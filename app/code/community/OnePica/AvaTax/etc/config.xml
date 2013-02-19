@@ -1,0 +1,296 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * OnePica_AvaTax
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0), a
+ * copy of which is available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
+ * @copyright  Copyright (c) 2009 One Pica, Inc.
+ * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ */
+-->
+
+<config>
+    <modules>
+        <OnePica_AvaTax>
+            <version>2.4.1.0</version>
+        </OnePica_AvaTax>
+    </modules>
+    <global>
+        <models>
+            <avatax>
+                <class>OnePica_AvaTax_Model</class>
+            </avatax>
+            <avatax_records>
+                <class>OnePica_AvaTax_Model_Records</class>
+                <resourceModel>avatax_records_mysql4</resourceModel>
+            </avatax_records>
+            <avatax_records_mysql4>
+                <class>OnePica_AvaTax_Model_Records_Mysql4</class>
+                <entities>
+                    <log>
+                        <table>op_avatax_log</table>
+                    </log>
+                    <queue>
+                        <table>op_avatax_queue</table>
+                    </queue>
+                </entities>
+            </avatax_records_mysql4>
+			<adminhtml>
+				<rewrite>
+					<config>OnePica_AvaTax_Model_Adminhtml_Config</config>
+					<sales_order_create>OnePica_AvaTax_Model_Adminhtml_Sales_Order_Create</sales_order_create>
+				</rewrite>
+			</adminhtml>
+			<admin>
+				<rewrite>
+					<session>OnePica_AvaTax_Model_Admin_Session</session>
+				</rewrite>
+			</admin>
+			<sales>
+				<rewrite>				
+					<quote_address>OnePica_AvaTax_Model_Sales_Quote_Address</quote_address>
+					<quote_address_total_grand>OnePica_AvaTax_Model_Sales_Quote_Address_Total_Grand</quote_address_total_grand>
+				</rewrite>
+			</sales>
+		</models>
+		<helpers>
+            <avatax>
+                <class>OnePica_AvaTax_Helper</class>
+            </avatax>
+			<tax>
+				<rewrite>
+					<data>OnePica_AvaTax_Helper_Tax_Data</data>
+				</rewrite>
+			</tax>
+        </helpers>
+		<blocks>
+            <avatax>
+                <class>OnePica_AvaTax_Block</class>
+            </avatax>
+			<adminhtml>
+				<rewrite>
+					<tax_class_grid>OnePica_AvaTax_Block_Adminhtml_Tax_Class_Grid</tax_class_grid>
+					<tax_class_edit_form>OnePica_AvaTax_Block_Adminhtml_Tax_Class_Edit_Form</tax_class_edit_form>
+				</rewrite>
+			</adminhtml>
+		</blocks>
+        <resources>
+            <avatax_records_setup>
+                <setup>
+                    <module>OnePica_AvaTax</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </avatax_records_setup>
+            <avatax_records_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </avatax_records_write>
+            <avatax_records_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </avatax_records_read>
+        </resources>
+        <events>
+            <sales_quote_collect_totals_before>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer</class>
+                        <method>salesQuoteCollectTotalsBefore</method>
+                    </avatax>
+                </observers>
+            </sales_quote_collect_totals_before>
+            <sales_order_invoice_save_after>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer</class>
+                        <method>salesOrderInvoiceSaveAfter</method>
+                    </avatax>
+                </observers>
+            </sales_order_invoice_save_after>
+            <sales_order_creditmemo_save_after>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer</class>
+                        <method>salesOrderCreditmemoSaveAfter</method>
+                    </avatax>
+                </observers>
+            </sales_order_creditmemo_save_after>
+            <admin_system_config_changed_section_tax>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer</class>
+                        <method>adminSystemConfigChangedSectionTax</method>
+                    </avatax>
+                </observers>
+            </admin_system_config_changed_section_tax>
+            <checkout_type_multishipping_set_shipping_items>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer</class>
+                        <method>multishippingSetShippingItems</method>
+                    </avatax>
+                </observers>
+            </checkout_type_multishipping_set_shipping_items>
+        </events>
+        <!-- set on-the-fly in OnePica_AvaTax_Model_Observer::salesQuoteCollectTotalsBefore
+        <sales>
+            <quote>
+                <totals>
+                    <tax>
+                        <class>avatax/sales_quote_address_total_tax</class>
+                        <after>subtotal,shipping</after>
+                        <before>customerbalance,grand_total</before>
+                    </tax>
+                </totals>
+            </quote>
+        </sales>
+        -->
+	</global>
+	<frontend>
+		<layout>
+			<updates>
+				<avatax>
+					<file>avatax.xml</file>
+				</avatax>
+			</updates>
+		</layout>
+	</frontend>
+    <admin>
+        <routers>
+			<avatax>
+				<use>admin</use>
+				<args>
+					<module>OnePica_AvaTax</module>
+					<frontName>avatax</frontName>
+				</args>
+			</avatax>
+        </routers>
+    </admin>
+	<!-- the adminhtml section is repeated in config.xml & adminhtml.xml for backwards compatibility -->
+	<!-- @see http://www.magentocommerce.com/bug-tracking/issue?issue=8496 -->
+	<adminhtml>
+		<layout>
+			<updates>
+				<avatax>
+					<file>avatax.xml</file>
+				</avatax>
+			</updates>
+		</layout>
+		<menu>
+			<sales>
+				<children>
+					<tax>
+						<children>
+							<rules>
+								<!-- enabled/disabled in OnePica_AvaTax_Model_Admin_Session -->
+							</rules>
+							<rates>
+								<!-- enabled/disabled in OnePica_AvaTax_Model_Admin_Session -->
+							</rates>
+							<import_export>
+								<!-- enabled/disabled in OnePica_AvaTax_Model_Admin_Session -->
+							</import_export>
+	                        <avatax_queue translate="title" module="avatax">
+	                            <title>AvaTax Order Sync Queue</title>
+	                            <action>avatax/adminhtml_grid/queue</action>
+	                        </avatax_queue>
+	                        <!--
+	                        <avatax_log translate="title" module="avatax">
+	                            <title>AvaTax Log</title>
+	                            <action>avatax/adminhtml_grid/log</action>
+	                        </avatax_log>
+	                        -->
+						</children>
+					</tax>
+				</children>
+			</sales>
+		</menu>
+		<acl>
+			<resources>
+				<admin>
+					<children>
+						<avatax translate="title">
+							<title>AvaTax Module</title>
+							<sort_order>100</sort_order>
+						</avatax>
+					</children>
+				</admin>
+			</resources>
+		</acl>
+	</adminhtml>
+    <default>
+        <tax>
+        	<avatax>
+        		<action>0</action>
+        		<url>https://avatax.avalara.net/</url>
+        		<region_filter_mode>0</region_filter_mode>
+        		<country_filter_list>CA,US</country_filter_list>
+        		<log_status>1</log_status>
+        		<log_lifetime>3</log_lifetime>
+        		<queue_success_lifetime>7</queue_success_lifetime>
+        		<queue_failed_lifetime>60</queue_failed_lifetime>
+        		<cust_code_format>0</cust_code_format>
+        		<shipping_sku>Shipping</shipping_sku>
+				<gw_order_sku>GwOrder</gw_order_sku>
+				<gw_items_sku>GwItems</gw_items_sku>
+				<gw_printed_card_sku>GwPrintedCard</gw_printed_card_sku>
+        		<adjustment_positive_sku>Adjustment</adjustment_positive_sku>
+        		<adjustment_negative_sku>Adjustment</adjustment_negative_sku>
+        		<sales_person_code>Magento</sales_person_code>
+        		<error_full_stop>1</error_full_stop>
+        		<error_frontend_action>2</error_frontend_action>
+        		<error_frontend_message>Unfortunately, we could not calculate tax for your order. Please try again with a different address or contact us to complete your order.</error_frontend_message>
+        		<error_backend_message>There was an error getting tax rates from Avalara. Please see the error log for details.</error_backend_message>
+        		<error_notification_toolbar>1</error_notification_toolbar>
+				<onepage_normalize_message>Your shipping address has been modified during our validation process. Please confirm the address to the right is accurate.</onepage_normalize_message>
+				<multiaddress_normalize_message>Your shipping addresses have been modified during our validation process. Please confirm they are still correct.</multiaddress_normalize_message>
+				<validate_address_message>The address '%s' appears invalid. Please correct it or select another address.</validate_address_message>
+        	</avatax>
+            <calculation>
+				<based_on>shipping</based_on>
+				<price_includes_tax>0</price_includes_tax>
+				<shipping_includes_tax>0</shipping_includes_tax>
+				<apply_after_discount>1</apply_after_discount>
+				<discount_tax>1</discount_tax>
+				<apply_tax_on>0</apply_tax_on>
+            </calculation>
+			<defaults>
+				<region>0</region>
+				<postcode>*</postcode>
+			</defaults>
+        </tax>
+    </default>
+    <crontab>
+        <jobs>
+            <avatax_processqueue>
+                <schedule><cron_expr>0 * * * *</cron_expr></schedule>
+                <run>
+                    <model>avatax/observer::processQueue</model>
+                </run>
+            </avatax_processqueue>
+            <avatax_cleanlog>
+                <schedule><cron_expr>0 0 * * *</cron_expr></schedule>
+                <run>
+                    <model>avatax/observer::cleanLog</model>
+                </run>
+            </avatax_cleanlog>
+        </jobs>
+    </crontab>
+</config>

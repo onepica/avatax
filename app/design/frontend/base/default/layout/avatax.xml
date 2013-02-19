@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout>
+	<checkout_onepage_index>
+		<reference name="checkout.onepage.shipping_method">
+			<block type="avatax/checkout_onepage_shipping_method_available" name="checkout.onepage.shipping_method.availableAvatax" before="-" output="toHtml" />
+		</reference>
+	</checkout_onepage_index>
+	
+	<checkout_onepage_shippingmethod>
+		<block type="avatax/checkout_onepage_shipping_method_available" name="checkout.onepage.shipping_method.availableAvatax" before="-" output="toHtml" />
+	</checkout_onepage_shippingmethod>
+</layout>

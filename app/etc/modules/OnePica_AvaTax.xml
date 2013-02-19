@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<OnePica_AvaTax>
+			<active>true</active>
+			<codePool>community</codePool>
+		</OnePica_AvaTax>
+	</modules>
+</config>

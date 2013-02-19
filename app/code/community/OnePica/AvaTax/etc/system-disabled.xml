@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * OnePica_AvaTax
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0), a
+ * copy of which is available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
+ * @copyright  Copyright (c) 2009 One Pica, Inc.
+ * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ */
+-->
+
+<config>
+	<sections>
+		<tax>
+			<groups>
+				<classes>
+					<fields>
+						<shipping_tax_class>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</shipping_tax_class>
+					</fields>
+				</classes>
+				<calculation>
+					<fields>
+						<based_on>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</based_on>
+						<price_includes_tax>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</price_includes_tax>
+						<shipping_includes_tax>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</shipping_includes_tax>
+						<apply_after_discount>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</apply_after_discount>
+						<discount_tax>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</discount_tax>
+						<apply_tax_on>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</apply_tax_on>
+					</fields>
+				</calculation>
+				<defaults>
+					<fields>
+						<region>
+							<comment></comment>
+						</region>
+						<postcode>
+							<comment></comment>
+						</postcode>
+					</fields>
+				</defaults>
+                <sales_display>
+                    <display>
+                        <fields>
+                            <full_summary>
+                                <show_in_default>1</show_in_default>
+                                <show_in_website>1</show_in_website>
+                                <show_in_store>1</show_in_store>
+                            </full_summary>
+                        </fields>
+                    </display>
+                </sales_display>
+			</groups>
+		</tax>
+	</sections>
+</config>
