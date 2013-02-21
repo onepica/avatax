@@ -232,14 +232,14 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
     /**
      * Adds shipping cost to request as item
      *
-     * @param Mage_Sales_Model_Quote
+     * @param Mage_Sales_Model_Quote_Address
      * @return int
      */
     protected function _addShipping($address) {
         $lineNumber = count($this->_lines);
         $storeId = Mage::app()->getStore()->getId();
         $taxClass = Mage::helper('tax')->getShippingTaxClass($storeId);
-        $shippingAmount = (float) $address->getShippingAmount();
+        $shippingAmount = (float) $address->getBaseShippingAmount();
 
         $line = new Line();
         $line->setNo($lineNumber);
@@ -260,7 +260,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
     /**
      * Adds giftwraporder cost to request as item
      *
-     * @param Mage_Sales_Model_Quote
+     * @param Mage_Sales_Model_Quote_Address
      * @return int
      */
     protected function _addGwOrderAmount($address) {
@@ -269,7 +269,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
         $lineNumber = count($this->_lines);
         $storeId = Mage::app()->getStore()->getId();
         //Add gift wrapping price(for entire order)
-        $gwOrderAmount = $address->getGwPrice();
+        $gwOrderAmount = $address->getGwBasePrice();
 
         $line = new Line();
         $line->setNo($lineNumber);
@@ -299,7 +299,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
         $lineNumber = count($this->_lines);
         $storeId = Mage::app()->getStore()->getId();
         //Add gift wrapping price(for individual items)
-        $gwItemsAmount = $address->getGwItemsPrice();
+        $gwItemsAmount = $address->getGwItemsBasePrice();
 
         $line = new Line();
         $line->setNo($lineNumber);
@@ -329,7 +329,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
         $lineNumber = count($this->_lines);
         $storeId = Mage::app()->getStore()->getId();
         //Add printed card price
-        $gwPrintedCardAmount = $address->getGwPrintedCardPrice();
+        $gwPrintedCardAmount = $address->getGwPrintedCardBasePrice();
 
         $line = new Line();
         $line->setNo($lineNumber);
@@ -385,7 +385,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
         if ($this->isProductCalculated($item)) {
             $price = 0;
         } else {
-            $price = $item->getRowTotal() - $item->getDiscountAmount();
+            $price = $item->getBaseRowTotal() - $item->getBaseDiscountAmount();
         }
 
         $line->setNo($lineNumber);
