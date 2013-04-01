@@ -112,6 +112,17 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
     {
         return $this->_getConfig('log_status', $store);
     }
+
+	/**
+	 * Returns the logging type
+	 *
+	 * @return string
+	 */
+    public function getLogType($store=null)
+    {
+        return explode(",", $this->_getConfig('log_type_list', $store));
+    }
+
     
 	/**
 	 * Returns shipping line item faked sku

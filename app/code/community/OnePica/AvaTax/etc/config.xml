@@ -246,6 +246,7 @@
         		<log_lifetime>3</log_lifetime>
         		<queue_success_lifetime>7</queue_success_lifetime>
         		<queue_failed_lifetime>60</queue_failed_lifetime>
+				<log_type_list>Ping,Get Tax,Filter,Validate,Queue</log_type_list>
         		<cust_code_format>0</cust_code_format>
         		<shipping_sku>Shipping</shipping_sku>
 				<gw_order_sku>GwOrder</gw_order_sku>

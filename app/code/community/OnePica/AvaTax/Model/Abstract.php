@@ -62,15 +62,18 @@ abstract class OnePica_AvaTax_Model_Abstract extends Varien_Object
 		$resultType = str_replace('Result', '', get_class($result));
 		$type = $requestType ? $requestType : $resultType;
 		if($type == 'Varien_Object') $type = 'Unknown';
-		
-		Mage::getModel('avatax_records/log')
-			->setStoreId($storeId)
-			->setLevel($result->getResultCode())
-			->setType($type)
-			->setRequest(print_r($request, true))
-			->setResult(print_r($result, true))
-			->setAdditional($additional)
-			->save();
+
+		if (in_array($resultType, Mage::helper('avatax')->getLogType($storeId)))
+		{
+			Mage::getModel('avatax_records/log')
+				->setStoreId($storeId)
+				->setLevel($result->getResultCode())
+				->setType($type)
+				->setRequest(print_r($request, true))
+				->setResult(print_r($result, true))
+				->setAdditional($additional)
+				->save();
+		}
 	}
 
 	/**
