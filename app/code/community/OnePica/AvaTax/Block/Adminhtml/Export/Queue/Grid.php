@@ -38,7 +38,8 @@ class OnePica_AvaTax_Block_Adminhtml_Export_Queue_Grid extends OnePica_AvaTax_Bl
      */
     public function getMainButtonsHtml()
     {
-    	$html = $this->getButtonHtml($this->__('Process Queue Now'), 'setLocation(\'' . $this->getUrl('*/*/processQueue') . '\')');
+		$html = $this->getButtonHtml($this->__('Clear Queue Now'), 'setLocation(\'' . $this->getUrl('*/*/clearQueue') . '\')');
+    	$html .= $this->getButtonHtml($this->__('Process Queue Now'), 'setLocation(\'' . $this->getUrl('*/*/processQueue') . '\')');
         $html .= parent::getMainButtonsHtml();
         return $html;
     }

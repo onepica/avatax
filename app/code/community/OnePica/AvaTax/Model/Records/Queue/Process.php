@@ -18,6 +18,22 @@
 class OnePica_AvaTax_Model_Records_Queue_Process extends OnePica_AvaTax_Model_Abstract
 {
     /**
+     * Remove the Failed process
+     *
+     * @return self
+     */
+	public function clear() {
+		$queue = Mage::getModel('avatax_records/queue')->getCollection()
+			->addFieldToFilter('status', OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_FAILED);
+					
+		foreach($queue as $item) {
+			$item->delete();
+		}
+
+    	return $this;
+	}
+
+    /**
      * Run the complete process
      *
      * @return self

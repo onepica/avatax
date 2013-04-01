@@ -25,6 +25,12 @@ class OnePica_AvaTax_Adminhtml_GridController extends Mage_Adminhtml_Controller_
     protected function _construct() {
         $this->setUsedModuleName('OnePica_AvaTax');
     }
+
+	public function clearQueueAction() {
+        Mage::getModel('avatax_records/queue_process')->clear();
+        $this->_redirect('*/*/queue');
+    }
+
     
     public function logAction() {
         $this->_setTitle($this->__('Sales'))->_setTitle($this->__('Tax'))->_setTitle($this->__('AvaTax Log'));
