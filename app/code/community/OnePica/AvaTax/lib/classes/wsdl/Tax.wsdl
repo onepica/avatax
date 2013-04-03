@@ -40,6 +40,8 @@
 					  <s:element minOccurs="1" maxOccurs="1" name="PaymentDate" type="s:date" />
 					  <s:element minOccurs="1" maxOccurs="1" name="ExchangeRate" type="s:decimal" />
 					  <s:element minOccurs="1" maxOccurs="1" name="ExchangeRateEffDate" type="s:date" />
+					  <s:element minOccurs="1" maxOccurs="1" name="TaxDate" type="s:date" />
+					  <s:element minOccurs="1" maxOccurs="1" name="StatusDate" type="s:date" />
 				  </s:sequence>
 			  </s:extension>
 		  </s:complexContent>

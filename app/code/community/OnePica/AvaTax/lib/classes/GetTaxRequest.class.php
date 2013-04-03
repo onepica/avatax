@@ -48,6 +48,12 @@ class GetTaxRequest
     private $PaymentDate;		//date
     private $ExchangeRate;		//decimal
     private $ExchangeRateEffDate;	//date
+
+
+	//@author: Rapshtynska Svitlana
+	//Added new properties
+	private $TaxDate;			//date
+	private $StatusDate;		//date
     
     
     
@@ -395,6 +401,7 @@ class GetTaxRequest
 	 */
 	public function setExchangeRateEffDate($value){ $this->ExchangeRateEffDate = $value; return $this; }	//date
 	
+	
 	/**
 	 *TaxOverride for the document. 
 	 *
@@ -407,6 +414,24 @@ class GetTaxRequest
 	{
 		$this->ReferenceCode=$value;
 	}
+
+
+	//@author: Rapshtynska Svitlana
+	/**
+	 * TaxDate should be in the format yyyy-mm-dd 
+	 *
+	 * @param date $value	 
+	 */
+    public function setTaxDate($value) { $this->TaxDate = $value; return $this; }				//date
+
+	/**
+	 * StatusDate should be in the format yyyy-mm-dd 
+	 *
+	 * @param date $value	 
+	 */
+    public function setStatusDate($value) { $this->StatusDate = $value; return $this; }				//date
+
+
 
 /**#@+
  * Accessor
@@ -491,6 +516,10 @@ class GetTaxRequest
 			}
 		}
 	}
+
+	//@author: Rapshtynska Svitlana
+	public function getTaxDate()  { return $this->TaxDate; }		//date	
+	public function getStatusDate()  { return $this->StatusDate; }		//date	
 	
 	
 /**#@-*/
