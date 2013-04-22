@@ -101,8 +101,9 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
 			if ($this->isProductCalculated($item)) {
 				$tax = 0;
 				foreach ($item->getChildren() as $child) {
+					$child->setAddress($item->getAddress());
 					$tax += $this->getItemTax($child);
-				}
+				}        
 				return $tax;
 			} else {
 				$key = $this->_getRates($item);
@@ -174,7 +175,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
         $makeRequest &= count($this->_lineToLineId) ? true : false;
         $makeRequest &= $this->_request->getDestinationAddress() == '' ? false : true;
         $makeRequest &= $address->getId() ? true : false;
-
+        
         //make request if needed and save results in cache
         if ($makeRequest) {
             $result = $this->_send($address->getStoreId());
