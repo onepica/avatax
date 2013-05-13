@@ -41,6 +41,8 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
         $this->_setAddress($address);
         parent::collect($address);
 
+		$session = Mage::getSingleton('checkout/session');
+
 		if($address->getPostcode() && $address->getPostcode() !='-'){
 			$store = $address->getQuote()->getStore();
 			$customer = $address->getQuote()->getCustomer();

@@ -160,13 +160,43 @@ class OnePica_AvaTax_Model_Avatax_Address extends OnePica_AvaTax_Model_Abstract
 		$key = $this->_mageAddress->getCacheHashKey();
 		if (array_key_exists($key, $this->_cache)) {
 			$result = unserialize($this->_cache[$key]);
-		} else {
+		} else if ($this->_mageAddress->getPostcode() && $this->_mageAddress->getPostcode() != '-') { 
+			$session = Mage::getSingleton('checkout/session');
+			if ($session->getPostType() == 'onepage')
+			{
+				$requiredFields = explode(",", $this->getHelper()->getFieldRequiredList());
+				$fieldRules = explode(",", $this->getHelper()->getFieldRule());
+				foreach ($requiredFields as $field)
+				{
+					$requiredFlag = 0;
+					foreach ($fieldRules as $rule)
+					{   
+						if (preg_match("/street\d/", $field)) $field = "street";
+						if ($field == "country") $field = "country_id";
+						if ($this->_mageAddress->getData($field) == $rule || !$this->_mageAddress->getData($field))
+						{
+							$requiredFlag = 1;
+						}
+					}
+					if ($requiredFlag)
+					{   
+						$errors = array();
+						$errors[] = $this->__('Invalid ').$this->__($field);
+						return $errors;
+					}
+				}
+			}
+                                                  
 			$client = $config->getAddressConnection();
 			$request = new ValidateRequest($this->_requestAddress, TextCase::$Mixed, 0);
 			$request->setTaxability(true);
 			$result = $client->Validate($request);
 			$this->_log($request, $result, $this->_storeId, $client);
 			$this->_cache[$key] = serialize($result);
+		} else {   
+			$errors = array();
+			$errors[] = $this->__('Invalid ZIP/Postal Code.');
+			return $errors;
 		}
 		
 		//normalization
