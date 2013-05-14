@@ -294,7 +294,7 @@
 						<validate_address translate="label comment">
 							<label>Address Validation</label>
 							<frontend_type>select</frontend_type>
-							<source_model>adminhtml/system_config_source_enabledisable</source_model>
+							<source_model>avatax/source_addressvalidation</source_model>
 							<comment>Require a validated address from AvaTax to checkout</comment>
 							<sort_order>301</sort_order>
 							<show_in_default>1</show_in_default>

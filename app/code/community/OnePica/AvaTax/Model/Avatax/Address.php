@@ -212,7 +212,7 @@ class OnePica_AvaTax_Model_Avatax_Address extends OnePica_AvaTax_Model_Abstract
 		}
 		
 		//validation
-		if($isAddressValidationOn) {
+		if($isAddressValidationOn == 1) {
 			if($result->getResultCode() == SeverityLevel::$Success) {
 				$this->_mageAddress->setAddressValidated(true);
 				return true;
@@ -224,6 +224,18 @@ class OnePica_AvaTax_Model_Avatax_Address extends OnePica_AvaTax_Model_Abstract
 				return $errors;
 			}
 			
+		} else if ($isAddressValidationOn == 2) {
+			$this->_mageAddress->setAddressValidated(true);
+			if($result->getResultCode() == SeverityLevel::$Success) { 
+				return true;
+			} else {
+				$this->_mageAddress->setAddressNotified(true);
+				foreach ($result->getMessages() as $message) { 
+					Mage::getSingleton('core/session')->addNotice($this->__($message->getSummary()));
+				}
+				return true;
+			}
+
 		//a valid address isn't required, but Avalara has to say there is 
 		//enough info to drill down to a tax jurisdiction to calc on
 		} elseif(!$isAddressValidationOn && $isQuoteActionable) {
