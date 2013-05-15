@@ -70,6 +70,8 @@ class OnePica_AvaTax_Block_Checkout_Onepage_Shipping_Method_Available extends Ma
 				Mage::getSingleton('core/session')->addNotice($notice);
 				$additional .= $this->getMessagesBlock()->getGroupedHtml();
 			}
+		} else if ($this->getAddress()->getAddressNotified()) {
+			$additional .= $this->getMessagesBlock()->getGroupedHtml();
 		}
 		return $additional;
 	}

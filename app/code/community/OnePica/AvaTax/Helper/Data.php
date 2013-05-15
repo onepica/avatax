@@ -223,6 +223,27 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
     {
         return $this->_getConfig('adjustment_negative_sku', $store);
     }
+
+	/**
+	 * Returns the required field list
+	 *
+	 * @return string
+	 */
+    public function getFieldRequiredList($store=null)
+    {
+        return $this->_getConfig('field_required_list', $store);
+    }
+
+	/**
+	 * Returns the rules for field
+	 *
+	 * @return string
+	 */
+    public function getFieldRule($store=null)
+    {
+        return $this->_getConfig('field_rule', $store);
+    }
+
     
 	/**
 	 * 
@@ -332,12 +353,12 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
 	    		$filter = 'region';
 	    	}
     	}
-	    	
+			
     	$countryFilters = explode(',', Mage::getStoreConfig('tax/avatax/country_filter_list', $storeId));
     	if(!in_array($address->getCountryId(), $countryFilters)) {
     		$filter = 'country';
     	}
-    	
+   		
 		if($filter && $this->getLogMode($storeId)) {
 			$filterLog = Mage::getSingleton('avatax/session')->getFilterLog();
 			if(!is_array($filterLog)) $filterLog = array();
