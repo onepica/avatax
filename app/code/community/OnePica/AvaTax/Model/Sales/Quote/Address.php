@@ -26,27 +26,34 @@ class OnePica_AvaTax_Model_Sales_Quote_Address extends Mage_Sales_Model_Quote_Ad
 	 * @var OnePica_AvaTax_Model_Avatax_Address
 	 */
 	protected $_avataxValidator = null;
-	
+
+    /**
+     * Validation results array (to avoid double valiadation of same address)
+     *
+     * @var array
+     */
+    static protected $_validationResult = array();
+
 	/**
 	 * Avatax address validator accessor method
 	 *
 	 * @return OnePica_AvaTax_Model_Avatax_Address
 	 */
-	public function getAvataxValidator() { 
+	public function getAvataxValidator() {
 		return $this->_avataxValidator;
 	}
-	
+
 	/**
 	 * Avatax address validator mutator method
 	 *
 	 * @return OnePica_AvaTax_Model_Avatax_Address
 	 * @return self
 	 */
-	public function setAvataxValidator(OnePica_AvaTax_Model_Avatax_Address $object) { 
-		$this->_avataxValidator = $object; 
+	public function setAvataxValidator(OnePica_AvaTax_Model_Avatax_Address $object) {
+		$this->_avataxValidator = $object;
 		return $this;
 	}
-	
+
 	/**
 	 * Creates a hash key based on only address data for caching
 	 *
@@ -58,7 +65,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address extends Mage_Sales_Model_Quote_Ad
 		}
 		return $this->getData('cache_hash_key');
 	}
-	
+
 	/**
 	 * Validates the address.  AvaTax validation is invoked if the this is a ship-to address.
 	 * Returns true on success and an array with an error on failure.
@@ -67,33 +74,38 @@ class OnePica_AvaTax_Model_Sales_Quote_Address extends Mage_Sales_Model_Quote_Ad
 	 */
 	public function validate () {
 		$result = parent::validate();
-		
+
 		//if base validation fails, don't bother with additional validation
-		if ($result !== true) {  
+		if ($result !== true) {
 			return $result;
 		}
-		
+
 		//if ship-to address, do AvaTax validation
 		$data = Mage::app()->getRequest()->getPost('billing', array());
 		$useForShipping = isset($data['use_for_shipping']) ? (int)$data['use_for_shipping'] : 0;
-		
+
 		if($this->getAddressType() == self::TYPE_SHIPPING || $this->getUseForShipping() /* <1.9 */ || $useForShipping /* >=1.9 */) {
-			if(!$this->getAvataxValidator()) {
-				$validator = Mage::getModel('avatax/avatax_address')->setAddress($this);
-				$this->setAvataxValidator($validator);
-			}
-			return $this->getAvataxValidator()->validate();
+            if (!isset(self::$_validationResult[$this->getAddressId()])) {
+                if(!$this->getAvataxValidator()) {
+                    $validator = Mage::getModel('avatax/avatax_address')->setAddress($this);
+                    $this->setAvataxValidator($validator);
+                }
+
+                self::$_validationResult[$this->getAddressId()] = $this->getAvataxValidator()->validate();
+            }
+
+            return self::$_validationResult[$this->getAddressId()];
 		}
-		
+
 		return $result;
-	}	
-    
-    
+	}
+
+
     /* BELOW ARE MAGE CORE PROPERTIES AND METHODS ADDED FOR OLDER VERSION COMPATABILITY */
 
     protected $_totalAmounts = array();
     protected $_baseTotalAmounts = array();
-    
+
     /**
      * Add amount total amount value
      *
