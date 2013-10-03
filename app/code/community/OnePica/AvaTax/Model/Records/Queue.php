@@ -13,6 +13,8 @@
  * @author     OnePica Codemaster <codemaster@onepica.com>
  * @copyright  Copyright (c) 2009 One Pica, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ *
+ * @method OnePica_AvaTax_Model_Records_Mysql4_Queue _getResource()
  */
 
 
@@ -57,4 +59,12 @@ class OnePica_AvaTax_Model_Records_Queue extends Mage_Core_Model_Abstract
     	);
     }
 
+    public function loadInvoiceByIncrementId($incrementId)
+    {
+        $this->_getResource()->loadInvoiceByIncrementId($this, $incrementId);
+        $this->_afterLoad();
+        $this->setOrigData();
+
+        return $this;
+    }
 }

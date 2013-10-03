@@ -37,8 +37,15 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
 	 * @param Varien_Event_Observer $observer
 	 */
     public function salesOrderInvoiceSaveAfter(Varien_Event_Observer $observer) {
+        /** @var Mage_Sales_Model_Order_Invoice $invoice */
     	$invoice = $observer->getEvent()->getInvoice();
-    	if(!$invoice->getOrigData($invoice->getIdFieldName()) && Mage::helper('avatax')->isObjectActionable($invoice)) {
+
+        $existingInvoiceInQueue = Mage::getModel('avatax_records/queue')->loadInvoiceByIncrementId($invoice->getIncrementId());
+        if ($existingInvoiceInQueue->getId()) {
+            return $this;
+        }
+
+        if(!$invoice->getOrigData($invoice->getIdFieldName()) && Mage::helper('avatax')->isObjectActionable($invoice)) {
 		    Mage::getModel('avatax_records/queue')
 		    	->setEntity($invoice)
 		    	->setType(OnePica_AvaTax_Model_Records_Queue::QUEUE_TYPE_INVOICE)

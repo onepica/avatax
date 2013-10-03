@@ -83,5 +83,23 @@ class OnePica_AvaTax_Model_Records_Mysql4_Queue extends Mage_Core_Model_Mysql4_A
 		}
         return $this;
     }
-    
+
+    /**
+     * @param $queue OnePica_AvaTax_Model_Records_Queue
+     * @param $invoiceIncrementId
+     * @return $this
+     */
+    public function loadInvoiceByIncrementId($queue, $invoiceIncrementId)
+    {
+        $adapter = $this->_getReadAdapter();
+        $select  = $adapter->select()
+            ->from($this->getMainTable())
+            ->where('entity_increment_id = ?', $invoiceIncrementId)
+            ->where('type = ?', OnePica_AvaTax_Model_Records_Queue::QUEUE_TYPE_INVOICE);
+
+        $data = $adapter->fetchRow($select);
+        $queue->setData($data);
+
+        return $this;
+    }
 }
