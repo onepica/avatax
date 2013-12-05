@@ -162,7 +162,7 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
 	 */
 	protected function _setDestinationAddress($address) {
 		//$shippingAddress = $quote->getShippingAddress();
-		//$street = $address->getStreet();
+		$street = $address->getStreet();
 		$street = array();
 		$street1 = isset($street[0]) ? $street[0] : null;
 		$street2 = isset($street[1]) ? $street[1] : null;
