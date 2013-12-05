@@ -73,6 +73,11 @@ class OnePica_AvaTax_Model_Sales_Quote_Address extends Mage_Sales_Model_Quote_Ad
      * @return true|array
      */
     public function validate () {
+
+        if (! Mage::helper('avatax')->fullStopOnError()) {
+            return true;
+        }
+        
         $result = parent::validate();
 
         //if base validation fails, don't bother with additional validation
