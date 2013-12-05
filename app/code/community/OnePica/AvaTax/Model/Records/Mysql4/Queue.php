@@ -43,6 +43,7 @@ class OnePica_AvaTax_Model_Records_Mysql4_Queue extends Mage_Core_Model_Mysql4_A
 	 * @return OnePica_AvaTax_Model_Mysql4_Queue
 	 */
     protected function _afterSave(Mage_Core_Model_Abstract $object) {
+        $storeId = $object->getStoreId();
         $logStatus = Mage::getStoreConfig('tax/avatax/log_status', $object->getStoreId());
         if($logStatus) {
 			if (in_array('Queue', Mage::helper('avatax')->getLogType($storeId)))
@@ -66,6 +67,7 @@ class OnePica_AvaTax_Model_Records_Mysql4_Queue extends Mage_Core_Model_Mysql4_A
 	 * @return OnePica_AvaTax_Model_Mysql4_Queue
 	 */
     protected function _afterDelete(Mage_Core_Model_Abstract $object) {
+        $storeId = $object->getStoreId();
         $logStatus = Mage::getStoreConfig('tax/avatax/log_status', $object->getStoreId());
         if($logStatus) {
 			if (in_array('Queue', Mage::helper('avatax')->getLogType($storeId)))
@@ -81,5 +83,23 @@ class OnePica_AvaTax_Model_Records_Mysql4_Queue extends Mage_Core_Model_Mysql4_A
 		}
         return $this;
     }
-    
+
+    /**
+     * @param $queue OnePica_AvaTax_Model_Records_Queue
+     * @param $invoiceIncrementId
+     * @return $this
+     */
+    public function loadInvoiceByIncrementId($queue, $invoiceIncrementId)
+    {
+        $adapter = $this->_getReadAdapter();
+        $select  = $adapter->select()
+            ->from($this->getMainTable())
+            ->where('entity_increment_id = ?', $invoiceIncrementId)
+            ->where('type = ?', OnePica_AvaTax_Model_Records_Queue::QUEUE_TYPE_INVOICE);
+
+        $data = $adapter->fetchRow($select);
+        $queue->setData($data);
+
+        return $this;
+    }
 }

@@ -23,3 +23,5 @@ nbproject
 /.buildpath
 *.DS_Store
 /var/resource_config.json
+web
+.idea/
