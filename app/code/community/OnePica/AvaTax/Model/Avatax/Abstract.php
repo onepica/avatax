@@ -161,11 +161,8 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
 	 * @return bool
 	 */
 	protected function _setDestinationAddress($address) {
-		//$shippingAddress = $quote->getShippingAddress();
-		$street = $address->getStreet();
-		$street = array();
-		$street1 = isset($street[0]) ? $street[0] : null;
-		$street2 = isset($street[1]) ? $street[1] : null;
+		$street1 = $address->getStreet(1);
+		$street2 = $address->getStreet(2);
 		$city = $address->getCity();
 		$zip = preg_replace('/[^0-9\-]*/', '', $address->getPostcode());
 		$state = Mage::getModel('directory/region')->load($address->getRegionId())->getCode(); 
