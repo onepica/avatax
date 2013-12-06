@@ -6,6 +6,7 @@
     "require": {
         "magento-hackathon/magento-composer-installer": "dev-master"
     },
+    "license": "OSL-3.0",
     "authors":[
         {
             "name":"One Pica",
