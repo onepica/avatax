@@ -19,7 +19,7 @@
  * The AvaTax Address Validator model.
  */
 class OnePica_AvaTax_Model_Avatax_Address extends OnePica_AvaTax_Model_Abstract
-{	
+{
 	/**
 	 * An array of previously checked addresses
 	 * Example: $_cache[$key] = serialize($resultObjectFromAvalara)
@@ -27,7 +27,7 @@ class OnePica_AvaTax_Model_Avatax_Address extends OnePica_AvaTax_Model_Abstract
 	 * @var array
 	 */
 	protected $_cache = array();
-	
+
 	/**
 	 * The Mage Address object
 	 *
@@ -57,7 +57,7 @@ class OnePica_AvaTax_Model_Avatax_Address extends OnePica_AvaTax_Model_Abstract
 	 * @var int
 	 */
 	protected $_storeId = null;
-	
+
 	/**
 	 * Loads any saved addresses in session
 	 *
@@ -69,17 +69,17 @@ class OnePica_AvaTax_Model_Avatax_Address extends OnePica_AvaTax_Model_Abstract
 		}
 		parent::__construct();
 	}
-	
+
 	/**
 	 * Saves any current addresses to session
 	 *
 	 */
 	public function __destruct() {
 		Mage::getSingleton('avatax/session')->setAddresses($this->_cache);
-		
+
 		if(method_exists(get_parent_class(), '__destruct')) {
 			parent::__destruct();
-		}		
+		}
 	}
 
 	/**
@@ -145,12 +145,12 @@ class OnePica_AvaTax_Model_Avatax_Address extends OnePica_AvaTax_Model_Abstract
 		if (!$this->_mageAddress) {
 			throw new OnePica_AvaTax_Model_Avatax_Address_Exception($this->__('An address must be set before validation.'));
 		}
-		
+
 		$config = Mage::getSingleton('avatax/config')->init($this->_storeId);
 		$isAddressValidationOn = Mage::helper('avatax')->isAddressValidationOn($this->_mageAddress, $this->_storeId);
 		$isAddressNormalizationOn = Mage::helper('avatax')->isAddressNormalizationOn($this->_mageAddress, $this->_storeId);
 		$isQuoteActionable = Mage::helper('avatax')->isObjectActionable($this->_mageAddress->getQuote(), $this->_mageAddress);
-		
+
 		//if there is no use cases for AvaTax services, return address as valid without doing a lookup
 		if(!$isAddressValidationOn && !$isAddressNormalizationOn && !$isQuoteActionable) {
 			return true;
@@ -160,7 +160,7 @@ class OnePica_AvaTax_Model_Avatax_Address extends OnePica_AvaTax_Model_Abstract
 		$key = $this->_mageAddress->getCacheHashKey();
 		if (array_key_exists($key, $this->_cache)) {
 			$result = unserialize($this->_cache[$key]);
-		} else if ($this->_mageAddress->getPostcode() && $this->_mageAddress->getPostcode() != '-') { 
+		} else if ($this->_mageAddress->getPostcode() && $this->_mageAddress->getPostcode() != '-') {
 			$session = Mage::getSingleton('checkout/session');
 			if ($session->getPostType() == 'onepage')
 			{
@@ -170,7 +170,7 @@ class OnePica_AvaTax_Model_Avatax_Address extends OnePica_AvaTax_Model_Abstract
 				{
 					$requiredFlag = 0;
 					foreach ($fieldRules as $rule)
-					{   
+					{
 						if (preg_match("/street\d/", $field)) $field = "street";
 						if ($field == "country") $field = "country_id";
 						if ($this->_mageAddress->getData($field) == $rule || !$this->_mageAddress->getData($field))
@@ -179,26 +179,26 @@ class OnePica_AvaTax_Model_Avatax_Address extends OnePica_AvaTax_Model_Abstract
 						}
 					}
 					if ($requiredFlag)
-					{   
+					{
 						$errors = array();
 						$errors[] = $this->__('Invalid ').$this->__($field);
 						return $errors;
 					}
 				}
 			}
-                                                  
+
 			$client = $config->getAddressConnection();
 			$request = new ValidateRequest($this->_requestAddress, TextCase::$Mixed, 0);
 			$request->setTaxability(true);
 			$result = $client->Validate($request);
 			$this->_log($request, $result, $this->_storeId, $client);
 			$this->_cache[$key] = serialize($result);
-		} else {   
+		} else {
 			$errors = array();
 			$errors[] = $this->__('Invalid ZIP/Postal Code.');
 			return $errors;
 		}
-		
+
 		//normalization
 		if ($isAddressNormalizationOn && $result->getResultCode() == SeverityLevel::$Success) {
 			$responseAddress = $result->getValidAddresses();
@@ -208,9 +208,9 @@ class OnePica_AvaTax_Model_Avatax_Address extends OnePica_AvaTax_Model_Abstract
 				$this->_convertResponseAddress();
 			} else {
 				throw new OnePica_AvaTax_Model_Avatax_Address_Exception($this->__('Invalid response address type.'));
-			}				
+			}
 		}
-		
+
 		//validation
 		if($isAddressValidationOn == 1) {
 			if($result->getResultCode() == SeverityLevel::$Success) {
@@ -223,20 +223,22 @@ class OnePica_AvaTax_Model_Avatax_Address extends OnePica_AvaTax_Model_Abstract
 				}
 				return $errors;
 			}
-			
+
 		} else if ($isAddressValidationOn == 2) {
 			$this->_mageAddress->setAddressValidated(true);
-			if($result->getResultCode() == SeverityLevel::$Success) { 
+			if($result->getResultCode() == SeverityLevel::$Success) {
 				return true;
 			} else {
-				$this->_mageAddress->setAddressNotified(true);
-				foreach ($result->getMessages() as $message) { 
-					Mage::getSingleton('core/session')->addNotice($this->__($message->getSummary()));
-				}
+                if (!$this->_mageAddress->getAddressNotified()) {
+                    $this->_mageAddress->setAddressNotified(true);
+                    foreach ($result->getMessages() as $message) {
+                        Mage::getSingleton('core/session')->addNotice($this->__($message->getSummary()));
+                    }
+                }
 				return true;
 			}
 
-		//a valid address isn't required, but Avalara has to say there is 
+		//a valid address isn't required, but Avalara has to say there is
 		//enough info to drill down to a tax jurisdiction to calc on
 		} elseif(!$isAddressValidationOn && $isQuoteActionable) {
 			if($result->isTaxable()) {
@@ -250,7 +252,7 @@ class OnePica_AvaTax_Model_Avatax_Address extends OnePica_AvaTax_Model_Abstract
 				return $errors;
 			}
 		}
-		
+
 		return true;
 	}
 }

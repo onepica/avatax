@@ -74,7 +74,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
     }
 
     /**
-     * Estimates tax rate for one item. 
+     * Estimates tax rate for one item.
      *
      * @param Varien_Object $item
      * @return int
@@ -103,7 +103,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
 				foreach ($item->getChildren() as $child) {
 					$child->setAddress($item->getAddress());
 					$tax += $this->getItemTax($child);
-				}        
+				}
 				return $tax;
 			} else {
 				$key = $this->_getRates($item);
@@ -175,7 +175,8 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
         $makeRequest &= count($this->_lineToLineId) ? true : false;
         $makeRequest &= $this->_request->getDestinationAddress() == '' ? false : true;
         $makeRequest &= $address->getId() ? true : false;
-        
+        $makeRequest &= !isset($this->_rates[$requestKey]['failure']);
+
         //make request if needed and save results in cache
         if ($makeRequest) {
             $result = $this->_send($address->getStoreId());
@@ -207,6 +208,13 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
 
                 //failure
             } else {
+                $this->_rates[$requestKey] = array(
+                    'timestamp'  => time(),
+                    'address_id' => $address->getId(),
+                    'summary'    => array(),
+                    'items'      => array(),
+                    'failure'    => true
+                );
                 if (Mage::helper('avatax')->fullStopOnError($address->getStoreId())) {
                     $address->getQuote()->setHasError(true);
                 }
@@ -287,7 +295,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
         $this->_lineToLineId[$lineNumber] = Mage::helper('avatax')->getGwOrderSku($storeId);
         return $lineNumber;
     }
-    
+
         /**
      * Adds giftwrapitems cost to request as item
      *
@@ -317,7 +325,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
         $this->_lineToLineId[$lineNumber] = Mage::helper('avatax')->getGwItemsSku($storeId);
         return $lineNumber;
     }
-    
+
      /**
      * Adds giftwrap printed card cost to request as item
      *
@@ -404,7 +412,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
             try {
                 $line->setRef1((string) $ref1);
             } catch (Exception $e) {
-                
+
             }
         }
         $ref2Code = Mage::helper('avatax')->getRef2AttributeCode($product->getStoreId());
@@ -413,7 +421,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
             try {
                 $line->setRef2((string) $ref2);
             } catch (Exception $e) {
-                
+
             }
         }
 
