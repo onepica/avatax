@@ -11,5 +11,3 @@ class BatchFileDeleteResponse {
   public function getBatchFileDeleteResult(){return $this->BatchFileDeleteResult;} // DeleteResult
 
 }
-
-?>

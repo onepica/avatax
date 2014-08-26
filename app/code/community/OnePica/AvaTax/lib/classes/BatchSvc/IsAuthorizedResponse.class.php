@@ -11,5 +11,3 @@ class IsAuthorizedResponse {
   public function getIsAuthorizedResult(){return $this->IsAuthorizedResult;} // IsAuthorizedResult
 
 }
-
-?>

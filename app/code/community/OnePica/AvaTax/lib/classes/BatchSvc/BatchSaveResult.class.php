@@ -15,5 +15,3 @@ class BatchSaveResult extends BaseResult {
   public function getEstimatedCompletion(){return $this->EstimatedCompletion;} // dateTime
 
 }
-
-?>

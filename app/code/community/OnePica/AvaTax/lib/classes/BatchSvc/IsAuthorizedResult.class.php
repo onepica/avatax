@@ -15,5 +15,3 @@ class IsAuthorizedResult {
   public function getExpires(){return $this->Expires;} // dateTime
 
 }
-
-?>

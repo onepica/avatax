@@ -23,5 +23,3 @@ class Profile {
   public function getMachine(){return $this->Machine;} // string
 
 }
-
-?>

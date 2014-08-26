@@ -304,5 +304,3 @@ public function __construct($configurationName = 'Default')
     }    		    
 
 }
-
-?>

@@ -12,5 +12,3 @@ class TaxOverrideType
     public static $TaxDate = "TaxDate";
     
 }
-
-?>

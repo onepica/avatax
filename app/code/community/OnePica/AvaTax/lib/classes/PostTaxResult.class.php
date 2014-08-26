@@ -50,5 +50,3 @@ class PostTaxResult //extends BaseResult
 
 
 }
-
-?>

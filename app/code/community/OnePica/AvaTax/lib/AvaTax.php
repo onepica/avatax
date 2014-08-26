@@ -93,9 +93,4 @@ function getCurrentDate()
 {
 	$dateTime=new DateTime();
 	return $dateTime->format("Y-m-d");
-} 
-
-
-
-
-?>
+}

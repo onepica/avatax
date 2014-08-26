@@ -86,5 +86,3 @@ class DocumentType extends Enum
 	
 	
 }
-
-?>

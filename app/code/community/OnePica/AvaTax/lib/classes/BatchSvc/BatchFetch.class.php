@@ -11,5 +11,3 @@ class BatchFetch {
   public function getFetchRequest(){return $this->FetchRequest;} // FetchRequest
 
 }
-
-?>

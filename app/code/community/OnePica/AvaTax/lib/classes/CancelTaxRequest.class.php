@@ -53,9 +53,3 @@ class CancelTaxRequest extends TaxRequest
     public function setCancelCode($value) { CancelCode::Validate($value); $this->CancelCode = $value; return $this; }
 	
 }
-
-
- 
-
-
-?>

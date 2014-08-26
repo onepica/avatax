@@ -11,5 +11,3 @@ class ApplyPaymentResult extends BaseResult
     
     
 }
-
-?>

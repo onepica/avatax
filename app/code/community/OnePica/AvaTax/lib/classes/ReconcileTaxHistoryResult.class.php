@@ -106,7 +106,5 @@ class ReconcileTaxHistoryResult //extends SearchTaxHistoryResult
     public function getMessages() { return EnsureIsArray($this->Messages->Message); }
 
 
-	
-}
 
-?>
+}

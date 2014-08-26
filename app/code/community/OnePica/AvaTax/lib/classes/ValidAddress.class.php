@@ -474,5 +474,3 @@ class ValidAddress //extends Address - or it should - SoapClient has issues mapp
     
     
 }
-
-?>

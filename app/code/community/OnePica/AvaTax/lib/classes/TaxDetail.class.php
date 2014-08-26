@@ -188,9 +188,3 @@ class TaxDetail
 
 	    
 }
-
-	
-	
-	
-
-?>

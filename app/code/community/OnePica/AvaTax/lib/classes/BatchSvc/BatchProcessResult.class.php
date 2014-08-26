@@ -7,5 +7,3 @@
 class BatchProcessResult extends BaseResult {
 
 }
-
-?>

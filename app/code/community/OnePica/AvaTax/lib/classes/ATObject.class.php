@@ -51,5 +51,3 @@ class ATObject
 	}
     public function ivars() { return $this->_ivars; }
 }
-
-?>

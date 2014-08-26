@@ -259,5 +259,3 @@ class AdjustTaxResult //extends GetTaxResult
 
 
 }
-
-?>

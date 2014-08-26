@@ -171,5 +171,3 @@ public function IsAuthorized($operations)
     }
 
 }
-
-?>

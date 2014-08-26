@@ -11,5 +11,3 @@ class BatchFileSaveResult extends BaseResult {
   public function getBatchFileId(){return $this->BatchFileId;} // int
 
 }
-
-?>

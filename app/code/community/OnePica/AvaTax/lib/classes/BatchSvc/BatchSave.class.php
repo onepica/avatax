@@ -11,5 +11,3 @@ class BatchSave {
   public function getBatch(){return $this->Batch;} // Batch
 
 }
-
-?>

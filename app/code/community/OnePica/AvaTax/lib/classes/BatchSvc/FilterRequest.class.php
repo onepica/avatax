@@ -21,5 +21,3 @@ class FilterRequest {
   public function getMaxCount(){return $this->MaxCount;} // int
 
 }
-
-?>

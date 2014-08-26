@@ -11,5 +11,3 @@ class FilterResult {
   public function getCount(){return $this->Count;} // int
 
 }
-
-?>

@@ -11,5 +11,3 @@ class BatchFileSaveResponse {
   public function getBatchFileSaveResult(){return $this->BatchFileSaveResult;} // BatchFileSaveResult
 
 }
-
-?>

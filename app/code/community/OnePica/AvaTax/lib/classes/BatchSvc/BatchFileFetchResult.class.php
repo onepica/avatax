@@ -15,5 +15,3 @@ class BatchFileFetchResult extends BaseResult {
   public function getRecordCount(){return $this->RecordCount;} // int
 
 }
-
-?>

@@ -30,7 +30,3 @@ class AvalaraSoapClient
     public function __getLastResponseHeaders() { return $this->client->__getLastResponseHeaders(); }
 
 }
-
-
-
-?>

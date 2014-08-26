@@ -33,7 +33,3 @@ class TaxType// extends Enum
 	*/
 	
 }
-
-	
-
-?>

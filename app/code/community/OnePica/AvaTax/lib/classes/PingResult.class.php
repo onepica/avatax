@@ -72,5 +72,3 @@ class PingResult //extends BaseResult
 
 
 }
-
-?>

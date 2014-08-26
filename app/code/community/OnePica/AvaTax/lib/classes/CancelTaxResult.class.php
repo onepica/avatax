@@ -54,5 +54,3 @@ class CancelTaxResult // extends BaseResult
 
 
 }
-
-?>

@@ -84,5 +84,3 @@ class Batch {
   public function getCurrentRecord(){return $this->CurrentRecord;} // int
 
 }
-
-?>
