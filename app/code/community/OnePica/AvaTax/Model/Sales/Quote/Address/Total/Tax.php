@@ -102,7 +102,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
 					$this->_addBaseAmount($baseShippingTax);
 				}
 
-				if($address->getGwPrice()) {
+				if($address->getGwPrice() > 0) {
 					$gwOrderItem = new Varien_Object();
 					$gwOrderItem->setId(Mage::helper('avatax')->getGwOrderSku($store->getId()));
 					$gwOrderItem->setProductId(Mage::helper('avatax')->getGwOrderSku($store->getId()));
@@ -117,7 +117,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
 					$this->_addBaseAmount($baseGwOrderTax);
 				}
 
-				if($address->getGwItemsPrice()) {
+				if($address->getGwItemsPrice() > 0) {
 					$gwIndividualItem = new Varien_Object();
 					$gwIndividualItem->setId(Mage::helper('avatax')->getGwItemsSku($store->getId()));
 					$gwIndividualItem->setProductId(Mage::helper('avatax')->getGwItemsSku($store->getId()));
