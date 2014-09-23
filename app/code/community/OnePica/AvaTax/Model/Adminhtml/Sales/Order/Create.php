@@ -50,7 +50,7 @@ class OnePica_AvaTax_Model_Adminhtml_Sales_Order_Create extends Mage_Adminhtml_M
                         foreach ($result as $error) {
                             $this->getSession()->addError($error);
                         }
-                        Mage::throwException('');
+                        Mage::throwException(implode('<br />', $result));
                     }
                 }
                 else if ($this->getShippingAddress()->getAddressNormalized() && !$this->_messageAdded) {

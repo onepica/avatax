@@ -307,42 +307,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
     	$this->_request->setLines($this->_lines);
     	return $lineNumber;
 	}
-        
-        /**
-	 * Adds shipping cost to request as item
-	 * 
-	 * Not used...?
-	 *
-	 * @param int $shippingAmount
-	 * @return int
-	 */
-	/*
-	protected function _addGiftAmount($object, $credit=false) {
-            if($object->getGiftCardsAmount() == 0) {
-                    return false;
-            }
 
-            $lineNumber = count($this->_lines);
-            $storeId = Mage::app()->getStore()->getId();
-
-            $giftAmount = $object->getShippingAmount();
-            if($credit) $amount *= -1;
-            $line = new Line();
-            $line->setNo($lineNumber);
-            $giftSku = Mage::helper('avatax')->getGiftSku($storeId);
-            $line->setItemCode($giftSku ? $giftSku : 'GiftAmount');
-            $line->setDescription('Gift Amount');
-            $line->setTaxCode('');
-            $line->setQty(1);
-            $line->setAmount($giftAmount);
-            $line->setDiscounted(false);
-
-            $this->_lineToItemId[$lineNumber] = Mage::helper('avatax')->getGiftSku($storeId);
-            $this->_lines[$lineNumber] = $line;
-            $this->_request->setLines($this->_lines);
-            return $lineNumber;
-	}
-	*/
 	
 	/**
 	 * Adds adjustments to request as items

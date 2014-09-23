@@ -149,19 +149,6 @@
                 </observers>
             </checkout_type_multishipping_set_shipping_items>
         </events>
-        <!-- set on-the-fly in OnePica_AvaTax_Model_Observer::salesQuoteCollectTotalsBefore
-        <sales>
-            <quote>
-                <totals>
-                    <tax>
-                        <class>avatax/sales_quote_address_total_tax</class>
-                        <after>subtotal,shipping</after>
-                        <before>customerbalance,grand_total</before>
-                    </tax>
-                </totals>
-            </quote>
-        </sales>
-        -->
 	</global>
 	<frontend>
 		<layout>
@@ -238,12 +225,6 @@
 	                            <title>AvaTax Order Sync Queue</title>
 	                            <action>avatax/adminhtml_grid/queue</action>
 	                        </avatax_queue>
-	                        <!--
-	                        <avatax_log translate="title" module="avatax">
-	                            <title>AvaTax Log</title>
-	                            <action>avatax/adminhtml_grid/log</action>
-	                        </avatax_log>
-	                        -->
 						</children>
 					</tax>
 				</children>
