@@ -56,7 +56,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
 			$address->setShippingTaxAmount(0);
 			$address->setBaseShippingTaxAmount(0);
 
-			if(Mage::helper('avatax')->isAddressActionable($address->getQuote()->getShippingAddress(), $address->getQuote()->getStoreId())){ //Added check for calculating tax for regions filtered in the admin
+			if(Mage::helper('avatax')->isAddressActionable($address, $address->getQuote()->getStoreId())){ //Added check for calculating tax for regions filtered in the admin
 
 				foreach ($address->getAllItems() as $item) {
 					$item->setAddress($address);
