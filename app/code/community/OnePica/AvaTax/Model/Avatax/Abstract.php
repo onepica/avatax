@@ -166,7 +166,7 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
         $street1 = $address->getStreet(1);
         $street2 = $address->getStreet(2);
         $city = $address->getCity();
-        $zip = preg_replace('/[^0-9\-]*/', '', $address->getPostcode());
+        $zip = $address->getPostcode();
         $state = Mage::getModel('directory/region')->load($address->getRegionId())->getCode();
         $country = $address->getCountry();
 
