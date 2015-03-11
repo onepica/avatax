@@ -45,7 +45,13 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
             return $this;
         }
 
-        if(!$invoice->getOrigData($invoice->getIdFieldName()) && Mage::helper('avatax')->isObjectActionable($invoice)) {
+        /* do not post pending or cancelled invoices */
+        if($invoice->getState() != Mage_Sales_Model_Order_Invoice::STATE_PAID ){
+            return $this;
+        }
+        /* if the previous state was unpaid, process now */
+       if(!$invoice->getOrigData($invoice->getIdFieldName() && $invoice->getOrigData('state') != Mage_Sales_Model_Order_Invoice::STATE_OPEN)
+        && Mage::helper('avatax')->isObjectActionable($invoice)) {
 		    Mage::getModel('avatax_records/queue')
 		    	->setEntity($invoice)
 		    	->setType(OnePica_AvaTax_Model_Records_Queue::QUEUE_TYPE_INVOICE)
