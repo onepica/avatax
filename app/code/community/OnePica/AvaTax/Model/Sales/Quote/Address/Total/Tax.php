@@ -107,7 +107,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
 					$gwOrderItem->setId(Mage::helper('avatax')->getGwOrderSku($store->getId()));
 					$gwOrderItem->setProductId(Mage::helper('avatax')->getGwOrderSku($store->getId()));
 					$gwOrderItem->setAddress($address);
-					$baseGwOrderTax = $calculator->getItemTax($gwOrderItem);
+					$baseGwOrderTax = $calculator->getItemTax($baseGwOrderTax);
 					$gwOrderTax = Mage::app()->getStore()->convertPrice($gwOrderItem);
 
 					$address->setGwBaseTaxAmount($address->getGwBasePrice()+$baseGwOrderTax);
