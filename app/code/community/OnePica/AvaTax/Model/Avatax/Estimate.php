@@ -387,15 +387,18 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
      * @return int
      */
     protected function _newLine($item) {
+        if ($this->isProductCalculated($item)) {
+            return;
+        }
         $product = $item->getProduct();
         $lineNumber = count($this->_lines);
         $line = new Line();
 
-        if ($this->isProductCalculated($item)) {
-            $price = 0;
-        } else {
+//        if ($this->isProductCalculated($item)) {
+//            $price = 0;
+//        } else {
             $price = $item->getBaseRowTotal() - $item->getBaseDiscountAmount();
-        }
+//        }
 
         $line->setNo($lineNumber);
         $line->setItemCode(substr($product->getSku(), 0, 50));
