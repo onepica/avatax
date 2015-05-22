@@ -108,17 +108,4 @@ class OnePica_AvaTax_Helper_Tax_Data extends Mage_Tax_Helper_Data
         }
         return parent::applyTaxAfterDiscount($store);
     }
-
-	/**
-	 * Always apply discount first since AvaTax doesn't support line-level item discount amounts
-	 *
-	 * @return bool
-	 */
-    public function discountTax($store = null) {
-        if (Mage::helper('avatax')->isAvataxEnabled($store)) {
-    		return false;
-        }
-        return parent::discountTax($store);
-    }
-    
 }
