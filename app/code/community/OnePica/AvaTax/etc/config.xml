@@ -60,6 +60,11 @@
 					<quote_address_total_grand>OnePica_AvaTax_Model_Sales_Quote_Address_Total_Grand</quote_address_total_grand>
 				</rewrite>
 			</sales>
+            <tax>
+                <rewrite>
+                    <config>OnePica_AvaTax_Model_Tax_Config</config>
+                </rewrite>
+            </tax>
 		</models>
 		<helpers>
             <avatax>
@@ -277,7 +282,7 @@
 				<price_includes_tax>0</price_includes_tax>
 				<shipping_includes_tax>0</shipping_includes_tax>
 				<apply_after_discount>1</apply_after_discount>
-				<discount_tax>1</discount_tax>
+				<discount_tax>0</discount_tax>
 				<apply_tax_on>0</apply_tax_on>
             </calculation>
 			<defaults>
