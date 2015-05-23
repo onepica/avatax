@@ -373,7 +373,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
 
         if (count($items) > 0) {
             foreach ($items as $item) {
-                $lineNum = $this->_newLine($item);
+                $this->_newLine($item);
             }
             $this->_request->setLines($this->_lines);
         }
@@ -384,22 +384,16 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
      * Makes a Line object from a product item object
      *
      * @param Varien_Object
-     * @return int
+     * @return int|bool
      */
     protected function _newLine($item) {
         if ($this->isProductCalculated($item)) {
-            return;
+            return false;
         }
         $product = $item->getProduct();
         $lineNumber = count($this->_lines);
         $line = new Line();
-
-//        if ($this->isProductCalculated($item)) {
-//            $price = 0;
-//        } else {
-            $price = $item->getBaseRowTotal() - $item->getBaseDiscountAmount();
-//        }
-
+        $price = $item->getBaseRowTotal() - $item->getBaseDiscountAmount();
         $line->setNo($lineNumber);
         $line->setItemCode(substr($product->getSku(), 0, 50));
         $line->setDescription($product->getName());
