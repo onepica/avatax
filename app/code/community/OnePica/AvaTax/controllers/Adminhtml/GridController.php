@@ -15,24 +15,37 @@
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
+/**
+ * Admin grid controller
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
+ */
 class OnePica_AvaTax_Adminhtml_GridController extends Mage_Adminhtml_Controller_Action
 {
-
     /**
      * Additional initialization
-     *
      */
-    protected function _construct() {
+    protected function _construct()
+    {
         $this->setUsedModuleName('OnePica_AvaTax');
     }
 
-    public function clearQueueAction() {
+    /**
+     * Clear queue action
+     */
+    public function clearQueueAction()
+    {
         Mage::getModel('avatax_records/queue_process')->clear();
         $this->_redirect('*/*/queue');
     }
 
-    
-    public function logAction() {
+    /**
+     * Log action
+     */
+    public function logAction()
+    {
         $this->_setTitle($this->__('Sales'))->_setTitle($this->__('Tax'))->_setTitle($this->__('AvaTax Log'));
 
         $this->loadLayout()
@@ -41,7 +54,11 @@ class OnePica_AvaTax_Adminhtml_GridController extends Mage_Adminhtml_Controller_
             ->renderLayout();
     }
 
-    public function logViewAction() {
+    /**
+     * Log view action
+     */
+    public function logViewAction()
+    {
         $this->_setTitle($this->__('Sales'))->_setTitle($this->__('Tax'))->_setTitle($this->__('AvaTax Log'));
 
         $logId = $this->getRequest()->getParam('id');
@@ -58,8 +75,12 @@ class OnePica_AvaTax_Adminhtml_GridController extends Mage_Adminhtml_Controller_
             ->_setActiveMenu('sales/tax/avatax_log')
             ->renderLayout();
     }
-    
-    public function queueAction() {
+
+    /**
+     * Queue action
+     */
+    public function queueAction()
+    {
         $this->_setTitle($this->__('Sales'))->_setTitle($this->__('Tax'))->_setTitle($this->__('AvaTax Queue'));
 
         $this->loadLayout()
@@ -67,27 +88,37 @@ class OnePica_AvaTax_Adminhtml_GridController extends Mage_Adminhtml_Controller_
             ->_addContent($this->getLayout()->createBlock('avatax/adminhtml_export_queue_grid'))
             ->renderLayout();
     }
-    
-    public function processQueueAction() {
+
+    /**
+     * Process queue action
+     */
+    public function processQueueAction()
+    {
         Mage::getModel('avatax_records/queue_process')->run();
         $this->_redirect('*/*/queue');
     }
 
-    protected function _isAllowed() {
+    /**
+     * Check if is allowed
+     *
+     * @return bool
+     */
+    protected function _isAllowed()
+    {
         return Mage::getSingleton('admin/session')->isAllowed('avatax');
     }
-    
+
     /**
      * Magento <1.4 does not let the title be set
      *
-     * @param string
+     * @param string $title
      * @return self
      */
-    protected function _setTitle($title) {
-        if(method_exists($this, '_title')) {
+    protected function _setTitle($title)
+    {
+        if (method_exists($this, '_title')) {
             $this->_title($title);
         }
         return $this;
     }
-
 }
