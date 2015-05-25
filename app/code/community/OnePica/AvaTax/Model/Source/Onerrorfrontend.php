@@ -19,10 +19,10 @@
 class OnePica_AvaTax_Model_Source_Onerrorfrontend
 {
     /**
-	 * Gets the list of cache methods for the admin config dropdown
-	 *
-	 * @return array
-	 */
+     * Gets the list of cache methods for the admin config dropdown
+     *
+     * @return array
+     */
     public function toOptionArray()
     {
         return array(

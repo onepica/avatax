@@ -17,8 +17,8 @@
 
 class OnePica_AvaTax_Block_Adminhtml_System_Config_Form_Field_Export extends Mage_Adminhtml_Block_System_Config_Form_Field
 {
-	protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element) {
-		$buttonBlock = $this->getLayout()->createBlock('adminhtml/widget_button');
+    protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element) {
+        $buttonBlock = $this->getLayout()->createBlock('adminhtml/widget_button');
         $params = array(
             'website' => $buttonBlock->getRequest()->getParam('website')
         );
@@ -38,5 +38,5 @@ class OnePica_AvaTax_Block_Adminhtml_System_Config_Form_Field_Export extends Mag
         $html .= $buttonBlock->setData($data2)->toHtml();
 
         return $html;
-	}
+    }
 }

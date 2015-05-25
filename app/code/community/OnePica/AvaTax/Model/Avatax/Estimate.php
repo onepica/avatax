@@ -91,27 +91,27 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
 
     /**
      * Estimates tax amount for one item. Does not trigger a call if the shipping
-	 * address has no postal code, or if the postal code is set to "-" (OneStepCheckout)
+     * address has no postal code, or if the postal code is set to "-" (OneStepCheckout)
      *
      * @param Varien_Object $data
      * @return int
      */
     public function getItemTax($item) {
-		if ($item->getAddress()->getPostcode() && $item->getAddress()->getPostcode() != '-') {
-			if ($this->isProductCalculated($item)) {
-				$tax = 0;
-				foreach ($item->getChildren() as $child) {
-					$child->setAddress($item->getAddress());
-					$tax += $this->getItemTax($child);
-				}
-				return $tax;
-			} else {
-				$key = $this->_getRates($item);
-				$id = $item->getId();
-				return isset($this->_rates[$key]['items'][$id]['amt']) ? $this->_rates[$key]['items'][$id]['amt'] : 0;
-			}
-		}
-		return 0;
+        if ($item->getAddress()->getPostcode() && $item->getAddress()->getPostcode() != '-') {
+            if ($this->isProductCalculated($item)) {
+                $tax = 0;
+                foreach ($item->getChildren() as $child) {
+                    $child->setAddress($item->getAddress());
+                    $tax += $this->getItemTax($child);
+                }
+                return $tax;
+            } else {
+                $key = $this->_getRates($item);
+                $id = $item->getId();
+                return isset($this->_rates[$key]['items'][$id]['amt']) ? $this->_rates[$key]['items'][$id]['amt'] : 0;
+            }
+        }
+        return 0;
     }
 
     /**
@@ -333,7 +333,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
      * @return int
      */
     protected function _addGwPrintedCardAmount($address) {
-    	if(!$address->getGwPrintedCardPrice())
+        if(!$address->getGwPrintedCardPrice())
             return;
         $lineNumber = count($this->_lines);
         $storeId = Mage::app()->getStore()->getId();

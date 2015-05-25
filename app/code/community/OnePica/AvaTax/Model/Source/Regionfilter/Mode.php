@@ -19,22 +19,22 @@
 class OnePica_AvaTax_Model_Source_Regionfilter_Mode
 {
     /**
-	 * Gets the list of cache methods for the admin config dropdown
-	 *
-	 * @return array
-	 */
+     * Gets the list of cache methods for the admin config dropdown
+     *
+     * @return array
+     */
     public function toOptionArray()
     {
         return array(
             array(
-            	'value' => OnePica_AvaTax_Model_Config::REGIONFILTER_OFF,
-            	'label' => Mage::helper('avatax')->__('None')),
-			array(
-				'value' => OnePica_AvaTax_Model_Config::REGIONFILTER_TAX,
-				'label' => Mage::helper('avatax')->__('Filter tax calculations')),
+                'value' => OnePica_AvaTax_Model_Config::REGIONFILTER_OFF,
+                'label' => Mage::helper('avatax')->__('None')),
             array(
-	            'value' => OnePica_AvaTax_Model_Config::REGIONFILTER_ALL,
-	            'label' => Mage::helper('avatax')->__('Filter tax calculations & address options')),
+                'value' => OnePica_AvaTax_Model_Config::REGIONFILTER_TAX,
+                'label' => Mage::helper('avatax')->__('Filter tax calculations')),
+            array(
+                'value' => OnePica_AvaTax_Model_Config::REGIONFILTER_ALL,
+                'label' => Mage::helper('avatax')->__('Filter tax calculations & address options')),
         );
     }
 }

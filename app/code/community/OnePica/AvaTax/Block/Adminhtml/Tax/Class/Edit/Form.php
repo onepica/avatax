@@ -18,13 +18,13 @@
 
 class OnePica_AvaTax_Block_Adminhtml_Tax_Class_Edit_Form extends Mage_Adminhtml_Block_Tax_Class_Edit_Form
 {
-	
+
     protected function _prepareForm()
     {
-    	parent::_prepareForm();
-    	$fieldset = $this->getForm()->getElement('base_fieldset');
+        parent::_prepareForm();
+        $fieldset = $this->getForm()->getElement('base_fieldset');
         
-    	$model  = Mage::registry('tax_class');
+        $model  = Mage::registry('tax_class');
         $fieldset->addField('op_avatax_code', 'text',
             array(
                 'name'  => 'op_avatax_code',

@@ -17,11 +17,11 @@
 
 class OnePica_AvaTax_Adminhtml_ExportController extends Mage_Adminhtml_Controller_Action
 {
-	protected function _isAllowed()
-	{
-		return Mage::getSingleton('admin/session')->isAllowed('avatax');
-	}
-	
+    protected function _isAllowed()
+    {
+        return Mage::getSingleton('admin/session')->isAllowed('avatax');
+    }
+
     public function logAction() {
         $fileName   = 'avatax-log-' . gmdate('U') . '.sql';
         $content    = $this->getLayout()->createBlock('avatax/adminhtml_export_log_grid')->getSql();

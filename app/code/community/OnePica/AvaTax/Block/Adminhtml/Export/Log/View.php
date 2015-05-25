@@ -32,7 +32,7 @@ class OnePica_AvaTax_Block_Adminhtml_Export_Log_View extends Mage_Adminhtml_Bloc
     {
         parent::__construct();
         
-		$this->_addButton('back', array(
+        $this->_addButton('back', array(
             'label'   => Mage::helper('avatax')->__('Back'),
             'onclick' => "setLocation('" . Mage::getSingleton('adminhtml/url')->getUrl('*/*/log'). "')",
             'class'   => 'back'
@@ -47,13 +47,13 @@ class OnePica_AvaTax_Block_Adminhtml_Export_Log_View extends Mage_Adminhtml_Bloc
     public function getHeaderText()
     {   
         if ($this->getCurrentEvent()) {
-			return '<h3 class="icon-head" style="background-image:url(' . $this->getSkinUrl('images/fam_application_view_tile.gif') . ');">' . 
-					$this->__('AvaTax Action Log Entry #%d', $this->getCurrentEvent()->getId()) . 
-					'</h3>';
+            return '<h3 class="icon-head" style="background-image:url(' . $this->getSkinUrl('images/fam_application_view_tile.gif') . ');">' .
+                    $this->__('AvaTax Action Log Entry #%d', $this->getCurrentEvent()->getId()) .
+                    '</h3>';
         }
-		return '<h3 class="icon-head" style="background-image:url(' . $this->getSkinUrl('images/fam_application_view_tile.gif') . ');">' . 
-				$this->__('AvaTax Action Log Entry Details') . 
-				'</h3>';
+        return '<h3 class="icon-head" style="background-image:url(' . $this->getSkinUrl('images/fam_application_view_tile.gif') . ');">' .
+                $this->__('AvaTax Action Log Entry Details') .
+                '</h3>';
     }
 
     /**

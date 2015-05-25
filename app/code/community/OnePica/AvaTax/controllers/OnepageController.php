@@ -25,8 +25,8 @@ class OnePica_AvaTax_OnepageController extends Mage_Checkout_OnepageController
      */
     public function indexAction()
     {         
-		$session = Mage::getSingleton('checkout/session');
-		$session->setPostType('onepage');
-		parent::indexAction();		
+        $session = Mage::getSingleton('checkout/session');
+        $session->setPostType('onepage');
+        parent::indexAction();        
     }
 }

@@ -22,44 +22,44 @@ class OnePica_AvaTax_Block_Adminhtml_Export_Log_Grid extends OnePica_AvaTax_Bloc
      * Sets default sort to id field
      *
      */
-	public function __construct() {
-		parent::__construct();
-		$this->setDefaultSort('log_id');
-		$this->setGridHeader(
-			'<h3 class="icon-head" style="background-image:url(' . $this->getSkinUrl('images/fam_application_view_tile.gif') . ');">' . 
-				$this->__('AvaTax Action Log') . 
-			'</h3>'
-		);
-	}
+    public function __construct() {
+        parent::__construct();
+        $this->setDefaultSort('log_id');
+        $this->setGridHeader(
+            '<h3 class="icon-head" style="background-image:url(' . $this->getSkinUrl('images/fam_application_view_tile.gif') . ');">' .
+                $this->__('AvaTax Action Log') .
+            '</h3>'
+        );
+    }
 
     /**
      * Adds columns to grid
      *
      * @return self
      */
-	protected function _prepareColumns() {
-		return $this->_addColumnsForExport(array(
-			'log_id' => 'number',
-			'store_id' => 'number',
-			'level' => Mage::getModel('avatax_records/log')->getLevelOptions(),
-			'type' => Mage::getModel('avatax_records/log')->getTypeOptions(),
-			'created_at' => 'datetime',
-		));
-		return $this;
-	}
+    protected function _prepareColumns() {
+        return $this->_addColumnsForExport(array(
+            'log_id' => 'number',
+            'store_id' => 'number',
+            'level' => Mage::getModel('avatax_records/log')->getLevelOptions(),
+            'type' => Mage::getModel('avatax_records/log')->getTypeOptions(),
+            'created_at' => 'datetime',
+        ));
+        return $this;
+    }
 
     /**
      * Adds collection
      *
      * @return unknown
      */
-	protected function _prepareCollection() {
-		$collection = Mage::getModel('avatax_records/log')->getCollection();
-		$this->setCollection($collection);
-		return parent::_prepareCollection();
-	}
+    protected function _prepareCollection() {
+        $collection = Mage::getModel('avatax_records/log')->getCollection();
+        $this->setCollection($collection);
+        return parent::_prepareCollection();
+    }
 
-	public function getRowUrl($row)
+    public function getRowUrl($row)
     {
         return $this->getUrl('*/*/logView', array('id' => $row->getId()));
     }

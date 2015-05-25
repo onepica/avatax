@@ -23,12 +23,12 @@ class OnePica_AvaTax_Block_Adminhtml_Tax_Class_Grid extends Mage_Adminhtml_Block
      * Set the help url
      *
      */
-	public function __construct() {
-	  $url = Mage::helper('avatax')->getDocumentationUrl();
-	  Mage::helper('adminhtml')->setPageHelpUrl($url);
-	  
-	  return parent::__construct();
-	}
+    public function __construct() {
+      $url = Mage::helper('avatax')->getDocumentationUrl();
+      Mage::helper('adminhtml')->setPageHelpUrl($url);
+
+      return parent::__construct();
+    }
 
     protected function _prepareColumns() {
         $this->addColumn('op_avatax_code',
@@ -36,7 +36,7 @@ class OnePica_AvaTax_Block_Adminhtml_Tax_Class_Grid extends Mage_Adminhtml_Block
                 'header'    => Mage::helper('avatax')->__('AvaTax Code'),
                 'align'     => 'left',
                 'index'     => 'op_avatax_code',
-                'width'		=> '175px'
+                'width'        => '175px'
             )
         );
 

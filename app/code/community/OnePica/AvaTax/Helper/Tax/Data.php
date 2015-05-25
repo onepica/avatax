@@ -20,91 +20,91 @@
  * Catalog data helper
  */
 class OnePica_AvaTax_Helper_Tax_Data extends Mage_Tax_Helper_Data
-{	
-	/**
-	 * Items should not include tax so that AvaTax can calculate it
-	 *
-	 * @return bool
-	 */
+{
+    /**
+     * Items should not include tax so that AvaTax can calculate it
+     *
+     * @return bool
+     */
     public function priceIncludesTax($store = null)
     {
-    	if (Mage::helper('avatax')->isAvataxEnabled($store)) {
-    		return false;
-    	}
-    	return parent::priceIncludesTax($store);
+        if (Mage::helper('avatax')->isAvataxEnabled($store)) {
+            return false;
+        }
+        return parent::priceIncludesTax($store);
     }
     
-	/**
-	 * Shipping should not include tax so that AvaTax can calculate it
-	 *
-	 * @return bool
-	 */
+    /**
+     * Shipping should not include tax so that AvaTax can calculate it
+     *
+     * @return bool
+     */
     public function shippingPriceIncludesTax($store = null)
     {
-    	if (Mage::helper('avatax')->isAvataxEnabled($store)) {
-    		return false;
-    	}
-    	return parent::shippingPriceIncludesTax($store);
+        if (Mage::helper('avatax')->isAvataxEnabled($store)) {
+            return false;
+        }
+        return parent::shippingPriceIncludesTax($store);
     }
     
-	/**
-	 * Returns AvaTax's hard-coded shipping tax class
-	 *
-	 * @return string
-	 */
+    /**
+     * Returns AvaTax's hard-coded shipping tax class
+     *
+     * @return string
+     */
     public function getShippingTaxClass($store)
     {
-    	if (Mage::helper('avatax')->isAvataxEnabled($store)) {
-    		return 'FR020100';
-    	}
-    	return parent::getShippingTaxClass($store);
+        if (Mage::helper('avatax')->isAvataxEnabled($store)) {
+            return 'FR020100';
+        }
+        return parent::getShippingTaxClass($store);
     }
     
-	/**
-	 * AvaTax always computes tax based on ship from and ship to addresses
-	 *
-	 * @return string
-	 */
+    /**
+     * AvaTax always computes tax based on ship from and ship to addresses
+     *
+     * @return string
+     */
     public function getTaxBasedOn($store = null)
     {
         if (Mage::helper('avatax')->isAvataxEnabled($store)) {
-    		return 'shipping';
+            return 'shipping';
         }
         return parent::getTaxBasedOn($store);
     }
 
-	/**
-	 * Always apply tax on custom price
-	 *
-	 * @return bool
-	 */
+    /**
+     * Always apply tax on custom price
+     *
+     * @return bool
+     */
     public function applyTaxOnCustomPrice($store = null) {
         if (Mage::helper('avatax')->isAvataxEnabled($store)) {
-    		return true;
+            return true;
         }
         return parent::applyTaxOnCustomPrice($store);
     }
 
-	/**
-	 * Always apply tax on custom price (not original)
-	 *
-	 * @return bool
-	 */
+    /**
+     * Always apply tax on custom price (not original)
+     *
+     * @return bool
+     */
     public function applyTaxOnOriginalPrice($store = null) {
         if (Mage::helper('avatax')->isAvataxEnabled($store)) {
-    		return false;
+            return false;
         }
         return parent::applyTaxOnOriginalPrice($store);
     }
 
-	/**
-	 * Always apply discount first since AvaTax doesn't support line-level item discount amounts
-	 *
-	 * @return bool
-	 */
+    /**
+     * Always apply discount first since AvaTax doesn't support line-level item discount amounts
+     *
+     * @return bool
+     */
     public function applyTaxAfterDiscount($store = null) {
         if (Mage::helper('avatax')->isAvataxEnabled($store)) {
-    		return true;
+            return true;
         }
         return parent::applyTaxAfterDiscount($store);
     }

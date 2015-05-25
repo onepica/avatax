@@ -26,7 +26,7 @@ class OnePica_AvaTax_Adminhtml_GridController extends Mage_Adminhtml_Controller_
         $this->setUsedModuleName('OnePica_AvaTax');
     }
 
-	public function clearQueueAction() {
+    public function clearQueueAction() {
         Mage::getModel('avatax_records/queue_process')->clear();
         $this->_redirect('*/*/queue');
     }
@@ -41,10 +41,10 @@ class OnePica_AvaTax_Adminhtml_GridController extends Mage_Adminhtml_Controller_
             ->renderLayout();
     }
 
-	public function logViewAction() {
-		$this->_setTitle($this->__('Sales'))->_setTitle($this->__('Tax'))->_setTitle($this->__('AvaTax Log'));
+    public function logViewAction() {
+        $this->_setTitle($this->__('Sales'))->_setTitle($this->__('Tax'))->_setTitle($this->__('AvaTax Log'));
 
-		$logId = $this->getRequest()->getParam('id');
+        $logId = $this->getRequest()->getParam('id');
         $model   = Mage::getModel('avatax/records_log')->load($logId);
 
         if (!$model->getId()) {
@@ -52,12 +52,12 @@ class OnePica_AvaTax_Adminhtml_GridController extends Mage_Adminhtml_Controller_
             return;
         }
 
-		Mage::register('current_event', $model);
+        Mage::register('current_event', $model);
 
         $this->loadLayout()
-        	->_setActiveMenu('sales/tax/avatax_log')
-        	->renderLayout();
-	}
+            ->_setActiveMenu('sales/tax/avatax_log')
+            ->renderLayout();
+    }
     
     public function queueAction() {
         $this->_setTitle($this->__('Sales'))->_setTitle($this->__('Tax'))->_setTitle($this->__('AvaTax Queue'));
@@ -84,10 +84,10 @@ class OnePica_AvaTax_Adminhtml_GridController extends Mage_Adminhtml_Controller_
      * @return self
      */
     protected function _setTitle($title) {
-    	if(method_exists($this, '_title')) {
-    		$this->_title($title);
-    	}
-    	return $this;
+        if(method_exists($this, '_title')) {
+            $this->_title($title);
+        }
+        return $this;
     }
 
 }

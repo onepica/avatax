@@ -18,32 +18,32 @@
 
 class OnePica_AvaTax_Model_Avatax_Ping extends OnePica_AvaTax_Model_Avatax_Abstract
 {
-	
-	/**
-	 * Tries to ping AvaTax service with provided credentials
-	 *
-	 * @param int $storeId
-	 * @return bool|array
-	 */
-	public function ping($storeId = null) {
-		$config = Mage::getSingleton('avatax/config')->init($storeId);
-		$connection = $config->getTaxConnection();
-		$result = null;
-		$message = null;
-		
-		try { $result = $connection->ping(); }
-		catch(Exception $exception) { $message = $exception->getMessage(); }
-		
-		if(!isset($result) || !is_object($result) || !$result->getResultCode()) {
-			$actualResult = $result;
-			$result = new Varien_Object;
-			$result->setResultCode(SeverityLevel::$Exception);
-			$result->setActualResult($actualResult);
-			$result->setMessage($message);
-		}
-		
-		$this->_log(new stdClass(), $result, $storeId);
-		return ($result->getResultCode() == SeverityLevel::$Success) ? true : $result->getMessage();
-	}
-	
+
+    /**
+     * Tries to ping AvaTax service with provided credentials
+     *
+     * @param int $storeId
+     * @return bool|array
+     */
+    public function ping($storeId = null) {
+        $config = Mage::getSingleton('avatax/config')->init($storeId);
+        $connection = $config->getTaxConnection();
+        $result = null;
+        $message = null;
+
+        try { $result = $connection->ping(); }
+        catch(Exception $exception) { $message = $exception->getMessage(); }
+
+        if(!isset($result) || !is_object($result) || !$result->getResultCode()) {
+            $actualResult = $result;
+            $result = new Varien_Object;
+            $result->setResultCode(SeverityLevel::$Exception);
+            $result->setActualResult($actualResult);
+            $result->setMessage($message);
+        }
+
+        $this->_log(new stdClass(), $result, $storeId);
+        return ($result->getResultCode() == SeverityLevel::$Success) ? true : $result->getMessage();
+    }
+
 }

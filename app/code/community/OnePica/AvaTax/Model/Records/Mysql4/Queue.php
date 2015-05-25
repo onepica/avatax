@@ -17,70 +17,70 @@
 
 
 class OnePica_AvaTax_Model_Records_Mysql4_Queue extends Mage_Core_Model_Mysql4_Abstract
-{	
+{
     protected function _construct() {
         $this->_init('avatax_records/queue', 'id');
     }
     
-	/**
-	 * Sets various dates before the model is saved.
-	 *
-	 * @param Mage_Core_Model_Abstract $object
-	 * @return OnePica_AvaTax_Model_Mysql4_Queue
-	 */
+    /**
+     * Sets various dates before the model is saved.
+     *
+     * @param Mage_Core_Model_Abstract $object
+     * @return OnePica_AvaTax_Model_Mysql4_Queue
+     */
     protected function _beforeSave(Mage_Core_Model_Abstract $object) {
         if(!$object->hasCreatedAt()) {
-        	$object->setCreatedAt(gmdate('Y-m-d H:i:s'));
+            $object->setCreatedAt(gmdate('Y-m-d H:i:s'));
         }
         $object->setUpdatedAt(gmdate('Y-m-d H:i:s'));
         return $this;
     }
     
-	/**
-	 * Log the save
-	 *
-	 * @param Mage_Core_Model_Abstract $object
-	 * @return OnePica_AvaTax_Model_Mysql4_Queue
-	 */
+    /**
+     * Log the save
+     *
+     * @param Mage_Core_Model_Abstract $object
+     * @return OnePica_AvaTax_Model_Mysql4_Queue
+     */
     protected function _afterSave(Mage_Core_Model_Abstract $object) {
         $storeId = $object->getStoreId();
         $logStatus = Mage::getStoreConfig('tax/avatax/log_status', $object->getStoreId());
         if($logStatus) {
-			if (in_array('Queue', Mage::helper('avatax')->getLogType($storeId)))
-			{
-		        Mage::getModel('avatax_records/log')
-					->setStoreId($object->getStoreId())
-					->setLevel('Success')
-					->setType('Queue')
-					->setRequest(print_r($object->getData(), true))
-					->setResult('Saved')
-					->save();
-			}
+            if (in_array('Queue', Mage::helper('avatax')->getLogType($storeId)))
+            {
+                Mage::getModel('avatax_records/log')
+                    ->setStoreId($object->getStoreId())
+                    ->setLevel('Success')
+                    ->setType('Queue')
+                    ->setRequest(print_r($object->getData(), true))
+                    ->setResult('Saved')
+                    ->save();
+            }
         }
         return $this;
     }
     
-	/**
-	 * Log the delete
-	 *
-	 * @param Mage_Core_Model_Abstract $object
-	 * @return OnePica_AvaTax_Model_Mysql4_Queue
-	 */
+    /**
+     * Log the delete
+     *
+     * @param Mage_Core_Model_Abstract $object
+     * @return OnePica_AvaTax_Model_Mysql4_Queue
+     */
     protected function _afterDelete(Mage_Core_Model_Abstract $object) {
         $storeId = $object->getStoreId();
         $logStatus = Mage::getStoreConfig('tax/avatax/log_status', $object->getStoreId());
         if($logStatus) {
-			if (in_array('Queue', Mage::helper('avatax')->getLogType($storeId)))
-			{
-		        Mage::getModel('avatax_records/log')
-					->setStoreId($object->getStoreId())
-					->setLevel('Success')
-					->setType('Queue')
-					->setRequest(print_r($object->getData(), true))
-					->setResult('Deleted')
-					->save();
-	        }
-		}
+            if (in_array('Queue', Mage::helper('avatax')->getLogType($storeId)))
+            {
+                Mage::getModel('avatax_records/log')
+                    ->setStoreId($object->getStoreId())
+                    ->setLevel('Success')
+                    ->setType('Queue')
+                    ->setRequest(print_r($object->getData(), true))
+                    ->setResult('Deleted')
+                    ->save();
+            }
+        }
         return $this;
     }
 

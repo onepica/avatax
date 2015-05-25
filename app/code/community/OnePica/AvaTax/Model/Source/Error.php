@@ -19,19 +19,19 @@
 class OnePica_AvaTax_Model_Source_Error
 {
     /**
-	 * Gets the list of cache methods for the admin config dropdown
-	 *
-	 * @return array
-	 */
+     * Gets the list of cache methods for the admin config dropdown
+     *
+     * @return array
+     */
     public function toOptionArray()
     {
         return array(
             array(
-            	'value' => 1,
-            	'label' => Mage::helper('avatax')->__('Disable checkout & show error message')),
-			array(
-				'value' => 0,
-				'label' => Mage::helper('avatax')->__('Allow checkout without charging tax (no error message)')),
+                'value' => 1,
+                'label' => Mage::helper('avatax')->__('Disable checkout & show error message')),
+            array(
+                'value' => 0,
+                'label' => Mage::helper('avatax')->__('Allow checkout without charging tax (no error message)')),
         );
     }
 }

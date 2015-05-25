@@ -18,8 +18,8 @@
 
 class OnePica_AvaTax_Model_Records_Mysql4_Queue_Collection extends Mage_Core_Model_Mysql4_Collection_Abstract
 {
-	public function _construct() {
-		parent::_construct();
-		$this->_init('avatax_records/queue');
-	}
+    public function _construct() {
+        parent::_construct();
+        $this->_init('avatax_records/queue');
+    }
 }

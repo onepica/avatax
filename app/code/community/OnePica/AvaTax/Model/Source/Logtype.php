@@ -18,35 +18,35 @@
 
 class OnePica_AvaTax_Model_Source_Logtype
 {
-	const PING		= 'Ping';
-	const GET_TAX	= 'GetTax';
-	const FILTER	= 'Filter';
-	const VALIDATE	= 'Validate';
-	const QUEUE		= 'Queue';
-	
+    const PING        = 'Ping';
+    const GET_TAX    = 'GetTax';
+    const FILTER    = 'Filter';
+    const VALIDATE    = 'Validate';
+    const QUEUE        = 'Queue';
+
     /**
-	 * Gets the list of type for the admin config dropdown
-	 *
-	 * @return array
-	 */
+     * Gets the list of type for the admin config dropdown
+     *
+     * @return array
+     */
     public function toOptionArray()
     {
         return array(
             array(
-            	'value' => self::PING,
-            	'label' => Mage::helper('avatax')->__('Ping')),
-			array(
-				'value' => self::GET_TAX,
-				'label' => Mage::helper('avatax')->__('Get Tax')),
-			array(
-				'value' => self::FILTER,
-				'label' => Mage::helper('avatax')->__('Filter')),
-			array(
-				'value' => self::VALIDATE,
-				'label' => Mage::helper('avatax')->__('Validate')),
-			array(
-				'value' => self::QUEUE,
-				'label' => Mage::helper('avatax')->__('Queue'))
+                'value' => self::PING,
+                'label' => Mage::helper('avatax')->__('Ping')),
+            array(
+                'value' => self::GET_TAX,
+                'label' => Mage::helper('avatax')->__('Get Tax')),
+            array(
+                'value' => self::FILTER,
+                'label' => Mage::helper('avatax')->__('Filter')),
+            array(
+                'value' => self::VALIDATE,
+                'label' => Mage::helper('avatax')->__('Validate')),
+            array(
+                'value' => self::QUEUE,
+                'label' => Mage::helper('avatax')->__('Queue'))
 
 
         );

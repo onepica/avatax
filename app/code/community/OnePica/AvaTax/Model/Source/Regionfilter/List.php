@@ -32,26 +32,26 @@ class OnePica_AvaTax_Model_Source_Regionfilter_List
     public function toOptionArray($isMultiselect=false)
     {
         if (!$this->_options) {
-        	$countries = array('US', 'CA');
-        	$this->_options = array();
-        	
-        	$this->_options[] = array(
-    			'label' => '',
-    			'value' => ''
-    		);
-        	
-        	foreach($countries as $country) {
-        		$regions = Mage::getResourceModel('directory/region_collection')
-	            	->addCountryFilter($country)
-	            	->loadData()
-	            	->toOptionArray();
-	           	array_shift($regions);
-	           	
-        		$this->_options[] = array(
-        			'label' => Mage::app()->getLocale()->getCountryTranslation($country),
-        			'value' => $regions
-        		);
-        	}
+            $countries = array('US', 'CA');
+            $this->_options = array();
+
+            $this->_options[] = array(
+                'label' => '',
+                'value' => ''
+            );
+
+            foreach($countries as $country) {
+                $regions = Mage::getResourceModel('directory/region_collection')
+                    ->addCountryFilter($country)
+                    ->loadData()
+                    ->toOptionArray();
+                   array_shift($regions);
+
+                $this->_options[] = array(
+                    'label' => Mage::app()->getLocale()->getCountryTranslation($country),
+                    'value' => $regions
+                );
+            }
         }
         
         return $this->_options;

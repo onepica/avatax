@@ -18,27 +18,27 @@
 
 class OnePica_AvaTax_Model_Source_Logmode
 {
-	const ERRORS	= 0;
-	const NORMAL	= 1;
-	const DEBUG		= 2;
-	
+    const ERRORS    = 0;
+    const NORMAL    = 1;
+    const DEBUG        = 2;
+
     /**
-	 * Gets the list of cache methods for the admin config dropdown
-	 *
-	 * @return array
-	 */
+     * Gets the list of cache methods for the admin config dropdown
+     *
+     * @return array
+     */
     public function toOptionArray()
     {
         return array(
             array(
-            	'value' => self::ERRORS,
-            	'label' => Mage::helper('avatax')->__('Log only errors')),
-			array(
-				'value' => self::NORMAL,
-				'label' => Mage::helper('avatax')->__('Log all actions (recommended)')),
-			array(
-				'value' => self::DEBUG,
-				'label' => Mage::helper('avatax')->__('Log all actions with trace (debug mode)'))
+                'value' => self::ERRORS,
+                'label' => Mage::helper('avatax')->__('Log only errors')),
+            array(
+                'value' => self::NORMAL,
+                'label' => Mage::helper('avatax')->__('Log all actions (recommended)')),
+            array(
+                'value' => self::DEBUG,
+                'label' => Mage::helper('avatax')->__('Log all actions with trace (debug mode)'))
         );
     }
 }

@@ -21,9 +21,9 @@ $installer = $this;
 $this->startSetup();
 
 $installer->run("
-	UPDATE `" . $this->getTable('tax/tax_class') . "`
-	SET `class_name`='Shipping (not used by AvaTax)'
-	WHERE `class_name`='Shipping' AND `class_type`='" . Mage_Tax_Model_Class::TAX_CLASS_TYPE_PRODUCT  . "';
+    UPDATE `" . $this->getTable('tax/tax_class') . "`
+    SET `class_name`='Shipping (not used by AvaTax)'
+    WHERE `class_name`='Shipping' AND `class_type`='" . Mage_Tax_Model_Class::TAX_CLASS_TYPE_PRODUCT  . "';
 ");
 
 $this->endSetup();

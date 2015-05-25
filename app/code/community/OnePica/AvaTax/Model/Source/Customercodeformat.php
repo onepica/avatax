@@ -18,27 +18,27 @@
 
 class OnePica_AvaTax_Model_Source_Customercodeformat
 {
-	const LEGACY		= 0; //depricated, included for stores who are upgrading so the code format doesn't change unexpectedly
-	const CUST_ID		= 1; //recommended
-	const CUST_EMAIL	= 2;
-	
+    const LEGACY        = 0; //depricated, included for stores who are upgrading so the code format doesn't change unexpectedly
+    const CUST_ID        = 1; //recommended
+    const CUST_EMAIL    = 2;
+
     /**
-	 * Gets the list of cache methods for the admin config dropdown
-	 *
-	 * @return array
-	 */
+     * Gets the list of cache methods for the admin config dropdown
+     *
+     * @return array
+     */
     public function toOptionArray()
     {
         return array(
-			array(
-				'value' => self::CUST_ID,
-				'label' => 'customer_id'),
             array(
-	            'value' => self::CUST_EMAIL,
-	            'label' => 'customer_email'),
+                'value' => self::CUST_ID,
+                'label' => 'customer_id'),
             array(
-            	'value' => self::LEGACY,
-            	'label' => 'customer_name (customer_id)'),
+                'value' => self::CUST_EMAIL,
+                'label' => 'customer_email'),
+            array(
+                'value' => self::LEGACY,
+                'label' => 'customer_name (customer_id)'),
         );
     }
 }

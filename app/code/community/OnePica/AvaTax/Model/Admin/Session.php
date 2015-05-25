@@ -31,16 +31,16 @@ class OnePica_AvaTax_Model_Admin_Session extends Mage_Admin_Model_Session
      */
     public function isAllowed($resource, $privilege=null)
     {
-    	$block = array(
-    		'admin/sales/tax/rules',
-    		'admin/sales/tax/rates',
-    		'admin/sales/tax/import_export'
-    	);
-    	
-    	if(in_array($resource, $block) && !Mage::helper('avatax')->isAnyStoreDisabled()) {
-    		return false;
-    	} else {
-    		return parent::isAllowed($resource, $privilege);
-    	}
+        $block = array(
+            'admin/sales/tax/rules',
+            'admin/sales/tax/rates',
+            'admin/sales/tax/import_export'
+        );
+
+        if(in_array($resource, $block) && !Mage::helper('avatax')->isAnyStoreDisabled()) {
+            return false;
+        } else {
+            return parent::isAllowed($resource, $privilege);
+        }
     }
 }

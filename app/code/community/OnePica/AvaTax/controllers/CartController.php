@@ -28,8 +28,8 @@ class OnePica_AvaTax_CartController extends Mage_Checkout_CartController
      */
     public function estimatePostAction()
     {   
-		$session = Mage::getSingleton('checkout/session');
-		$session->setPostType('estimate');
-		parent::estimatePostAction();		
+        $session = Mage::getSingleton('checkout/session');
+        $session->setPostType('estimate');
+        parent::estimatePostAction();
     }
 }

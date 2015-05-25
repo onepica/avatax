@@ -22,16 +22,16 @@ class OnePica_AvaTax_Model_Records_Mysql4_Log extends Mage_Core_Model_Mysql4_Abs
         $this->_init('avatax_records/log', 'log_id');
     }
     
-	/**
-	 * Sets various dates before the model is saved.
-	 *
-	 * @param Mage_Core_Model_Abstract $object
-	 * @return OnePica_AvaTax_Model_Mysql4_Log
-	 */
+    /**
+     * Sets various dates before the model is saved.
+     *
+     * @param Mage_Core_Model_Abstract $object
+     * @return OnePica_AvaTax_Model_Mysql4_Log
+     */
     protected function _beforeSave(Mage_Core_Model_Abstract $object) {
         $object->setCreatedAt(gmdate('Y-m-d H:i:s'));
         if(!$object->getLevel()) {
-        	$object->setLevel('Unknown');
+            $object->setLevel('Unknown');
         }
         return $this;
     }

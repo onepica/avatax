@@ -21,13 +21,13 @@ $installer = $this;
 $installer->startSetup();
 
 try {
-	$installer->run("
-	
-	ALTER TABLE `" . $this->getTable('tax/tax_class') . "` 
-		ADD `op_avatax_code` VARCHAR(255) DEFAULT '' NOT NULL COMMENT 'Used by One Pica AvaTax extension' 
-		AFTER `class_name`;
-	
-	");
+    $installer->run("
+
+    ALTER TABLE `" . $this->getTable('tax/tax_class') . "`
+        ADD `op_avatax_code` VARCHAR(255) DEFAULT '' NOT NULL COMMENT 'Used by One Pica AvaTax extension'
+        AFTER `class_name`;
+
+    ");
 } catch(Exception $e) { }
 
 $installer->endSetup(); 
