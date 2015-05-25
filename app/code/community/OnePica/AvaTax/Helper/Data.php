@@ -456,7 +456,8 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
      * @param Mage_Sales_Model_Quote_Address $shippingAddress
      * @return bool
      */
-    public function isObjectActionable($object, $shippingAddress = null) {
+    public function isObjectActionable($object, $shippingAddress = null)
+    {
         $storeId = $object->getStore()->getId();
 
         //is action enabled?
