@@ -25,6 +25,11 @@
 class OnePica_AvaTax_Helper_Tax_Data extends Mage_Tax_Helper_Data
 {
     /**
+     * Avatax shipping tax class
+     */
+    const AVATAX_SHIPPING_TAX_CLASS = 'FR020100';
+
+    /**
      * Items should not include tax so that AvaTax can calculate it
      *
      * @param null|bool|int|Mage_Core_Model_Store $store
@@ -61,7 +66,7 @@ class OnePica_AvaTax_Helper_Tax_Data extends Mage_Tax_Helper_Data
     public function getShippingTaxClass($store)
     {
         if (Mage::helper('avatax')->isAvataxEnabled($store)) {
-            return 'FR020100';
+            return self::AVATAX_SHIPPING_TAX_CLASS;
         }
         return parent::getShippingTaxClass($store);
     }
