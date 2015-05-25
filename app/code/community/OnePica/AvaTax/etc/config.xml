@@ -16,7 +16,6 @@
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 -->
-
 <config>
     <modules>
         <OnePica_AvaTax>
@@ -164,7 +163,7 @@
             </updates>
         </layout>
         <routers>
-            <checkout> 
+            <checkout>
                 <args>
                     <modules>
                         <OnePica_AvaTax before="Mage_Checkout">OnePica_AvaTax</OnePica_AvaTax>
