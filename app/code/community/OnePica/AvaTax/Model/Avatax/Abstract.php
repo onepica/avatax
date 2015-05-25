@@ -15,10 +15,15 @@
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
-
+/**
+ * Avatax abstract model
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
+ */
 abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model_Abstract
 {
-
     /**
      * Flag that states if there was an error
      *
@@ -36,11 +41,14 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
     /**
      * Sets the company code on the request
      *
-     * @return null
+     * @param int|null $storeId
+     * @return $this
      */
-    protected function _setCompanyCode($storeId=null) {
+    protected function _setCompanyCode($storeId = null)
+    {
         $config = Mage::getSingleton('avatax/config');
         $this->_request->setCompanyCode($config->getCompanyCode($storeId));
+        return $this;
     }
 
     /**
@@ -49,16 +57,20 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
      * @param int $storeId
      * @return mixed
      */
-    protected function _send($storeId) {
+    protected function _send($storeId)
+    {
         $config = Mage::getSingleton('avatax/config')->init($storeId);
         $connection = $config->getTaxConnection();
         $result = null;
         $message = null;
 
-        try { $result = $connection->getTax($this->_request); }
-        catch(Exception $exception) { $message = $exception->getMessage(); }
+        try {
+            $result = $connection->getTax($this->_request);
+        } catch (Exception $exception) {
+            $message = $exception->getMessage();
+        }
 
-        if(!isset($result) || !is_object($result) || !$result->getResultCode()) {
+        if (!isset($result) || !is_object($result) || !$result->getResultCode()) {
             $result = Mage::getModel('Varien_Object')
                 ->setResultCode(SeverityLevel::$Exception)
                 ->setActualResult($result)
@@ -83,8 +95,10 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
      * Adds additional transaction based data
      *
      * @param Mage_Sales_Model_Quote|Mage_Sales_Model_Order $object
+     * @return $this
      */
-    protected function _addGeneralInfo($object) {
+    protected function _addGeneralInfo($object)
+    {
         $storeId = $object->getStoreId();
         $this->_setCompanyCode($storeId);
         $this->_request->setDetailLevel(DetailLevel::$Document);
@@ -96,41 +110,41 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
         $this->_request->setCountry(Mage::getStoreConfig('shipping/origin/country_id', $storeId));
         $this->_request->setCurrencyCode(Mage::app()->getStore()->getBaseCurrencyCode());
         $this->_addCustomer($object);
-        if($object instanceof Mage_Sales_Model_Order && $object->getIncrementId()) {
+        if ($object instanceof Mage_Sales_Model_Order && $object->getIncrementId()) {
             $this->_request->setReferenceCode('Magento Order #' . $object->getIncrementId());
         }
+        return $this;
     }
 
     /**
      * Sets the customer info if available
      *
      * @param Mage_Sales_Model_Quote|Mage_Sales_Model_Order $object
+     * @return $this
      */
-    protected function _addCustomer($object) {
+    protected function _addCustomer($object)
+    {
         $format = Mage::getStoreConfig('tax/avatax/cust_code_format', $object->getStoreId());
         $customer = Mage::getModel('customer/customer');
-        $customerCode = '';
 
-        if($object->getCustomerId()) {
+        if ($object->getCustomerId()) {
             $customer->load($object->getCustomerId());
             $taxClass = Mage::getModel('tax/class')->load($customer->getTaxClassId())->getOpAvataxCode();
             $this->_request->setCustomerUsageType($taxClass);
         }
 
-        switch($format) {
+        switch ($format) {
             case OnePica_AvaTax_Model_Source_Customercodeformat::LEGACY:
-                if($customer->getId()) {
+                if ($customer->getId()) {
                     $customerCode = $customer->getName() . ' (' . $customer->getId() . ')';
                 } else {
                     $address = $object->getBillingAddress() ? $object->getBillingAddress() : $object;
                     $customerCode = $address->getFirstname() . ' ' . $address->getLastname() . ' (Guest)';
                 }
                 break;
-
             case OnePica_AvaTax_Model_Source_Customercodeformat::CUST_EMAIL:
                 $customerCode = $object->getCustomerEmail() ? $object->getCustomerEmail() : $customer->getEmail();
                 break;
-
             case OnePica_AvaTax_Model_Source_Customercodeformat::CUST_ID:
             default:
                 $customerCode = $object->getCustomerId() ? $object->getCustomerId() : 'guest-'.$object->getId();
@@ -138,14 +152,17 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
         }
 
         $this->_request->setCustomerCode($customerCode);
+        return $this;
     }
 
     /**
      * Adds the orgin address to the request
      *
+     * @param null|bool|int|Mage_Core_Model_Store $store
      * @return Address
      */
-    protected function _setOriginAddress($store=null) {
+    protected function _setOriginAddress($store = null)
+    {
         $country = Mage::getStoreConfig('shipping/origin/country_id', $store);
         $zip = Mage::getStoreConfig('shipping/origin/postcode', $store);
         $regionId = Mage::getStoreConfig('shipping/origin/region_id', $store);
@@ -162,7 +179,8 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
      * @param Address
      * @return bool
      */
-    protected function _setDestinationAddress($address) {
+    protected function _setDestinationAddress($address)
+    {
         $street1 = $address->getStreet(1);
         $street2 = $address->getStreet(2);
         $city = $address->getCity();
@@ -170,7 +188,7 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
         $state = Mage::getModel('directory/region')->load($address->getRegionId())->getCode();
         $country = $address->getCountry();
 
-        if(($city && $state) || $zip) {
+        if (($city && $state) || $zip) {
             $address = $this->_newAddress($street1, $street2, $city, $state, $zip, $country);
             return $this->_request->setDestinationAddress($address);
         } else {
@@ -189,7 +207,8 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
      * @param string $country
      * @return Address
      */
-    protected function _newAddress($line1, $line2, $city, $state, $zip, $country='USA') {
+    protected function _newAddress($line1, $line2, $city, $state, $zip, $country = 'USA')
+    {
         $address = new Address();
         $address->setLine1($line1);
         $address->setLine2($line2);
@@ -206,15 +225,18 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
      * @param Mage_Sales_Model_Quote_Item|Mage_Sales_Model_Order_Item|mixed $item
      * @return bool
      */
-    public function isProductCalculated($item) {
+    public function isProductCalculated($item)
+    {
         try {
-            if($item->isChildrenCalculated() && !$item->getParentItem()) {
+            if ($item->isChildrenCalculated() && !$item->getParentItem()) {
                 return true;
             }
-            if(!$item->isChildrenCalculated() && $item->getParentItem()) {
+            if (!$item->isChildrenCalculated() && $item->getParentItem()) {
                 return true;
             }
-        } catch(Exception $e) { }
+        } catch (Exception $e) {
+            Mage::logException($e);
+        }
         return false;
     }
 
@@ -225,10 +247,11 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
      * @param string
      * @return self
      */
-    protected function _addStatusHistoryComment($order, $comment) {
-        if(method_exists($order, 'addStatusHistoryComment')) {
-            $order->addStatusHistoryComment($comment)->save();;
-        } elseif(method_exists($order, 'addStatusToHistory')) {
+    protected function _addStatusHistoryComment($order, $comment)
+    {
+        if (method_exists($order, 'addStatusHistoryComment')) {
+            $order->addStatusHistoryComment($comment)->save();
+        } elseif (method_exists($order, 'addStatusToHistory')) {
             $order->addStatusToHistory($order->getStatus(), $comment, false)->save();;
         }
         return $this;
