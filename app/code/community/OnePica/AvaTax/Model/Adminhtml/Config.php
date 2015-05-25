@@ -15,12 +15,23 @@
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
-
+/**
+ * Admin config model
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
+ */
 class OnePica_AvaTax_Model_Adminhtml_Config extends Mage_Adminhtml_Model_Config
 {
-
-    protected function _initSectionsAndTabs() {
-        if(Mage::helper('avatax')->isAnyStoreDisabled()) {
+    /**
+     * Init modules configuration
+     *
+     * @return $this
+     */
+    protected function _initSectionsAndTabs()
+    {
+        if (Mage::helper('avatax')->isAnyStoreDisabled()) {
             $config = Mage::getConfig()->loadModulesConfiguration('system.xml')
                 ->applyExtends();
 
@@ -31,12 +42,12 @@ class OnePica_AvaTax_Model_Adminhtml_Config extends Mage_Adminhtml_Model_Config
             $mergeModel = new Mage_Core_Model_Config_Base();
             $mergeModel->loadFile($configFile);
             $config = $config->extend($mergeModel, true);
-
             $this->_sections = $config->getNode('sections');
             $this->_tabs = $config->getNode('tabs');
         } else {
-            return parent::_initSectionsAndTabs();
+            parent::_initSectionsAndTabs();
         }
-    }
 
+        return $this;
+    }
 }
