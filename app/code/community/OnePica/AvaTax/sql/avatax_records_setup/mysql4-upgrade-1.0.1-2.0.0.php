@@ -26,7 +26,7 @@ $installer->run("CREATE TABLE IF NOT EXISTS `" . $this->getTable('avatax_records
 	`entity_id` INT(10) UNSIGNED NOT NULL,
 	`entity_increment_id` VARCHAR(50) NOT NULL,
 	`type` ENUM('Invoice','Credit memo') NOT NULL,
-	`status` ENUM('Pending','Retry pending','Failed','Complete','Unbalanced') NOT NULL DEFAULT 'pending',
+	`status` ENUM('Pending','Retry pending','Failed','Complete','Unbalanced') NOT NULL DEFAULT 'Pending',
 	`attempt` TINYINT UNSIGNED NOT NULL DEFAULT '0',
 	`message` VARCHAR (255) NULL DEFAULT NULL,
 	`created_at` DATETIME NOT NULL,
