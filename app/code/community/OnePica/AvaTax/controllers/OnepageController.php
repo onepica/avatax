@@ -15,18 +15,24 @@
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
-
 require_once 'Mage/Checkout/controllers/OnepageController.php';
 
+/**
+ * Onepage controller
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
+ */
 class OnePica_AvaTax_OnepageController extends Mage_Checkout_OnepageController
 {
     /**
      * Initialize shipping information
      */
     public function indexAction()
-    {         
+    {
         $session = Mage::getSingleton('checkout/session');
         $session->setPostType('onepage');
-        parent::indexAction();        
+        parent::indexAction();
     }
 }
