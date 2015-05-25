@@ -17,11 +17,39 @@
 
 /**
  * The Onepage Shipping Method Available block
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
  */
 class OnePica_AvaTax_Block_Checkout_Onepage_Shipping_Method_Available extends Mage_Core_Block_Abstract
 {
+    /**
+     * Quote address
+     *
+     * @var Mage_Sales_Model_Quote_Address
+     */
     protected $_address;
 
+    /**
+     * Checkout session
+     *
+     * @var Mage_Checkout_Model_Session
+     */
+    protected $_checkout;
+
+    /**
+     * Sales quote
+     *
+     * @var Mage_Sales_Model_Quote
+     */
+    protected $_quote;
+
+    /**
+     * Get quote address
+     *
+     * @return Mage_Sales_Model_Quote_Address
+     */
     public function getAddress()
     {
         if (empty($this->_address)) {
@@ -29,7 +57,7 @@ class OnePica_AvaTax_Block_Checkout_Onepage_Shipping_Method_Available extends Ma
         }
         return $this->_address;
     }
-    
+
     /**
      * Retrieve checkout session model
      *
@@ -42,7 +70,7 @@ class OnePica_AvaTax_Block_Checkout_Onepage_Shipping_Method_Available extends Ma
         }
         return $this->_checkout;
     }
-    
+
     /**
      * Retrieve sales quote model
      *
@@ -55,7 +83,7 @@ class OnePica_AvaTax_Block_Checkout_Onepage_Shipping_Method_Available extends Ma
         }
         return $this->_quote;
     }
-    
+
     /**
      * Overriding parent to insert session message block if an address has been validated.
      *
@@ -70,7 +98,7 @@ class OnePica_AvaTax_Block_Checkout_Onepage_Shipping_Method_Available extends Ma
                 Mage::getSingleton('core/session')->addNotice($notice);
                 $additional .= $this->getMessagesBlock()->getGroupedHtml();
             }
-        } else if ($this->getAddress()->getAddressNotified()) {
+        } elseif ($this->getAddress()->getAddressNotified()) {
             $additional .= $this->getMessagesBlock()->getGroupedHtml();
         }
         return $additional;
