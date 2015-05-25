@@ -16,7 +16,11 @@
  */
 
 /**
- * The base AvaTax Helper class.
+ * The base AvaTax Helper class
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
  */
 class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
 {
@@ -25,6 +29,12 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
      */
     const  CALCULATE_ERROR_MESSAGE_IDENTIFIER = 'avatax_calculate_error';
 
+    /**
+     * Check if avatax extension is enabled
+     *
+     * @param null|bool|int|Mage_Core_Model_Store $store $store
+     * @return bool
+     */
     public function isAvataxEnabled($store = null)
     {
         return ($this->_getConfig('action', $store) != OnePica_AvaTax_Model_Config::ACTION_DISABLE);
@@ -100,7 +110,7 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
      * Returns a config value from the admin.
      *
      * @param string $path
-     * @param int $store
+     * @param null|bool|int|Mage_Core_Model_Store $store
      * @return string
      */
     protected function _getConfig ($path, $store = null)
@@ -111,9 +121,10 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Returns the logging level
      *
+     * @param null|bool|int|Mage_Core_Model_Store $store
      * @return int
      */
-    public function getLogMode($store=null)
+    public function getLogMode($store = null)
     {
         return $this->_getConfig('log_status', $store);
     }
@@ -121,20 +132,21 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Returns the logging type
      *
+     * @param null|bool|int|Mage_Core_Model_Store $store
      * @return string
      */
-    public function getLogType($store=null)
+    public function getLogType($store = null)
     {
         return explode(",", $this->_getConfig('log_type_list', $store));
     }
 
-
     /**
      * Returns shipping line item faked sku
      *
+     * @param null|bool|int|Mage_Core_Model_Store $store
      * @return string
      */
-    public function getShippingSku($store=null)
+    public function getShippingSku($store = null)
     {
         return $this->_getConfig('shipping_sku', $store);
     }
@@ -142,9 +154,10 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Returns giftwraporder line item faked sku
      *
+     * @param null|bool|int|Mage_Core_Model_Store $store
      * @return string
      */
-    public function getGwOrderSku($store=null)
+    public function getGwOrderSku($store = null)
     {
         return $this->_getConfig('gw_order_sku', $store);
     }
@@ -152,9 +165,10 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Returns giftwrapitems line item faked sku
      *
+     * @param null|bool|int|Mage_Core_Model_Store $store
      * @return string
      */
-    public function getGwItemsSku($store=null)
+    public function getGwItemsSku($store = null)
     {
         return $this->_getConfig('gw_items_sku', $store);
     }
@@ -162,9 +176,10 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Returns giftwrapprintedcard line item faked sku
      *
+     * @param null|bool|int|Mage_Core_Model_Store $store
      * @return string
      */
-    public function getGwPrintedCardSku($store=null)
+    public function getGwPrintedCardSku($store = null)
     {
         return $this->_getConfig('gw_printed_card_sku', $store);
     }
@@ -172,9 +187,10 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Returns shipping line item faked sku
      *
+     * @param null|bool|int|Mage_Core_Model_Store $store
      * @return string
      */
-    public function getSalesPersonCode($store=null)
+    public function getSalesPersonCode($store = null)
     {
         return $this->_getConfig('sales_person_code', $store);
     }
@@ -182,9 +198,10 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Returns attribute code for the location code to send to Avalara
      *
+     * @param null|bool|int|Mage_Core_Model_Store $store
      * @return string
      */
-    public function getLocationCode($store=null)
+    public function getLocationCode($store = null)
     {
         return $this->_getConfig('location_code', $store);
     }
@@ -192,9 +209,10 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Returns attribute code for the reference code 1 to send to Avalara
      *
+     * @param null|bool|int|Mage_Core_Model_Store $store
      * @return string
      */
-    public function getRef1AttributeCode($store=null)
+    public function getRef1AttributeCode($store = null)
     {
         return $this->_getConfig('line_ref1_code', $store);
     }
@@ -202,9 +220,10 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Returns attribute code for the reference code 2 to send to Avalara
      *
+     * @param null|bool|int|Mage_Core_Model_Store $store
      * @return string
      */
-    public function getRef2AttributeCode($store=null)
+    public function getRef2AttributeCode($store = null)
     {
         return $this->_getConfig('line_ref2_code', $store);
     }
@@ -212,9 +231,10 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Returns the positive adjustment identifier to send to Avalara
      *
+     * @param null|bool|int|Mage_Core_Model_Store $store
      * @return string
      */
-    public function getPositiveAdjustmentSku($store=null)
+    public function getPositiveAdjustmentSku($store = null)
     {
         return $this->_getConfig('adjustment_positive_sku', $store);
     }
@@ -222,9 +242,10 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Returns the negative adjustment identifier to send to Avalara
      *
+     * @param null|bool|int|Mage_Core_Model_Store $store
      * @return string
      */
-    public function getNegativeAdjustmentSku($store=null)
+    public function getNegativeAdjustmentSku($store = null)
     {
         return $this->_getConfig('adjustment_negative_sku', $store);
     }
@@ -232,9 +253,10 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Returns the required field list
      *
+     * @param null|bool|int|Mage_Core_Model_Store $store
      * @return string
      */
-    public function getFieldRequiredList($store=null)
+    public function getFieldRequiredList($store = null)
     {
         return $this->_getConfig('field_required_list', $store);
     }
@@ -242,20 +264,21 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Returns the rules for field
      *
+     * @param null|bool|int|Mage_Core_Model_Store $store
      * @return string
      */
-    public function getFieldRule($store=null)
+    public function getFieldRule($store = null)
     {
         return $this->_getConfig('field_rule', $store);
     }
 
-
     /**
+     * Returns full stop on error
      *
-     *
+     * @param null|bool|int|Mage_Core_Model_Store $store
      * @return string
      */
-    public function fullStopOnError($store=null)
+    public function fullStopOnError($store = null)
     {
         return (bool)$this->_getConfig('error_full_stop', $store);
     }
@@ -263,14 +286,17 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Adds error message if there is an error
      *
+     * @param null|bool|int|Mage_Core_Model_Store $store
      * @return string
      */
     public function addErrorMessage($store = null)
     {
         $message = $this->getErrorMessage($store);
         if (Mage::app()->getStore()->isAdmin()) {
+            /** @var Mage_Adminhtml_Model_Session_Quote $session */
             $session = Mage::getSingleton('adminhtml/session_quote');
         } else {
+            /** @var Mage_Checkout_Model_Session $session */
             $session = Mage::getSingleton('checkout/session');
         }
 
@@ -287,27 +313,32 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Remove error message
      *
-     * @param null $store
+     * @return $this
      */
     public function removeErrorMessage()
     {
         if (Mage::app()->getStore()->isAdmin()) {
+            /** @var Mage_Adminhtml_Model_Session_Quote $session */
             $session = Mage::getSingleton('adminhtml/session_quote');
         } else {
+            /** @var Mage_Checkout_Model_Session $session */
             $session = Mage::getSingleton('checkout/session');
         }
         /** @var Mage_Core_Model_Message_Collection $messages */
         $messages = $session->getMessages();
         $messages->deleteMessageByIdentifier(self::CALCULATE_ERROR_MESSAGE_IDENTIFIER);
+        return $this;
     }
 
     /**
      * Gets error message
      *
+     * @param null|bool|int|Mage_Core_Model_Store $store
      * @return string
      */
-    public function getErrorMessage($store=null) {
-        if(Mage::app()->getStore()->isAdmin()) {
+    public function getErrorMessage($store = null)
+    {
+        if (Mage::app()->getStore()->isAdmin()) {
             return $this->_getConfig('error_backend_message', $store);
         } else {
             return $this->_getConfig('error_frontend_message', $store);
@@ -324,8 +355,10 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
         $disabled = false;
         $storeCollection = Mage::app()->getStores();
 
-        foreach($storeCollection as $store) {
+        foreach ($storeCollection as $store) {
+            //@startSkipCommitHooks
             $disabled |= Mage::getStoreConfig('tax/avatax/action', $store->getId()) == OnePica_AvaTax_Model_Config::ACTION_DISABLE;
+            //@finishSkipCommitHooks
         }
 
         return $disabled;
@@ -338,8 +371,9 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
      * @param int $storeId
      * @return bool
      */
-    public function isAddressValidationOn($address, $storeId) {
-        if(!$this->isAddressActionable($address, $storeId)) {
+    public function isAddressValidationOn($address, $storeId)
+    {
+        if (!$this->isAddressActionable($address, $storeId)) {
             return false;
         }
         return Mage::getStoreConfig('tax/avatax/validate_address', $storeId);
@@ -352,8 +386,9 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
      * @param int $storeId
      * @return bool
      */
-    public function isAddressNormalizationOn($address, $storeId) {
-        if(!$this->isAddressActionable($address, $storeId)) {
+    public function isAddressNormalizationOn($address, $storeId)
+    {
+        if (!$this->isAddressActionable($address, $storeId)) {
             return false;
         }
         return Mage::getStoreConfig('tax/avatax/normalize_address', $storeId);
@@ -364,38 +399,43 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
      *
      * @param Mage_Customer_Model_Address
      * @param int $storeId
+     * @param int $filterMode
      * @return bool
      */
-    public function isAddressActionable($address, $storeId, $filterMode = OnePica_AvaTax_Model_Config::REGIONFILTER_ALL) {
+    public function isAddressActionable($address, $storeId, $filterMode = OnePica_AvaTax_Model_Config::REGIONFILTER_ALL)
+    {
         $filter = false;
 
-        if(Mage::getStoreConfig('tax/avatax/action', $storeId) == OnePica_AvaTax_Model_Config::ACTION_DISABLE) {
+        if (Mage::getStoreConfig('tax/avatax/action', $storeId) == OnePica_AvaTax_Model_Config::ACTION_DISABLE) {
             return false;
         }
 
-        if(Mage::getStoreConfig('tax/avatax/region_filter_mode', $storeId) >= $filterMode) {
+        if (Mage::getStoreConfig('tax/avatax/region_filter_mode', $storeId) >= $filterMode) {
             $regionFilters = explode(',', Mage::getStoreConfig('tax/avatax/region_filter_list', $storeId));
-            if(!in_array($address->getRegionId(), $regionFilters)) {
+            if (!in_array($address->getRegionId(), $regionFilters)) {
                 $filter = 'region';
             }
         }
 
         $countryFilters = explode(',', Mage::getStoreConfig('tax/avatax/country_filter_list', $storeId));
-        if(!in_array($address->getCountryId(), $countryFilters)) {
+        if (!in_array($address->getCountryId(), $countryFilters)) {
             $filter = 'country';
         }
 
-        if($filter && $this->getLogMode($storeId)) {
+        if ($filter && $this->getLogMode($storeId)) {
             $filterLog = Mage::getSingleton('avatax/session')->getFilterLog();
-            if(!is_array($filterLog)) $filterLog = array();
+            if (!is_array($filterLog)) {
+                $filterLog = array();
+            }
             $key = $address->getCacheHashKey();
 
             //did we already log this filtered address?
-            if(!in_array($key, $filterLog)) {
+            if (!in_array($key, $filterLog)) {
                 $filterLog[] = $key;
                 Mage::getSingleton('avatax/session')->setFilterLog($filterLog);
 
-                $type = ($filterMode == OnePica_AvaTax_Model_Config::REGIONFILTER_TAX) ? 'tax_calc' : 'tax_calc|address_opts';
+                $type = ($filterMode == OnePica_AvaTax_Model_Config::REGIONFILTER_TAX) ?
+                    'tax_calc' : 'tax_calc|address_opts';
                 Mage::getModel('avatax_records/log')
                     ->setStoreId($storeId)
                     ->setLevel('Success')
@@ -412,28 +452,29 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Determines if the object (quote, invoice, or credit memo) should use AvaTax services
      *
-     * @param Mage_Sales_Model_Quote|Mage_Sales_Model_Order_Invoice|Mage_Sales_Model_Order_Creditmemo
-     * @param Mage_Sales_Model_Quote_Address
+     * @param Mage_Sales_Model_Quote|Mage_Sales_Model_Order_Invoice|Mage_Sales_Model_Order_Creditmemo $object
+     * @param Mage_Sales_Model_Quote_Address $shippingAddress
      * @return bool
      */
-    public function isObjectActionable($object, $shippingAddress=null) {
+    public function isObjectActionable($object, $shippingAddress = null) {
         $storeId = $object->getStore()->getId();
 
         //is action enabled?
-        $action = $object->getOrder() ? OnePica_AvaTax_Model_Config::ACTION_CALC_SUBMIT : OnePica_AvaTax_Model_Config::ACTION_CALC;
-        if(Mage::getStoreConfig('tax/avatax/action', $storeId) < $action) {
+        $action = $object->getOrder() ?
+            OnePica_AvaTax_Model_Config::ACTION_CALC_SUBMIT : OnePica_AvaTax_Model_Config::ACTION_CALC;
+        if (Mage::getStoreConfig('tax/avatax/action', $storeId) < $action) {
             return false;
         }
 
-        if(!$shippingAddress) {
+        if (!$shippingAddress) {
             $shippingAddress = $object->getShippingAddress();
         }
-        if(!$shippingAddress) {
+        if (!$shippingAddress) {
             $shippingAddress = $object->getBillingAddress();
         }
 
         //is the region filtered?
-        if(!$this->isAddressActionable($shippingAddress, $storeId, OnePica_AvaTax_Model_Config::REGIONFILTER_TAX)) {
+        if (!$this->isAddressActionable($shippingAddress, $storeId, OnePica_AvaTax_Model_Config::REGIONFILTER_TAX)) {
             return false;
         }
 
