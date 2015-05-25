@@ -15,29 +15,36 @@
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
+/**
+ * Admin log grid block
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
+ */
 class OnePica_AvaTax_Block_Adminhtml_Export_Log_Grid extends OnePica_AvaTax_Block_Adminhtml_Export_Abstract_Grid
 {
-
     /**
-     * Sets default sort to id field
-     *
+     * Construct: Sets default sort to id field
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->setDefaultSort('log_id');
         $this->setGridHeader(
-            '<h3 class="icon-head" style="background-image:url(' . $this->getSkinUrl('images/fam_application_view_tile.gif') . ');">' .
-                $this->__('AvaTax Action Log') .
-            '</h3>'
+            '<h3 class="icon-head" style="background-image:url('
+            . $this->getSkinUrl('images/fam_application_view_tile.gif') . ');">'
+            . $this->__('AvaTax Action Log') . '</h3>'
         );
     }
 
     /**
      * Adds columns to grid
      *
-     * @return self
+     * @return $this
      */
-    protected function _prepareColumns() {
+    protected function _prepareColumns()
+    {
         return $this->_addColumnsForExport(array(
             'log_id' => 'number',
             'store_id' => 'number',
@@ -45,7 +52,6 @@ class OnePica_AvaTax_Block_Adminhtml_Export_Log_Grid extends OnePica_AvaTax_Bloc
             'type' => Mage::getModel('avatax_records/log')->getTypeOptions(),
             'created_at' => 'datetime',
         ));
-        return $this;
     }
 
     /**
@@ -53,16 +59,21 @@ class OnePica_AvaTax_Block_Adminhtml_Export_Log_Grid extends OnePica_AvaTax_Bloc
      *
      * @return unknown
      */
-    protected function _prepareCollection() {
+    protected function _prepareCollection()
+    {
         $collection = Mage::getModel('avatax_records/log')->getCollection();
         $this->setCollection($collection);
         return parent::_prepareCollection();
     }
 
+    /**
+     * Get row url
+     *
+     * @param OnePica_AvaTax_Model_Records_Log $row
+     * @return string
+     */
     public function getRowUrl($row)
     {
         return $this->getUrl('*/*/logView', array('id' => $row->getId()));
     }
-
-
 }
