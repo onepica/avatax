@@ -15,9 +15,25 @@
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
-class OnePica_AvaTax_Block_Adminhtml_System_Config_Form_Field_Export extends Mage_Adminhtml_Block_System_Config_Form_Field
+/**
+ * Config form field export block
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
+ */
+class OnePica_AvaTax_Block_Adminhtml_System_Config_Form_Field_Export
+    extends Mage_Adminhtml_Block_System_Config_Form_Field
 {
-    protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element) {
+    /**
+     * Get element html
+     *
+     * @param Varien_Data_Form_Element_Abstract $element
+     * @return string
+     * @throws Exception
+     */
+    protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element)
+    {
         $buttonBlock = $this->getLayout()->createBlock('adminhtml/widget_button');
         $params = array(
             'website' => $buttonBlock->getRequest()->getParam('website')
@@ -25,12 +41,15 @@ class OnePica_AvaTax_Block_Adminhtml_System_Config_Form_Field_Export extends Mag
 
         $data1 = array(
             'label'     => Mage::helper('avatax')->__('Export Logs'),
-            'onclick'   => 'setLocation(\''.Mage::helper('adminhtml')->getUrl("avatax/adminhtml_export/log", $params) . '\')',
+            'onclick'   => 'setLocation(\'' . Mage::helper('adminhtml')->getUrl("avatax/adminhtml_export/log", $params)
+                . '\')',
             'class'     => '',
         );
         $data2 = array(
             'label'     => Mage::helper('avatax')->__('Export Queue'),
-            'onclick'   => 'setLocation(\''.Mage::helper('adminhtml')->getUrl("avatax/adminhtml_export/queue", $params) . '\')',
+            'onclick'   => 'setLocation(\''
+                . Mage::helper('adminhtml')->getUrl("avatax/adminhtml_export/queue", $params)
+                . '\')',
             'class'     => '',
         );
 
