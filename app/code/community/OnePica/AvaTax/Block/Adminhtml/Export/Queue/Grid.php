@@ -15,31 +15,45 @@
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
+/**
+ * Admin queue grid block
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
+ */
 class OnePica_AvaTax_Block_Adminhtml_Export_Queue_Grid extends OnePica_AvaTax_Block_Adminhtml_Export_Abstract_Grid
 {
-
     /**
-     * Sets default sort to id field
-     *
+     * Construct: Sets default sort to id field
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->setDefaultSort('id');
         $this->setGridHeader(
-            '<h3 class="icon-head" style="background-image:url(' . $this->getSkinUrl('images/fam_application_view_tile.gif') . ');">' .
-                $this->__('AvaTax Order Sync Queue') .
-            '</h3>'
+            '<h3 class="icon-head" style="background-image:url('
+            . $this->getSkinUrl('images/fam_application_view_tile.gif') . ');">'
+            . $this->__('AvaTax Order Sync Queue')
+            . '</h3>'
         );
     }
 
     /**
      * Adds custom buttons
      *
+     * @return string
      */
     public function getMainButtonsHtml()
     {
-        $html = $this->getButtonHtml($this->__('Clear Queue Now'), 'setLocation(\'' . $this->getUrl('*/*/clearQueue') . '\')');
-        $html .= $this->getButtonHtml($this->__('Process Queue Now'), 'setLocation(\'' . $this->getUrl('*/*/processQueue') . '\')');
+        $html = $this->getButtonHtml(
+            $this->__('Clear Queue Now'),
+            'setLocation(\'' . $this->getUrl('*/*/clearQueue') . '\')'
+        );
+        $html .= $this->getButtonHtml(
+            $this->__('Process Queue Now'),
+            'setLocation(\'' . $this->getUrl('*/*/processQueue') . '\')'
+        );
         $html .= parent::getMainButtonsHtml();
         return $html;
     }
@@ -47,9 +61,10 @@ class OnePica_AvaTax_Block_Adminhtml_Export_Queue_Grid extends OnePica_AvaTax_Bl
     /**
      * Adds columns to grid
      *
-     * @return self
+     * @return $this
      */
-    protected function _prepareColumns() {
+    protected function _prepareColumns()
+    {
         return $this->_addColumnsForExport(array(
             'id' => 'number',
             'store_id' => 'number',
@@ -62,18 +77,18 @@ class OnePica_AvaTax_Block_Adminhtml_Export_Queue_Grid extends OnePica_AvaTax_Bl
             'created_at' => 'datetime',
             'updated_at' => 'datetime'
         ));
-        return $this;
     }
 
     /**
      * Adds collection
      *
-     * @return unknown
+     * @return $this
      */
-    protected function _prepareCollection() {
+    protected function _prepareCollection()
+    {
+        /** @var OnePica_AvaTax_Model_Records_Mysql4_Queue_Collection $collection */
         $collection = Mage::getModel('avatax_records/queue')->getCollection();
         $this->setCollection($collection);
         return parent::_prepareCollection();
     }
-
 }
