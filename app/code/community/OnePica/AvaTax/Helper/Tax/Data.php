@@ -15,15 +15,19 @@
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
-
 /**
  * Catalog data helper
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
  */
 class OnePica_AvaTax_Helper_Tax_Data extends Mage_Tax_Helper_Data
 {
     /**
      * Items should not include tax so that AvaTax can calculate it
      *
+     * @param null|bool|int|Mage_Core_Model_Store $store
      * @return bool
      */
     public function priceIncludesTax($store = null)
@@ -33,10 +37,11 @@ class OnePica_AvaTax_Helper_Tax_Data extends Mage_Tax_Helper_Data
         }
         return parent::priceIncludesTax($store);
     }
-    
+
     /**
      * Shipping should not include tax so that AvaTax can calculate it
      *
+     * @param null|bool|int|Mage_Core_Model_Store $store
      * @return bool
      */
     public function shippingPriceIncludesTax($store = null)
@@ -46,10 +51,11 @@ class OnePica_AvaTax_Helper_Tax_Data extends Mage_Tax_Helper_Data
         }
         return parent::shippingPriceIncludesTax($store);
     }
-    
+
     /**
      * Returns AvaTax's hard-coded shipping tax class
      *
+     * @param null|bool|int|Mage_Core_Model_Store $store
      * @return string
      */
     public function getShippingTaxClass($store)
@@ -59,10 +65,11 @@ class OnePica_AvaTax_Helper_Tax_Data extends Mage_Tax_Helper_Data
         }
         return parent::getShippingTaxClass($store);
     }
-    
+
     /**
      * AvaTax always computes tax based on ship from and ship to addresses
      *
+     * @param null|bool|int|Mage_Core_Model_Store $store
      * @return string
      */
     public function getTaxBasedOn($store = null)
@@ -76,6 +83,7 @@ class OnePica_AvaTax_Helper_Tax_Data extends Mage_Tax_Helper_Data
     /**
      * Always apply tax on custom price
      *
+     * @param null|bool|int|Mage_Core_Model_Store $store
      * @return bool
      */
     public function applyTaxOnCustomPrice($store = null) {
@@ -88,6 +96,7 @@ class OnePica_AvaTax_Helper_Tax_Data extends Mage_Tax_Helper_Data
     /**
      * Always apply tax on custom price (not original)
      *
+     * @param null|bool|int|Mage_Core_Model_Store $store
      * @return bool
      */
     public function applyTaxOnOriginalPrice($store = null) {
@@ -100,6 +109,7 @@ class OnePica_AvaTax_Helper_Tax_Data extends Mage_Tax_Helper_Data
     /**
      * Always apply discount first since AvaTax doesn't support line-level item discount amounts
      *
+     * @param null|bool|int|Mage_Core_Model_Store $store
      * @return bool
      */
     public function applyTaxAfterDiscount($store = null) {
