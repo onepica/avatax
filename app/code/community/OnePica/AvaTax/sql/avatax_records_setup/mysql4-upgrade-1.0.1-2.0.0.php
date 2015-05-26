@@ -14,8 +14,7 @@
  * @copyright  Copyright (c) 2009 One Pica, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-
-
+//@startSkipCommitHooks
 $installer = $this;
 
 $this->startSetup();
@@ -35,3 +34,4 @@ $installer->run("CREATE TABLE IF NOT EXISTS `" . $this->getTable('avatax_records
 ) COMMENT = 'Used by One Pica AvaTax extension' ENGINE = InnoDB");
 
 $this->endSetup();
+//@finishSkipCommitHooks
