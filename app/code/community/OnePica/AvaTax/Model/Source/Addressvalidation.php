@@ -15,11 +15,28 @@
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
-
+/**
+ * Address validation source model
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
+ */
 class OnePica_AvaTax_Model_Source_Addressvalidation
 {
+    /**
+     * Disabled
+     */
     const DISABLED                = 0;
+
+    /**
+     * Enabled + Prevent order
+     */
     const ENABLED_PREVENT_ORDER    = 1;
+
+    /**
+     * Enabled + Allow order
+     */
     const ENABLED_ALLOW_ORDER    = 2;
 
     /**
