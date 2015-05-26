@@ -17,48 +17,108 @@
  * @method OnePica_AvaTax_Model_Records_Mysql4_Queue _getResource()
  */
 
-
+/**
+ * Queue model
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
+ */
 class OnePica_AvaTax_Model_Records_Queue extends Mage_Core_Model_Abstract
 {
-    const QUEUE_TYPE_INVOICE        = 'Invoice';
-    const QUEUE_TYPE_CREDITMEMEO    = 'Credit memo';
+    /**
+     * Invoice type
+     */
+    const QUEUE_TYPE_INVOICE = 'Invoice';
 
-    const QUEUE_STATUS_PENDING        = 'Pending';
-    const QUEUE_STATUS_RETRY        = 'Retry pending';
-    const QUEUE_STATUS_FAILED        = 'Failed';
-    const QUEUE_STATUS_COMPLETE        = 'Complete';
-    const QUEUE_STATUS_UNBALANCED    = 'Unbalanced';
+    /**
+     * Credit memo type
+     */
+    const QUEUE_TYPE_CREDITMEMEO = 'Credit memo';
 
-    public function _construct()
+    /**
+     * Pending status
+     */
+    const QUEUE_STATUS_PENDING = 'Pending';
+
+    /**
+     * Retry status
+     */
+    const QUEUE_STATUS_RETRY = 'Retry pending';
+
+    /**
+     * Failed status
+     */
+    const QUEUE_STATUS_FAILED = 'Failed';
+
+    /**
+     * Complete status
+     */
+    const QUEUE_STATUS_COMPLETE = 'Complete';
+
+    /**
+     * Unbalanced status
+     */
+    const QUEUE_STATUS_UNBALANCED = 'Unbalanced';
+
+    /**
+     * Internal constructor
+     */
+    protected function _construct()
     {
         parent::_construct();
         $this->_init('avatax_records/queue');
     }
-    
-    public function setEntity($object) {
+
+    /**
+     * Set entity
+     *
+     * @param Mage_Sales_Model_Order_Invoice|Mage_Sales_Model_Order_Creditmemo $object
+     * @return $this
+     */
+    public function setEntity($object)
+    {
         $this->setEntityId($object->getId());
         $this->setEntityIncrementId($object->getIncrementId());
         $this->setStoreId($object->getStoreId());
         return $this;
     }
-    
-    public function getTypeOptions() {
+
+    /**
+     * Get type options
+     *
+     * @return array
+     */
+    public function getTypeOptions()
+    {
         return array(
-            self::QUEUE_TYPE_INVOICE        => self::QUEUE_TYPE_INVOICE,
-            self::QUEUE_TYPE_CREDITMEMEO    => self::QUEUE_TYPE_CREDITMEMEO
-        );
-    }
-    
-    public function getStatusOptions() {
-        return array(
-            self::QUEUE_STATUS_PENDING        => self::QUEUE_STATUS_PENDING,
-            self::QUEUE_STATUS_RETRY        => self::QUEUE_STATUS_RETRY,
-            self::QUEUE_STATUS_FAILED        => self::QUEUE_STATUS_FAILED,
-            self::QUEUE_STATUS_COMPLETE        => self::QUEUE_STATUS_COMPLETE,
-            self::QUEUE_STATUS_UNBALANCED    => self::QUEUE_STATUS_UNBALANCED
+            self::QUEUE_TYPE_INVOICE => self::QUEUE_TYPE_INVOICE,
+            self::QUEUE_TYPE_CREDITMEMEO => self::QUEUE_TYPE_CREDITMEMEO
         );
     }
 
+    /**
+     * Get status options
+     *
+     * @return array
+     */
+    public function getStatusOptions()
+    {
+        return array(
+            self::QUEUE_STATUS_PENDING => self::QUEUE_STATUS_PENDING,
+            self::QUEUE_STATUS_RETRY => self::QUEUE_STATUS_RETRY,
+            self::QUEUE_STATUS_FAILED => self::QUEUE_STATUS_FAILED,
+            self::QUEUE_STATUS_COMPLETE => self::QUEUE_STATUS_COMPLETE,
+            self::QUEUE_STATUS_UNBALANCED => self::QUEUE_STATUS_UNBALANCED
+        );
+    }
+
+    /**
+     * Load invoice by increment id
+     *
+     * @param int $incrementId
+     * @return $this
+     */
     public function loadInvoiceByIncrementId($incrementId)
     {
         $this->_getResource()->loadInvoiceByIncrementId($this, $incrementId);
