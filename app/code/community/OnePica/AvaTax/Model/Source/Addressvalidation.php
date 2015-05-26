@@ -49,13 +49,16 @@ class OnePica_AvaTax_Model_Source_Addressvalidation
         return array(
             array(
                 'value' => self::DISABLED,
-                'label' => Mage::helper('avatax')->__('Disabled')),
+                'label' => Mage::helper('avatax')->__('Disabled')
+            ),
             array(
                 'value' => self::ENABLED_PREVENT_ORDER,
-                'label' => Mage::helper('avatax')->__('Enabled + Prevent Order')),
+                'label' => Mage::helper('avatax')->__('Enabled + Prevent Order')
+            ),
             array(
                 'value' => self::ENABLED_ALLOW_ORDER,
-                'label' => Mage::helper('avatax')->__('Enabled + Allow Order'))
+                'label' => Mage::helper('avatax')->__('Enabled + Allow Order')
+            )
         );
     }
 }

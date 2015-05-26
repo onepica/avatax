@@ -34,10 +34,12 @@ class OnePica_AvaTax_Model_Source_Error
         return array(
             array(
                 'value' => 1,
-                'label' => Mage::helper('avatax')->__('Disable checkout & show error message')),
+                'label' => Mage::helper('avatax')->__('Disable checkout & show error message')
+            ),
             array(
                 'value' => 0,
-                'label' => Mage::helper('avatax')->__('Allow checkout without charging tax (no error message)')),
+                'label' => Mage::helper('avatax')->__('Allow checkout without charging tax (no error message)')
+            )
         );
     }
 }

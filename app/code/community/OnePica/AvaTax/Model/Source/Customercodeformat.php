@@ -49,13 +49,16 @@ class OnePica_AvaTax_Model_Source_Customercodeformat
         return array(
             array(
                 'value' => self::CUST_ID,
-                'label' => 'customer_id'),
+                'label' => 'customer_id'
+            ),
             array(
                 'value' => self::CUST_EMAIL,
-                'label' => 'customer_email'),
+                'label' => 'customer_email'
+            ),
             array(
                 'value' => self::LEGACY,
-                'label' => 'customer_name (customer_id)'),
+                'label' => 'customer_name (customer_id)'
+            )
         );
     }
 }
