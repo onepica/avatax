@@ -15,12 +15,29 @@
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
-
+/**
+ * Log mode source model
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
+ */
 class OnePica_AvaTax_Model_Source_Logmode
 {
-    const ERRORS    = 0;
-    const NORMAL    = 1;
-    const DEBUG        = 2;
+    /**
+     * Only errors mode
+     */
+    const ERRORS = 0;
+
+    /**
+     * Normal mode
+     */
+    const NORMAL = 1;
+
+    /**
+     * Debug mode
+     */
+    const DEBUG = 2;
 
     /**
      * Gets the list of cache methods for the admin config dropdown
