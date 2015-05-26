@@ -15,13 +15,38 @@
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
-
+/**
+ * Log type source model
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
+ */
 class OnePica_AvaTax_Model_Source_Logtype
 {
+    /**
+     * Ping type
+     */
     const PING        = 'Ping';
+
+    /**
+     * Get tax type
+     */
     const GET_TAX    = 'GetTax';
+
+    /**
+     * Filter type
+     */
     const FILTER    = 'Filter';
+
+    /**
+     * Validate type
+     */
     const VALIDATE    = 'Validate';
+
+    /**
+     * Queue type
+     */
     const QUEUE        = 'Queue';
 
     /**
@@ -34,21 +59,24 @@ class OnePica_AvaTax_Model_Source_Logtype
         return array(
             array(
                 'value' => self::PING,
-                'label' => Mage::helper('avatax')->__('Ping')),
+                'label' => Mage::helper('avatax')->__('Ping')
+            ),
             array(
                 'value' => self::GET_TAX,
-                'label' => Mage::helper('avatax')->__('Get Tax')),
+                'label' => Mage::helper('avatax')->__('Get Tax')
+            ),
             array(
                 'value' => self::FILTER,
-                'label' => Mage::helper('avatax')->__('Filter')),
+                'label' => Mage::helper('avatax')->__('Filter')
+            ),
             array(
                 'value' => self::VALIDATE,
-                'label' => Mage::helper('avatax')->__('Validate')),
+                'label' => Mage::helper('avatax')->__('Validate')
+            ),
             array(
                 'value' => self::QUEUE,
-                'label' => Mage::helper('avatax')->__('Queue'))
-
-
+                'label' => Mage::helper('avatax')->__('Queue')
+            )
         );
     }
 }
