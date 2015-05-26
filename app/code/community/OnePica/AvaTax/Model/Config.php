@@ -15,36 +15,66 @@
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
-
-require_once(Mage::getModuleDir('', 'OnePica_AvaTax').DS.'lib'.DS.'functions.php');
+require_once(Mage::getModuleDir('', 'OnePica_AvaTax') . DS . 'lib' . DS.'functions.php');
 
 /**
- * The AvaTax Config Model, which registers config settings with the AvaTax SDK. 
+ * The AvaTax Config Model, which registers config settings with the AvaTax SDK
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
  */
 class OnePica_AvaTax_Model_Config extends Varien_Object
 {
+    /**
+     * Config key
+     */
     const CONFIG_KEY = 'Magento';
+
+    /**
+     * App name
+     */
     const APP_NAME = 'OP_AvaTax by One Pica';
 
     /**
-     * Values for the admin config action options
+     * Disable action
      */
-    const ACTION_DISABLE             = 0;
-    const ACTION_CALC                = 1;
-    const ACTION_CALC_SUBMIT        = 2;
-    const ACTION_CALC_SUBMIT_COMMIT    = 3;
+    const ACTION_DISABLE = 0;
 
     /**
-     * Values for the admin config action options
+     * Calculate action
      */
-    const REGIONFILTER_OFF            = 0;
-    const REGIONFILTER_TAX            = 1;
-    const REGIONFILTER_ALL            = 2;
+    const ACTION_CALC = 1;
+
+    /**
+     * Calculate, submit action
+     */
+    const ACTION_CALC_SUBMIT = 2;
+
+    /**
+     * Calculate, submit, commit action
+     */
+    const ACTION_CALC_SUBMIT_COMMIT = 3;
+
+    /**
+     * Region filter disable mode
+     */
+    const REGIONFILTER_OFF = 0;
+
+    /**
+     * Region filter tax mode
+     */
+    const REGIONFILTER_TAX = 1;
+
+    /**
+     * Region filter all mode
+     */
+    const REGIONFILTER_ALL = 2;
 
     /**
      * Number of times a queue item will try to send
      */
-    const QUEUE_ATTEMPT_MAX            = 5;
+    const QUEUE_ATTEMPT_MAX = 5;
 
     /**
      * The AvaTax ATConfig object.
@@ -69,10 +99,8 @@ class OnePica_AvaTax_Model_Config extends Varien_Object
 
     /**
      * Constructor.  Loads all required AvaTax classes.
-     *
-     * @return null
      */
-    protected function _construct ()
+    protected function _construct()
     {
         $helper = Mage::helper('avatax');
 
@@ -124,15 +152,16 @@ class OnePica_AvaTax_Model_Config extends Varien_Object
      * @param int $storeId
      * @return OnePica_AvaTax_Model_Config
      */
-    public function init ($storeId)
+    public function init($storeId)
     {
         if (!$this->_config) {
             $this->_config = new ATConfig(self::CONFIG_KEY, array(
-                'url'       => $this->getConfig('url', $storeId),
-                'account'   => $this->getConfig('account', $storeId),
-                'license'   => $this->getConfig('license', $storeId),
-                'trace'     => (Mage::helper('avatax')->getLogMode($storeId) == OnePica_AvaTax_Model_Source_Logmode::DEBUG) ? true : false,
-                'client'    => $this->getClientName()
+                'url' => $this->getConfig('url', $storeId),
+                'account' => $this->getConfig('account', $storeId),
+                'license' => $this->getConfig('license', $storeId),
+                'trace' => (Mage::helper('avatax')
+                    ->getLogMode($storeId) == OnePica_AvaTax_Model_Source_Logmode::DEBUG) ? true : false,
+                'client' => $this->getClientName()
             ));
         }
         return $this;
@@ -152,7 +181,8 @@ class OnePica_AvaTax_Model_Config extends Varien_Object
      * @example Magento,1.4,.0.1,OP_AvaTax by One Pica,2,0.1
      * @return string
      */
-    public function getClientName() {
+    public function getClientName()
+    {
         $mageVersion = Mage::getVersion();
         $mageVerParts = explode('.', $mageVersion, 2);
 
@@ -174,7 +204,7 @@ class OnePica_AvaTax_Model_Config extends Varien_Object
      *
      * @return AddressServiceSoap
      */
-    public function getAddressConnection ()
+    public function getAddressConnection()
     {
         if (!$this->_addressConnection) {
             $this->_addressConnection = new AddressServiceSoap(self::CONFIG_KEY);
@@ -187,7 +217,7 @@ class OnePica_AvaTax_Model_Config extends Varien_Object
      *
      * @return AddressServiceSoap
      */
-    public function getTaxConnection ()
+    public function getTaxConnection()
     {
         if (!$this->_taxConnection) {
             $this->_taxConnection = new TaxServiceSoap(self::CONFIG_KEY);
@@ -198,11 +228,12 @@ class OnePica_AvaTax_Model_Config extends Varien_Object
     /**
      * Returns a parameter from the AvaTax ATConfig object.
      *
+     * @param string $param
      * @return string
      */
-    public function getParam ($param)
+    public function getParam($param)
     {
-        return $this->_avataxConfig->$param;
+        return $this->_config->$param;
     }
 
     /**
@@ -212,7 +243,7 @@ class OnePica_AvaTax_Model_Config extends Varien_Object
      * @param int $store
      * @return string
      */
-    public function getConfig ($path, $store=null)
+    public function getConfig($path, $store = null)
     {
         return Mage::getStoreConfig('tax/avatax/' . $path, $store);
     }
@@ -222,7 +253,7 @@ class OnePica_AvaTax_Model_Config extends Varien_Object
      *
      * @return boolean
      */
-    public function normalizeAddress ()
+    public function normalizeAddress()
     {
         $storeId = Mage::app()->getStore()->getId();
         return $this->getConfig('normalize_address', $storeId);
@@ -231,9 +262,10 @@ class OnePica_AvaTax_Model_Config extends Varien_Object
     /**
      * Returns the company code to use from the AvaTax dashboard
      *
+     * @param null|bool|int|Mage_Core_Model_Store $store
      * @return string
      */
-    public function getCompanyCode ($store=null)
+    public function getCompanyCode($store = null)
     {
         return $this->getConfig('company_code', $store);
     }
