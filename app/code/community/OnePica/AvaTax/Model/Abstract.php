@@ -16,7 +16,11 @@
  */
 
 /**
- * The abstract base AvaTax model.
+ * The abstract base AvaTax model
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
  */
 abstract class OnePica_AvaTax_Model_Abstract extends Varien_Object
 {
@@ -29,8 +33,6 @@ abstract class OnePica_AvaTax_Model_Abstract extends Varien_Object
 
     /**
      * Constructor
-     *
-     * @return null
      */
     protected function _construct ()
     {
@@ -45,10 +47,10 @@ abstract class OnePica_AvaTax_Model_Abstract extends Varien_Object
      * @param int $storeId id of the store the call is make for
      * @param mixed $additional any other info
      */
-    protected function _log ($request, $result, $storeId=null, $additional=null)
+    protected function _log($request, $result, $storeId = null, $additional = null)
     {
-        if($result->getResultCode() == SeverityLevel::$Success) {
-            switch(Mage::helper('avatax')->getLogMode($storeId)) {
+        if ($result->getResultCode() == SeverityLevel::$Success) {
+            switch (Mage::helper('avatax')->getLogMode($storeId)) {
                 case OnePica_AvaTax_Model_Source_Logmode::ERRORS:
                     return;
                     break;
@@ -61,10 +63,11 @@ abstract class OnePica_AvaTax_Model_Abstract extends Varien_Object
         $requestType = str_replace('Request', '', get_class($request));
         $resultType = str_replace('Result', '', get_class($result));
         $type = $requestType ? $requestType : $resultType;
-        if($type == 'Varien_Object') $type = 'Unknown';
+        if ($type == 'Varien_Object') {
+            $type = 'Unknown';
+        }
 
-        if (in_array($resultType, Mage::helper('avatax')->getLogType($storeId)))
-        {
+        if (in_array($resultType, Mage::helper('avatax')->getLogType($storeId))) {
             Mage::getModel('avatax_records/log')
                 ->setStoreId($storeId)
                 ->setLevel($result->getResultCode())
@@ -99,6 +102,7 @@ abstract class OnePica_AvaTax_Model_Abstract extends Varien_Object
         return $this->_helper;
     }
 
+    //@startSkipCommitHooks
     /**
      * Alias to the helper translate method.
      *
@@ -106,9 +110,10 @@ abstract class OnePica_AvaTax_Model_Abstract extends Varien_Object
      * @param string var number of replacement vars
      * @return string
      */
-    public function __ ($message)
+    public function __($message)
     {
         $args = func_get_args();
         return call_user_func_array(array($this->getHelper(), '__'), $args);
     }
+    //@finishSkipCommitHooks
 }
