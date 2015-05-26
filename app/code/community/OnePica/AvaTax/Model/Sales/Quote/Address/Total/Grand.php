@@ -17,28 +17,32 @@
 
 /**
  * Grand totals calculation model
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
  */
 class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Grand extends Mage_Sales_Model_Quote_Address_Total_Grand
 {
-
     /**
      * Collect grand total address amount
      *
-     * @param   Mage_Sales_Model_Quote_Address $address
-     * @return  OnePica_AvaTax_Model_Sales_Quote_Address_Total_Grand
+     * @param Mage_Sales_Model_Quote_Address $address
+     * @return OnePica_AvaTax_Model_Sales_Quote_Address_Total_Grand
      */
-    public function collect(Mage_Sales_Model_Quote_Address $address) {
-        $grandTotal     = $address->getGrandTotal();
+    public function collect(Mage_Sales_Model_Quote_Address $address)
+    {
+        $grandTotal = $address->getGrandTotal();
         parent::collect($address);
-        
-        if(Mage::helper('avatax')->isAddressActionable($address->getQuote()->getShippingAddress(), $address->getQuote()->getStoreId())) {
-            if($address->getGrandTotal() == $grandTotal) {
-                $address->setGrandTotal($address->getGrandTotal() + $address->getTaxAmount());
-                $address->setBaseGrandTotal($address->getBaseGrandTotal() + $address->getBaseTaxAmount());
-            }
+
+        $shippingAddress = $address->getQuote()->getShippingAddress();
+        $storeId = $address->getQuote()->getStoreId();
+        $isAddressActionable = Mage::helper('avatax')->isAddressActionable($shippingAddress, $storeId);
+        if ($isAddressActionable && $address->getGrandTotal() == $grandTotal) {
+            $address->setGrandTotal($address->getGrandTotal() + $address->getTaxAmount());
+            $address->setBaseGrandTotal($address->getBaseGrandTotal() + $address->getBaseTaxAmount());
         }
-        
+
         return $this;
     }
-    
 }
