@@ -24,12 +24,28 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-
+/**
+ * Regionfilter source model
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
+ */
 class OnePica_AvaTax_Model_Source_Regionfilter_List
 {
+    /**
+     * Options
+     *
+     * @var array
+     */
     protected $_options;
 
-    public function toOptionArray($isMultiselect=false)
+    /**
+     * Get option array
+     *
+     * @return array
+     */
+    public function toOptionArray()
     {
         if (!$this->_options) {
             $countries = array('US', 'CA');
@@ -40,12 +56,12 @@ class OnePica_AvaTax_Model_Source_Regionfilter_List
                 'value' => ''
             );
 
-            foreach($countries as $country) {
+            foreach ($countries as $country) {
                 $regions = Mage::getResourceModel('directory/region_collection')
                     ->addCountryFilter($country)
                     ->loadData()
                     ->toOptionArray();
-                   array_shift($regions);
+                array_shift($regions);
 
                 $this->_options[] = array(
                     'label' => Mage::app()->getLocale()->getCountryTranslation($country),
@@ -53,7 +69,7 @@ class OnePica_AvaTax_Model_Source_Regionfilter_List
                 );
             }
         }
-        
+
         return $this->_options;
     }
 }
