@@ -15,7 +15,13 @@
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
-
+/**
+ * Error mode source model
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
+ */
 class OnePica_AvaTax_Model_Source_Error
 {
     /**
