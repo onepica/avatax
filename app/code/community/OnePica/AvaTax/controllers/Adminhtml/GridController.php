@@ -34,15 +34,20 @@ class OnePica_AvaTax_Adminhtml_GridController extends Mage_Adminhtml_Controller_
 
     /**
      * Clear queue action
+     *
+     * @return $this
      */
     public function clearQueueAction()
     {
         Mage::getModel('avatax_records/queue_process')->clear();
         $this->_redirect('*/*/queue');
+        return $this;
     }
 
     /**
      * Log action
+     *
+     * @return $this
      */
     public function logAction()
     {
@@ -50,23 +55,25 @@ class OnePica_AvaTax_Adminhtml_GridController extends Mage_Adminhtml_Controller_
 
         $this->loadLayout()
             ->_setActiveMenu('sales/tax/avatax_log')
-            ->_addContent($this->getLayout()->createBlock('avatax/adminhtml_export_log_grid'))
             ->renderLayout();
+        return $this;
     }
 
     /**
      * Log view action
+     *
+     * @return $this
      */
     public function logViewAction()
     {
         $this->_setTitle($this->__('Sales'))->_setTitle($this->__('Tax'))->_setTitle($this->__('AvaTax Log'));
 
         $logId = $this->getRequest()->getParam('id');
-        $model   = Mage::getModel('avatax/records_log')->load($logId);
+        $model = Mage::getModel('avatax/records_log')->load($logId);
 
         if (!$model->getId()) {
-            $this->_redirect('*/*/');
-            return;
+            $this->_redirect('*/*/log');
+            return $this;
         }
 
         Mage::register('current_event', $model);
@@ -74,10 +81,13 @@ class OnePica_AvaTax_Adminhtml_GridController extends Mage_Adminhtml_Controller_
         $this->loadLayout()
             ->_setActiveMenu('sales/tax/avatax_log')
             ->renderLayout();
+        return $this;
     }
 
     /**
      * Queue action
+     *
+     * @return $this
      */
     public function queueAction()
     {
@@ -85,17 +95,20 @@ class OnePica_AvaTax_Adminhtml_GridController extends Mage_Adminhtml_Controller_
 
         $this->loadLayout()
             ->_setActiveMenu('sales/tax/avatax_queue')
-            ->_addContent($this->getLayout()->createBlock('avatax/adminhtml_export_queue_grid'))
             ->renderLayout();
+        return $this;
     }
 
     /**
      * Process queue action
+     *
+     * @return $this
      */
     public function processQueueAction()
     {
         Mage::getModel('avatax_records/queue_process')->run();
         $this->_redirect('*/*/queue');
+        return $this;
     }
 
     /**
@@ -112,7 +125,7 @@ class OnePica_AvaTax_Adminhtml_GridController extends Mage_Adminhtml_Controller_
      * Magento <1.4 does not let the title be set
      *
      * @param string $title
-     * @return self
+     * @return $this
      */
     protected function _setTitle($title)
     {
