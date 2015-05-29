@@ -22,7 +22,7 @@
     <layout>
         <updates>
             <avatax>
-                <file>avatax.xml</file>
+                <file>onepica/avatax.xml</file>
             </avatax>
         </updates>
     </layout>

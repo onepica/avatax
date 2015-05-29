@@ -25,7 +25,7 @@
 
     <avatax_adminhtml_grid_logview>
         <reference name="content">
-            <block type="avatax/adminhtml_export_log_view" name ="avatax_log_view" template="avatax/log/view.phtml"></block>
+            <block type="avatax/adminhtml_export_log_view" name ="avatax_log_view" template="onepica/avatax/log/view.phtml"></block>
         </reference>
     </avatax_adminhtml_grid_logview>
 </layout>
