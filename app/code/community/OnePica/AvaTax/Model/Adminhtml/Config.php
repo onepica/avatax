@@ -39,7 +39,8 @@ class OnePica_AvaTax_Model_Adminhtml_Config extends Mage_Adminhtml_Model_Config
 
             //these 4 lines are the only added content
             $configFile = Mage::helper('avatax')->getEtcPath() . DS . 'system-disabled.xml';
-            $mergeModel = new Mage_Core_Model_Config_Base();
+            /** @var Mage_Core_Model_Config_Base $mergeModel */
+            $mergeModel = Mage::getModel('core/config_base');
             $mergeModel->loadFile($configFile);
             $config = $config->extend($mergeModel, true);
             $this->_sections = $config->getNode('sections');
