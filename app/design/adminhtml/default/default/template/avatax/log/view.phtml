@@ -19,15 +19,13 @@
 <div class="content-header">
     <table cellspacing="0">
         <tr>
-            <td style="<?php echo $this->getHeaderWidth() ?>"><?php echo $this->getHeaderHtml() ?></td>
-            <td class="form-buttons"><?php echo $this->getButtonsHtml() ?></td>
+            <td style="<?php echo $this->getHeaderWidth() ?>"><?php echo $this->getHeaderHtml(); ?></td>
+            <td class="form-buttons"><?php echo $this->getButtonsHtml(); ?></td>
         </tr>
     </table>
 </div>
 
-<?php
-$event = $this->getCurrentEvent();
-?>
+<?php $event = $this->getCurrentEvent();?>
 <div class="entry-edit">
     <div class="entry-edit">
         <div class="entry-edit-head">
