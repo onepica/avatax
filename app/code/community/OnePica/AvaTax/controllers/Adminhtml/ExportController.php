@@ -36,21 +36,27 @@ class OnePica_AvaTax_Adminhtml_ExportController extends Mage_Adminhtml_Controlle
 
     /**
      * Log action
+     *
+     * @return $this
      */
     public function logAction() {
-        $fileName   = 'avatax-log-' . gmdate('U') . '.sql';
-        $content    = $this->getLayout()->createBlock('avatax/adminhtml_export_log_grid')->getSql();
+        $fileName = 'avatax-log-' . gmdate('U') . '.sql';
+        $content = $this->getLayout()->createBlock('avatax/adminhtml_export_log_grid')->getSql();
         $this->_sendResponse($fileName, $content);
+        return $this;
     }
 
     /**
      * Queue action
+     *
+     * @return $this
      */
     public function queueAction()
     {
-        $fileName   = 'avatax-queue-' . gmdate('U') . '.sql';
-        $content    = $this->getLayout()->createBlock('avatax/adminhtml_export_queue_grid')->getSql();
+        $fileName = 'avatax-queue-' . gmdate('U') . '.sql';
+        $content = $this->getLayout()->createBlock('avatax/adminhtml_export_queue_grid')->getSql();
         $this->_sendResponse($fileName, $content);
+        return $this;
     }
 
     /**
@@ -59,6 +65,7 @@ class OnePica_AvaTax_Adminhtml_ExportController extends Mage_Adminhtml_Controlle
      * @param string $fileName
      * @param string $content
      * @param string $contentType
+     * @return $this
      */
     protected function _sendResponse($fileName, $content, $contentType = 'application/octet-stream')
     {
@@ -72,7 +79,6 @@ class OnePica_AvaTax_Adminhtml_ExportController extends Mage_Adminhtml_Controlle
         $response->setHeader('Content-Length', strlen($content));
         $response->setHeader('Content-type', $contentType);
         $response->setBody($content);
-        $response->sendResponse();
-        exit;
+        return $this;
     }
 }
