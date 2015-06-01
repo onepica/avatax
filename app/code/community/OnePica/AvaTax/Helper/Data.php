@@ -56,7 +56,7 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
      * @param string $className
      * @return OnePica_AvaTax_Helper_Data
      */
-    public function loadClass ($className)
+    public function loadClass($className)
     {
         require_once $this->getLibPath() . DS . 'classes' . DS . $className . '.class.php';
         return $this;
@@ -68,11 +68,22 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
      * @param array $classes
      * @return OnePica_AvaTax_Helper_Data
      */
-    public function loadClasses (array $classes)
+    public function loadClasses(array $classes)
     {
         foreach ($classes as $class) {
             $this->loadClass($class);
         }
+        return $this;
+    }
+
+    /**
+     * Load functions required to work with Avalara API
+     *
+     * @return $this
+     */
+    public function loadFunctions()
+    {
+        require_once $this->getLibPath() . DS . 'functions.php';
         return $this;
     }
 

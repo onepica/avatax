@@ -152,6 +152,15 @@
                     </avatax>
                 </observers>
             </checkout_type_multishipping_set_shipping_items>
+            <controller_front_init_before>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer</class>
+                        <method>controllerFrontInitBefore</method>
+                    </avatax>
+                </observers>
+            </controller_front_init_before>
         </events>
     </global>
     <frontend>

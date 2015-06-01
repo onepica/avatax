@@ -32,14 +32,6 @@ abstract class OnePica_AvaTax_Model_Abstract extends Varien_Object
     protected $_helper = null;
 
     /**
-     * Constructor
-     */
-    protected function _construct ()
-    {
-        Mage::getSingleton('avatax/config');
-    }
-
-    /**
      * Logs a debug message
      *
      * @param string $request the request string

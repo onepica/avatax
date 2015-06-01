@@ -98,55 +98,6 @@ class OnePica_AvaTax_Model_Config extends Varien_Object
     protected $_addressConnection;
 
     /**
-     * Constructor.  Loads all required AvaTax classes.
-     */
-    protected function _construct()
-    {
-        $helper = Mage::helper('avatax');
-
-        // AvaTax functions
-        require_once $helper->getLibPath() . DS . 'functions.php';
-
-        // AvaTax classes
-        $helper->loadClasses(array(
-            'TaxRequest',
-            'PostTaxRequest',
-            'PostTaxResult',
-            'CommitTaxRequest',
-            'CommitTaxResult',
-            'CancelTaxRequest',
-            'CancelTaxResult',
-            'Enum',
-            'CancelCode',
-            'ATConfig',
-            'ATObject',
-            'DynamicSoapClient',
-            'AvalaraSoapClient',
-            'AddressServiceSoap',
-            'Address',
-            'Enum',
-            'TextCase',
-            'Message',
-            'SeverityLevel',
-            'ValidateRequest',
-            'ValidateResult',
-            'ValidAddress',
-            'TaxServiceSoap',
-            'GetTaxRequest',
-            'DocumentType',
-            'DetailLevel',
-            'Line',
-            'ServiceMode',
-            'GetTaxResult',
-            'TaxLine',
-            'TaxDetail',
-            'PingResult',
-            'TaxOverride',
-            'TaxOverrideType'
-        ));
-    }
-
-    /**
      * Initializes the AvaTax SDK with connection settings found in the Admin config.
      *
      * @param int $storeId

@@ -25,6 +25,48 @@
 class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
 {
     /**
+     * Avalara lib classes
+     *
+     * @var array
+     */
+    protected static $_classes = array(
+        'TaxRequest',
+        'PostTaxRequest',
+        'PostTaxResult',
+        'CommitTaxRequest',
+        'CommitTaxResult',
+        'CancelTaxRequest',
+        'CancelTaxResult',
+        'Enum',
+        'CancelCode',
+        'ATConfig',
+        'ATObject',
+        'DynamicSoapClient',
+        'AvalaraSoapClient',
+        'AddressServiceSoap',
+        'Address',
+        'Enum',
+        'TextCase',
+        'Message',
+        'SeverityLevel',
+        'ValidateRequest',
+        'ValidateResult',
+        'ValidAddress',
+        'TaxServiceSoap',
+        'GetTaxRequest',
+        'DocumentType',
+        'DetailLevel',
+        'Line',
+        'ServiceMode',
+        'GetTaxResult',
+        'TaxLine',
+        'TaxDetail',
+        'PingResult',
+        'TaxOverride',
+        'TaxOverrideType'
+    );
+
+    /**
      * Sets the collectTotals tax node based on the extensions enabled/disabled status
      *
      * @param Varien_Event_Observer $observer
@@ -249,5 +291,34 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
             $connection->quoteInto('created_at < DATE_SUB(UTC_DATE(), INTERVAL ? DAY)', $days)
         );
         return $this;
+    }
+
+    /**
+     * This an observer function for the event 'controller_front_init_before'.
+     * It prepends our autoloader, so we can load the extra libraries.
+     *
+     * @param Varien_Event_Observer $observer
+     * @return $this
+     */
+    public function controllerFrontInitBefore(Varien_Event_Observer $observer)
+    {
+        spl_autoload_register(array($this, 'loadLib'), true, true);
+        return $this;
+    }
+
+    /**
+     * This function can autoloads classes to work with Avalara API
+     *
+     * @param string $class
+     */
+    public static function loadLib($class)
+    {
+        if (in_array($class, self::$_classes)) {
+            /** @var OnePica_AvaTax_Helper_Data $helper */
+            $helper = Mage::helper('avatax');
+            $helper->loadFunctions();
+            $helper->loadClass($class);
+        }
+        return;
     }
 }
