@@ -46,4 +46,18 @@ class OnePica_AvaTax_Model_Records_Mysql4_Log extends Mage_Core_Model_Mysql4_Abs
         }
         return $this;
     }
+
+    /**
+     * Delete logs for given interval
+     *
+     * @param int $days
+     * @return int
+     */
+    public function deleteLogsByInterval($days)
+    {
+        return $this->_getWriteAdapter()->delete(
+            $this->getTable('avatax_records/log'),
+            $this->_getWriteAdapter()->quoteInto('created_at < DATE_SUB(UTC_DATE(), INTERVAL ? DAY)', $days)
+        );
+    }
 }

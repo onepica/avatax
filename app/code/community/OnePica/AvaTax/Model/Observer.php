@@ -284,12 +284,7 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     public function cleanLog($schedule)
     {
         $days = floatval(Mage::getStoreConfig('tax/avatax/log_lifetime'));
-
-        $connection = Mage::getSingleton('core/resource')->getConnection('core_write');
-        $connection->delete(
-            Mage::getResourceModel('avatax_records/log')->getTable('avatax_records/log'),
-            $connection->quoteInto('created_at < DATE_SUB(UTC_DATE(), INTERVAL ? DAY)', $days)
-        );
+        Mage::getModel('avatax_records/log')->deleteLogsByInterval($days);
         return $this;
     }
 

@@ -89,4 +89,15 @@ class OnePica_AvaTax_Model_Records_Log extends Mage_Core_Model_Abstract
             self::LOG_LEVEL_ERROR => self::LOG_LEVEL_ERROR
         );
     }
+
+    /**
+     * Delete logs for given interval
+     *
+     * @param int $days
+     * @return int
+     */
+    public function deleteLogsByInterval($days)
+    {
+        return $this->getResource()->deleteLogsByInterval($days);
+    }
 }
