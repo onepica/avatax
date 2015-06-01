@@ -38,6 +38,7 @@ abstract class OnePica_AvaTax_Model_Abstract extends Varien_Object
      * @param string $result the result string
      * @param int $storeId id of the store the call is make for
      * @param mixed $additional any other info
+     * @return $this
      */
     protected function _log($request, $result, $storeId = null, $additional = null)
     {
@@ -69,6 +70,7 @@ abstract class OnePica_AvaTax_Model_Abstract extends Varien_Object
                 ->setAdditional($additional)
                 ->save();
         }
+        return $this;
     }
 
     /**
