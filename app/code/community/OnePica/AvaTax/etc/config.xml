@@ -161,6 +161,24 @@
                     </avatax>
                 </observers>
             </controller_front_init_before>
+            <controller_action_predispatch_checkout_cart_estimatePost>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer</class>
+                        <method>controllerActionPredispatchCheckoutCartEstimatePost</method>
+                    </avatax>
+                </observers>
+            </controller_action_predispatch_checkout_cart_estimatePost>
+            <controller_action_predispatch_checkout_onepage_index>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer</class>
+                        <method>controllerActionPredispatchCheckoutOnepageIndex</method>
+                    </avatax>
+                </observers>
+            </controller_action_predispatch_checkout_onepage_index>
         </events>
     </global>
     <frontend>
@@ -171,15 +189,6 @@
                 </avatax>
             </updates>
         </layout>
-        <routers>
-            <checkout>
-                <args>
-                    <modules>
-                        <OnePica_AvaTax before="Mage_Checkout">OnePica_AvaTax</OnePica_AvaTax>
-                    </modules>
-                </args>
-            </checkout>
-        </routers>
         <translate>
             <modules>
                 <OnePica_AvaTax>

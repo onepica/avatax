@@ -321,4 +321,30 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
         }
         return;
     }
+
+    /**
+     * Set post type for checkout session when 'controller_action_predispatch_checkout_cart_estimatePost' event
+     *
+     * @param Varien_Event_Observer $observer
+     * @return $this
+     */
+    public function controllerActionPredispatchCheckoutCartEstimatePost(Varien_Event_Observer $observer)
+    {
+        $session = Mage::getSingleton('checkout/session');
+        $session->setPostType('estimate');
+        return $this;
+    }
+
+    /**
+     * Set post type for checkout session when 'controller_action_predispatch_checkout_onepage_index' event
+     *
+     * @param Varien_Event_Observer $observer
+     * @return $this
+     */
+    public function controllerActionPredispatchCheckoutOnepageIndex(Varien_Event_Observer $observer)
+    {
+        $session = Mage::getSingleton('checkout/session');
+        $session->setPostType('onepage');
+        return $this;
+    }
 }
