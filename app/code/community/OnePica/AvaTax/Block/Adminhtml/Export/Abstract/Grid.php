@@ -68,6 +68,7 @@ abstract class OnePica_AvaTax_Block_Adminhtml_Export_Abstract_Grid extends Mage_
 
     /**
      * Creates SQL code from collection
+     * TODO: move logic to model
      *
      * @return string
      */
