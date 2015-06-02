@@ -18,9 +18,9 @@
 /**
  * Configuration paths storage
  *
- * @category   Mage
- * @package    Mage_Tax
- * @author     Magento Core Team <core@magentocommerce.com>
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
  */
 class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
 {

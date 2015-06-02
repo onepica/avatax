@@ -16,12 +16,21 @@
  */
 
 /**
- * The AvaTax Session model.
+ * The AvaTax Session model
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Session extends Mage_Core_Model_Session_Abstract {
-
-    public function __construct($data=array()) {
+class OnePica_AvaTax_Model_Session extends Mage_Core_Model_Session_Abstract
+{
+    /**
+     * Construct
+     *
+     * @param array $data
+     */
+    public function __construct($data = array())
+    {
         $this->init('avatax');
     }
-
 }

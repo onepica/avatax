@@ -15,28 +15,40 @@
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
-
+/**
+ * Admin config model
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
+ */
 class OnePica_AvaTax_Model_Adminhtml_Config extends Mage_Adminhtml_Model_Config
 {
-
-    protected function _initSectionsAndTabs() {
-    	if(Mage::helper('avatax')->isAnyStoreDisabled()) {
+    /**
+     * Init modules configuration
+     *
+     * @return $this
+     */
+    protected function _initSectionsAndTabs()
+    {
+        if (Mage::helper('avatax')->isAnyStoreDisabled()) {
             $config = Mage::getConfig()->loadModulesConfiguration('system.xml')
                 ->applyExtends();
 
             Mage::dispatchEvent('adminhtml_init_system_config', array('config' => $config));
-	        
-	        //these 4 lines are the only added content
-	        $configFile = Mage::helper('avatax')->getEtcPath() . DS . 'system-disabled.xml';
-	    	$mergeModel = new Mage_Core_Model_Config_Base();
-	        $mergeModel->loadFile($configFile);        
-	    	$config = $config->extend($mergeModel, true);
-	
-	        $this->_sections = $config->getNode('sections');        
-	        $this->_tabs = $config->getNode('tabs');
-    	} else {
-    		return parent::_initSectionsAndTabs();
-    	}
-    }
 
+            //these 4 lines are the only added content
+            $configFile = Mage::helper('avatax')->getEtcPath() . DS . 'system-disabled.xml';
+            /** @var Mage_Core_Model_Config_Base $mergeModel */
+            $mergeModel = Mage::getModel('core/config_base');
+            $mergeModel->loadFile($configFile);
+            $config = $config->extend($mergeModel, true);
+            $this->_sections = $config->getNode('sections');
+            $this->_tabs = $config->getNode('tabs');
+        } else {
+            parent::_initSectionsAndTabs();
+        }
+
+        return $this;
+    }
 }

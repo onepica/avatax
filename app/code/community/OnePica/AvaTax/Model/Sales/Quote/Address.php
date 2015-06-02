@@ -16,7 +16,11 @@
  */
 
 /**
- * The Sales Quote Address model.
+ * The Sales Quote Address model
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
  */
 class OnePica_AvaTax_Model_Sales_Quote_Address extends Mage_Sales_Model_Quote_Address
 {
@@ -39,17 +43,19 @@ class OnePica_AvaTax_Model_Sales_Quote_Address extends Mage_Sales_Model_Quote_Ad
      *
      * @return OnePica_AvaTax_Model_Avatax_Address
      */
-    public function getAvataxValidator() {
+    public function getAvataxValidator()
+    {
         return $this->_avataxValidator;
     }
 
     /**
      * Avatax address validator mutator method
      *
-     * @return OnePica_AvaTax_Model_Avatax_Address
-     * @return self
+     * @param OnePica_AvaTax_Model_Avatax_Address $object
+     * @return $this
      */
-    public function setAvataxValidator(OnePica_AvaTax_Model_Avatax_Address $object) {
+    public function setAvataxValidator(OnePica_AvaTax_Model_Avatax_Address $object)
+    {
         $this->_avataxValidator = $object;
         return $this;
     }
@@ -59,8 +65,9 @@ class OnePica_AvaTax_Model_Sales_Quote_Address extends Mage_Sales_Model_Quote_Ad
      *
      * @return string
      */
-    public function getCacheHashKey() {
-        if(!$this->getData('cache_hash_key')) {
+    public function getCacheHashKey()
+    {
+        if (!$this->getData('cache_hash_key')) {
             $this->setData('cache_hash_key', hash('md4', $this->format('text')));
         }
         return $this->getData('cache_hash_key');
@@ -72,12 +79,12 @@ class OnePica_AvaTax_Model_Sales_Quote_Address extends Mage_Sales_Model_Quote_Ad
      *
      * @return true|array
      */
-    public function validate () {
-
+    public function validate()
+    {
         if (! Mage::helper('avatax')->fullStopOnError()) {
             return true;
         }
-        
+
         $result = parent::validate();
 
         //if base validation fails, don't bother with additional validation
@@ -89,9 +96,10 @@ class OnePica_AvaTax_Model_Sales_Quote_Address extends Mage_Sales_Model_Quote_Ad
         $data = Mage::app()->getRequest()->getPost('billing', array());
         $useForShipping = isset($data['use_for_shipping']) ? (int)$data['use_for_shipping'] : 0;
 
-        if($this->getAddressType() == self::TYPE_SHIPPING || $this->getUseForShipping() /* <1.9 */ || $useForShipping /* >=1.9 */) {
+        if ($this->getAddressType() == self::TYPE_SHIPPING
+                || $this->getUseForShipping()/* <1.9 */ || $useForShipping/* >=1.9 */) {
             if (!isset(self::$_validationResult[$this->getAddressId()])) {
-                if(!$this->getAvataxValidator()) {
+                if (!$this->getAvataxValidator()) {
                     $validator = Mage::getModel('avatax/avatax_address')->setAddress($this);
                     $this->setAvataxValidator($validator);
                 }
@@ -105,10 +113,20 @@ class OnePica_AvaTax_Model_Sales_Quote_Address extends Mage_Sales_Model_Quote_Ad
         return $result;
     }
 
-
     /* BELOW ARE MAGE CORE PROPERTIES AND METHODS ADDED FOR OLDER VERSION COMPATABILITY */
 
+    /**
+     * Total amount
+     *
+     * @var array
+     */
     protected $_totalAmounts = array();
+
+    /**
+     * Base total amount
+     *
+     * @var array
+     */
     protected $_baseTotalAmounts = array();
 
     /**

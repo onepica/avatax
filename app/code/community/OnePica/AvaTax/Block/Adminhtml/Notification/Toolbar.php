@@ -15,43 +15,65 @@
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
+/**
+ * Admin notification toolbar block
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
+ */
 class OnePica_AvaTax_Block_Adminhtml_Notification_Toolbar extends Mage_Adminhtml_Block_Notification_Toolbar
 {
-	
     /**
      * Count the number of pending_retry items in queue
      *
      * @return int
      */
-	protected function _getQueuePendingRetryCount() {
-		return Mage::getModel('avatax_records/queue')->getCollection()
-			->addFieldToFilter('status', OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_RETRY)
-			->load()
-			->count();
-	}
+    public function getQueuePendingRetryCount()
+    {
+        return Mage::getModel('avatax_records/queue')->getCollection()
+            ->addFieldToFilter('status', OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_RETRY)
+            ->load()
+            ->count();
+    }
 
     /**
-     * Piggyback the admin notification messages block to show AvaTax warnings as needed
+     * Check if avatax is allowed
+     *
+     * @return bool
+     */
+    public function isAllowed()
+    {
+        return Mage::getSingleton('admin/session')->isAllowed('avatax');
+    }
+
+    /**
+     * Get queue grid url
      *
      * @return string
      */
-    protected function _toHtml() {
-    	$html = '';
-    	
-    	if(Mage::getStoreConfig('tax/avatax/error_notification_toolbar')) {
-    		$count = $this->_getQueuePendingRetryCount();
-	    	if ($count) {
-	    		if($count==1) $text = 'There is <strong>' . $count . '</strong> entry in the AvaTax Order Sync Queue that has errored. Syncing is attemped ' . OnePica_AvaTax_Model_Config::QUEUE_ATTEMPT_MAX . ' times before permanently failing.';
-	    		else $text = 'There are <strong>' . $count . '</strong> entries in the AvaTax Order Sync Queue that have errored. Syncing is attemped ' . OnePica_AvaTax_Model_Config::QUEUE_ATTEMPT_MAX . ' times before permanently failing.';
-	    		
-	    		$html = '<div class="notification-global">';
-	    		if (Mage::getSingleton('admin/session')->isAllowed('avatax')) { 
-	    			$html .= '<span class="f-right">Go to the <a href="' . $this->getUrl('avatax/adminhtml_grid/queue') . '">AvaTax Order Sync Queue</a></span>';
-	    		}
-	    		$html .= '<strong class="label">AvaTax:</strong> ' . $text . '</div>';
-	    	}
-    	}
-    	
-        return parent::_toHtml() . $html;
+    public function getQueueGridUrl()
+    {
+        return $this->getUrl('avatax/adminhtml_grid/queue');
+    }
+
+    /**
+     * Check if avatax toolbar is enabled
+     *
+     * @return boolean
+     */
+    public function isEnabled()
+    {
+        return Mage::getStoreConfigFlag('tax/avatax/error_notification_toolbar');
+    }
+
+    /**
+     * Get Queue attempt max value
+     *
+     * @return int
+     */
+    public function getQueueAttemptMaxValue()
+    {
+        return OnePica_AvaTax_Model_Config::QUEUE_ATTEMPT_MAX;
     }
 }

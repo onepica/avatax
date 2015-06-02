@@ -15,79 +15,123 @@
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
+/**
+ * Admin grid controller
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
+ */
 class OnePica_AvaTax_Adminhtml_GridController extends Mage_Adminhtml_Controller_Action
 {
-
     /**
      * Additional initialization
-     *
      */
-    protected function _construct() {
+    protected function _construct()
+    {
         $this->setUsedModuleName('OnePica_AvaTax');
     }
 
-	public function clearQueueAction() {
+    /**
+     * Clear queue action
+     *
+     * @return $this
+     */
+    public function clearQueueAction()
+    {
         Mage::getModel('avatax_records/queue_process')->clear();
         $this->_redirect('*/*/queue');
+        return $this;
     }
 
-    
-    public function logAction() {
+    /**
+     * Log action
+     *
+     * @return $this
+     */
+    public function logAction()
+    {
         $this->_setTitle($this->__('Sales'))->_setTitle($this->__('Tax'))->_setTitle($this->__('AvaTax Log'));
 
         $this->loadLayout()
             ->_setActiveMenu('sales/tax/avatax_log')
-            ->_addContent($this->getLayout()->createBlock('avatax/adminhtml_export_log_grid'))
             ->renderLayout();
+        return $this;
     }
 
-	public function logViewAction() {
-		$this->_setTitle($this->__('Sales'))->_setTitle($this->__('Tax'))->_setTitle($this->__('AvaTax Log'));
+    /**
+     * Log view action
+     *
+     * @return $this
+     */
+    public function logViewAction()
+    {
+        $this->_setTitle($this->__('Sales'))->_setTitle($this->__('Tax'))->_setTitle($this->__('AvaTax Log'));
 
-		$logId = $this->getRequest()->getParam('id');
-        $model   = Mage::getModel('avatax/records_log')->load($logId);
+        $logId = $this->getRequest()->getParam('id');
+        $model = Mage::getModel('avatax/records_log')->load($logId);
 
         if (!$model->getId()) {
-            $this->_redirect('*/*/');
-            return;
+            $this->_redirect('*/*/log');
+            return $this;
         }
 
-		Mage::register('current_event', $model);
+        Mage::register('current_event', $model);
 
         $this->loadLayout()
-        	->_setActiveMenu('sales/tax/avatax_log')
-        	->renderLayout();
-	}
-    
-    public function queueAction() {
+            ->_setActiveMenu('sales/tax/avatax_log')
+            ->renderLayout();
+        return $this;
+    }
+
+    /**
+     * Queue action
+     *
+     * @return $this
+     */
+    public function queueAction()
+    {
         $this->_setTitle($this->__('Sales'))->_setTitle($this->__('Tax'))->_setTitle($this->__('AvaTax Queue'));
 
         $this->loadLayout()
             ->_setActiveMenu('sales/tax/avatax_queue')
-            ->_addContent($this->getLayout()->createBlock('avatax/adminhtml_export_queue_grid'))
             ->renderLayout();
-    }
-    
-    public function processQueueAction() {
-        Mage::getModel('avatax_records/queue_process')->run();
-        $this->_redirect('*/*/queue');
+        return $this;
     }
 
-    protected function _isAllowed() {
+    /**
+     * Process queue action
+     *
+     * @return $this
+     */
+    public function processQueueAction()
+    {
+        Mage::getModel('avatax_records/queue_process')->run();
+        $this->_redirect('*/*/queue');
+        return $this;
+    }
+
+    /**
+     * Check if is allowed
+     *
+     * @return bool
+     */
+    protected function _isAllowed()
+    {
         return Mage::getSingleton('admin/session')->isAllowed('avatax');
     }
-    
+
     /**
      * Magento <1.4 does not let the title be set
      *
-     * @param string
-     * @return self
+     * @param string $title
+     * @return $this
      */
-    protected function _setTitle($title) {
-    	if(method_exists($this, '_title')) {
-    		$this->_title($title);
-    	}
-    	return $this;
+    protected function _setTitle($title)
+    {
+        if (method_exists($this, '_title')) {
+            $this->_title($title);
+        }
+        return $this;
     }
-
 }
