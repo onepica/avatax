@@ -39,6 +39,20 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
     protected $_request = null;
 
     /**
+     * Product collection for items to be calculated
+     *
+     * @var Mage_Catalog_Model_Resource_Product_Collection
+     */
+    protected $_productCollection;
+
+    /**
+     * Tax class collection for items to be calculated
+     *
+     * @var Mage_Tax_Model_Resource_Class_Collection
+     */
+    protected $_taxClassCollection;
+
+    /**
      * Sets the company code on the request
      *
      * @param int|null $storeId
@@ -255,5 +269,104 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
             $order->addStatusToHistory($order->getStatus(), $comment, false)->save();;
         }
         return $this;
+    }
+
+    /**
+     * Init product collection for items to be calculated
+     *
+     * @param Mage_Sales_Model_Mysql4_Order_Invoice_Item_Collection|array $items
+     * @return $this
+     */
+    protected function _initProductCollection($items)
+    {
+        $productIds = array();
+        foreach ($items as $item) {
+            if (!$this->isProductCalculated($item)) {
+                $productIds[] = $item->getProductId();
+            }
+        }
+        $this->_productCollection = Mage::getModel('catalog/product')->getCollection()
+            ->addAttributeToSelect(array('entity_id', 'name', 'sku', 'tax_class_id', 'store_id'))
+            ->addAttributeToFilter('entity_id', array('in' => $productIds));
+        return $this;
+    }
+
+    /**
+     * Init tax class collection for items to be calculated
+     *
+     * @return $this
+     * @throws OnePica_AvaTax_Model_Exception
+     */
+    protected function _initTaxClassCollection()
+    {
+        $taxClassIds = array();
+        foreach ($this->_getProductCollection() as $product) {
+            if (!in_array($product->getTaxClassId(), $taxClassIds)) {
+                $taxClassIds[] = $product->getTaxClassId();
+            }
+        }
+        $this->_taxClassCollection = Mage::getModel('tax/class')->getCollection()
+            ->addFieldToSelect(array('class_id', 'op_avatax_code'))
+            ->addFieldToFilter('class_id', array('in' => $taxClassIds));
+        return $this;
+    }
+
+    /**
+     * Get product collection for items to be calculated
+     *
+     * @return Mage_Catalog_Model_Resource_Product_Collection
+     * @throws OnePica_AvaTax_Model_Exception
+     */
+    protected function _getProductCollection()
+    {
+        if (!$this->_productCollection) {
+            throw new OnePica_AvaTax_Model_Exception('Product collection should be set before usage');
+        }
+
+        return $this->_productCollection;
+    }
+
+    /**
+     * Get tax class collection for items to be calculated
+     *
+     * @return Mage_Tax_Model_Resource_Class_Collection
+     * @throws OnePica_AvaTax_Model_Exception
+     */
+    protected function _getTaxClassCollection()
+    {
+        if (!$this->_taxClassCollection) {
+            throw new OnePica_AvaTax_Model_Exception('Tax class collection should be set before usage');
+        }
+
+        return $this->_taxClassCollection;
+    }
+
+    /**
+     * Get Avatax class for given product
+     *
+     * @param Mage_Catalog_Model_Product $product
+     * @return string
+     */
+    protected function _getTaxClassByProduct($product)
+    {
+        $taxClass = '';
+        if ($product->getTaxClassId()) {
+            $taxClass = $this->_getTaxClassCollection()
+                ->getItemById($product->getTaxClassId())
+                ->getOpAvataxCode();
+        }
+        return $taxClass;
+    }
+
+    /**
+     * Get product from collection by given product id
+     *
+     * @param int $productId
+     * @return Mage_Catalog_Model_Product
+     * @throws OnePica_AvaTax_Model_Exception
+     */
+    protected function _getProductByProductId($productId)
+    {
+        return $this->_getProductCollection()->getItemById($productId);
     }
 }

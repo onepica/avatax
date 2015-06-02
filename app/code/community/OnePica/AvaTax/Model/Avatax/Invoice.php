@@ -84,7 +84,10 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
         $commitAction = OnePica_AvaTax_Model_Config::ACTION_CALC_SUBMIT_COMMIT;
         $this->_request->setCommit(($configAction == $commitAction) ? true : false);
 
-        foreach ($invoice->getItemsCollection() as $item) {
+        $items = $invoice->getItemsCollection();
+        $this->_initProductCollection($items);
+        $this->_initTaxClassCollection();
+        foreach ($items as $item) {
             /** @var Mage_Sales_Model_Order_Invoice_Item $item */
             $this->_newLine($item);
         }
@@ -172,7 +175,10 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
         $commitAction = OnePica_AvaTax_Model_Config::ACTION_CALC_SUBMIT_COMMIT;
         $this->_request->setCommit(($configAction == $commitAction) ? true : false);
 
-        foreach ($creditmemo->getAllItems() as $item) {
+        $items = $creditmemo->getAllItems();
+        $this->_initProductCollection($items);
+        $this->_initTaxClassCollection();
+        foreach ($items as $item) {
             /** @var Mage_Sales_Model_Order_Creditmemo_Item $item */
             $this->_newLine($item, true);
         }
@@ -419,6 +425,8 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
             return false;
         }
 
+        $product = $this->_getProductByProductId($item->getProductId());
+        $taxClass = $this->_getTaxClassByProduct($product);
         $price = $item->getBaseRowTotal() - $item->getBaseDiscountAmount();
         if ($credit) {
             //@startSkipCommitHooks
@@ -433,9 +441,6 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
         $line->setQty($item->getQty());
         $line->setAmount($price);
         $line->setDiscounted($item->getBaseDiscountAmount() ? true : false);
-
-        $product = Mage::getModel('catalog/product')->load($item->getProductId());
-        $taxClass = Mage::getModel('tax/class')->load($product->getTaxClassId())->getOpAvataxCode();
         $line->setTaxCode($taxClass);
 
         $ref1Code = Mage::helper('avatax')->getRef1AttributeCode($product->getStoreId());

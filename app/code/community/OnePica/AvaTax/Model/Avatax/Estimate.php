@@ -396,6 +396,8 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
         }
 
         if (count($items) > 0) {
+            $this->_initProductCollection($items);
+            $this->_initTaxClassCollection();
             foreach ($items as $item) {
                 $this->_newLine($item);
             }
@@ -407,7 +409,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
     /**
      * Makes a Line object from a product item object
      *
-     * @param Varien_Object
+     * @param Varien_Object $item
      * @return int|bool
      */
     protected function _newLine($item)
@@ -415,14 +417,14 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
         if ($this->isProductCalculated($item)) {
             return false;
         }
-        $product = $item->getProduct();
+        $product = $this->_getProductByProductId($item->getProductId());
+        $taxClass = $this->_getTaxClassByProduct($product);
+        $price = $item->getBaseRowTotal() - $item->getBaseDiscountAmount();
         $lineNumber = count($this->_lines);
         $line = new Line();
-        $price = $item->getBaseRowTotal() - $item->getBaseDiscountAmount();
         $line->setNo($lineNumber);
         $line->setItemCode(substr($product->getSku(), 0, 50));
         $line->setDescription($product->getName());
-        $taxClass = Mage::getModel('tax/class')->load($product->getTaxClassId())->getOpAvataxCode();
         $line->setTaxCode($taxClass);
         $line->setQty($item->getQty());
         $line->setAmount($price);
