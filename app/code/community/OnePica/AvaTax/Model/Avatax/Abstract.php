@@ -43,14 +43,14 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
      *
      * @var Mage_Catalog_Model_Resource_Product_Collection
      */
-    protected $_productCollection;
+    protected $_productCollection = null;
 
     /**
      * Tax class collection for items to be calculated
      *
      * @var Mage_Tax_Model_Resource_Class_Collection
      */
-    protected $_taxClassCollection;
+    protected $_taxClassCollection = null;
 
     /**
      * Sets the company code on the request
@@ -286,7 +286,7 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
             }
         }
         $this->_productCollection = Mage::getModel('catalog/product')->getCollection()
-            ->addAttributeToSelect(array('entity_id', 'name', 'sku', 'tax_class_id', 'store_id'))
+            ->addAttributeToSelect('*')
             ->addAttributeToFilter('entity_id', array('in' => $productIds));
         return $this;
     }
@@ -368,5 +368,27 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
     protected function _getProductByProductId($productId)
     {
         return $this->_getProductCollection()->getItemById($productId);
+    }
+
+    /**
+     * Get proper ref value for given product
+     *
+     * @param Mage_Catalog_Model_Product $product
+     * @param int $refNumber
+     * @return null|string
+     */
+    protected function _getRefValue($product, $refNumber)
+    {
+        $value = null;
+        $helperMethod = 'getRef' . $refNumber . 'AttributeCode';
+        $refCode = Mage::helper('avatax')->{$helperMethod}($product->getStoreId());
+        if ($refCode && $product->getResource()->getAttribute($refCode)) {
+            try {
+                $value = (string)$product->getResource()->getAttribute($refCode)->getFrontend()->getValue($product);
+            } catch (Exception $e) {
+                Mage::logException($e);
+            }
+        }
+        return $value;
     }
 }

@@ -442,24 +442,13 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
         $line->setAmount($price);
         $line->setDiscounted($item->getBaseDiscountAmount() ? true : false);
         $line->setTaxCode($taxClass);
-
-        $ref1Code = Mage::helper('avatax')->getRef1AttributeCode($product->getStoreId());
-        if ($ref1Code && $product->getResource()->getAttribute($ref1Code)) {
-            $ref1 = $product->getResource()->getAttribute($ref1Code)->getFrontend()->getValue($product);
-            try {
-                $line->setRef1((string)$ref1);
-            } catch (Exception $e) {
-                Mage::logException($e);
-            }
+        $ref1Value = $this->_getRefValue($product, 1);
+        if ($ref1Value) {
+            $line->setRef1($ref1Value);
         }
-        $ref2Code = Mage::helper('avatax')->getRef2AttributeCode($product->getStoreId());
-        if ($ref2Code && $product->getResource()->getAttribute($ref2Code)) {
-            $ref2 = $product->getResource()->getAttribute($ref2Code)->getFrontend()->getValue($product);
-            try {
-                $line->setRef2((string)$ref2);
-            } catch (Exception $e) {
-                Mage::logException($e);
-            }
+        $ref2Value = $this->_getRefValue($product, 2);
+        if ($ref2Value) {
+            $line->setRef2($ref2Value);
         }
 
         $this->_lineToItemId[count($this->_lines)] = $item->getOrderItemId();
