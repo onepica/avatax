@@ -39,7 +39,7 @@ class OnePica_AvaTax_Model_Records_Mysql4_Queue extends Mage_Core_Model_Mysql4_A
      */
     protected function _construct()
     {
-        $this->_init('avatax_records/queue', 'id');
+        $this->_init('avatax_records/queue', 'queue_id');
     }
 
     /**
