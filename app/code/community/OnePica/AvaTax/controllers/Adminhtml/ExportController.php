@@ -41,7 +41,12 @@ class OnePica_AvaTax_Adminhtml_ExportController extends Mage_Adminhtml_Controlle
      */
     public function logAction() {
         $fileName = 'avatax-log-' . gmdate('U') . '.sql';
-        $content = $this->getLayout()->createBlock('avatax/adminhtml_export_log_grid')->getSql();
+        //$content = $this->getLayout()->createBlock('avatax/adminhtml_export_log_grid')->getSql();
+        //$content = Mage::getModel('avatax/records_log')->getExportSql();
+        $content = Mage::getModel('avatax/export')
+            ->setAdapter(Mage::getModel('avatax/export_adapter_sql'))
+            ->setEntity(Mage::getModel('avatax/export_entity_log'))
+            ->getContent();
         $this->_sendResponse($fileName, $content);
         return $this;
     }
@@ -54,7 +59,12 @@ class OnePica_AvaTax_Adminhtml_ExportController extends Mage_Adminhtml_Controlle
     public function queueAction()
     {
         $fileName = 'avatax-queue-' . gmdate('U') . '.sql';
-        $content = $this->getLayout()->createBlock('avatax/adminhtml_export_queue_grid')->getSql();
+        //$content = $this->getLayout()->createBlock('avatax/adminhtml_export_queue_grid')->getSql();
+        //$content = Mage::getModel('avatax/records_queue')->getExportSql();
+        $content = Mage::getModel('avatax/export')
+            ->setAdapter(Mage::getModel('avatax/export_adapter_sql'))
+            ->setEntity(Mage::getModel('avatax/export_entity_queue'))
+            ->getContent();
         $this->_sendResponse($fileName, $content);
         return $this;
     }
