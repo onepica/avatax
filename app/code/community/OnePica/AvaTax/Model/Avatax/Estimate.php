@@ -425,10 +425,18 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
         $line->setNo($lineNumber);
         $line->setItemCode(substr($product->getSku(), 0, 50));
         $line->setDescription($product->getName());
-        $line->setTaxCode($taxClass);
         $line->setQty($item->getQty());
         $line->setAmount($price);
         $line->setDiscounted($item->getDiscountAmount() ? true : false);
+        if ($taxClass) {
+            $line->setTaxCode($taxClass);
+        } elseif ($product->isVirtual()) {
+            $line->setTaxOverride($this->_getTaxOverrideObject(
+                self::TAX_OVERRIDE_TYPE_TAX_AMOUNT,
+                self::TAX_OVERRIDE_REASON_VIRTUAL,
+                0
+            ));
+        }
         $ref1Value = $this->_getRefValue($product, 1);
         if ($ref1Value) {
             $line->setRef1($ref1Value);

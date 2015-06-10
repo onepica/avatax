@@ -25,6 +25,16 @@
 abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model_Abstract
 {
     /**
+     * TaxAmount tax override type
+     */
+    const TAX_OVERRIDE_TYPE_TAX_AMOUNT = 'TaxAmount';
+
+    /**
+     * Tax override reason for virtual product
+     */
+    const TAX_OVERRIDE_REASON_VIRTUAL = 'Virtual';
+
+    /**
      * Flag that states if there was an error
      *
      * @var bool
@@ -390,5 +400,22 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
             }
         }
         return $value;
+    }
+
+    /**
+     * Init tax override object
+     *
+     * @param string $taxOverrideType
+     * @param string $reason
+     * @param float $taxAmount
+     * @return TaxOverride
+     */
+    protected function _getTaxOverrideObject($taxOverrideType, $reason, $taxAmount)
+    {
+        $taxOverride = new TaxOverride();
+        $taxOverride->setTaxOverrideType($taxOverrideType);
+        $taxOverride->setReason($reason);
+        $taxOverride->setTaxAmount($taxAmount);
+        return $taxOverride;
     }
 }
