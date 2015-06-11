@@ -25,11 +25,6 @@
 abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model_Abstract
 {
     /**
-     * TaxAmount tax override type
-     */
-    const TAX_OVERRIDE_TYPE_TAX_AMOUNT = 'TaxAmount';
-
-    /**
      * Tax override reason for virtual product
      */
     const TAX_OVERRIDE_REASON_VIRTUAL = 'Virtual';
