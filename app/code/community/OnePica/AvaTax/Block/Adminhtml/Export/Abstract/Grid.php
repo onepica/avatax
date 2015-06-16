@@ -45,7 +45,7 @@ abstract class OnePica_AvaTax_Block_Adminhtml_Export_Abstract_Grid extends Mage_
      * @return $this
      * @throws Exception
      */
-    protected function _addColumnsForExport($columns)
+    protected function _addColumns($columns)
     {
         foreach ($columns as $name => $type) {
             if (is_array($type)) {
@@ -64,59 +64,5 @@ abstract class OnePica_AvaTax_Block_Adminhtml_Export_Abstract_Grid extends Mage_
             }
         }
         return $this;
-    }
-
-    /**
-     * Creates SQL code from collection
-     * TODO: move logic to model
-     *
-     * @return string
-     */
-    public function getSql()
-    {
-        $this->_isExport = true;
-        $this->_prepareGrid();
-        $this->getCollection()->getSelect()->limit();
-        $this->getCollection()->setPageSize(0);
-        $this->getCollection()->load();
-        $this->_afterLoadCollection();
-
-        $columns = array();
-        foreach ($this->_columns as $column) {
-            if (!$column->getIsSystem()) {
-                $columns[] = $column->getIndex();
-            }
-        }
-
-        $resourceModel = $this->getCollection()->getResource();
-        $adapter = $resourceModel->getReadConnection();
-        $version = Mage::getResourceModel('core/resource')->getDbVersion('avatax_records_setup');
-        $stores = count(Mage::app()->getStores());
-
-        $sql  = '-- ' . strtoupper($resourceModel->getMainTable()) . " EXPORT\n";
-        $sql .= '-- Created at: ' . gmdate(DATE_W3C) . "\n";
-        $sql .= '-- Created by: ' . Mage::getUrl('/') . "\n";
-        $sql .= '-- Magento v' . Mage::getVersion() . ' // OP_AvaTax v' . $version . ' // Stores: ' . $stores . "\n";
-        $sql .= '-- Total rows: ' . $this->getCollection()->count() . "\n\n";
-
-        $rows = array();
-        foreach ($this->getCollection() as $item) {
-            $values = array();
-            foreach ($columns as $column) {
-                $values[] = $adapter->quote($item->getData($column));
-            }
-            $rows[] = "(" . implode(", ", $values) . ")";
-        }
-
-        $chunks = array_chunk($rows, 50);
-        unset($rows);
-
-        foreach ($chunks as $chunk) {
-             $sql .= 'INSERT INTO `' . $resourceModel->getMainTable() . '` (`' . implode('`, `', $columns) . '`) VALUES ';
-             $sql .= "\n" . implode(",\n", $chunk);
-             $sql .= ";\n\n";
-        }
-
-        return $sql;
     }
 }

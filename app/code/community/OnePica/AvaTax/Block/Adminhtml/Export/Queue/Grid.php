@@ -65,7 +65,7 @@ class OnePica_AvaTax_Block_Adminhtml_Export_Queue_Grid extends OnePica_AvaTax_Bl
      */
     protected function _prepareColumns()
     {
-        return $this->_addColumnsForExport(array(
+        return $this->_addColumns(array(
             'queue_id' => 'number',
             'store_id' => 'number',
             'entity_id' => 'number',
