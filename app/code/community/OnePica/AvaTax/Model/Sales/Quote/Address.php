@@ -81,7 +81,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address extends Mage_Sales_Model_Quote_Ad
      */
     public function validate()
     {
-        if (! Mage::helper('avatax')->fullStopOnError()) {
+        if (!Mage::helper('avatax')->fullStopOnError()) {
             return true;
         }
 

@@ -382,7 +382,7 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
      * @param int $refNumber
      * @return null|string
      */
-    protected function _getRefValue($product, $refNumber)
+    protected function _getRefValueByProductAndNumber($product, $refNumber)
     {
         $value = null;
         $helperMethod = 'getRef' . $refNumber . 'AttributeCode';
