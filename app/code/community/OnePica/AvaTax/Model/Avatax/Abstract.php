@@ -96,7 +96,7 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
                 ->setMessage($message);
         }
 
-        $this->_log($this->_request, $result, $storeId, $connection);
+        $this->_log(OnePica_AvaTax_Model_Source_Logtype::GET_TAX, $this->_request, $result, $storeId, $connection);
 
         if ($result->getResultCode() != SeverityLevel::$Success) {
             self::$_hasError = true;

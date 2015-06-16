@@ -45,13 +45,13 @@ class OnePica_AvaTax_Model_Avatax_Ping extends OnePica_AvaTax_Model_Avatax_Abstr
 
         if (!isset($result) || !is_object($result) || !$result->getResultCode()) {
             $actualResult = $result;
-            $result = new Varien_Object;
+            $result = new Varien_Object();
             $result->setResultCode(SeverityLevel::$Exception);
             $result->setActualResult($actualResult);
             $result->setMessage($message);
         }
 
-        $this->_log(new stdClass(), $result, $storeId);
+        $this->_log(OnePica_AvaTax_Model_Source_Logtype::PING, new stdClass(), $result, $storeId, $connection);
         return ($result->getResultCode() == SeverityLevel::$Success) ? true : $result->getMessage();
     }
 }

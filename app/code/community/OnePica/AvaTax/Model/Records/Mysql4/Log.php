@@ -41,8 +41,8 @@ class OnePica_AvaTax_Model_Records_Mysql4_Log extends Mage_Core_Model_Mysql4_Abs
     protected function _beforeSave(Mage_Core_Model_Abstract $object)
     {
         $object->setCreatedAt(gmdate('Y-m-d H:i:s'));
-        if (!$object->getLevel()) {
-            $object->setLevel('Unknown');
+        if ($object->getLevel() == SeverityLevel::$Exception) {
+            $object->setLevel(OnePica_AvaTax_Model_Records_Log::LOG_LEVEL_ERROR);
         }
         return $this;
     }

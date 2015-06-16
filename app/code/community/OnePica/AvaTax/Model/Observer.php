@@ -189,15 +189,15 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     /**
      * Test for required values when admin config setting related to the this extension are changed
      *
-     * @param Mage_Cron_Model_Schedule $schedule
+     * @param Varien_Event_Observer $observer
      * @return bool
      */
-    public function adminSystemConfigChangedSectionTax($schedule)
+    public function adminSystemConfigChangedSectionTax(Varien_Event_Observer $observer)
     {
         Mage::app()->cleanCache('block_html');
 
         $session = Mage::getSingleton('adminhtml/session');
-        $storeId = Mage::getModel('core/store')->load($schedule->getEvent()->getStore())->getStoreId();
+        $storeId = Mage::getModel('core/store')->load($observer->getEvent()->getStore())->getStoreId();
         $warnings = array();
         $errors = array();
 
