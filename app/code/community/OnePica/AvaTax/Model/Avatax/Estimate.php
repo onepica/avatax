@@ -195,7 +195,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
 
         //make request if needed and save results in cache
         if ($makeRequest) {
-            $result = $this->_send($address->getStoreId());
+            $result = $this->_send($address->getQuote()->getStoreId());
 
             //success
             if ($result->getResultCode() == SeverityLevel::$Success) {
