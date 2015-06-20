@@ -34,13 +34,14 @@ abstract class OnePica_AvaTax_Model_Abstract extends Varien_Object
     /**
      * Logs a debug message
      *
+     * @param string $type
      * @param string $request the request string
      * @param string $result the result string
      * @param int $storeId id of the store the call is make for
      * @param mixed $additional any other info
      * @return $this
      */
-    protected function _log($request, $result, $storeId = null, $additional = null)
+    protected function _log($type, $request, $result, $storeId = null, $additional = null)
     {
         if ($result->getResultCode() == SeverityLevel::$Success) {
             switch (Mage::helper('avatax')->getLogMode($storeId)) {
@@ -53,14 +54,7 @@ abstract class OnePica_AvaTax_Model_Abstract extends Varien_Object
             }
         }
 
-        $requestType = str_replace('Request', '', get_class($request));
-        $resultType = str_replace('Result', '', get_class($result));
-        $type = $requestType ? $requestType : $resultType;
-        if ($type == 'Varien_Object') {
-            $type = 'Unknown';
-        }
-
-        if (in_array($resultType, Mage::helper('avatax')->getLogType($storeId))) {
+        if (in_array($type, Mage::helper('avatax')->getLogType($storeId))) {
             Mage::getModel('avatax_records/log')
                 ->setStoreId($storeId)
                 ->setLevel($result->getResultCode())

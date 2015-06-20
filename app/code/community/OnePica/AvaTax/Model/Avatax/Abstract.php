@@ -25,11 +25,6 @@
 abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model_Abstract
 {
     /**
-     * TaxAmount tax override type
-     */
-    const TAX_OVERRIDE_TYPE_TAX_AMOUNT = 'TaxAmount';
-
-    /**
      * Tax override reason for virtual product
      */
     const TAX_OVERRIDE_REASON_VIRTUAL = 'Virtual';
@@ -83,6 +78,7 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
      */
     protected function _send($storeId)
     {
+        /** @var OnePica_AvaTax_Model_Config $config */
         $config = Mage::getSingleton('avatax/config')->init($storeId);
         $connection = $config->getTaxConnection();
         $result = null;
@@ -91,17 +87,24 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
         try {
             $result = $connection->getTax($this->_request);
         } catch (Exception $exception) {
-            $message = $exception->getMessage();
+            $message = new Message();
+            $message->setSummary($exception->getMessage());
         }
 
         if (!isset($result) || !is_object($result) || !$result->getResultCode()) {
-            $result = Mage::getModel('Varien_Object')
-                ->setResultCode(SeverityLevel::$Exception)
+            $result = new Varien_Object();
+            $result->setResultCode(SeverityLevel::$Exception)
                 ->setActualResult($result)
-                ->setMessage($message);
+                ->setMessages(array($message));
         }
 
-        $this->_log($this->_request, $result, $storeId, $connection);
+        $this->_log(
+            OnePica_AvaTax_Model_Source_Logtype::GET_TAX,
+            $this->_request,
+            $result,
+            $storeId,
+            $config->getParams()
+        );
 
         /*if ($result->getResultCode() != SeverityLevel::$Success) {
             self::$_hasError = true;
@@ -387,7 +390,7 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
      * @param int $refNumber
      * @return null|string
      */
-    protected function _getRefValue($product, $refNumber)
+    protected function _getRefValueByProductAndNumber($product, $refNumber)
     {
         $value = null;
         $helperMethod = 'getRef' . $refNumber . 'AttributeCode';

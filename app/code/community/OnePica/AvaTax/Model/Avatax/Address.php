@@ -156,6 +156,7 @@ class OnePica_AvaTax_Model_Avatax_Address extends OnePica_AvaTax_Model_Abstract
             );
         }
 
+        /** @var OnePica_AvaTax_Model_Config $config */
         $config = Mage::getSingleton('avatax/config')->init($this->_storeId);
         $isAddressValidationOn = Mage::helper('avatax')->isAddressValidationOn($this->_mageAddress, $this->_storeId);
         $isAddressNormalizationOn = Mage::helper('avatax')
@@ -172,7 +173,7 @@ class OnePica_AvaTax_Model_Avatax_Address extends OnePica_AvaTax_Model_Abstract
         $key = $this->_mageAddress->getCacheHashKey();
         if (array_key_exists($key, $this->_cache)) {
             $result = unserialize($this->_cache[$key]);
-        } else if ($this->_mageAddress->getPostcode() && $this->_mageAddress->getPostcode() != '-') {
+        } elseif ($this->_mageAddress->getPostcode() && $this->_mageAddress->getPostcode() != '-') {
             $session = Mage::getSingleton('checkout/session');
             if ($session->getPostType() == 'onepage') {
                 $requiredFields = explode(",", $this->getHelper()->getFieldRequiredList());
@@ -202,7 +203,13 @@ class OnePica_AvaTax_Model_Avatax_Address extends OnePica_AvaTax_Model_Abstract
             $request = new ValidateRequest($this->_requestAddress, TextCase::$Mixed, 0);
             $request->setTaxability(true);
             $result = $client->Validate($request);
-            $this->_log($request, $result, $this->_storeId, $client);
+            $this->_log(
+                OnePica_AvaTax_Model_Source_Logtype::VALIDATE,
+                $request,
+                $result,
+                $this->_storeId,
+                $config->getParams()
+            );
             $this->_cache[$key] = serialize($result);
         } else {
             $errors = array();
@@ -234,7 +241,6 @@ class OnePica_AvaTax_Model_Avatax_Address extends OnePica_AvaTax_Model_Abstract
                 }
                 return $errors;
             }
-
         } elseif ($isAddressValidationOn == 2) {
             $this->_mageAddress->setAddressValidated(true);
             if ($result->getResultCode() == SeverityLevel::$Success) {
@@ -263,7 +269,6 @@ class OnePica_AvaTax_Model_Avatax_Address extends OnePica_AvaTax_Model_Abstract
                 return $errors;
             }
         }
-
         return true;
     }
 }
