@@ -104,8 +104,9 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
         }
         /* if the previous state was unpaid, process now */
         if (!$invoice->getOrigData($invoice->getIdFieldName()
-               && $invoice->getOrigData('state') != Mage_Sales_Model_Order_Invoice::STATE_OPEN)
-               && Mage::helper('avatax')->isObjectActionable($invoice)) {
+                && $invoice->getOrigData('state') != Mage_Sales_Model_Order_Invoice::STATE_OPEN)
+            && Mage::helper('avatax')->isObjectActionable($invoice)
+        ) {
             Mage::getModel('avatax_records/queue')
                 ->setEntity($invoice)
                 ->setType(OnePica_AvaTax_Model_Records_Queue::QUEUE_TYPE_INVOICE)
@@ -125,8 +126,9 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     {
         /* @var $creditmemo Mage_Sales_Model_Order_Creditmemo */
         $creditmemo = $observer->getEvent()->getCreditmemo();
-        if(!$creditmemo->getOrigData($creditmemo->getIdFieldName())
-                && Mage::helper('avatax')->isObjectActionable($creditmemo)) {
+        if (!$creditmemo->getOrigData($creditmemo->getIdFieldName())
+            && Mage::helper('avatax')->isObjectActionable($creditmemo)
+        ) {
             Mage::getModel('avatax_records/queue')
                 ->setEntity($creditmemo)
                 ->setType(OnePica_AvaTax_Model_Records_Queue::QUEUE_TYPE_CREDITMEMEO)
@@ -145,13 +147,18 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
      */
     public function multishippingSetShippingItems(Varien_Event_Observer $observer)
     {
+        // skip validation if customer wants to add new address
+        if (Mage::app()->getRequest()->getParam('new_address')) {
+            return $this;
+        }
+
         /* @var $quote Mage_Sales_Model_Quote */
         $quote = $observer->getEvent()->getQuote();
 
         $errors = array();
         $normalized = false;
         $store = Mage::getModel('core/store')->load($quote->getStoreId());
-        $addresses  = $quote->getAllShippingAddresses();
+        $addresses = $quote->getAllShippingAddresses();
         $message = Mage::getStoreConfig('tax/avatax/validate_address_message', $store);
         foreach ($addresses as $address) {
             /* @var $address OnePica_AvaTax_Model_Sales_Quote_Address */
@@ -340,6 +347,93 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     {
         $session = Mage::getSingleton('checkout/session');
         $session->setPostType('onepage');
+        return $this;
+    }
+
+    /**
+     * Add error message if tax estimation has problems when user estimates post
+     *
+     * @param Varien_Event_Observer $observer
+     * @return $this
+     */
+    public function controllerActionPostdispatchCheckoutCartEstimatePost(Varien_Event_Observer $observer)
+    {
+        $this->_handleTaxEstimation();
+        return $this;
+    }
+
+    /**
+     * Add error message if tax estimation has problems when user updates estimate post
+     *
+     * @param Varien_Event_Observer $observer
+     * @return $this
+     */
+    public function controllerActionPostdispatchCheckoutCartEstimateUpdatePost(Varien_Event_Observer $observer)
+    {
+        $this->_handleTaxEstimation();
+        return $this;
+    }
+
+    /**
+     * Add error message if tax estimation has problems
+     *
+     * @return $this
+     */
+    protected function _handleTaxEstimation()
+    {
+        $quote = $this->_getQuote();
+        $quote->collectTotals();
+        if ($quote->getData('estimate_tax_error')) {
+            Mage::helper('avatax')->addErrorMessage($quote->getStoreId());
+        }
+        return $this;
+    }
+
+    /**
+     * Stop order creation if tax estimation has problems
+     *
+     * @param Varien_Event_Observer $observer
+     * @return $this
+     * @throws OnePica_AvaTax_Model_Exception
+     */
+    public function salesModelServiceQuoteSubmitBefore(Varien_Event_Observer $observer)
+    {
+        /** @var Mage_Sales_Model_Quote $quote */
+        $quote = $observer->getEvent()->getQuote();
+        $this->_handleTaxEstimationOnOrderPlace($quote);
+        return $this;
+    }
+
+    /**
+     * Stop order creation if tax estimation has problems when multishipping
+     *
+     * @param Varien_Event_Observer $observer
+     * @return $this
+     * @throws OnePica_AvaTax_Model_Exception
+     */
+    public function checkoutTypeMultishippingCreateOrdersSingle(Varien_Event_Observer $observer)
+    {
+        /** @var Mage_Sales_Model_Quote_Address $address */
+        $address = $observer->getEvent()->getAddress();
+        $quote = $address->getQuote();
+        $this->_handleTaxEstimationOnOrderPlace($quote);
+        return $this;
+    }
+
+    /**
+     * Stop order creation if tax estimation has problems
+     *
+     * @param Mage_Sales_Model_Quote $quote
+     * @return $this
+     * @throws OnePica_AvaTax_Model_Exception
+     */
+    protected function _handleTaxEstimationOnOrderPlace($quote)
+    {
+        /** @var OnePica_AvaTax_Helper_Data $helper */
+        $helper = Mage::helper('avatax');
+        if ($helper->fullStopOnError($quote)) {
+            throw new OnePica_AvaTax_Model_Exception($helper->getErrorMessage());
+        }
         return $this;
     }
 }

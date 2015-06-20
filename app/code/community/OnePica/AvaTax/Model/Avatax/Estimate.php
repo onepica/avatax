@@ -232,21 +232,13 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
                     'failure'    => true
                 );
                 self::$_hasError = true;
-                /*if (Mage::helper('avatax')->fullStopOnError($address->getStoreId())) {
-                    $address->getQuote()->setHasError(true);
-                }*/
             }
 
             Mage::getSingleton('avatax/session')->setRates($this->_rates);
         }
 
         if (isset($this->_rates[$requestKey]['failure'])) {
-            //die('sss');
-            if (Mage::helper('avatax')->fullStopOnError($address->getStoreId())) {
-                //Mage::getSingleton('avatax/session')->setHasError(true);
-                $address->getQuote()->setHasError(true);
-                Mage::helper('avatax')->addErrorMessage($address->getStoreId());
-            }
+            $address->getQuote()->setData('estimate_tax_error', true);
         }
 
         //return $requestKey so it doesn't have to be calculated again

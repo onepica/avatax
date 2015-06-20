@@ -106,15 +106,6 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
             $config->getParams()
         );
 
-        /*if ($result->getResultCode() != SeverityLevel::$Success) {
-            self::$_hasError = true;
-            if (Mage::helper('avatax')->fullStopOnError($storeId)) {
-                Mage::helper('avatax')->addErrorMessage($storeId);
-            }
-        } else {
-            Mage::helper('avatax')->removeErrorMessage();
-        }*/
-
         return $result;
     }
 

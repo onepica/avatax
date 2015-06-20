@@ -65,4 +65,21 @@ class OnePica_AvaTax_Model_Adminhtml_Sales_Order_Create extends Mage_Adminhtml_M
         }
         return $this;
     }
+
+    /**
+     * Quote saving
+     *
+     * @return Mage_Adminhtml_Model_Sales_Order_Create
+     */
+    public function saveQuote()
+    {
+        parent::saveQuote();
+        /** @var OnePica_AvaTax_Helper_Data $helper */
+        $helper = Mage::helper('avatax');
+        $quote = $this->getQuote();
+        if ($helper->fullStopOnError($quote)) {
+            $helper->addErrorMessage();
+        }
+        return $this;
+    }
 }
