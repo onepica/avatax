@@ -249,7 +249,7 @@ class OnePica_AvaTax_Model_Avatax_Address extends OnePica_AvaTax_Model_Abstract
                 if (!$this->_mageAddress->getAddressNotified()) {
                     $this->_mageAddress->setAddressNotified(true);
                     foreach ($result->getMessages() as $message) {
-                        Mage::getSingleton('core/session')->addNotice($this->__($message->getSummary()));
+                        $this->_addValidateNotice($message);
                     }
                 }
                 return true;
@@ -270,5 +270,19 @@ class OnePica_AvaTax_Model_Avatax_Address extends OnePica_AvaTax_Model_Abstract
             }
         }
         return true;
+    }
+
+    /**
+     * Add validation notice
+     *
+     * @param string $message
+     * @return $this
+     */
+    protected function _addValidateNotice($message)
+    {
+        $notice = Mage::getSingleton('core/message')->notice($this->__($message->getSummary()));
+        $notice->setIdentifier(OnePica_AvaTax_Helper_Data::VALIDATION_NOTICE_IDENTIFIER);
+        Mage::getSingleton('core/session')->addMessage($notice);
+        return $this;
     }
 }
