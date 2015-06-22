@@ -148,9 +148,9 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
 
         if ($object->getCustomerId()) {
             $customer->load($object->getCustomerId());
-            $taxClass = Mage::getModel('tax/class')->load($customer->getTaxClassId())->getOpAvataxCode();
-            $this->_request->setCustomerUsageType($taxClass);
         }
+
+        $this->_request->setCustomerUsageType($this->_getCustomerUsageType());
 
         switch ($format) {
             case OnePica_AvaTax_Model_Source_Customercodeformat::LEGACY:
@@ -412,5 +412,37 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
         $taxOverride->setReason($reason);
         $taxOverride->setTaxAmount($taxAmount);
         return $taxOverride;
+    }
+
+    /**
+     * Get customer usage type
+     *
+     * @return string
+     */
+    protected function _getCustomerUsageType()
+    {
+        return Mage::getModel('tax/class')->load($this->_getTaxClassId())->getOpAvataxCode();
+    }
+
+    /**
+     * Get tax class id
+     *
+     * @return int
+     */
+    protected function _getTaxClassId()
+    {
+        return Mage::getSingleton('customer/group')
+            ->load($this->_getCustomerGroupId())
+            ->getTaxClassId();
+    }
+
+    /**
+     * Get customer group id
+     *
+     * @return int
+     */
+    protected function _getCustomerGroupId()
+    {
+        return Mage::getSingleton('customer/session')->getCustomerGroupId();
     }
 }
