@@ -188,6 +188,16 @@ class OnePica_AvaTax_Model_Config extends Varien_Object
     }
 
     /**
+     * Returns the AvaTax ATConfig object
+     *
+     * @return ATConfig
+     */
+    public function getParams()
+    {
+        return $this->_config;
+    }
+
+    /**
      * Returns data from the admin system config.
      *
      * @param string $path

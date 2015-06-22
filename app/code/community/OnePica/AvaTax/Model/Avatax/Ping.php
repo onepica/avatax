@@ -32,6 +32,7 @@ class OnePica_AvaTax_Model_Avatax_Ping extends OnePica_AvaTax_Model_Avatax_Abstr
      */
     public function ping($storeId = null)
     {
+        /** @var OnePica_AvaTax_Model_Config $config */
         $config = Mage::getSingleton('avatax/config')->init($storeId);
         $connection = $config->getTaxConnection();
         $result = null;
@@ -51,7 +52,14 @@ class OnePica_AvaTax_Model_Avatax_Ping extends OnePica_AvaTax_Model_Avatax_Abstr
             $result->setMessage($message);
         }
 
-        $this->_log(OnePica_AvaTax_Model_Source_Logtype::PING, new stdClass(), $result, $storeId, $connection);
+        $this->_log(
+            OnePica_AvaTax_Model_Source_Logtype::PING,
+            new stdClass(),
+            $result,
+            $storeId,
+            $config->getParams()
+        );
+
         return ($result->getResultCode() == SeverityLevel::$Success) ? true : $result->getMessage();
     }
 }

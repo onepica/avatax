@@ -19,7 +19,7 @@
 <config>
     <modules>
         <OnePica_AvaTax>
-            <version>2.4.3.3</version>
+            <version>2.5.0</version>
         </OnePica_AvaTax>
     </modules>
     <global>
@@ -179,6 +179,60 @@
                     </avatax>
                 </observers>
             </controller_action_predispatch_checkout_onepage_index>
+            <controller_action_postdispatch_checkout_cart_estimatePost>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer</class>
+                        <method>controllerActionPostdispatchCheckoutCartEstimatePost</method>
+                    </avatax>
+                </observers>
+            </controller_action_postdispatch_checkout_cart_estimatePost>
+            <controller_action_postdispatch_checkout_cart_estimateUpdatePost>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer</class>
+                        <method>controllerActionPostdispatchCheckoutCartEstimateUpdatePost</method>
+                    </avatax>
+                </observers>
+            </controller_action_postdispatch_checkout_cart_estimateUpdatePost>
+            <sales_model_service_quote_submit_before>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer</class>
+                        <method>salesModelServiceQuoteSubmitBefore</method>
+                    </avatax>
+                </observers>
+            </sales_model_service_quote_submit_before>
+            <checkout_type_multishipping_create_orders_single>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer</class>
+                        <method>checkoutTypeMultishippingCreateOrdersSingle</method>
+                    </avatax>
+                </observers>
+            </checkout_type_multishipping_create_orders_single>
+            <sales_model_service_quote_submit_after>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer</class>
+                        <method>salesModelServiceQuoteSubmitAfter</method>
+                    </avatax>
+                </observers>
+            </sales_model_service_quote_submit_after>
+            <checkout_submit_all_after>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer</class>
+                        <method>checkoutSubmitAllAfter</method>
+                    </avatax>
+                </observers>
+            </checkout_submit_all_after>
         </events>
     </global>
     <frontend>
