@@ -441,7 +441,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
 
         $line = new Line();
         $line->setNo(count($this->_lines));
-        $line->setItemCode(substr($item->getSku(), 0, 50));
+        $line->setItemCode($this->_getItemCode($product, $item));
         $line->setDescription($item->getName());
         $line->setQty($item->getQty());
         $line->setAmount($price);
@@ -490,5 +490,21 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
     protected function _convertGmtDate($gmt, $storeId)
     {
         return Mage::app()->getLocale()->storeDate($storeId, $gmt)->toString(Varien_Date::DATE_INTERNAL_FORMAT);
+    }
+
+    /**
+     * Get item code
+     *
+     * @param Mage_Catalog_Model_Product                                                 $product
+     * @param Mage_Sales_Model_Order_Invoice_Item|Mage_Sales_Model_Order_Creditmemo_Item $item
+     * @return string
+     */
+    protected function _getItemCode($product, $item)
+    {
+        $upcCode = $this->_getUpcCode($product);
+        if (empty($upcCode)) {
+            return substr($item->getSku(), 0, 50);
+        }
+        return $upcCode;
     }
 }

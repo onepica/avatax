@@ -448,8 +448,8 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
         $lineNumber = count($this->_lines);
         $line = new Line();
         $line->setNo($lineNumber);
-        $line->setItemCode(substr($item->getSku(), 0, 50));
-        $line->setDescription($item->getName());
+        $line->setItemCode($this->_getItemCode($product));
+        $line->setDescription($product->getName());
         $line->setQty($item->getQty());
         $line->setAmount($price);
         $line->setDiscounted($item->getDiscountAmount() ? true : false);
@@ -493,5 +493,20 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
     protected function _getTaxArrayCodeByLine($line)
     {
         return isset($this->_productGiftPair[$line->getNo()]) ? 'gw_items' : 'items';
+    }
+
+    /**
+     * Get item code
+     *
+     * @param Mage_Catalog_Model_Product $product
+     * @return string
+     */
+    protected function _getItemCode($product)
+    {
+        $upcCode = $this->_getUpcCode($product);
+        if (empty($upcCode)) {
+            return substr($product->getSku(), 0, 50);
+        }
+        return $upcCode;
     }
 }

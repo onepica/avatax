@@ -548,4 +548,41 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
 
         return $object->getStoreId();
     }
+
+    /**
+     * Get UPC code from product
+     *
+     * @param Mage_Catalog_Model_Product $product
+     * @return string
+     */
+    protected function _getUpcCode($product)
+    {
+        $upc = (string)$product->getResource()
+            ->getAttributeRawValue(
+                $product->getId(),
+                $this->_getUpcAttributeCode(),
+                $product->getStoreId()
+            );
+        return !empty($upc) ? 'UPC:' . $upc : '';
+    }
+
+    /**
+     * Get UPC attribute code
+     *
+     * @return string
+     */
+    protected function _getUpcAttributeCode()
+    {
+        return $this->_getDataHelper()->getUpcAttributeCode(Mage::app()->getStore()->getId());
+    }
+
+    /**
+     * Get data helper
+     *
+     * @return OnePica_AvaTax_Helper_Data
+     */
+    protected function _getDataHelper()
+    {
+        return Mage::helper('avatax');
+    }
 }
