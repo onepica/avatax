@@ -312,7 +312,7 @@
                         <normalize_address translate="label comment">
                             <label>Address Normalization</label>
                             <frontend_type>select</frontend_type>
-                            <source_model>avatax/source_enableddisabled</source_model>
+                            <source_model>adminhtml/system_config_source_enabledisable</source_model>
                             <comment>Replace address with well-formed one from AvaTax</comment>
                             <sort_order>320</sort_order>
                             <show_in_default>1</show_in_default>
