@@ -474,4 +474,14 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
         $messages->deleteMessageByIdentifier(OnePica_AvaTax_Helper_Data::VALIDATION_NOTICE_IDENTIFIER);
         return $this;
     }
+
+    /**
+     * Get quote
+     *
+     * @return Mage_Sales_Model_Quote
+     */
+    protected function _getQuote()
+    {
+        return Mage::getModel('checkout/cart')->getQuote();
+    }
 }
