@@ -52,6 +52,7 @@
                         <url translate="label">
                             <label>URL</label>
                             <frontend_type>text</frontend_type>
+                            <validate>required-entry</validate>
                             <sort_order>20</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -60,6 +61,7 @@
                         <account translate="label">
                             <label>Account Number</label>
                             <frontend_type>text</frontend_type>
+                            <validate>required-entry</validate>
                             <sort_order>30</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -68,6 +70,7 @@
                         <license translate="label">
                             <label>License Key</label>
                             <frontend_type>text</frontend_type>
+                            <validate>required-entry</validate>
                             <sort_order>40</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -77,6 +80,7 @@
                             <label>Company Code</label>
                             <comment>Required. Your company code from the dashboard.</comment>
                             <frontend_type>text</frontend_type>
+                            <validate>required-entry</validate>
                             <sort_order>50</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
