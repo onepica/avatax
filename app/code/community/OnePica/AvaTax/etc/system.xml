@@ -131,6 +131,7 @@
                             <label>Log Entry Lifetime</label>
                             <comment>Required. Days before entries are auto-purged.</comment>
                             <frontend_type>text</frontend_type>
+                            <validate>required-entry</validate>
                             <sort_order>120</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
@@ -140,6 +141,7 @@
                             <label>Successful Queue Lifetime</label>
                             <comment>Required. Days before entries are auto-purged.</comment>
                             <frontend_type>text</frontend_type>
+                            <validate>required-entry</validate>
                             <sort_order>122</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
@@ -148,6 +150,7 @@
                         <queue_failed_lifetime translate="label comment">
                             <label>Failed Queue Lifetime</label>
                             <comment>Required. Days before entries are auto-purged.</comment>
+                            <validate>required-entry</validate>
                             <frontend_type>text</frontend_type>
                             <sort_order>124</sort_order>
                             <show_in_default>1</show_in_default>
@@ -196,6 +199,7 @@
                             <label>Shipping Sku</label>
                             <comment>Required. The sku sent to denote shipping costs.</comment>
                             <frontend_type>text</frontend_type>
+                            <validate>required-entry</validate>
                             <sort_order>210</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -205,15 +209,17 @@
                             <label>Gift Wrap Order Sku</label>
                             <comment>Required. The sku sent to denote gift wrap order costs.</comment>
                             <frontend_type>text</frontend_type>
+                            <validate>required-entry</validate>
                             <sort_order>215</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </gw_order_sku>
-                                                <gw_items_sku translate="label comment">
+                        <gw_items_sku translate="label comment">
                             <label>Gift Wrap Items Sku</label>
                             <comment>Required. The sku sent to denote gift wrap items costs.</comment>
                             <frontend_type>text</frontend_type>
+                            <validate>required-entry</validate>
                             <sort_order>216</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -223,6 +229,7 @@
                             <label>Gift Wrap Printed Card Sku</label>
                             <comment>Required. The sku sent to denote gift wrap printed card costs.</comment>
                             <frontend_type>text</frontend_type>
+                            <validate>required-entry</validate>
                             <sort_order>217</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -232,6 +239,7 @@
                             <label>Adjustment Refund Sku</label>
                             <comment>Required. The sku sent to denote positive ajustments.</comment>
                             <frontend_type>text</frontend_type>
+                            <validate>required-entry</validate>
                             <sort_order>220</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -241,6 +249,7 @@
                             <label>Adjustment Fee Sku</label>
                             <comment>Required. The sku sent to denote negative ajustments.</comment>
                             <frontend_type>text</frontend_type>
+                            <validate>required-entry</validate>
                             <sort_order>230</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
