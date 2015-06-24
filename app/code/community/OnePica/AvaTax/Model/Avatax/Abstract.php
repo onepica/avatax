@@ -143,6 +143,8 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
     protected function _addCustomer($object)
     {
         $format = Mage::getStoreConfig('tax/avatax/cust_code_format', $object->getStoreId());
+
+        /** @var Mage_Customer_Model_Customer $customer */
         $customer = Mage::getModel('customer/customer');
 
         if ($object->getCustomerId()) {
@@ -161,11 +163,12 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
                 }
                 break;
             case OnePica_AvaTax_Model_Source_Customercodeformat::CUST_EMAIL:
-                $customerCode = $object->getCustomerEmail() ? $object->getCustomerEmail() : $customer->getEmail();
+                $customerCode = $this->_getCustomerEmail($object, $customer)
+                    ?: $this->_getCustomerId($object);
                 break;
             case OnePica_AvaTax_Model_Source_Customercodeformat::CUST_ID:
             default:
-                $customerCode = $object->getCustomerId() ? $object->getCustomerId() : 'guest-'.$object->getId();
+                $customerCode = $this->_getCustomerId($object);
                 break;
         }
 
@@ -411,5 +414,32 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
         $taxOverride->setReason($reason);
         $taxOverride->setTaxAmount($taxAmount);
         return $taxOverride;
+    }
+
+    /**
+     * Retrieve customer email
+     *
+     * @param Mage_Sales_Model_Quote|Mage_Sales_Model_Order $object
+     * @param Mage_Customer_Model_Customer $customer
+     * @return string
+     */
+    protected function _getCustomerEmail($object, $customer)
+    {
+        return $object->getCustomerEmail()
+            ? $object->getCustomerEmail()
+            : $customer->getEmail();
+    }
+
+    /**
+     * Retrieve customer id
+     *
+     * @param Mage_Sales_Model_Quote|Mage_Sales_Model_Order $object
+     * @return string
+     */
+    protected function _getCustomerId($object)
+    {
+        return $object->getCustomerId()
+            ? $object->getCustomerId()
+            : 'guest-' . $object->getId();
     }
 }
