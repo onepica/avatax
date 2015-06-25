@@ -289,13 +289,13 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     }
 
     /**
-     * This an observer function for the event 'controller_front_init_before'.
+     * This an observer function for the event 'controller_front_init_before' and 'default'
      * It prepends our autoloader, so we can load the extra libraries.
      *
      * @param Varien_Event_Observer $observer
      * @return $this
      */
-    public function controllerFrontInitBefore(Varien_Event_Observer $observer)
+    public function loadAvaTaxExternalLib(Varien_Event_Observer $observer)
     {
         spl_autoload_register(array($this, 'loadLib'), true, true);
         return $this;
