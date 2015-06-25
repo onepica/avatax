@@ -547,16 +547,16 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
      * Get product attribute value
      *
      * @param Mage_Catalog_Model_Product $product
-     * @param string $refCode
+     * @param string                     $code
      * @return string
      */
-    protected function _getProductAttributeValue($product, $refCode)
+    protected function _getProductAttributeValue($product, $code)
     {
         $value = '';
-        if ($refCode && $product->getResource()->getAttribute($refCode)) {
+        if ($code && $product->getResource()->getAttribute($code)) {
             try {
                 $value = (string)$product->getResource()
-                    ->getAttribute($refCode)
+                    ->getAttribute($code)
                     ->getFrontend()
                     ->getValue($product);
             } catch (Exception $e) {
