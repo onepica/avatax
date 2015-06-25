@@ -503,10 +503,10 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
      */
     protected function _getItemCode($product)
     {
-        $upcCode = $this->_getUpcCode($product);
-        if (empty($upcCode)) {
-            return substr($product->getSku(), 0, 50);
+        $itemCode = $this->_getUpcCode($product);
+        if (empty($itemCode)) {
+            $itemCode = $product->getSku();
         }
-        return $upcCode;
+        return substr($itemCode, 0, 50);
     }
 }
