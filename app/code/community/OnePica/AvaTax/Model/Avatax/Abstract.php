@@ -78,6 +78,7 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
      */
     protected function _send($storeId)
     {
+        /** @var OnePica_AvaTax_Model_Config $config */
         $config = Mage::getSingleton('avatax/config')->init($storeId);
         $connection = $config->getTaxConnection();
         $result = null;
@@ -86,26 +87,24 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
         try {
             $result = $connection->getTax($this->_request);
         } catch (Exception $exception) {
-            $message = $exception->getMessage();
+            $message = new Message();
+            $message->setSummary($exception->getMessage());
         }
 
         if (!isset($result) || !is_object($result) || !$result->getResultCode()) {
-            $result = Mage::getModel('Varien_Object')
-                ->setResultCode(SeverityLevel::$Exception)
+            $result = new Varien_Object();
+            $result->setResultCode(SeverityLevel::$Exception)
                 ->setActualResult($result)
-                ->setMessage($message);
+                ->setMessages(array($message));
         }
 
-        $this->_log(OnePica_AvaTax_Model_Source_Logtype::GET_TAX, $this->_request, $result, $storeId, $connection);
-
-        if ($result->getResultCode() != SeverityLevel::$Success) {
-            self::$_hasError = true;
-            if (Mage::helper('avatax')->fullStopOnError($storeId)) {
-                Mage::helper('avatax')->addErrorMessage($storeId);
-            }
-        } else {
-            Mage::helper('avatax')->removeErrorMessage();
-        }
+        $this->_log(
+            OnePica_AvaTax_Model_Source_Logtype::GET_TAX,
+            $this->_request,
+            $result,
+            $storeId,
+            $config->getParams()
+        );
 
         return $result;
     }
@@ -144,13 +143,15 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
     protected function _addCustomer($object)
     {
         $format = Mage::getStoreConfig('tax/avatax/cust_code_format', $object->getStoreId());
+
+        /** @var Mage_Customer_Model_Customer $customer */
         $customer = Mage::getModel('customer/customer');
 
         if ($object->getCustomerId()) {
             $customer->load($object->getCustomerId());
-            $taxClass = Mage::getModel('tax/class')->load($customer->getTaxClassId())->getOpAvataxCode();
-            $this->_request->setCustomerUsageType($taxClass);
         }
+
+        $this->_request->setCustomerUsageType($this->_getCustomerUsageType());
 
         switch ($format) {
             case OnePica_AvaTax_Model_Source_Customercodeformat::LEGACY:
@@ -162,11 +163,12 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
                 }
                 break;
             case OnePica_AvaTax_Model_Source_Customercodeformat::CUST_EMAIL:
-                $customerCode = $object->getCustomerEmail() ? $object->getCustomerEmail() : $customer->getEmail();
+                $customerCode = $this->_getCustomerEmail($object, $customer)
+                    ?: $this->_getCustomerId($object);
                 break;
             case OnePica_AvaTax_Model_Source_Customercodeformat::CUST_ID:
             default:
-                $customerCode = $object->getCustomerId() ? $object->getCustomerId() : 'guest-'.$object->getId();
+                $customerCode = $this->_getCustomerId($object);
                 break;
         }
 
@@ -412,5 +414,64 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
         $taxOverride->setReason($reason);
         $taxOverride->setTaxAmount($taxAmount);
         return $taxOverride;
+    }
+
+    /**
+     * Retrieve customer email
+     *
+     * @param Mage_Sales_Model_Quote|Mage_Sales_Model_Order $object
+     * @param Mage_Customer_Model_Customer $customer
+     * @return string
+     */
+    protected function _getCustomerEmail($object, $customer)
+    {
+        return $object->getCustomerEmail()
+            ? $object->getCustomerEmail()
+            : $customer->getEmail();
+    }
+
+    /**
+     * Retrieve customer id
+     *
+     * @param Mage_Sales_Model_Quote|Mage_Sales_Model_Order $object
+     * @return string
+     */
+    protected function _getCustomerId($object)
+    {
+        return $object->getCustomerId()
+            ? $object->getCustomerId()
+            : 'guest-' . $object->getId();
+    }
+
+    /**
+     * Get customer usage type
+     *
+     * @return string
+     */
+    protected function _getCustomerUsageType()
+    {
+        return Mage::getModel('tax/class')->load($this->_getTaxClassId())->getOpAvataxCode();
+    }
+
+    /**
+     * Get tax class id
+     *
+     * @return int
+     */
+    protected function _getTaxClassId()
+    {
+        return Mage::getSingleton('customer/group')
+            ->load($this->_getCustomerGroupId())
+            ->getTaxClassId();
+    }
+
+    /**
+     * Get customer group id
+     *
+     * @return int
+     */
+    protected function _getCustomerGroupId()
+    {
+        return Mage::getSingleton('customer/session')->getCustomerGroupId();
     }
 }

@@ -156,6 +156,7 @@ class OnePica_AvaTax_Model_Avatax_Address extends OnePica_AvaTax_Model_Abstract
             );
         }
 
+        /** @var OnePica_AvaTax_Model_Config $config */
         $config = Mage::getSingleton('avatax/config')->init($this->_storeId);
         $isAddressValidationOn = Mage::helper('avatax')->isAddressValidationOn($this->_mageAddress, $this->_storeId);
         $isAddressNormalizationOn = Mage::helper('avatax')
@@ -202,7 +203,13 @@ class OnePica_AvaTax_Model_Avatax_Address extends OnePica_AvaTax_Model_Abstract
             $request = new ValidateRequest($this->_requestAddress, TextCase::$Mixed, 0);
             $request->setTaxability(true);
             $result = $client->Validate($request);
-            $this->_log(OnePica_AvaTax_Model_Source_Logtype::VALIDATE, $request, $result, $this->_storeId, $client);
+            $this->_log(
+                OnePica_AvaTax_Model_Source_Logtype::VALIDATE,
+                $request,
+                $result,
+                $this->_storeId,
+                $config->getParams()
+            );
             $this->_cache[$key] = serialize($result);
         } else {
             $errors = array();
@@ -242,7 +249,7 @@ class OnePica_AvaTax_Model_Avatax_Address extends OnePica_AvaTax_Model_Abstract
                 if (!$this->_mageAddress->getAddressNotified()) {
                     $this->_mageAddress->setAddressNotified(true);
                     foreach ($result->getMessages() as $message) {
-                        Mage::getSingleton('checkout/session')->addNotice($this->__($message->getSummary()));
+                        $this->_addValidateNotice($message);
                     }
                 }
                 return true;
@@ -263,5 +270,19 @@ class OnePica_AvaTax_Model_Avatax_Address extends OnePica_AvaTax_Model_Abstract
             }
         }
         return true;
+    }
+
+    /**
+     * Add validation notice
+     *
+     * @param string $message
+     * @return $this
+     */
+    protected function _addValidateNotice($message)
+    {
+        $notice = Mage::getSingleton('core/message')->notice($this->__($message->getSummary()));
+        $notice->setIdentifier(OnePica_AvaTax_Helper_Data::VALIDATION_NOTICE_IDENTIFIER);
+        Mage::getSingleton('core/session')->addMessage($notice);
+        return $this;
     }
 }
