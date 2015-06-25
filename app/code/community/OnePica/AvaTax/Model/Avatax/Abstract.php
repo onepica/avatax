@@ -472,6 +472,9 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
      */
     protected function _getCustomerGroupId()
     {
-        return Mage::getSingleton('adminhtml/sales_order_create')->getCustomerGroupId();
+        if (Mage::app()->getStore()->isAdmin()) {
+            return Mage::getSingleton('adminhtml/sales_order_create')->getCustomerGroupId();
+        }
+        return Mage::getSingleton('customer/session')->getCustomerGroupId();
     }
 }
