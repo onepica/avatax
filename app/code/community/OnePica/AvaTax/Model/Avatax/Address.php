@@ -282,7 +282,7 @@ class OnePica_AvaTax_Model_Avatax_Address extends OnePica_AvaTax_Model_Abstract
     {
         $notice = Mage::getSingleton('core/message')->notice($this->__($message->getSummary()));
         $notice->setIdentifier(OnePica_AvaTax_Helper_Data::VALIDATION_NOTICE_IDENTIFIER);
-        Mage::getSingleton('core/session')->addMessage($notice);
+        Mage::getSingleton('checkout/session')->addMessage($notice);
         return $this;
     }
 }
