@@ -157,10 +157,19 @@
                     <avatax>
                         <type>singleton</type>
                         <class>avatax/observer</class>
-                        <method>controllerFrontInitBefore</method>
+                        <method>loadAvaTaxExternalLib</method>
                     </avatax>
                 </observers>
             </controller_front_init_before>
+            <default>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer</class>
+                        <method>loadAvaTaxExternalLib</method>
+                    </avatax>
+                </observers>
+            </default>
             <controller_action_predispatch_checkout_cart_estimatePost>
                 <observers>
                     <avatax>
@@ -365,7 +374,7 @@
     <crontab>
         <jobs>
             <avatax_processqueue>
-                <schedule><cron_expr>0 * * * *</cron_expr></schedule>
+                <schedule><cron_expr>*/5 * * * *</cron_expr></schedule>
                 <run>
                     <model>avatax/observer::processQueue</model>
                 </run>
