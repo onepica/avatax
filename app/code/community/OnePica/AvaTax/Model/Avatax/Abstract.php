@@ -380,20 +380,13 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
      *
      * @param Mage_Catalog_Model_Product $product
      * @param int $refNumber
-     * @return null|string
+     * @return string
      */
     protected function _getRefValueByProductAndNumber($product, $refNumber)
     {
-        $value = null;
         $helperMethod = 'getRef' . $refNumber . 'AttributeCode';
         $refCode = Mage::helper('avatax')->{$helperMethod}($product->getStoreId());
-        if ($refCode && $product->getResource()->getAttribute($refCode)) {
-            try {
-                $value = (string)$product->getResource()->getAttribute($refCode)->getFrontend()->getValue($product);
-            } catch (Exception $e) {
-                Mage::logException($e);
-            }
-        }
+        $value = $this->_getProductAttributeValue($product, $refCode);
         return $value;
     }
 
@@ -415,6 +408,29 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
     }
 
     /**
+     * Get product attribute value
+     *
+     * @param Mage_Catalog_Model_Product $product
+     * @param string $refCode
+     * @return string
+     */
+    protected function _getProductAttributeValue($product, $refCode)
+    {
+        $value = '';
+        if ($refCode && $product->getResource()->getAttribute($refCode)) {
+            try {
+                $value = (string)$product->getResource()
+                    ->getAttribute($refCode)
+                    ->getFrontend()
+                    ->getValue($product);
+            } catch (Exception $e) {
+                Mage::logException($e);
+            }
+        }
+        return $value;
+    }
+
+    /**
      * Get UPC code from product
      *
      * @param Mage_Catalog_Model_Product $product
@@ -422,12 +438,10 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
      */
     protected function _getUpcCode($product)
     {
-        $upc = (string)$product->getResource()
-            ->getAttributeRawValue(
-                $product->getId(),
-                $this->_getUpcAttributeCode(),
-                $product->getStoreId()
-            );
+        $upc = $this->_getProductAttributeValue(
+            $product,
+            $this->_getUpcAttributeCode()
+        );
         return !empty($upc) ? 'UPC:' . $upc : '';
     }
 
