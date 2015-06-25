@@ -374,7 +374,7 @@
     <crontab>
         <jobs>
             <avatax_processqueue>
-                <schedule><cron_expr>*/5 * * * *</cron_expr></schedule>
+                <schedule><cron_expr>0 * * * *</cron_expr></schedule>
                 <run>
                     <model>avatax/observer::processQueue</model>
                 </run>
