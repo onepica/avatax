@@ -473,10 +473,10 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
      */
     protected function _getItemCode($product, $item)
     {
-        $upcCode = $this->_getUpcCode($product);
-        if (empty($upcCode)) {
-            return substr($item->getSku(), 0, 50);
+        $itemCode = $this->_getUpcCode($product);
+        if (empty($itemCode)) {
+            $itemCode = $item->getSku();
         }
-        return $upcCode;
+        return substr($itemCode, 0, 50);
     }
 }
