@@ -225,30 +225,6 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
         if ($ping !== true) {
             $errors[] = $ping;
         }
-        if (!Mage::getStoreConfig('tax/avatax/url', $storeId)) {
-            $errors[] = Mage::helper('avatax')->__('You must enter a connection URL');
-        }
-        if (!Mage::getStoreConfig('tax/avatax/account', $storeId)) {
-            $errors[] = Mage::helper('avatax')->__('You must enter an account number');
-        }
-        if (!Mage::getStoreConfig('tax/avatax/license', $storeId)) {
-            $errors[] = Mage::helper('avatax')->__('You must enter a license key');
-        }
-        if (!is_numeric(Mage::getStoreConfig('tax/avatax/log_lifetime'))) {
-            $errors[] = Mage::helper('avatax')->__('You must enter the number of days to keep log entries');
-        }
-        if (!Mage::getStoreConfig('tax/avatax/company_code', $storeId)) {
-            $errors[] = Mage::helper('avatax')->__('You must enter a company code');
-        }
-        if (!Mage::getStoreConfig('tax/avatax/shipping_sku', $storeId)) {
-            $errors[] = Mage::helper('avatax')->__('You must enter a shipping sku');
-        }
-        if (!Mage::getStoreConfig('tax/avatax/adjustment_positive_sku', $storeId)) {
-            $errors[] = Mage::helper('avatax')->__('You must enter an adjustment refund sku');
-        }
-        if (!Mage::getStoreConfig('tax/avatax/adjustment_negative_sku', $storeId)) {
-            $errors[] = Mage::helper('avatax')->__('You must enter an adjustment fee sku');
-        }
 
         if (!class_exists('SoapClient')) {
             $errors[] = Mage::helper('avatax')->__('The PHP class SoapClient is missing. It must be enabled to use this extension. See %s for details.', '<a href="http://www.php.net/manual/en/book.soap.php" target="_blank">http://www.php.net/manual/en/book.soap.php</a>');
