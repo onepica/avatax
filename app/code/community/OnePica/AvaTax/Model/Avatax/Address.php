@@ -202,7 +202,12 @@ class OnePica_AvaTax_Model_Avatax_Address extends OnePica_AvaTax_Model_Abstract
             $client = $config->getAddressConnection();
             $request = new ValidateRequest($this->_requestAddress, TextCase::$Mixed, 0);
             $request->setTaxability(true);
-            $result = $client->Validate($request);
+
+            try {
+                $result = $client->Validate($request);
+            } catch (Exception $e) {
+                $result = $this->_convertExceptionToResult($e);
+            }
             $this->_log(
                 OnePica_AvaTax_Model_Source_Logtype::VALIDATE,
                 $request,
@@ -242,6 +247,7 @@ class OnePica_AvaTax_Model_Avatax_Address extends OnePica_AvaTax_Model_Abstract
                 return $errors;
             }
         } elseif ($isAddressValidationOn == 2) {
+
             $this->_mageAddress->setAddressValidated(true);
             if ($result->getResultCode() == SeverityLevel::$Success) {
                 return true;
@@ -294,5 +300,22 @@ class OnePica_AvaTax_Model_Avatax_Address extends OnePica_AvaTax_Model_Abstract
     protected function _getDataHelper()
     {
         return Mage::helper('avatax');
+    }
+
+    /**
+     * Convert exception to result
+     *
+     * @param Exception $e
+     * @return Varien_Object
+     */
+    protected function _convertExceptionToResult($e)
+    {
+        $message = new Message();
+        $message->setSummary($e->getMessage());
+
+        $result = new Varien_Object();
+        $result->setResultCode(SeverityLevel::$Exception)
+            ->setMessages(array($message));
+        return $result;
     }
 }
