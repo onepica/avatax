@@ -146,12 +146,12 @@ class OnePica_AvaTax_Model_Avatax_Address extends OnePica_AvaTax_Model_Abstract
      * Returns true on success and an array with an error on failure.
      *
      * @return array|bool
-     * @throws OnePica_AvaTax_Model_Avatax_Address_Exception
+     * @throws OnePica_AvaTax_Model_Avatax_Exception_Address
      */
     public function validate()
     {
         if (!$this->_mageAddress) {
-            throw new OnePica_AvaTax_Model_Avatax_Address_Exception(
+            throw new OnePica_AvaTax_Model_Avatax_Exception_Address(
                 $this->__('An address must be set before validation.')
             );
         }
@@ -230,7 +230,7 @@ class OnePica_AvaTax_Model_Avatax_Address extends OnePica_AvaTax_Model_Abstract
                 $this->_responseAddress = $responseAddress;
                 $this->_convertResponseAddress();
             } else {
-                throw new OnePica_AvaTax_Model_Avatax_Address_Exception($this->__('Invalid response address type.'));
+                throw new OnePica_AvaTax_Model_Avatax_Exception_Address($this->__('Invalid response address type.'));
             }
         }
 
