@@ -247,7 +247,6 @@ class OnePica_AvaTax_Model_Avatax_Address extends OnePica_AvaTax_Model_Abstract
                 return $errors;
             }
         } elseif ($isAddressValidationOn == 2) {
-
             $this->_mageAddress->setAddressValidated(true);
             if ($result->getResultCode() == SeverityLevel::$Success) {
                 return true;
