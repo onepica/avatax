@@ -105,7 +105,7 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
         /* if the previous state was unpaid, process now */
         if (!$invoice->getOrigData($invoice->getIdFieldName()
                 && $invoice->getOrigData('state') != Mage_Sales_Model_Order_Invoice::STATE_OPEN)
-            && Mage::helper('avatax')->isObjectActionable($invoice)
+            && $this->_getDataHelper()->isObjectActionable($invoice)
         ) {
             Mage::getModel('avatax_records/queue')
                 ->setEntity($invoice)
@@ -127,7 +127,7 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
         /* @var $creditmemo Mage_Sales_Model_Order_Creditmemo */
         $creditmemo = $observer->getEvent()->getCreditmemo();
         if (!$creditmemo->getOrigData($creditmemo->getIdFieldName())
-            && Mage::helper('avatax')->isObjectActionable($creditmemo)
+            && $this->_getDataHelper()->isObjectActionable($creditmemo)
         ) {
             Mage::getModel('avatax_records/queue')
                 ->setEntity($creditmemo)
@@ -209,16 +209,16 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
         $errors = array();
 
         if (strpos(Mage::getStoreConfig('tax/avatax/url', $storeId), 'development.avalara.net') !== false) {
-            $warnings[] = Mage::helper('avatax')->__('You are using the AvaTax development connection URL. If you are receiving errors about authentication, please ensure that you have a development account.');
+            $warnings[] = $this->_getDataHelper()->__('You are using the AvaTax development connection URL. If you are receiving errors about authentication, please ensure that you have a development account.');
         }
         if (Mage::getStoreConfig('tax/avatax/action', $storeId) == OnePica_AvaTax_Model_Config::ACTION_DISABLE) {
-            $warnings[] = Mage::helper('avatax')->__('All AvaTax services are disabled');
+            $warnings[] = $this->_getDataHelper()->__('All AvaTax services are disabled');
         }
         if (Mage::getStoreConfig('tax/avatax/action', $storeId) == OnePica_AvaTax_Model_Config::ACTION_CALC) {
-            $warnings[] = Mage::helper('avatax')->__('Orders will not be sent to the AvaTax system');
+            $warnings[] = $this->_getDataHelper()->__('Orders will not be sent to the AvaTax system');
         }
         if (Mage::getStoreConfig('tax/avatax/action', $storeId) == OnePica_AvaTax_Model_Config::ACTION_CALC_SUBMIT) {
-            $warnings[] = Mage::helper('avatax')->__('Orders will be sent but never committed to the AvaTax system');
+            $warnings[] = $this->_getDataHelper()->__('Orders will be sent but never committed to the AvaTax system');
         }
 
         $ping = Mage::getSingleton('avatax/avatax_ping')->ping($storeId);
@@ -226,57 +226,57 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
             $errors[] = $ping;
         }
         if (!Mage::getStoreConfig('tax/avatax/url', $storeId)) {
-            $errors[] = Mage::helper('avatax')->__('You must enter a connection URL');
+            $errors[] = $this->_getDataHelper()->__('You must enter a connection URL');
         }
         if (!Mage::getStoreConfig('tax/avatax/account', $storeId)) {
-            $errors[] = Mage::helper('avatax')->__('You must enter an account number');
+            $errors[] = $this->_getDataHelper()->__('You must enter an account number');
         }
         if (!Mage::getStoreConfig('tax/avatax/license', $storeId)) {
-            $errors[] = Mage::helper('avatax')->__('You must enter a license key');
+            $errors[] = $this->_getDataHelper()->__('You must enter a license key');
         }
         if (!is_numeric(Mage::getStoreConfig('tax/avatax/log_lifetime'))) {
-            $errors[] = Mage::helper('avatax')->__('You must enter the number of days to keep log entries');
+            $errors[] = $this->_getDataHelper()->__('You must enter the number of days to keep log entries');
         }
         if (!Mage::getStoreConfig('tax/avatax/company_code', $storeId)) {
-            $errors[] = Mage::helper('avatax')->__('You must enter a company code');
+            $errors[] = $this->_getDataHelper()->__('You must enter a company code');
         }
         if (!Mage::getStoreConfig('tax/avatax/shipping_sku', $storeId)) {
-            $errors[] = Mage::helper('avatax')->__('You must enter a shipping sku');
+            $errors[] = $this->_getDataHelper()->__('You must enter a shipping sku');
         }
         if (!Mage::getStoreConfig('tax/avatax/adjustment_positive_sku', $storeId)) {
-            $errors[] = Mage::helper('avatax')->__('You must enter an adjustment refund sku');
+            $errors[] = $this->_getDataHelper()->__('You must enter an adjustment refund sku');
         }
         if (!Mage::getStoreConfig('tax/avatax/adjustment_negative_sku', $storeId)) {
-            $errors[] = Mage::helper('avatax')->__('You must enter an adjustment fee sku');
+            $errors[] = $this->_getDataHelper()->__('You must enter an adjustment fee sku');
         }
 
         if (!class_exists('SoapClient')) {
-            $errors[] = Mage::helper('avatax')->__('The PHP class SoapClient is missing. It must be enabled to use this extension. See %s for details.', '<a href="http://www.php.net/manual/en/book.soap.php" target="_blank">http://www.php.net/manual/en/book.soap.php</a>');
+            $errors[] = $this->_getDataHelper()->__('The PHP class SoapClient is missing. It must be enabled to use this extension. See %s for details.', '<a href="http://www.php.net/manual/en/book.soap.php" target="_blank">http://www.php.net/manual/en/book.soap.php</a>');
         }
 
         if (!function_exists('openssl_sign') && count($errors)) {
-            $key = array_search(Mage::helper('avatax')->__('SSL support is not available in this build'), $errors);
+            $key = array_search($this->_getDataHelper()->__('SSL support is not available in this build'), $errors);
             if (isset($errors[$key])) {
                 unset($errors[$key]);
             }
-            $errors[] = Mage::helper('avatax')->__('SSL must be enabled in PHP to use this extension. Typically, OpenSSL is used but it is not enabled on your server. This may not be a problem if you have some other form of SSL in place. For more information about OpenSSL, see %s.', '<a href="http://www.php.net/manual/en/book.openssl.php" target="_blank">http://www.php.net/manual/en/book.openssl.php</a>');
+            $errors[] = $this->_getDataHelper()->__('SSL must be enabled in PHP to use this extension. Typically, OpenSSL is used but it is not enabled on your server. This may not be a problem if you have some other form of SSL in place. For more information about OpenSSL, see %s.', '<a href="http://www.php.net/manual/en/book.openssl.php" target="_blank">http://www.php.net/manual/en/book.openssl.php</a>');
         }
 
         if (!Mage::getResourceModel('cron/schedule_collection')->count()) {
-            $warnings[] = Mage::helper('avatax')->__('It appears that Magento\'s cron scheduler is not running. For more information, see %s.', '<a href="http://www.magentocommerce.com/wiki/how_to_setup_a_cron_job" target="_black">How to Set Up a Cron Job</a>');
+            $warnings[] = $this->_getDataHelper()->__('It appears that Magento\'s cron scheduler is not running. For more information, see %s.', '<a href="http://www.magentocommerce.com/wiki/how_to_setup_a_cron_job" target="_black">How to Set Up a Cron Job</a>');
         }
 
         if (count($errors) == 1) {
             $session->addError(implode('', $errors));
         } elseif (count($errors)) {
-            $session->addError(Mage::helper('avatax')->__('Please fix the following issues:') . '<br /> - '
+            $session->addError($this->_getDataHelper()->__('Please fix the following issues:') . '<br /> - '
                 . implode('<br /> - ', $errors));
         }
 
         if (count($warnings) == 1) {
             $session->addWarning(implode('', $warnings));
         } elseif (count($warnings)) {
-            $session->addWarning(Mage::helper('avatax')->__('Please be aware of the following warnings:')
+            $session->addWarning($this->_getDataHelper()->__('Please be aware of the following warnings:')
                 . '<br /> - '
                 . implode('<br /> - ', $warnings));
         }
@@ -396,7 +396,7 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
         $quote = $this->_getQuote();
         $quote->collectTotals();
         if ($quote->getData('estimate_tax_error')) {
-            Mage::helper('avatax')->addErrorMessage($quote->getStoreId());
+            $this->_getDataHelper()->addErrorMessage($quote->getStoreId());
         }
         return $this;
     }
@@ -413,6 +413,25 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
         /** @var Mage_Sales_Model_Quote $quote */
         $quote = $observer->getEvent()->getQuote();
         $this->_handleTaxEstimationOnOrderPlace($quote);
+        return $this;
+    }
+
+    /**
+     * Stop order creation if tax estimation has problems
+     *
+     * @param Varien_Event_Observer $observer
+     * @return $this
+     * @throws OnePica_AvaTax_Model_Exception
+     */
+    public function controllerActionPostdispatchCheckoutOnepageSaveShippingMethod(Varien_Event_Observer $observer) {
+        /** @var Mage_Sales_Model_Quote $quote */
+        $quote = Mage::getSingleton('checkout/cart')->getQuote();
+        /** @var OnePica_AvaTax_Helper_Data $helper */
+        if ($this->_getDataHelper()->fullStopOnError($quote)) {
+            Mage::app()
+                ->getResponse()
+                ->setBody($this->_getResponseErrorMessage());
+        }
         return $this;
     }
 
@@ -442,7 +461,7 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     protected function _handleTaxEstimationOnOrderPlace($quote)
     {
         /** @var OnePica_AvaTax_Helper_Data $helper */
-        $helper = Mage::helper('avatax');
+        $helper = $this->_getDataHelper();
         if ($helper->fullStopOnError($quote)) {
             throw new OnePica_AvaTax_Model_Exception($helper->getErrorMessage());
         }
@@ -495,5 +514,30 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     protected function _getQuote()
     {
         return Mage::getModel('checkout/cart')->getQuote();
+    }
+
+    /**
+     * Get data helper
+     *
+     * @return OnePica_AvaTax_Helper_Data
+     */
+    protected function _getDataHelper()
+    {
+        return Mage::helper('avatax');
+    }
+
+    /**
+     * Get response error message
+     *
+     * @return string
+     */
+    protected function _getResponseErrorMessage()
+    {
+        return Mage::helper('core')->jsonEncode(
+            array(
+                'error'   => -1,
+                'message' => $this->_getDataHelper()->getErrorMessage()
+            )
+        );
     }
 }

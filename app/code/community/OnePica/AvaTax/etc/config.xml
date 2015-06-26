@@ -206,6 +206,15 @@
                     </avatax>
                 </observers>
             </controller_action_postdispatch_checkout_cart_estimateUpdatePost>
+            <controller_action_postdispatch_checkout_onepage_saveShippingMethod>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer</class>
+                        <method>controllerActionPostdispatchCheckoutOnepageSaveShippingMethod</method>
+                    </avatax>
+                </observers>
+            </controller_action_postdispatch_checkout_onepage_saveShippingMethod>
             <sales_model_service_quote_submit_before>
                 <observers>
                     <avatax>
