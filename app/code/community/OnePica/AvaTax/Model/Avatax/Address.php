@@ -158,10 +158,10 @@ class OnePica_AvaTax_Model_Avatax_Address extends OnePica_AvaTax_Model_Abstract
 
         /** @var OnePica_AvaTax_Model_Config $config */
         $config = Mage::getSingleton('avatax/config')->init($this->_storeId);
-        $isAddressValidationOn = Mage::helper('avatax')->isAddressValidationOn($this->_mageAddress, $this->_storeId);
-        $isAddressNormalizationOn = Mage::helper('avatax')
+        $isAddressValidationOn = $this->_getDataHelper()->isAddressValidationOn($this->_mageAddress, $this->_storeId);
+        $isAddressNormalizationOn = $this->_getDataHelper()
             ->isAddressNormalizationOn($this->_mageAddress, $this->_storeId);
-        $isQuoteActionable = Mage::helper('avatax')
+        $isQuoteActionable = $this->_getDataHelper()
             ->isObjectActionable($this->_mageAddress->getQuote(), $this->_mageAddress);
 
         //if there is no use cases for AvaTax services, return address as valid without doing a lookup
@@ -284,5 +284,15 @@ class OnePica_AvaTax_Model_Avatax_Address extends OnePica_AvaTax_Model_Abstract
         $notice->setIdentifier(OnePica_AvaTax_Helper_Data::VALIDATION_NOTICE_IDENTIFIER);
         Mage::getSingleton('core/session')->addMessage($notice);
         return $this;
+    }
+
+    /**
+     * Get data helper
+     *
+     * @return OnePica_AvaTax_Helper_Data
+     */
+    protected function _getDataHelper()
+    {
+        return Mage::helper('avatax');
     }
 }
