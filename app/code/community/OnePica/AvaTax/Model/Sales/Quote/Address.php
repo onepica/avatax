@@ -81,15 +81,15 @@ class OnePica_AvaTax_Model_Sales_Quote_Address extends Mage_Sales_Model_Quote_Ad
      */
     public function validate()
     {
-        if (!Mage::helper('avatax')->fullStopOnError()) {
-            return true;
-        }
-
         $result = parent::validate();
 
         //if base validation fails, don't bother with additional validation
         if ($result !== true) {
             return $result;
+        }
+
+        if (!Mage::helper('avatax')->getValidateAddress($this->getQuote()->getStoreId())) {
+            return true;
         }
 
         //if ship-to address, do AvaTax validation
@@ -98,16 +98,16 @@ class OnePica_AvaTax_Model_Sales_Quote_Address extends Mage_Sales_Model_Quote_Ad
 
         if ($this->getAddressType() == self::TYPE_SHIPPING
                 || $this->getUseForShipping()/* <1.9 */ || $useForShipping/* >=1.9 */) {
-            if (!isset(self::$_validationResult[$this->getAddressId()])) {
+            if (!isset(self::$_validationResult[$this->getCacheHashKey()])) {
                 if (!$this->getAvataxValidator()) {
                     $validator = Mage::getModel('avatax/avatax_address')->setAddress($this);
                     $this->setAvataxValidator($validator);
                 }
 
-                self::$_validationResult[$this->getAddressId()] = $this->getAvataxValidator()->validate();
+                self::$_validationResult[$this->getCacheHashKey()] = $this->getAvataxValidator()->validate();
             }
 
-            return self::$_validationResult[$this->getAddressId()];
+            return self::$_validationResult[$this->getCacheHashKey()];
         }
 
         return $result;

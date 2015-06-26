@@ -30,6 +30,11 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
     const  CALCULATE_ERROR_MESSAGE_IDENTIFIER = 'avatax_calculate_error';
 
     /**
+     * Identifier for validation notice
+     */
+    const VALIDATION_NOTICE_IDENTIFIER = 'avatax_validation_notice';
+
+    /**
      * Check if avatax extension is enabled
      *
      * @param null|bool|int|Mage_Core_Model_Store $store $store
@@ -286,12 +291,56 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Returns full stop on error
      *
-     * @param null|bool|int|Mage_Core_Model_Store $store
+     * @param Mage_Sales_Model_Quote $quote
      * @return bool
      */
-    public function fullStopOnError($store = null)
+    public function fullStopOnError($quote)
+    {
+        if ($quote->getData('estimate_tax_error') && $this->getFullStopOnErrorMode($quote->getStoreId())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Returns full stop on error mode
+     *
+     * @param @param null|bool|int|Mage_Core_Model_Store $store
+     * @return bool
+     */
+    public function getFullStopOnErrorMode($store = null)
+    {
+        $validateAddress = $this->getValidateAddress($store);
+        $errorFullStop = $this->getErrorFullStop($store);
+        $enablePreventOrderConst = OnePica_AvaTax_Model_Source_Addressvalidation::ENABLED_PREVENT_ORDER;
+        if (!$validateAddress && $errorFullStop || $validateAddress == $enablePreventOrderConst) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Returns error full stop config value
+     *
+     * @param @param null|bool|int|Mage_Core_Model_Store $store
+     * @return bool
+     */
+    public function getErrorFullStop($store = null)
     {
         return (bool)$this->_getConfig('error_full_stop', $store);
+    }
+
+    /**
+     * Returns validate address config value
+     *
+     * @param @param null|bool|int|Mage_Core_Model_Store $store
+     * @return bool
+     */
+    public function getValidateAddress($store = null)
+    {
+        return $this->_getConfig('validate_address', $store);
     }
 
     /**
@@ -387,7 +436,7 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
         if (!$this->isAddressActionable($address, $storeId)) {
             return false;
         }
-        return Mage::getStoreConfig('tax/avatax/validate_address', $storeId);
+        return $this->getValidateAddress($storeId);
     }
 
     /**

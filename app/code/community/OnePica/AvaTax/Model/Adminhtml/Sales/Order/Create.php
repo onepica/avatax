@@ -50,18 +50,32 @@ class OnePica_AvaTax_Model_Adminhtml_Sales_Order_Create extends Mage_Adminhtml_M
             if (!Mage::app()->getFrontController()->getRequest()->getParam('isAjax')) {
                 $result = $this->getShippingAddress()->validate();
                 if ($result !== true) {
-                    $storeId = $this->_session->getStore()->getId();
-                    if (Mage::helper('avatax')->fullStopOnError($storeId)) {
-                        foreach ($result as $error) {
-                            $this->getSession()->addError($error);
-                        }
-                        throw new Mage_Core_Exception(implode('<br />', $result));
+                    foreach ($result as $error) {
+                        $this->getSession()->addError($error);
                     }
+                    throw new Mage_Core_Exception(implode('<br />', $result));
                 } elseif ($this->getShippingAddress()->getAddressNormalized() && !$this->_messageAdded) {
-                    Mage::getSingleton('avatax/session')->addNotice(Mage::helper('avatax')->__('The shipping address has been modified during the validation process. Please confirm the address below is accurate.'));
+                    Mage::getSingleton('adminhtml/session')->addNotice(Mage::helper('avatax')->__('The shipping address has been modified during the validation process. Please confirm the address below is accurate.'));
                     $this->_messageAdded = true;  // only add the message once
                 }
             }
+        }
+        return $this;
+    }
+
+    /**
+     * Quote saving
+     *
+     * @return Mage_Adminhtml_Model_Sales_Order_Create
+     */
+    public function saveQuote()
+    {
+        parent::saveQuote();
+        /** @var OnePica_AvaTax_Helper_Data $helper */
+        $helper = Mage::helper('avatax');
+        $quote = $this->getQuote();
+        if ($helper->fullStopOnError($quote)) {
+            $helper->addErrorMessage();
         }
         return $this;
     }
