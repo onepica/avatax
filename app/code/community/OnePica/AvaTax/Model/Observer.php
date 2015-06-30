@@ -225,30 +225,6 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
         if ($ping !== true) {
             $errors[] = $ping;
         }
-        if (!Mage::getStoreConfig('tax/avatax/url', $storeId)) {
-            $errors[] = $this->_getDataHelper()->__('You must enter a connection URL');
-        }
-        if (!Mage::getStoreConfig('tax/avatax/account', $storeId)) {
-            $errors[] = $this->_getDataHelper()->__('You must enter an account number');
-        }
-        if (!Mage::getStoreConfig('tax/avatax/license', $storeId)) {
-            $errors[] = $this->_getDataHelper()->__('You must enter a license key');
-        }
-        if (!is_numeric(Mage::getStoreConfig('tax/avatax/log_lifetime'))) {
-            $errors[] = $this->_getDataHelper()->__('You must enter the number of days to keep log entries');
-        }
-        if (!Mage::getStoreConfig('tax/avatax/company_code', $storeId)) {
-            $errors[] = $this->_getDataHelper()->__('You must enter a company code');
-        }
-        if (!Mage::getStoreConfig('tax/avatax/shipping_sku', $storeId)) {
-            $errors[] = $this->_getDataHelper()->__('You must enter a shipping sku');
-        }
-        if (!Mage::getStoreConfig('tax/avatax/adjustment_positive_sku', $storeId)) {
-            $errors[] = $this->_getDataHelper()->__('You must enter an adjustment refund sku');
-        }
-        if (!Mage::getStoreConfig('tax/avatax/adjustment_negative_sku', $storeId)) {
-            $errors[] = $this->_getDataHelper()->__('You must enter an adjustment fee sku');
-        }
 
         if (!class_exists('SoapClient')) {
             $errors[] = $this->_getDataHelper()->__('The PHP class SoapClient is missing. It must be enabled to use this extension. See %s for details.', '<a href="http://www.php.net/manual/en/book.soap.php" target="_blank">http://www.php.net/manual/en/book.soap.php</a>');
@@ -296,13 +272,13 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     }
 
     /**
-     * This an observer function for the event 'controller_front_init_before'.
+     * This an observer function for the event 'controller_front_init_before' and 'default'
      * It prepends our autoloader, so we can load the extra libraries.
      *
      * @param Varien_Event_Observer $observer
      * @return $this
      */
-    public function controllerFrontInitBefore(Varien_Event_Observer $observer)
+    public function loadAvaTaxExternalLib(Varien_Event_Observer $observer)
     {
         spl_autoload_register(array($this, 'loadLib'), true, true);
         return $this;
@@ -497,7 +473,7 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     protected function _deleteValidateNotices()
     {
         /** @var Mage_Checkout_Model_Session $session */
-        $session = Mage::getSingleton('core/session');
+        $session = Mage::getSingleton('checkout/session');
         $messages = $session->getMessages();
         $messages->deleteMessageByIdentifier(OnePica_AvaTax_Helper_Data::VALIDATION_NOTICE_IDENTIFIER);
         return $this;

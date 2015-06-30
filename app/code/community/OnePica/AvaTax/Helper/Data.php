@@ -541,4 +541,18 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
 
         return true;
     }
+
+    /**
+     * Get UPC attributeCode
+     *
+     * @param int $storeId
+     * @return string
+     */
+    public function getUpcAttributeCode($storeId = null)
+    {
+        if (!(bool)$this->_getConfig('upc_check_status', $storeId)) {
+            return '';
+        }
+        return (string)$this->_getConfig('upc_attribute_code', $storeId);
+    }
 }

@@ -382,20 +382,13 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
      *
      * @param Mage_Catalog_Model_Product $product
      * @param int $refNumber
-     * @return null|string
+     * @return string
      */
     protected function _getRefValueByProductAndNumber($product, $refNumber)
     {
-        $value = null;
         $helperMethod = 'getRef' . $refNumber . 'AttributeCode';
         $refCode = Mage::helper('avatax')->{$helperMethod}($product->getStoreId());
-        if ($refCode && $product->getResource()->getAttribute($refCode)) {
-            try {
-                $value = (string)$product->getResource()->getAttribute($refCode)->getFrontend()->getValue($product);
-            } catch (Exception $e) {
-                Mage::logException($e);
-            }
-        }
+        $value = $this->_getProductAttributeValue($product, $refCode);
         return $value;
     }
 
@@ -472,6 +465,67 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
      */
     protected function _getCustomerGroupId()
     {
+        if (Mage::app()->getStore()->isAdmin()) {
+            return Mage::getSingleton('adminhtml/sales_order_create')->getCustomerGroupId();
+        }
         return Mage::getSingleton('customer/session')->getCustomerGroupId();
+    }
+
+    /**
+     * Get product attribute value
+     *
+     * @param Mage_Catalog_Model_Product $product
+     * @param string                     $code
+     * @return string
+     */
+    protected function _getProductAttributeValue($product, $code)
+    {
+        $value = '';
+        if ($code && $product->getResource()->getAttribute($code)) {
+            try {
+                $value = (string)$product->getResource()
+                    ->getAttribute($code)
+                    ->getFrontend()
+                    ->getValue($product);
+            } catch (Exception $e) {
+                Mage::logException($e);
+            }
+        }
+        return $value;
+    }
+
+    /**
+     * Get UPC code from product
+     *
+     * @param Mage_Catalog_Model_Product $product
+     * @return string
+     */
+    protected function _getUpcCode($product)
+    {
+        $upc = $this->_getProductAttributeValue(
+            $product,
+            $this->_getUpcAttributeCode()
+        );
+        return !empty($upc) ? 'UPC:' . $upc : '';
+    }
+
+    /**
+     * Get UPC attribute code
+     *
+     * @return string
+     */
+    protected function _getUpcAttributeCode()
+    {
+        return $this->_getDataHelper()->getUpcAttributeCode(Mage::app()->getStore()->getId());
+    }
+
+    /**
+     * Get data helper
+     *
+     * @return OnePica_AvaTax_Helper_Data
+     */
+    protected function _getDataHelper()
+    {
+        return Mage::helper('avatax');
     }
 }

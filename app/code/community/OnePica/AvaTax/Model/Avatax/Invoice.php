@@ -418,6 +418,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
      */
     protected function _newLine($item, $credit = false)
     {
+
         if ($this->isProductCalculated($item->getOrderItem())) {
             return false;
         }
@@ -436,7 +437,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
 
         $line = new Line();
         $line->setNo(count($this->_lines));
-        $line->setItemCode(substr($item->getSku(), 0, 50));
+        $line->setItemCode($this->_getItemCode($product, $item));
         $line->setDescription($item->getName());
         $line->setQty($item->getQty());
         $line->setAmount($price);
@@ -461,5 +462,21 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
 
         $this->_lineToItemId[count($this->_lines)] = $item->getOrderItemId();
         $this->_lines[] = $line;
+    }
+
+    /**
+     * Get item code
+     *
+     * @param Mage_Catalog_Model_Product                                                 $product
+     * @param Mage_Sales_Model_Order_Invoice_Item|Mage_Sales_Model_Order_Creditmemo_Item $item
+     * @return string
+     */
+    protected function _getItemCode($product, $item)
+    {
+        $itemCode = $this->_getUpcCode($product);
+        if (empty($itemCode)) {
+            $itemCode = $item->getSku();
+        }
+        return substr($itemCode, 0, 50);
     }
 }
