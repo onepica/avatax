@@ -92,9 +92,10 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
         }
 
         if (!isset($result) || !is_object($result) || !$result->getResultCode()) {
+            $actualResult = $result;
             $result = new Varien_Object();
             $result->setResultCode(SeverityLevel::$Exception)
-                ->setActualResult($result)
+                ->setActualResult($actualResult)
                 ->setMessages(array($message));
         }
 
