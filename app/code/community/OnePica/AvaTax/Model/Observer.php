@@ -424,10 +424,7 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
      * @throws OnePica_AvaTax_Model_Exception
      */
     public function controllerActionPostdispatchCheckoutOnepageSaveShippingMethod(Varien_Event_Observer $observer) {
-        /** @var Mage_Sales_Model_Quote $quote */
-        $quote = Mage::getSingleton('checkout/cart')->getQuote();
-        /** @var OnePica_AvaTax_Helper_Data $helper */
-        if ($this->_getDataHelper()->fullStopOnError($quote)) {
+        if ($this->_getDataHelper()->fullStopOnError($this->_getQuote())) {
             Mage::app()
                 ->getResponse()
                 ->setBody($this->_getResponseErrorMessage());
@@ -513,7 +510,7 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
      */
     protected function _getQuote()
     {
-        return Mage::getModel('checkout/cart')->getQuote();
+        return Mage::getSingleton('checkout/cart')->getQuote();
     }
 
     /**
@@ -535,7 +532,7 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     {
         return Mage::helper('core')->jsonEncode(
             array(
-                'error'   => -1,
+                'error'   => - 1,
                 'message' => $this->_getDataHelper()->getErrorMessage()
             )
         );
