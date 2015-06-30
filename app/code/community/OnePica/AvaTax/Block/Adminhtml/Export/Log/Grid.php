@@ -45,13 +45,15 @@ class OnePica_AvaTax_Block_Adminhtml_Export_Log_Grid extends OnePica_AvaTax_Bloc
      */
     protected function _prepareColumns()
     {
-        return $this->_addColumns(array(
-            'log_id' => 'number',
-            'store_id' => 'number',
-            'level' => Mage::getModel('avatax_records/log')->getLevelOptions(),
-            'type' => Mage::getModel('avatax_records/log')->getTypeOptions(),
-            'created_at' => 'datetime',
-        ));
+        return $this->_addColumns(
+            array(
+                'log_id'     => 'number',
+                'store_id'   => 'number',
+                'level'      => Mage::getModel('avatax_records/log')->getLevelOptions(),
+                'type'       => $this->_getDataHelper()->getExistingTypesLog(),
+                'created_at' => 'datetime',
+            )
+        );
     }
 
     /**
@@ -75,5 +77,15 @@ class OnePica_AvaTax_Block_Adminhtml_Export_Log_Grid extends OnePica_AvaTax_Bloc
     public function getRowUrl($row)
     {
         return $this->getUrl('*/*/logView', array('id' => $row->getId()));
+    }
+
+    /**
+     * Get data helper
+     *
+     * @return OnePica_AvaTax_Helper_Data
+     */
+    protected function _getDataHelper()
+    {
+        return $this->helper('avatax');
     }
 }
