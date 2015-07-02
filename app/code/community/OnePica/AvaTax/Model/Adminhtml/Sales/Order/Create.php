@@ -45,20 +45,8 @@ class OnePica_AvaTax_Model_Adminhtml_Sales_Order_Create extends Mage_Adminhtml_M
         if ($this->getQuote()->getIsVirtual()) {
             return $this;
         }
-
-        if (Mage::helper('avatax')->isAvataxEnabled()) {
-            if (!Mage::app()->getFrontController()->getRequest()->getParam('isAjax')) {
-                $result = $this->getShippingAddress()->validate();
-                if ($result !== true) {
-                    foreach ($result as $error) {
-                        $this->getSession()->addError($error);
-                    }
-                    throw new Mage_Core_Exception(implode('<br />', $result));
-                } elseif ($this->getShippingAddress()->getAddressNormalized() && !$this->_messageAdded) {
-                    Mage::getSingleton('adminhtml/session')->addNotice(Mage::helper('avatax')->__('The shipping address has been modified during the validation process. Please confirm the address below is accurate.'));
-                    $this->_messageAdded = true;  // only add the message once
-                }
-            }
+        if (!$this->_isAjaxRequest()) {
+            $this->_validateShippingAddress();
         }
         return $this;
     }
@@ -78,5 +66,49 @@ class OnePica_AvaTax_Model_Adminhtml_Sales_Order_Create extends Mage_Adminhtml_M
             $helper->addErrorMessage();
         }
         return $this;
+    }
+
+    /**
+     * Validate shipping address
+     *
+     * @return $this
+     * @throws Mage_Core_Exception
+     */
+    protected function _validateShippingAddress()
+    {
+        if (!$this->_getDataHelper()->isAvataxEnabled()) {
+            return $this;
+        }
+        $result = $this->getShippingAddress()->validate();
+        if ($result !== true) {
+            throw new Mage_Core_Exception(implode('<br />', $result));
+        } elseif ($this->getShippingAddress()->getAddressNormalized() && !$this->_messageAdded) {
+            Mage::getSingleton('adminhtml/session')->addNotice(
+                $this->_getDataHelper()->__('The shipping address has been modified during the validation process. Please confirm the address below is accurate.')
+            );
+            $this->_messageAdded = true;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Is ajax
+     *
+     * @return bool
+     */
+    protected function _isAjaxRequest()
+    {
+        return (bool)Mage::app()->getFrontController()->getRequest()->getParam('isAjax');
+    }
+
+    /**
+     * Get data helper
+     *
+     * @return OnePica_AvaTax_Helper_Data
+     */
+    protected function _getDataHelper()
+    {
+        return Mage::helper('avatax');
     }
 }
