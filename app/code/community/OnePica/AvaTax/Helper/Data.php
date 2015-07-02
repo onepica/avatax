@@ -555,4 +555,20 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
         }
         return (string)$this->_getConfig('upc_attribute_code', $storeId);
     }
+
+    /**
+     * Get existing types log
+     *
+     * @return array
+     */
+    public function getExistingTypesLog()
+    {
+        return array(
+            OnePica_AvaTax_Model_Source_Logtype::FILTER   => OnePica_AvaTax_Model_Source_Logtype::FILTER,
+            OnePica_AvaTax_Model_Source_Logtype::GET_TAX  => OnePica_AvaTax_Model_Source_Logtype::GET_TAX,
+            OnePica_AvaTax_Model_Source_Logtype::PING     => OnePica_AvaTax_Model_Source_Logtype::PING,
+            OnePica_AvaTax_Model_Source_Logtype::QUEUE    => OnePica_AvaTax_Model_Source_Logtype::QUEUE,
+            OnePica_AvaTax_Model_Source_Logtype::VALIDATE => OnePica_AvaTax_Model_Source_Logtype::VALIDATE,
+        );
+    }
 }
