@@ -162,8 +162,10 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
         $message = Mage::getStoreConfig('tax/avatax/validate_address_message', $store);
         foreach ($addresses as $address) {
             /* @var $address OnePica_AvaTax_Model_Sales_Quote_Address */
-            if ($address->validate() !== true) {
+            $addressValidation = $address->validate();
+            if ($addressValidation !== true) {
                 $errors[] = sprintf($message, $address->format('oneline'));
+                $errors = array_merge($errors, $addressValidation);
             }
             if ($address->getAddressNormalized()) {
                 $normalized = true;
