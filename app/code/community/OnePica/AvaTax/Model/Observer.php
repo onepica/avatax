@@ -388,6 +388,7 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     {
         /** @var Mage_Sales_Model_Quote $quote */
         $quote = $observer->getEvent()->getQuote();
+        $this->_getDataHelper()->removeErrorMessage();
         $this->_handleTaxEstimationOnOrderPlace($quote);
         return $this;
     }
