@@ -45,14 +45,14 @@ class OnePica_AvaTax_Model_Records_Queue_Process extends OnePica_AvaTax_Model_Ab
     /**
      * Run the complete process
      *
+     * @throws \Exception
      * @return $this
      */
     public function run()
     {
         $this->_cleanCompleted()
             ->_cleanFailed()
-            ->_cleanUnbalancedQueueByType(OnePica_AvaTax_Model_Records_Queue::QUEUE_TYPE_INVOICE)
-            ->_cleanUnbalancedQueueByType(OnePica_AvaTax_Model_Records_Queue::QUEUE_TYPE_CREDITMEMEO)
+            ->_cleanUnbalanced()
             ->_parseInvoices()
             ->_parseCreditMemos();
         return $this;
@@ -103,16 +103,22 @@ class OnePica_AvaTax_Model_Records_Queue_Process extends OnePica_AvaTax_Model_Ab
     /**
      * Clean unbalanced queue by type
      *
-     * @param string $type
      * @return $this
      * @throws \Exception
      */
-    protected function _cleanUnbalancedQueueByType($type)
+    protected function _cleanUnbalanced()
     {
-        $days = (int)(Mage::getStoreConfig('tax/avatax/queue_success_lifetime'));
+        $days = (int)Mage::getStoreConfig('tax/avatax/queue_success_lifetime');
         /** @var OnePica_AvaTax_Model_Records_Mysql4_Queue_Collection $queue */
         $queue = Mage::getModel('avatax_records/queue')->getCollection()
-            ->addFieldToFilter('type', $type)
+            ->addFieldToFilter(
+                'type', array(
+                    'in' => array(
+                        OnePica_AvaTax_Model_Records_Queue::QUEUE_TYPE_INVOICE,
+                        OnePica_AvaTax_Model_Records_Queue::QUEUE_TYPE_CREDITMEMEO
+                    )
+                )
+            )
             ->addFieldToFilter('status', OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_UNBALANCED)
             ->addFieldToFilter('updated_at', array('lt' => gmdate('Y-m-d H:i:s', strtotime('-' . $days . ' days'))));
 
