@@ -108,7 +108,7 @@ class OnePica_AvaTax_Model_Records_Queue_Process extends OnePica_AvaTax_Model_Ab
      */
     protected function _cleanUnbalanced()
     {
-        $days = (int)Mage::getStoreConfig('tax/avatax/queue_success_lifetime');
+        $days = (int)Mage::getStoreConfig('tax/avatax/queue_failed_lifetime');
         /** @var OnePica_AvaTax_Model_Records_Mysql4_Queue_Collection $queue */
         $queue = Mage::getModel('avatax_records/queue')->getCollection()
             ->addFieldToFilter('status', OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_UNBALANCED)
