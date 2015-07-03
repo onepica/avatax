@@ -51,6 +51,8 @@ class OnePica_AvaTax_Model_Records_Queue_Process extends OnePica_AvaTax_Model_Ab
     {
         $this->_cleanCompleted()
             ->_cleanFailed()
+            ->_cleanUnbalancedInvoice()
+            ->_cleanUnbalancedCreditMemo()
             ->_parseInvoices()
             ->_parseCreditMemos();
         return $this;
@@ -91,6 +93,52 @@ class OnePica_AvaTax_Model_Records_Queue_Process extends OnePica_AvaTax_Model_Ab
             ->addFieldToFilter('status', OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_FAILED)
             ->addFieldToFilter('updated_at', array('lt' => gmdate('Y-m-d H:i:s', strtotime('-' . $days . ' days'))));
 
+        foreach ($queue as $item) {
+            $item->delete();
+        }
+
+        return $this;
+    }
+
+    /**
+     * Clean unbalanced invoice
+     *
+     * @return $this
+     * @throws \Exception
+     */
+    protected function _cleanUnbalancedInvoice()
+    {
+        $days = (int)(Mage::getStoreConfig('tax/avatax/queue_success_lifetime'));
+        /** @var OnePica_AvaTax_Model_Records_Mysql4_Queue_Collection $queue */
+        $queue = Mage::getModel('avatax_records/queue')->getCollection()
+            ->addFieldToFilter('type', OnePica_AvaTax_Model_Records_Queue::QUEUE_TYPE_INVOICE)
+            ->addFieldToFilter('status', OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_UNBALANCED)
+            ->addFieldToFilter('updated_at', array('lt' => gmdate('Y-m-d H:i:s', strtotime('-' . $days . ' days'))));
+
+        /** @var OnePica_AvaTax_Model_Records_Queue $item */
+        foreach ($queue as $item) {
+            $item->delete();
+        }
+
+        return $this;
+    }
+
+    /**
+     * Clean unbalanced credit memo
+     *
+     * @return $this
+     * @throws \Exception
+     */
+    protected function _cleanUnbalancedCreditMemo()
+    {
+        $days = (int)(Mage::getStoreConfig('tax/avatax/queue_success_lifetime'));
+        /** @var OnePica_AvaTax_Model_Records_Mysql4_Queue_Collection $queue */
+        $queue = Mage::getModel('avatax_records/queue')->getCollection()
+            ->addFieldToFilter('type', OnePica_AvaTax_Model_Records_Queue::QUEUE_TYPE_CREDITMEMEO)
+            ->addFieldToFilter('status', OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_UNBALANCED)
+            ->addFieldToFilter('updated_at', array('lt' => gmdate('Y-m-d H:i:s', strtotime('-' . $days . ' days'))));
+
+        /** @var OnePica_AvaTax_Model_Records_Queue $item */
         foreach ($queue as $item) {
             $item->delete();
         }
