@@ -101,7 +101,7 @@ class OnePica_AvaTax_Model_Records_Queue_Process extends OnePica_AvaTax_Model_Ab
     }
 
     /**
-     * Clean unbalanced queue by type
+     * Delete any queue items that have unbalanced status
      *
      * @return $this
      * @throws \Exception
