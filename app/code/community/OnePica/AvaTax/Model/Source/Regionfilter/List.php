@@ -48,7 +48,7 @@ class OnePica_AvaTax_Model_Source_Regionfilter_List
     public function toOptionArray()
     {
         if (!$this->_options) {
-            $countries = array('US', 'CA');
+            $countries = array('US');
             $this->_options = array();
 
             $this->_options[] = array(
