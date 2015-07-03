@@ -111,14 +111,6 @@ class OnePica_AvaTax_Model_Records_Queue_Process extends OnePica_AvaTax_Model_Ab
         $days = (int)Mage::getStoreConfig('tax/avatax/queue_success_lifetime');
         /** @var OnePica_AvaTax_Model_Records_Mysql4_Queue_Collection $queue */
         $queue = Mage::getModel('avatax_records/queue')->getCollection()
-            ->addFieldToFilter(
-                'type', array(
-                    'in' => array(
-                        OnePica_AvaTax_Model_Records_Queue::QUEUE_TYPE_INVOICE,
-                        OnePica_AvaTax_Model_Records_Queue::QUEUE_TYPE_CREDITMEMEO
-                    )
-                )
-            )
             ->addFieldToFilter('status', OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_UNBALANCED)
             ->addFieldToFilter('updated_at', array('lt' => gmdate('Y-m-d H:i:s', strtotime('-' . $days . ' days'))));
 
