@@ -25,11 +25,6 @@
 abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model_Abstract
 {
     /**
-     * Tax override reason for virtual product
-     */
-    const TAX_OVERRIDE_REASON_VIRTUAL = 'Virtual';
-
-    /**
      * Flag that states if there was an error
      *
      * @var bool
