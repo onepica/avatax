@@ -1,5 +1,6 @@
-app/etc/modules/*                                       app/etc/modules/
-app/code/community/OnePica/AvaTax                       app/code/community/OnePica/AvaTax
+app/etc/modules/*                                               app/etc/modules/
+app/code/community/OnePica/AvaTax                               app/code/community/OnePica/AvaTax
 app/design/adminhtml/default/default/layout/onepica/avatax.xml  app/design/adminhtml/default/default/layout/onepica/avatax.xml
 app/design/adminhtml/default/default/template/onepica/avatax    app/design/adminhtml/default/default/template/onepica/avatax
 app/design/frontend/base/default/layout/onepica/avatax.xml      app/design/frontend/base/default/layout/onepica/avatax.xml
+app/locale                                                      app/locale
