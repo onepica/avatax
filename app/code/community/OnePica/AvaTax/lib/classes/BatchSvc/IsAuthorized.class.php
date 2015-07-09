@@ -11,5 +11,3 @@ class IsAuthorized {
   public function getOperations(){return $this->Operations;} // string
 
 }
-
-?>

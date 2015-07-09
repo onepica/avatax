@@ -11,5 +11,3 @@ class Ping {
   public function getMessage(){return $this->Message;} // string
 
 }
-
-?>

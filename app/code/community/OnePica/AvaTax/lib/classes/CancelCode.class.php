@@ -70,5 +70,3 @@ class CancelCode extends Enum
     public static function Validate($value) { self::__Validate($value,self::Values(),__CLASS__); }	
 	
 }
-
-?>

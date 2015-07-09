@@ -22,5 +22,3 @@ class DeleteRequest //extends FilterRequest
   public function getMaxCount(){return $this->MaxCount;} // int
 
 }
-
-?>

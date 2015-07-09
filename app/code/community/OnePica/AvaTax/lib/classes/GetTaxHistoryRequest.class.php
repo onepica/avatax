@@ -50,5 +50,3 @@ class GetTaxHistoryRequest extends TaxRequest
     	public function setDetailLevel($value) { DetailLevel::Validate($value); $this->DetailLevel = $value; return $this; }			//Summary or Document or Line or Tax or Diagnostic - enum
 
 }
-
-?>

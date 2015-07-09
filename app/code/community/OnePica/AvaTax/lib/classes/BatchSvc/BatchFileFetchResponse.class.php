@@ -11,5 +11,3 @@ class BatchFileFetchResponse {
   public function getBatchFileFetchResult(){return $this->BatchFileFetchResult;} // BatchFileFetchResult
 
 }
-
-?>

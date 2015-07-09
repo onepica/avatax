@@ -77,8 +77,3 @@ class PostTaxRequest extends TaxRequest
 	public function setNewDocCode($value) { $this->NewDocCode = $value; }
 		
 	}
-	
-	
-
-
-?>

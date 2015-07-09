@@ -44,4 +44,3 @@ class ServiceMode extends Enum
     // Unfortunate boiler plate due to polymorphism issues on static functions
     public static function Validate($value) { self::__Validate($value,self::Values(),__CLASS__); }
 }
-?>

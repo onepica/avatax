@@ -41,6 +41,3 @@ class CommitTaxRequest extends TaxRequest
 	
 
 }
-
-
-?>

@@ -16,6 +16,10 @@
  */
 
 /**
- * The AvaTax Validation Exception class.
+ * The AvaTax Validation Exception class
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
  */
 class OnePica_AvaTax_Model_Avatax_Address_Exception extends Exception {}

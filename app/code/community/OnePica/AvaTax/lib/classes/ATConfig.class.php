@@ -65,7 +65,3 @@ new ATConfig('Default', array(
 	'name'    => 'PHPAdapter',
     'trace'     => true) // change to false for production
 );
-
-
-
-?>

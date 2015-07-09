@@ -11,5 +11,3 @@ class PingResponse {
   public function getPingResult(){return $this->PingResult;} // PingResult
 
 }
-
-?>

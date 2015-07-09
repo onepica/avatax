@@ -14,20 +14,24 @@
  * @copyright  Copyright (c) 2009 One Pica, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-
-
 $installer = $this;
-
 $installer->startSetup();
-
+/* @var $this Mage_Core_Model_Resource_Setup */
+$adapter = $this->getConnection();
 try {
-	$installer->run("
-	
-	ALTER TABLE `" . $this->getTable('tax/tax_class') . "` 
-		ADD `op_avatax_code` VARCHAR(255) DEFAULT '' NOT NULL COMMENT 'Used by One Pica AvaTax extension' 
-		AFTER `class_name`;
-	
-	");
-} catch(Exception $e) { }
-
-$installer->endSetup(); 
+    $adapter->addColumn(
+        $this->getTable('tax/tax_class'),
+        'op_avatax_code',
+        array(
+            'type' => Varien_Db_Ddl_Table::TYPE_TEXT,
+            'length' => 255,
+            'default' => '',
+            'nullable' => false,
+            'comment' => 'Used by One Pica AvaTax extension',
+            'after' => 'class_name'
+        )
+    );
+} catch (Exception $e) {
+    Mage::logException($e);
+}
+$installer->endSetup();

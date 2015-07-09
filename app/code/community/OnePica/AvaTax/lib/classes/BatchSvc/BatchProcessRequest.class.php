@@ -22,5 +22,3 @@ class BatchProcessRequest //extends FilterRequest
   public function getMaxCount(){return $this->MaxCount;} // int
 
 }
-
-?>

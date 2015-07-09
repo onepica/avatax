@@ -188,5 +188,3 @@ class ValidateRequest
 
     public function getCoordinates() { return $this->Coordinates; }
 }
-
-?>

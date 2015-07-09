@@ -84,5 +84,3 @@ class Message
     public function setName($value) { $this->Name = $value; return $this; }
     
 }
-
-?>

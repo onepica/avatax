@@ -50,5 +50,3 @@ class BatchFile {
   public function getErrorCount(){return $this->ErrorCount;} // int
 
 }
-
-?>

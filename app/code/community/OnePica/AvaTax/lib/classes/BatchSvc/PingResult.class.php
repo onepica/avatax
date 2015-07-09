@@ -24,5 +24,3 @@ class PingResult extends BaseResult
     //public function getMessages() { return EnsureIsArray($this->Messages->Message);}
   
 }
-
-?>

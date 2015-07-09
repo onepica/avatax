@@ -43,5 +43,3 @@ class FetchRequest {
   public function getRecordCount(){return $this->RecordCount;} // int
 
 }
-
-?>

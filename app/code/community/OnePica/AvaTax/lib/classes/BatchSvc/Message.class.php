@@ -35,5 +35,3 @@ class Message {
   public function getName(){return $this->Name;} // string
 
 }
-
-?>

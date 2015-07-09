@@ -11,5 +11,3 @@ class BatchFileDelete {
   public function getDeleteRequest(){return $this->DeleteRequest;} // DeleteRequest
 
 }
-
-?>

@@ -15,6 +15,13 @@
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
+/**
+ * Admin html export detail view block
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
+ */
 class OnePica_AvaTax_Block_Adminhtml_Export_Log_View extends Mage_Adminhtml_Block_Widget_Container
 {
     /**
@@ -25,14 +32,13 @@ class OnePica_AvaTax_Block_Adminhtml_Export_Log_View extends Mage_Adminhtml_Bloc
     protected $_currentEevent = null;
 
     /**
-     * Add back button
-     *
+     * Construct: Add back button
      */
     public function __construct()
     {
         parent::__construct();
-        
-		$this->_addButton('back', array(
+
+        $this->_addButton('back', array(
             'label'   => Mage::helper('avatax')->__('Back'),
             'onclick' => "setLocation('" . Mage::getSingleton('adminhtml/url')->getUrl('*/*/log'). "')",
             'class'   => 'back'
@@ -45,20 +51,22 @@ class OnePica_AvaTax_Block_Adminhtml_Export_Log_View extends Mage_Adminhtml_Bloc
      * @return string
      */
     public function getHeaderText()
-    {   
+    {
         if ($this->getCurrentEvent()) {
-			return '<h3 class="icon-head" style="background-image:url(' . $this->getSkinUrl('images/fam_application_view_tile.gif') . ');">' . 
-					$this->__('AvaTax Action Log Entry #%d', $this->getCurrentEvent()->getId()) . 
-					'</h3>';
+            return '<h3 class="icon-head" style="background-image:url('
+                . $this->getSkinUrl('images/fam_application_view_tile.gif') . ');">'
+                . $this->__('AvaTax Action Log Entry #%d', $this->getCurrentEvent()->getId())
+                . '</h3>';
         }
-		return '<h3 class="icon-head" style="background-image:url(' . $this->getSkinUrl('images/fam_application_view_tile.gif') . ');">' . 
-				$this->__('AvaTax Action Log Entry Details') . 
-				'</h3>';
+        return '<h3 class="icon-head" style="background-image:url('
+            . $this->getSkinUrl('images/fam_application_view_tile.gif') . ');">'
+            . $this->__('AvaTax Action Log Entry Details')
+            . '</h3>';
     }
 
     /**
      * Get current event
-    *
+     *
      * @return OnePica_AvaTax_Model_Event|null
      */
     public function getCurrentEvent()
@@ -68,5 +76,4 @@ class OnePica_AvaTax_Block_Adminhtml_Export_Log_View extends Mage_Adminhtml_Bloc
         }
         return $this->_currentEevent;
     }
-
 }

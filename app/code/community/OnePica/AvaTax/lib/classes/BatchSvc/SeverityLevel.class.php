@@ -11,5 +11,3 @@ class SeverityLevel {
   const Exception = 'Exception';
 
 }
-
-?>

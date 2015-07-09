@@ -69,6 +69,3 @@ function xml_pretty_printer($xml, $html_output=FALSE)
     $xml = join("n", $new_xml_lines);
     return ($html_output) ? '<pre>' . htmlentities($xml) . '</pre>' : $xml;
 }
-
-
-?>

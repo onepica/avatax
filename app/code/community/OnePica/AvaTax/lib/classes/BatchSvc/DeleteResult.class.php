@@ -7,5 +7,3 @@
 class DeleteResult extends BaseResult {
 
 }
-
-?>

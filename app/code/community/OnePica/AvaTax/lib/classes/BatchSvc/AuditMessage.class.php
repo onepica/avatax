@@ -11,5 +11,3 @@ class AuditMessage {
   public function getMessage(){return $this->Message;} // string
 
 }
-
-?>

@@ -11,5 +11,3 @@ class BatchProcess {
   public function getBatchProcessRequest(){return $this->BatchProcessRequest;} // BatchProcessRequest
 
 }
-
-?>

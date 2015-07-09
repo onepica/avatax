@@ -15,41 +15,89 @@
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
-
+/**
+ * Log model
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
+ */
 class OnePica_AvaTax_Model_Records_Log extends Mage_Core_Model_Abstract
 {
+    /**
+     * Success log level
+     */
+    const LOG_LEVEL_SUCCESS = 'Success';
 
-	const LOG_LEVEL_SUCCESS = 'Success';
-	const LOG_LEVEL_ERROR	= 'Error';
+    /**
+     * Error log level
+     */
+    const LOG_LEVEL_ERROR    = 'Error';
 
-	public function _construct()
-	{
-		parent::_construct();
-		$this->_init('avatax_records/log');
-	}
-	
-	public function setAdditional($value=null) {
-		if($value) {
-			$value = str_replace(Mage::getStoreConfig('tax/avatax/license'), '[MASKED::LICENSE_KEY]', print_r($value, true));
-		}
-		$this->setData('additional', $value);
-		return $this;
-	}
-
-	public function getTypeOptions() {
-		$storeId = Mage::app()->getStore()->getId();
-		$types = Mage::helper('avatax')->getLogType($storeId);
-		foreach ($types as $key => $value)
-		{
-			$result[$value] = $value;
-		}
-		return $result;
+    /**
+     * Internal constructor
+     */
+    protected function _construct()
+    {
+        parent::_construct();
+        $this->_init('avatax_records/log');
     }
 
-	public function getLevelOptions() {
-		return array(
-			self::LOG_LEVEL_SUCCESS		=> self::LOG_LEVEL_SUCCESS,
-			self::LOG_LEVEL_ERROR		=> self::LOG_LEVEL_ERROR
-  	 	);
-	}
+    /**
+     * Set additional data
+     *
+     * @param string|null $value
+     * @return $this
+     */
+    public function setAdditional($value = null)
+    {
+        if ($value) {
+            $value = str_replace(
+                Mage::getStoreConfig('tax/avatax/license'),
+                '[MASKED::LICENSE_KEY]',
+                print_r($value, true)
+            );
+        }
+        $this->setData('additional', $value);
+        return $this;
+    }
+
+    /**
+     * Get type options
+     *
+     * @return array
+     */
+    public function getTypeOptions()
+    {
+        $result = array();
+        $storeId = Mage::app()->getStore()->getId();
+        $types = Mage::helper('avatax')->getLogType($storeId);
+        foreach ($types as $key => $value) {
+            $result[$value] = $value;
+        }
+        return $result;
+    }
+
+    /**
+     * Get level options
+     *
+     * @return array
+     */
+    public function getLevelOptions() {
+        return array(
+            self::LOG_LEVEL_SUCCESS => self::LOG_LEVEL_SUCCESS,
+            self::LOG_LEVEL_ERROR => self::LOG_LEVEL_ERROR
+        );
+    }
+
+    /**
+     * Delete logs for given interval
+     *
+     * @param int $days
+     * @return int
+     */
+    public function deleteLogsByInterval($days)
+    {
+        return $this->getResource()->deleteLogsByInterval($days);
+    }
 }

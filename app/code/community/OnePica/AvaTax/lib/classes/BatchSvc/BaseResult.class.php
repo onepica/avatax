@@ -19,5 +19,3 @@ class BaseResult {
   public function getMessages(){return $this->Messages;} // ArrayOfMessage
 
 }
-
-?>

@@ -75,5 +75,3 @@ class ApplyPaymentRequest
     public function getPaymentDate(){ return $this->PaymentDate;}   //date
     
 }
-
-?>

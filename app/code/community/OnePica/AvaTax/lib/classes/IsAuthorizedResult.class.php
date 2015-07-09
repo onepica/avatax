@@ -77,5 +77,3 @@ class IsAuthorizedResult //extends BaseResult
 
 
 }
-
-?>

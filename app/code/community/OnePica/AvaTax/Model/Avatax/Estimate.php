@@ -15,7 +15,16 @@
  * @copyright  Copyright (c) 2009 One Pica, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_Abstract {
+
+/**
+ * The AvaTax Address Estimate model
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
+ */
+class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_Abstract
+{
     /**
      * Length of time in minutes for cached rates
      *
@@ -58,9 +67,9 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
 
     /**
      * Loads any saved rates in session
-     *
      */
-    protected function _construct() {
+    protected function _construct()
+    {
         $rates = Mage::getSingleton('avatax/session')->getRates();
         if (is_array($rates)) {
             foreach ($rates as $key => $rate) {
@@ -74,12 +83,13 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
     }
 
     /**
-     * Estimates tax rate for one item. 
+     * Estimates tax rate for one item.
      *
      * @param Varien_Object $item
      * @return int
      */
-    public function getItemRate($item) {
+    public function getItemRate($item)
+    {
         if ($this->isProductCalculated($item)) {
             return 0;
         } else {
@@ -91,35 +101,38 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
 
     /**
      * Estimates tax amount for one item. Does not trigger a call if the shipping
-	 * address has no postal code, or if the postal code is set to "-" (OneStepCheckout)
+     * address has no postal code, or if the postal code is set to "-" (OneStepCheckout)
      *
-     * @param Varien_Object $data
+     * @param Varien_Object $item
      * @return int
      */
-    public function getItemTax($item) {
-		if ($item->getAddress()->getPostcode() && $item->getAddress()->getPostcode() != '-') {
-			if ($this->isProductCalculated($item)) {
-				$tax = 0;
-				foreach ($item->getChildren() as $child) {
-					$child->setAddress($item->getAddress());
-					$tax += $this->getItemTax($child);
-				}        
-				return $tax;
-			} else {
-				$key = $this->_getRates($item);
-				$id = $item->getId();
-				return isset($this->_rates[$key]['items'][$id]['amt']) ? $this->_rates[$key]['items'][$id]['amt'] : 0;
-			}
-		}
-		return 0;
+    public function getItemTax($item)
+    {
+        if ($item->getAddress()->getPostcode() && $item->getAddress()->getPostcode() != '-') {
+            if ($this->isProductCalculated($item)) {
+                $tax = 0;
+                foreach ($item->getChildren() as $child) {
+                    $child->setAddress($item->getAddress());
+                    $tax += $this->getItemTax($child);
+                }
+                return $tax;
+            } else {
+                $key = $this->_getRates($item);
+                $id = $item->getId();
+                return isset($this->_rates[$key]['items'][$id]['amt']) ? $this->_rates[$key]['items'][$id]['amt'] : 0;
+            }
+        }
+        return 0;
     }
 
     /**
      * Get tax detail summary
      *
+     * @param int|null $addressId
      * @return array
      */
-    public function getSummary($addressId=null) {
+    public function getSummary($addressId = null)
+    {
         $summary = null;
 
         if ($addressId) {
@@ -132,7 +145,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
             }
         }
 
-        if (is_null($summary)) {
+        if ($summary === null) {
             $requestKey = Mage::getSingleton('avatax/session')->getLastRequestKey();
             $summary = isset($this->_rates[$requestKey]['summary']) ? $this->_rates[$requestKey]['summary'] : array();
         }
@@ -143,10 +156,11 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
     /**
      * Get rates from Avalara
      *
-     * @param Varien_Object $data
+     * @param Varien_Object $item
      * @return string
      */
-    protected function _getRates($item) {
+    protected function _getRates($item)
+    {
         if (self::$_hasError) {
             return 'error';
         }
@@ -172,13 +186,16 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
         //check to see if we can/need to make the request to Avalara
         $requestKey = $this->_genRequestKey();
         $makeRequest = !isset($this->_rates[$requestKey]['items'][$item->getId()]);
+        //@startSkipCommitHooks
         $makeRequest &= count($this->_lineToLineId) ? true : false;
         $makeRequest &= $this->_request->getDestinationAddress() == '' ? false : true;
         $makeRequest &= $address->getId() ? true : false;
-        
+        $makeRequest &= !isset($this->_rates[$requestKey]['failure']);
+        //@finishSkipCommitHooks
+
         //make request if needed and save results in cache
         if ($makeRequest) {
-            $result = $this->_send($address->getStoreId());
+            $result = $this->_send($address->getQuote()->getStoreId());
 
             //success
             if ($result->getResultCode() == SeverityLevel::$Success) {
@@ -204,9 +221,15 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
                         'amt' => $row->getTax()
                     );
                 }
-
-                //failure
+            //failure
             } else {
+                $this->_rates[$requestKey] = array(
+                    'timestamp'  => time(),
+                    'address_id' => $address->getId(),
+                    'summary'    => array(),
+                    'items'      => array(),
+                    'failure'    => true
+                );
                 if (Mage::helper('avatax')->fullStopOnError($address->getStoreId())) {
                     $address->getQuote()->setHasError(true);
                 }
@@ -224,7 +247,8 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
      *
      * @return string
      */
-    protected function _genRequestKey() {
+    protected function _genRequestKey()
+    {
         $hash = sprintf("%u", crc32(serialize($this->_request)));
         Mage::getSingleton('avatax/session')->setLastRequestKey($hash);
         return $hash;
@@ -236,7 +260,8 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
      * @param Mage_Sales_Model_Quote_Address
      * @return int
      */
-    protected function _addShipping($address) {
+    protected function _addShipping($address)
+    {
         $lineNumber = count($this->_lines);
         $storeId = Mage::app()->getStore()->getId();
         $taxClass = Mage::helper('tax')->getShippingTaxClass($storeId);
@@ -262,11 +287,13 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
      * Adds giftwraporder cost to request as item
      *
      * @param Mage_Sales_Model_Quote_Address
-     * @return int
+     * @return int|bool
      */
-    protected function _addGwOrderAmount($address) {
-        if(!$address->getGwPrice())
-            return;
+    protected function _addGwOrderAmount($address)
+    {
+        if (!$address->getGwPrice()) {
+            return false;
+        }
         $lineNumber = count($this->_lines);
         $storeId = Mage::app()->getStore()->getId();
         //Add gift wrapping price(for entire order)
@@ -287,16 +314,18 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
         $this->_lineToLineId[$lineNumber] = Mage::helper('avatax')->getGwOrderSku($storeId);
         return $lineNumber;
     }
-    
-        /**
+
+    /**
      * Adds giftwrapitems cost to request as item
      *
      * @param Mage_Sales_Model_Quote
-     * @return int
+     * @return int|bool
      */
-    protected function _addGwItemsAmount($address) {
-        if(!$address->getGwItemsPrice())
-            return;
+    protected function _addGwItemsAmount($address)
+    {
+        if (!$address->getGwItemsPrice()) {
+            return false;
+        }
         $lineNumber = count($this->_lines);
         $storeId = Mage::app()->getStore()->getId();
         //Add gift wrapping price(for individual items)
@@ -317,16 +346,18 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
         $this->_lineToLineId[$lineNumber] = Mage::helper('avatax')->getGwItemsSku($storeId);
         return $lineNumber;
     }
-    
+
      /**
      * Adds giftwrap printed card cost to request as item
      *
      * @param Mage_Sales_Model_Quote
-     * @return int
+     * @return int|bool
      */
-    protected function _addGwPrintedCardAmount($address) {
-    	if(!$address->getGwPrintedCardPrice())
-            return;
+    protected function _addGwPrintedCardAmount($address)
+    {
+        if (!$address->getGwPrintedCardPrice()) {
+            return false;
+        }
         $lineNumber = count($this->_lines);
         $storeId = Mage::app()->getStore()->getId();
         //Add printed card price
@@ -354,7 +385,8 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
      * @param Mage_Sales_Model_Quote_item|Mage_Sales_Model_Quote_Address_item
      * @return int
      */
-    protected function _addItemsInCart($item) {
+    protected function _addItemsInCart($item)
+    {
         if ($item->getAddress() instanceof Mage_Sales_Model_Quote_Address) {
             $items = $item->getAddress()->getAllItems();
         } elseif ($item->getQuote() instanceof Mage_Sales_Model_Quote) {
@@ -364,8 +396,10 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
         }
 
         if (count($items) > 0) {
+            $this->_initProductCollection($items);
+            $this->_initTaxClassCollection();
             foreach ($items as $item) {
-                $lineNum = $this->_newLine($item);
+                $this->_newLine($item);
             }
             $this->_request->setLines($this->_lines);
         }
@@ -375,51 +409,39 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
     /**
      * Makes a Line object from a product item object
      *
-     * @param Varien_Object
-     * @return int
+     * @param Varien_Object $item
+     * @return int|bool
      */
-    protected function _newLine($item) {
-        $product = $item->getProduct();
+    protected function _newLine($item)
+    {
+        if ($this->isProductCalculated($item)) {
+            return false;
+        }
+        $product = $this->_getProductByProductId($item->getProductId());
+        $taxClass = $this->_getTaxClassByProduct($product);
+        $price = $item->getBaseRowTotal() - $item->getBaseDiscountAmount();
         $lineNumber = count($this->_lines);
         $line = new Line();
-
-        if ($this->isProductCalculated($item)) {
-            $price = 0;
-        } else {
-            $price = $item->getBaseRowTotal() - $item->getBaseDiscountAmount();
-        }
-
         $line->setNo($lineNumber);
         $line->setItemCode(substr($product->getSku(), 0, 50));
         $line->setDescription($product->getName());
-        $taxClass = Mage::getModel('tax/class')->load($product->getTaxClassId())->getOpAvataxCode();
-        $line->setTaxCode($taxClass);
         $line->setQty($item->getQty());
         $line->setAmount($price);
         $line->setDiscounted($item->getDiscountAmount() ? true : false);
-
-        $ref1Code = Mage::helper('avatax')->getRef1AttributeCode($product->getStoreId());
-        if ($ref1Code && $product->getResource()->getAttribute($ref1Code)) {
-            $ref1 = $product->getResource()->getAttribute($ref1Code)->getFrontend()->getValue($product);
-            try {
-                $line->setRef1((string) $ref1);
-            } catch (Exception $e) {
-                
-            }
+        if ($taxClass) {
+            $line->setTaxCode($taxClass);
         }
-        $ref2Code = Mage::helper('avatax')->getRef2AttributeCode($product->getStoreId());
-        if ($ref2Code && $product->getResource()->getAttribute($ref2Code)) {
-            $ref2 = $product->getResource()->getAttribute($ref2Code)->getFrontend()->getValue($product);
-            try {
-                $line->setRef2((string) $ref2);
-            } catch (Exception $e) {
-                
-            }
+        $ref1Value = $this->_getRefValueByProductAndNumber($product, 1);
+        if ($ref1Value) {
+            $line->setRef1($ref1Value);
+        }
+        $ref2Value = $this->_getRefValueByProductAndNumber($product, 2);
+        if ($ref2Value) {
+            $line->setRef2($ref2Value);
         }
 
         $this->_lines[$lineNumber] = $line;
         $this->_lineToLineId[$lineNumber] = $item->getId();
         return $lineNumber;
     }
-
 }
