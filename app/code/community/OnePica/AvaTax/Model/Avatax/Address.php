@@ -158,14 +158,14 @@ class OnePica_AvaTax_Model_Avatax_Address extends OnePica_AvaTax_Model_Abstract
 
         /** @var OnePica_AvaTax_Model_Config $config */
         $config = Mage::getSingleton('avatax/config')->init($this->_storeId);
+        /** @var Mage_Sales_Model_Quote $quote */
+        $quote = $this->_mageAddress->getQuote();
         $isAddressValidationOn = $this->_getDataHelper()->isAddressValidationOn($this->_mageAddress, $this->_storeId);
         $isAddressNormalizationOn = $this->_getDataHelper()
             ->isAddressNormalizationOn($this->_mageAddress, $this->_storeId);
-        $isQuoteActionable = $this->_getDataHelper()
-            ->isObjectActionable($this->_mageAddress->getQuote(), $this->_mageAddress);
-
+        $isAddressActionable = $this->_getDataHelper()->isAddressActionable($this->_mageAddress, $quote->getStoreId());
         //if there is no use cases for AvaTax services, return address as valid without doing a lookup
-        if (!$isAddressValidationOn && !$isAddressNormalizationOn && !$isQuoteActionable) {
+        if (!$isAddressValidationOn && !$isAddressNormalizationOn && !$isAddressActionable) {
             return true;
         }
 
@@ -262,7 +262,7 @@ class OnePica_AvaTax_Model_Avatax_Address extends OnePica_AvaTax_Model_Abstract
 
             //a valid address isn't required, but Avalara has to say there is
             //enough info to drill down to a tax jurisdiction to calc on
-        } elseif (!$isAddressValidationOn && $isQuoteActionable) {
+        } elseif (!$isAddressValidationOn && $isAddressActionable) {
             if ($result->isTaxable()) {
                 $this->_mageAddress->setAddressValidated(true);
                 return true;

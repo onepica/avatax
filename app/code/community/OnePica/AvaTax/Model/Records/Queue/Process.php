@@ -33,8 +33,16 @@ class OnePica_AvaTax_Model_Records_Queue_Process extends OnePica_AvaTax_Model_Ab
     {
         /** @var OnePica_AvaTax_Model_Records_Mysql4_Queue_Collection $queue */
         $queue = Mage::getModel('avatax_records/queue')->getCollection()
-            ->addFieldToFilter('status', OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_FAILED);
+            ->addFieldToFilter('status', array(
+                    'in' => array(
+                        OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_FAILED,
+                        OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_UNBALANCED,
+                        OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_COMPLETE
+                    )
+                )
+            );
 
+        /** @var OnePica_AvaTax_Model_Records_Queue $item */
         foreach ($queue as $item) {
             $item->delete();
         }
@@ -45,12 +53,14 @@ class OnePica_AvaTax_Model_Records_Queue_Process extends OnePica_AvaTax_Model_Ab
     /**
      * Run the complete process
      *
+     * @throws \Exception
      * @return $this
      */
     public function run()
     {
         $this->_cleanCompleted()
             ->_cleanFailed()
+            ->_cleanUnbalanced()
             ->_parseInvoices()
             ->_parseCreditMemos();
         return $this;
@@ -91,6 +101,28 @@ class OnePica_AvaTax_Model_Records_Queue_Process extends OnePica_AvaTax_Model_Ab
             ->addFieldToFilter('status', OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_FAILED)
             ->addFieldToFilter('updated_at', array('lt' => gmdate('Y-m-d H:i:s', strtotime('-' . $days . ' days'))));
 
+        foreach ($queue as $item) {
+            $item->delete();
+        }
+
+        return $this;
+    }
+
+    /**
+     * Delete any queue items that have unbalanced status
+     *
+     * @return $this
+     * @throws \Exception
+     */
+    protected function _cleanUnbalanced()
+    {
+        $days = (int)Mage::getStoreConfig('tax/avatax/queue_failed_lifetime');
+        /** @var OnePica_AvaTax_Model_Records_Mysql4_Queue_Collection $queue */
+        $queue = Mage::getModel('avatax_records/queue')->getCollection()
+            ->addFieldToFilter('status', OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_UNBALANCED)
+            ->addFieldToFilter('updated_at', array('lt' => gmdate('Y-m-d H:i:s', strtotime('-' . $days . ' days'))));
+
+        /** @var OnePica_AvaTax_Model_Records_Queue $item */
         foreach ($queue as $item) {
             $item->delete();
         }

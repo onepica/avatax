@@ -444,12 +444,6 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
         $line->setDiscounted($item->getBaseDiscountAmount() ? true : false);
         if ($taxClass) {
             $line->setTaxCode($taxClass);
-        } elseif ($product->isVirtual()) {
-            $line->setTaxOverride($this->_getTaxOverrideObject(
-                TaxOverrideType::$TaxAmount,
-                self::TAX_OVERRIDE_REASON_VIRTUAL,
-                0
-            ));
         }
         $ref1Value = $this->_getRefValueByProductAndNumber($product, 1);
         if ($ref1Value) {
