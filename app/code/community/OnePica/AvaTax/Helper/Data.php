@@ -422,10 +422,7 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
         }
 
         if (Mage::getStoreConfig('tax/avatax/region_filter_mode', $storeId) >= $filterMode) {
-            $regionFilters = explode(',', Mage::getStoreConfig('tax/avatax/region_filter_list', $storeId));
-            if (!in_array($address->getRegionId(), $regionFilters)) {
-                $filter = 'region';
-            }
+            $filter = $this->_getFilterRegion($address, $storeId);
         }
 
         if (!in_array($address->getCountryId(), $this->getTaxableCountry($storeId))) {
@@ -457,6 +454,24 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
         }
 
         return $filter ? false : true;
+    }
+
+    /**
+     * Get region filter
+     *
+     * @param Mage_Customer_Model_Address $address
+     * @param int                         $storeId
+     * @return string|bool
+     */
+    protected function _getFilterRegion($address, $storeId)
+    {
+        $filter = false;
+        $regionFilters = explode(',', Mage::getStoreConfig('tax/avatax/region_filter_list', $storeId));
+        $entityId = $address->getRegionId() ?: $address->getCountryId();
+        if (!in_array($entityId, $regionFilters)) {
+            $filter = 'region';
+        }
+        return $filter;
     }
 
     /**
