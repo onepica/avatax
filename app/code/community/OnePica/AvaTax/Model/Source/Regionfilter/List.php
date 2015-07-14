@@ -38,38 +38,103 @@ class OnePica_AvaTax_Model_Source_Regionfilter_List
      *
      * @var array
      */
-    protected $_options;
+    protected $_options = array();
 
     /**
      * Get option array
      *
+     * @throws Mage_Core_Model_Store_Exception
      * @return array
      */
     public function toOptionArray()
     {
-        if (!$this->_options) {
-            $countries = array('US');
-            $this->_options = array();
+        if ($this->_options) {
+            return $this->_options;
+        }
+        $this->_initOptions();
+        return $this->_options;
+    }
 
+    /**
+     * Options initializations
+     *
+     * @throws Mage_Core_Model_Store_Exception
+     * @return $this
+     */
+    protected function _initOptions()
+    {
+        $this->_options[] = array(
+            'label' => '',
+            'value' => ''
+        );
+
+        foreach ($this->_getCountryList() as $country) {
+            $regions = $this->_prepareRegionList($country);
             $this->_options[] = array(
-                'label' => '',
-                'value' => ''
+                'label' => Mage::app()->getLocale()->getCountryTranslation($country),
+                'value' => $regions
             );
-
-            foreach ($countries as $country) {
-                $regions = Mage::getResourceModel('directory/region_collection')
-                    ->addCountryFilter($country)
-                    ->loadData()
-                    ->toOptionArray();
-                array_shift($regions);
-
-                $this->_options[] = array(
-                    'label' => Mage::app()->getLocale()->getCountryTranslation($country),
-                    'value' => $regions
-                );
-            }
         }
 
-        return $this->_options;
+        return $this;
+    }
+
+    /**
+     * Get regions by country
+     *
+     * @param string $country
+     * @return array
+     */
+    protected function _getRegionsByCountry($country)
+    {
+        return Mage::getResourceModel('directory/region_collection')
+            ->addCountryFilter($country)
+            ->loadData()
+            ->toOptionArray();
+    }
+
+    /**
+     * Prepare region list.
+     *
+     * If magento, don't have region list for selected country,
+     * instead region list we add a 'All' option with country code value
+     *
+     * @param string $country
+     * @return array
+     */
+    protected function _prepareRegionList($country)
+    {
+        $regions = $this->_getRegionsByCountry($country);
+        array_shift($regions);
+        if (!$regions) {
+            $regions[] = array(
+                'title' => 'All',
+                'label' => 'All',
+                'value' => $country
+            );
+        }
+
+        return $regions;
+    }
+
+    /**
+     * Get country list
+     *
+     * @throws Mage_Core_Model_Store_Exception
+     * @return array
+     */
+    protected function _getCountryList()
+    {
+        return $this->_getDataHelper()->getTaxableCountry(Mage::app()->getStore()->getId());
+    }
+
+    /**
+     * Get data helper
+     *
+     * @return OnePica_AvaTax_Helper_Data
+     */
+    protected function _getDataHelper()
+    {
+        return Mage::helper('avatax');
     }
 }
