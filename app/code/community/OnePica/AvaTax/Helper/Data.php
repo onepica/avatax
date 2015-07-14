@@ -408,7 +408,7 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Determines if the address should be filtered
      *
-     * @param Mage_Customer_Model_Address
+     * @param Mage_Customer_Model_Address $address
      * @param int $storeId
      * @param int $filterMode
      * @return bool
@@ -428,8 +428,7 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
             }
         }
 
-        $countryFilters = explode(',', Mage::getStoreConfig('tax/avatax/country_filter_list', $storeId));
-        if (!in_array($address->getCountryId(), $countryFilters)) {
+        if (!in_array($address->getCountryId(), $this->getTaxableCountry($storeId))) {
             $filter = 'country';
         }
 
@@ -458,6 +457,17 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
         }
 
         return $filter ? false : true;
+    }
+
+    /**
+     * Get taxable country
+     *
+     * @param int $storeId
+     * @return array
+     */
+    public function getTaxableCountry($storeId)
+    {
+        return explode(',', Mage::getStoreConfig('tax/avatax/taxable_country', $storeId));
     }
 
     /**

@@ -280,7 +280,7 @@
                 <action>0</action>
                 <url>https://avatax.avalara.net/</url>
                 <region_filter_mode>0</region_filter_mode>
-                <country_filter_list>CA,US</country_filter_list>
+                <taxable_country>CA,US</taxable_country>
                 <log_status>1</log_status>
                 <log_lifetime>3</log_lifetime>
                 <queue_success_lifetime>7</queue_success_lifetime>
