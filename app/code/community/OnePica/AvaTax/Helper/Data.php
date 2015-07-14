@@ -25,9 +25,14 @@
 class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
 {
     /**
+     * Xml path to taxable_country config
+     */
+    const XML_PATH_TO_TAX_AVATAX_TAXABLE_COUNTRY = 'tax/avatax/taxable_country';
+
+    /**
      * Identifier for error message
      */
-    const  CALCULATE_ERROR_MESSAGE_IDENTIFIER = 'avatax_calculate_error';
+    const CALCULATE_ERROR_MESSAGE_IDENTIFIER = 'avatax_calculate_error';
 
     /**
      * Check if avatax extension is enabled
@@ -425,7 +430,7 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
             $filter = $this->_getFilterRegion($address, $storeId);
         }
 
-        if (!in_array($address->getCountryId(), $this->getTaxableCountry($storeId))) {
+        if (!in_array($address->getCountryId(), $this->getTaxableCountryByStore($storeId))) {
             $filter = 'country';
         }
 
@@ -475,14 +480,45 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Get taxable country
+     * Get taxable country by store
      *
      * @param int $storeId
      * @return array
      */
-    public function getTaxableCountry($storeId)
+    public function getTaxableCountryByStore($storeId = null)
     {
-        return explode(',', Mage::getStoreConfig('tax/avatax/taxable_country', $storeId));
+        return explode(',', Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_TAXABLE_COUNTRY, $storeId));
+    }
+
+    /**
+     * Get taxable country by website
+     *
+     * @param int $websiteId
+     * @return array
+     */
+    public function getTaxableCountryByWebSite($websiteId)
+    {
+        return explode(',', Mage::app()
+            ->getWebsite($websiteId)
+            ->getConfig(self::XML_PATH_TO_TAX_AVATAX_TAXABLE_COUNTRY)
+        );
+    }
+
+    /**
+     * Get taxable country by current scope
+     *
+     * Used in admin panel
+     *
+     * @return array
+     */
+    public function getTaxableCountryByCurrentScope()
+    {
+        $websiteId = Mage::app()->getRequest()->get('website');
+        $storeId = Mage::app()->getRequest()->get('store');
+        if ($websiteId && !$storeId) {
+            return $this->getTaxableCountryByWebSite($websiteId);
+        }
+        return $this->getTaxableCountryByStore($storeId);
     }
 
     /**

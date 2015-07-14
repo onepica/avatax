@@ -63,11 +63,6 @@ class OnePica_AvaTax_Model_Source_Regionfilter_List
      */
     protected function _initOptions()
     {
-        $this->_options[] = array(
-            'label' => '',
-            'value' => ''
-        );
-
         foreach ($this->_getCountryList() as $country) {
             $regions = $this->_prepareRegionList($country);
             $this->_options[] = array(
@@ -125,7 +120,7 @@ class OnePica_AvaTax_Model_Source_Regionfilter_List
      */
     protected function _getCountryList()
     {
-        return $this->_getDataHelper()->getTaxableCountry(Mage::app()->getStore()->getId());
+        return $this->_getDataHelper()->getTaxableCountryByCurrentScope();
     }
 
     /**
