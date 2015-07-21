@@ -437,6 +437,7 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     {
         /** @var OnePica_AvaTax_Helper_Data $helper */
         $helper = $this->_getDataHelper();
+        $helper->removeErrorMessage();
         if ($helper->fullStopOnError($quote)) {
             throw new OnePica_AvaTax_Model_Exception($helper->getErrorMessage());
         }
