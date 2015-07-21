@@ -34,7 +34,7 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
     /**
      * The request data object
      *
-     * @var mixed
+     * @var GetTaxRequest
      */
     protected $_request = null;
 
@@ -124,6 +124,7 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
     {
         $storeId = $object->getStoreId();
         $this->_setCompanyCode($storeId);
+        $this->_request->setBusinessIdentificationNo($this->_getBusinessIdentificationNo($object));
         $this->_request->setDetailLevel(DetailLevel::$Document);
         $this->_request->setDocDate(date('Y-m-d'));
         $this->_request->setExemptionNo('');
@@ -137,6 +138,21 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
             $this->_request->setReferenceCode('Magento Order #' . $object->getIncrementId());
         }
         return $this;
+    }
+
+    /**
+     * Retrieve Business identification number
+     *
+     * @param Mage_Sales_Model_Order|OnePica_AvaTax_Model_Sales_Quote_Address $object
+     * @return $this
+     */
+    protected function _getBusinessIdentificationNo($object)
+    {
+        if ($object instanceof Mage_Sales_Model_Order) {
+            return $object->getShippingAddress()->getVatId();
+        }
+
+        return  $object->getVatId();
     }
 
     /**
