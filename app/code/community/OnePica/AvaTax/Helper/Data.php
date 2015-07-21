@@ -404,7 +404,7 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function isAddressValidationOn($address, $storeId)
     {
-        if (!$this->isAddressActionable($address, $storeId)) {
+        if (!$this->isAddressActionable($address, $storeId, OnePica_AvaTax_Model_Config::REGIONFILTER_ALL, true)) {
             return false;
         }
         return Mage::getStoreConfig('tax/avatax/validate_address', $storeId);
@@ -419,7 +419,7 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function isAddressNormalizationOn($address, $storeId)
     {
-        if (!$this->isAddressActionable($address, $storeId)) {
+        if (!$this->isAddressActionable($address, $storeId, OnePica_AvaTax_Model_Config::REGIONFILTER_ALL, true)) {
             return false;
         }
         return Mage::getStoreConfig('tax/avatax/normalize_address', $storeId);
@@ -429,12 +429,14 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
      * Determines if the address should be filtered
      *
      * @param Mage_Customer_Model_Address $address
-     * @param int $storeId
-     * @param int $filterMode
+     * @param int                         $storeId
+     * @param int                         $filterMode
+     * @param bool                        $isAddressValidation
      * @return bool
      */
-    public function isAddressActionable($address, $storeId, $filterMode = OnePica_AvaTax_Model_Config::REGIONFILTER_ALL)
-    {
+    public function isAddressActionable($address, $storeId, $filterMode = OnePica_AvaTax_Model_Config::REGIONFILTER_ALL,
+        $isAddressValidation = false
+    ) {
         $filter = false;
 
         if (Mage::getStoreConfig('tax/avatax/action', $storeId) == OnePica_AvaTax_Model_Config::ACTION_DISABLE) {
@@ -445,7 +447,19 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
             $filter = $this->_getFilterRegion($address, $storeId);
         }
 
+        if ($isAddressValidation && $filter
+            && ((int)$this->getRegionFilterModByStore($storeId) !== OnePica_AvaTax_Model_Config::REGIONFILTER_ALL)
+        ) {
+            $filter = false;
+        }
+
         if (!in_array($address->getCountryId(), $this->getTaxableCountryByStore($storeId))) {
+            $filter = 'country';
+        }
+
+        if ($isAddressValidation && !$filter
+            && !in_array($address->getCountryId(), $this->getAddressValidationCountries($storeId))
+        ) {
             $filter = 'country';
         }
 
