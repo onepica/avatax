@@ -30,6 +30,11 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_PATH_TO_TAX_AVATAX_TAXABLE_COUNTRY = 'tax/avatax/taxable_country';
 
     /**
+     * Xml path to region_filter_mode
+     */
+    const XML_PATH_TO_TAX_AVATAX_REGION_FILTER_MODE = 'tax/avatax/region_filter_mode';
+
+    /**
      * Identifier for error message
      */
     const CALCULATE_ERROR_MESSAGE_IDENTIFIER = 'avatax_calculate_error';
@@ -436,7 +441,7 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
             return false;
         }
 
-        if (Mage::getStoreConfig('tax/avatax/region_filter_mode', $storeId) >= $filterMode) {
+        if ($this->getRegionFilterModByStore($storeId) >= $filterMode) {
             $filter = $this->_getFilterRegion($address, $storeId);
         }
 
@@ -529,6 +534,48 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
             return $this->getTaxableCountryByWebSite($websiteId);
         }
         return $this->getTaxableCountryByStore($storeId);
+    }
+
+    /**
+     * Get region filter mod by store
+     *
+     * @param null|int $storeId
+     * @return int
+     * @internal param int $store
+     */
+    public function getRegionFilterModByStore($storeId = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_REGION_FILTER_MODE, $storeId);
+    }
+
+    /**
+     * Get region filter mod by website
+     *
+     * @param int $websiteId
+     * @return int
+     * @throws \Mage_Core_Exception
+     */
+    public function getRegionFilterModByWebsite($websiteId)
+    {
+        return Mage::app()->getWebsite($websiteId)->getConfig(self::XML_PATH_TO_TAX_AVATAX_REGION_FILTER_MODE);
+    }
+
+    /**
+     * Get region filter mode by current scope
+     *
+     * @throws \Mage_Core_Exception
+     * @return int
+     */
+    public function getRegionFilterModByCurrentScope()
+    {
+        $websiteId = Mage::app()->getRequest()->get('website');
+        $storeId = Mage::app()->getRequest()->get('store');
+
+        if ($websiteId && !$storeId) {
+            return $this->getRegionFilterModByWebsite($websiteId);
+        }
+
+        return $this->getRegionFilterModByStore($storeId);
     }
 
     /**

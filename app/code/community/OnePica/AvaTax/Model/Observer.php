@@ -259,6 +259,10 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
             $warnings[] = Mage::helper('avatax')->__('It appears that Magento\'s cron scheduler is not running. For more information, see %s.', '<a href="http://www.magentocommerce.com/wiki/how_to_setup_a_cron_job" target="_black">How to Set Up a Cron Job</a>');
         }
 
+        if ($this->_isRegionFilterAll() && $this->_canNotBeAddressValidated()) {
+            $warnings[] = Mage::helper('avatax')->__('Please be aware that address validation will not work for addresses outside United States and Canada');
+        }
+
         if (count($errors) == 1) {
             $session->addError(implode('', $errors));
         } elseif (count($errors)) {
@@ -341,5 +345,29 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
         $session = Mage::getSingleton('checkout/session');
         $session->setPostType('onepage');
         return $this;
+    }
+
+    /**
+     * Is region filter all mod
+     *
+     * @return bool
+     */
+    protected function _isRegionFilterAll()
+    {
+        return (int)$this->_getDataHelper()->getRegionFilterModByCurrentScope()
+               === OnePica_AvaTax_Model_Config::REGIONFILTER_ALL;
+    }
+
+    /**
+     * Can not be address validated
+     *
+     * @return array
+     */
+    protected function _canNotBeAddressValidated()
+    {
+        return (bool)array_diff(
+            $this->_getDataHelper()->getTaxableCountryByCurrentScope(),
+            $this->_getDataHelper()->getAddressValidationCountries()
+        );
     }
 }
