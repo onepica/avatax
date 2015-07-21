@@ -388,7 +388,6 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     {
         /** @var Mage_Sales_Model_Quote $quote */
         $quote = $observer->getEvent()->getQuote();
-        $this->_getDataHelper()->removeErrorMessage();
         $this->_handleTaxEstimationOnOrderPlace($quote);
         return $this;
     }
@@ -436,6 +435,7 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     {
         /** @var OnePica_AvaTax_Helper_Data $helper */
         $helper = $this->_getDataHelper();
+        $helper->removeErrorMessage();
         if ($helper->fullStopOnError($quote)) {
             throw new OnePica_AvaTax_Model_Exception($helper->getErrorMessage());
         }
