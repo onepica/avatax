@@ -281,6 +281,7 @@
                 <url>https://avatax.avalara.net/</url>
                 <region_filter_mode>0</region_filter_mode>
                 <taxable_country>CA,US</taxable_country>
+                <address_validation_countries>CA,US</address_validation_countries>
                 <log_status>1</log_status>
                 <log_lifetime>3</log_lifetime>
                 <queue_success_lifetime>7</queue_success_lifetime>

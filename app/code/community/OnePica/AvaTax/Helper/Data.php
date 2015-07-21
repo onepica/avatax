@@ -300,6 +300,16 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Get address validation countries
+     *
+     * @return array
+     */
+    public function getAddressValidationCountries()
+    {
+        return explode(',', $this->_getConfig('address_validation_countries'));
+    }
+
+    /**
      * Adds error message if there is an error
      *
      * @param null|bool|int|Mage_Core_Model_Store $store
