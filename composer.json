@@ -1,16 +1,16 @@
 {
     "name": "onepica/avatax",
     "type": "magento-module",
-    "description": "This extension integrates Magento with AvaTax, a tax service provided by Avalara. ",
+    "description": "This extension integrates Magento with AvaTax, a tax service provided by Avalara.",
     "homepage": "http://www.magentocommerce.com/magento-connect/6760.html",
-    "require": {
-        "magento-hackathon/magento-composer-installer": "dev-master"
-    },
     "license": "OSL-3.0",
     "authors":[
         {
-            "name":"One Pica",
+            "name": "One Pica",
             "homepage": "http://www.onepica.com/"
         }
-    ]
+    ],
+    "suggest": {
+        "magento-hackathon/magento-composer-installer": "To deploy Magento module packages."
+    }
 }
