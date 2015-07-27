@@ -144,15 +144,17 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
      * Retrieve Business identification number
      *
      * @param Mage_Sales_Model_Order|OnePica_AvaTax_Model_Sales_Quote_Address $object
-     * @return $this
+     * @return string
      */
     protected function _getBusinessIdentificationNo($object)
     {
         if ($object instanceof Mage_Sales_Model_Order) {
-            return $object->getShippingAddress()->getVatId();
+            return $object->getShippingAddress()->getVatId()
+                ?: $object->getBillingAddress()->getVatId();
         }
 
-        return  $object->getVatId();
+        return $object->getQuote()->getShippingAddress()->getVatId()
+            ?: $object->getQuote()->getBillingAddress()->getVatId();
     }
 
     /**
