@@ -370,4 +370,14 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
             $this->_getDataHelper()->getAddressValidationCountries()
         );
     }
+
+    /**
+     * Get data helper
+     *
+     * @return OnePica_AvaTax_Helper_Data
+     */
+    protected function _getDataHelper()
+    {
+        return Mage::helper('avatax');
+    }
 }
