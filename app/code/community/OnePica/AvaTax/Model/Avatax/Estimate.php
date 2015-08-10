@@ -176,7 +176,6 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
         $this->_setOriginAddress($address->getStoreId());
         $this->_setDestinationAddress($address);
         $this->_request->setDetailLevel(DetailLevel::$Line);
-        $this->_addCustomer($address);
         $this->_addItemsInCart($item);
         $this->_addShipping($address);
         //Added code for calculating tax for giftwrap items
