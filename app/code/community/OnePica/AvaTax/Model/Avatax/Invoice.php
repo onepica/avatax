@@ -55,6 +55,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
         /** @var Mage_Sales_Model_Resource_Order_Invoice_Collection $invoiceCollection */
         $invoiceCollection = $order->getInvoiceCollection();
         $invoiceCollection->setPageSize(1)->setCurPage(1);
+        $invoiceCollection->addAttributeToSort('created_at', 'desc');
         $invoiceDate = $invoiceCollection->getFirstItem()->getCreatedAt();
         $orderDate = $order->getCreatedAt();
         $statusDate = $queue->getUpdatedAt();
@@ -140,6 +141,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
         $statusDate = $queue->getUpdatedAt();
         /** @var Mage_Sales_Model_Resource_Order_Creditmemo_Collection $creditmemoCollection */
         $creditmemoCollection = $order->getCreditmemosCollection();
+        $creditmemoCollection->addAttributeToSort('created_at', 'desc');
         $creditmemoCollection->setPageSize(1)->setCurPage(1);
         $creditmemoDate = $creditmemoCollection->getFirstItem()->getCreatedAt();
 
