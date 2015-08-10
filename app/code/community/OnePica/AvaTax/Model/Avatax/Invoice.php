@@ -62,7 +62,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
 
         $shippingAddress = ($order->getShippingAddress()) ? $order->getShippingAddress() : $order->getBillingAddress();
         if (!$shippingAddress) {
-            throw new Exception($this->__('There is no address attached to this order'));
+            Mage::throwException($this->__('There is no address attached to this order'));
         }
 
         $this->_request = new GetTaxRequest();
@@ -147,7 +147,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
 
         $shippingAddress = ($order->getShippingAddress()) ? $order->getShippingAddress() : $order->getBillingAddress();
         if (!$shippingAddress) {
-            throw new Exception($this->__('There is no address attached to this order'));
+            Mage::throwException($this->__('There is no address attached to this order'));
         }
 
         $this->_request = new GetTaxRequest();

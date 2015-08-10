@@ -169,7 +169,7 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
         }
 
         if (!empty($errors)) {
-            throw new Mage_Core_Exception(implode('<br />', $errors));
+            Mage::throwException(implode('<br />', $errors));
         }
         return $this;
     }

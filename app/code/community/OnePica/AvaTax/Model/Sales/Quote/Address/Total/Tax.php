@@ -298,7 +298,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
     protected function _getAddress()
     {
         if ($this->_address === null) {
-            throw new Mage_Core_Exception(Mage::helper('sales')->__('Address model is not defined'));
+            Mage::throwException(Mage::helper('sales')->__('Address model is not defined'));
         }
         return $this->_address;
     }
