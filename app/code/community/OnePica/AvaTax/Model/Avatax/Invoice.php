@@ -52,7 +52,10 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
     public function invoice($invoice, $queue)
     {
         $order = $invoice->getOrder();
-        $invoiceDate = $order->getInvoiceCollection()->getFirstItem()->getCreatedAt();
+        /** @var Mage_Sales_Model_Resource_Order_Invoice_Collection $invoiceCollection */
+        $invoiceCollection = $order->getInvoiceCollection();
+        $invoiceCollection->setPageSize(1)->setCurPage(1);
+        $invoiceDate = $invoiceCollection->getFirstItem()->getCreatedAt();
         $orderDate = $order->getCreatedAt();
         $statusDate = $queue->getUpdatedAt();
 
@@ -135,7 +138,10 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
         $order = $creditmemo->getOrder();
         $orderDate = $order->getCreatedAt();
         $statusDate = $queue->getUpdatedAt();
-        $creditmemoDate = $order->getCreditmemosCollection()->getFirstItem()->getCreatedAt();
+        /** @var Mage_Sales_Model_Resource_Order_Creditmemo_Collection $creditmemoCollection */
+        $creditmemoCollection = $order->getCreditmemosCollection();
+        $creditmemoCollection->setPageSize(1)->setCurPage(1);
+        $creditmemoDate = $creditmemoCollection->getFirstItem()->getCreatedAt();
 
         $shippingAddress = ($order->getShippingAddress()) ? $order->getShippingAddress() : $order->getBillingAddress();
         if (!$shippingAddress) {

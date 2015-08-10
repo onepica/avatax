@@ -73,8 +73,11 @@ class OnePica_AvaTax_Model_Export_Adapter_Sql extends OnePica_AvaTax_Model_Expor
     protected function _getColumns()
     {
         if ($this->_columns === null) {
-            $this->_columns = array_keys($this->getCollection()->getFirstItem()->getData());
+            $this->_columns = array_keys(
+                $this->getCollection()->setPageSize(1)->setCurPage(1)->getFirstItem()->getData()
+            );
         }
+
         return $this->_columns;
     }
 
