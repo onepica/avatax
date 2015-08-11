@@ -60,7 +60,8 @@ class OnePica_AvaTax_Model_Export_Adapter_Sql extends OnePica_AvaTax_Model_Expor
         $content = '-- ' . strtoupper($this->getCollection()->getMainTable()) . " EXPORT\n";
         $content .= '-- Created at: ' . gmdate(DATE_W3C) . "\n";
         $content .= '-- Created by: ' . Mage::getUrl('/') . "\n";
-        $content .= '-- Magento v' . Mage::getVersion() . ' // OP_AvaTax v' . $version . ' // Stores: ' . $stores . "\n";
+        $content .= '-- Magento v' . Mage::getVersion() . ' // OP_AvaTax v' . $version . ' // Stores: ' . $stores
+                    . "\n";
         $content .= '-- Total rows: ' . $this->getCollection()->getSize() . "\n\n";
         return $content;
     }
