@@ -63,20 +63,6 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Loads an array of AvaTax classes.
-     *
-     * @param array $classes
-     * @return OnePica_AvaTax_Helper_Data
-     */
-    public function loadClasses(array $classes)
-    {
-        foreach ($classes as $class) {
-            $this->loadClass($class);
-        }
-        return $this;
-    }
-
-    /**
      * Load functions required to work with Avalara API
      *
      * @return $this
@@ -105,16 +91,6 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
     public function getLibPath ()
     {
         return Mage::getModuleDir('', 'OnePica_AvaTax') . DS . 'lib';
-    }
-
-    /**
-     * Returns the path to the AvaTax SDK WSDL directory.
-     *
-     * @return string
-     */
-    public function getWsdlPath ()
-    {
-        return $this->getLibPath() . DS . 'wsdl';
     }
 
     /**
