@@ -128,8 +128,9 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     {
         /* @var $creditmemo Mage_Sales_Model_Order_Creditmemo */
         $creditmemo = $observer->getEvent()->getCreditmemo();
-        if(!$creditmemo->getOrigData($creditmemo->getIdFieldName())
-                && Mage::helper('avatax')->isObjectActionable($creditmemo)) {
+        if (!$creditmemo->getOrigData($creditmemo->getIdFieldName())
+            && Mage::helper('avatax')->isObjectActionable($creditmemo)
+        ) {
             Mage::getModel('avatax_records/queue')
                 ->setEntity($creditmemo)
                 ->setType(OnePica_AvaTax_Model_Records_Queue::QUEUE_TYPE_CREDITMEMEO)
