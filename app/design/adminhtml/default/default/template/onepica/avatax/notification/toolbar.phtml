@@ -21,7 +21,9 @@
     <?php if ($count):?>
         <div class="notification-global">
             <?php if ($this->isAllowed()):?>
-            <span class="f-right"><?php echo $this->__('Go to the <a href="%s">AvaTax Order Sync Queue</a>', $this->getQueueGridUrl());?></span>
+            <span class="f-right">
+                <?php echo $this->__('Go to the <a href="%s">AvaTax Order Sync Queue</a>', $this->getQueueGridUrl());?>
+            </span>
             <?php endif;?>
             <strong class="label"><?php echo $this->__('AvaTax:');?></strong>
             <?php if ($count == 1):?>
