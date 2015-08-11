@@ -430,11 +430,11 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
         if ($taxClass) {
             $line->setTaxCode($taxClass);
         }
-        $ref1Value = $this->_getRefValueByProductAndNumber($product, 1);
+        $ref1Value = $this->_getRefValueByProductAndNumber($product, 1, $item->getStoreId());
         if ($ref1Value) {
             $line->setRef1($ref1Value);
         }
-        $ref2Value = $this->_getRefValueByProductAndNumber($product, 2);
+        $ref2Value = $this->_getRefValueByProductAndNumber($product, 2, $item->getStoreId());
         if ($ref2Value) {
             $line->setRef2($ref2Value);
         }

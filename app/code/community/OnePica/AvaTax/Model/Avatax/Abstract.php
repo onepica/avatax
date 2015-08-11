@@ -383,14 +383,15 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
      * Get proper ref value for given product
      *
      * @param Mage_Catalog_Model_Product $product
-     * @param int $refNumber
+     * @param int                        $refNumber
+     * @param int                        $storeId
      * @return null|string
      */
-    protected function _getRefValueByProductAndNumber($product, $refNumber)
+    protected function _getRefValueByProductAndNumber($product, $refNumber, $storeId)
     {
         $value = null;
         $helperMethod = 'getRef' . $refNumber . 'AttributeCode';
-        $refCode = Mage::helper('avatax')->{$helperMethod}($product->getStoreId());
+        $refCode = Mage::helper('avatax')->{$helperMethod}($storeId);
         if ($refCode && $product->getResource()->getAttribute($refCode)) {
             try {
                 $value = (string)$product->getResource()->getAttribute($refCode)->getFrontend()->getValue($product);
