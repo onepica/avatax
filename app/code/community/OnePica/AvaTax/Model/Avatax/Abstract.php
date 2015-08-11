@@ -131,7 +131,7 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
         $this->_request->setSalespersonCode(Mage::helper('avatax')->getSalesPersonCode($storeId));
         $this->_request->setLocationCode(Mage::helper('avatax')->getLocationCode($storeId));
         $this->_request->setCountry(Mage::getStoreConfig('shipping/origin/country_id', $storeId));
-        $this->_request->setCurrencyCode(Mage::app()->getStore()->getBaseCurrencyCode());
+        $this->_request->setCurrencyCode(Mage::app()->getStore($storeId)->getBaseCurrencyCode());
         $this->_addCustomer($object);
         if ($object instanceof Mage_Sales_Model_Order && $object->getIncrementId()) {
             $this->_request->setReferenceCode('Magento Order #' . $object->getIncrementId());
