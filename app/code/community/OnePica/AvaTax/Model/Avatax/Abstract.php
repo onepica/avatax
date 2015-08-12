@@ -251,7 +251,6 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
     public function isProductCalculated($item)
     {
         // check if item has methods as far as shipping, gift wrapping, printed card item comes as Varien_Object
-        // TODO: Refactor OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax::collect method
         if (method_exists($item, 'isChildrenCalculated') && method_exists($item, 'getParentItem')) {
             if ($item->isChildrenCalculated() && !$item->getParentItem()) {
                 return true;
