@@ -4,3 +4,4 @@ app/design/adminhtml/default/default/layout/onepica/avatax.xml  app/design/admin
 app/design/adminhtml/default/default/template/onepica/avatax    app/design/adminhtml/default/default/template/onepica/avatax
 app/design/frontend/base/default/layout/onepica/avatax.xml      app/design/frontend/base/default/layout/onepica/avatax.xml
 app/locale                                                      app/locale
+lib/AvaTax                                                      lib/AvaTax

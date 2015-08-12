@@ -88,9 +88,9 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
      *
      * @return string
      */
-    public function getLibPath ()
+    public function getLibPath()
     {
-        return Mage::getModuleDir('', 'OnePica_AvaTax') . DS . 'lib';
+        return Mage::getBaseDir('lib') . DS . 'AvaTax';
     }
 
     /**

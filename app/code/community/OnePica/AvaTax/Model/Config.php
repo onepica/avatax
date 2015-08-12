@@ -15,7 +15,7 @@
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
-require_once(Mage::getModuleDir('', 'OnePica_AvaTax') . DS . 'lib' . DS.'functions.php');
+require_once(Mage::getBaseDir('lib') . DS . 'AvaTax' . DS . 'functions.php');
 
 /**
  * The AvaTax Config Model, which registers config settings with the AvaTax SDK
