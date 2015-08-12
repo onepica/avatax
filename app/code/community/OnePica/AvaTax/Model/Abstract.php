@@ -46,7 +46,7 @@ abstract class OnePica_AvaTax_Model_Abstract extends Varien_Object
         if ($result->getResultCode() == SeverityLevel::$Success) {
             switch (Mage::helper('avatax')->getLogMode($storeId)) {
                 case OnePica_AvaTax_Model_Source_Logmode::ERRORS:
-                    return;
+                    return $this;
                     break;
                 case OnePica_AvaTax_Model_Source_Logmode::NORMAL:
                     $additional = null;
