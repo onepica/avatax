@@ -106,15 +106,18 @@ class OnePica_AvaTax_Model_Config extends Varien_Object
     public function init($storeId)
     {
         if (!$this->_config) {
-            $this->_config = new ATConfig(self::CONFIG_KEY, array(
-                'url' => $this->getConfig('url', $storeId),
+            $this->_config = new ATConfig(
+                self::CONFIG_KEY, array(
+                'url'     => $this->getConfig('url', $storeId),
                 'account' => $this->getConfig('account', $storeId),
                 'license' => $this->getConfig('license', $storeId),
-                'trace' => (Mage::helper('avatax')
-                    ->getLogMode($storeId) == OnePica_AvaTax_Model_Source_Logmode::DEBUG) ? true : false,
-                'client' => $this->getClientName()
-            ));
+                'trace'   => (Mage::helper('avatax')
+                                  ->getLogMode($storeId) == OnePica_AvaTax_Model_Source_Logmode::DEBUG) ? true : false,
+                'client'  => $this->getClientName()
+                )
+            );
         }
+
         return $this;
     }
 

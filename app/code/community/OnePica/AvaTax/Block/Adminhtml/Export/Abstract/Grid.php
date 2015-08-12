@@ -49,18 +49,22 @@ abstract class OnePica_AvaTax_Block_Adminhtml_Export_Abstract_Grid extends Mage_
     {
         foreach ($columns as $name => $type) {
             if (is_array($type)) {
-                $this->addColumn($name, array(
-                    'header'    => Mage::helper('avatax')->__(ucwords(str_replace('_', ' ', $name))),
-                    'index'     => $name,
-                    'type'      => 'options',
-                    'options'    => $type
-                ));
+                $this->addColumn(
+                    $name, array(
+                        'header'  => Mage::helper('avatax')->__(ucwords(str_replace('_', ' ', $name))),
+                        'index'   => $name,
+                        'type'    => 'options',
+                        'options' => $type
+                    )
+                );
             } else {
-                $this->addColumn($name, array(
-                    'header'    => Mage::helper('avatax')->__(ucwords(str_replace('_', ' ', $name))),
-                    'index'     => $name,
-                    'type'      => $type
-                ));
+                $this->addColumn(
+                    $name, array(
+                        'header' => Mage::helper('avatax')->__(ucwords(str_replace('_', ' ', $name))),
+                        'index'  => $name,
+                        'type'   => $type
+                    )
+                );
             }
         }
         return $this;

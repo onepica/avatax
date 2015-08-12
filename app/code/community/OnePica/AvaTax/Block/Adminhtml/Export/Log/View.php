@@ -38,11 +38,13 @@ class OnePica_AvaTax_Block_Adminhtml_Export_Log_View extends Mage_Adminhtml_Bloc
     {
         parent::__construct();
 
-        $this->_addButton('back', array(
-            'label'   => Mage::helper('avatax')->__('Back'),
-            'onclick' => "setLocation('" . Mage::getSingleton('adminhtml/url')->getUrl('*/*/log'). "')",
-            'class'   => 'back'
-        ));
+        $this->_addButton(
+            'back', array(
+                'label'   => Mage::helper('avatax')->__('Back'),
+                'onclick' => "setLocation('" . Mage::getSingleton('adminhtml/url')->getUrl('*/*/log') . "')",
+                'class'   => 'back'
+            )
+        );
     }
 
     /**

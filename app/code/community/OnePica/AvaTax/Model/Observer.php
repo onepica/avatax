@@ -266,16 +266,20 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
         if (count($errors) == 1) {
             $session->addError(implode('', $errors));
         } elseif (count($errors)) {
-            $session->addError(Mage::helper('avatax')->__('Please fix the following issues:') . '<br /> - '
-                . implode('<br /> - ', $errors));
+            $session->addError(
+                Mage::helper('avatax')->__('Please fix the following issues:') . '<br /> - '
+                . implode('<br /> - ', $errors)
+            );
         }
 
         if (count($warnings) == 1) {
             $session->addWarning(implode('', $warnings));
         } elseif (count($warnings)) {
-            $session->addWarning(Mage::helper('avatax')->__('Please be aware of the following warnings:')
+            $session->addWarning(
+                Mage::helper('avatax')->__('Please be aware of the following warnings:')
                 . '<br /> - '
-                . implode('<br /> - ', $warnings));
+                . implode('<br /> - ', $warnings)
+            );
         }
     }
 
