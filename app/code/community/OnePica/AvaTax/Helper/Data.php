@@ -344,7 +344,8 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
 
         foreach ($storeCollection as $store) {
             //@startSkipCommitHooks
-            $disabled |= Mage::getStoreConfig('tax/avatax/action', $store->getId()) == OnePica_AvaTax_Model_Config::ACTION_DISABLE;
+            $disabled |= Mage::getStoreConfig('tax/avatax/action', $store->getId())
+                         == OnePica_AvaTax_Model_Config::ACTION_DISABLE;
             //@finishSkipCommitHooks
         }
 
