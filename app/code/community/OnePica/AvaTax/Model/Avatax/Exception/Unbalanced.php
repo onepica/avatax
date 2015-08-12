@@ -22,4 +22,7 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Avatax_Exception_Unbalanced extends Exception {}
+class OnePica_AvaTax_Model_Avatax_Exception_Unbalanced extends Exception
+{
+}
+
