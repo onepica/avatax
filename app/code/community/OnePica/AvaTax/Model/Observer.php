@@ -154,9 +154,9 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
 
         $errors = array();
         $normalized = false;
-        $store = Mage::getModel('core/store')->load($quote->getStoreId());
+
         $addresses  = $quote->getAllShippingAddresses();
-        $message = Mage::getStoreConfig('tax/avatax/validate_address_message', $store);
+        $message = Mage::getStoreConfig('tax/avatax/validate_address_message');
         foreach ($addresses as $address) {
             /* @var $address OnePica_AvaTax_Model_Sales_Quote_Address */
             if ($address->validate() !== true) {
@@ -169,7 +169,7 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
 
         $session = Mage::getSingleton('checkout/session');
         if ($normalized) {
-            $session->addNotice(Mage::getStoreConfig('tax/avatax/multiaddress_normalize_message', $store));
+            $session->addNotice(Mage::getStoreConfig('tax/avatax/multiaddress_normalize_message'));
         }
 
         if (!empty($errors)) {
@@ -203,7 +203,6 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
         $storeId = Mage::getModel('core/store')->load($observer->getEvent()->getStore())->getStoreId();
         $warnings = array();
         $errors = array();
-
         if (strpos(Mage::getStoreConfig('tax/avatax/url', $storeId), 'development.avalara.net') !== false) {
             $warnings[] = Mage::helper('avatax')->__('You are using the AvaTax development connection URL. If you are receiving errors about authentication, please ensure that you have a development account.');
         }
