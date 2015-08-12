@@ -72,7 +72,7 @@ class OnePica_AvaTax_Model_Records_Log extends Mage_Core_Model_Abstract
         $result = array();
         $storeId = Mage::app()->getStore()->getId();
         $types = Mage::helper('avatax')->getLogType($storeId);
-        foreach ($types as $key => $value) {
+        foreach ($types as $value) {
             $result[$value] = $value;
         }
         return $result;
