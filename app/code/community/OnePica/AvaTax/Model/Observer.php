@@ -320,7 +320,6 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
             $helper->loadFunctions();
             $helper->loadClass($class);
         }
-        return;
     }
 
     /**
