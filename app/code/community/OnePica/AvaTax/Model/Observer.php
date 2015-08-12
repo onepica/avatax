@@ -181,10 +181,9 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     /**
      * Observer push data to Avalara
      *
-     * @param Mage_Cron_Model_Schedule $schedule
      * @return $this;
      */
-    public function processQueue($schedule)
+    public function processQueue()
     {
         Mage::getModel('avatax_records/queue_process')->run();
         return $this;
@@ -286,10 +285,9 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     /**
      * Observer to clean the log every so often so it does not get too big.
      *
-     * @param Mage_Cron_Model_Schedule $schedule
      * @return $this
      */
-    public function cleanLog($schedule)
+    public function cleanLog()
     {
         $days = floatval(Mage::getStoreConfig('tax/avatax/log_lifetime'));
         Mage::getModel('avatax_records/log')->deleteLogsByInterval($days);
