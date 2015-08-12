@@ -94,11 +94,9 @@ abstract class OnePica_AvaTax_Model_Abstract extends Varien_Object
     /**
      * Alias to the helper translate method.
      *
-     * @param string $message
-     * @param string var number of replacement vars
      * @return string
      */
-    public function __($message)
+    public function __()
     {
         $args = func_get_args();
         return call_user_func_array(array($this->getHelper(), '__'), $args);
