@@ -25,10 +25,12 @@ $table = $adapter->newTable($this->getTable('avatax_records/log'))
         'nullable'  => false,
         'primary'  => true,
         'unsigned' => true
-    ))
+        )
+    )
     ->addColumn('store_id', Varien_Db_Ddl_Table::TYPE_SMALLINT, null, array(
         'unsigned' => true
-    ))
+        )
+    )
     ->addColumn('level', Varien_Db_Ddl_Table::TYPE_VARCHAR, 50)
     ->addColumn('type', Varien_Db_Ddl_Table::TYPE_VARCHAR, 50)
     ->addColumn('request', Varien_Db_Ddl_Table::TYPE_TEXT, null)
