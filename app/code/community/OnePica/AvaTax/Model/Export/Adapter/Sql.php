@@ -58,7 +58,7 @@ class OnePica_AvaTax_Model_Export_Adapter_Sql extends OnePica_AvaTax_Model_Expor
         $version = Mage::getResourceModel('core/resource')->getDbVersion('avatax_records_setup');
         $stores = count(Mage::app()->getStores());
         $content = '-- ' . strtoupper($this->getCollection()->getMainTable()) . " EXPORT\n";
-        $content .= '-- Created at: ' . gmdate(DATE_W3C) . "\n";
+        $content .= '-- Created at: ' . $this->_getDateModel()->gmtDate(DATE_W3C) . "\n";
         $content .= '-- Created by: ' . Mage::getUrl('/') . "\n";
         $content .= '-- Magento v' . Mage::getVersion() . ' // OP_AvaTax v' . $version . ' // Stores: ' . $stores
                     . "\n";
@@ -117,5 +117,15 @@ class OnePica_AvaTax_Model_Export_Adapter_Sql extends OnePica_AvaTax_Model_Expor
             $rows[] = "(" . implode(", ", $values) . ")";
         }
         return $rows;
+    }
+
+    /**
+     * Get core date model
+     *
+     * @return \Mage_Core_Model_Date
+     */
+    protected function _getDateModel()
+    {
+        return Mage::getSingleton('core/date');
     }
 }

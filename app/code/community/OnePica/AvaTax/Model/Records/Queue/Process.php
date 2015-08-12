@@ -79,7 +79,10 @@ class OnePica_AvaTax_Model_Records_Queue_Process extends OnePica_AvaTax_Model_Ab
         /** @var OnePica_AvaTax_Model_Records_Mysql4_Queue_Collection $queue */
         $queue = Mage::getModel('avatax_records/queue')->getCollection()
             ->addFieldToFilter('status', OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_COMPLETE)
-            ->addFieldToFilter('updated_at', array('lt' => gmdate('Y-m-d H:i:s', strtotime('-' . $days . ' days'))));
+            ->addFieldToFilter(
+                'updated_at',
+                array('lt' => $this->_getDateModel()->gmtDate('Y-m-d H:i:s', strtotime('-' . $days . ' days')))
+            );
 
         foreach ($queue as $item) {
             $item->delete();
@@ -100,7 +103,10 @@ class OnePica_AvaTax_Model_Records_Queue_Process extends OnePica_AvaTax_Model_Ab
         /** @var OnePica_AvaTax_Model_Records_Mysql4_Queue_Collection $queue */
         $queue = Mage::getModel('avatax_records/queue')->getCollection()
             ->addFieldToFilter('status', OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_FAILED)
-            ->addFieldToFilter('updated_at', array('lt' => gmdate('Y-m-d H:i:s', strtotime('-' . $days . ' days'))));
+            ->addFieldToFilter(
+                'updated_at',
+                array('lt' => $this->_getDateModel()->gmtDate('Y-m-d H:i:s', strtotime('-' . $days . ' days')))
+            );
 
         foreach ($queue as $item) {
             $item->delete();
@@ -121,7 +127,10 @@ class OnePica_AvaTax_Model_Records_Queue_Process extends OnePica_AvaTax_Model_Ab
         /** @var OnePica_AvaTax_Model_Records_Mysql4_Queue_Collection $queue */
         $queue = Mage::getModel('avatax_records/queue')->getCollection()
             ->addFieldToFilter('status', OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_UNBALANCED)
-            ->addFieldToFilter('updated_at', array('lt' => gmdate('Y-m-d H:i:s', strtotime('-' . $days . ' days'))));
+            ->addFieldToFilter(
+                'updated_at',
+                array('lt' => $this->_getDateModel()->gmtDate('Y-m-d H:i:s', strtotime('-' . $days . ' days')))
+            );
 
         /** @var OnePica_AvaTax_Model_Records_Queue $item */
         foreach ($queue as $item) {
@@ -207,5 +216,15 @@ class OnePica_AvaTax_Model_Records_Queue_Process extends OnePica_AvaTax_Model_Ab
         }
 
         return $this;
+    }
+
+    /**
+     * Get core date model
+     *
+     * @return Mage_Core_Model_Date
+     */
+    protected function _getDateModel()
+    {
+        return Mage::getSingleton('core/date');
     }
 }

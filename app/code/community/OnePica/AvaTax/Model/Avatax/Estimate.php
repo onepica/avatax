@@ -199,7 +199,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
             //success
             if ($result->getResultCode() == SeverityLevel::$Success) {
                 $this->_rates[$requestKey] = array(
-                    'timestamp' => time(),
+                    'timestamp' => $this->_getDateModel()->timestamp(),
                     'address_id' => $address->getId(),
                     'summary' => array(),
                     'items' => array()
@@ -223,7 +223,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
             //failure
             } else {
                 $this->_rates[$requestKey] = array(
-                    'timestamp'  => time(),
+                    'timestamp'  => $this->_getDateModel()->timestamp(),
                     'address_id' => $address->getId(),
                     'summary'    => array(),
                     'items'      => array(),

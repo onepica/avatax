@@ -40,7 +40,7 @@ class OnePica_AvaTax_Model_Records_Mysql4_Log extends Mage_Core_Model_Mysql4_Abs
      */
     protected function _beforeSave(Mage_Core_Model_Abstract $object)
     {
-        $object->setCreatedAt(gmdate('Y-m-d H:i:s'));
+        $object->setCreatedAt($this->_getDateModel()->gmtDate('Y-m-d H:i:s'));
         if ($object->getLevel() != OnePica_AvaTax_Model_Records_Log::LOG_LEVEL_SUCCESS) {
             $object->setLevel(OnePica_AvaTax_Model_Records_Log::LOG_LEVEL_ERROR);
         }
@@ -59,5 +59,15 @@ class OnePica_AvaTax_Model_Records_Mysql4_Log extends Mage_Core_Model_Mysql4_Abs
             $this->getTable('avatax_records/log'),
             $this->_getWriteAdapter()->quoteInto('created_at < DATE_SUB(UTC_DATE(), INTERVAL ? DAY)', $days)
         );
+    }
+
+    /**
+     * Get core date model
+     *
+     * @return \Mage_Core_Model_Date
+     */
+    protected function _getDateModel()
+    {
+        return Mage::getSingleton('core/date');
     }
 }

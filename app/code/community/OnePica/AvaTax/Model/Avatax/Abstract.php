@@ -125,7 +125,7 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
         $storeId = $object->getStoreId();
         $this->_setCompanyCode($storeId);
         $this->_request->setDetailLevel(DetailLevel::$Document);
-        $this->_request->setDocDate(date('Y-m-d'));
+        $this->_request->setDocDate($this->_getDateModel()->date('Y-m-d'));
         $this->_request->setExemptionNo('');
         $this->_request->setDiscount(0.00); //cannot be used in Magento
         $this->_request->setSalespersonCode(Mage::helper('avatax')->getSalesPersonCode($storeId));
@@ -417,5 +417,15 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
         $taxOverride->setReason($reason);
         $taxOverride->setTaxAmount($taxAmount);
         return $taxOverride;
+    }
+
+    /**
+     * Get date model
+     *
+     * @return Mage_Core_Model_Date
+     */
+    protected function _getDateModel()
+    {
+        return Mage::getSingleton('core/date');
     }
 }

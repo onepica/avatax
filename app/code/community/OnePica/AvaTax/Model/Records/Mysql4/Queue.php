@@ -51,9 +51,9 @@ class OnePica_AvaTax_Model_Records_Mysql4_Queue extends Mage_Core_Model_Mysql4_A
     protected function _beforeSave(Mage_Core_Model_Abstract $object)
     {
         if (!$object->hasCreatedAt()) {
-            $object->setCreatedAt(gmdate('Y-m-d H:i:s'));
+            $object->setCreatedAt($this->_getDateModel()->gmtDate('Y-m-d H:i:s'));
         }
-        $object->setUpdatedAt(gmdate('Y-m-d H:i:s'));
+        $object->setUpdatedAt($this->_getDateModel()->gmtDate('Y-m-d H:i:s'));
         return $this;
     }
 
@@ -126,5 +126,15 @@ class OnePica_AvaTax_Model_Records_Mysql4_Queue extends Mage_Core_Model_Mysql4_A
         $queue->setData($data);
 
         return $this;
+    }
+
+    /**
+     * Get core date model
+     *
+     * @return Mage_Core_Model_Date
+     */
+    protected function _getDateModel()
+    {
+        return Mage::getSingleton('core/date');
     }
 }

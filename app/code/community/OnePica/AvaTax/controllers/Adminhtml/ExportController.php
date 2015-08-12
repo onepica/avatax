@@ -41,7 +41,7 @@ class OnePica_AvaTax_Adminhtml_ExportController extends Mage_Adminhtml_Controlle
      */
     public function logAction()
     {
-        $fileName = 'avatax-log-' . gmdate('U') . '.sql';
+        $fileName = 'avatax-log-' . $this->_getDateModel()->gmtDate('U') . '.sql';
         $content = Mage::getModel('avatax/export')
             ->setAdapter(Mage::getModel('avatax/export_adapter_sql'))
             ->setEntity(Mage::getModel('avatax/export_entity_log'))
@@ -57,7 +57,7 @@ class OnePica_AvaTax_Adminhtml_ExportController extends Mage_Adminhtml_Controlle
      */
     public function queueAction()
     {
-        $fileName = 'avatax-queue-' . gmdate('U') . '.sql';
+        $fileName = 'avatax-queue-' . $this->_getDateModel()->gmtDate('U') . '.sql';
         $content = Mage::getModel('avatax/export')
             ->setAdapter(Mage::getModel('avatax/export_adapter_sql'))
             ->setEntity(Mage::getModel('avatax/export_entity_queue'))
@@ -81,11 +81,21 @@ class OnePica_AvaTax_Adminhtml_ExportController extends Mage_Adminhtml_Controlle
         $response->setHeader('Pragma', 'public', true);
         $response->setHeader('Cache-Control', 'must-revalidate, post-check=0, pre-check=0', true);
         $response->setHeader('Content-Disposition', 'attachment; filename=' . $fileName);
-        $response->setHeader('Last-Modified', date('r'));
+        $response->setHeader('Last-Modified', $this->_getDateModel()->date('r'));
         $response->setHeader('Accept-Ranges', 'bytes');
         $response->setHeader('Content-Length', strlen($content));
         $response->setHeader('Content-type', $contentType);
         $response->setBody($content);
         return $this;
+    }
+
+    /**
+     * Get core date model
+     *
+     * @return Mage_Core_Model_Date
+     */
+    protected function _getDateModel()
+    {
+        return Mage::getSingleton('core/date');
     }
 }
