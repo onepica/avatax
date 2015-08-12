@@ -78,7 +78,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
 
         $this->_setOriginAddress($order->getStoreId());
         $this->_setDestinationAddress($shippingAddress);
-        //$this->_request->setPaymentDate(date('Y-m-d'));
+
         $this->_request->setDocDate(substr($invoiceDate, 0, 10));
         $this->_request->setPaymentDate(substr($invoiceDate, 0, 10));
         $this->_request->setTaxDate(substr($orderDate, 0, 10));
@@ -166,9 +166,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
         $this->_setDestinationAddress($shippingAddress);
 
         // Set the tax date for calculation.
-        //$invoiceDate = $order->getInvoiceCollection()->getFirstItem()->getCreatedAt();
         $override = new TaxOverride();
-        //$override->setTaxDate(substr($invoiceDate, 0, 10));
         $override->setTaxDate(substr($orderDate, 0, 10));
         $override->setTaxOverrideType(TaxOverrideType::$TaxDate);
         $override->setReason('Credit memo - refund');
