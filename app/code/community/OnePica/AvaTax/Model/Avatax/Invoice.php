@@ -263,7 +263,8 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
      * @param bool $credit
      * @return int|bool
      */
-    protected function _addGwOrderAmount($object, $credit = false) {
+    protected function _addGwOrderAmount($object, $credit = false)
+    {
         if ($object->getGwPrice() == 0) {
             return false;
         }

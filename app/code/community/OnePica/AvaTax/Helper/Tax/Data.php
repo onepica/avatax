@@ -91,7 +91,8 @@ class OnePica_AvaTax_Helper_Tax_Data extends Mage_Tax_Helper_Data
      * @param null|bool|int|Mage_Core_Model_Store $store
      * @return bool
      */
-    public function applyTaxOnCustomPrice($store = null) {
+    public function applyTaxOnCustomPrice($store = null)
+    {
         if (Mage::helper('avatax')->isAvataxEnabled($store)) {
             return true;
         }
@@ -104,7 +105,8 @@ class OnePica_AvaTax_Helper_Tax_Data extends Mage_Tax_Helper_Data
      * @param null|bool|int|Mage_Core_Model_Store $store
      * @return bool
      */
-    public function applyTaxOnOriginalPrice($store = null) {
+    public function applyTaxOnOriginalPrice($store = null)
+    {
         if (Mage::helper('avatax')->isAvataxEnabled($store)) {
             return false;
         }
@@ -117,7 +119,8 @@ class OnePica_AvaTax_Helper_Tax_Data extends Mage_Tax_Helper_Data
      * @param null|bool|int|Mage_Core_Model_Store $store
      * @return bool
      */
-    public function applyTaxAfterDiscount($store = null) {
+    public function applyTaxAfterDiscount($store = null)
+    {
         if (Mage::helper('avatax')->isAvataxEnabled($store)) {
             return true;
         }

@@ -39,7 +39,8 @@ class OnePica_AvaTax_Adminhtml_ExportController extends Mage_Adminhtml_Controlle
      *
      * @return $this
      */
-    public function logAction() {
+    public function logAction()
+    {
         $fileName = 'avatax-log-' . gmdate('U') . '.sql';
         $content = Mage::getModel('avatax/export')
             ->setAdapter(Mage::getModel('avatax/export_adapter_sql'))
