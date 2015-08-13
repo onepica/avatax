@@ -25,4 +25,3 @@
 class OnePica_AvaTax_Model_Avatax_Exception_Unbalanced extends Exception
 {
 }
-
