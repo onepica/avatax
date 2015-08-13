@@ -45,7 +45,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
      * @param Mage_Sales_Model_Order_Invoice $invoice
      * @param OnePica_AvaTax_Model_Records_Queue $queue
      * @return bool
-     * @throws Exception
+     * @throws OnePica_AvaTax_Exception
      * @throws OnePica_AvaTax_Model_Avatax_Exception_Commitfailure
      * @throws OnePica_AvaTax_Model_Avatax_Exception_Unbalanced
      */
@@ -62,7 +62,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
 
         $shippingAddress = ($order->getShippingAddress()) ? $order->getShippingAddress() : $order->getBillingAddress();
         if (!$shippingAddress) {
-            Mage::throwException($this->__('There is no address attached to this order'));
+            throw new OnePica_AvaTax_Exception($this->__('There is no address attached to this order'));
         }
 
         $this->_request = new GetTaxRequest();
@@ -130,7 +130,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
      * @param Mage_Sales_Model_Order_Creditmemo $creditmemo
      * @param OnePica_AvaTax_Model_Records_Queue $queue
      * @return mixed
-     * @throws Exception
+     * @throws OnePica_AvaTax_Exception
      * @throws OnePica_AvaTax_Model_Avatax_Exception_Commitfailure
      * @throws OnePica_AvaTax_Model_Avatax_Exception_Unbalanced
      */
@@ -147,7 +147,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
 
         $shippingAddress = ($order->getShippingAddress()) ? $order->getShippingAddress() : $order->getBillingAddress();
         if (!$shippingAddress) {
-            Mage::throwException($this->__('There is no address attached to this order'));
+            throw new OnePica_AvaTax_Exception($this->__('There is no address attached to this order'));
         }
 
         $this->_request = new GetTaxRequest();

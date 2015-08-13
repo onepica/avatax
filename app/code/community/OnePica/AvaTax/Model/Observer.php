@@ -145,7 +145,7 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
      *
      * @param Varien_Event_Observer $observer
      * @return $this
-     * @throws Mage_Core_Exception
+     * @throws OnePica_AvaTax_Exception
      */
     public function multishippingSetShippingItems(Varien_Event_Observer $observer)
     {
@@ -173,7 +173,7 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
         }
 
         if (!empty($errors)) {
-            Mage::throwException(implode('<br />', $errors));
+            throw new OnePica_AvaTax_Exception(implode('<br />', $errors));
         }
         return $this;
     }

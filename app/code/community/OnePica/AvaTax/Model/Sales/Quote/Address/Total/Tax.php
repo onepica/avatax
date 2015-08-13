@@ -298,12 +298,12 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
      * Get quote address object
      *
      * @return Mage_Sales_Model_Quote_Address
-     * @throws Mage_Core_Exception
+     * @throws OnePica_AvaTax_Exception
      */
     protected function _getAddress()
     {
         if ($this->_address === null) {
-            Mage::throwException(Mage::helper('sales')->__('Address model is not defined'));
+            throw new OnePica_AvaTax_Exception(Mage::helper('sales')->__('Address model is not defined'));
         }
         return $this->_address;
     }
