@@ -151,12 +151,13 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     {
         /* @var $quote Mage_Sales_Model_Quote */
         $quote = $observer->getEvent()->getQuote();
+        $storeId = $quote->getStoreId();
 
         $errors = array();
         $normalized = false;
 
         $addresses  = $quote->getAllShippingAddresses();
-        $message = Mage::getStoreConfig('tax/avatax/validate_address_message');
+        $message = Mage::getStoreConfig('tax/avatax/validate_address_message', $storeId);
         foreach ($addresses as $address) {
             /* @var $address OnePica_AvaTax_Model_Sales_Quote_Address */
             if ($address->validate() !== true) {
@@ -169,7 +170,7 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
 
         $session = Mage::getSingleton('checkout/session');
         if ($normalized) {
-            $session->addNotice(Mage::getStoreConfig('tax/avatax/multiaddress_normalize_message'));
+            $session->addNotice(Mage::getStoreConfig('tax/avatax/multiaddress_normalize_message', $storeId));
         }
 
         if (!empty($errors)) {
@@ -198,7 +199,7 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     public function adminSystemConfigChangedSectionTax(Varien_Event_Observer $observer)
     {
         Mage::app()->cleanCache('block_html');
-        $storeId = Mage::getModel('core/store')->load($observer->getEvent()->getStore())->getStoreId();
+        $storeId = $observer->getEvent()->getStore();
         $this->_addErrorsToSession($storeId);
         $this->_addWarningsToSession($storeId);
     }
