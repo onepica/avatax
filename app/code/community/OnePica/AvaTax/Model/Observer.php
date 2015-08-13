@@ -198,7 +198,7 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     public function adminSystemConfigChangedSectionTax(Varien_Event_Observer $observer)
     {
         Mage::app()->cleanCache('block_html');
-        $storeId = Mage::getModel('core/store')->load($observer->getEvent()->getStore())->getStoreId();
+        $storeId = $observer->getEvent()->getStore();
         $this->_addErrorsToSession($storeId);
         $this->_addWarningsToSession($storeId);
     }
