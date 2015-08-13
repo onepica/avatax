@@ -432,6 +432,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
             return false;
         }
 
+        $storeId = $this->_retrieveStoreIdFromItem($item);
         $product = $this->_getProductByProductId($item->getProductId());
         $taxClass = $this->_getTaxClassByProduct($product);
         $price = $item->getBaseRowTotal() - $item->getBaseDiscountAmount();
@@ -451,16 +452,34 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
         if ($taxClass) {
             $line->setTaxCode($taxClass);
         }
-        $ref1Value = $this->_getRefValueByProductAndNumber($product, 1);
+        $ref1Value = $this->_getRefValueByProductAndNumber($product, 1, $storeId);
         if ($ref1Value) {
             $line->setRef1($ref1Value);
         }
-        $ref2Value = $this->_getRefValueByProductAndNumber($product, 2);
+        $ref2Value = $this->_getRefValueByProductAndNumber($product, 2, $storeId);
         if ($ref2Value) {
             $line->setRef2($ref2Value);
         }
 
         $this->_lineToItemId[count($this->_lines)] = $item->getOrderItemId();
         $this->_lines[] = $line;
+    }
+
+    /**
+     * Retrieve store id from item
+     *
+     * @param Mage_Sales_Model_Order_Invoice_Item|Mage_Sales_Model_Order_Creditmemo_Item $item
+     * @return int
+     */
+    protected function _retrieveStoreIdFromItem($item)
+    {
+        $storeId = null;
+        if ($item instanceof Mage_Sales_Model_Order_Invoice_Item) {
+            $storeId = $item->getInvoice()->getStoreId();
+        } else {
+            $storeId = $item->getCreditmemo()->getStoreId();
+        }
+
+        return $storeId;
     }
 }
