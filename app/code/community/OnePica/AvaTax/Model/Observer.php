@@ -313,52 +313,14 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     protected function _prepareErrors($storeId)
     {
         $errors = array();
-        $ping = Mage::getSingleton('avatax/avatax_ping')->ping($storeId);
-        if ($ping !== true) {
-            $errors[] = $ping;
-        }
-        if (!Mage::getStoreConfig('tax/avatax/url', $storeId)) {
-            $errors[] = Mage::helper('avatax')->__('You must enter a connection URL');
-        }
-        if (!Mage::getStoreConfig('tax/avatax/account', $storeId)) {
-            $errors[] = Mage::helper('avatax')->__('You must enter an account number');
-        }
-        if (!Mage::getStoreConfig('tax/avatax/license', $storeId)) {
-            $errors[] = Mage::helper('avatax')->__('You must enter a license key');
-        }
-        if (!is_numeric(Mage::getStoreConfig('tax/avatax/log_lifetime'))) {
-            $errors[] = Mage::helper('avatax')->__('You must enter the number of days to keep log entries');
-        }
-        if (!Mage::getStoreConfig('tax/avatax/company_code', $storeId)) {
-            $errors[] = Mage::helper('avatax')->__('You must enter a company code');
-        }
-        if (!Mage::getStoreConfig('tax/avatax/shipping_sku', $storeId)) {
-            $errors[] = Mage::helper('avatax')->__('You must enter a shipping sku');
-        }
-        if (!Mage::getStoreConfig('tax/avatax/adjustment_positive_sku', $storeId)) {
-            $errors[] = Mage::helper('avatax')->__('You must enter an adjustment refund sku');
-        }
-        if (!Mage::getStoreConfig('tax/avatax/adjustment_negative_sku', $storeId)) {
-            $errors[] = Mage::helper('avatax')->__('You must enter an adjustment fee sku');
-        }
-
-        if (!class_exists('SoapClient')) {
-            $errors[] = Mage::helper('avatax')->__(
-                'The PHP class SoapClient is missing. It must be enabled to use this extension. See %s for details.',
-                '<a href="http://www.php.net/manual/en/book.soap.php" target="_blank">http://www.php.net/manual/en/book.soap.php</a>'
-            );
-        }
-
-        if (!function_exists('openssl_sign') && count($errors)) {
-            $key = array_search(Mage::helper('avatax')->__('SSL support is not available in this build'), $errors);
-            if (isset($errors[$key])) {
-                unset($errors[$key]);
-            }
-            $errors[] = Mage::helper('avatax')->__(
-                'SSL must be enabled in PHP to use this extension. Typically, OpenSSL is used but it is not enabled on your server. This may not be a problem if you have some other form of SSL in place. For more information about OpenSSL, see %s.',
-                '<a href="http://www.php.net/manual/en/book.openssl.php" target="_blank">http://www.php.net/manual/en/book.openssl.php</a>'
-            );
-        }
+        $errors = array_merge(
+            $errors,
+            $this->_sendPing($storeId),
+            $this->_checkConnectionFields($storeId),
+            $this->_checkSkuFields($storeId),
+            $this->_checkSoapSupport(),
+            $this->_checkSslSupport()
+        );
 
         return $errors;
     }
@@ -416,5 +378,114 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
         }
 
         return $this;
+    }
+
+    /**
+     * Send ping request
+     *
+     * @param int $storeId
+     * @return array
+     */
+    protected function _sendPing($storeId)
+    {
+        $errors = array();
+        $ping = Mage::getSingleton('avatax/avatax_ping')->ping($storeId);
+        if ($ping !== true) {
+            $errors[] = $ping;
+        }
+
+        return $errors;
+    }
+
+    /**
+     * Check connection fields
+     *
+     * @param int $storeId
+     * @return array
+     */
+    protected function _checkConnectionFields($storeId)
+    {
+        $errors = array();
+        if (!Mage::getStoreConfig('tax/avatax/url', $storeId)) {
+            $errors[] = Mage::helper('avatax')->__('You must enter a connection URL');
+        }
+        if (!Mage::getStoreConfig('tax/avatax/account', $storeId)) {
+            $errors[] = Mage::helper('avatax')->__('You must enter an account number');
+        }
+        if (!Mage::getStoreConfig('tax/avatax/license', $storeId)) {
+            $errors[] = Mage::helper('avatax')->__('You must enter a license key');
+        }
+        if (!is_numeric(Mage::getStoreConfig('tax/avatax/log_lifetime'))) {
+            $errors[] = Mage::helper('avatax')->__('You must enter the number of days to keep log entries');
+        }
+        if (!Mage::getStoreConfig('tax/avatax/company_code', $storeId)) {
+            $errors[] = Mage::helper('avatax')->__('You must enter a company code');
+        }
+
+        return $errors;
+    }
+
+    /**
+     * Check Sku fields
+     *
+     * @param int $storeId
+     * @return array
+     */
+    protected function _checkSkuFields($storeId)
+    {
+        $errors = array();
+        if (!Mage::getStoreConfig('tax/avatax/shipping_sku', $storeId)) {
+            $errors[] = Mage::helper('avatax')->__('You must enter a shipping sku');
+        }
+        if (!Mage::getStoreConfig('tax/avatax/adjustment_positive_sku', $storeId)) {
+            $errors[] = Mage::helper('avatax')->__('You must enter an adjustment refund sku');
+        }
+        if (!Mage::getStoreConfig('tax/avatax/adjustment_negative_sku', $storeId)) {
+            $errors[] = Mage::helper('avatax')->__('You must enter an adjustment fee sku');
+
+            return $errors;
+        }
+
+        return $errors;
+    }
+
+    /**
+     * Check SOAP support
+     *
+     * @return array
+     */
+    protected function _checkSoapSupport()
+    {
+        $errors = array();
+        if (!class_exists('SoapClient')) {
+            $errors[] = Mage::helper('avatax')->__(
+                'The PHP class SoapClient is missing. It must be enabled to use this extension. See %s for details.',
+                '<a href="http://www.php.net/manual/en/book.soap.php" target="_blank">http://www.php.net/manual/en/book.soap.php</a>'
+            );
+        }
+
+        return $errors;
+    }
+
+    /**
+     * Check SSL support
+     *
+     * @return array
+     */
+    protected function _checkSslSupport()
+    {
+        $errors = array();
+        if (!function_exists('openssl_sign') && count($errors)) {
+            $key = array_search(Mage::helper('avatax')->__('SSL support is not available in this build'), $errors);
+            if (isset($errors[$key])) {
+                unset($errors[$key]);
+            }
+            $errors[] = Mage::helper('avatax')->__(
+                'SSL must be enabled in PHP to use this extension. Typically, OpenSSL is used but it is not enabled on your server. This may not be a problem if you have some other form of SSL in place. For more information about OpenSSL, see %s.',
+                '<a href="http://www.php.net/manual/en/book.openssl.php" target="_blank">http://www.php.net/manual/en/book.openssl.php</a>'
+            );
+        }
+
+        return $errors;
     }
 }
