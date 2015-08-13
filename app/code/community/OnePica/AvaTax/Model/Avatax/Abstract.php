@@ -303,7 +303,7 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
      * Init tax class collection for items to be calculated
      *
      * @return $this
-     * @throws OnePica_AvaTax_Model_Exception
+     * @throws OnePica_AvaTax_Exception
      */
     protected function _initTaxClassCollection()
     {
@@ -316,6 +316,7 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
         $this->_taxClassCollection = Mage::getModel('tax/class')->getCollection()
             ->addFieldToSelect(array('class_id', 'op_avatax_code'))
             ->addFieldToFilter('class_id', array('in' => $taxClassIds));
+
         return $this;
     }
 
@@ -323,12 +324,12 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
      * Get product collection for items to be calculated
      *
      * @return Mage_Catalog_Model_Resource_Product_Collection
-     * @throws OnePica_AvaTax_Model_Exception
+     * @throws OnePica_AvaTax_Exception
      */
     protected function _getProductCollection()
     {
         if (!$this->_productCollection) {
-            throw new OnePica_AvaTax_Model_Exception('Product collection should be set before usage');
+            throw new OnePica_AvaTax_Exception('Product collection should be set before usage');
         }
 
         return $this->_productCollection;
@@ -338,12 +339,12 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
      * Get tax class collection for items to be calculated
      *
      * @return Mage_Tax_Model_Resource_Class_Collection
-     * @throws OnePica_AvaTax_Model_Exception
+     * @throws OnePica_AvaTax_Exception
      */
     protected function _getTaxClassCollection()
     {
         if (!$this->_taxClassCollection) {
-            throw new OnePica_AvaTax_Model_Exception('Tax class collection should be set before usage');
+            throw new OnePica_AvaTax_Exception('Tax class collection should be set before usage');
         }
 
         return $this->_taxClassCollection;
@@ -371,7 +372,7 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
      *
      * @param int $productId
      * @return Mage_Catalog_Model_Product
-     * @throws OnePica_AvaTax_Model_Exception
+     * @throws OnePica_AvaTax_Exception
      */
     protected function _getProductByProductId($productId)
     {

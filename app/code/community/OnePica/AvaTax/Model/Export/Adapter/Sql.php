@@ -35,16 +35,17 @@ class OnePica_AvaTax_Model_Export_Adapter_Sql extends OnePica_AvaTax_Model_Expor
      * Get content
      *
      * @return string
-     * @throws OnePica_AvaTax_Model_Exception
+     * @throws OnePica_AvaTax_Exception
      */
     public function getContent()
     {
         if (!$this->getCollection()) {
-            throw new OnePica_AvaTax_Model_Exception('Collection should be set before export process');
+            throw new OnePica_AvaTax_Exception('Collection should be set before export process');
         }
 
         $content = $this->_getExportHeader();
         $content .= $this->_getExportQueries();
+
         return $content;
     }
 

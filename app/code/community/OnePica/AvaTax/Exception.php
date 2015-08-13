@@ -16,12 +16,8 @@
  */
 
 /**
- * The AvaTax Exception class
- *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@onepica.com>
+ * Class OnePica_AvaTax_Exception
  */
-class OnePica_AvaTax_Model_Exception extends Mage_Core_Exception
+class OnePica_AvaTax_Exception extends Mage_Core_Exception
 {
 }
