@@ -73,7 +73,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
         $rates = Mage::getSingleton('avatax/session')->getRates();
         if (is_array($rates)) {
             foreach ($rates as $key => $rate) {
-                if ($rate['timestamp'] < strtotime('-' . self::CACHE_TTL . ' minutes')) {
+                if ($rate['timestamp'] < $this->_getDateModel()->timestamp('-' . self::CACHE_TTL . ' minutes')) {
                     unset($rates[$key]);
                 }
             }
