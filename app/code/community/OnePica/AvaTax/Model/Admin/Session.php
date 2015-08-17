@@ -33,6 +33,7 @@ class OnePica_AvaTax_Model_Admin_Session extends Mage_Admin_Model_Session
      * @param   string $resource
      * @param   string $privilege
      * @return  boolean
+     * @throws Mage_Core_Exception
      */
     public function isAllowed($resource, $privilege = null)
     {
@@ -42,10 +43,20 @@ class OnePica_AvaTax_Model_Admin_Session extends Mage_Admin_Model_Session
             'admin/sales/tax/import_export'
         );
 
-        if (in_array($resource, $block) && !Mage::helper('avatax')->isAnyStoreDisabled()) {
+        if (in_array($resource, $block) && !$this->_getDataHelper()->isAvaTaxDisabled()) {
             return false;
-        } else {
-            return parent::isAllowed($resource, $privilege);
         }
+
+        return parent::isAllowed($resource, $privilege);
+    }
+
+    /**
+     * Get data helper
+     *
+     * @return OnePica_AvaTax_Helper_Data
+     */
+    protected function _getDataHelper()
+    {
+        return Mage::helper('avatax');
     }
 }
