@@ -396,6 +396,24 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Is AvaTax disabled.
+     *
+     * @return bool
+     * @throws \Mage_Core_Exception
+     */
+    public function isAvaTaxDisabled()
+    {
+        $websiteId = Mage::app()->getRequest()->get('website');
+        $storeId = Mage::app()->getRequest()->get('store');
+
+        if ($websiteId && !$storeId) {
+            return !(bool)Mage::app()->getWebsite($websiteId)->getConfig('tax/avatax/action');
+        }
+
+        return !(bool)Mage::getStoreConfig('tax/avatax/action', $storeId);
+    }
+
+    /**
      * Determines if address validation is enabled
      *
      * @param Mage_Customer_Model_Address $address
