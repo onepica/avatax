@@ -285,7 +285,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
     protected function _addShipping($address)
     {
         $lineNumber = count($this->_lines);
-        $storeId = Mage::app()->getStore()->getId();
+        $storeId = $address->getQuote()->getStore()->getId();
         $taxClass = Mage::helper('tax')->getShippingTaxClass($storeId);
         $shippingAmount = (float) $address->getBaseShippingAmount();
 
@@ -317,7 +317,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
             return false;
         }
         $lineNumber = count($this->_lines);
-        $storeId = Mage::app()->getStore()->getId();
+        $storeId = $address->getQuote()->getStore()->getId();
         //Add gift wrapping price(for entire order)
         $gwOrderAmount = $address->getGwBasePrice();
 
@@ -326,7 +326,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
         $gwOrderSku = Mage::helper('avatax')->getGwOrderSku($storeId);
         $line->setItemCode($gwOrderSku ? $gwOrderSku : 'GwOrderAmount');
         $line->setDescription('Gift Wrap Order Amount');
-        $line->setTaxCode('');
+        $line->setTaxCode($this->_getGiftTaxClass($storeId));
         $line->setQty(1);
         $line->setAmount($gwOrderAmount);
         $line->setDiscounted(false);
@@ -349,7 +349,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
             return false;
         }
         $lineNumber = count($this->_lines);
-        $storeId = Mage::app()->getStore()->getId();
+        $storeId = $item->getAddress()->getQuote()->getStore()->getId();
         //Add gift wrapping price(for individual items)
         $gwItemsAmount = $item->getGwBasePrice();
 
@@ -358,7 +358,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
         $gwItemsSku = Mage::helper('avatax')->getGwItemsSku($storeId);
         $line->setItemCode($gwItemsSku ? $gwItemsSku : 'GwItemsAmount');
         $line->setDescription('Gift Wrap Items Amount');
-        $line->setTaxCode('');
+        $line->setTaxCode($this->_getGiftTaxClass($storeId));
         $line->setQty(1);
         $line->setAmount($gwItemsAmount);
         $line->setDiscounted(false);
@@ -382,7 +382,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
             return false;
         }
         $lineNumber = count($this->_lines);
-        $storeId = Mage::app()->getStore()->getId();
+        $storeId = $address->getQuote()->getStore()->getId();
         //Add printed card price
         $gwPrintedCardAmount = $address->getGwPrintedCardBasePrice();
 
@@ -391,7 +391,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
         $gwPrintedCardSku = Mage::helper('avatax')->getGwPrintedCardSku($storeId);
         $line->setItemCode($gwPrintedCardSku ? $gwPrintedCardSku : 'GwPrintedCardAmount');
         $line->setDescription('Gift Wrap Printed Card Amount');
-        $line->setTaxCode('');
+        $line->setTaxCode($this->_getGiftTaxClass($storeId));
         $line->setQty(1);
         $line->setAmount($gwPrintedCardAmount);
         $line->setDiscounted(false);

@@ -435,4 +435,33 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
         $taxOverride->setTaxAmount($taxAmount);
         return $taxOverride;
     }
+
+    /**
+     * Get gift tax class
+     *
+     * @param int $storeId
+     * @return bool|string
+     */
+    protected function _getGiftTaxClass($storeId)
+    {
+        $taxClass = '';
+        if (Mage::getEdition() === Mage::EDITION_ENTERPRISE) {
+            $taxClassId = $this->_getGiftWrappingDataHelper()->getWrappingTaxClass($storeId);
+            $taxClass = $this->_getTaxClassCollection()
+                ->getItemById($taxClassId)
+                ->getOpAvataxCode();
+        }
+
+        return $taxClass;
+    }
+
+    /**
+     * Get gift wrapping data helper
+     *
+     * @return \Enterprise_GiftWrapping_Helper_Data
+     */
+    protected function _getGiftWrappingDataHelper()
+    {
+        return Mage::helper('enterprise_giftwrapping');
+    }
 }
