@@ -448,8 +448,8 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
         if (Mage::getEdition() === Mage::EDITION_ENTERPRISE) {
             $taxClassId = $this->_getGiftWrappingDataHelper()->getWrappingTaxClass($storeId);
             if ($taxClassId) {
-                $taxClass = $this->_getTaxClassCollection()
-                    ->getItemById($taxClassId)
+                $taxClass = Mage::getModel('tax/class')
+                    ->load($taxClassId)
                     ->getOpAvataxCode();
             }
         }
