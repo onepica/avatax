@@ -153,7 +153,11 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
         $this->_addGwItemsAmount($creditmemo);
         $this->_addGwPrintedCardAmount($creditmemo);
 
-        $this->_addAdjustments($creditmemo->getAdjustmentPositive(), $creditmemo->getAdjustmentNegative());
+        $this->_addAdjustments(
+            $creditmemo->getAdjustmentPositive(),
+            $creditmemo->getAdjustmentNegative(),
+            $order->getStoreId()
+        );
         $this->_setOriginAddress($order->getStoreId());
         $this->_setDestinationAddress($shippingAddress);
 
@@ -223,7 +227,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
         }
 
         $lineNumber = count($this->_lines);
-        $storeId = Mage::app()->getStore()->getId();
+        $storeId = $object->getStore()->getId();
         $taxClass = Mage::helper('tax')->getShippingTaxClass($storeId);
 
         $amount = $object->getBaseShippingAmount();
@@ -261,8 +265,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
         }
 
         $lineNumber = count($this->_lines);
-        $storeId = Mage::app()->getStore()->getId();
-
+        $storeId = $object->getStore()->getId();
         $amount = $object->getGwBasePrice();
         if ($credit) {
             //@startSkipCommitHooks
@@ -299,7 +302,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
         }
 
         $lineNumber = count($this->_lines);
-        $storeId = Mage::app()->getStore()->getId();
+        $storeId = $object->getStore()->getId();
 
         $amount = $object->getGwItemsBasePrice();
         if ($credit) {
@@ -337,7 +340,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
         }
 
         $lineNumber = count($this->_lines);
-        $storeId = Mage::app()->getStore()->getId();
+        $storeId = $object->getStore()->getId();
 
         $amount = $object->getGwPrintedCardBasePrice();
         if ($credit) {
@@ -366,12 +369,11 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
      *
      * @param float $positive
      * @param float $negative
+     * @param int   $storeId
      * @return array
      */
-    protected function _addAdjustments($positive, $negative)
+    protected function _addAdjustments($positive, $negative, $storeId)
     {
-        $storeId = Mage::app()->getStore()->getId();
-
         if ($positive != 0) {
             $lineNumber = count($this->_lines);
             $identifier = Mage::helper('avatax')->getPositiveAdjustmentSku($storeId);
