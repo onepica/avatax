@@ -29,6 +29,21 @@ class OnePica_AvaTax_Model_Total_Quote_Tax_Giftwrapping
      */
     public function collect(Mage_Sales_Model_Quote_Address $address)
     {
-        return $this;
+        $storeId = $address->getQuote()->getStore()->getId();
+        if ($this->_getAvaTaxDataHelper()->isAvataxEnabled($storeId)) {
+            return $this;
+        }
+
+        return parent::collect($address);
+    }
+
+    /**
+     * Get avatax data helper
+     *
+     * @return OnePica_AvaTax_Helper_Data
+     */
+    protected function _getAvaTaxDataHelper()
+    {
+        return Mage::helper('avatax');
     }
 }
