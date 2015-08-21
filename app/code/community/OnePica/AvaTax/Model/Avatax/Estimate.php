@@ -192,7 +192,6 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
         $this->_request = new GetTaxRequest();
         $this->_request->setDocType(DocumentType::$SalesOrder);
         $this->_request->setDocCode('quote-' . $address->getId());
-        $this->_initGwTaxClassId($address);
         $this->_addGeneralInfo($address);
         $this->_setOriginAddress($address->getStoreId());
         $this->_setDestinationAddress($address);
@@ -406,7 +405,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
     /**
      * Adds all items in the cart to the request
      *
-     * @param Mage_Sales_Model_Quote_item|Mage_Sales_Model_Quote_Address_item
+     * @param Mage_Sales_Model_Quote_item|Mage_Sales_Model_Quote_Address_item $item
      * @return int
      */
     protected function _addItemsInCart($item)
@@ -421,7 +420,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
 
         if (count($items) > 0) {
             $this->_initProductCollection($items);
-            $this->_initTaxClassCollection();
+            $this->_initTaxClassCollection($item->getAddress());
             foreach ($items as $item) {
                 $productLineNumber = $this->_newLine($item);
                 if (is_int($productLineNumber)) {
@@ -430,6 +429,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
             }
             $this->_request->setLines($this->_lines);
         }
+
         return count($this->_lines);
     }
 

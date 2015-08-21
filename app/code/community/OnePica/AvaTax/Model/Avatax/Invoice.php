@@ -68,9 +68,8 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
         $this->_addGeneralInfo($order);
         $this->_addShipping($invoice);
         $items = $invoice->getItemsCollection();
-        $this->_initGwTaxClassId($invoice);
         $this->_initProductCollection($items);
-        $this->_initTaxClassCollection();
+        $this->_initTaxClassCollection($invoice);
         //Added code for calculating tax for giftwrap items
         $this->_addGwOrderAmount($invoice);
         $this->_addGwItemsAmount($invoice);
@@ -152,8 +151,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
 
         $items = $creditmemo->getAllItems();
         $this->_initProductCollection($items);
-        $this->_initGwTaxClassId($creditmemo);
-        $this->_initTaxClassCollection();
+        $this->_initTaxClassCollection($creditmemo);
         //Added code for calculating tax for giftwrap items
         $this->_addGwOrderAmount($creditmemo);
         $this->_addGwItemsAmount($creditmemo);
