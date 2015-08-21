@@ -64,6 +64,11 @@
                     <config>OnePica_AvaTax_Model_Tax_Config</config>
                 </rewrite>
             </tax>
+            <enterprise_giftwrapping>
+                <rewrite>
+                    <total_quote_tax_giftwrapping>OnePica_AvaTax_Model_Total_Quote_Tax_Giftwrapping</total_quote_tax_giftwrapping>
+                </rewrite>
+            </enterprise_giftwrapping>
         </models>
         <helpers>
             <avatax>
