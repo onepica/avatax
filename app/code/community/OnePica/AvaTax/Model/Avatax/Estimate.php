@@ -192,6 +192,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
         $this->_request = new GetTaxRequest();
         $this->_request->setDocType(DocumentType::$SalesOrder);
         $this->_request->setDocCode('quote-' . $address->getId());
+        $this->_initGwTaxClassId($address);
         $this->_addGeneralInfo($address);
         $this->_setOriginAddress($address->getStoreId());
         $this->_setDestinationAddress($address);
@@ -326,7 +327,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
         $gwOrderSku = Mage::helper('avatax')->getGwOrderSku($storeId);
         $line->setItemCode($gwOrderSku ? $gwOrderSku : 'GwOrderAmount');
         $line->setDescription('Gift Wrap Order Amount');
-        $line->setTaxCode($this->_getGiftTaxClass($storeId));
+        $line->setTaxCode($this->_getGiftTaxClass());
         $line->setQty(1);
         $line->setAmount($gwOrderAmount);
         $line->setDiscounted(false);
@@ -358,7 +359,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
         $gwItemsSku = Mage::helper('avatax')->getGwItemsSku($storeId);
         $line->setItemCode($gwItemsSku ? $gwItemsSku : 'GwItemsAmount');
         $line->setDescription('Gift Wrap Items Amount');
-        $line->setTaxCode($this->_getGiftTaxClass($storeId));
+        $line->setTaxCode($this->_getGiftTaxClass());
         $line->setQty(1);
         $line->setAmount($gwItemsAmount);
         $line->setDiscounted(false);
@@ -391,7 +392,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
         $gwPrintedCardSku = Mage::helper('avatax')->getGwPrintedCardSku($storeId);
         $line->setItemCode($gwPrintedCardSku ? $gwPrintedCardSku : 'GwPrintedCardAmount');
         $line->setDescription('Gift Wrap Printed Card Amount');
-        $line->setTaxCode($this->_getGiftTaxClass($storeId));
+        $line->setTaxCode($this->_getGiftTaxClass());
         $line->setQty(1);
         $line->setAmount($gwPrintedCardAmount);
         $line->setDiscounted(false);

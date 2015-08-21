@@ -53,6 +53,13 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
     protected $_taxClassCollection = null;
 
     /**
+     * Gift wrapping tax class id
+     *
+     * @var int
+     */
+    protected $_gwTaxClassId;
+
+    /**
      * Sets the company code on the request
      *
      * @param int|null $storeId
@@ -62,6 +69,35 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
     {
         $config = Mage::getSingleton('avatax/config');
         $this->_request->setCompanyCode($config->getCompanyCode($storeId));
+        return $this;
+    }
+
+    /**
+     * Initialization gift wrapping tax class id
+     *
+     * @param Mage_Sales_Model_Order_Invoice|Mage_Sales_Model_Order_Creditmemo|Mage_Sales_Model_Quote_Address $object
+     * @return $this
+     */
+    protected function _initGwTaxClassId($object)
+    {
+        if (Mage::getEdition() !== Mage::EDITION_ENTERPRISE) {
+            return $this;
+        }
+        if (!$object->getGwPrice()
+            && !$object->getGwItemsPrice()
+            && !$object->getGwPrintedCardPrice()
+        ) {
+            return $this;
+        }
+
+        if ($object instanceof Mage_Sales_Model_Quote_Address) {
+            $storeId = $object->getQuote()->getStore()->getId();
+        } else {
+            $storeId = $object->getStore()->getId();
+        }
+
+        $this->_gwTaxClassId = $this->_getGiftWrappingDataHelper()->getWrappingTaxClass($storeId);
+
         return $this;
     }
 
@@ -332,6 +368,9 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
                 $taxClassIds[] = $product->getTaxClassId();
             }
         }
+        if (null !== $this->_gwTaxClassId) {
+            $taxClassIds[] = $this->_gwTaxClassId;
+        }
         $this->_taxClassCollection = Mage::getModel('tax/class')->getCollection()
             ->addFieldToSelect(array('class_id', 'op_avatax_code'))
             ->addFieldToFilter('class_id', array('in' => $taxClassIds));
@@ -439,19 +478,15 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
     /**
      * Get gift tax class
      *
-     * @param int $storeId
-     * @return bool|string
+     * @return string
      */
-    protected function _getGiftTaxClass($storeId)
+    protected function _getGiftTaxClass()
     {
         $taxClass = '';
-        if (Mage::getEdition() === Mage::EDITION_ENTERPRISE) {
-            $taxClassId = $this->_getGiftWrappingDataHelper()->getWrappingTaxClass($storeId);
-            if ($taxClassId) {
-                $taxClass = Mage::getModel('tax/class')
-                    ->load($taxClassId)
-                    ->getOpAvataxCode();
-            }
+        if ($this->_gwTaxClassId) {
+            $taxClass = $this->_getTaxClassCollection()
+                ->getItemById($this->_gwTaxClassId)
+                ->getOpAvataxCode();
         }
 
         return $taxClass;
