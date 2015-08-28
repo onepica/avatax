@@ -58,21 +58,8 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function loadClass($className)
     {
-        require_once $this->getLibPath() . DS . 'classes' . DS . $className . '.class.php';
-        return $this;
-    }
-
-    /**
-     * Loads an array of AvaTax classes.
-     *
-     * @param array $classes
-     * @return OnePica_AvaTax_Helper_Data
-     */
-    public function loadClasses(array $classes)
-    {
-        foreach ($classes as $class) {
-            $this->loadClass($class);
-        }
+        $classFile = $this->getLibPath() . DS . 'classes' . DS . $className . '.class.php';
+        require_once $classFile;
         return $this;
     }
 
@@ -83,7 +70,8 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function loadFunctions()
     {
-        require_once $this->getLibPath() . DS . 'functions.php';
+        $functionsFile = $this->getLibPath() . DS . 'functions.php';
+        require_once $functionsFile;
         return $this;
     }
 
@@ -102,19 +90,9 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
      *
      * @return string
      */
-    public function getLibPath ()
+    public function getLibPath()
     {
-        return Mage::getModuleDir('', 'OnePica_AvaTax') . DS . 'lib';
-    }
-
-    /**
-     * Returns the path to the AvaTax SDK WSDL directory.
-     *
-     * @return string
-     */
-    public function getWsdlPath ()
-    {
-        return $this->getLibPath() . DS . 'wsdl';
+        return Mage::getBaseDir('lib') . DS . 'AvaTax';
     }
 
     /**
@@ -368,7 +346,8 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
 
         foreach ($storeCollection as $store) {
             //@startSkipCommitHooks
-            $disabled |= Mage::getStoreConfig('tax/avatax/action', $store->getId()) == OnePica_AvaTax_Model_Config::ACTION_DISABLE;
+            $disabled |= Mage::getStoreConfig('tax/avatax/action', $store->getId())
+                         == OnePica_AvaTax_Model_Config::ACTION_DISABLE;
             //@finishSkipCommitHooks
         }
 

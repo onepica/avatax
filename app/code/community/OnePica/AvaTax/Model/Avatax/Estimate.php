@@ -73,7 +73,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
         $rates = Mage::getSingleton('avatax/session')->getRates();
         if (is_array($rates)) {
             foreach ($rates as $key => $rate) {
-                if ($rate['timestamp'] < strtotime('-' . self::CACHE_TTL . ' minutes')) {
+                if ($rate['timestamp'] < $this->_getDateModel()->timestamp('-' . self::CACHE_TTL . ' minutes')) {
                     unset($rates[$key]);
                 }
             }
@@ -176,7 +176,6 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
         $this->_setOriginAddress($address->getStoreId());
         $this->_setDestinationAddress($address);
         $this->_request->setDetailLevel(DetailLevel::$Line);
-        $this->_addCustomer($address);
         $this->_addItemsInCart($item);
         $this->_addShipping($address);
         //Added code for calculating tax for giftwrap items
@@ -200,7 +199,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
             //success
             if ($result->getResultCode() == SeverityLevel::$Success) {
                 $this->_rates[$requestKey] = array(
-                    'timestamp' => time(),
+                    'timestamp' => $this->_getDateModel()->timestamp(),
                     'address_id' => $address->getId(),
                     'summary' => array(),
                     'items' => array()
@@ -224,7 +223,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
             //failure
             } else {
                 $this->_rates[$requestKey] = array(
-                    'timestamp'  => time(),
+                    'timestamp'  => $this->_getDateModel()->timestamp(),
                     'address_id' => $address->getId(),
                     'summary'    => array(),
                     'items'      => array(),
@@ -409,7 +408,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
     /**
      * Makes a Line object from a product item object
      *
-     * @param Varien_Object $item
+     * @param Varien_Object|Mage_Sales_Model_Quote_Item $item
      * @return int|bool
      */
     protected function _newLine($item)
@@ -423,19 +422,19 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
         $lineNumber = count($this->_lines);
         $line = new Line();
         $line->setNo($lineNumber);
-        $line->setItemCode(substr($product->getSku(), 0, 50));
-        $line->setDescription($product->getName());
+        $line->setItemCode(substr($item->getSku(), 0, 50));
+        $line->setDescription($item->getName());
         $line->setQty($item->getQty());
         $line->setAmount($price);
         $line->setDiscounted($item->getDiscountAmount() ? true : false);
         if ($taxClass) {
             $line->setTaxCode($taxClass);
         }
-        $ref1Value = $this->_getRefValueByProductAndNumber($product, 1);
+        $ref1Value = $this->_getRefValueByProductAndNumber($product, 1, $item->getStoreId());
         if ($ref1Value) {
             $line->setRef1($ref1Value);
         }
-        $ref2Value = $this->_getRefValueByProductAndNumber($product, 2);
+        $ref2Value = $this->_getRefValueByProductAndNumber($product, 2, $item->getStoreId());
         if ($ref2Value) {
             $line->setRef2($ref2Value);
         }

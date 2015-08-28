@@ -26,10 +26,8 @@ class OnePica_AvaTax_Model_Session extends Mage_Core_Model_Session_Abstract
 {
     /**
      * Construct
-     *
-     * @param array $data
      */
-    public function __construct($data = array())
+    public function __construct()
     {
         $this->init('avatax');
     }

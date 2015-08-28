@@ -208,30 +208,35 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
         }
 
         if (($amount != 0) || (Mage::helper('tax')->displayZeroTax($store))) {
-            $address->addTotal(array(
-                'code' => $this->getCode(),
-                'title' => Mage::helper('tax')->__('Tax'),
-                'full_info' => $fullInfo,
-                'value' => $amount,
-                'area' => null
-            ));
+            $address->addTotal(
+                array(
+                    'code'      => $this->getCode(),
+                    'title'     => Mage::helper('tax')->__('Tax'),
+                    'full_info' => $fullInfo,
+                    'value'     => $amount,
+                    'area'      => null
+                )
+            );
         }
 
         /**
          * Modify subtotal
          */
         if (method_exists($config, "displayCartSubtotalBoth") && method_exists($config, "displayCartSubtotalInclTax")
-                && ($config->displayCartSubtotalBoth($store) || $config->displayCartSubtotalInclTax($store))) {
+            && ($config->displayCartSubtotalBoth($store) || $config->displayCartSubtotalInclTax($store))
+        ) {
             $subtotalInclTax = $address->getSubtotal() + $address->getTaxAmount() - $address->getShippingTaxAmount();
             $address->setSubtotalInclTax($subtotalInclTax);
 
-            $address->addTotal(array(
-                'code' => 'subtotal',
-                'title' => Mage::helper('sales')->__('Subtotal'),
-                'value' => $subtotalInclTax,
-                'value_incl_tax' => $subtotalInclTax,
-                'value_excl_tax' => $address->getSubtotal(),
-            ));
+            $address->addTotal(
+                array(
+                    'code'           => 'subtotal',
+                    'title'          => Mage::helper('sales')->__('Subtotal'),
+                    'value'          => $subtotalInclTax,
+                    'value_incl_tax' => $subtotalInclTax,
+                    'value_excl_tax' => $address->getSubtotal(),
+                )
+            );
         }
 
         return $this;
@@ -293,12 +298,12 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
      * Get quote address object
      *
      * @return Mage_Sales_Model_Quote_Address
-     * @throws Mage_Core_Exception
+     * @throws OnePica_AvaTax_Exception
      */
     protected function _getAddress()
     {
         if ($this->_address === null) {
-            throw new Mage_Core_Exception(Mage::helper('sales')->__('Address model is not defined'));
+            throw new OnePica_AvaTax_Exception(Mage::helper('sales')->__('Address model is not defined'));
         }
         return $this->_address;
     }

@@ -65,18 +65,20 @@ class OnePica_AvaTax_Block_Adminhtml_Export_Queue_Grid extends OnePica_AvaTax_Bl
      */
     protected function _prepareColumns()
     {
-        return $this->_addColumns(array(
-            'queue_id' => 'number',
-            'store_id' => 'number',
-            'entity_id' => 'number',
-            'entity_increment_id' => 'number',
-            'type' => Mage::getModel('avatax/records_queue')->getTypeOptions(),
-            'status' => Mage::getModel('avatax/records_queue')->getStatusOptions(),
-            'attempt' => 'number',
-            'message' => 'default',
-            'created_at' => 'datetime',
-            'updated_at' => 'datetime'
-        ));
+        return $this->_addColumns(
+            array(
+                'queue_id'            => 'number',
+                'store_id'            => 'number',
+                'entity_id'           => 'number',
+                'entity_increment_id' => 'number',
+                'type'                => Mage::getModel('avatax/records_queue')->getTypeOptions(),
+                'status'              => Mage::getModel('avatax/records_queue')->getStatusOptions(),
+                'attempt'             => 'number',
+                'message'             => 'default',
+                'created_at'          => 'datetime',
+                'updated_at'          => 'datetime'
+            )
+        );
     }
 
     /**

@@ -33,8 +33,7 @@ class OnePica_AvaTax_Block_Adminhtml_Notification_Toolbar extends Mage_Adminhtml
     {
         return Mage::getModel('avatax_records/queue')->getCollection()
             ->addFieldToFilter('status', OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_RETRY)
-            ->load()
-            ->count();
+            ->getSize();
     }
 
     /**

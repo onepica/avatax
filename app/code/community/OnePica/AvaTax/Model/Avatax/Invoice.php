@@ -45,20 +45,20 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
      * @param Mage_Sales_Model_Order_Invoice $invoice
      * @param OnePica_AvaTax_Model_Records_Queue $queue
      * @return bool
-     * @throws Exception
+     * @throws OnePica_AvaTax_Exception
      * @throws OnePica_AvaTax_Model_Avatax_Exception_Commitfailure
      * @throws OnePica_AvaTax_Model_Avatax_Exception_Unbalanced
      */
     public function invoice($invoice, $queue)
     {
         $order = $invoice->getOrder();
-        $invoiceDate = $order->getInvoiceCollection()->getFirstItem()->getCreatedAt();
+        $invoiceDate = $invoice->getCreatedAt();
         $orderDate = $order->getCreatedAt();
         $statusDate = $queue->getUpdatedAt();
 
         $shippingAddress = ($order->getShippingAddress()) ? $order->getShippingAddress() : $order->getBillingAddress();
         if (!$shippingAddress) {
-            throw new Exception($this->__('There is no address attached to this order'));
+            throw new OnePica_AvaTax_Exception($this->__('There is no address attached to this order'));
         }
 
         $this->_request = new GetTaxRequest();
@@ -74,7 +74,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
 
         $this->_setOriginAddress($order->getStoreId());
         $this->_setDestinationAddress($shippingAddress);
-        //$this->_request->setPaymentDate(date('Y-m-d'));
+
         $this->_request->setDocDate(substr($invoiceDate, 0, 10));
         $this->_request->setPaymentDate(substr($invoiceDate, 0, 10));
         $this->_request->setTaxDate(substr($orderDate, 0, 10));
@@ -126,7 +126,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
      * @param Mage_Sales_Model_Order_Creditmemo $creditmemo
      * @param OnePica_AvaTax_Model_Records_Queue $queue
      * @return mixed
-     * @throws Exception
+     * @throws OnePica_AvaTax_Exception
      * @throws OnePica_AvaTax_Model_Avatax_Exception_Commitfailure
      * @throws OnePica_AvaTax_Model_Avatax_Exception_Unbalanced
      */
@@ -135,11 +135,11 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
         $order = $creditmemo->getOrder();
         $orderDate = $order->getCreatedAt();
         $statusDate = $queue->getUpdatedAt();
-        $creditmemoDate = $order->getCreditmemosCollection()->getFirstItem()->getCreatedAt();
+        $creditmemoDate = $creditmemo->getCreatedAt();
 
         $shippingAddress = ($order->getShippingAddress()) ? $order->getShippingAddress() : $order->getBillingAddress();
         if (!$shippingAddress) {
-            throw new Exception($this->__('There is no address attached to this order'));
+            throw new OnePica_AvaTax_Exception($this->__('There is no address attached to this order'));
         }
 
         $this->_request = new GetTaxRequest();
@@ -158,9 +158,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
         $this->_setDestinationAddress($shippingAddress);
 
         // Set the tax date for calculation.
-        //$invoiceDate = $order->getInvoiceCollection()->getFirstItem()->getCreatedAt();
         $override = new TaxOverride();
-        //$override->setTaxDate(substr($invoiceDate, 0, 10));
         $override->setTaxDate(substr($orderDate, 0, 10));
         $override->setTaxOverrideType(TaxOverrideType::$TaxDate);
         $override->setReason('Credit memo - refund');
@@ -255,7 +253,8 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
      * @param bool $credit
      * @return int|bool
      */
-    protected function _addGwOrderAmount($object, $credit = false) {
+    protected function _addGwOrderAmount($object, $credit = false)
+    {
         if ($object->getGwPrice() == 0) {
             return false;
         }
@@ -425,6 +424,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
             return false;
         }
 
+        $storeId = $this->_retrieveStoreIdFromItem($item);
         $product = $this->_getProductByProductId($item->getProductId());
         $taxClass = $this->_getTaxClassByProduct($product);
         $price = $item->getBaseRowTotal() - $item->getBaseDiscountAmount();
@@ -444,16 +444,34 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
         if ($taxClass) {
             $line->setTaxCode($taxClass);
         }
-        $ref1Value = $this->_getRefValueByProductAndNumber($product, 1);
+        $ref1Value = $this->_getRefValueByProductAndNumber($product, 1, $storeId);
         if ($ref1Value) {
             $line->setRef1($ref1Value);
         }
-        $ref2Value = $this->_getRefValueByProductAndNumber($product, 2);
+        $ref2Value = $this->_getRefValueByProductAndNumber($product, 2, $storeId);
         if ($ref2Value) {
             $line->setRef2($ref2Value);
         }
 
         $this->_lineToItemId[count($this->_lines)] = $item->getOrderItemId();
         $this->_lines[] = $line;
+    }
+
+    /**
+     * Retrieve store id from item
+     *
+     * @param Mage_Sales_Model_Order_Invoice_Item|Mage_Sales_Model_Order_Creditmemo_Item $item
+     * @return int
+     */
+    protected function _retrieveStoreIdFromItem($item)
+    {
+        $storeId = null;
+        if ($item instanceof Mage_Sales_Model_Order_Invoice_Item) {
+            $storeId = $item->getInvoice()->getStoreId();
+        } else {
+            $storeId = $item->getCreditmemo()->getStoreId();
+        }
+
+        return $storeId;
     }
 }

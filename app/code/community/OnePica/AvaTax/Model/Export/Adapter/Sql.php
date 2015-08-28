@@ -35,16 +35,17 @@ class OnePica_AvaTax_Model_Export_Adapter_Sql extends OnePica_AvaTax_Model_Expor
      * Get content
      *
      * @return string
-     * @throws OnePica_AvaTax_Model_Exception
+     * @throws OnePica_AvaTax_Exception
      */
     public function getContent()
     {
         if (!$this->getCollection()) {
-            throw new OnePica_AvaTax_Model_Exception('Collection should be set before export process');
+            throw new OnePica_AvaTax_Exception('Collection should be set before export process');
         }
 
         $content = $this->_getExportHeader();
         $content .= $this->_getExportQueries();
+
         return $content;
     }
 
@@ -58,10 +59,11 @@ class OnePica_AvaTax_Model_Export_Adapter_Sql extends OnePica_AvaTax_Model_Expor
         $version = Mage::getResourceModel('core/resource')->getDbVersion('avatax_records_setup');
         $stores = count(Mage::app()->getStores());
         $content = '-- ' . strtoupper($this->getCollection()->getMainTable()) . " EXPORT\n";
-        $content .= '-- Created at: ' . gmdate(DATE_W3C) . "\n";
+        $content .= '-- Created at: ' . $this->_getDateModel()->gmtDate(DATE_W3C) . "\n";
         $content .= '-- Created by: ' . Mage::getUrl('/') . "\n";
-        $content .= '-- Magento v' . Mage::getVersion() . ' // OP_AvaTax v' . $version . ' // Stores: ' . $stores . "\n";
-        $content .= '-- Total rows: ' . $this->getCollection()->count() . "\n\n";
+        $content .= '-- Magento v' . Mage::getVersion() . ' // OP_AvaTax v' . $version
+            . ' // Stores: ' . $stores . "\n";
+        $content .= '-- Total rows: ' . $this->getCollection()->getSize() . "\n\n";
         return $content;
     }
 
@@ -73,8 +75,11 @@ class OnePica_AvaTax_Model_Export_Adapter_Sql extends OnePica_AvaTax_Model_Expor
     protected function _getColumns()
     {
         if ($this->_columns === null) {
-            $this->_columns = array_keys($this->getCollection()->getFirstItem()->getData());
+            $this->_columns = array_keys(
+                $this->getCollection()->setPageSize(1)->setCurPage(1)->getFirstItem()->getData()
+            );
         }
+
         return $this->_columns;
     }
 
@@ -113,5 +118,15 @@ class OnePica_AvaTax_Model_Export_Adapter_Sql extends OnePica_AvaTax_Model_Expor
             $rows[] = "(" . implode(", ", $values) . ")";
         }
         return $rows;
+    }
+
+    /**
+     * Get core date model
+     *
+     * @return \Mage_Core_Model_Date
+     */
+    protected function _getDateModel()
+    {
+        return Mage::getSingleton('core/date');
     }
 }

@@ -19,25 +19,33 @@ $this->startSetup();
 /* @var $this Mage_Core_Model_Resource_Setup */
 $adapter = $this->getConnection();
 $table = $adapter->newTable($this->getTable('avatax_records/queue'))
-    ->addColumn('queue_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
+    ->addColumn(
+        'queue_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
         'identity' => true,
-        'nullable'  => false,
+        'nullable' => false,
         'primary'  => true,
         'unsigned' => true
-    ))
-    ->addColumn('store_id', Varien_Db_Ddl_Table::TYPE_SMALLINT, null, array(
+        )
+    )
+    ->addColumn(
+        'store_id', Varien_Db_Ddl_Table::TYPE_SMALLINT, null, array(
         'unsigned' => true
-    ))
-    ->addColumn('entity_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
+        )
+    )
+    ->addColumn(
+        'entity_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
         'unsigned' => true
-    ))
+        )
+    )
     ->addColumn('entity_increment_id', Varien_Db_Ddl_Table::TYPE_VARCHAR, 50)
     ->addColumn('type', Varien_Db_Ddl_Table::TYPE_VARCHAR, 50)
     ->addColumn('status', Varien_Db_Ddl_Table::TYPE_VARCHAR, 50)
-    ->addColumn('attempt', Varien_Db_Ddl_Table::TYPE_SMALLINT, null, array(
+    ->addColumn(
+        'attempt', Varien_Db_Ddl_Table::TYPE_SMALLINT, null, array(
         'unsigned' => true,
-        'default' => 0
-    ))
+        'default'  => 0
+        )
+    )
     ->addColumn('message', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255)
     ->addColumn('created_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null)
     ->addColumn('updated_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null)
