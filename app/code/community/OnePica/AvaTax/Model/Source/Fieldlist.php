@@ -33,7 +33,7 @@ class OnePica_AvaTax_Model_Source_Fieldlist
     {
         $obj = Mage::getConfig()->getNode('admin/fieldsets/customer_dataflow');
 
-        foreach ($obj as $key => $obj2) {
+        foreach ($obj as $obj2) {
             foreach ($obj2 as $key2 => $obj3) {
                 if ($obj3->shipping) {
                     $arr[] = array(

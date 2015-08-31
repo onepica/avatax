@@ -15,8 +15,6 @@
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
-require_once(Mage::getModuleDir('', 'OnePica_AvaTax') . DS . 'lib' . DS.'functions.php');
-
 /**
  * The AvaTax Config Model, which registers config settings with the AvaTax SDK
  *
@@ -106,15 +104,19 @@ class OnePica_AvaTax_Model_Config extends Varien_Object
     public function init($storeId)
     {
         if (!$this->_config) {
-            $this->_config = new ATConfig(self::CONFIG_KEY, array(
-                'url' => $this->getConfig('url', $storeId),
-                'account' => $this->getConfig('account', $storeId),
-                'license' => $this->getConfig('license', $storeId),
-                'trace' => (Mage::helper('avatax')
-                    ->getLogMode($storeId) == OnePica_AvaTax_Model_Source_Logmode::DEBUG) ? true : false,
-                'client' => $this->getClientName()
-            ));
+            $this->_config = new ATConfig(
+                self::CONFIG_KEY,
+                array(
+                    'url'     => $this->getConfig('url', $storeId),
+                    'account' => $this->getConfig('account', $storeId),
+                    'license' => $this->getConfig('license', $storeId),
+                    'trace'   => (Mage::helper('avatax')
+                        ->getLogMode($storeId) == OnePica_AvaTax_Model_Source_Logmode::DEBUG) ? true : false,
+                    'client'  => $this->getClientName()
+                )
+            );
         }
+
         return $this;
     }
 
@@ -174,17 +176,6 @@ class OnePica_AvaTax_Model_Config extends Varien_Object
             $this->_taxConnection = new TaxServiceSoap(self::CONFIG_KEY);
         }
         return $this->_taxConnection;
-    }
-
-    /**
-     * Returns a parameter from the AvaTax ATConfig object.
-     *
-     * @param string $param
-     * @return string
-     */
-    public function getParam($param)
-    {
-        return $this->_config->$param;
     }
 
     /**

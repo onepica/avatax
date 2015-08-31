@@ -46,7 +46,7 @@ abstract class OnePica_AvaTax_Model_Abstract extends Varien_Object
         if ($result->getResultCode() == SeverityLevel::$Success) {
             switch (Mage::helper('avatax')->getLogMode($storeId)) {
                 case OnePica_AvaTax_Model_Source_Logmode::ERRORS:
-                    return;
+                    return $this;
                     break;
                 case OnePica_AvaTax_Model_Source_Logmode::NORMAL:
                     $additional = null;
@@ -94,11 +94,9 @@ abstract class OnePica_AvaTax_Model_Abstract extends Varien_Object
     /**
      * Alias to the helper translate method.
      *
-     * @param string $message
-     * @param string var number of replacement vars
      * @return string
      */
-    public function __($message)
+    public function __()
     {
         $args = func_get_args();
         return call_user_func_array(array($this->getHelper(), '__'), $args);

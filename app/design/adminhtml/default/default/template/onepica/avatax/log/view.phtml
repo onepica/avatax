@@ -32,19 +32,25 @@
             <h4 class="icon-head head-edit-form fieldset-legend"><?php echo $this->__('Request'); ?></h4>
         </div>
         <div id="log_details_fieldset" class="log-details">
-            <textarea readonly style="width:100%; height:300px"><?php echo $this->escapeHtml($event->getRequest()); ?></textarea>
+            <textarea readonly style="width:100%; height:300px"><?php echo $this->escapeHtml(
+                    $event->getRequest()
+                ); ?></textarea>
         </div>
         <div class="entry-edit-head">
             <h4 class="icon-head head-edit-form fieldset-legend"><?php echo $this->__('Response'); ?></h4>
         </div>
         <div id="log_details_fieldset" class="log-details">
-            <textarea readonly style="width:100%; height:300px"><?php echo $this->escapeHtml($event->getResult()); ?></textarea>
+            <textarea readonly style="width:100%; height:300px"><?php echo $this->escapeHtml(
+                    $event->getResult()
+                ); ?></textarea>
         </div>
         <div class="entry-edit-head">
             <h4 class="icon-head head-edit-form fieldset-legend"><?php echo $this->__('Additional'); ?></h4>
         </div>
         <div id="log_details_fieldset" class="log-details">
-            <textarea readonly style="width:100%; height:300px"><?php echo $this->escapeHtml($event->getAdditional()); ?></textarea>
+            <textarea readonly style="width:100%; height:300px"><?php echo $this->escapeHtml(
+                    $event->getAdditional()
+                ); ?></textarea>
         </div>
     </div>
 </div>

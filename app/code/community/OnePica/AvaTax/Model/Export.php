@@ -86,16 +86,16 @@ class OnePica_AvaTax_Model_Export
      * Get export content
      *
      * @return string
-     * @throws OnePica_AvaTax_Model_Exception
+     * @throws OnePica_AvaTax_Exception
      */
     public function getContent()
     {
         if (!$this->getEntity()) {
-            throw new OnePica_AvaTax_Model_Exception('Entity should be set before export process');
+            throw new OnePica_AvaTax_Exception('Entity should be set before export process');
         }
 
         if (!$this->getAdapter()) {
-            throw new OnePica_AvaTax_Model_Exception('Adapter should be set before export process');
+            throw new OnePica_AvaTax_Exception('Adapter should be set before export process');
         }
 
         return $this->getEntity()

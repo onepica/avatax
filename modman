@@ -3,4 +3,11 @@ app/code/community/OnePica/AvaTax                               app/code/communi
 app/design/adminhtml/default/default/layout/onepica/avatax.xml  app/design/adminhtml/default/default/layout/onepica/avatax.xml
 app/design/adminhtml/default/default/template/onepica/avatax    app/design/adminhtml/default/default/template/onepica/avatax
 app/design/frontend/base/default/layout/onepica/avatax.xml      app/design/frontend/base/default/layout/onepica/avatax.xml
-app/locale                                                      app/locale
+app/locale/de_DE/OnePica_AvaTax.csv								app/locale/de_DE/OnePica_AvaTax.csv
+app/locale/en_US/OnePica_AvaTax.csv								app/locale/en_US/OnePica_AvaTax.csv
+app/locale/es_ES/OnePica_AvaTax.csv								app/locale/es_ES/OnePica_AvaTax.csv
+app/locale/fr_FR/OnePica_AvaTax.csv								app/locale/fr_FR/OnePica_AvaTax.csv
+app/locale/nl_NL/OnePica_AvaTax.csv								app/locale/nl_NL/OnePica_AvaTax.csv
+app/locale/pt_BR/OnePica_AvaTax.csv								app/locale/pt_BR/OnePica_AvaTax.csv
+app/locale/zh_CN/OnePica_AvaTax.csv								app/locale/zh_CN/OnePica_AvaTax.csv
+lib/AvaTax                                                      lib/AvaTax
