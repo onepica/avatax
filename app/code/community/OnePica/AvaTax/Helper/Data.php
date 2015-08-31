@@ -358,7 +358,7 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
      * Is AvaTax disabled.
      *
      * @return bool
-     * @throws \Mage_Core_Exception
+     * @throws Mage_Core_Exception
      */
     public function isAvaTaxDisabled()
     {
@@ -370,6 +370,24 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
         }
 
         return !(bool)Mage::getStoreConfig('tax/avatax/action', $storeId);
+    }
+
+    /**
+     * Does any store have this extension disabled?
+     *
+     * @return bool
+     */
+    public function isAnyStoreDisabled()
+    {
+        $disabled = false;
+        $storeCollection = Mage::app()->getStores();
+
+        foreach ($storeCollection as $store) {
+            $disabled |= Mage::getStoreConfig('tax/avatax/action', $store->getId())
+                == OnePica_AvaTax_Model_Config::ACTION_DISABLE;
+        }
+
+        return $disabled;
     }
 
     /**

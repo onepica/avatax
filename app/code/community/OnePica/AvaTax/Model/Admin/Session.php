@@ -43,7 +43,7 @@ class OnePica_AvaTax_Model_Admin_Session extends Mage_Admin_Model_Session
             'admin/sales/tax/import_export'
         );
 
-        if (in_array($resource, $block) && !$this->_getDataHelper()->isAvaTaxDisabled()) {
+        if (in_array($resource, $block) && !$this->_getDataHelper()->isAnyStoreDisabled()) {
             return false;
         }
 
