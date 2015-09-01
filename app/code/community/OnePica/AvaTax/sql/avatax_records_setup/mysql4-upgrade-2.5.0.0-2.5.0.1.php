@@ -22,285 +22,47 @@ $adapter = $this->getConnection();
 // check if current process is install from scratch or update from 2.4.3.3-stable
 $queueColumns = array_keys($adapter->describeTable($this->getTable('avatax_records/queue')));
 if (!in_array('queue_id', $queueColumns)) {
-    $adapter
-        ->modifyColumn(
-            $this->getTable('avatax_records/log'),
-            'log_id',
-            array(
-                'type' => Varien_Db_Ddl_Table::TYPE_INTEGER,
-                'identity' => true,
-                'nullable'  => false,
-                'primary'  => true,
-                'unsigned' => true
-            )
-        )
-        ->modifyColumn(
-            $this->getTable('avatax_records/log'),
-            'store_id',
-            array(
-                'type' => Varien_Db_Ddl_Table::TYPE_SMALLINT,
-                'unsigned' => true
-            )
-        )
-        ->modifyColumn(
-            $this->getTable('avatax_records/log'),
-            'level',
-            array(
-                'type' => Varien_Db_Ddl_Table::TYPE_TEXT,
-                'length' => 50
-            )
-        )
-        ->modifyColumn(
-            $this->getTable('avatax_records/log'),
-            'type',
-            array(
-                'type' => Varien_Db_Ddl_Table::TYPE_TEXT,
-                'length' => 50
-            )
-        )
-        ->modifyColumn(
-            $this->getTable('avatax_records/log'),
-            'request',
-            array(
-                'type' => Varien_Db_Ddl_Table::TYPE_TEXT,
-            )
-        )
-        ->modifyColumn(
-            $this->getTable('avatax_records/log'),
-            'result',
-            array(
-                'type' => Varien_Db_Ddl_Table::TYPE_TEXT,
-            )
-        )
-        ->modifyColumn(
-            $this->getTable('avatax_records/log'),
-            'additional',
-            array(
-                'type' => Varien_Db_Ddl_Table::TYPE_TEXT,
-            )
-        )
-        ->modifyColumn(
-            $this->getTable('avatax_records/log'),
-            'created_at',
-            array(
-                'type' => Varien_Db_Ddl_Table::TYPE_DATETIME,
-            )
-        );
-    $adapter
-        ->addForeignKey(
-            $this->getFkName(
-                $this->getTable('avatax_records/log'),
-                'store_id',
-                $this->getTable('core/store'),
-                'store_id'
-            ),
-            $this->getTable('avatax_records/log'),
-            'store_id',
-            $this->getTable('core/store'),
-            'store_id',
-            Varien_Db_Ddl_Table::ACTION_CASCADE,
-            Varien_Db_Ddl_Table::ACTION_CASCADE
-        );
-    $adapter->addIndex(
-        $this->getTable('avatax_records/log'),
-        $this->getIdxName(
-            $this->getTable('avatax_records/log'),
-            array('level'),
-            Varien_Db_Adapter_Interface::INDEX_TYPE_INDEX
-        ),
-        array('level'),
-        Varien_Db_Adapter_Interface::INDEX_TYPE_INDEX
-    );
-    $adapter->addIndex(
-        $this->getTable('avatax_records/log'),
-        $this->getIdxName(
-            $this->getTable('avatax_records/log'),
-            array('type'),
-            Varien_Db_Adapter_Interface::INDEX_TYPE_INDEX
-        ),
-        array('type'),
-        Varien_Db_Adapter_Interface::INDEX_TYPE_INDEX
-    );
-    $adapter->addIndex(
-        $this->getTable('avatax_records/log'),
-        $this->getIdxName(
-            $this->getTable('avatax_records/log'),
-            array('created_at'),
-            Varien_Db_Adapter_Interface::INDEX_TYPE_INDEX
-        ),
-        array('created_at'),
-        Varien_Db_Adapter_Interface::INDEX_TYPE_INDEX
-    );
+    $installer->run("
 
-    $result = $adapter->changeColumn(
-        $this->getTable('avatax_records/queue'),
-        'id',
-        'queue_id',
-        array(
-            'type' => Varien_Db_Ddl_Table::TYPE_INTEGER,
-            'identity' => true,
-            'nullable'  => false,
-            'primary'  => true,
-            'unsigned' => true
-        )
-    );
+    ALTER TABLE `" . $this->getTable('avatax_records/log') . "`
+	CHANGE COLUMN `log_id` `log_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+	CHANGE COLUMN `store_id` `store_id` smallint(5) unsigned DEFAULT NULL,
+	CHANGE COLUMN `level` `level` varchar(50) DEFAULT NULL,
+    CHANGE COLUMN `type` `type` varchar(50) DEFAULT NULL,
+    CHANGE COLUMN `request` `request` text,
+    CHANGE COLUMN `result` `result` text,
+    CHANGE COLUMN `additional` `additional` text,
+    CHANGE COLUMN `created_at` `created_at` datetime DEFAULT NULL,
+    ADD KEY `FK_OP_AVATAX_LOG_STORE_ID_CORE_STORE_STORE_ID` (`store_id`),
+    ADD KEY `IDX_OP_AVATAX_LOG_LEVEL` (`level`),
+    ADD KEY `IDX_OP_AVATAX_LOG_TYPE` (`type`),
+    ADD KEY `IDX_OP_AVATAX_LOG_CREATED_AT` (`created_at`),
+    ADD CONSTRAINT `FK_OP_AVATAX_LOG_STORE_ID_CORE_STORE_STORE_ID` FOREIGN KEY (`store_id`)
+        REFERENCES `" . $this->getTable('core/store') . "` (`store_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
-    $adapter
-        ->modifyColumn(
-            $this->getTable('avatax_records/queue'),
-            'store_id',
-            array(
-                'type' => Varien_Db_Ddl_Table::TYPE_SMALLINT,
-                'unsigned' => true
-            )
-        )
-        ->modifyColumn(
-            $this->getTable('avatax_records/queue'),
-            'entity_id',
-            array(
-                'type' => Varien_Db_Ddl_Table::TYPE_INTEGER,
-                'unsigned' => true
-            )
-        )
-        ->modifyColumn(
-            $this->getTable('avatax_records/queue'),
-            'entity_increment_id',
-            array(
-                'type' => Varien_Db_Ddl_Table::TYPE_TEXT,
-                'length' => 50
-            )
-        )
-        ->modifyColumn(
-            $this->getTable('avatax_records/queue'),
-            'type',
-            array(
-                'type' => Varien_Db_Ddl_Table::TYPE_TEXT,
-                'length' => 50
-            )
-        )
-        ->modifyColumn(
-            $this->getTable('avatax_records/queue'),
-            'status',
-            array(
-                'type' => Varien_Db_Ddl_Table::TYPE_TEXT,
-                'length' => 50
-            )
-        )
-        ->modifyColumn(
-            $this->getTable('avatax_records/queue'),
-            'attempt',
-            array(
-                'type' => Varien_Db_Ddl_Table::TYPE_SMALLINT,
-                'unsigned' => true,
-                'default' => 0
-            )
-        )
-        ->modifyColumn(
-            $this->getTable('avatax_records/queue'),
-            'message',
-            array(
-                'type' => Varien_Db_Ddl_Table::TYPE_TEXT,
-                'length' => 255
-            )
-        )
-        ->modifyColumn(
-            $this->getTable('avatax_records/queue'),
-            'created_at',
-            array(
-                'type' => Varien_Db_Ddl_Table::TYPE_DATETIME,
-            )
-        )
-        ->modifyColumn(
-            $this->getTable('avatax_records/queue'),
-            'updated_at',
-            array(
-                'type' => Varien_Db_Ddl_Table::TYPE_DATETIME,
-            )
-        );
-    $adapter->addForeignKey(
-        $this->getFkName(
-            $this->getTable('avatax_records/queue'),
-            'store_id',
-            $this->getTable('core/store'),
-            'store_id'
-        ),
-        $this->getTable('avatax_records/queue'),
-        'store_id',
-        $this->getTable('core/store'),
-        'store_id',
-        Varien_Db_Ddl_Table::ACTION_CASCADE,
-        Varien_Db_Ddl_Table::ACTION_CASCADE
-    );
-    $adapter->addIndex(
-        $this->getTable('avatax_records/queue'),
-        $this->getIdxName(
-            $this->getTable('avatax_records/queue'),
-            array('entity_id'),
-            Varien_Db_Adapter_Interface::INDEX_TYPE_INDEX
-        ),
-        array('entity_id'),
-        Varien_Db_Adapter_Interface::INDEX_TYPE_INDEX
-    );
-    $adapter->addIndex(
-        $this->getTable('avatax_records/queue'),
-        $this->getIdxName(
-            $this->getTable('avatax_records/queue'),
-            array('entity_increment_id'),
-            Varien_Db_Adapter_Interface::INDEX_TYPE_INDEX
-        ),
-        array('entity_increment_id'),
-        Varien_Db_Adapter_Interface::INDEX_TYPE_INDEX
-    );
-    $adapter->addIndex(
-        $this->getTable('avatax_records/queue'),
-        $this->getIdxName(
-            $this->getTable('avatax_records/queue'),
-            array('type'),
-            Varien_Db_Adapter_Interface::INDEX_TYPE_INDEX
-        ),
-        array('type'),
-        Varien_Db_Adapter_Interface::INDEX_TYPE_INDEX
-    );
-    $adapter->addIndex(
-        $this->getTable('avatax_records/queue'),
-        $this->getIdxName(
-            $this->getTable('avatax_records/queue'),
-            array('status'),
-            Varien_Db_Adapter_Interface::INDEX_TYPE_INDEX
-        ),
-        array('status'),
-        Varien_Db_Adapter_Interface::INDEX_TYPE_INDEX
-    );
-    $adapter->addIndex(
-        $this->getTable('avatax_records/queue'),
-        $this->getIdxName(
-            $this->getTable('avatax_records/queue'),
-            array('attempt'),
-            Varien_Db_Adapter_Interface::INDEX_TYPE_INDEX
-        ),
-        array('attempt'),
-        Varien_Db_Adapter_Interface::INDEX_TYPE_INDEX
-    );
-    $adapter->addIndex(
-        $this->getTable('avatax_records/queue'),
-        $this->getIdxName(
-            $this->getTable('avatax_records/queue'),
-            array('created_at'),
-            Varien_Db_Adapter_Interface::INDEX_TYPE_INDEX
-        ),
-        array('created_at'),
-        Varien_Db_Adapter_Interface::INDEX_TYPE_INDEX
-    );
-    $adapter->addIndex(
-        $this->getTable('avatax_records/queue'),
-        $this->getIdxName(
-            $this->getTable('avatax_records/queue'),
-            array('updated_at'),
-            Varien_Db_Adapter_Interface::INDEX_TYPE_INDEX
-        ),
-        array('updated_at'),
-        Varien_Db_Adapter_Interface::INDEX_TYPE_INDEX
-    );
+    ALTER TABLE `" . $this->getTable('avatax_records/queue') . "`
+    CHANGE COLUMN `id` `queue_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+    CHANGE COLUMN `store_id` `store_id` smallint(5) unsigned DEFAULT NULL,
+    CHANGE COLUMN `entity_id` `entity_id` int(10) unsigned DEFAULT NULL,
+    CHANGE COLUMN `entity_increment_id` `entity_increment_id` varchar(50) DEFAULT NULL,
+    CHANGE COLUMN `type` `type` varchar(50) DEFAULT NULL,
+    CHANGE COLUMN `status` `status` varchar(50) DEFAULT NULL,
+    CHANGE COLUMN `attempt` `attempt` smallint(5) unsigned DEFAULT '0',
+    CHANGE COLUMN `message` `message` varchar(255) DEFAULT NULL,
+    CHANGE COLUMN `created_at` `created_at` datetime DEFAULT NULL,
+    CHANGE COLUMN `updated_at` `updated_at` datetime DEFAULT NULL,
+    ADD KEY `FK_OP_AVATAX_QUEUE_STORE_ID_CORE_STORE_STORE_ID` (`store_id`),
+    ADD KEY `IDX_OP_AVATAX_QUEUE_ENTITY_ID` (`entity_id`),
+    ADD KEY `IDX_OP_AVATAX_QUEUE_ENTITY_INCREMENT_ID` (`entity_increment_id`),
+    ADD KEY `IDX_OP_AVATAX_QUEUE_TYPE` (`type`),
+    ADD KEY `IDX_OP_AVATAX_QUEUE_STATUS` (`status`),
+    ADD KEY `IDX_OP_AVATAX_QUEUE_ATTEMPT` (`attempt`),
+    ADD KEY `IDX_OP_AVATAX_QUEUE_CREATED_AT` (`created_at`),
+    ADD KEY `IDX_OP_AVATAX_QUEUE_UPDATED_AT` (`updated_at`),
+    ADD CONSTRAINT `FK_OP_AVATAX_QUEUE_STORE_ID_CORE_STORE_STORE_ID` FOREIGN KEY (`store_id`)
+        REFERENCES `" . $this->getTable('core/store') . "` (`store_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+    ");
 }
 
 $this->endSetup();
