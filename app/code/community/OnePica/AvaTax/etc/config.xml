@@ -19,7 +19,7 @@
 <config>
     <modules>
         <OnePica_AvaTax>
-            <version>2.6.0.0</version>
+            <version>2.6.0.1</version>
         </OnePica_AvaTax>
     </modules>
     <global>
@@ -261,6 +261,10 @@
                                 <title>AvaTax Order Sync Queue</title>
                                 <action>avatax/adminhtml_grid/queue</action>
                             </avatax_queue>
+                            <avatax_log translate="title" module="avatax">
+                                <title>AvaTax Log</title>
+                                <action>avatax/adminhtml_grid/log</action>
+                            </avatax_log>
                         </children>
                     </tax>
                 </children>

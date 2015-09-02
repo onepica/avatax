@@ -151,7 +151,7 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
     {
         $storeId = $object->getStoreId();
         $this->_setCompanyCode($storeId);
-        $this->_request->setBusinessIdentificationNo($this->_getBusinessIdentificationNo($object));
+        $this->_request->setBusinessIdentificationNo($this->_getVatId($object));
         $this->_request->setDetailLevel(DetailLevel::$Document);
         $this->_request->setDocDate($this->_getDateModel()->date('Y-m-d'));
         $this->_request->setExemptionNo('');
@@ -168,20 +168,44 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
     }
 
     /**
-     * Retrieve Business identification number
+     * Retrieve Vat Id
      *
      * @param Mage_Sales_Model_Order|OnePica_AvaTax_Model_Sales_Quote_Address $object
      * @return string
      */
-    protected function _getBusinessIdentificationNo($object)
+    protected function _getVatId($object)
     {
         if ($object instanceof Mage_Sales_Model_Order) {
-            return $object->getShippingAddress()->getVatId()
-                ?: $object->getBillingAddress()->getVatId();
+            return $this->_getVatIdByOrder($object);
         }
+        return $this->_getVatIdByQuoteAddress($object);
+    }
 
-        return $object->getQuote()->getShippingAddress()->getVatId()
-            ?: $object->getQuote()->getBillingAddress()->getVatId();
+    /**
+     * Retrieve Vat Id from quote address
+     *
+     * @param OnePica_AvaTax_Model_Sales_Quote_Address $address
+     * @return string
+     */
+    protected function _getVatIdByQuoteAddress($address)
+    {
+        return $address->getQuote()->getShippingAddress()->getVatId()
+            ?: $address->getQuote()->getBillingAddress()->getVatId();
+    }
+
+    /**
+     * Retrieve Vat Id from order
+     *
+     * @param Mage_Sales_Model_Order $order
+     * @return string
+     */
+    protected function _getVatIdByOrder($order)
+    {
+        $shippingAddress = $order->getShippingAddress();
+        if ($shippingAddress && $shippingAddress->getVatId()) {
+            return $shippingAddress->getVatId();
+        }
+        return $order->getBillingAddress()->getVatId();
     }
 
     /**
@@ -365,7 +389,6 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
             $taxClassIds[] = $gwTaxClassId;
         }
         $this->_taxClassCollection = Mage::getModel('tax/class')->getCollection()
-            ->addFieldToSelect(array('class_id', 'op_avatax_code'))
             ->addFieldToFilter('class_id', array('in' => $taxClassIds));
 
         return $this;
