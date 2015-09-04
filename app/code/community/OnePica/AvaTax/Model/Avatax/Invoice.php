@@ -153,9 +153,9 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
         $this->_initProductCollection($items);
         $this->_initTaxClassCollection($creditmemo);
         //Added code for calculating tax for giftwrap items
-        $this->_addGwOrderAmount($creditmemo);
-        $this->_addGwItemsAmount($creditmemo);
-        $this->_addGwPrintedCardAmount($creditmemo);
+        $this->_addGwOrderAmount($creditmemo, true);
+        $this->_addGwItemsAmount($creditmemo, true);
+        $this->_addGwPrintedCardAmount($creditmemo, true);
 
         $this->_addAdjustments(
             $creditmemo->getAdjustmentPositive(),

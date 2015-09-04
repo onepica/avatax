@@ -348,7 +348,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
             return false;
         }
         $lineNumber = count($this->_lines);
-        $storeId = $item->getAddress()->getQuote()->getStore()->getId();
+        $storeId = $item->getQuote()->getStoreId();
         //Add gift wrapping price(for individual items)
         $gwItemsAmount = $item->getGwBasePrice();
 
