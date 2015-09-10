@@ -1,8 +1,14 @@
 <?php
 /**
  * Profile.class.php
+ */
+
+/**
+ * 
  *
- * @package Batch
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Batch
  */
 class Profile {
   private $Name; // string
@@ -23,3 +29,5 @@ class Profile {
   public function getMachine(){return $this->Machine;} // string
 
 }
+
+?>

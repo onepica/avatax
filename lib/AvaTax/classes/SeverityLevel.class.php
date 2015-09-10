@@ -1,8 +1,6 @@
 <?php
 /**
  * SeverityLevel.class.php
- *
- * @package Address
  */
 
 /**
@@ -10,9 +8,9 @@
  *
  * Defines the constants used to specify SeverityLevel in {@link Message}
  *
- * @package Address
- * @author tblanchard
- * Copyright (c) 2007, Avalara.  All rights reserved.
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Address
  */
  
 class SeverityLevel extends Enum
@@ -29,10 +27,12 @@ class SeverityLevel extends Enum
 			SeverityLevel::$Success,
 			SeverityLevel::$Warning,
 			SeverityLevel::$Error,
-			SeverityLevel::$Tax
+			SeverityLevel::$Exception
 		);
 	}
 	
     // Unfortunate boiler plate due to polymorphism issues on static functions
     public static function Validate($value) { self::__Validate($value,self::Values(),__CLASS__); }
 }
+
+?>

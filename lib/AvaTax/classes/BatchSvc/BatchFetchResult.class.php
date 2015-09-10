@@ -1,8 +1,14 @@
 <?php
 /**
  * BatchFetchResult.class.php
+ */
+
+/**
+ * 
  *
- * @package Batch
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Batch
  */
 class BatchFetchResult extends BaseResult {
   private $Batches; // ArrayOfBatch
@@ -15,3 +21,5 @@ class BatchFetchResult extends BaseResult {
   public function getRecordCount(){return $this->RecordCount;} // int
 
 }
+
+?>

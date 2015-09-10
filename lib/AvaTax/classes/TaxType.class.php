@@ -1,15 +1,14 @@
 <?php
 /**
  * TaxType.class.php
- * @package Tax
  */
 
 /**
  * The Type of the tax.
  *
- * @package Tax
- * @author tblanchard
- * Copyright (c) 2008, Avalara.  All rights reserved.
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Tax
  */
 
 class TaxType// extends Enum
@@ -17,6 +16,12 @@ class TaxType// extends Enum
 	public static $Sales	= 'Sales';
 	public static $Use		= 'Use';
 	public static $ConsumerUse	= 'ConsumerUse';
+    public static $Output	= 'Output';
+    public static $Input	= 'Input';
+    public static $Nonrecoverable	= 'Nonrecoverable';
+    public static $Fee	= 'Fee';
+    public static $Rental	= 'Rental';
+	public static $Excise ='Excise';
 	/*
     public static function Values()
 	{
@@ -33,3 +38,7 @@ class TaxType// extends Enum
 	*/
 	
 }
+
+	
+
+?>

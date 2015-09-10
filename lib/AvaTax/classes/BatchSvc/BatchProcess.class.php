@@ -1,8 +1,14 @@
 <?php
 /**
  * BatchProcess.class.php
+ */
+
+/**
+ * 
  *
- * @package Batch
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Batch
  */
 class BatchProcess {
   private $BatchProcessRequest; // BatchProcessRequest
@@ -11,3 +17,5 @@ class BatchProcess {
   public function getBatchProcessRequest(){return $this->BatchProcessRequest;} // BatchProcessRequest
 
 }
+
+?>

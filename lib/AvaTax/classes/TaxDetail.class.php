@@ -1,18 +1,18 @@
 <?php
 /**
  * TaxDetail.class.php
- * @package Tax
  */
 
 /**
  * Holds calculated tax information by jurisdiction.
  *
- * @package Tax
  * @see ArrayOfTaxDetail
  * @see TaxLine
  * @see GetTaxResult
- * @author tblanchard
- * Copyright (c) 2008, Avalara.  All rights reserved.
+ * 
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Tax
  */
 
 class TaxDetail
@@ -188,3 +188,9 @@ class TaxDetail
 
 	    
 }
+
+	
+	
+	
+
+?>

@@ -1,7 +1,6 @@
 <?php
 /**
  * TaxRequest.class.php
- * @package Tax
  */
 
 /**
@@ -9,9 +8,10 @@
  * Tax Requests require either a DocId, or CompanyCode, DocType, and DocCode.
  *
  * @see TaxServiceSoap
- * @package Tax
- * @author tblanchard
- * Copyright (c) 2007, Avalara.  All rights reserved.
+ * 
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Tax
  */
 
 class TaxRequest
@@ -48,7 +48,7 @@ class TaxRequest
     * @access public
     * @var string
     */
-    //protected $DocId;	
+    protected $DocId;	
 	
 	/**
     * Sets the client application company reference code.
@@ -87,7 +87,7 @@ class TaxRequest
     * @see GetTaxResult#DocId
     */
 
-    //public function setDocId($value) { $this->DocId = $value; return $this; }
+    public function setDocId($value) { $this->DocId = $value; return $this; }
 
     /**
     * Sets the hashCode value for this GetTaxRequest.
@@ -149,7 +149,7 @@ class TaxRequest
     * @see GetTaxResult#DocId
     */
 
-    //public function getDocId() { return $this->DocId; }
+    public function getDocId() { return $this->DocId; }
 	
 	public function __construct()
 	{
@@ -159,3 +159,5 @@ class TaxRequest
 	}
 
 }
+
+?>

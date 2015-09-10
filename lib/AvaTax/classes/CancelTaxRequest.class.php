@@ -1,9 +1,7 @@
 <?php
 /**
  * CancelTaxRequest.class.php
- * @package Tax
  */
-
 
  /**
  * Data to pass to CancelTax indicating
@@ -15,11 +13,11 @@
  * DocType in order to uniquely identify the document.
  * </p>
  *
- * @package Tax
  * @see CancelTaxResult, DocumentType
- * @author tblanchard
- * Copyright (c) 2008, Avalara.  All rights reserved.
  *
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Tax
  */
 
 class CancelTaxRequest extends TaxRequest
@@ -53,3 +51,9 @@ class CancelTaxRequest extends TaxRequest
     public function setCancelCode($value) { CancelCode::Validate($value); $this->CancelCode = $value; return $this; }
 	
 }
+
+
+ 
+
+
+?>

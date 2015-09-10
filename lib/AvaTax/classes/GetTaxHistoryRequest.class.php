@@ -1,10 +1,7 @@
 <?php
 /**
  * GetTaxHistoryRequest.class.php
- *
- * @package Tax
  */
-
 
 /**
  * Data to pass to {@link TaxServiceSoap#getTaxHistory}.
@@ -13,9 +10,10 @@
  * </p>
  *
  * @see GetTaxHistoryResult
- * @package Tax
- * @author tblanchard
- * Copyright (c) 2008, Avalara.  All rights reserved.
+ * 
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Tax
  */
 
 class GetTaxHistoryRequest extends TaxRequest 
@@ -50,3 +48,5 @@ class GetTaxHistoryRequest extends TaxRequest
     	public function setDetailLevel($value) { DetailLevel::Validate($value); $this->DetailLevel = $value; return $this; }			//Summary or Document or Line or Tax or Diagnostic - enum
 
 }
+
+?>

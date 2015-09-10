@@ -1,8 +1,14 @@
 <?php
 /**
  * SeverityLevel.class.php
+ */
+
+/**
+ * 
  *
- * @package Batch
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Batch
  */
 class SeverityLevel {
   const Success = 'Success';
@@ -11,3 +17,5 @@ class SeverityLevel {
   const Exception = 'Exception';
 
 }
+
+?>

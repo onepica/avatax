@@ -1,8 +1,14 @@
 <?php
 /**
  * Message.class.php
+ */
+
+/**
+ * 
  *
- * @package Batch
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Batch
  */
 class Message {
   private $Summary; // string
@@ -35,3 +41,5 @@ class Message {
   public function getName(){return $this->Name;} // string
 
 }
+
+?>

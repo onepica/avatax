@@ -1,8 +1,14 @@
 <?php
 /**
  * Batch.class.php
+ */
+
+/**
+ * 
  *
- * @package Batch
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Batch
  */
 class Batch {
   private $AccountId; // int
@@ -84,3 +90,5 @@ class Batch {
   public function getCurrentRecord(){return $this->CurrentRecord;} // int
 
 }
+
+?>

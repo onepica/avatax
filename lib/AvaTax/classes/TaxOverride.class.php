@@ -1,9 +1,14 @@
 <?php
-
 /**
  * TaxOverride.class.php
+ */
+
+/**
+ * 
  *
- * @package Tax
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Tax
  */
 
 class TaxOverride
@@ -38,3 +43,5 @@ class TaxOverride
     
     
 }
+
+?>

@@ -1,9 +1,6 @@
 <?php
-
 /**
  * AvalaraSoapClient.class.php
- *
- * @package Base
  */
 
 /**
@@ -11,13 +8,13 @@
  *
  * Users should never create instances of this class.
  *
- * @package Base
  * @abstract
  * @see AddressServiceSoap
  * @see TaxServiceSoap
- * @author tblanchard
- *  
- * Copyright (c) 2007, Avalara.  All rights reserved.
+ * 
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Base
  */
 
 class AvalaraSoapClient 
@@ -30,3 +27,7 @@ class AvalaraSoapClient
     public function __getLastResponseHeaders() { return $this->client->__getLastResponseHeaders(); }
 
 }
+
+
+
+?>

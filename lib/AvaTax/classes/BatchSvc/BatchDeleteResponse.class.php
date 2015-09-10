@@ -1,8 +1,14 @@
 <?php
 /**
  * BatchDeleteResponse.class.php
+ */
+
+/**
+ * 
  *
- * @package Batch
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Batch
  */
 class BatchDeleteResponse {
   private $BatchDeleteResult; // DeleteResult
@@ -11,3 +17,5 @@ class BatchDeleteResponse {
   public function getBatchDeleteResult(){return $this->BatchDeleteResult;} // DeleteResult
 
 }
+
+?>

@@ -1,7 +1,6 @@
 <?php
 /**
  * IsAuthorizedResult.class.php
- * @package Address
  */
 
 /**
@@ -18,9 +17,9 @@
  *  print('Ping Result # of messages is '.$numMessages);
  * </pre>
  *
- * @package Address
- * @author tblanchard
- * Copyright (c) 2007, Avalara.  All rights reserved.
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Address
  */
 
 class IsAuthorizedResult //extends BaseResult
@@ -77,3 +76,5 @@ class IsAuthorizedResult //extends BaseResult
 
 
 }
+
+?>

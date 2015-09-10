@@ -1,8 +1,14 @@
 <?php
 /**
  * BatchFileFetchResponse.class.php
+ */
+
+/**
+ * 
  *
- * @package Batch
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Batch
  */
 class BatchFileFetchResponse {
   private $BatchFileFetchResult; // BatchFileFetchResult
@@ -11,3 +17,5 @@ class BatchFileFetchResponse {
   public function getBatchFileFetchResult(){return $this->BatchFileFetchResult;} // BatchFileFetchResult
 
 }
+
+?>

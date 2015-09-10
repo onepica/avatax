@@ -1,16 +1,16 @@
 <?php
 /**
  * PostTaxResult.class.php
- * @package Tax
  */
 
 /**
  * Result data returned from {@link TaxServiceSoap#postTax}.
  *
- * @package Tax
  * @see PostTaxRequest
- * @author tblanchard
- * Copyright (c) 2007, Avalara.  All rights reserved.
+ * 
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Tax
  */
 
 class PostTaxResult //extends BaseResult
@@ -23,6 +23,8 @@ class PostTaxResult //extends BaseResult
  * @var string
  */
     private $TransactionId;
+	
+	private $DocId;
 /**
  * @var string must be one of the values defined in {@link SeverityLevel}.
  */
@@ -37,6 +39,8 @@ class PostTaxResult //extends BaseResult
  * @return string
  */
     public function getTransactionId() { return $this->TransactionId; }
+	
+	public function getDocId() { return $this->DocId; }
 /**
  * Accessor
  * @return string
@@ -50,3 +54,5 @@ class PostTaxResult //extends BaseResult
 
 
 }
+
+?>

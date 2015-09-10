@@ -1,8 +1,14 @@
 <?php
 /**
  * BatchFileSaveResponse.class.php
+ */
+
+/**
+ * 
  *
- * @package Batch
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Batch
  */
 class BatchFileSaveResponse {
   private $BatchFileSaveResult; // BatchFileSaveResult
@@ -11,3 +17,5 @@ class BatchFileSaveResponse {
   public function getBatchFileSaveResult(){return $this->BatchFileSaveResult;} // BatchFileSaveResult
 
 }
+
+?>

@@ -1,8 +1,14 @@
 <?php
 /**
  * AuditMessage.class.php
+ */
+
+/**
+ * 
  *
- * @package Batch
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Batch
  */
 class AuditMessage {
   private $Message; // string
@@ -11,3 +17,5 @@ class AuditMessage {
   public function getMessage(){return $this->Message;} // string
 
 }
+
+?>

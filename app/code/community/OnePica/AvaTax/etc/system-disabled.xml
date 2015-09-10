@@ -25,7 +25,7 @@
                         <shipping_tax_class>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
+                            <show_in_store>0</show_in_store>
                         </shipping_tax_class>
                     </fields>
                 </classes>
@@ -34,33 +34,38 @@
                         <based_on>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
+                            <show_in_store>0</show_in_store>
                         </based_on>
                         <price_includes_tax>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
+                            <show_in_store>0</show_in_store>
                         </price_includes_tax>
                         <shipping_includes_tax>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
+                            <show_in_store>0</show_in_store>
                         </shipping_includes_tax>
                         <apply_after_discount>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
+                            <show_in_store>0</show_in_store>
                         </apply_after_discount>
                         <discount_tax>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
+                            <show_in_store>0</show_in_store>
                         </discount_tax>
                         <apply_tax_on>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
+                            <show_in_store>0</show_in_store>
                         </apply_tax_on>
+                        <algorithm>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </algorithm>
                     </fields>
                 </calculation>
                 <defaults>
@@ -73,16 +78,28 @@
                         </postcode>
                     </fields>
                 </defaults>
+                <display>
+                    <fields>
+                        <type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </type>
+                        <shipping>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </shipping>
+                    </fields>
+                </display>
                 <sales_display>
-                    <display>
-                        <fields>
-                            <full_summary>
-                                <show_in_default>1</show_in_default>
-                                <show_in_website>1</show_in_website>
-                                <show_in_store>1</show_in_store>
-                            </full_summary>
-                        </fields>
-                    </display>
+                    <fields>
+                        <full_summary>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </full_summary>
+                    </fields>
                 </sales_display>
             </groups>
         </tax>

@@ -1,16 +1,16 @@
 <?php
 /**
  * AdjustTaxRequest.class.php
- * @package Tax
  */
 
 /**
  * Data to pass to {@link TaxServiceSoap#adjustTax}.
  *
  * @see AdjustTaxRequest
- * @package Tax
- * @author tblanchard
- * Copyright (c) 2008, Avalara.  All rights reserved.
+ *
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Tax
  */
  
  
@@ -73,3 +73,5 @@ class AdjustTaxRequest
 
 	
 }
+
+?>

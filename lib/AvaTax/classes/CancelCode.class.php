@@ -1,20 +1,16 @@
 <?php
 /**
  * CancelCode.class.php
- *
- * @package Tax
  */
 
 /**
- * CancelCode.class.php
-
  * A cancel code is set on a {@link CancelTaxRequest} and specifies the reason the
  * tax calculation is being canceled (or in the case of posting, returned to its prior state).
- * @author tblanchard
- * @package Tax
  * @see CancelTaxRequest
- * Copyright (c) 2008, Avalara.  All rights reserved.
-
+ * 
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Tax
 */
 class CancelCode extends Enum
 {
@@ -70,3 +66,5 @@ class CancelCode extends Enum
     public static function Validate($value) { self::__Validate($value,self::Values(),__CLASS__); }	
 	
 }
+
+?>

@@ -1,7 +1,6 @@
 <?php
 /**
  * ValidateRequest.class.php
- * @package Address
  */
 
 /**
@@ -29,9 +28,9 @@
  * System.out.println("Number of Addresses is " + numAddresses);
  * </pre>
  *
- * @package Address
- * @author tblanchard
- * Copyright (c) 2006, Avalara.  All rights reserved.
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Address
  */
  
  //public function validate($address, $textCase = 'Default', $coordinates = false)
@@ -188,3 +187,5 @@ class ValidateRequest
 
     public function getCoordinates() { return $this->Coordinates; }
 }
+
+?>

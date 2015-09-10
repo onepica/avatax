@@ -1,16 +1,15 @@
 <?php
 /**
  * ReconcileTaxHistoryResult.class.php
- * @package Tax
  */
 
 /**
  * Result data returned from {@link TaxServiceSoap#reconcileTaxHistory}.
- *
- * @package Tax
  * @see ReconcileTaxHistoryRequest
- * @author tblanchard
- * Copyright (c) 2007, Avalara.  All rights reserved.
+ * 
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Tax
  */
 
 class ReconcileTaxHistoryResult //extends SearchTaxHistoryResult
@@ -106,5 +105,7 @@ class ReconcileTaxHistoryResult //extends SearchTaxHistoryResult
     public function getMessages() { return EnsureIsArray($this->Messages->Message); }
 
 
-
+	
 }
+
+?>

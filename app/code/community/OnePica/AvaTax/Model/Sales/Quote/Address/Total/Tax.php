@@ -61,15 +61,23 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
 
             //Added check for calculating tax for regions filtered in the admin
             if ($this->_isAddressActionable($address)) {
+                /** @var Mage_Sales_Model_Quote_Item $item */
                 foreach ($address->getAllItems() as $item) {
                     $item->setAddress($address);
                     $baseAmount = $calculator->getItemTax($item);
+
+                    $giftBaseTaxAmount = $calculator->getItemGiftTax($item);
+                    $giftTaxAmount = Mage::app()->getStore()->convertPrice($giftBaseTaxAmount);
+
                     $amount = Mage::app()->getStore()->convertPrice($baseAmount);
                     $percent = $calculator->getItemRate($item);
 
                     $item->setTaxAmount($amount);
                     $item->setBaseTaxAmount($baseAmount);
                     $item->setTaxPercent($percent);
+
+                    $item->setGwBaseTaxAmount($giftBaseTaxAmount);
+                    $item->setGwTaxAmount($giftTaxAmount);
 
                     $item->setPriceInclTax($item->getPrice() + ($amount / $item->getQty()));
                     $item->setBasePriceInclTax($item->getBasePrice() + ($baseAmount / $item->getQty()));
@@ -79,6 +87,8 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
                     if (!$calculator->isProductCalculated($item)) {
                         $this->_addAmount($amount);
                         $this->_addBaseAmount($baseAmount);
+                        $this->_addAmount($giftTaxAmount);
+                        $this->_addBaseAmount($giftBaseTaxAmount);
                     }
                 }
 
@@ -114,26 +124,11 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
                     $baseGwOrderTax = $calculator->getItemTax($gwOrderItem);
                     $gwOrderTax = Mage::app()->getStore()->convertPrice($baseGwOrderTax);
 
-                    $address->setGwBaseTaxAmount($address->getGwBasePrice() + $baseGwOrderTax);
-                    $address->setGwTaxAmount($address->getGwPrice() + $gwOrderTax);
+                    $address->setGwBaseTaxAmount($baseGwOrderTax);
+                    $address->setGwTaxAmount($gwOrderTax);
 
                     $this->_addAmount($gwOrderTax);
                     $this->_addBaseAmount($baseGwOrderTax);
-                }
-
-                if ($address->getGwItemsPrice() > 0) {
-                    $gwIndividualItem = new Varien_Object();
-                    $gwIndividualItem->setId(Mage::helper('avatax')->getGwItemsSku($store->getId()));
-                    $gwIndividualItem->setProductId(Mage::helper('avatax')->getGwItemsSku($store->getId()));
-                    $gwIndividualItem->setAddress($address);
-                    $baseGwItemsTax = $calculator->getItemTax($gwIndividualItem);
-                    $gwItemsTax = Mage::app()->getStore()->convertPrice($baseGwItemsTax);
-
-                    $address->setGwItemsBaseTaxAmount($address->getGwItemsBasePrice() + $baseGwItemsTax);
-                    $address->setGwItemsTaxAmount($address->getGwItemsPrice() + $gwItemsTax);
-
-                    $this->_addAmount($gwItemsTax);
-                    $this->_addBaseAmount($baseGwItemsTax);
                 }
 
                 if ($address->getGwAddPrintedCard()) {

@@ -1,7 +1,6 @@
 <?php
 /**
  * CommitTaxRequest.class.php
- * @package Tax
  */
 
 /**
@@ -13,10 +12,11 @@
  * {@link CommitTaxRequest#tDocType} in order to uniquely identify the document.
  * </p>
  *
- * @package Tax
  * @see CommitTaxResult
- * @author tblanchard
- * Copyright (c) 2007, Avalara.  All rights reserved.
+ *  
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Tax
  */
  
 class CommitTaxRequest extends TaxRequest
@@ -41,3 +41,6 @@ class CommitTaxRequest extends TaxRequest
 	
 
 }
+
+
+?>

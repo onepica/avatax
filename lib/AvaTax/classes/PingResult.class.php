@@ -1,8 +1,6 @@
 <?php
 /**
  * PingResult.class.php
- *
- * @package Base
  */
  
  /**
@@ -18,9 +16,9 @@
  *
  * </pre>
  *
- * @package Base
- * @author tblanchard
- * Copyright (c) 2007, Avalara.  All rights reserved.
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Base
  */
 
 
@@ -72,3 +70,5 @@ class PingResult //extends BaseResult
 
 
 }
+
+?>

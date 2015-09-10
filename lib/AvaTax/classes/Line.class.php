@@ -1,17 +1,16 @@
 <?php
 /**
  * Line.class.php
- * @package Tax
  */
 
 /**
  * A single line within a document containing data used for calculating tax. 
-
  *
  * @see GetTaxRequest
- * @package Tax
- * @author tblanchard
- * Copyright (c) 2007, Avalara.  All rights reserved.
+ * 
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Tax
  */
  
 class Line
@@ -35,6 +34,7 @@ class Line
 	private $TaxOverride;	//TaxOverride
 	private $OriginAddress;			//Address
 	private $DestinationAddress;		//Address
+    private $BusinessIdentificationNo;      //string
 	private $TaxIncluded;		//boolean
 
 
@@ -122,17 +122,17 @@ class Line
      * </p>
      * <p>
      * The standard values for the CustomerUsageType (A-L).<br/>
-        A ï¿½ Federal Government<br/>
-        B ï¿½ State/Local Govt.<br/>
-        C ï¿½ Tribal Government<br/>
-        D ï¿½ Foreign Diplomat<br/>
-        E ï¿½ Charitable Organization<br/>
-        F ï¿½ Religious/Education<br/>
-        G ï¿½ Resale<br/>
-        H ï¿½ Agricultural Production<br/>
-        I ï¿½ Industrial Prod/Mfg.<br/>
-        J ï¿½ Direct Pay Permit<br/>
-        K ï¿½ Direct Mail<br/>
+        A – Federal Government<br/>
+        B – State/Local Govt.<br/>
+        C – Tribal Government<br/>
+        D – Foreign Diplomat<br/>
+        E – Charitable Organization<br/>
+        F – Religious/Education<br/>
+        G – Resale<br/>
+        H – Agricultural Production<br/>
+        I – Industrial Prod/Mfg.<br/>
+        J – Direct Pay Permit<br/>
+        K – Direct Mail<br/>
         L - Other<br/>
      * </p>
      * @param string $value
@@ -204,6 +204,24 @@ class Line
 	public function getTaxIncluded($value)
 	{
 		return $this->TaxIncluded;
+    }
+
+    /**
+     * Sets BusinessIdentificationNo in the line.
+     * @param string
+     */
+    public function setBusinessIdentificationNo($value)
+    {
+        $this->BusinessIdentificationNo=$value;
+    }
+
+    /**
+     * Gets BusinessIdentificationNo .
+     * @return string
+     */
+    public function getBusinessIdentificationNo()
+    {
+        return $this->BusinessIdentificationNo;
 	}
     
     public function registerAddressesIn(&$getTaxRequest)
@@ -262,3 +280,6 @@ class Line
 /**#@-*/
 
 }
+	
+
+?>

@@ -1,8 +1,14 @@
 <?php
 /**
  * BatchFileDelete.class.php
+ */
+
+/**
+ * 
  *
- * @package Batch
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Batch
  */
 class BatchFileDelete {
   private $DeleteRequest; // DeleteRequest
@@ -11,3 +17,5 @@ class BatchFileDelete {
   public function getDeleteRequest(){return $this->DeleteRequest;} // DeleteRequest
 
 }
+
+?>

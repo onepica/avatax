@@ -1,14 +1,14 @@
 <?php
 /** 
  * BaseResult.class.php
- * @package Base
  */
  
  /**
  * The base class for result objects that return a ResultCode and Messages collection -- There is no reason for clients to create these.
- * @package Base
- * @author tblanchard
- * Copyright (c) 2005, Avalara.  All rights reserved.
+ *
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Base
  */
  
   
@@ -23,6 +23,8 @@ class BaseResult
  * @return string
  */
     public function getTransactionId() { return $this->TransactionId; }
+	
+	public function getDocId() { return $this->DocId; }
 /**
  * Indicates whether operation was successfully completed or not.
  * @return string
@@ -35,3 +37,5 @@ class BaseResult
     public function getMessages() { return EnsureIsArray($this->Messages->Message); }
 
 }
+
+?>

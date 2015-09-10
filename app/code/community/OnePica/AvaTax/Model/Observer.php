@@ -92,13 +92,8 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
         /** @var Mage_Sales_Model_Order_Invoice $invoice */
         $invoice = $observer->getEvent()->getInvoice();
 
-        $existingInvoiceInQueue = Mage::getModel('avatax_records/queue')
-            ->loadInvoiceByIncrementId($invoice->getIncrementId());
-        if ($existingInvoiceInQueue->getId()) {
-            return $this;
-        }
-
-        if (!$invoice->getOrigData($invoice->getIdFieldName())
+        if ((int)$invoice->getOrigData('state') !== Mage_Sales_Model_Order_Invoice::STATE_PAID
+            && (int)$invoice->getState() === Mage_Sales_Model_Order_Invoice::STATE_PAID
             && Mage::helper('avatax')->isObjectActionable($invoice)
         ) {
             Mage::getModel('avatax_records/queue')
@@ -291,8 +286,9 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
                 'It appears that Magento\'s cron scheduler is not running. For more information, see %s.',
                 '<a href="http://www.magentocommerce.com/wiki/how_to_setup_a_cron_job" target="_black">How to Set Up a Cron Job</a>'
             );
-
-            return $warnings;
+        }
+        if ($this->_isRegionFilterAll() && $this->_canNotBeAddressValidated()) {
+            $warnings[] = Mage::helper('avatax')->__('Please be aware that address validation will not work for addresses outside United States and Canada');
         }
 
         return $warnings;
@@ -481,5 +477,39 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
         }
 
         return $errors;
+    }
+
+    /**
+     * Is region filter all mod
+     *
+     * @return bool
+     */
+    protected function _isRegionFilterAll()
+    {
+        return (int)$this->_getDataHelper()->getRegionFilterModByCurrentScope()
+               === OnePica_AvaTax_Model_Config::REGIONFILTER_ALL;
+    }
+
+    /**
+     * Can not be address validated
+     *
+     * @return array
+     */
+    protected function _canNotBeAddressValidated()
+    {
+        return (bool)array_diff(
+            $this->_getDataHelper()->getTaxableCountryByCurrentScope(),
+            $this->_getDataHelper()->getAddressValidationCountries()
+        );
+    }
+
+    /**
+     * Get data helper
+     *
+     * @return OnePica_AvaTax_Helper_Data
+     */
+    protected function _getDataHelper()
+    {
+        return Mage::helper('avatax');
     }
 }

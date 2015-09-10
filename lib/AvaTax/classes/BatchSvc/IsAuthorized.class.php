@@ -1,8 +1,14 @@
 <?php
 /**
  * IsAuthorized.class.php
+ */
+
+/**
+ * 
  *
- * @package Batch
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Batch
  */
 class IsAuthorized {
   private $Operations; // string
@@ -11,3 +17,5 @@ class IsAuthorized {
   public function getOperations(){return $this->Operations;} // string
 
 }
+
+?>

@@ -1,17 +1,15 @@
 <?php
 /**
  * DocumentType.class.php
- *
- * @package Tax
  */
  
  /**
  * The document type specifies the category of the document and affects how the document
  * is treated after a tax calculation. Specified when constructing a {@link GetTaxRequest}.
  *
- * @package Tax
- * @author tblanchard
- * Copyright (c) 2008, Avalara.  All rights reserved.
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Tax
  */
 
 
@@ -59,6 +57,20 @@ class DocumentType extends Enum
 	 * @var DocumentType
 	 */
     public static $ReturnInvoice	= 'ReturnInvoice';
+
+     /**
+	 * Inventory Transfer Order
+	 *
+	 * @var DocumentType
+	 */
+    public static $InventoryTransferOrder	= 'InventoryTransferOrder';
+
+     /**
+	 * Inventory Transfer Invoice
+	 *
+	 * @var DocumentType
+	 */
+    public static $InventoryTransferInvoice	= 'InventoryTransferInvoice';
     
     /**
 	 * This will return all types of documents.
@@ -76,13 +88,14 @@ class DocumentType extends Enum
 			DocumentType::$PurchaseInvoice,
 			DocumentType::$ReturnOrder,
 			DocumentType::$ReturnInvoice,	
-			DocumentType::$Any	
+			DocumentType::$InventoryTransferOrder,	
+			DocumentType::$InventoryTransferInvoice,
+			DocumentType::$Any
 		);
 	}
 	// Unfortunate boiler plate due to polymorphism issues on static functions
     public static function Validate($value) { self::__Validate($value,self::Values(),__CLASS__); }
 	
-   
-	
-	
 }
+
+?>

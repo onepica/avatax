@@ -1,8 +1,6 @@
 <?php
 /**
  * ValidateResult.class.php
- *
- * @package Address
  */
  
 /**
@@ -23,10 +21,12 @@
  *  print("Number of addresses returned is ". sizeoof($addresses));
  *
  * </pre>
- * @package Address
+ * 
  * @see ValidAddress
- * @author tblanchard
- * Copyright (c) 2005, Avalara.  All rights reserved.
+ * 
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Address
  */
 
 
@@ -85,3 +85,5 @@ class ValidateResult// extends BaseResult
     }
 
 }
+
+?>

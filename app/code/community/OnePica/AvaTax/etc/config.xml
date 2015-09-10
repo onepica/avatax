@@ -19,7 +19,7 @@
 <config>
     <modules>
         <OnePica_AvaTax>
-            <version>2.5.2.0</version>
+            <version>2.6.0.4</version>
         </OnePica_AvaTax>
     </modules>
     <global>
@@ -64,6 +64,11 @@
                     <config>OnePica_AvaTax_Model_Tax_Config</config>
                 </rewrite>
             </tax>
+            <enterprise_giftwrapping>
+                <rewrite>
+                    <total_quote_tax_giftwrapping>OnePica_AvaTax_Model_Total_Quote_Tax_Giftwrapping</total_quote_tax_giftwrapping>
+                </rewrite>
+            </enterprise_giftwrapping>
         </models>
         <helpers>
             <avatax>
@@ -256,6 +261,10 @@
                                 <title>AvaTax Order Sync Queue</title>
                                 <action>avatax/adminhtml_grid/queue</action>
                             </avatax_queue>
+                            <avatax_log translate="title" module="avatax">
+                                <title>AvaTax Log</title>
+                                <action>avatax/adminhtml_grid/log</action>
+                            </avatax_log>
                         </children>
                     </tax>
                 </children>
@@ -280,7 +289,8 @@
                 <action>0</action>
                 <url>https://avatax.avalara.net/</url>
                 <region_filter_mode>0</region_filter_mode>
-                <country_filter_list>CA,US</country_filter_list>
+                <taxable_country>CA,US</taxable_country>
+                <address_validation_countries>CA,US</address_validation_countries>
                 <log_status>1</log_status>
                 <log_lifetime>3</log_lifetime>
                 <queue_success_lifetime>7</queue_success_lifetime>

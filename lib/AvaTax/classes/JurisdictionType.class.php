@@ -1,8 +1,6 @@
 <?php
-
 /**
  * JurisdictionType.class.php
- * @package Tax
  */
  
 /**
@@ -11,10 +9,11 @@
  * Multiple jurisdictions might be applied to a single Line during a tax calcuation.
  * Details are available in the TaxDetail of the GetTaxResult. 
  *
- * @package Tax
  * @see TaxDetail
- * @author tblanchard
- * Copyright (c) 2008, Avalara.  All rights reserved.
+ * 
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Tax
 */
 class JurisdictionType 
 {
@@ -71,3 +70,5 @@ class JurisdictionType
 	*/
 	
 }
+
+?>

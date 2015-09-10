@@ -1,15 +1,14 @@
 <?php
 /**
  * Enum.class.php
- * @package Base
  */
 
 /**
  * Abstract class for enumerated types - provides validation.
  *
- * @package Base
- * @author tblanchard
- * Copyright (c) 2008, Avalara.  All rights reserved.
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Base
  */
  
 class Enum
@@ -28,3 +27,5 @@ class Enum
 		throw new Exception('Invalid '.$class.' "'.$value.'" - must be one of "'.implode('"|"',$values).'"');
     }
 }
+
+?>

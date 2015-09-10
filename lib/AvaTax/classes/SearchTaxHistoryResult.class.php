@@ -1,17 +1,17 @@
 <?php
 /**
  * SearchTaxHistoryResult.class.php
- * @package Tax
  */
 
 /**
  * Result data returned from {@link TaxSvcSoap#reconcileTaxHistory}.
  * This class encapsulates the data and methods used by {@link ReconcileTaxHistoryResult}.
  *
- * @package Tax
  * @see ReconcileTaxHistoryRequest
- * @author tblanchard
- * Copyright (c) 2007, Avalara.  All rights reserved.
+ * 
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Tax
  */
 
 class SearchTaxHistoryResult //extends BaseResult
@@ -98,3 +98,5 @@ class SearchTaxHistoryResult //extends BaseResult
 
 
 }
+
+?>

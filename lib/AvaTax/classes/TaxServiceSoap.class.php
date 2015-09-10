@@ -1,16 +1,11 @@
 <?php
-
 /**
  * TaxServiceSoap.class.php
- *
- * This is a proxy for the Avalara Tax service.  It contains methods that perform remote calls
- * to the Avalara Tax Service.
- *
- * @package Tax
  */
 
 /**
- * Proxy interface for the Avalara Tax Web Service. 
+ * Proxy interface for the Avalara Tax Web Service.  It contains methods that perform remote calls
+ * to the Avalara Tax Service. 
  *
  * TaxServiceSoap reads its configuration values from static variables defined
  * in ATConfig.class.php. This file must be properly configured with your security credentials.
@@ -22,9 +17,9 @@
  *  $result = $taxService->ping();
  * </pre>
  *
- * @package Tax
- * @author tblanchard
- * Copyright (c) 2007, Avalara.  All rights reserved.
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Tax
  */
 
 
@@ -304,3 +299,5 @@ public function __construct($configurationName = 'Default')
     }    		    
 
 }
+
+?>

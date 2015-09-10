@@ -40,8 +40,8 @@
 					  <s:element minOccurs="1" maxOccurs="1" name="PaymentDate" type="s:date" />
 					  <s:element minOccurs="1" maxOccurs="1" name="ExchangeRate" type="s:decimal" />
 					  <s:element minOccurs="1" maxOccurs="1" name="ExchangeRateEffDate" type="s:date" />
-					  <s:element minOccurs="1" maxOccurs="1" name="TaxDate" type="s:date" />
-					  <s:element minOccurs="1" maxOccurs="1" name="StatusDate" type="s:date" />
+					  <s:element minOccurs="0" maxOccurs="1" name="PosLaneCode" type="s:string"/>
+                      <s:element minOccurs="0" maxOccurs="1" name="BusinessIdentificationNo" type="s:string"/>
 				  </s:sequence>
 			  </s:extension>
 		  </s:complexContent>
@@ -56,6 +56,8 @@
           <s:enumeration value="ReturnInvoice" />
           <s:enumeration value="PendingAdjustment" />
           <s:enumeration value="Any" />
+          <s:enumeration value="InventoryTransferOrder"/>
+          <s:enumeration value="InventoryTransferInvoice"/>
         </s:restriction>
       </s:simpleType>
       <s:complexType name="ArrayOfBaseAddress">
@@ -99,6 +101,7 @@
           <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="TaxOverride" type="tns:TaxOverride" />
 		  <s:element minOccurs="0" maxOccurs="1" name="TaxIncluded" type="s:boolean" default="false" />
+          <s:element minOccurs="0" maxOccurs="1" name="BusinessIdentificationNo" type="s:string"/>
         </s:sequence>
       </s:complexType>
       <s:complexType name="TaxOverride">
@@ -115,6 +118,7 @@
           <s:enumeration value="TaxAmount" />
           <s:enumeration value="Exemption" />
           <s:enumeration value="TaxDate" />
+          <s:enumeration value="AccruedTaxAmount"/>
         </s:restriction>
       </s:simpleType>
       <s:simpleType name="DetailLevel">
@@ -167,6 +171,7 @@
               <s:element minOccurs="1" maxOccurs="1" name="TaxDate" type="s:date" />
               <s:element minOccurs="0" maxOccurs="1" name="TaxSummary" type="tns:ArrayOfTaxDetail" />
               <s:element minOccurs="0" maxOccurs="1" name="Signature" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="VolatileTaxRates" type="s:boolean"/>
             </s:sequence>
           </s:extension>
         </s:complexContent>
@@ -287,6 +292,7 @@
           <s:enumeration value="Sales" />
           <s:enumeration value="Use" />
           <s:enumeration value="ConsumerUse" />
+          <s:enumeration value="Excise" />
           <s:enumeration value="Output" />
           <s:enumeration value="Input" />
           <s:enumeration value="Nonrecoverable" />
@@ -316,6 +322,11 @@
           <s:element minOccurs="0" maxOccurs="1" name="Region" type="s:string" />
           <s:element minOccurs="1" maxOccurs="1" name="TaxRegionId" type="s:int" />
           <s:element minOccurs="0" maxOccurs="1" name="JurisCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Latitude" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Longitude" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ValidateStatus" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="GeocodeType" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="DistanceToBoundary" type="s:int"/>
         </s:sequence>
       </s:complexType>
       <s:element name="Profile" type="tns:Profile" />
@@ -515,6 +526,7 @@
 			  <s:extension base="tns:BaseRequest">
           <s:sequence>
             <s:element minOccurs="0" maxOccurs="1" name="CompanyCode" type="s:string" />
+          	<s:element minOccurs="0" maxOccurs="1" name="LastDocId" type="s:string"/>
             <s:element minOccurs="1" maxOccurs="1" name="StartDate" type="s:date" />
             <s:element minOccurs="1" maxOccurs="1" name="EndDate" type="s:date" />
             <s:element minOccurs="1" maxOccurs="1" name="DocStatus" type="tns:DocStatus" />
@@ -546,6 +558,7 @@
           <s:extension base="tns:BaseResult">
             <s:sequence>
               <s:element minOccurs="0" maxOccurs="1" name="GetTaxResults" type="tns:ArrayOfGetTaxResult" />
+                <s:element minOccurs="0" maxOccurs="1" name="LastDocId" type="s:string"/>
               <s:element minOccurs="0" maxOccurs="1" name="LastDocCode" type="s:string" />
             </s:sequence>
           </s:extension>
@@ -796,6 +809,42 @@
           </s:extension>
         </s:complexContent>
       </s:complexType>
+        <s:element name="TaxSummaryFetch">
+            <s:complexType>
+                <s:sequence>
+                    <s:element minOccurs="0" maxOccurs="1" name="TaxSummaryFetchRequest" type="tns:TaxSummaryFetchRequest"/>
+                </s:sequence>
+            </s:complexType>
+        </s:element>
+        <s:complexType name="TaxSummaryFetchRequest">
+            <s:sequence>
+                <s:element minOccurs="0" maxOccurs="1" name="MerchantCode" type="s:string"/>
+                <s:element minOccurs="1" maxOccurs="1" name="StartDate" type="s:date"/>
+                <s:element minOccurs="1" maxOccurs="1" name="EndDate" type="s:date"/>
+            </s:sequence>
+        </s:complexType>
+        <s:element name="TaxSummaryFetchResponse">
+            <s:complexType>
+                <s:sequence>
+                    <s:element minOccurs="0" maxOccurs="1" name="TaxSummaryFetchResult" type="tns:TaxSummaryFetchResult"/>
+                </s:sequence>
+            </s:complexType>
+        </s:element>
+        <s:complexType name="TaxSummaryFetchResult">
+            <s:complexContent mixed="false">
+                <s:extension base="tns:BaseResult">
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="TaxSummaryReport">
+                            <s:complexType>
+                                <s:sequence>
+                                    <s:any/>
+                                </s:sequence>
+                            </s:complexType>
+                        </s:element>
+                    </s:sequence>
+                </s:extension>
+            </s:complexContent>
+        </s:complexType>
     </s:schema>
   </wsdl:types>
   <wsdl:message name="GetTaxSoapIn">
@@ -926,6 +975,15 @@
   <wsdl:message name="IsAuthorizedProfile">
     <wsdl:part name="Profile" element="tns:Profile" />
   </wsdl:message>
+    <wsdl:message name="TaxSummaryFetchSoapIn">
+        <wsdl:part name="parameters" element="tns:TaxSummaryFetch"/>
+    </wsdl:message>
+    <wsdl:message name="TaxSummaryFetchSoapOut">
+        <wsdl:part name="parameters" element="tns:TaxSummaryFetchResponse"/>
+    </wsdl:message>
+    <wsdl:message name="TaxSummaryFetchProfile">
+        <wsdl:part name="Profile" element="tns:Profile"/>
+    </wsdl:message>
   <wsdl:portType name="TaxSvcSoap">
     <wsdl:operation name="GetTax">
       <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Calculates taxes on a document</wsdl:documentation>

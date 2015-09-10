@@ -1,8 +1,14 @@
 <?php
 /**
  * FilterRequest.class.php
+ */
+
+/**
+ * 
  *
- * @package Batch
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Batch
  */
 class FilterRequest {
   private $Filters; // string
@@ -21,3 +27,5 @@ class FilterRequest {
   public function getMaxCount(){return $this->MaxCount;} // int
 
 }
+
+?>

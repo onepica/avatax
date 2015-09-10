@@ -1,8 +1,6 @@
 <?php
 /**
  * ATConfig.class.php
- *
- * @package Base
  */
  
 /**
@@ -10,7 +8,9 @@
  *
  * {@link AddressServiceSoap} and {@link TaxServiceSoap} read this file during initialization.
  *
- * @package Base
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Base
  */
 
 class ATConfig
@@ -55,13 +55,19 @@ new ATConfig('Default', array(
     'addressService' => '/Address/AddressSvc.asmx',
     'taxService' => '/Tax/TaxSvc.asmx',
 	'batchService'=> '/Batch/BatchSvc.asmx',
+	'avacert2Service'=> '/AvaCert2/AvaCert2Svc.asmx',
     'addressWSDL' => 'file://'.$__wsdldir.'/Address.wsdl',
     'taxWSDL'  => 'file://'.$__wsdldir.'/Tax.wsdl',
 	'batchWSDL'  => 'file://'.$__wsdldir.'/BatchSvc.wsdl',
+	'avacert2WSDL'  => 'file://'.$__wsdldir.'/AvaCert2Svc.wsdl',
     'account'   => '<your account number here>',
     'license'   => '<your license key here>',
-    'adapter'   => 'avatax4php,5.7.3.0',
+    'adapter'   => 'avatax4php,14.2.0.0',
     'client'    => 'AvalaraPHPInterface,1.0',
-	'name'    => 'PHPAdapter',
+	'name'    => '13.7.0.0',
     'trace'     => true) // change to false for production
 );
+
+
+
+?>

@@ -1,16 +1,15 @@
 <?php
 /**
  * CommitTaxResult.class.php
- * @package Tax
  */
 
 /**
  * Result data returned from {@link TaxServiceSoap#commitTax}.
- *
- * @package Tax
  * @see CommitTaxRequest
- * @author tblanchard
- * Copyright (c) 2008, Avalara.  All rights reserved.
+ * 
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Tax
  */
 
 class CommitTaxResult //extends BaseResult
@@ -23,6 +22,8 @@ class CommitTaxResult //extends BaseResult
  * @var string
  */
     private $TransactionId;
+	
+	private $DocId;
 /**
  * @var string must be one of the values defined in {@link SeverityLevel}.
  */
@@ -37,6 +38,8 @@ class CommitTaxResult //extends BaseResult
  * @return string
  */
     public function getTransactionId() { return $this->TransactionId; }
+	
+	public function getDocId() { return $this->DocId;}
 /**
  * Accessor
  * @return string
@@ -50,3 +53,5 @@ class CommitTaxResult //extends BaseResult
 
 
 }
+
+?>

@@ -1,19 +1,17 @@
 <?php
 /**
  * BoundaryLevel.class.php
- * @package Tax
  */
 
 /**
- * BoundaryLevel.class.php
- *
  * Jurisdiction boundary precision level found for address;
  * This depends on the accuracy of the address as well as the
  * precision level of the state provided jurisdiction boundaries.
- * @package Tax
  * @see TaxLine
- * @author tblanchard
- * Copyright (c) 2008, Avalara.  All rights reserved.
+ * 
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Tax
 */
 
 class BoundaryLevel extends Enum
@@ -55,3 +53,6 @@ class BoundaryLevel extends Enum
     // Unfortunate boiler plate due to polymorphism issues on static functions
     public static function Validate($value) { self::__Validate($value,self::Values(),__CLASS__); }
 }
+	
+
+?>

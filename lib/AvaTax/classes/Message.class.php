@@ -1,18 +1,15 @@
 <?php
 /**
  * Message.class.php
- *
- * @package Address
  */
 
 /**
  * Message class used in results and exceptions.
- *
  * Contains status detail about call results.
  *
- * @package Address
- * @author tblanchard
- * Copyright (c) 2007, Avalara.  All rights reserved.
+ * @package   Address
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
  */
 
 class Message
@@ -84,3 +81,5 @@ class Message
     public function setName($value) { $this->Name = $value; return $this; }
     
 }
+
+?>

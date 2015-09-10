@@ -1,7 +1,6 @@
 <?php
 /**
  * ValidAddress.class.php
- * @package Address
  */
 
 /**
@@ -33,9 +32,10 @@
  * </pre>
  *
  * @see Address
- * @package Address
- * @author tblanchard
- * Copyright (c) 2007, Avalara.  All rights reserved.
+ * 
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Address
  */
 
 class ValidAddress //extends Address - or it should - SoapClient has issues mapping attributes in superclasses
@@ -110,6 +110,8 @@ class ValidAddress //extends Address - or it should - SoapClient has issues mapp
 		strcmp($this->Region , $other->Region) == 0 &&
 		strcmp($this->PostalCode , $other->PostalCode) == 0 &&
 		strcmp($this->Country , $other->Country) == 0 &&
+		strcmp($this->Latitude , $other->Latitude) == 0 &&
+		strcmp($this->Longitude , $other->Longitude) == 0 &&
 		$this->TaxRegionId === $other->TaxRegionId
 		);
 	}
@@ -474,3 +476,5 @@ class ValidAddress //extends Address - or it should - SoapClient has issues mapp
     
     
 }
+
+?>

@@ -1,17 +1,16 @@
 <?php
 /**
  * AdjustTaxResult.class.php
- * @package Tax
  */
-
 
 /**
  * Result data returned from {@link TaxServiceSoap#getTax}.
  *
  * @see AdjustTaxRequest
- * @package Tax
- * @author tblanchard
- * Copyright (c) 2008, Avalara.  All rights reserved.
+ *
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Tax
  */
 
 class AdjustTaxResult //extends GetTaxResult
@@ -259,3 +258,5 @@ class AdjustTaxResult //extends GetTaxResult
 
 
 }
+
+?>

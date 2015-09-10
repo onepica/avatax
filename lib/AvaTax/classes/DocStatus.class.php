@@ -1,16 +1,15 @@
 <?php
 /**
  * DocStatus.class.php
- * @package Tax
  */
 
 /**
  * The document's status is returned in the GetTaxResult (except for <b>DocStatus::$Any</b>)
  * and indicates the state of the document in tax history.
  *
- * @package Tax
- * @author tblanchard
- * Copyright (c) 2007, Avalara.  All rights reserved.
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Tax
  */
 
 
@@ -83,3 +82,5 @@ class DocStatus extends Enum
     public static function Validate($value) { self::__Validate($value,self::Values(),__CLASS__); }
 
 }
+
+?>

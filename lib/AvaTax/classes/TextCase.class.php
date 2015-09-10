@@ -1,15 +1,14 @@
 <?php
 /**
  * TextCase.class.php
- * @package Address
  */
 
 /**
  * The casing to apply to the valid address(es) returned in the validation result.
  *
- * @package Address
- * @author tblanchard
- * Copyright (c) 2007, Avalara.  All rights reserved.
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Address
  */
 
 class TextCase extends Enum
@@ -30,3 +29,5 @@ class TextCase extends Enum
     // Unfortunate boiler plate due to polymorphism issues on static functions
     public static function Validate($value) { self::__Validate($value,self::Values(),__CLASS__); }
 }
+
+?>

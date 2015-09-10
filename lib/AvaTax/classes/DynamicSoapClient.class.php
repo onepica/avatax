@@ -1,7 +1,6 @@
 <?php
 /**
  * DynamicSoapClient.class.php
- * @package Base
  */
  
 /**
@@ -10,13 +9,13 @@
  * Users should never need to create instances of this class.  This class provides the underlying implementation
  * for instances of {@link AvalaraSoapClient} and it's subclasses.
  *
- * @package Base
  * @see AvalaraSoapClient
  * @see AddressServiceSoap
  * @see TaxServiceSoap
- * @author tblanchard
  *  
- * Copyright (c) 2007, Avalara.  All rights reserved.
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Base
  */
  
 class DynamicSoapClient extends SoapClient
@@ -59,3 +58,5 @@ class DynamicSoapClient extends SoapClient
     }
     
 }
+
+?>

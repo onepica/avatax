@@ -67,6 +67,9 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
 
         $this->_addGeneralInfo($order);
         $this->_addShipping($invoice);
+        $items = $invoice->getItemsCollection();
+        $this->_initProductCollection($items);
+        $this->_initTaxClassCollection($invoice);
         //Added code for calculating tax for giftwrap items
         $this->_addGwOrderAmount($invoice);
         $this->_addGwItemsAmount($invoice);
@@ -84,9 +87,6 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
         $commitAction = OnePica_AvaTax_Model_Config::ACTION_CALC_SUBMIT_COMMIT;
         $this->_request->setCommit(($configAction == $commitAction) ? true : false);
 
-        $items = $invoice->getItemsCollection();
-        $this->_initProductCollection($items);
-        $this->_initTaxClassCollection();
         foreach ($items as $item) {
             /** @var Mage_Sales_Model_Order_Invoice_Item $item */
             $this->_newLine($item);
@@ -148,12 +148,20 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
 
         $this->_addGeneralInfo($order);
         $this->_addShipping($creditmemo, true);
-        //Added code for calculating tax for giftwrap items
-        $this->_addGwOrderAmount($creditmemo);
-        $this->_addGwItemsAmount($creditmemo);
-        $this->_addGwPrintedCardAmount($creditmemo);
 
-        $this->_addAdjustments($creditmemo->getAdjustmentPositive(), $creditmemo->getAdjustmentNegative());
+        $items = $creditmemo->getAllItems();
+        $this->_initProductCollection($items);
+        $this->_initTaxClassCollection($creditmemo);
+        //Added code for calculating tax for giftwrap items
+        $this->_addGwOrderAmount($creditmemo, true);
+        $this->_addGwItemsAmount($creditmemo, true);
+        $this->_addGwPrintedCardAmount($creditmemo, true);
+
+        $this->_addAdjustments(
+            $creditmemo->getAdjustmentPositive(),
+            $creditmemo->getAdjustmentNegative(),
+            $order->getStoreId()
+        );
         $this->_setOriginAddress($order->getStoreId());
         $this->_setDestinationAddress($shippingAddress);
 
@@ -173,9 +181,6 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
         $commitAction = OnePica_AvaTax_Model_Config::ACTION_CALC_SUBMIT_COMMIT;
         $this->_request->setCommit(($configAction == $commitAction) ? true : false);
 
-        $items = $creditmemo->getAllItems();
-        $this->_initProductCollection($items);
-        $this->_initTaxClassCollection();
         foreach ($items as $item) {
             /** @var Mage_Sales_Model_Order_Creditmemo_Item $item */
             $this->_newLine($item, true);
@@ -221,7 +226,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
         }
 
         $lineNumber = count($this->_lines);
-        $storeId = Mage::app()->getStore()->getId();
+        $storeId = $object->getStore()->getId();
         $taxClass = Mage::helper('tax')->getShippingTaxClass($storeId);
 
         $amount = $object->getBaseShippingAmount();
@@ -260,8 +265,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
         }
 
         $lineNumber = count($this->_lines);
-        $storeId = Mage::app()->getStore()->getId();
-
+        $storeId = $object->getStore()->getId();
         $amount = $object->getGwBasePrice();
         if ($credit) {
             //@startSkipCommitHooks
@@ -273,7 +277,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
         $line->setNo($lineNumber);
         $line->setItemCode(Mage::helper('avatax')->getGwOrderSku($storeId));
         $line->setDescription('Gift Wrap Order Amount');
-        $line->setTaxCode('');
+        $line->setTaxCode($this->_getGiftTaxClass());
         $line->setQty(1);
         $line->setAmount($amount);
         $line->setDiscounted(false);
@@ -298,7 +302,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
         }
 
         $lineNumber = count($this->_lines);
-        $storeId = Mage::app()->getStore()->getId();
+        $storeId = $object->getStore()->getId();
 
         $amount = $object->getGwItemsBasePrice();
         if ($credit) {
@@ -311,7 +315,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
         $line->setNo($lineNumber);
         $line->setItemCode(Mage::helper('avatax')->getGwItemsSku($storeId));
         $line->setDescription('Gift Wrap Items Amount');
-        $line->setTaxCode('');
+        $line->setTaxCode($this->_getGiftTaxClass());
         $line->setQty(1);
         $line->setAmount($amount);
         $line->setDiscounted(false);
@@ -336,7 +340,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
         }
 
         $lineNumber = count($this->_lines);
-        $storeId = Mage::app()->getStore()->getId();
+        $storeId = $object->getStore()->getId();
 
         $amount = $object->getGwPrintedCardBasePrice();
         if ($credit) {
@@ -349,7 +353,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
         $line->setNo($lineNumber);
         $line->setItemCode(Mage::helper('avatax')->getGwPrintedCardSku($storeId));
         $line->setDescription('Gift Wrap Printed Card Amount');
-        $line->setTaxCode('');
+        $line->setTaxCode($this->_getGiftTaxClass());
         $line->setQty(1);
         $line->setAmount($amount);
         $line->setDiscounted(false);
@@ -365,12 +369,11 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
      *
      * @param float $positive
      * @param float $negative
+     * @param int   $storeId
      * @return array
      */
-    protected function _addAdjustments($positive, $negative)
+    protected function _addAdjustments($positive, $negative, $storeId)
     {
-        $storeId = Mage::app()->getStore()->getId();
-
         if ($positive != 0) {
             $lineNumber = count($this->_lines);
             $identifier = Mage::helper('avatax')->getPositiveAdjustmentSku($storeId);

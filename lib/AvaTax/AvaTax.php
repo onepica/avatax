@@ -17,7 +17,11 @@ function __autoload($class_name)
 	if(!file_exists($path))
 	{
 		$path=dirname(__FILE__).'/classes/BatchSvc/'.$class_name . '.class.php';
-		
+	}
+	
+	if(!file_exists($path))
+	{
+		$path=dirname(__FILE__).'/classes/AvaCert2Svc/'.$class_name . '.class.php';		
 	}
 	
 	require_once $path;
@@ -93,4 +97,9 @@ function getCurrentDate()
 {
 	$dateTime=new DateTime();
 	return $dateTime->format("Y-m-d");
-}
+} 
+
+
+
+
+?>

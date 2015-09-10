@@ -1,8 +1,14 @@
 <?php
 /**
  * BatchProcessRequest.class.php
+ */
+
+/**
+ * 
  *
- * @package Batch
+ * @author    Avalara
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Batch
  */
 class BatchProcessRequest //extends FilterRequest
 {
@@ -22,3 +28,5 @@ class BatchProcessRequest //extends FilterRequest
   public function getMaxCount(){return $this->MaxCount;} // int
 
 }
+
+?>
