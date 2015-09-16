@@ -195,7 +195,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
             $message = Mage::helper('avatax')->__('Credit memo #%s was saved to AvaTax', $result->getDocCode());
             $this->_addStatusHistoryComment($order, $message);
 
-            if ($result->getTotalTax() != ($creditmemo->getTaxAmount() * -1)) {
+            if ($result->getTotalTax() != ($creditmemo->getBaseTaxAmount() * -1)) {
                 throw new OnePica_AvaTax_Model_Avatax_Exception_Unbalanced(
                     'Collected: ' . $creditmemo->getTaxAmount() . ', Actual: ' . $result->getTotalTax()
                 );
