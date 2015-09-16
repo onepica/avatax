@@ -52,9 +52,9 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
     public function invoice($invoice, $queue)
     {
         $order = $invoice->getOrder();
-        $invoiceDate = $invoice->getCreatedAt();
-        $orderDate = $order->getCreatedAt();
-        $statusDate = $queue->getUpdatedAt();
+        $invoiceDate = $this->_convertUtcDate($invoice->getCreatedAt());
+        $orderDate = $this->_convertUtcDate($order->getCreatedAt());
+        $statusDate = $this->_convertUtcDate($queue->getUpdatedAt());
 
         $shippingAddress = ($order->getShippingAddress()) ? $order->getShippingAddress() : $order->getBillingAddress();
         if (!$shippingAddress) {
@@ -78,10 +78,10 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
         $this->_setOriginAddress($order->getStoreId());
         $this->_setDestinationAddress($shippingAddress);
 
-        $this->_request->setDocDate(substr($invoiceDate, 0, 10));
-        $this->_request->setPaymentDate(substr($invoiceDate, 0, 10));
-        $this->_request->setTaxDate(substr($orderDate, 0, 10));
-        $this->_request->setStatusDate(substr($statusDate, 0, 10));
+        $this->_request->setDocDate($invoiceDate);
+        $this->_request->setPaymentDate($invoiceDate);
+        $this->_request->setTaxDate($orderDate);
+        $this->_request->setStatusDate($statusDate);
 
         $configAction = Mage::getStoreConfig('tax/avatax/action', $order->getStoreId());
         $commitAction = OnePica_AvaTax_Model_Config::ACTION_CALC_SUBMIT_COMMIT;
@@ -133,9 +133,9 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
     public function creditmemo($creditmemo, $queue)
     {
         $order = $creditmemo->getOrder();
-        $orderDate = $order->getCreatedAt();
-        $statusDate = $queue->getUpdatedAt();
-        $creditmemoDate = $creditmemo->getCreatedAt();
+        $orderDate = $this->_convertUtcDate($order->getCreatedAt());
+        $statusDate = $this->_convertUtcDate($queue->getUpdatedAt());
+        $creditmemoDate = $this->_convertUtcDate($creditmemo->getCreatedAt());
 
         $shippingAddress = ($order->getShippingAddress()) ? $order->getShippingAddress() : $order->getBillingAddress();
         if (!$shippingAddress) {
@@ -167,15 +167,15 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
 
         // Set the tax date for calculation.
         $override = new TaxOverride();
-        $override->setTaxDate(substr($orderDate, 0, 10));
+        $override->setTaxDate($orderDate);
         $override->setTaxOverrideType(TaxOverrideType::$TaxDate);
         $override->setReason('Credit memo - refund');
         $this->_request->setTaxOverride($override);
 
-        $this->_request->setDocDate(substr($creditmemoDate, 0, 10));
-        $this->_request->setPaymentDate(substr($creditmemoDate, 0, 10));
-        $this->_request->setTaxDate(substr($orderDate, 0, 10));
-        $this->_request->setStatusDate(substr($statusDate, 0, 10));
+        $this->_request->setDocDate($creditmemoDate);
+        $this->_request->setPaymentDate($creditmemoDate);
+        $this->_request->setTaxDate($orderDate);
+        $this->_request->setStatusDate($statusDate);
 
         $configAction = Mage::getStoreConfig('tax/avatax/action', $order->getStoreId());
         $commitAction = OnePica_AvaTax_Model_Config::ACTION_CALC_SUBMIT_COMMIT;
@@ -476,5 +476,16 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
         }
 
         return $storeId;
+    }
+
+    /**
+     * Retrieve converted date taking into account the current time zone.
+     *
+     * @param string $utc
+     * @return string
+     */
+    protected function _convertUtcDate($utc)
+    {
+        return Mage::getModel('core/date')->date('Y-m-d', $utc);
     }
 }
