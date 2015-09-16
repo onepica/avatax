@@ -352,7 +352,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
         $lineNumber = count($this->_lines);
         $storeId = $item->getQuote()->getStoreId();
         //Add gift wrapping price(for individual items)
-        $gwItemsAmount = $item->getGwBasePrice();
+        $gwItemsAmount = $item->getGwBasePrice() * $item->getQty();
 
         $line = new Line();
         $line->setNo($lineNumber);
@@ -360,7 +360,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
         $line->setItemCode($gwItemsSku ? $gwItemsSku : 'GwItemsAmount');
         $line->setDescription('Gift Wrap Items Amount');
         $line->setTaxCode($this->_getGiftTaxClass());
-        $line->setQty(1);
+        $line->setQty($item->getQty());
         $line->setAmount($gwItemsAmount);
         $line->setDiscounted(false);
 
