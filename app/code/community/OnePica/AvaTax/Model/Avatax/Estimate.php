@@ -92,7 +92,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
     /**
      * Estimates tax rate for one item.
      *
-     * @param Varien_Object $item
+     * @param Mage_Sales_Model_Quote_Item $item
      * @return int
      */
     public function getItemRate($item)
@@ -123,7 +123,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
      * Estimates tax amount for one item. Does not trigger a call if the shipping
      * address has no postal code, or if the postal code is set to "-" (OneStepCheckout)
      *
-     * @param Varien_Object $item
+     * @param Mage_Sales_Model_Quote_Item $item
      * @return int
      */
     public function getItemTax($item)
@@ -176,7 +176,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
     /**
      * Get rates from Avalara
      *
-     * @param Varien_Object $item
+     * @param Mage_Sales_Model_Quote_Item $item
      * @return string
      */
     protected function _getRates($item)
@@ -185,15 +185,17 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
             return 'error';
         }
 
+        /** @var OnePica_AvaTax_Model_Sales_Quote_Address $address */
         $address = $item->getAddress();
         $this->_lines = array();
 
         //set up request
+        $quote = $address->getQuote();
         $this->_request = new GetTaxRequest();
         $this->_request->setDocType(DocumentType::$SalesOrder);
         $this->_request->setDocCode('quote-' . $address->getId());
-        $this->_addGeneralInfo($address);
-        $this->_setOriginAddress($address->getStoreId());
+        $this->_addGeneralInfo($quote);
+        $this->_setOriginAddress($quote->getStoreId());
         $this->_setDestinationAddress($address);
         $this->_request->setDetailLevel(DetailLevel::$Line);
         $this->_addItemsInCart($item);
@@ -213,7 +215,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
 
         //make request if needed and save results in cache
         if ($makeRequest) {
-            $result = $this->_send($address->getQuote()->getStoreId());
+            $result = $this->_send($quote->getStoreId());
 
             //success
             /** @var GetTaxResult $result */

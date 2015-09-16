@@ -170,7 +170,7 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
     /**
      * Retrieve Vat Id
      *
-     * @param Mage_Sales_Model_Order|OnePica_AvaTax_Model_Sales_Quote_Address $object
+     * @param Mage_Sales_Model_Order|Mage_Sales_Model_Quote $object
      * @return string
      */
     protected function _getVatId($object)
@@ -178,19 +178,19 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
         if ($object instanceof Mage_Sales_Model_Order) {
             return $this->_getVatIdByOrder($object);
         }
-        return $this->_getVatIdByQuoteAddress($object);
+        return $this->_getVatIdByQuote($object);
     }
 
     /**
      * Retrieve Vat Id from quote address
      *
-     * @param OnePica_AvaTax_Model_Sales_Quote_Address $address
+     * @param Mage_Sales_Model_Quote $quote
      * @return string
      */
-    protected function _getVatIdByQuoteAddress($address)
+    protected function _getVatIdByQuote($quote)
     {
-        return $address->getQuote()->getShippingAddress()->getVatId()
-            ?: $address->getQuote()->getBillingAddress()->getVatId();
+        return $quote->getShippingAddress()->getVatId()
+            ?: $quote->getBillingAddress()->getVatId();
     }
 
     /**
