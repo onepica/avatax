@@ -277,7 +277,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
         $line->setNo($lineNumber);
         $line->setItemCode(Mage::helper('avatax')->getGwOrderSku($storeId));
         $line->setDescription('Gift Wrap Order Amount');
-        $line->setTaxCode($this->_getGiftTaxClass());
+        $line->setTaxCode($this->_getGiftTaxClassCode($storeId));
         $line->setQty(1);
         $line->setAmount($amount);
         $line->setDiscounted(false);
@@ -315,7 +315,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
         $line->setNo($lineNumber);
         $line->setItemCode(Mage::helper('avatax')->getGwItemsSku($storeId));
         $line->setDescription('Gift Wrap Items Amount');
-        $line->setTaxCode($this->_getGiftTaxClass());
+        $line->setTaxCode($this->_getGiftTaxClassCode($storeId));
         $line->setQty(1);
         $line->setAmount($amount);
         $line->setDiscounted(false);
@@ -335,7 +335,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
      */
     protected function _addGwPrintedCardAmount($object, $credit = false)
     {
-        if ($object->getGwPrintedCardSku() == 0) {
+        if (!$object->getGwPrintedCardBasePrice()) {
             return false;
         }
 
@@ -353,7 +353,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
         $line->setNo($lineNumber);
         $line->setItemCode(Mage::helper('avatax')->getGwPrintedCardSku($storeId));
         $line->setDescription('Gift Wrap Printed Card Amount');
-        $line->setTaxCode($this->_getGiftTaxClass());
+        $line->setTaxCode($this->_getGiftTaxClassCode($storeId));
         $line->setQty(1);
         $line->setAmount($amount);
         $line->setDiscounted(false);
@@ -429,7 +429,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
 
         $storeId = $this->_retrieveStoreIdFromItem($item);
         $product = $this->_getProductByProductId($item->getProductId());
-        $taxClass = $this->_getTaxClassByProduct($product);
+        $taxClass = $this->_getTaxClassCodeByProduct($product);
         $price = $item->getBaseRowTotal() - $item->getBaseDiscountAmount();
         if ($credit) {
             //@startSkipCommitHooks

@@ -327,7 +327,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
         $gwOrderSku = Mage::helper('avatax')->getGwOrderSku($storeId);
         $line->setItemCode($gwOrderSku ? $gwOrderSku : 'GwOrderAmount');
         $line->setDescription('Gift Wrap Order Amount');
-        $line->setTaxCode($this->_getGiftTaxClass());
+        $line->setTaxCode($this->_getGiftTaxClassCode($storeId));
         $line->setQty(1);
         $line->setAmount($gwOrderAmount);
         $line->setDiscounted(false);
@@ -359,7 +359,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
         $gwItemsSku = Mage::helper('avatax')->getGwItemsSku($storeId);
         $line->setItemCode($gwItemsSku ? $gwItemsSku : 'GwItemsAmount');
         $line->setDescription('Gift Wrap Items Amount');
-        $line->setTaxCode($this->_getGiftTaxClass());
+        $line->setTaxCode($this->_getGiftTaxClassCode($storeId));
         $line->setQty($item->getQty());
         $line->setAmount($gwItemsAmount);
         $line->setDiscounted(false);
@@ -392,7 +392,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
         $gwPrintedCardSku = Mage::helper('avatax')->getGwPrintedCardSku($storeId);
         $line->setItemCode($gwPrintedCardSku ? $gwPrintedCardSku : 'GwPrintedCardAmount');
         $line->setDescription('Gift Wrap Printed Card Amount');
-        $line->setTaxCode($this->_getGiftTaxClass());
+        $line->setTaxCode($this->_getGiftTaxClassCode($storeId));
         $line->setQty(1);
         $line->setAmount($gwPrintedCardAmount);
         $line->setDiscounted(false);
@@ -446,7 +446,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
             return false;
         }
         $product = $this->_getProductByProductId($item->getProductId());
-        $taxClass = $this->_getTaxClassByProduct($product);
+        $taxClass = $this->_getTaxClassCodeByProduct($product);
         $price = $item->getBaseRowTotal() - $item->getBaseDiscountAmount();
         $lineNumber = count($this->_lines);
         $line = new Line();
