@@ -87,9 +87,9 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
                     if (!$calculator->isProductCalculated($item)) {
                         $this->_addAmount($amount);
                         $this->_addBaseAmount($baseAmount);
-                        $this->_addAmount($giftTaxAmount);
-                        $this->_addBaseAmount($giftBaseTaxAmount);
                     }
+                    $this->_addAmount($giftTaxAmount);
+                    $this->_addBaseAmount($giftBaseTaxAmount);
                 }
 
                 if ($address->getAddressType() == Mage_Sales_Model_Quote_Address::TYPE_SHIPPING
