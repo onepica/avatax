@@ -67,9 +67,9 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
                     $baseAmount = $calculator->getItemTax($item);
 
                     $giftBaseTaxAmount = $calculator->getItemGiftTax($item);
-                    $giftTaxAmount = Mage::app()->getStore()->convertPrice($giftBaseTaxAmount);
+                    $giftTaxAmount = $store->convertPrice($giftBaseTaxAmount);
 
-                    $amount = Mage::app()->getStore()->convertPrice($baseAmount);
+                    $amount = $store->convertPrice($baseAmount);
                     $percent = $calculator->getItemRate($item);
 
                     $item->setTaxAmount($amount);
@@ -93,13 +93,14 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
                 }
 
                 if ($address->getAddressType() == Mage_Sales_Model_Quote_Address::TYPE_SHIPPING
-                        || $address->getUseForShipping()) {
+                    || $address->getUseForShipping()
+                ) {
                     $shippingItem = new Varien_Object();
                     $shippingItem->setId(Mage::helper('avatax')->getShippingSku($store->getId()));
                     $shippingItem->setProductId(Mage::helper('avatax')->getShippingSku($store->getId()));
                     $shippingItem->setAddress($address);
                     $baseShippingTax = $calculator->getItemTax($shippingItem);
-                    $shippingTax = Mage::app()->getStore()->convertPrice($baseShippingTax);
+                    $shippingTax = $store->convertPrice($baseShippingTax);
 
                     $shippingAmt = $address->getTotalAmount('shipping');
                     $baseShippingAmt = $address->getBaseTotalAmount('shipping');
@@ -122,7 +123,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
                     $gwOrderItem->setProductId(Mage::helper('avatax')->getGwOrderSku($store->getId()));
                     $gwOrderItem->setAddress($address);
                     $baseGwOrderTax = $calculator->getItemTax($gwOrderItem);
-                    $gwOrderTax = Mage::app()->getStore()->convertPrice($baseGwOrderTax);
+                    $gwOrderTax = $store->convertPrice($baseGwOrderTax);
 
                     $address->setGwBaseTaxAmount($baseGwOrderTax);
                     $address->setGwTaxAmount($gwOrderTax);
@@ -137,7 +138,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
                     $gwPrintedCardItem->setProductId(Mage::helper('avatax')->getGwPrintedCardSku($store->getId()));
                     $gwPrintedCardItem->setAddress($address);
                     $baseGwPrintedCardTax = $calculator->getItemTax($gwPrintedCardItem);
-                    $gwPrintedCardTax = Mage::app()->getStore()->convertPrice($baseGwPrintedCardTax);
+                    $gwPrintedCardTax = $store->convertPrice($baseGwPrintedCardTax);
 
                     $address->setGwPrintedCardBaseTaxAmount(
                         $address->getGwPrintedCardBasePrice() + $baseGwPrintedCardTax
