@@ -42,7 +42,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
      * Save order in AvaTax system
      *
      * @see OnePica_AvaTax_Model_Observer::salesOrderPlaceAfter()
-     * @param Mage_Sales_Model_Order_Invoice $invoice
+     * @param Mage_Sales_Model_Order_Invoice     $invoice
      * @param OnePica_AvaTax_Model_Records_Queue $queue
      * @return bool
      * @throws OnePica_AvaTax_Exception
@@ -52,9 +52,10 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
     public function invoice($invoice, $queue)
     {
         $order = $invoice->getOrder();
-        $invoiceDate = $this->_convertUtcDate($invoice->getCreatedAt());
-        $orderDate = $this->_convertUtcDate($order->getCreatedAt());
-        $statusDate = $this->_convertUtcDate($queue->getUpdatedAt());
+        $storeId = $order->getStoreId();
+        $invoiceDate = $this->_convertGmtDate($invoice->getCreatedAt(), $storeId);
+        $orderDate = $this->_convertGmtDate($order->getCreatedAt(), $storeId);
+        $statusDate = $this->_convertGmtDate($queue->getUpdatedAt(), $storeId);
 
         $shippingAddress = ($order->getShippingAddress()) ? $order->getShippingAddress() : $order->getBillingAddress();
         if (!$shippingAddress) {
@@ -133,9 +134,10 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
     public function creditmemo($creditmemo, $queue)
     {
         $order = $creditmemo->getOrder();
-        $orderDate = $this->_convertUtcDate($order->getCreatedAt());
-        $statusDate = $this->_convertUtcDate($queue->getUpdatedAt());
-        $creditmemoDate = $this->_convertUtcDate($creditmemo->getCreatedAt());
+        $storeId = $order->getStoreId();
+        $orderDate = $this->_convertGmtDate($order->getCreatedAt(), $storeId);
+        $statusDate = $this->_convertGmtDate($queue->getUpdatedAt(), $storeId);
+        $creditmemoDate = $this->_convertGmtDate($creditmemo->getCreatedAt(), $storeId);
 
         $shippingAddress = ($order->getShippingAddress()) ? $order->getShippingAddress() : $order->getBillingAddress();
         if (!$shippingAddress) {
@@ -479,13 +481,14 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
     }
 
     /**
-     * Retrieve converted date taking into account the current time zone.
+     * Retrieve converted date taking into account the current time zone and store.
      *
-     * @param string $utc
+     * @param string $gmt
+     * @param int    $storeId
      * @return string
      */
-    protected function _convertUtcDate($utc)
+    protected function _convertGmtDate($gmt, $storeId)
     {
-        return Mage::getModel('core/date')->date('Y-m-d', $utc);
+        return Mage::app()->getLocale()->storeDate($storeId, $gmt)->toString(Varien_Date::DATE_INTERNAL_FORMAT);
     }
 }
