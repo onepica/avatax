@@ -116,7 +116,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
     {
         $key = $this->_getRates($item);
         $id = $item->getId();
-        return isset($this->_rates[$key]['gw_items'][$id]['rate']) ? $this->_rates[$key]['gw_items'][$id]['rate'] : 0;
+        return isset($this->_rates[$key]['gw_items'][$id]['amt']) ? $this->_rates[$key]['gw_items'][$id]['amt'] : 0;
     }
 
     /**
