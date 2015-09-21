@@ -340,7 +340,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
      */
     protected function _addGwItemsAmount($item)
     {
-        if (!$item->getGwPrice()) {
+        if (!$item->getGwId()) {
             return false;
         }
         $lineNumber = count($this->_lines);
