@@ -52,9 +52,9 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
     public function invoice($invoice, $queue)
     {
         $order = $invoice->getOrder();
-        $invoiceDate = $this->_convertUtcDate($invoice->getCreatedAt());
-        $orderDate = $this->_convertUtcDate($order->getCreatedAt());
-        $statusDate = $this->_convertUtcDate($queue->getUpdatedAt());
+        $invoiceDate = $this->_convertUtcDate($invoice->getCreatedAt(), $order->getStoreId());
+        $orderDate = $this->_convertUtcDate($order->getCreatedAt(), $order->getStoreId());
+        $statusDate = $this->_convertUtcDate($queue->getUpdatedAt(), $order->getStoreId());
 
         $shippingAddress = ($order->getShippingAddress()) ? $order->getShippingAddress() : $order->getBillingAddress();
         if (!$shippingAddress) {
@@ -133,9 +133,9 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
     public function creditmemo($creditmemo, $queue)
     {
         $order = $creditmemo->getOrder();
-        $orderDate = $this->_convertUtcDate($order->getCreatedAt());
-        $statusDate = $this->_convertUtcDate($queue->getUpdatedAt());
-        $creditmemoDate = $this->_convertUtcDate($creditmemo->getCreatedAt());
+        $orderDate = $this->_convertUtcDate($order->getCreatedAt(), $order->getStoreId());
+        $statusDate = $this->_convertUtcDate($queue->getUpdatedAt(), $order->getStoreId());
+        $creditmemoDate = $this->_convertUtcDate($creditmemo->getCreatedAt(), $order->getStoreId());
 
         $shippingAddress = ($order->getShippingAddress()) ? $order->getShippingAddress() : $order->getBillingAddress();
         if (!$shippingAddress) {
@@ -479,13 +479,14 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
     }
 
     /**
-     * Retrieve converted date taking into account the current time zone.
+     * Retrieve converted date taking into account the current time zone and store.
      *
      * @param string $utc
+     * @param int    $storeId
      * @return string
      */
-    protected function _convertUtcDate($utc)
+    protected function _convertUtcDate($utc, $storeId)
     {
-        return Mage::getModel('core/date')->date('Y-m-d', $utc);
+        return Mage::app()->getLocale()->storeDate($storeId, $utc)->toString(Varien_Date::DATE_INTERNAL_FORMAT);
     }
 }
