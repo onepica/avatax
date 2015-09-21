@@ -52,9 +52,10 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
     public function invoice($invoice, $queue)
     {
         $order = $invoice->getOrder();
-        $invoiceDate = $this->_convertGmtDate($invoice->getCreatedAt(), $order->getStoreId());
-        $orderDate = $this->_convertGmtDate($order->getCreatedAt(), $order->getStoreId());
-        $statusDate = $this->_convertGmtDate($queue->getUpdatedAt(), $order->getStoreId());
+        $storeId = $order->getStoreId();
+        $invoiceDate = $this->_convertGmtDate($invoice->getCreatedAt(), $storeId);
+        $orderDate = $this->_convertGmtDate($order->getCreatedAt(), $storeId);
+        $statusDate = $this->_convertGmtDate($queue->getUpdatedAt(), $storeId);
 
         $shippingAddress = ($order->getShippingAddress()) ? $order->getShippingAddress() : $order->getBillingAddress();
         if (!$shippingAddress) {
@@ -133,9 +134,10 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
     public function creditmemo($creditmemo, $queue)
     {
         $order = $creditmemo->getOrder();
-        $orderDate = $this->_convertGmtDate($order->getCreatedAt(), $order->getStoreId());
-        $statusDate = $this->_convertGmtDate($queue->getUpdatedAt(), $order->getStoreId());
-        $creditmemoDate = $this->_convertGmtDate($creditmemo->getCreatedAt(), $order->getStoreId());
+        $storeId = $order->getStoreId();
+        $orderDate = $this->_convertGmtDate($order->getCreatedAt(), $storeId);
+        $statusDate = $this->_convertGmtDate($queue->getUpdatedAt(), $storeId);
+        $creditmemoDate = $this->_convertGmtDate($creditmemo->getCreatedAt(), $storeId);
 
         $shippingAddress = ($order->getShippingAddress()) ? $order->getShippingAddress() : $order->getBillingAddress();
         if (!$shippingAddress) {
