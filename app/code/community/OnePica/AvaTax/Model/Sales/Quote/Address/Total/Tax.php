@@ -66,7 +66,9 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
                     $item->setAddress($address);
                     $baseAmount = $calculator->getItemTax($item);
 
-                    $giftBaseTaxAmount = $calculator->getItemGiftTax($item);
+                    $giftBaseTaxTotalAmount = $calculator->getItemGiftTax($item);
+                    $giftTaxTotalAmount = $store->convertPrice($giftBaseTaxTotalAmount);
+                    $giftBaseTaxAmount = Mage::app()->getStore()->roundPrice($giftBaseTaxTotalAmount / $item->getQty());
                     $giftTaxAmount = $store->convertPrice($giftBaseTaxAmount);
 
                     $amount = $store->convertPrice($baseAmount);
@@ -88,8 +90,8 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
                         $this->_addAmount($amount);
                         $this->_addBaseAmount($baseAmount);
                     }
-                    $this->_addAmount($giftTaxAmount);
-                    $this->_addBaseAmount($giftBaseTaxAmount);
+                    $this->_addAmount($giftTaxTotalAmount);
+                    $this->_addBaseAmount($giftBaseTaxTotalAmount);
                 }
 
                 if ($address->getAddressType() == Mage_Sales_Model_Quote_Address::TYPE_SHIPPING
