@@ -155,12 +155,12 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
     /**
      * Adds additional transaction based data
      *
-     * @param Mage_Sales_Model_Quote|Mage_Sales_Model_Order $object
+     * @param OnePica_AvaTax_Model_Sales_Quote_Address|Mage_Sales_Model_Order $object
      * @return $this
      */
     protected function _addGeneralInfo($object)
     {
-        $storeId = $object->getStoreId();
+        $storeId = $this->_retrieveStoreIdFromObject($object);
         $this->_setCompanyCode($storeId);
         $this->_request->setBusinessIdentificationNo($this->_getVatId($object));
         $this->_request->setDetailLevel(DetailLevel::$Document);
@@ -531,5 +531,20 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
     protected function _getDateModel()
     {
         return Mage::getSingleton('core/date');
+    }
+
+    /**
+     * Retrieve storeId from object
+     *
+     * @param OnePica_AvaTax_Model_Sales_Quote_Address|Mage_Sales_Model_Order $object
+     * @return int
+     */
+    protected function _retrieveStoreIdFromObject($object)
+    {
+        if ($object instanceof OnePica_AvaTax_Model_Sales_Quote_Address) {
+            return $object->getQuote()->getStoreId();
+        }
+
+        return $object->getStoreId();
     }
 }
