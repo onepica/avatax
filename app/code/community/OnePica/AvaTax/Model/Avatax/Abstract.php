@@ -160,7 +160,7 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
      */
     protected function _addGeneralInfo($object)
     {
-        $storeId = $this->_retrieveStoreIdFromObject($object);
+        $storeId = $this->_getStoreIdByObject($object);
         $this->_setCompanyCode($storeId);
         $this->_request->setBusinessIdentificationNo($this->_getVatId($object));
         $this->_request->setDetailLevel(DetailLevel::$Document);
@@ -539,7 +539,7 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
      * @param OnePica_AvaTax_Model_Sales_Quote_Address|Mage_Sales_Model_Order $object
      * @return int
      */
-    protected function _retrieveStoreIdFromObject($object)
+    protected function _getStoreIdByObject($object)
     {
         if ($object instanceof OnePica_AvaTax_Model_Sales_Quote_Address) {
             return $object->getQuote()->getStoreId();
