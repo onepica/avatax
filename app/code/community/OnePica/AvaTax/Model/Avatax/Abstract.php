@@ -95,7 +95,7 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
     /**
      * Get gift wrapping tax class config value
      *
-     * @param $storeId
+     * @param int $storeId
      * @return int
      */
     protected function _getWrappingTaxClass($storeId)
@@ -155,12 +155,12 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
     /**
      * Adds additional transaction based data
      *
-     * @param Mage_Sales_Model_Quote|Mage_Sales_Model_Order $object
+     * @param OnePica_AvaTax_Model_Sales_Quote_Address|Mage_Sales_Model_Order $object
      * @return $this
      */
     protected function _addGeneralInfo($object)
     {
-        $storeId = $object->getStoreId();
+        $storeId = $this->_getStoreIdByObject($object);
         $this->_setCompanyCode($storeId);
         $this->_request->setBusinessIdentificationNo($this->_getVatId($object));
         $this->_request->setDetailLevel(DetailLevel::$Document);
@@ -181,27 +181,28 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
     /**
      * Retrieve Vat Id
      *
-     * @param Mage_Sales_Model_Order|Mage_Sales_Model_Quote $object
+     * @param Mage_Sales_Model_Order|OnePica_AvaTax_Model_Sales_Quote_Address $object
      * @return string
      */
     protected function _getVatId($object)
     {
         if ($object instanceof Mage_Sales_Model_Order) {
             return $this->_getVatIdByOrder($object);
-        }
-        return $this->_getVatIdByQuote($object);
+         }
+
+        return $this->_getVatIdByQuoteAddress($object);
     }
 
     /**
      * Retrieve Vat Id from quote address
      *
-     * @param Mage_Sales_Model_Quote $quote
+     * @param OnePica_AvaTax_Model_Sales_Quote_Address $address
      * @return string
      */
-    protected function _getVatIdByQuote($quote)
+    protected function _getVatIdByQuoteAddress($address)
     {
-        return $quote->getShippingAddress()->getVatId()
-            ?: $quote->getBillingAddress()->getVatId();
+        return $address->getVatId()
+            ?: $address->getQuote()->getBillingAddress()->getVatId();
     }
 
     /**
@@ -345,8 +346,8 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
     /**
      * Adds a comment to order history. Method choosen based on Magento version.
      *
-     * @param Mage_Sales_Model_Order
-     * @param string
+     * @param Mage_Sales_Model_Order $order
+     * @param string $comment
      * @return self
      */
     protected function _addStatusHistoryComment($order, $comment)
@@ -530,5 +531,20 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
     protected function _getDateModel()
     {
         return Mage::getSingleton('core/date');
+    }
+
+    /**
+     * Retrieve storeId from object
+     *
+     * @param OnePica_AvaTax_Model_Sales_Quote_Address|Mage_Sales_Model_Order $object
+     * @return int
+     */
+    protected function _getStoreIdByObject($object)
+    {
+        if ($object instanceof OnePica_AvaTax_Model_Sales_Quote_Address) {
+            return $object->getQuote()->getStoreId();
+        }
+
+        return $object->getStoreId();
     }
 }
