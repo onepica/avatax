@@ -194,7 +194,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
         $this->_request = new GetTaxRequest();
         $this->_request->setDocType(DocumentType::$SalesOrder);
         $this->_request->setDocCode('quote-' . $address->getId());
-        $this->_addGeneralInfo($quote);
+        $this->_addGeneralInfo($address);
         $this->_setOriginAddress($quote->getStoreId());
         $this->_setDestinationAddress($address);
         $this->_request->setDetailLevel(DetailLevel::$Line);
@@ -450,6 +450,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
         $line->setQty($item->getQty());
         $line->setAmount($price);
         $line->setDiscounted($item->getDiscountAmount() ? true : false);
+
         if ($taxClass) {
             $line->setTaxCode($taxClass);
         }
