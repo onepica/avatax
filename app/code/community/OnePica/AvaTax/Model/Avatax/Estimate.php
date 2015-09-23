@@ -205,7 +205,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
         $this->_addGwPrintedCardAmount($address);
         //check to see if we can/need to make the request to Avalara
         $requestKey = $this->_genRequestKey();
-        $makeRequest = !isset($this->_rates[$requestKey]['items'][$item->getId()]);
+        $makeRequest = empty($this->_rates[$requestKey]['items']);
         //@startSkipCommitHooks
         $makeRequest &= count($this->_lineToLineId) ? true : false;
         $makeRequest &= $this->_request->getDestinationAddress() == '' ? false : true;
