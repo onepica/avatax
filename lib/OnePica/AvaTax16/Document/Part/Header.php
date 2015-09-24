@@ -22,6 +22,14 @@
 class OnePica_AvaTax16_Document_Part_Header extends OnePica_AvaTax16_Document_Part
 {
     /**
+     * Required properties
+     *
+     * @var array
+     */
+    protected $_requiredProperties = array('_accountId', '_companyCode', '_transactionType', '_documentCode',
+        '_customerCode', '_vendorCode', '_transactionDate', '_defaultLocations');
+
+    /**
      * Account Id
      * (Required)
      *
@@ -145,4 +153,13 @@ class OnePica_AvaTax16_Document_Part_Header extends OnePica_AvaTax16_Document_Pa
      * @var array
      */
     protected $_metadata;
+
+    /**
+     * Construct
+     */
+    public function __construct()
+    {
+        // init document parts
+        $this->_defaultLocations = new OnePica_AvaTax16_Document_Part_Locations();
+    }
 }

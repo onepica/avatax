@@ -22,13 +22,20 @@
 class OnePica_AvaTax16_Document_Part
 {
     /**
+     * Required properties
+     *
+     * @var array
+     */
+    protected $_requiredProperties = array();
+
+    /**
      * Properties get and set methods
      */
     public function __call($name, $arguments) {
         $action = substr($name, 0, 3);
         switch ($action) {
             case 'get':
-                $property = '_' . strtolower(substr($name, 3));
+                $property = '_' . lcfirst(substr($name, 3));
                 if (property_exists($this,$property)) {
                     return $this->{$property};
                 } else {
@@ -40,7 +47,7 @@ class OnePica_AvaTax16_Document_Part
                 }
                 break;
             case 'set':
-                $property = '_' . strtolower(substr($name, 3));
+                $property = '_' . lcfirst(substr($name, 3));
                 if (property_exists($this,$property)) {
                     $this->{$property} = $arguments[0];
                 } else {
@@ -58,5 +65,17 @@ class OnePica_AvaTax16_Document_Part
                 trigger_error($errorMessage, E_USER_ERROR);
                 return null;
         }
+    }
+
+    /**
+     * Checks if document part is valid
+     */
+    public function isValid() {
+        foreach ($this as $key => $value) {
+            if (in_array($key, $this->_requiredProperties) && !$value) {
+                return false;
+            }
+        }
+        return true;
     }
 }
