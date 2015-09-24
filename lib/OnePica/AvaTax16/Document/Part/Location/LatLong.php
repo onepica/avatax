@@ -26,56 +26,12 @@ class OnePica_AvaTax16_Document_Part_Location_LatLong extends OnePica_AvaTax16_D
      *
      * @var string
      */
-    private $_latitude;
+    protected $_latitude;
 
     /**
      * Longitude
      *
      * @var string
      */
-    private $_longitude;
-
-    /**
-     * Set Latitude
-     *
-     * @param string $value
-     * @return $this
-     */
-    public function setLatitude($value)
-    {
-        $this->_latitude = $value;
-        return $this;
-    }
-
-    /**
-     * Get Latitude
-     *
-     * @return string
-     */
-    public function getLatitude()
-    {
-        return $this->_latitude;
-    }
-
-    /**
-     * Set Longitude
-     *
-     * @param string $value
-     * @return $this
-     */
-    public function setLongitude($value)
-    {
-        $this->_longitude = $value;
-        return $this;
-    }
-
-    /**
-     * Get Longitude
-     *
-     * @return string
-     */
-    public function getLongitude()
-    {
-        return $this->_longitude;
-    }
+    protected $_longitude;
 }

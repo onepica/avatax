@@ -26,14 +26,14 @@ class OnePica_AvaTax16_Document_Part_Location extends OnePica_AvaTax16_Document_
      *
      * @var OnePica_AvaTax16_Document_Part_Location_Address
      */
-    private $_address;
+    protected $_address;
 
     /**
      * latitude and longitude
      *
      * @var OnePica_AvaTax16_Document_Part_Location_LatLong
      */
-    private $_latlong;
+    protected $_latlong;
 
     /**
      * Location code
@@ -41,7 +41,7 @@ class OnePica_AvaTax16_Document_Part_Location extends OnePica_AvaTax16_Document_
      *
      * @var string
      */
-    private $_locationCode;
+    protected $_locationCode;
 
     /**
      * Ip Address
@@ -49,14 +49,14 @@ class OnePica_AvaTax16_Document_Part_Location extends OnePica_AvaTax16_Document_
      *
      * @var string
      */
-    private $_ipAddress;
+    protected $_ipAddress;
 
     /**
      * Resolution Quality
      *
      * @var string
      */
-    private $_resolutionQuality;
+    protected $_resolutionQuality;
 
     /**
      * Address Tax Payer Code
@@ -64,7 +64,7 @@ class OnePica_AvaTax16_Document_Part_Location extends OnePica_AvaTax16_Document_
      *
      * @var string
      */
-    private $_addressTaxPayerCode;
+    protected $_addressTaxPayerCode;
 
     /**
      * Address Entity Use Type
@@ -72,7 +72,7 @@ class OnePica_AvaTax16_Document_Part_Location extends OnePica_AvaTax16_Document_
      *
      * @var string
      */
-    private $_addressEntityUseType;
+    protected $_addressEntityUseType;
 
     /**
      * Set Address
@@ -97,134 +97,15 @@ class OnePica_AvaTax16_Document_Part_Location extends OnePica_AvaTax16_Document_
     }
 
     /**
-     * Set Latlong
-     *
-     * @param OnePica_AvaTax16_Document_Part_Location_LatLong $value
-     * @return $this
-     */
-    public function setLatlong($value)
-    {
-        $this->_latlong = $value;
-        return $this;
-    }
-
-    /**
      * Get Latlong
      *
      * @return OnePica_AvaTax16_Document_Part_Location_LatLong
      */
     public function getLatlong()
     {
+        if (!$this->_latlong) {
+            $this->_latlong = new OnePica_AvaTax16_Document_Part_Location_LatLong();
+        }
         return $this->_latlong;
-    }
-
-    /**
-     * Set Location Code
-     *
-     * @param string $value
-     * @return $this
-     */
-    public function setLocationCode($value)
-    {
-        $this->_locationCode = $value;
-        return $this;
-    }
-
-    /**
-     * Get Location Code
-     *
-     * @return string
-     */
-    public function getLocationCode()
-    {
-        return $this->_locationCode;
-    }
-
-    /**
-     * Set Ip Address
-     *
-     * @param string $value
-     * @return $this
-     */
-    public function setIpAddress($value)
-    {
-        $this->_ipAddress = $value;
-        return $this;
-    }
-
-    /**
-     * Get Ip Address
-     *
-     * @return string
-     */
-    public function getIpAddress()
-    {
-        return $this->_ipAddress;
-    }
-
-    /**
-     * Set Resolution Quality
-     *
-     * @param string $value
-     * @return $this
-     */
-    public function setResolutionQuality($value)
-    {
-        $this->_resolutionQuality = $value;
-        return $this;
-    }
-
-    /**
-     * Get Resolution Quality
-     *
-     * @return string
-     */
-    public function getResolutionQuality()
-    {
-        return $this->_resolutionQuality;
-    }
-
-    /**
-     * Set Address Tax Payer Code
-     *
-     * @param string $value
-     * @return $this
-     */
-    public function setAddressTaxPayerCode($value)
-    {
-        $this->_addressTaxPayerCode = $value;
-        return $this;
-    }
-
-    /**
-     * Get Address Tax Payer Code
-     *
-     * @return string
-     */
-    public function getAddressTaxPayerCode()
-    {
-        return $this->_addressTaxPayerCode;
-    }
-
-    /**
-     * Set Address Entity Use Type
-     *
-     * @param string $value
-     * @return $this
-     */
-    public function setAddressEntityUseType($value)
-    {
-        $this->_addressEntityUseType = $value;
-        return $this;
-    }
-
-    /**
-     * Get Address Entity Use Type
-     *
-     * @return string
-     */
-    public function getAddressEntityUseType()
-    {
-        return $this->_addressEntityUseType;
     }
 }

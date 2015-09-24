@@ -26,7 +26,7 @@ class OnePica_AvaTax16_Document_Request extends OnePica_AvaTax16_Document_Part
      *
      * @var OnePica_AvaTax16_Document_Part_Header
      */
-    private $_header;
+    protected $_header;
 
     /**
      * Construct
@@ -35,15 +35,5 @@ class OnePica_AvaTax16_Document_Request extends OnePica_AvaTax16_Document_Part
     {
         // init document parts
         $this->_header = new OnePica_AvaTax16_Document_Part_Header();
-    }
-
-    /**
-     * Get header
-     *
-     * @return OnePica_AvaTax16_Document_Part_Header
-     */
-    public function getHeader()
-    {
-        return $this->_header;
     }
 }
