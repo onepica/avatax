@@ -29,6 +29,13 @@ class OnePica_AvaTax16_Document_Request extends OnePica_AvaTax16_Document_Part
     protected $_header;
 
     /**
+     * Lines
+     *
+     * @var Array
+     */
+    protected $_lines;
+
+    /**
      * Feedback
      *
      * @var OnePica_AvaTax16_Document_Part_Feedback
