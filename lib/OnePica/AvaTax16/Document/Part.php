@@ -21,4 +21,42 @@
  */
 class OnePica_AvaTax16_Document_Part
 {
+    /**
+     * Properties get and set methods
+     */
+    public function __call($name, $arguments) {
+        $action = substr($name, 0, 3);
+        switch ($action) {
+            case 'get':
+                $property = '_' . strtolower(substr($name, 3));
+                if (property_exists($this,$property)) {
+                    return $this->{$property};
+                } else {
+                    $trace = debug_backtrace();
+                    $errorMessage = 'Undefined method  ' . $name . ' in ' . $trace[0]['file']
+                                  . ' on line ' . $trace[0]['line'];
+                    trigger_error($errorMessage, E_USER_ERROR);
+                    return null;
+                }
+                break;
+            case 'set':
+                $property = '_' . strtolower(substr($name, 3));
+                if (property_exists($this,$property)) {
+                    $this->{$property} = $arguments[0];
+                } else {
+                    $trace = debug_backtrace();
+                    $errorMessage = 'Undefined method  ' . $name . ' in ' . $trace[0]['file']
+                                  . ' on line ' . $trace[0]['line'];
+                    trigger_error($errorMessage, E_USER_ERROR);
+                    return null;
+                }
+                break;
+            default :
+                $trace = debug_backtrace();
+                $errorMessage = 'Undefined method  ' . $name . ' in ' . $trace[0]['file']
+                    . ' on line ' . $trace[0]['line'];
+                trigger_error($errorMessage, E_USER_ERROR);
+                return null;
+        }
+    }
 }
