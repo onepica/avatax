@@ -17,43 +17,27 @@
  */
 
 /**
- * Class OnePica_AvaTax16_Document_Request
+ * Class OnePica_AvaTax16_Document_Part_Feedback
  */
-class OnePica_AvaTax16_Document_Request extends OnePica_AvaTax16_Document_Part
+class OnePica_AvaTax16_Document_Part_Feedback extends OnePica_AvaTax16_Document_Part
 {
     /**
-     * Header
+     * Latency Data
      *
-     * @var OnePica_AvaTax16_Document_Part_Header
+     * @var OnePica_AvaTax16_Document_Part_Feedback_LatencyData
      */
-    protected $_header;
+    protected $_latencyData;
 
     /**
-     * Feedback
+     * Get Latency Data
      *
-     * @var OnePica_AvaTax16_Document_Part_Feedback
+     * @return OnePica_AvaTax16_Document_Part_Feedback_LatencyData
      */
-    protected $_feedback;
-
-    /**
-     * Construct
-     */
-    public function __construct()
+    public function getLatencyData()
     {
-        // init document parts
-        $this->_header = new OnePica_AvaTax16_Document_Part_Header();
-    }
-
-    /**
-     * Get Feedback
-     *
-     * @return OnePica_AvaTax16_Document_Part_Feedback
-     */
-    public function getFeedback()
-    {
-        if (!$this->_feedback) {
-            $this->_feedback = new OnePica_AvaTax16_Document_Part_Feedback();
+        if (!$this->_latencyData) {
+            $this->_latencyData = new OnePica_AvaTax16_Document_Part_Feedback_LatencyData();
         }
-        return $this->_feedback;
+        return $this->_latencyData;
     }
 }
