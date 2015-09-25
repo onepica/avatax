@@ -29,9 +29,17 @@ class OnePica_AvaTax16_Document_Part
     protected $_requiredProperties = array();
 
     /**
+     * Excluded properties (will be ignored during toArray function)
+     *
+     * @var array
+     */
+    protected $_excludedProperties = array();
+
+    /**
      * Properties get and set methods
      */
-    public function __call($name, $arguments) {
+    public function __call($name, $arguments)
+    {
         $action = substr($name, 0, 3);
         switch ($action) {
             case 'get':
@@ -69,13 +77,69 @@ class OnePica_AvaTax16_Document_Part
 
     /**
      * Checks if document part is valid
+     *
+     * @return bool
      */
-    public function isValid() {
+    public function isValid()
+    {
         foreach ($this as $key => $value) {
             if (in_array($key, $this->_requiredProperties) && !$value) {
                 return false;
             }
         }
         return true;
+    }
+
+    /**
+     * Convert object data to array
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        if (!$this->isValid()) {
+            throw new Exception("Not valid data in " . get_class($this));
+        }
+        $result = array();
+        foreach ($this as $key => $value) {
+            if (in_array($key, $this->_excludedProperties)
+                || in_array($key, array('_requiredProperties', '_excludedProperties'))
+                || !$value) {
+                // skip property
+                continue;
+            }
+            $name = substr($key, 1);
+            $result[$name] = $this->_proceedToArrayItem($value);
+        }
+        return $result;
+    }
+
+    /**
+     * Convert object data to array
+     *
+     * @param OnePica_AvaTax16_Document_Part|array|string $item
+     * @return array|string
+     */
+    protected function _proceedToArrayItem($item)
+    {
+        $result = null;
+        $itemType = ($item instanceof OnePica_AvaTax16_Document_Part) ? 'documentPart' :
+                ((is_array($item)) ? 'array' : 'simple');
+
+        switch ($itemType) {
+            case 'documentPart':
+                $result = $item->toArray();
+                break;
+            case 'array':
+                foreach ($item as $key => $value) {
+                    $result[$key] = $this->_proceedToArrayItem($value);
+                }
+                break;
+            case 'simple':
+                $result = $item;
+                break;
+        }
+
+        return $result;
     }
 }

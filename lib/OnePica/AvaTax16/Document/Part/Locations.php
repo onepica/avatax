@@ -50,4 +50,18 @@ class OnePica_AvaTax16_Document_Part_Locations extends OnePica_AvaTax16_Document
         }
         return $this;
     }
+
+    /**
+     * Convert object data to array
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $result = array();
+        foreach ($this->_locations as $key => $value) {
+            $result[$key] = $this->_proceedToArrayItem($value);
+        }
+        return $result;
+    }
 }
