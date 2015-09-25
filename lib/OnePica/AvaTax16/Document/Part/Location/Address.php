@@ -22,12 +22,11 @@
 class OnePica_AvaTax16_Document_Part_Location_Address extends OnePica_AvaTax16_Document_Part
 {
     /**
-     * Address Code
-     * (Required)
+     * Required properties
      *
-     * @var string
+     * @var array
      */
-    protected $_addressCode;
+    protected $_requiredProperties = array('_line1');
 
     /**
      * Line 1
@@ -59,11 +58,11 @@ class OnePica_AvaTax16_Document_Part_Location_Address extends OnePica_AvaTax16_D
     protected $_city;
 
     /**
-     * Region
+     * State
      *
      * @var string
      */
-    protected $_region;
+    protected $_state;
 
     /**
      * Country
@@ -73,30 +72,9 @@ class OnePica_AvaTax16_Document_Part_Location_Address extends OnePica_AvaTax16_D
     protected $_country;
 
     /**
-     * Postal Code
+     * Zip Code
      *
      * @var string
      */
-    protected $_postalCode;
-
-    /**
-     * Latitude
-     *
-     * @var string
-     */
-    protected $_latitude;
-
-    /**
-     * Longitude
-     *
-     * @var string
-     */
-    protected $_longitude;
-
-    /**
-     * Tax Region Id
-     *
-     * @var int
-     */
-    protected $_taxRegionId;
+    protected $_zipcode;
 }
