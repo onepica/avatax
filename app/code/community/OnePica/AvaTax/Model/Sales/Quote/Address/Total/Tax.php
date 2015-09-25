@@ -68,9 +68,8 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
 
                     $giftBaseTaxTotalAmount = $calculator->getItemGiftTax($item);
                     $giftTaxTotalAmount = $store->convertPrice($giftBaseTaxTotalAmount);
-                    $giftBaseTaxAmount = Mage::app()->getStore()->roundPrice(
-                        ceil($giftBaseTaxTotalAmount / $item->getQty())
-                    );
+                    $giftBaseTaxAmount = $this->_getDataHelper()
+                        ->roundUp($giftBaseTaxTotalAmount / $item->getQty(), 2);
                     $giftTaxAmount = $store->convertPrice($giftBaseTaxAmount);
 
                     $amount = $store->convertPrice($baseAmount);
@@ -306,5 +305,15 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
             throw new OnePica_AvaTax_Exception(Mage::helper('sales')->__('Address model is not defined'));
         }
         return $this->_address;
+    }
+
+    /**
+     * Get data helper
+     *
+     * @return \OnePica_AvaTax_Helper_Data
+     */
+    protected function _getDataHelper()
+    {
+        return Mage::helper('avatax');
     }
 }
