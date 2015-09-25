@@ -619,4 +619,18 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
 
         return true;
     }
+
+    /**
+     * Round up
+     *
+     * @param float $value
+     * @param int   $precision
+     * @return float
+     */
+    public function roundUp($value, $precision)
+    {
+        $fact = pow(10, $precision);
+
+        return ceil($fact * $value) / $fact;
+    }
 }
