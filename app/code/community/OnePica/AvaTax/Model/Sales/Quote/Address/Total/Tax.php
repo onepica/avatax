@@ -143,10 +143,8 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
                     $baseGwPrintedCardTax = $calculator->getItemTax($gwPrintedCardItem);
                     $gwPrintedCardTax = $store->convertPrice($baseGwPrintedCardTax);
 
-                    $address->setGwPrintedCardBaseTaxAmount(
-                        $address->getGwPrintedCardBasePrice() + $baseGwPrintedCardTax
-                    );
-                    $address->setGwPrintedCardTaxAmount($address->getGwPrintedCardPrice() + $gwPrintedCardTax);
+                    $address->setGwPrintedCardBaseTaxAmount($baseGwPrintedCardTax);
+                    $address->setGwPrintedCardTaxAmount($gwPrintedCardTax);
 
                     $this->_addAmount($gwPrintedCardTax);
                     $this->_addBaseAmount($baseGwPrintedCardTax);
