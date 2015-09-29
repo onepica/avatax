@@ -17,36 +17,14 @@
  */
 
 /**
- * Class OnePica_AvaTax16_Calculation_ListOfCalculationsResponse_CalculatedTaxSummary_TaxByType_Details
+ * Class OnePica_AvaTax16_Calculation_ListItemResponse_Line
  */
-class OnePica_AvaTax16_Calculation_ListOfCalculationsResponse_CalculatedTaxSummary_TaxByType_Details
-    extends OnePica_AvaTax16_Document_Part
+class OnePica_AvaTax16_Calculation_ListItemResponse_Line extends OnePica_AvaTax16_Document_Part
 {
     /**
-     * Jurisdiction Name
+     * Avalara Goods And Services Modifier type
      *
      * @var string
      */
-    protected $_jurisdictionName;
-
-    /**
-     * Jurisdiction Type
-     *
-     * @var string
-     */
-    protected $_jurisdictionType;
-
-    /**
-     * Tax
-     *
-     * @var float
-     */
-    protected $_tax ;
-
-    /**
-     * Comment
-     *
-     * @var float
-     */
-    protected $_comment;
+    protected $_avalaraGoodsAndServicesModifierType;
 }

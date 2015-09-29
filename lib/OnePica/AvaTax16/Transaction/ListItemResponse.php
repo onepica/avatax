@@ -17,9 +17,9 @@
  */
 
 /**
- * Class OnePica_AvaTax16_Transaction_ListOfTransactionsResponse
+ * Class OnePica_AvaTax16_Transaction_ListItemResponse
  */
-class OnePica_AvaTax16_Transaction_ListOfTransactionsResponse
-    extends OnePica_AvaTax16_Calculation_ListOfCalculationsResponse
+class OnePica_AvaTax16_Transaction_ListItemResponse
+    extends OnePica_AvaTax16_Calculation_ListItemResponse
 {
 }

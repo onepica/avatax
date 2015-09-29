@@ -138,8 +138,8 @@ class OnePica_AvaTax16_Transaction extends OnePica_AvaTax16_ResourceAbstract
         $result = null;
         if (is_array($data)) {
             foreach ($data as $dataItem) {
-                $listOfTransactions = new OnePica_AvaTax16_Transaction_ListOfTransactionsResponse();
-                $result[] = $listOfTransactions->fillData($dataItem);
+                $transactionListItem = new OnePica_AvaTax16_Transaction_ListItemResponse();
+                $result[] = $transactionListItem->fillData($dataItem);
             }
         }
         return $result;

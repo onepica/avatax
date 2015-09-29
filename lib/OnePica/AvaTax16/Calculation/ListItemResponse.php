@@ -17,9 +17,9 @@
  */
 
 /**
- * Class OnePica_AvaTax16_Calculations_ListOfCalculationsResponse
+ * Class OnePica_AvaTax16_Calculation_ListItemResponse
  */
-class OnePica_AvaTax16_Calculation_ListOfCalculationsResponse extends OnePica_AvaTax16_Document_Part
+class OnePica_AvaTax16_Calculation_ListItemResponse extends OnePica_AvaTax16_Document_Part
 {
     /**
      * Types of complex properties
@@ -28,24 +28,24 @@ class OnePica_AvaTax16_Calculation_ListOfCalculationsResponse extends OnePica_Av
      */
     protected $_propertyComplexTypes = array(
         '_header' => array(
-            'type' => 'OnePica_AvaTax16_Calculation_ListOfCalculationsResponse_Header'
+            'type' => 'OnePica_AvaTax16_Calculation_ListItemResponse_Header'
         ),
         '_lines' => array(
-            'type' => 'OnePica_AvaTax16_Calculation_ListOfCalculationsResponse_Line',
+            'type' => 'OnePica_AvaTax16_Calculation_ListItemResponse_Line',
             'isArrayOf' => 'true'
         ),
         '_calculatedTaxSummary' => array(
-            'type' => 'OnePica_AvaTax16_Calculation_ListOfCalculationsResponse_CalculatedTaxSummary'
+            'type' => 'OnePica_AvaTax16_Calculation_ListItemResponse_CalculatedTaxSummary'
         ),
         '_processingInfo' => array(
-            'type' => 'OnePica_AvaTax16_Calculation_ListOfCalculationsResponse_ProcessingInfo'
+            'type' => 'OnePica_AvaTax16_Calculation_ListItemResponse_ProcessingInfo'
         ),
     );
 
     /**
      * Header
      *
-     * @var OnePica_AvaTax16_Calculation_ListOfCalculationsResponse_Header
+     * @var OnePica_AvaTax16_Calculation_ListItemResponse_Header
      */
     protected $_header;
 
@@ -59,14 +59,14 @@ class OnePica_AvaTax16_Calculation_ListOfCalculationsResponse extends OnePica_Av
     /**
      * Feedback
      *
-     * @var OnePica_AvaTax16_Calculation_ListOfCalculationsResponse_CalculatedTaxSummary
+     * @var OnePica_AvaTax16_Calculation_ListItemResponse_CalculatedTaxSummary
      */
     protected $_calculatedTaxSummary;
 
     /**
      * Feedback
      *
-     * @var OnePica_AvaTax16_Calculation_ListOfCalculationsResponse_ProcessingInfo
+     * @var OnePica_AvaTax16_Calculation_ListItemResponse_ProcessingInfo
      */
     protected $_processingInfo;
 }

@@ -17,63 +17,36 @@
  */
 
 /**
- * Class OnePica_AvaTax16_Calculation_ListOfCalculationsResponse_Header
+ * Class OnePica_AvaTax16_Calculation_ListItemResponse_CalculatedTaxSummary_TaxByType_Details
  */
-class OnePica_AvaTax16_Calculation_ListOfCalculationsResponse_Header extends OnePica_AvaTax16_Document_Part
+class OnePica_AvaTax16_Calculation_ListItemResponse_CalculatedTaxSummary_TaxByType_Details
+    extends OnePica_AvaTax16_Document_Part
 {
     /**
-     * Account Id
+     * Jurisdiction Name
      *
      * @var string
      */
-    protected $_accountId;
+    protected $_jurisdictionName;
 
     /**
-     * Company Code
+     * Jurisdiction Type
      *
      * @var string
      */
-    protected $_companyCode;
+    protected $_jurisdictionType;
 
     /**
-     * Transaction Type
+     * Tax
      *
-     * @var string
+     * @var float
      */
-    protected $_transactionType;
+    protected $_tax ;
 
     /**
-     * Document Code
+     * Comment
      *
-     * @var string
+     * @var float
      */
-    protected $_documentCode;
-
-    /**
-     * Customer Code
-     *
-     * @var string
-     */
-    protected $_customerCode;
-
-    /**
-     * Transaction Date
-     *
-     * @var string
-     */
-    protected $_transactionDate;
-
-    /**
-     * Currency
-     *
-     * @var string
-     */
-    protected $_currency;
-
-    /**
-     * Total Tax Override Amount
-     *
-     * @var string
-     */
-    protected $_totalTaxOverrideAmount;
+    protected $_comment;
 }

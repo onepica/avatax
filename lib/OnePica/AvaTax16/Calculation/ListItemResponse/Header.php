@@ -17,40 +17,63 @@
  */
 
 /**
- * Class OnePica_AvaTax16_Calculation_ListOfCalculationsResponse_CalculatedTaxSummary_TaxByType
+ * Class OnePica_AvaTax16_Calculation_ListItemResponse_Header
  */
-class OnePica_AvaTax16_Calculation_ListOfCalculationsResponse_CalculatedTaxSummary_TaxByType
-    extends OnePica_AvaTax16_Document_Part
+class OnePica_AvaTax16_Calculation_ListItemResponse_Header extends OnePica_AvaTax16_Document_Part
 {
     /**
-     * Types of complex properties
-     *
-     * @var array
-     */
-    protected $_propertyComplexTypes = array(
-        '_jurisdictions' => array(
-            'type' => 'OnePica_AvaTax16_Calculation_ListOfCalculationsResponse_CalculatedTaxSummary_TaxByType_Details'
-        )
-    );
-
-    /**
-     * Tax
-     *
-     * @var float
-     */
-    protected $_tax;
-
-    /**
-     * jurisdictions
-     *
-     * @var OnePica_AvaTax16_Calculation_ListOfCalculationsResponse_CalculatedTaxSummary_TaxByType_Details
-     */
-    protected $_jurisdictions;
-
-    /**
-     * Comment
+     * Account Id
      *
      * @var string
      */
-    protected $_comment ;
+    protected $_accountId;
+
+    /**
+     * Company Code
+     *
+     * @var string
+     */
+    protected $_companyCode;
+
+    /**
+     * Transaction Type
+     *
+     * @var string
+     */
+    protected $_transactionType;
+
+    /**
+     * Document Code
+     *
+     * @var string
+     */
+    protected $_documentCode;
+
+    /**
+     * Customer Code
+     *
+     * @var string
+     */
+    protected $_customerCode;
+
+    /**
+     * Transaction Date
+     *
+     * @var string
+     */
+    protected $_transactionDate;
+
+    /**
+     * Currency
+     *
+     * @var string
+     */
+    protected $_currency;
+
+    /**
+     * Total Tax Override Amount
+     *
+     * @var string
+     */
+    protected $_totalTaxOverrideAmount;
 }
