@@ -19,12 +19,33 @@
 /**
  * Class OnePica_AvaTax16_Calculations_ListOfCalculationsResponse
  */
-class OnePica_AvaTax16_Calculations_ListOfCalculationsResponse extends OnePica_AvaTax16_Document_Part
+class OnePica_AvaTax16_Calculation_ListOfCalculationsResponse extends OnePica_AvaTax16_Document_Part
 {
+    /**
+     * Types of complex properties
+     *
+     * @var array
+     */
+    protected $_propertyComplexTypes = array(
+        '_header' => array(
+            'type' => 'OnePica_AvaTax16_Calculation_ListOfCalculationsResponse_Header'
+        ),
+        '_lines' => array(
+            'type' => 'OnePica_AvaTax16_Calculation_ListOfCalculationsResponse_Line',
+            'isArrayOf' => 'true'
+        ),
+        '_calculatedTaxSummary' => array(
+            'type' => 'OnePica_AvaTax16_Calculation_ListOfCalculationsResponse_CalculatedTaxSummary'
+        ),
+        '_processingInfo' => array(
+            'type' => 'OnePica_AvaTax16_Calculation_ListOfCalculationsResponse_ProcessingInfo'
+        ),
+    );
+
     /**
      * Header
      *
-     * @var OnePica_AvaTax16_Calculations_ListOfCalculationsResponse_Header
+     * @var OnePica_AvaTax16_Calculation_ListOfCalculationsResponse_Header
      */
     protected $_header;
 
@@ -38,14 +59,14 @@ class OnePica_AvaTax16_Calculations_ListOfCalculationsResponse extends OnePica_A
     /**
      * Feedback
      *
-     * @var OnePica_AvaTax16_Calculations_ListOfCalculationsResponse_CalculatedTaxSummary
+     * @var OnePica_AvaTax16_Calculation_ListOfCalculationsResponse_CalculatedTaxSummary
      */
     protected $_calculatedTaxSummary;
 
     /**
      * Feedback
      *
-     * @var OnePica_AvaTax16_Calculations_ListOfCalculationsResponse_ProcessingInfo
+     * @var OnePica_AvaTax16_Calculation_ListOfCalculationsResponse_ProcessingInfo
      */
     protected $_processingInfo;
 }

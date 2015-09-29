@@ -36,6 +36,13 @@ class OnePica_AvaTax16_Document_Part
     protected $_excludedProperties = array();
 
     /**
+     * Types of complex properties
+     *
+     * @var array
+     */
+    protected $_propertyComplexTypes = array();
+
+    /**
      * Properties get and set methods
      */
     public function __call($name, $arguments)
@@ -141,5 +148,39 @@ class OnePica_AvaTax16_Document_Part
         }
 
         return $result;
+    }
+
+    /**
+     * Fill data from object
+     *
+     * @param StdClass|array $data
+     * @return $this
+     */
+    public function fillData($data)
+    {
+        foreach ($data as $key => $value) {
+            $propName = '_' . $key;
+            $method = 'set' . ucfirst($key);
+            if (isset($this->_propertyComplexTypes[$propName])) {
+                $propertyType = $this->_propertyComplexTypes[$propName]['type'];
+                if (isset($this->_propertyComplexTypes[$propName]['isArrayOf'])) {
+                    $items = null;
+                    foreach ($value as $itemKey => $itemData) {
+                        $item = new $propertyType();
+                        $item->fillData($itemData);
+                        $items[$itemKey] = $item;
+                    }
+                    $this->$method($items);
+                } else {
+                    $item = new $propertyType();
+                    $item->fillData($value);
+                    $this->$method($item);
+                }
+
+            } else {
+                $this->$method($value);
+            }
+        }
+        return $this;
     }
 }

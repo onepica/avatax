@@ -17,63 +17,36 @@
  */
 
 /**
- * Class OnePica_AvaTax16_Calculation_ListOfCalculationsResponse_ProcessingInfo
+ * Class OnePica_AvaTax16_Calculation_ListOfCalculationsResponse_CalculatedTaxSummary_TaxByType_Details
  */
-class OnePica_AvaTax16_Calculation_ListOfCalculationsResponse_ProcessingInfo extends OnePica_AvaTax16_Document_Part
+class OnePica_AvaTax16_Calculation_ListOfCalculationsResponse_CalculatedTaxSummary_TaxByType_Details
+    extends OnePica_AvaTax16_Document_Part
 {
     /**
-     * Transaction State
+     * Jurisdiction Name
      *
      * @var string
      */
-    protected $_transactionState;
+    protected $_jurisdictionName;
 
     /**
-     * Version Id
+     * Jurisdiction Type
      *
      * @var string
      */
-    protected $_versionId;
+    protected $_jurisdictionType;
 
     /**
-     * Format Id
-     *
-     * @var string
-     */
-    protected $_formatId;
-
-    /**
-     * Duration
+     * Tax
      *
      * @var float
      */
-    protected $_duration;
+    protected $_tax ;
 
     /**
-     * Modified Date
+     * Comment
      *
-     * @var string
+     * @var float
      */
-    protected $_modifiedDate;
-
-    /**
-     * Batch Id
-     *
-     * @var string
-     */
-    protected $_batchId;
-
-    /**
-     * Document Id
-     *
-     * @var string
-     */
-    protected $_documentId;
-
-    /**
-     * Message
-     *
-     * @var string
-     */
-    protected $_message;
+    protected $_comment;
 }

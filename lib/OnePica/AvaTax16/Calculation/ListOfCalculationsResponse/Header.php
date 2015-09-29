@@ -17,9 +17,9 @@
  */
 
 /**
- * Class OnePica_AvaTax16_Calculations_ListOfCalculationsResponse_Header
+ * Class OnePica_AvaTax16_Calculation_ListOfCalculationsResponse_Header
  */
-class OnePica_AvaTax16_Calculations_ListOfCalculationsResponse_Header extends OnePica_AvaTax16_Document_Part
+class OnePica_AvaTax16_Calculation_ListOfCalculationsResponse_Header extends OnePica_AvaTax16_Document_Part
 {
     /**
      * Account Id
@@ -62,4 +62,18 @@ class OnePica_AvaTax16_Calculations_ListOfCalculationsResponse_Header extends On
      * @var string
      */
     protected $_transactionDate;
+
+    /**
+     * Currency
+     *
+     * @var string
+     */
+    protected $_currency;
+
+    /**
+     * Total Tax Override Amount
+     *
+     * @var string
+     */
+    protected $_totalTaxOverrideAmount;
 }

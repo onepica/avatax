@@ -17,9 +17,9 @@
  */
 
 /**
- * Class OnePica_AvaTax16_Calculation_ListOfCalculationsResponse_CalculatedTaxSummary
+ * Class OnePica_AvaTax16_Calculation_ListOfCalculationsResponse_CalculatedTaxSummary_TaxByType
  */
-class OnePica_AvaTax16_Calculation_ListOfCalculationsResponse_CalculatedTaxSummary
+class OnePica_AvaTax16_Calculation_ListOfCalculationsResponse_CalculatedTaxSummary_TaxByType
     extends OnePica_AvaTax16_Document_Part
 {
     /**
@@ -28,39 +28,10 @@ class OnePica_AvaTax16_Calculation_ListOfCalculationsResponse_CalculatedTaxSumma
      * @var array
      */
     protected $_propertyComplexTypes = array(
-        '_taxByType' => array(
-            'type' => 'OnePica_AvaTax16_Calculation_ListOfCalculationsResponse_CalculatedTaxSummary_TaxByType',
-            'isArrayOf' => 'true'
+        '_jurisdictions' => array(
+            'type' => 'OnePica_AvaTax16_Calculation_ListOfCalculationsResponse_CalculatedTaxSummary_TaxByType_Details'
         )
     );
-
-    /**
-     * Number Of Lines
-     *
-     * @var int
-     */
-    protected $_numberOfLines;
-
-    /**
-     * Subtotal
-     *
-     * @var float
-     */
-    protected $_subtotal;
-
-    /**
-     * Total Tax
-     *
-     * @var float
-     */
-    protected $_totalTax;
-
-    /**
-     * Tax By Type
-     *
-     * @var OnePica_AvaTax16_Calculation_ListOfCalculationsResponse_CalculatedTaxSummary_TaxByType
-     */
-    protected $_taxByType;
 
     /**
      * Tax
@@ -70,9 +41,16 @@ class OnePica_AvaTax16_Calculation_ListOfCalculationsResponse_CalculatedTaxSumma
     protected $_tax;
 
     /**
-     * Grand Total
+     * jurisdictions
      *
-     * @var float
+     * @var OnePica_AvaTax16_Calculation_ListOfCalculationsResponse_CalculatedTaxSummary_TaxByType_Details
      */
-    protected $_grandTotal;
+    protected $_jurisdictions;
+
+    /**
+     * Comment
+     *
+     * @var string
+     */
+    protected $_comment ;
 }

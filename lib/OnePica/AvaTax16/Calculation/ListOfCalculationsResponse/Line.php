@@ -17,14 +17,14 @@
  */
 
 /**
- * Class OnePica_AvaTax16_Calculations_ListOfCalculationsResponse_Line
+ * Class OnePica_AvaTax16_Calculation_ListOfCalculationsResponse_Line
  */
-class OnePica_AvaTax16_Calculations_ListOfCalculationsResponse_Line extends OnePica_AvaTax16_Document_Part
+class OnePica_AvaTax16_Calculation_ListOfCalculationsResponse_Line extends OnePica_AvaTax16_Document_Part
 {
     /**
      * Avalara Goods And Services Modifier type
      *
      * @var string
      */
-    protected $_avalaraGoodsAndServicesModifiertype;
+    protected $_avalaraGoodsAndServicesModifierType;
 }
