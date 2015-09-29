@@ -99,7 +99,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
                     || $address->getUseForShipping()
                 ) {
                     $shippingItem = new Varien_Object();
-                    $shippingItem->setId(Mage::helper('avatax')->getShippingSku($store->getId()));
+                    $shippingItem->setSku(Mage::helper('avatax')->getShippingSku($store->getId()));
                     $shippingItem->setProductId(Mage::helper('avatax')->getShippingSku($store->getId()));
                     $shippingItem->setAddress($address);
                     $baseShippingTax = $calculator->getItemTax($shippingItem);
@@ -122,7 +122,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
 
                 if ($address->getGwPrice() > 0) {
                     $gwOrderItem = new Varien_Object();
-                    $gwOrderItem->setId(Mage::helper('avatax')->getGwOrderSku($store->getId()));
+                    $gwOrderItem->setSku(Mage::helper('avatax')->getGwOrderSku($store->getId()));
                     $gwOrderItem->setProductId(Mage::helper('avatax')->getGwOrderSku($store->getId()));
                     $gwOrderItem->setAddress($address);
                     $baseGwOrderTax = $calculator->getItemTax($gwOrderItem);
@@ -137,7 +137,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
 
                 if ($address->getGwAddPrintedCard()) {
                     $gwPrintedCardItem = new Varien_Object();
-                    $gwPrintedCardItem->setId(Mage::helper('avatax')->getGwPrintedCardSku($store->getId()));
+                    $gwPrintedCardItem->setSku(Mage::helper('avatax')->getGwPrintedCardSku($store->getId()));
                     $gwPrintedCardItem->setProductId(Mage::helper('avatax')->getGwPrintedCardSku($store->getId()));
                     $gwPrintedCardItem->setAddress($address);
                     $baseGwPrintedCardTax = $calculator->getItemTax($gwPrintedCardItem);

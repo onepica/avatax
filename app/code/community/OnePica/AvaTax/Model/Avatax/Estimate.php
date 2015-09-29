@@ -101,7 +101,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
             return 0;
         } else {
             $key = $this->_getRates($item);
-            $id = $item->getId();
+            $id = $item->getSku();
             return isset($this->_rates[$key]['items'][$id]['rate']) ? $this->_rates[$key]['items'][$id]['rate'] : 0;
         }
     }
@@ -114,8 +114,11 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
      */
     public function getItemGiftTax($item)
     {
+        if ($item->getParentItemId()) {
+            return 0;
+        }
         $key = $this->_getRates($item);
-        $id = $item->getId();
+        $id = $item->getSku();
         return isset($this->_rates[$key]['gw_items'][$id]['amt']) ? $this->_rates[$key]['gw_items'][$id]['amt'] : 0;
     }
 
@@ -138,7 +141,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
                 return $tax;
             } else {
                 $key = $this->_getRates($item);
-                $id = $item->getId();
+                $id = $item->getSku();
                 return isset($this->_rates[$key]['items'][$id]['amt']) ? $this->_rates[$key]['items'][$id]['amt'] : 0;
             }
         }
@@ -361,7 +364,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
         $this->_lines[$lineNumber] = $line;
         $this->_request->setLines($this->_lines);
         $this->_lineToLineId[$lineNumber] = Mage::helper('avatax')->getGwItemsSku($storeId);
-        $this->_productGiftPair[$lineNumber] = $item->getId();
+        $this->_productGiftPair[$lineNumber] = $item->getSku();
 
         return $lineNumber;
     }
@@ -464,7 +467,7 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
         }
 
         $this->_lines[$lineNumber] = $line;
-        $this->_lineToLineId[$lineNumber] = $item->getId();
+        $this->_lineToLineId[$lineNumber] = $item->getSku();
         return $lineNumber;
     }
 
