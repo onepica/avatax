@@ -83,7 +83,6 @@ class OnePica_AvaTax16_Transaction extends OnePica_AvaTax16_ResourceAbstract
      */
     public function getTransaction($transactionType, $documentCode)
     {
-        $curl = $this->_getCurlObjectWithHeaders();
         $config = $this->getConfig();
         $getUrl = $config->getBaseUrl()
                 . self::TRANSACTION_URL_PATH
@@ -96,6 +95,7 @@ class OnePica_AvaTax16_Transaction extends OnePica_AvaTax16_ResourceAbstract
                 . '/'
                 . $documentCode;
 
+        $curl = $this->_getCurlObjectWithHeaders();
         $curl->get($getUrl);
         $data = $curl->response;
         return $data;
@@ -114,7 +114,6 @@ class OnePica_AvaTax16_Transaction extends OnePica_AvaTax16_ResourceAbstract
     public function getListOfTransactions($transactionType, $limit = null, $startDate = null, $endDate = null,
         $startCode = null)
     {
-        $curl = $this->_getCurlObjectWithHeaders();
         $config = $this->getConfig();
         $getUrl = $config->getBaseUrl()
                 . self::TRANSACTION_URL_PATH
@@ -132,6 +131,7 @@ class OnePica_AvaTax16_Transaction extends OnePica_AvaTax16_ResourceAbstract
             'startCode' => $startCode,
         );
 
+        $curl = $this->_getCurlObjectWithHeaders();
         $curl->get($getUrl, $filterData);
         $data = $curl->response;
 
@@ -143,5 +143,33 @@ class OnePica_AvaTax16_Transaction extends OnePica_AvaTax16_ResourceAbstract
             }
         }
         return $result;
+    }
+
+    /**
+     * Get Transaction Input
+     *
+     * @param string $transactionType
+     * @param string $documentCode
+     * @return StdClass|array $result
+     */
+    public function getTransactionInput($transactionType, $documentCode)
+    {
+        $config = $this->getConfig();
+        $getUrl = $config->getBaseUrl()
+                . self::TRANSACTION_URL_PATH
+                . '/account/'
+                . $config->getAccountId()
+                . '/company/'
+                . $config->getCompanyCode()
+                . '/'
+                . $transactionType
+                . '/'
+                . $documentCode
+                . '/source';
+
+        $curl = $this->_getCurlObjectWithHeaders();
+        $curl->get($getUrl);
+        $data = $curl->response;
+        return $data;
     }
 }

@@ -72,9 +72,9 @@ class OnePica_AvaTax16_Calculation
      */
     public function createCalculation($documentRequest)
     {
-        $curl = $this->_getCurlObjectWithHeaders();
         $postUrl = $this->_config->getBaseUrl() . self::CALCULATION_URL_PATH;
         $postData = $documentRequest->toArray();
+        $curl = $this->_getCurlObjectWithHeaders();
         $curl->post($postUrl, $postData);
         $data = $curl->response;
         return $data;
@@ -89,7 +89,6 @@ class OnePica_AvaTax16_Calculation
      */
     public function getCalculation($transactionType, $documentCode)
     {
-        $curl = $this->_getCurlObjectWithHeaders();
         $config = $this->getConfig();
         $getUrl = $config->getBaseUrl()
                 . self::CALCULATION_URL_PATH
@@ -102,6 +101,7 @@ class OnePica_AvaTax16_Calculation
                 . '/'
                 . $documentCode;
 
+        $curl = $this->_getCurlObjectWithHeaders();
         $curl->get($getUrl);
         $data = $curl->response;
         return $data;
@@ -120,7 +120,6 @@ class OnePica_AvaTax16_Calculation
     public function getListOfCalculations($transactionType, $limit = null, $startDate = null, $endDate = null,
         $startCode = null)
     {
-        $curl = $this->_getCurlObjectWithHeaders();
         $config = $this->getConfig();
         $getUrl = $config->getBaseUrl()
                 . self::CALCULATION_URL_PATH
@@ -137,6 +136,7 @@ class OnePica_AvaTax16_Calculation
             'startCode' => $startCode,
         );
 
+        $curl = $this->_getCurlObjectWithHeaders();
         $curl->get($getUrl, $filterData);
         $data = $curl->response;
 
