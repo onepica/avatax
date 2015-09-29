@@ -117,7 +117,7 @@ class OnePica_AvaTax16_Calculation
      * @param string $startCode (not implemented)
      * @return StdClass|array $result
      */
-    public function getListOfCalculation($transactionType, $limit = null, $startDate = null, $endDate = null,
+    public function getListOfCalculations($transactionType, $limit = null, $startDate = null, $endDate = null,
         $startCode = null)
     {
         $curl = $this->_getCurlObjectWithHeaders();

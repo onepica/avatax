@@ -100,4 +100,48 @@ class OnePica_AvaTax16_Transaction extends OnePica_AvaTax16_ResourceAbstract
         $data = $curl->response;
         return $data;
     }
+
+    /**
+     * Get List Of Transactions
+     *
+     * @param string $transactionType
+     * @param int $limit
+     * @param string $startDate
+     * @param string $endDate
+     * @param string $startCode (not implemented)
+     * @return StdClass|array $result
+     */
+    public function getListOfTransactions($transactionType, $limit = null, $startDate = null, $endDate = null,
+        $startCode = null)
+    {
+        $curl = $this->_getCurlObjectWithHeaders();
+        $config = $this->getConfig();
+        $getUrl = $config->getBaseUrl()
+                . self::TRANSACTION_URL_PATH
+                . '/account/'
+                . $config->getAccountId()
+                . '/company/'
+                . $config->getCompanyCode()
+                . '/'
+                . $transactionType;
+
+        $filterData = array(
+            'limit' => $limit,
+            'startDate' => $startDate,
+            'endDate' => $endDate,
+            'startCode' => $startCode,
+        );
+
+        $curl->get($getUrl, $filterData);
+        $data = $curl->response;
+
+        $result = null;
+        if (is_array($data)) {
+            foreach ($data as $dataItem) {
+                $listOfTransactions = new OnePica_AvaTax16_Transaction_ListOfTransactionsResponse();
+                $result[] = $listOfTransactions->fillData($dataItem);
+            }
+        }
+        return $result;
+    }
 }
