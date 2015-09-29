@@ -172,4 +172,40 @@ class OnePica_AvaTax16_Transaction extends OnePica_AvaTax16_ResourceAbstract
         $data = $curl->response;
         return $data;
     }
+
+    /**
+     * Transition Transaction State
+     *
+     * @param string $transactionType
+     * @param string $documentCode
+     * @param string $type
+     * @param string $comment
+     * @return bool
+     * @todo analise and refactor return value
+     */
+    public function transitionTransactionState($transactionType, $documentCode, $type, $comment)
+    {
+        $config = $this->getConfig();
+        $postUrl = $config->getBaseUrl()
+            . self::TRANSACTION_URL_PATH
+            . '/account/'
+            . $config->getAccountId()
+            . '/company/'
+            . $config->getCompanyCode()
+            . '/'
+            . $transactionType
+            . '/'
+            . $documentCode
+            . '/stateTransitions';
+
+        $postData = array(
+            'type' => $type,
+            'comment' => $comment
+        );
+
+        $curl = $this->_getCurlObjectWithHeaders();
+        $curl->post($postUrl, $postData);
+
+        return ($curl->httpStatusCode == 201) ? true : false;
+    }
 }
