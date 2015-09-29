@@ -21,10 +21,6 @@
  */
 class OnePica_AvaTax16_Calculation
 {
-    /**
-     * Url path for calculations
-     */
-    const CALCULATION_URL_PATH = '/calculations';
 
     /**
      * Config
