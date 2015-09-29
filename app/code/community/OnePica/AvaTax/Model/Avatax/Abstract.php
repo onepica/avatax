@@ -201,8 +201,9 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
      */
     protected function _getVatIdByQuoteAddress($address)
     {
-        return $address->getVatId()
+        $vatId = $address->getVatId()
             ?: $address->getQuote()->getBillingAddress()->getVatId();
+        return (string)$vatId;
     }
 
     /**
