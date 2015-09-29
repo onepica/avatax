@@ -51,16 +51,16 @@ class OnePica_AvaTax16_Transaction extends OnePica_AvaTax16_ResourceAbstract
     {
         $config = $this->getConfig();
         $postUrl = $config->getBaseUrl()
-            . self::CALCULATION_URL_PATH
-            . '/account/'
-            . $config->getAccountId()
-            . '/company/'
-            . $config->getCompanyCode()
-            . '/'
-            . $transactionType
-            . '/'
-            . $documentCode
-            . self::TRANSACTION_URL_PATH;
+                 . self::CALCULATION_URL_PATH
+                 . '/account/'
+                 . $config->getAccountId()
+                 . '/company/'
+                 . $config->getCompanyCode()
+                 . '/'
+                 . $transactionType
+                 . '/'
+                 . $documentCode
+                 . self::TRANSACTION_URL_PATH;
 
         $postData = array(
             'recalculate' => $recalculate,
@@ -70,6 +70,33 @@ class OnePica_AvaTax16_Transaction extends OnePica_AvaTax16_ResourceAbstract
 
         $curl = $this->_getCurlObjectWithHeaders();
         $curl->post($postUrl, $postData);
+        $data = $curl->response;
+        return $data;
+    }
+
+    /**
+     * Get Transaction
+     *
+     * @param string $transactionType
+     * @param string $documentCode
+     * @return StdClass $data
+     */
+    public function getTransaction($transactionType, $documentCode)
+    {
+        $curl = $this->_getCurlObjectWithHeaders();
+        $config = $this->getConfig();
+        $getUrl = $config->getBaseUrl()
+                . self::TRANSACTION_URL_PATH
+                . '/account/'
+                . $config->getAccountId()
+                . '/company/'
+                . $config->getCompanyCode()
+                . '/'
+                . $transactionType
+                . '/'
+                . $documentCode;
+
+        $curl->get($getUrl);
         $data = $curl->response;
         return $data;
     }

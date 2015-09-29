@@ -21,7 +21,6 @@
  */
 class OnePica_AvaTax16_Calculation
 {
-
     /**
      * Config
      *
