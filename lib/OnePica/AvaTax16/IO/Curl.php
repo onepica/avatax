@@ -262,7 +262,7 @@ class OnePica_AvaTax16_IO_Curl
         $this->setOpt(CURLINFO_HEADER_OUT, true);
         $this->setOpt(CURLOPT_HEADERFUNCTION, array($this, 'headerCallback'));
         $this->setOpt(CURLOPT_RETURNTRANSFER, true);
-        $this->headers = new CaseInsensitiveArray();
+        $this->headers = new OnePica_AvaTax16_IO_CaseInsensitiveArray();
         $this->setURL($base_url);
     }
 
@@ -1031,7 +1031,7 @@ class OnePica_AvaTax16_IO_Curl
     private function parseHeaders($raw_headers)
     {
         $raw_headers = preg_split('/\r\n/', $raw_headers, null, PREG_SPLIT_NO_EMPTY);
-        $http_headers = new CaseInsensitiveArray();
+        $http_headers = new OnePica_AvaTax16_IO_CaseInsensitiveArray();
 
         $raw_headers_count = count($raw_headers);
         for ($i = 1; $i < $raw_headers_count; $i++) {
@@ -1059,7 +1059,7 @@ class OnePica_AvaTax16_IO_Curl
      */
     private function parseRequestHeaders($raw_headers)
     {
-        $request_headers = new CaseInsensitiveArray();
+        $request_headers = new OnePica_AvaTax16_IO_CaseInsensitiveArray();
         list($first_line, $headers) = $this->parseHeaders($raw_headers);
         $request_headers['Request-Line'] = $first_line;
         foreach ($headers as $key => $value) {
@@ -1116,7 +1116,7 @@ class OnePica_AvaTax16_IO_Curl
             }
         }
 
-        $response_headers = new CaseInsensitiveArray();
+        $response_headers = new OnePica_AvaTax16_IO_CaseInsensitiveArray();
         list($first_line, $headers) = $this->parseHeaders($response_header);
         $response_headers['Status-Line'] = $first_line;
         foreach ($headers as $key => $value) {
@@ -1188,72 +1188,3 @@ class OnePica_AvaTax16_IO_Curl
     }
 }
 
-class CaseInsensitiveArray implements \ArrayAccess, \Countable, \Iterator
-{
-    private $container = array();
-
-    public function offsetSet($offset, $value)
-    {
-        if ($offset === null) {
-            $this->container[] = $value;
-        } else {
-            $index = array_search(strtolower($offset), array_keys(array_change_key_case($this->container, CASE_LOWER)));
-            if (!($index === false)) {
-                $keys = array_keys($this->container);
-                unset($this->container[$keys[$index]]);
-            }
-            $this->container[$offset] = $value;
-        }
-    }
-
-    public function offsetExists($offset)
-    {
-        return array_key_exists(strtolower($offset), array_change_key_case($this->container, CASE_LOWER));
-    }
-
-    public function offsetUnset($offset)
-    {
-        unset($this->container[$offset]);
-    }
-
-    public function offsetGet($offset)
-    {
-        $index = array_search(strtolower($offset), array_keys(array_change_key_case($this->container, CASE_LOWER)));
-        if ($index === false) {
-            return null;
-        }
-
-        $values = array_values($this->container);
-        return $values[$index];
-    }
-
-    public function count()
-    {
-        return count($this->container);
-    }
-
-    public function current()
-    {
-        return current($this->container);
-    }
-
-    public function next()
-    {
-        return next($this->container);
-    }
-
-    public function key()
-    {
-        return key($this->container);
-    }
-
-    public function valid()
-    {
-        return !($this->current() === false);
-    }
-
-    public function rewind()
-    {
-        reset($this->container);
-    }
-}
