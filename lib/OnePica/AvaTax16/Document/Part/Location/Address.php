@@ -99,7 +99,7 @@ class OnePica_AvaTax16_Document_Part_Location_Address extends OnePica_AvaTax16_D
 
     /**
      * Zip Code
-     * zipcode, postalCode, postCode are synonyms. Should be set only one of them
+     * zipcode, postalCode, postcode are synonyms. Should be set only one of them
      *
      * @var string
      */
@@ -107,7 +107,7 @@ class OnePica_AvaTax16_Document_Part_Location_Address extends OnePica_AvaTax16_D
 
     /**
      * Postal Code
-     * zipcode, postalCode, postCode are synonyms. Should be set only one of them
+     * zipcode, postalCode, postcode are synonyms. Should be set only one of them
      *
      * @var string
      */
@@ -115,7 +115,7 @@ class OnePica_AvaTax16_Document_Part_Location_Address extends OnePica_AvaTax16_D
 
     /**
      * Post Code
-     * zipcode, postalCode, postCode are synonyms. Should be set only one of them
+     * zipcode, postalCode, postcode are synonyms. Should be set only one of them
      *
      * @var string
      */
