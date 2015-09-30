@@ -176,70 +176,70 @@ class OnePica_AvaTax16_IO_Curl
      *
      * @var string
      */
-    private $successFunction = null;
+    protected $_successFunction = null;
 
     /**
      * Error function
      *
      * @var string
      */
-    private $errorFunction = null;
+    protected $_errorFunction = null;
 
     /**
      * Complete function
      *
      * @var string
      */
-    private $completeFunction = null;
+    protected $_completeFunction = null;
 
     /**
      * Cookies
      *
      * @var array
      */
-    private $cookies = array();
+    protected $_cookies = array();
 
     /**
      * Response cookies
      *
      * @var array
      */
-    private $responseCookies = array();
+    protected $_responseCookies = array();
 
     /**
      * Headers
      *
      * @var array
      */
-    private $headers = array();
+    protected $_headers = array();
 
     /**
      * Options
      *
      * @var array
      */
-    private $options = array();
+    protected $_options = array();
 
     /**
      * Options
      *
      * @var function
      */
-    private $jsonDecoder = null;
+    protected $_jsonDecoder = null;
 
     /**
      * Json pattern
      *
      * @var string
      */
-    private $jsonPattern = '/^(?:application|text)\/(?:[a-z]+(?:[\.-][0-9a-z]+){0,}[\+\.]|x-)?json(?:-[a-z]+)?/i';
+    protected $_jsonPattern = '/^(?:application|text)\/(?:[a-z]+(?:[\.-][0-9a-z]+){0,}[\+\.]|x-)?json(?:-[a-z]+)?/i';
 
     /**
      * XML pattern
      *
      * @var string
      */
-    private $xmlPattern = '~^(?:text/|application/(?:atom\+|rss\+)?)xml~i';
+    protected $_xmlPattern = '~^(?:text/|application/(?:atom\+|rss\+)?)xml~i';
 
     /**
      * Construct
@@ -262,7 +262,7 @@ class OnePica_AvaTax16_IO_Curl
         $this->setOpt(CURLINFO_HEADER_OUT, true);
         $this->setOpt(CURLOPT_HEADERFUNCTION, array($this, 'headerCallback'));
         $this->setOpt(CURLOPT_RETURNTRANSFER, true);
-        $this->headers = new OnePica_AvaTax16_IO_CaseInsensitiveArray();
+        $this->_headers = new OnePica_AvaTax16_IO_CaseInsensitiveArray();
         $this->setURL($base_url);
     }
 
@@ -289,8 +289,8 @@ class OnePica_AvaTax16_IO_Curl
     {
         if (is_array($data)) {
             if (self::is_array_multidim($data)) {
-                if (isset($this->headers['Content-Type']) &&
-                    preg_match($this->jsonPattern, $this->headers['Content-Type'])) {
+                if (isset($this->_headers['Content-Type']) &&
+                    preg_match($this->_jsonPattern, $this->_headers['Content-Type'])) {
                     $json_str = json_encode($data);
                     if (!($json_str === false)) {
                         $data = $json_str;
@@ -320,8 +320,8 @@ class OnePica_AvaTax16_IO_Curl
                 }
 
                 if (!$binary_data) {
-                    if (isset($this->headers['Content-Type']) &&
-                        preg_match($this->jsonPattern, $this->headers['Content-Type'])) {
+                    if (isset($this->_headers['Content-Type']) &&
+                        preg_match($this->_jsonPattern, $this->_headers['Content-Type'])) {
                         $json_str = json_encode($data);
                         if (!($json_str === false)) {
                             $data = $json_str;
@@ -361,8 +361,8 @@ class OnePica_AvaTax16_IO_Curl
         if (is_resource($this->curl)) {
             curl_close($this->curl);
         }
-        $this->options = null;
-        $this->jsonDecoder = null;
+        $this->_options = null;
+        $this->_jsonDecoder = null;
     }
 
     /**
@@ -373,7 +373,7 @@ class OnePica_AvaTax16_IO_Curl
      */
     public function complete($callback)
     {
-        $this->completeFunction = $callback;
+        $this->_completeFunction = $callback;
     }
 
     /**
@@ -481,7 +481,7 @@ class OnePica_AvaTax16_IO_Curl
      */
     public function error($callback)
     {
-        $this->errorFunction = $callback;
+        $this->_errorFunction = $callback;
     }
 
     /**
@@ -494,7 +494,7 @@ class OnePica_AvaTax16_IO_Curl
      */
     public function exec($ch = null)
     {
-        $this->responseCookies = array();
+        $this->_responseCookies = array();
         if (!($ch === null)) {
             $this->rawResponse = curl_multi_getcontent($ch);
         } else {
@@ -526,12 +526,12 @@ class OnePica_AvaTax16_IO_Curl
         $this->errorMessage = $this->curlError ? $this->curlErrorMessage : $this->httpErrorMessage;
 
         if (!$this->error) {
-            $this->call($this->successFunction);
+            $this->call($this->_successFunction);
         } else {
-            $this->call($this->errorFunction);
+            $this->call($this->_errorFunction);
         }
 
-        $this->call($this->completeFunction);
+        $this->call($this->_completeFunction);
 
         return $this->response;
     }
@@ -567,7 +567,7 @@ class OnePica_AvaTax16_IO_Curl
      */
     public function getOpt($option)
     {
-        return $this->options[$option];
+        return $this->_options[$option];
     }
 
     /**
@@ -603,7 +603,7 @@ class OnePica_AvaTax16_IO_Curl
     public function headerCallback($ch, $header)
     {
         if (preg_match('/^Set-Cookie:\s*([^=]+)=([^;]+)/mi', $header, $cookie) == 1) {
-            $this->responseCookies[$cookie[1]] = $cookie[2];
+            $this->_responseCookies[$cookie[1]] = $cookie[2];
         }
         $this->rawResponseHeaders .= $header;
         return strlen($header);
@@ -697,7 +697,7 @@ class OnePica_AvaTax16_IO_Curl
         $this->setURL($url);
         $this->setOpt(CURLOPT_CUSTOMREQUEST, 'PUT');
         $put_data = $this->buildPostData($data);
-        if (empty($this->options[CURLOPT_INFILE]) && empty($this->options[CURLOPT_INFILESIZE])) {
+        if (empty($this->_options[CURLOPT_INFILE]) && empty($this->_options[CURLOPT_INFILESIZE])) {
             $this->setHeader('Content-Length', strlen($put_data));
         }
         $this->setOpt(CURLOPT_POSTFIELDS, $put_data);
@@ -739,8 +739,8 @@ class OnePica_AvaTax16_IO_Curl
      */
     public function setCookie($key, $value)
     {
-        $this->cookies[$key] = $value;
-        $this->setOpt(CURLOPT_COOKIE, str_replace(' ', '%20', urldecode(http_build_query($this->cookies, '', '; '))));
+        $this->_cookies[$key] = $value;
+        $this->setOpt(CURLOPT_COOKIE, str_replace(' ', '%20', urldecode(http_build_query($this->_cookies, '', '; '))));
     }
 
     /**
@@ -762,7 +762,7 @@ class OnePica_AvaTax16_IO_Curl
      */
     public function getResponseCookie($key)
     {
-        return isset($this->responseCookies[$key]) ? $this->responseCookies[$key] : null;
+        return isset($this->_responseCookies[$key]) ? $this->_responseCookies[$key] : null;
     }
 
     /**
@@ -816,7 +816,7 @@ class OnePica_AvaTax16_IO_Curl
      */
     public function setDefaultJsonDecoder()
     {
-        $this->jsonDecoder = function($response) {
+        $this->_jsonDecoder = function($response) {
             $json_obj = json_decode($response, false);
             if (!($json_obj === null)) {
                 $response = $json_obj;
@@ -860,9 +860,9 @@ class OnePica_AvaTax16_IO_Curl
      */
     public function setHeader($key, $value)
     {
-        $this->headers[$key] = $value;
+        $this->_headers[$key] = $value;
         $headers = array();
-        foreach ($this->headers as $key => $value) {
+        foreach ($this->_headers as $key => $value) {
             $headers[] = $key . ': ' . $value;
         }
         $this->setOpt(CURLOPT_HTTPHEADER, $headers);
@@ -877,7 +877,7 @@ class OnePica_AvaTax16_IO_Curl
     public function setJsonDecoder($function)
     {
         if (is_callable($function)) {
-            $this->jsonDecoder = $function;
+            $this->_jsonDecoder = $function;
         }
     }
 
@@ -900,7 +900,7 @@ class OnePica_AvaTax16_IO_Curl
             trigger_error($required_options[$option] . ' is a required option', E_USER_WARNING);
         }
 
-        $this->options[$option] = $value;
+        $this->_options[$option] = $value;
         return curl_setopt($this->curl, $option, $value);
     }
 
@@ -970,7 +970,7 @@ class OnePica_AvaTax16_IO_Curl
      */
     public function success($callback)
     {
-        $this->successFunction = $callback;
+        $this->_successFunction = $callback;
     }
 
     /**
@@ -982,7 +982,7 @@ class OnePica_AvaTax16_IO_Curl
     public function unsetHeader($key)
     {
         $this->setHeader($key, '');
-        unset($this->headers[$key]);
+        unset($this->_headers[$key]);
     }
 
     /**
@@ -1081,12 +1081,12 @@ class OnePica_AvaTax16_IO_Curl
     {
         $response = $raw_response;
         if (isset($response_headers['Content-Type'])) {
-            if (preg_match($this->jsonPattern, $response_headers['Content-Type'])) {
-                $json_decoder = $this->jsonDecoder;
+            if (preg_match($this->_jsonPattern, $response_headers['Content-Type'])) {
+                $json_decoder = $this->_jsonDecoder;
                 if (is_callable($json_decoder)) {
                     $response = $json_decoder($response);
                 }
-            } elseif (preg_match($this->xmlPattern, $response_headers['Content-Type'])) {
+            } elseif (preg_match($this->_xmlPattern, $response_headers['Content-Type'])) {
                 $xml_obj = @simplexml_load_string($response);
                 if (!($xml_obj === false)) {
                     $response = $xml_obj;
@@ -1187,4 +1187,3 @@ class OnePica_AvaTax16_IO_Curl
         return (bool)count(array_filter($array, 'is_array'));
     }
 }
-
