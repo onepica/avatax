@@ -512,10 +512,10 @@ class OnePica_AvaTax16_IO_Curl
         // NOTE: CURLINFO_HEADER_OUT set to true is required for requestHeaders
         // to not be empty (e.g. $curl->setOpt(CURLINFO_HEADER_OUT, true);).
         if ($this->getOpt(CURLINFO_HEADER_OUT) === true) {
-            $this->requestHeaders = $this->parseRequestHeaders(curl_getinfo($this->curl, CURLINFO_HEADER_OUT));
+            $this->requestHeaders = $this->_parseRequestHeaders(curl_getinfo($this->curl, CURLINFO_HEADER_OUT));
         }
-        $this->responseHeaders = $this->parseResponseHeaders($this->rawResponseHeaders);
-        list($this->response, $this->rawResponse) = $this->parseResponse($this->responseHeaders, $this->rawResponse);
+        $this->responseHeaders = $this->_parseResponseHeaders($this->rawResponseHeaders);
+        list($this->response, $this->rawResponse) = $this->_parseResponse($this->responseHeaders, $this->rawResponse);
 
         $this->httpErrorMessage = '';
         if ($this->error) {
@@ -947,7 +947,7 @@ class OnePica_AvaTax16_IO_Curl
     public function setURL($url, $data = array())
     {
         $this->baseUrl = $url;
-        $this->url = $this->buildURL($url, $data);
+        $this->url = $this->_buildURL($url, $data);
         $this->setOpt(CURLOPT_URL, $this->url);
     }
 
@@ -1009,13 +1009,13 @@ class OnePica_AvaTax16_IO_Curl
     /**
      * Build Url
      *
-     * @access private
+     * @access protected
      * @param  $url
      * @param  $data
      *
      * @return string
      */
-    private function buildURL($url, $data = array())
+    protected function _buildURL($url, $data = array())
     {
         return $url . (empty($data) ? '' : '?' . http_build_query($data));
     }
@@ -1023,12 +1023,12 @@ class OnePica_AvaTax16_IO_Curl
     /**
      * Parse Headers
      *
-     * @access private
+     * @access protected
      * @param  $raw_headers
      *
      * @return array
      */
-    private function parseHeaders($raw_headers)
+    protected function _parseHeaders($raw_headers)
     {
         $raw_headers = preg_split('/\r\n/', $raw_headers, null, PREG_SPLIT_NO_EMPTY);
         $http_headers = new OnePica_AvaTax16_IO_CaseInsensitiveArray();
@@ -1052,15 +1052,15 @@ class OnePica_AvaTax16_IO_Curl
     /**
      * Parse Request Headers
      *
-     * @access private
+     * @access protected
      * @param  $raw_headers
      *
      * @return array
      */
-    private function parseRequestHeaders($raw_headers)
+    protected function _parseRequestHeaders($raw_headers)
     {
         $request_headers = new OnePica_AvaTax16_IO_CaseInsensitiveArray();
-        list($first_line, $headers) = $this->parseHeaders($raw_headers);
+        list($first_line, $headers) = $this->_parseHeaders($raw_headers);
         $request_headers['Request-Line'] = $first_line;
         foreach ($headers as $key => $value) {
             $request_headers[$key] = $value;
@@ -1071,13 +1071,13 @@ class OnePica_AvaTax16_IO_Curl
     /**
      * Parse Response
      *
-     * @access private
+     * @access protected
      * @param  $response_headers
      * @param  $raw_response
      *
      * @return array
      */
-    private function parseResponse($response_headers, $raw_response)
+    protected function _parseResponse($response_headers, $raw_response)
     {
         $response = $raw_response;
         if (isset($response_headers['Content-Type'])) {
@@ -1100,12 +1100,12 @@ class OnePica_AvaTax16_IO_Curl
     /**
      * Parse Response Headers
      *
-     * @access private
+     * @access protected
      * @param  $raw_response_headers
      *
      * @return array
      */
-    private function parseResponseHeaders($raw_response_headers)
+    protected function _parseResponseHeaders($raw_response_headers)
     {
         $response_header_array = explode("\r\n\r\n", $raw_response_headers);
         $response_header  = '';
@@ -1117,7 +1117,7 @@ class OnePica_AvaTax16_IO_Curl
         }
 
         $response_headers = new OnePica_AvaTax16_IO_CaseInsensitiveArray();
-        list($first_line, $headers) = $this->parseHeaders($response_header);
+        list($first_line, $headers) = $this->_parseHeaders($response_header);
         $response_headers['Status-Line'] = $first_line;
         foreach ($headers as $key => $value) {
             $response_headers[$key] = $value;
