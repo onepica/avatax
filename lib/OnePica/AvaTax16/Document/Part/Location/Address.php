@@ -52,17 +52,43 @@ class OnePica_AvaTax16_Document_Part_Location_Address extends OnePica_AvaTax16_D
 
     /**
      * City
+     * city, municipality, town are synonyms. Should be set only one of them
      *
      * @var string
      */
     protected $_city;
 
     /**
+     * Municipality
+     * city, municipality, town are synonyms. Should be set only one of them
+     *
+     * @var string
+     */
+    protected $_municipality;
+
+    /**
+     * Town
+     * city, municipality, town are synonyms. Should be set only one of them
+     *
+     * @var string
+     */
+    protected $_town;
+
+    /**
      * State
+     * state, province are synonyms. Should be set only one of them
      *
      * @var string
      */
     protected $_state;
+
+    /**
+     * Province
+     * state, province are synonyms. Should be set only one of them
+     *
+     * @var string
+     */
+    protected $_province;
 
     /**
      * Country
@@ -73,8 +99,25 @@ class OnePica_AvaTax16_Document_Part_Location_Address extends OnePica_AvaTax16_D
 
     /**
      * Zip Code
+     * zipcode, postalCode, postCode are synonyms. Should be set only one of them
      *
      * @var string
      */
     protected $_zipcode;
+
+    /**
+     * Postal Code
+     * zipcode, postalCode, postCode are synonyms. Should be set only one of them
+     *
+     * @var string
+     */
+    protected $_postalCode;
+
+    /**
+     * Post Code
+     * zipcode, postalCode, postCode are synonyms. Should be set only one of them
+     *
+     * @var string
+     */
+    protected $_postCode;
 }

@@ -32,6 +32,11 @@ abstract class OnePica_AvaTax16_ResourceAbstract
     const TRANSACTION_URL_PATH = '/transactions';
 
     /**
+     * Url path for address resolution
+     */
+    const ADDRESS_RESOLUTION_URL_PATH = '/address';
+
+    /**
      * Config
      *
      * @var OnePica_AvaTax16_Config
