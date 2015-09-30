@@ -26,7 +26,7 @@ class OnePica_AvaTax16_IO_CaseInsensitiveArray implements \ArrayAccess, \Countab
      *
      * @var array
      */
-    private $container = array();
+    protected $_container = array();
 
     /**
      * Offset Set
@@ -38,14 +38,14 @@ class OnePica_AvaTax16_IO_CaseInsensitiveArray implements \ArrayAccess, \Countab
     public function offsetSet($offset, $value)
     {
         if ($offset === null) {
-            $this->container[] = $value;
+            $this->_container[] = $value;
         } else {
-            $index = array_search(strtolower($offset), array_keys(array_change_key_case($this->container, CASE_LOWER)));
+            $index = array_search(strtolower($offset), array_keys(array_change_key_case($this->_container, CASE_LOWER)));
             if (!($index === false)) {
-                $keys = array_keys($this->container);
-                unset($this->container[$keys[$index]]);
+                $keys = array_keys($this->_container);
+                unset($this->_container[$keys[$index]]);
             }
-            $this->container[$offset] = $value;
+            $this->_container[$offset] = $value;
         }
     }
 
@@ -57,7 +57,7 @@ class OnePica_AvaTax16_IO_CaseInsensitiveArray implements \ArrayAccess, \Countab
      */
     public function offsetExists($offset)
     {
-        return array_key_exists(strtolower($offset), array_change_key_case($this->container, CASE_LOWER));
+        return array_key_exists(strtolower($offset), array_change_key_case($this->_container, CASE_LOWER));
     }
 
     /**
@@ -68,7 +68,7 @@ class OnePica_AvaTax16_IO_CaseInsensitiveArray implements \ArrayAccess, \Countab
      */
     public function offsetUnset($offset)
     {
-        unset($this->container[$offset]);
+        unset($this->_container[$offset]);
     }
 
     /**
@@ -79,12 +79,12 @@ class OnePica_AvaTax16_IO_CaseInsensitiveArray implements \ArrayAccess, \Countab
      */
     public function offsetGet($offset)
     {
-        $index = array_search(strtolower($offset), array_keys(array_change_key_case($this->container, CASE_LOWER)));
+        $index = array_search(strtolower($offset), array_keys(array_change_key_case($this->_container, CASE_LOWER)));
         if ($index === false) {
             return null;
         }
 
-        $values = array_values($this->container);
+        $values = array_values($this->_container);
         return $values[$index];
     }
 
@@ -95,7 +95,7 @@ class OnePica_AvaTax16_IO_CaseInsensitiveArray implements \ArrayAccess, \Countab
      */
     public function count()
     {
-        return count($this->container);
+        return count($this->_container);
     }
 
     /**
@@ -105,7 +105,7 @@ class OnePica_AvaTax16_IO_CaseInsensitiveArray implements \ArrayAccess, \Countab
      */
     public function current()
     {
-        return current($this->container);
+        return current($this->_container);
     }
 
     /**
@@ -115,7 +115,7 @@ class OnePica_AvaTax16_IO_CaseInsensitiveArray implements \ArrayAccess, \Countab
      */
     public function next()
     {
-        return next($this->container);
+        return next($this->_container);
     }
 
     /**
@@ -125,7 +125,7 @@ class OnePica_AvaTax16_IO_CaseInsensitiveArray implements \ArrayAccess, \Countab
      */
     public function key()
     {
-        return key($this->container);
+        return key($this->_container);
     }
 
     /**
@@ -145,6 +145,6 @@ class OnePica_AvaTax16_IO_CaseInsensitiveArray implements \ArrayAccess, \Countab
      */
     public function rewind()
     {
-        reset($this->container);
+        reset($this->_container);
     }
 }
