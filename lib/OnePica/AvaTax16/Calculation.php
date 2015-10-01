@@ -76,7 +76,7 @@ class OnePica_AvaTax16_Calculation
         $postData = $documentRequest->toArray();
         $curl = $this->_getCurlObjectWithHeaders();
         $curl->post($postUrl, $postData);
-        $data = $curl->response;
+        $data = $curl->getResponse();
         return $data;
     }
 
@@ -103,7 +103,7 @@ class OnePica_AvaTax16_Calculation
 
         $curl = $this->_getCurlObjectWithHeaders();
         $curl->get($getUrl);
-        $data = $curl->response;
+        $data = $curl->getResponse();
         return $data;
     }
 
@@ -138,7 +138,7 @@ class OnePica_AvaTax16_Calculation
 
         $curl = $this->_getCurlObjectWithHeaders();
         $curl->get($getUrl, $filterData);
-        $data = $curl->response;
+        $data = $curl->getResponse();
 
         $result = null;
         if (is_array($data)) {

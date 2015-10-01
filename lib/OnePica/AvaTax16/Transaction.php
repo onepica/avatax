@@ -70,7 +70,7 @@ class OnePica_AvaTax16_Transaction extends OnePica_AvaTax16_ResourceAbstract
 
         $curl = $this->_getCurlObjectWithHeaders();
         $curl->post($postUrl, $postData);
-        $data = $curl->response;
+        $data = $curl->getResponse();
         return $data;
     }
 
@@ -97,7 +97,7 @@ class OnePica_AvaTax16_Transaction extends OnePica_AvaTax16_ResourceAbstract
 
         $curl = $this->_getCurlObjectWithHeaders();
         $curl->get($getUrl);
-        $data = $curl->response;
+        $data = $curl->getResponse();
         return $data;
     }
 
@@ -133,7 +133,7 @@ class OnePica_AvaTax16_Transaction extends OnePica_AvaTax16_ResourceAbstract
 
         $curl = $this->_getCurlObjectWithHeaders();
         $curl->get($getUrl, $filterData);
-        $data = $curl->response;
+        $data = $curl->getResponse();
 
         $result = null;
         if (is_array($data)) {
@@ -169,7 +169,7 @@ class OnePica_AvaTax16_Transaction extends OnePica_AvaTax16_ResourceAbstract
 
         $curl = $this->_getCurlObjectWithHeaders();
         $curl->get($getUrl);
-        $data = $curl->response;
+        $data = $curl->getResponse();
         return $data;
     }
 
@@ -206,6 +206,6 @@ class OnePica_AvaTax16_Transaction extends OnePica_AvaTax16_ResourceAbstract
         $curl = $this->_getCurlObjectWithHeaders();
         $curl->post($postUrl, $postData);
 
-        return ($curl->httpStatusCode == 201) ? true : false;
+        return ($curl->getHttpStatusCode() == 201) ? true : false;
     }
 }
