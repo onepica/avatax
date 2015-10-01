@@ -42,7 +42,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
      * Save order in AvaTax system
      *
      * @see OnePica_AvaTax_Model_Observer::salesOrderPlaceAfter()
-     * @param Mage_Sales_Model_Order_Invoice $invoice
+     * @param Mage_Sales_Model_Order_Invoice     $invoice
      * @param OnePica_AvaTax_Model_Records_Queue $queue
      * @return bool
      * @throws OnePica_AvaTax_Exception
@@ -52,9 +52,10 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
     public function invoice($invoice, $queue)
     {
         $order = $invoice->getOrder();
-        $invoiceDate = $invoice->getCreatedAt();
-        $orderDate = $order->getCreatedAt();
-        $statusDate = $queue->getUpdatedAt();
+        $storeId = $order->getStoreId();
+        $invoiceDate = $this->_convertGmtDate($invoice->getCreatedAt(), $storeId);
+        $orderDate = $this->_convertGmtDate($order->getCreatedAt(), $storeId);
+        $statusDate = $this->_convertGmtDate($queue->getUpdatedAt(), $storeId);
 
         $shippingAddress = ($order->getShippingAddress()) ? $order->getShippingAddress() : $order->getBillingAddress();
         if (!$shippingAddress) {
@@ -78,10 +79,10 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
         $this->_setOriginAddress($order->getStoreId());
         $this->_setDestinationAddress($shippingAddress);
 
-        $this->_request->setDocDate(substr($invoiceDate, 0, 10));
-        $this->_request->setPaymentDate(substr($invoiceDate, 0, 10));
-        $this->_request->setTaxDate(substr($orderDate, 0, 10));
-        $this->_request->setStatusDate(substr($statusDate, 0, 10));
+        $this->_request->setDocDate($invoiceDate);
+        $this->_request->setPaymentDate($invoiceDate);
+        $this->_request->setTaxDate($orderDate);
+        $this->_request->setStatusDate($statusDate);
 
         $configAction = Mage::getStoreConfig('tax/avatax/action', $order->getStoreId());
         $commitAction = OnePica_AvaTax_Model_Config::ACTION_CALC_SUBMIT_COMMIT;
@@ -133,9 +134,10 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
     public function creditmemo($creditmemo, $queue)
     {
         $order = $creditmemo->getOrder();
-        $orderDate = $order->getCreatedAt();
-        $statusDate = $queue->getUpdatedAt();
-        $creditmemoDate = $creditmemo->getCreatedAt();
+        $storeId = $order->getStoreId();
+        $orderDate = $this->_convertGmtDate($order->getCreatedAt(), $storeId);
+        $statusDate = $this->_convertGmtDate($queue->getUpdatedAt(), $storeId);
+        $creditmemoDate = $this->_convertGmtDate($creditmemo->getCreatedAt(), $storeId);
 
         $shippingAddress = ($order->getShippingAddress()) ? $order->getShippingAddress() : $order->getBillingAddress();
         if (!$shippingAddress) {
@@ -167,15 +169,15 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
 
         // Set the tax date for calculation.
         $override = new TaxOverride();
-        $override->setTaxDate(substr($orderDate, 0, 10));
+        $override->setTaxDate($orderDate);
         $override->setTaxOverrideType(TaxOverrideType::$TaxDate);
         $override->setReason('Credit memo - refund');
         $this->_request->setTaxOverride($override);
 
-        $this->_request->setDocDate(substr($creditmemoDate, 0, 10));
-        $this->_request->setPaymentDate(substr($creditmemoDate, 0, 10));
-        $this->_request->setTaxDate(substr($orderDate, 0, 10));
-        $this->_request->setStatusDate(substr($statusDate, 0, 10));
+        $this->_request->setDocDate($creditmemoDate);
+        $this->_request->setPaymentDate($creditmemoDate);
+        $this->_request->setTaxDate($orderDate);
+        $this->_request->setStatusDate($statusDate);
 
         $configAction = Mage::getStoreConfig('tax/avatax/action', $order->getStoreId());
         $commitAction = OnePica_AvaTax_Model_Config::ACTION_CALC_SUBMIT_COMMIT;
@@ -195,7 +197,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
             $message = Mage::helper('avatax')->__('Credit memo #%s was saved to AvaTax', $result->getDocCode());
             $this->_addStatusHistoryComment($order, $message);
 
-            if ($result->getTotalTax() != ($creditmemo->getTaxAmount() * -1)) {
+            if ($result->getTotalTax() != ($creditmemo->getBaseTaxAmount() * -1)) {
                 throw new OnePica_AvaTax_Model_Avatax_Exception_Unbalanced(
                     'Collected: ' . $creditmemo->getTaxAmount() . ', Actual: ' . $result->getTotalTax()
                 );
@@ -277,7 +279,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
         $line->setNo($lineNumber);
         $line->setItemCode(Mage::helper('avatax')->getGwOrderSku($storeId));
         $line->setDescription('Gift Wrap Order Amount');
-        $line->setTaxCode($this->_getGiftTaxClass());
+        $line->setTaxCode($this->_getGiftTaxClassCode($storeId));
         $line->setQty(1);
         $line->setAmount($amount);
         $line->setDiscounted(false);
@@ -315,7 +317,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
         $line->setNo($lineNumber);
         $line->setItemCode(Mage::helper('avatax')->getGwItemsSku($storeId));
         $line->setDescription('Gift Wrap Items Amount');
-        $line->setTaxCode($this->_getGiftTaxClass());
+        $line->setTaxCode($this->_getGiftTaxClassCode($storeId));
         $line->setQty(1);
         $line->setAmount($amount);
         $line->setDiscounted(false);
@@ -335,7 +337,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
      */
     protected function _addGwPrintedCardAmount($object, $credit = false)
     {
-        if ($object->getGwPrintedCardSku() == 0) {
+        if (!$object->getGwPrintedCardBasePrice()) {
             return false;
         }
 
@@ -353,7 +355,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
         $line->setNo($lineNumber);
         $line->setItemCode(Mage::helper('avatax')->getGwPrintedCardSku($storeId));
         $line->setDescription('Gift Wrap Printed Card Amount');
-        $line->setTaxCode($this->_getGiftTaxClass());
+        $line->setTaxCode($this->_getGiftTaxClassCode($storeId));
         $line->setQty(1);
         $line->setAmount($amount);
         $line->setDiscounted(false);
@@ -429,7 +431,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
 
         $storeId = $this->_retrieveStoreIdFromItem($item);
         $product = $this->_getProductByProductId($item->getProductId());
-        $taxClass = $this->_getTaxClassByProduct($product);
+        $taxClass = $this->_getTaxClassCodeByProduct($product);
         $price = $item->getBaseRowTotal() - $item->getBaseDiscountAmount();
         if ($credit) {
             //@startSkipCommitHooks
@@ -476,5 +478,17 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
         }
 
         return $storeId;
+    }
+
+    /**
+     * Retrieve converted date taking into account the current time zone and store.
+     *
+     * @param string $gmt
+     * @param int    $storeId
+     * @return string
+     */
+    protected function _convertGmtDate($gmt, $storeId)
+    {
+        return Mage::app()->getLocale()->storeDate($storeId, $gmt)->toString(Varien_Date::DATE_INTERNAL_FORMAT);
     }
 }
