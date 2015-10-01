@@ -54,11 +54,7 @@ class OnePica_AvaTax16_Document_Part
                 if (property_exists($this,$property)) {
                     return $this->{$property};
                 } else {
-                    $trace = debug_backtrace();
-                    $errorMessage = 'Undefined method  ' . $name . ' in ' . $trace[0]['file']
-                                  . ' on line ' . $trace[0]['line'];
-                    trigger_error($errorMessage, E_USER_ERROR);
-                    return null;
+                    $this->_throwWrongMethodErrorException($name);
                 }
                 break;
             case 'set':
@@ -66,20 +62,30 @@ class OnePica_AvaTax16_Document_Part
                 if (property_exists($this,$property)) {
                     $this->{$property} = $arguments[0];
                 } else {
-                    $trace = debug_backtrace();
-                    $errorMessage = 'Undefined method  ' . $name . ' in ' . $trace[0]['file']
-                                  . ' on line ' . $trace[0]['line'];
-                    trigger_error($errorMessage, E_USER_ERROR);
-                    return null;
+                    $this->_throwWrongMethodErrorException($name);
                 }
                 break;
             default :
-                $trace = debug_backtrace();
-                $errorMessage = 'Undefined method  ' . $name . ' in ' . $trace[0]['file']
-                    . ' on line ' . $trace[0]['line'];
-                trigger_error($errorMessage, E_USER_ERROR);
-                return null;
+                $this->_throwWrongMethodErrorException($name);
         }
+    }
+
+    /**
+     * Throw Wrong Method Error Exception
+     *
+     * @param string $methodName
+     * @throws OnePica_AvaTax16_Exception
+     */
+    protected function _throwWrongMethodErrorException($methodName)
+    {
+        $trace = debug_backtrace();
+        $errorMessage = 'Undefined method  '
+                      . $methodName
+                      . ' in '
+                      . $trace[0]['file']
+                      . ' on line '
+                      . $trace[0]['line'];
+        throw new OnePica_AvaTax16_Exception($errorMessage);
     }
 
     /**
@@ -105,7 +111,7 @@ class OnePica_AvaTax16_Document_Part
     public function toArray()
     {
         if (!$this->isValid()) {
-            throw new Exception("Not valid data in " . get_class($this));
+            throw new OnePica_AvaTax16_Exception("Not valid data in " . get_class($this));
         }
         $result = array();
         foreach ($this as $key => $value) {
@@ -176,7 +182,6 @@ class OnePica_AvaTax16_Document_Part
                     $item->fillData($value);
                     $this->$method($item);
                 }
-
             } else {
                 $this->$method($value);
             }

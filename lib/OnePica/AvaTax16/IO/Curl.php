@@ -267,17 +267,6 @@ class OnePica_AvaTax16_IO_Curl
     }
 
     /**
-     * Before Send
-     *
-     * @access public
-     * @param  $callback
-     */
-    public function beforeSend($callback)
-    {
-        $this->_beforeSendFunction = $callback;
-    }
-
-    /**
      * Build Post Data
      *
      * @access public
