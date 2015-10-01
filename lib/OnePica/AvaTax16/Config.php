@@ -41,35 +41,35 @@ class OnePica_AvaTax16_Config
      *
      * @var string
      */
-    private $_baseUrl;
+    protected $_baseUrl;
 
     /**
      * Account id
      *
      * @var string
      */
-    private $_accountId;
+    protected $_accountId;
 
     /**
      * Company code
      *
      * @var string
      */
-    private $_companyCode;
+    protected $_companyCode;
 
     /**
      * Authorization header
      *
      * @var string
      */
-    private $_authorizationHeader;
+    protected $_authorizationHeader;
 
     /**
      * User agent
      *
      * @var string
      */
-    private $_userAgent;
+    protected $_userAgent;
 
     /**
      * Construct
