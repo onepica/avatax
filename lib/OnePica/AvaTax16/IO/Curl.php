@@ -1188,13 +1188,73 @@ class OnePica_AvaTax16_IO_Curl
     }
 
     /**
-     * Get Response
+     * Get Error
      *
-     * @return mixed
+     * @return bool
      */
-    public function getResponse()
+    public function getError()
     {
-        return $this->_response;
+        return $this->_error;
+    }
+
+    /**
+     * Get Error Code
+     *
+     * @return int
+     */
+    public function getErrorCode()
+    {
+        return $this->_errorCode;
+    }
+
+    /**
+     * Get Error Message
+     *
+     * @return string
+     */
+    public function getErrorMessage()
+    {
+        return $this->_errorMessage;
+    }
+
+    /**
+     * Get Curl Error
+     *
+     * @return bool
+     */
+    public function getCurlError()
+    {
+        return $this->_curlError;
+    }
+
+    /**
+     * Get Curl Error Code
+     *
+     * @return int
+     */
+    public function getCurlErrorCode()
+    {
+        return $this->_curlErrorCode;
+    }
+
+    /**
+     * Get Curl Error Message
+     *
+     * @return string
+     */
+    public function getCurlErrorMessage()
+    {
+        return $this->_curlErrorMessage;
+    }
+
+    /**
+     * Get Http Error
+     *
+     * @return bool
+     */
+    public function getHttpError()
+    {
+        return $this->_httpError;
     }
 
     /**
@@ -1205,5 +1265,129 @@ class OnePica_AvaTax16_IO_Curl
     public function getHttpStatusCode()
     {
         return $this->_httpStatusCode;
+    }
+
+    /**
+     * Get Http Error Message
+     *
+     * @return string
+     */
+    public function getHttpErrorMessage()
+    {
+        return $this->_httpErrorMessage;
+    }
+
+    /**
+     * Get Base Url
+     *
+     * @return string
+     */
+    public function getBaseUrl()
+    {
+        return $this->_baseUrl;
+    }
+
+    /**
+     * Get Url
+     *
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->_url;
+    }
+
+    /**
+     * Get Request Headers
+     *
+     * @return array
+     */
+    public function getRequestHeaders()
+    {
+        return $this->_requestHeaders;
+    }
+
+    /**
+     * Get Response Headers
+     *
+     * @return array
+     */
+    public function getResponseHeaders()
+    {
+        return $this->_responseHeaders;
+    }
+
+    /**
+     * Get Raw Response Headers
+     *
+     * @return string
+     */
+    public function getRawResponseHeaders()
+    {
+        return $this->_rawResponseHeaders;
+    }
+
+    /**
+     * Get Response
+     *
+     * @return mixed
+     */
+    public function getResponse()
+    {
+        return $this->_response;
+    }
+
+    /**
+     * Get Raw Response
+     *
+     * @return string
+     */
+    public function getRawResponse()
+    {
+        return $this->_rawResponse;
+    }
+
+    /**
+     * Get Before Send Function
+     *
+     * @return string
+     */
+    public function getBeforeSendFunction()
+    {
+        return $this->_beforeSendFunction;
+    }
+
+    /**
+     * Set Before Send Function
+     *
+     * @param string $function
+     * @return $this
+     */
+    public function setBeforeSendFunction($function)
+    {
+        $this->_beforeSendFunction = $function;
+        return $this;
+    }
+
+    /**
+     * Get Download Complete Function
+     *
+     * @return string
+     */
+    public function getDownloadCompleteFunction()
+    {
+        return $this->_downloadCompleteFunction;
+    }
+
+    /**
+     * Get Download Complete Function
+     *
+     * @param string $function
+     * @return $this
+     */
+    public function setDownloadCompleteFunction($function)
+    {
+        $this->_downloadCompleteFunction = $function;
+        return $this;
     }
 }

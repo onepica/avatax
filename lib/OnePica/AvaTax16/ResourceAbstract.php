@@ -24,17 +24,17 @@ abstract class OnePica_AvaTax16_ResourceAbstract
     /**
      * Url path for calculations
      */
-    const CALCULATION_URL_PATH = '/calculations1';
+    const CALCULATION_URL_PATH = '/calculations';
 
     /**
      * Url path for transactions
      */
-    const TRANSACTION_URL_PATH = '/transactions1';
+    const TRANSACTION_URL_PATH = '/transactions';
 
     /**
      * Url path for address resolution
      */
-    const ADDRESS_RESOLUTION_URL_PATH = '/address1';
+    const ADDRESS_RESOLUTION_URL_PATH = '/address';
 
     /**
      * Config
