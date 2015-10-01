@@ -27,17 +27,4 @@ class OnePica_AvaTax16_Document_Part_Feedback extends OnePica_AvaTax16_Document_
      * @var OnePica_AvaTax16_Document_Part_Feedback_LatencyData
      */
     protected $_latencyData;
-
-    /**
-     * Get Latency Data
-     *
-     * @return OnePica_AvaTax16_Document_Part_Feedback_LatencyData
-     */
-    public function getLatencyData()
-    {
-        if (!$this->_latencyData) {
-            $this->_latencyData = new OnePica_AvaTax16_Document_Part_Feedback_LatencyData();
-        }
-        return $this->_latencyData;
-    }
 }

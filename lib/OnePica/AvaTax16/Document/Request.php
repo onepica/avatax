@@ -41,26 +41,4 @@ class OnePica_AvaTax16_Document_Request extends OnePica_AvaTax16_Document_Part
      * @var OnePica_AvaTax16_Document_Part_Feedback
      */
     protected $_feedback;
-
-    /**
-     * Construct
-     */
-    public function __construct()
-    {
-        // init document parts
-        $this->_header = new OnePica_AvaTax16_Document_Part_Header();
-    }
-
-    /**
-     * Get Feedback
-     *
-     * @return OnePica_AvaTax16_Document_Part_Feedback
-     */
-    public function getFeedback()
-    {
-        if (!$this->_feedback) {
-            $this->_feedback = new OnePica_AvaTax16_Document_Part_Feedback();
-        }
-        return $this->_feedback;
-    }
 }

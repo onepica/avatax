@@ -33,7 +33,7 @@ class OnePica_AvaTax16_Transaction extends OnePica_AvaTax16_ResourceAbstract
         $postData = $documentRequest->toArray();
         $curl = $this->_getCurlObjectWithHeaders();
         $curl->post($postUrl, $postData);
-        $data = $curl->response;
+        $data = $curl->getResponse();
         return $data;
     }
 

@@ -120,7 +120,7 @@ class OnePica_AvaTax16_Document_Part_Header extends OnePica_AvaTax16_Document_Pa
      * Default locations
      * (Required)
      *
-     * @var OnePica_AvaTax16_Document_Part_Locations
+     * @var OnePica_AvaTax16_Document_Part_Location[]
      */
     protected $_defaultLocations;
 
@@ -153,13 +153,4 @@ class OnePica_AvaTax16_Document_Part_Header extends OnePica_AvaTax16_Document_Pa
      * @var array
      */
     protected $_metadata;
-
-    /**
-     * Construct
-     */
-    public function __construct()
-    {
-        // init document parts
-        $this->_defaultLocations = new OnePica_AvaTax16_Document_Part_Locations();
-    }
 }

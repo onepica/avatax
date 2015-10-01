@@ -109,17 +109,4 @@ class OnePica_AvaTax16_Document_Part_Location extends OnePica_AvaTax16_Document_
     {
         return $this->_address;
     }
-
-    /**
-     * Get Latlong
-     *
-     * @return OnePica_AvaTax16_Document_Part_Location_LatLong
-     */
-    public function getLatlong()
-    {
-        if (!$this->_latlong) {
-            $this->_latlong = new OnePica_AvaTax16_Document_Part_Location_LatLong();
-        }
-        return $this->_latlong;
-    }
 }
