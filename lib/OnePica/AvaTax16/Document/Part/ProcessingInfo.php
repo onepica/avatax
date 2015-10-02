@@ -17,40 +17,63 @@
  */
 
 /**
- * Class OnePica_AvaTax16_Calculation_ListItemResponse_CalculatedTaxSummary_TaxByType
+ * Class OnePica_AvaTax16_Document_Part_ProcessingInfo
  */
-class OnePica_AvaTax16_Calculation_ListItemResponse_CalculatedTaxSummary_TaxByType
-    extends OnePica_AvaTax16_Document_Part
+class OnePica_AvaTax16_Document_Part_ProcessingInfo extends OnePica_AvaTax16_Document_Part
 {
     /**
-     * Types of complex properties
-     *
-     * @var array
-     */
-    protected $_propertyComplexTypes = array(
-        '_jurisdictions' => array(
-            'type' => 'OnePica_AvaTax16_Calculation_ListItemResponse_CalculatedTaxSummary_TaxByType_Details'
-        )
-    );
-
-    /**
-     * Tax
-     *
-     * @var float
-     */
-    protected $_tax;
-
-    /**
-     * jurisdictions
-     *
-     * @var OnePica_AvaTax16_Calculation_ListItemResponse_CalculatedTaxSummary_TaxByType_Details
-     */
-    protected $_jurisdictions;
-
-    /**
-     * Comment
+     * Transaction State
      *
      * @var string
      */
-    protected $_comment;
+    protected $_transactionState;
+
+    /**
+     * Version Id
+     *
+     * @var string
+     */
+    protected $_versionId;
+
+    /**
+     * Format Id
+     *
+     * @var string
+     */
+    protected $_formatId;
+
+    /**
+     * Duration
+     *
+     * @var float
+     */
+    protected $_duration;
+
+    /**
+     * Modified Date
+     *
+     * @var string
+     */
+    protected $_modifiedDate;
+
+    /**
+     * Batch Id
+     *
+     * @var string
+     */
+    protected $_batchId;
+
+    /**
+     * Document Id
+     *
+     * @var string
+     */
+    protected $_documentId;
+
+    /**
+     * Message
+     *
+     * @var string
+     */
+    protected $_message;
 }

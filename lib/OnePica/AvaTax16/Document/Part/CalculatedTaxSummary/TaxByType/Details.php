@@ -17,40 +17,36 @@
  */
 
 /**
- * Class OnePica_AvaTax16_Calculation_ListItemResponse_CalculatedTaxSummary_TaxByType
+ * Class OnePica_AvaTax16_Document_Part_CalculatedTaxSummary_TaxByType_Details
  */
-class OnePica_AvaTax16_Calculation_ListItemResponse_CalculatedTaxSummary_TaxByType
+class OnePica_AvaTax16_Document_Part_CalculatedTaxSummary_TaxByType_Details
     extends OnePica_AvaTax16_Document_Part
 {
     /**
-     * Types of complex properties
+     * Jurisdiction Name
      *
-     * @var array
+     * @var string
      */
-    protected $_propertyComplexTypes = array(
-        '_jurisdictions' => array(
-            'type' => 'OnePica_AvaTax16_Calculation_ListItemResponse_CalculatedTaxSummary_TaxByType_Details'
-        )
-    );
+    protected $_jurisdictionName;
+
+    /**
+     * Jurisdiction Type
+     *
+     * @var string
+     */
+    protected $_jurisdictionType;
 
     /**
      * Tax
      *
      * @var float
      */
-    protected $_tax;
-
-    /**
-     * jurisdictions
-     *
-     * @var OnePica_AvaTax16_Calculation_ListItemResponse_CalculatedTaxSummary_TaxByType_Details
-     */
-    protected $_jurisdictions;
+    protected $_tax ;
 
     /**
      * Comment
      *
-     * @var string
+     * @var float
      */
     protected $_comment;
 }

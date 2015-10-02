@@ -68,7 +68,7 @@ class OnePica_AvaTax16_Calculation
      * Create Calculation
      *
      * @param OnePica_AvaTax16_Document_Request $documentRequest
-     * @return StdClass $data
+     * @return OnePica_AvaTax16_Document_Response $documentResponse
      */
     public function createCalculation($documentRequest)
     {
@@ -77,7 +77,9 @@ class OnePica_AvaTax16_Calculation
         $curl = $this->_getCurlObjectWithHeaders();
         $curl->post($postUrl, $postData);
         $data = $curl->getResponse();
-        return $data;
+        $documentResponse = new OnePica_AvaTax16_Document_Response();
+        $documentResponse->fillData($data);
+        return $documentResponse;
     }
 
     /**

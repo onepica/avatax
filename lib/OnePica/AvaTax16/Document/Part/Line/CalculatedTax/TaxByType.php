@@ -17,9 +17,9 @@
  */
 
 /**
- * Class OnePica_AvaTax16_Calculation_ListItemResponse_CalculatedTaxSummary_TaxByType
+ * Class OnePica_AvaTax16_Document_Part_Line_CalculatedTax_TaxByType
  */
-class OnePica_AvaTax16_Calculation_ListItemResponse_CalculatedTaxSummary_TaxByType
+class OnePica_AvaTax16_Document_Part_Line_CalculatedTax_TaxByType
     extends OnePica_AvaTax16_Document_Part
 {
     /**
@@ -29,7 +29,8 @@ class OnePica_AvaTax16_Calculation_ListItemResponse_CalculatedTaxSummary_TaxByTy
      */
     protected $_propertyComplexTypes = array(
         '_jurisdictions' => array(
-            'type' => 'OnePica_AvaTax16_Calculation_ListItemResponse_CalculatedTaxSummary_TaxByType_Details'
+            'type' => 'OnePica_AvaTax16_Document_Part_Line_CalculatedTax_TaxByType_Details',
+            'isArrayOf' => true
         )
     );
 
@@ -39,18 +40,4 @@ class OnePica_AvaTax16_Calculation_ListItemResponse_CalculatedTaxSummary_TaxByTy
      * @var float
      */
     protected $_tax;
-
-    /**
-     * jurisdictions
-     *
-     * @var OnePica_AvaTax16_Calculation_ListItemResponse_CalculatedTaxSummary_TaxByType_Details
-     */
-    protected $_jurisdictions;
-
-    /**
-     * Comment
-     *
-     * @var string
-     */
-    protected $_comment;
 }

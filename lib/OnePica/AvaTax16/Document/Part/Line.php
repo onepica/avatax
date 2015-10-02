@@ -29,6 +29,21 @@ class OnePica_AvaTax16_Document_Part_Line extends OnePica_AvaTax16_Document_Part
     protected $_requiredProperties = array('_lineCode', '_extendedAmount');
 
     /**
+     * Types of complex properties
+     *
+     * @var array
+     */
+    protected $_propertyComplexTypes = array(
+        '_locations' => array(
+            'type' => 'OnePica_AvaTax16_Document_Part_Location',
+            'isArrayOf' => 'true'
+        ),
+        '_calculatedTax' => array(
+            'type' => 'OnePica_AvaTax16_Document_Part_Line_CalculatedTax',
+        ),
+    );
+
+    /**
      * Line Code
      * (Required)
      *
@@ -104,7 +119,7 @@ class OnePica_AvaTax16_Document_Part_Line extends OnePica_AvaTax16_Document_Part
     /**
      * Locations
      *
-     * @var OnePica_AvaTax16_Document_Part_Locations
+     * @var OnePica_AvaTax16_Document_Part_Location[]
      */
     protected $_locations;
 
@@ -178,6 +193,34 @@ class OnePica_AvaTax16_Document_Part_Line extends OnePica_AvaTax16_Document_Part
      * @var OnePica_AvaTax16_Document_Part_Line_CalculatedTax
      */
     protected $_calculatedTax;
+
+    /**
+     * Nature
+     *
+     * @var string
+     */
+    protected $_nature;
+
+    /**
+     * State
+     *
+     * @var string
+     */
+    protected $_state;
+
+    /**
+     * Domain
+     *
+     * @var string
+     */
+    protected $_domain;
+
+    /**
+     * Domain
+     *
+     * @var string
+     */
+    protected $_form;
 
     /**
      * Set Metadata
