@@ -65,12 +65,26 @@ class OnePica_AvaTax16_Document_Part_Line extends OnePica_AvaTax16_Document_Part
     protected $_quantity;
 
     /**
+     * Number Of Items
+     *
+     * @var float
+     */
+    protected $_numberOfItems;
+
+    /**
      * Extended Amount
      * (Required)
      *
      * @var float
      */
     protected $_extendedAmount;
+
+    /**
+     * Line Amount
+     *
+     * @var float
+     */
+    protected $_lineAmount;
 
     /**
      * Item Description
@@ -101,6 +115,30 @@ class OnePica_AvaTax16_Document_Part_Line extends OnePica_AvaTax16_Document_Part
      * @var string
      */
     protected $_taxPayerCode;
+
+    /**
+     * Use Type
+     * (Not currently supported)
+     *
+     * @var string
+     */
+    protected $_useType;
+
+    /**
+     * Buyer Type
+     * (Not currently supported)
+     *
+     * @var string
+     */
+    protected $_buyerType;
+
+    /**
+     * Line Attributes
+     * (Not currently supported)
+     *
+     * @var string
+     */
+    protected $_lineAttributes;
 
     /**
      * Entity Use Type
@@ -140,4 +178,21 @@ class OnePica_AvaTax16_Document_Part_Line extends OnePica_AvaTax16_Document_Part
      * @var OnePica_AvaTax16_Document_Part_Line_CalculatedTax
      */
     protected $_calculatedTax;
+
+    /**
+     * Set Metadata
+     *
+     * @param array|StdClass $value
+     * @return $this
+     */
+    public function setMetadata($value)
+    {
+        if ($value instanceof StdClass) {
+            // convert object data to array
+            // it is used during filling data from response
+            $this->_metadata = (array) $value;
+        } else {
+            $this->_metadata = $value;
+        }
+    }
 }

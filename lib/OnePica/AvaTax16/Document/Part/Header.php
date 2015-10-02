@@ -22,6 +22,18 @@
 class OnePica_AvaTax16_Document_Part_Header extends OnePica_AvaTax16_Document_Part
 {
     /**
+     * Types of complex properties
+     *
+     * @var array
+     */
+    protected $_propertyComplexTypes = array(
+        '_defaultLocations' => array(
+            'type' => 'OnePica_AvaTax16_Document_Part_Location',
+            'isArrayOf' => 'true'
+        ),
+    );
+
+    /**
      * Required properties
      *
      * @var array
@@ -153,4 +165,21 @@ class OnePica_AvaTax16_Document_Part_Header extends OnePica_AvaTax16_Document_Pa
      * @var array
      */
     protected $_metadata;
+
+    /**
+     * Set Metadata
+     *
+     * @param array|StdClass $value
+     * @return $this
+     */
+    public function setMetadata($value)
+    {
+        if ($value instanceof StdClass) {
+            // convert object data to array
+            // it is used during filling data from response
+            $this->_metadata = (array) $value;
+        } else {
+            $this->_metadata = $value;
+        }
+    }
 }

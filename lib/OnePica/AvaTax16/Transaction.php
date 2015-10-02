@@ -150,7 +150,7 @@ class OnePica_AvaTax16_Transaction extends OnePica_AvaTax16_ResourceAbstract
      *
      * @param string $transactionType
      * @param string $documentCode
-     * @return StdClass|array $result
+     * @return OnePica_AvaTax16_Document_Request $transactionInput
      */
     public function getTransactionInput($transactionType, $documentCode)
     {
@@ -170,7 +170,9 @@ class OnePica_AvaTax16_Transaction extends OnePica_AvaTax16_ResourceAbstract
         $curl = $this->_getCurlObjectWithHeaders();
         $curl->get($getUrl);
         $data = $curl->getResponse();
-        return $data;
+        $transactionInput = new OnePica_AvaTax16_Document_Request();
+        $transactionInput->fillData($data);
+        return $transactionInput;
     }
 
     /**

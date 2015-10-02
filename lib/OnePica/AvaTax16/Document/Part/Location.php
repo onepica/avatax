@@ -22,6 +22,23 @@
 class OnePica_AvaTax16_Document_Part_Location extends OnePica_AvaTax16_Document_Part
 {
     /**
+     * Types of complex properties
+     *
+     * @var array
+     */
+    protected $_propertyComplexTypes = array(
+        '_address' => array(
+            'type' => 'OnePica_AvaTax16_Document_Part_Location_Address'
+        ),
+        '_latlong' => array(
+            'type' => 'OnePica_AvaTax16_Document_Part_Location_LatLong'
+        ),
+        '_feedback' => array(
+            'type' => 'OnePica_AvaTax16_Document_Part_Feedback'
+        ),
+    );
+
+    /**
      * Required properties
      *
      * @var array
