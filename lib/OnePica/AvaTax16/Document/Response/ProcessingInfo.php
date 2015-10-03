@@ -17,9 +17,9 @@
  */
 
 /**
- * Class OnePica_AvaTax16_Document_Part_ProcessingInfo
+ * Class OnePica_AvaTax16_Document_Response_ProcessingInfo
  */
-class OnePica_AvaTax16_Document_Part_ProcessingInfo extends OnePica_AvaTax16_Document_Part
+class OnePica_AvaTax16_Document_Response_ProcessingInfo extends OnePica_AvaTax16_Document_Part
 {
     /**
      * Transaction State

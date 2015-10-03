@@ -17,9 +17,9 @@
  */
 
 /**
- * Class OnePica_AvaTax16_Document_Part_CalculatedTaxSummary_TaxByType_Details
+ * Class OnePica_AvaTax16_Document_Response_Line_CalculatedTax_Details
  */
-class OnePica_AvaTax16_Document_Part_CalculatedTaxSummary_TaxByType_Details
+class OnePica_AvaTax16_Document_Response_Line_CalculatedTax_Details
     extends OnePica_AvaTax16_Document_Part
 {
     /**
@@ -37,16 +37,79 @@ class OnePica_AvaTax16_Document_Part_CalculatedTaxSummary_TaxByType_Details
     protected $_jurisdictionType;
 
     /**
+     * Tax Type
+     *
+     * @var string
+     */
+    protected $_taxType;
+
+    /**
+     * Rate Type
+     *
+     * @var string
+     */
+    protected $_rateType;
+
+    /**
+     * Scenario
+     *
+     * @var string
+     */
+    protected $_scenario;
+
+    /**
+     * Subtotal Taxable
+     *
+     * @var float
+     */
+    protected $_subtotalTaxable;
+
+    /**
+     * Subtotal Exempt
+     *
+     * @var float
+     */
+    protected $_subtotalExempt;
+
+    /**
+     * Rate
+     *
+     * @var float
+     */
+    protected $_rate;
+
+    /**
      * Tax
      *
      * @var float
      */
-    protected $_tax ;
+    protected $_tax;
+
+    /**
+     * Exempt
+     *
+     * @var bool
+     */
+    protected $_exempt;
+
+    /**
+     * ExemptionReason
+     *
+     * @var string
+     */
+    protected $_exemptionReason;
+
+    /**
+     * Significant Locations
+     *
+     * @var string[]
+     */
+    protected $_significantLocations;
 
     /**
      * Comment
      *
-     * @var float
+     * @var string
      */
     protected $_comment;
 }

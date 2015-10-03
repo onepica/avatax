@@ -17,9 +17,9 @@
  */
 
 /**
- * Class OnePica_AvaTax16_Document_Part_Line
+ * Class OnePica_AvaTax16_Document_Response_Line
  */
-class OnePica_AvaTax16_Document_Part_Line extends OnePica_AvaTax16_Document_Part
+class OnePica_AvaTax16_Document_Response_Line extends OnePica_AvaTax16_Document_Part
 {
     /**
      * Required properties
@@ -39,7 +39,7 @@ class OnePica_AvaTax16_Document_Part_Line extends OnePica_AvaTax16_Document_Part
             'isArrayOf' => 'true'
         ),
         '_calculatedTax' => array(
-            'type' => 'OnePica_AvaTax16_Document_Part_Line_CalculatedTax',
+            'type' => 'OnePica_AvaTax16_Document_Response_Line_CalculatedTax',
         ),
     );
 
@@ -190,7 +190,7 @@ class OnePica_AvaTax16_Document_Part_Line extends OnePica_AvaTax16_Document_Part
      * Calculated Tax
      * (Only response)
      *
-     * @var OnePica_AvaTax16_Document_Part_Line_CalculatedTax
+     * @var OnePica_AvaTax16_Document_Response_Line_CalculatedTax
      */
     protected $_calculatedTax;
 

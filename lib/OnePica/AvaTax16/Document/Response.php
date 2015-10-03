@@ -28,41 +28,41 @@ class OnePica_AvaTax16_Document_Response extends OnePica_AvaTax16_Document_Part
      */
     protected $_propertyComplexTypes = array(
         '_header' => array(
-            'type' => 'OnePica_AvaTax16_Document_Part_Header'
+            'type' => 'OnePica_AvaTax16_Document_Response_Header'
         ),
         '_lines' => array(
-            'type' => 'OnePica_AvaTax16_Document_Part_Line',
+            'type' => 'OnePica_AvaTax16_Document_Response_Line',
             'isArrayOf' => 'true'
         ),
         '_calculatedTaxSummary' => array(
-            'type' => 'OnePica_AvaTax16_Document_Part_CalculatedTaxSummary'
+            'type' => 'OnePica_AvaTax16_Document_Response_CalculatedTaxSummary'
         ),
         '_feedback' => array(
             'type' => 'OnePica_AvaTax16_Document_Part_Feedback'
         ),
         '_processingInfo' => array(
-            'type' => 'OnePica_AvaTax16_Document_Part_ProcessingInfo'
+            'type' => 'OnePica_AvaTax16_Document_Response_ProcessingInfo'
         ),
     );
 
     /**
      * Header
      *
-     * @var OnePica_AvaTax16_Document_Part_Header
+     * @var OnePica_AvaTax16_Document_Response_Header
      */
     protected $_header;
 
     /**
      * Lines
      *
-     * @var OnePica_AvaTax16_Document_Part_Line[]
+     * @var OnePica_AvaTax16_Document_Response_Line[]
      */
     protected $_lines;
 
     /**
      * Calculated Tax Summary
      *
-     * @var OnePica_AvaTax16_Document_Part_CalculatedTaxSummary
+     * @var OnePica_AvaTax16_Document_Response_CalculatedTaxSummary
      */
     protected $_calculatedTaxSummary;
 
@@ -76,7 +76,7 @@ class OnePica_AvaTax16_Document_Response extends OnePica_AvaTax16_Document_Part
     /**
      * Processing Info
      *
-     * @var OnePica_AvaTax16_Document_Part_ProcessingInfo
+     * @var OnePica_AvaTax16_Document_Response_ProcessingInfo
      */
     protected $_processingInfo;
 }

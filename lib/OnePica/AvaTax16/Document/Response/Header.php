@@ -17,9 +17,9 @@
  */
 
 /**
- * Class OnePica_AvaTax16_Document_Part_Header
+ * Class OnePica_AvaTax16_Document_Response_Header
  */
-class OnePica_AvaTax16_Document_Part_Header extends OnePica_AvaTax16_Document_Part
+class OnePica_AvaTax16_Document_Response_Header extends OnePica_AvaTax16_Document_Part
 {
     /**
      * Types of complex properties

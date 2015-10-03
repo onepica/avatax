@@ -17,10 +17,9 @@
  */
 
 /**
- * Class OnePica_AvaTax16_Document_Part_Line_CalculatedTax_TaxByType
+ * Class OnePica_AvaTax16_Document_Response_Line_CalculatedTax
  */
-class OnePica_AvaTax16_Document_Part_Line_CalculatedTax_TaxByType
-    extends OnePica_AvaTax16_Document_Part
+class OnePica_AvaTax16_Document_Response_Line_CalculatedTax extends OnePica_AvaTax16_Document_Part
 {
     /**
      * Types of complex properties
@@ -28,11 +27,22 @@ class OnePica_AvaTax16_Document_Part_Line_CalculatedTax_TaxByType
      * @var array
      */
     protected $_propertyComplexTypes = array(
-        '_jurisdictions' => array(
-            'type' => 'OnePica_AvaTax16_Document_Part_Line_CalculatedTax_TaxByType_Details',
-            'isArrayOf' => true
+        '_taxByType' => array(
+            'type' => 'OnePica_AvaTax16_Document_Response_Line_CalculatedTax_TaxByType',
+            'isArrayOf' => 'true'
+        ),
+        '_details' => array(
+            'type' => 'OnePica_AvaTax16_Document_Response_Line_CalculatedTax_Details',
+            'isArrayOf' => 'true'
         )
     );
+
+    /**
+     * Tax By Type
+     *
+     * @var OnePica_AvaTax16_Document_Response_Line_CalculatedTax_TaxByType[]
+     */
+    protected $_taxByType;
 
     /**
      * Tax
@@ -40,4 +50,11 @@ class OnePica_AvaTax16_Document_Part_Line_CalculatedTax_TaxByType
      * @var float
      */
     protected $_tax;
+
+    /**
+     * Details
+     *
+     * @var OnePica_AvaTax16_Document_Response_Line_CalculatedTax_Details[]
+     */
+    protected $_details;
 }
