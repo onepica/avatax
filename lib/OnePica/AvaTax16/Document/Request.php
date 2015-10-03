@@ -28,10 +28,10 @@ class OnePica_AvaTax16_Document_Request extends OnePica_AvaTax16_Document_Part
      */
     protected $_propertyComplexTypes = array(
         '_header' => array(
-            'type' => 'OnePica_AvaTax16_Document_Part_Header'
+            'type' => 'OnePica_AvaTax16_Document_Request_Header'
         ),
         '_lines' => array(
-            'type' => 'OnePica_AvaTax16_Document_Part_Line',
+            'type' => 'OnePica_AvaTax16_Document_Request_Line',
             'isArrayOf' => 'true'
         ),
         '_feedback' => array(
@@ -42,14 +42,14 @@ class OnePica_AvaTax16_Document_Request extends OnePica_AvaTax16_Document_Part
     /**
      * Header
      *
-     * @var OnePica_AvaTax16_Document_Part_Header
+     * @var OnePica_AvaTax16_Document_Request_Header
      */
     protected $_header;
 
     /**
      * Lines
      *
-     * @var OnePica_AvaTax16_Document_Part_Line[]
+     * @var OnePica_AvaTax16_Document_Request_Line[]
      */
     protected $_lines;
 
