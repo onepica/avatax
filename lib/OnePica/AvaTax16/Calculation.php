@@ -87,7 +87,7 @@ class OnePica_AvaTax16_Calculation
      *
      * @param string $transactionType
      * @param string $documentCode
-     * @return StdClass $data
+     * @return OnePica_AvaTax16_Document_Response $documentResponse
      */
     public function getCalculation($transactionType, $documentCode)
     {
@@ -106,7 +106,9 @@ class OnePica_AvaTax16_Calculation
         $curl = $this->_getCurlObjectWithHeaders();
         $curl->get($getUrl);
         $data = $curl->getResponse();
-        return $data;
+        $documentResponse = new OnePica_AvaTax16_Document_Response();
+        $documentResponse->fillData($data);
+        return $documentResponse;
     }
 
     /**
@@ -117,7 +119,7 @@ class OnePica_AvaTax16_Calculation
      * @param string $startDate
      * @param string $endDate
      * @param string $startCode (not implemented)
-     * @return StdClass|array $result
+     * @return OnePica_AvaTax16_Calculation_ListItemResponse[] $result
      */
     public function getListOfCalculations($transactionType, $limit = null, $startDate = null, $endDate = null,
         $startCode = null)
@@ -142,7 +144,7 @@ class OnePica_AvaTax16_Calculation
         $curl->get($getUrl, $filterData);
         $data = $curl->getResponse();
 
-        $result = null;
+        $result = array();
         if (is_array($data)) {
             foreach ($data as $dataItem) {
                 $calculationListItem = new OnePica_AvaTax16_Calculation_ListItemResponse();
