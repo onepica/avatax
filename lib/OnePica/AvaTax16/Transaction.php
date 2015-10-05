@@ -188,8 +188,7 @@ class OnePica_AvaTax16_Transaction extends OnePica_AvaTax16_ResourceAbstract
      * @param string $documentCode
      * @param string $type
      * @param string $comment
-     * @return bool
-     * @todo analise and refactor return value
+     * @return OnePica_AvaTax16_Transaction_TransitionTransactionStateResponse $transitionTransactionStateResponse
      */
     public function transitionTransactionState($transactionType, $documentCode, $type, $comment)
     {
@@ -213,7 +212,8 @@ class OnePica_AvaTax16_Transaction extends OnePica_AvaTax16_ResourceAbstract
 
         $curl = $this->_getCurlObjectWithHeaders();
         $curl->post($postUrl, $postData);
-
-        return ($curl->getHttpStatusCode() == 201) ? true : false;
+        $transitionTransactionStateResponse = new OnePica_AvaTax16_Transaction_TransitionTransactionStateResponse();
+        $transitionTransactionStateResponse->setHttpStatus($curl->getHttpStatusCode());
+        return $transitionTransactionStateResponse;
     }
 }
