@@ -78,4 +78,31 @@ abstract class OnePica_AvaTax16_ResourceAbstract
         $curl->setHeader('User-Agent', $config->getUserAgent());
         return $curl;
     }
+
+    /**
+     * Set Error Data To Response If Exists
+     *
+     * @param OnePica_AvaTax16_Document_Part $response
+     * @param OnePica_AvaTax16_IO_Curl $curl
+     * @return $this
+     */
+    protected function _setErrorDataToResponseIfExists($response, $curl)
+    {
+        if ($curl->getError()) {
+            $response->setHasError(true);
+            $errors = array();
+            $responseData = $curl->getResponse();
+            if ($responseData instanceof stdClass) {
+                if (isset($responseData->errors)) {
+                    $errors = (array) $responseData->errors;
+                }
+                if (isset($responseData->message)) {
+                    $errors['message'] = $responseData->message;
+                }
+            } else {
+                $errors['message'] = $response;
+            }
+            $response->setErrors($errors);
+        }
+    }
 }

@@ -78,7 +78,10 @@ class OnePica_AvaTax16_Calculation
         $curl->post($postUrl, $postData);
         $data = $curl->getResponse();
         $documentResponse = new OnePica_AvaTax16_Document_Response();
-        $documentResponse->fillData($data);
+        $this->_setErrorDataToResponseIfExists($documentResponse, $curl);
+        if (!$documentResponse->getHasError()) {
+            $documentResponse->fillData($data);
+        }
         return $documentResponse;
     }
 
@@ -107,7 +110,10 @@ class OnePica_AvaTax16_Calculation
         $curl->get($getUrl);
         $data = $curl->getResponse();
         $documentResponse = new OnePica_AvaTax16_Document_Response();
-        $documentResponse->fillData($data);
+        $this->_setErrorDataToResponseIfExists($documentResponse, $curl);
+        if (!$documentResponse->getHasError()) {
+            $documentResponse->fillData($data);
+        }
         return $documentResponse;
     }
 
