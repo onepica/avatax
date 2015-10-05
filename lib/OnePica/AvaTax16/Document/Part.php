@@ -167,6 +167,10 @@ class OnePica_AvaTax16_Document_Part
         foreach ($data as $key => $value) {
             $propName = '_' . $key;
             $method = 'set' . ucfirst($key);
+            if (!property_exists ($this , $propName)) {
+                // skip unknown property received from response to prevent error
+                continue;
+            }
             if (isset($this->_propertyComplexTypes[$propName])) {
                 $propertyType = $this->_propertyComplexTypes[$propName]['type'];
                 if (isset($this->_propertyComplexTypes[$propName]['isArrayOf'])) {

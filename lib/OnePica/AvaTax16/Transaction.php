@@ -46,7 +46,7 @@ class OnePica_AvaTax16_Transaction extends OnePica_AvaTax16_ResourceAbstract
      * @param string $documentCode
      * @param bool $recalculate
      * @param string $comment
-     * @return StdClass $data
+     * @return OnePica_AvaTax16_Document_Response $documentResponse
      */
     public function createTransactionFromCalculation($transactionType, $documentCode, $recalculate = null,
         $comment = null)
@@ -73,7 +73,9 @@ class OnePica_AvaTax16_Transaction extends OnePica_AvaTax16_ResourceAbstract
         $curl = $this->_getCurlObjectWithHeaders();
         $curl->post($postUrl, $postData);
         $data = $curl->getResponse();
-        return $data;
+        $documentResponse = new OnePica_AvaTax16_Document_Response();
+        $documentResponse->fillData($data);
+        return $documentResponse;
     }
 
     /**
@@ -81,7 +83,7 @@ class OnePica_AvaTax16_Transaction extends OnePica_AvaTax16_ResourceAbstract
      *
      * @param string $transactionType
      * @param string $documentCode
-     * @return StdClass $data
+     * @return OnePica_AvaTax16_Document_Response $documentResponse
      */
     public function getTransaction($transactionType, $documentCode)
     {
@@ -100,7 +102,9 @@ class OnePica_AvaTax16_Transaction extends OnePica_AvaTax16_ResourceAbstract
         $curl = $this->_getCurlObjectWithHeaders();
         $curl->get($getUrl);
         $data = $curl->getResponse();
-        return $data;
+        $documentResponse = new OnePica_AvaTax16_Document_Response();
+        $documentResponse->fillData($data);
+        return $documentResponse;
     }
 
     /**
@@ -111,7 +115,7 @@ class OnePica_AvaTax16_Transaction extends OnePica_AvaTax16_ResourceAbstract
      * @param string $startDate
      * @param string $endDate
      * @param string $startCode (not implemented)
-     * @return StdClass|array $result
+     * @return OnePica_AvaTax16_Transaction_ListItemResponse[] $result
      */
     public function getListOfTransactions($transactionType, $limit = null, $startDate = null, $endDate = null,
         $startCode = null)
@@ -137,7 +141,7 @@ class OnePica_AvaTax16_Transaction extends OnePica_AvaTax16_ResourceAbstract
         $curl->get($getUrl, $filterData);
         $data = $curl->getResponse();
 
-        $result = null;
+        $result = array();
         if (is_array($data)) {
             foreach ($data as $dataItem) {
                 $transactionListItem = new OnePica_AvaTax16_Transaction_ListItemResponse();
