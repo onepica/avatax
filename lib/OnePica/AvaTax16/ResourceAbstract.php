@@ -100,7 +100,7 @@ abstract class OnePica_AvaTax16_ResourceAbstract
                     $errors['message'] = $responseData->message;
                 }
             } else {
-                $errors['message'] = $response;
+                $errors['message'] = $responseData;
             }
             $response->setErrors($errors);
         }

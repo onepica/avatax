@@ -22,6 +22,20 @@
 class OnePica_AvaTax16_Document_Request extends OnePica_AvaTax16_Document_Part
 {
     /**
+     * Has error
+     *
+     * @var bool
+     */
+    protected $_hasError = false;
+
+    /**
+     * Errors
+     *
+     * @var array
+     */
+    protected $_errors;
+
+    /**
      * Types of complex properties
      *
      * @var array

@@ -23,6 +23,20 @@ class OnePica_AvaTax16_Transaction_TransitionTransactionStateResponse
     extends OnePica_AvaTax16_Document_Part
 {
     /**
+     * Has error
+     *
+     * @var bool
+     */
+    protected $_hasError = false;
+
+    /**
+     * Errors
+     *
+     * @var array
+     */
+    protected $_errors;
+
+    /**
      * Http Status (code)
      *
      * @var int
