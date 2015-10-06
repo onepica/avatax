@@ -124,7 +124,7 @@ class OnePica_AvaTax16_Transaction extends OnePica_AvaTax16_ResourceAbstract
      * @param string $startDate
      * @param string $endDate
      * @param string $startCode (not implemented)
-     * @return OnePica_AvaTax16_Transaction_ListItemResponse[] $result
+     * @return OnePica_AvaTax16_Transaction_ListResponse $transactionListResponse
      */
     public function getListOfTransactions($transactionType, $limit = null, $startDate = null, $endDate = null,
         $startCode = null)
@@ -150,14 +150,12 @@ class OnePica_AvaTax16_Transaction extends OnePica_AvaTax16_ResourceAbstract
         $curl->get($getUrl, $filterData);
         $data = $curl->getResponse();
 
-        $result = array();
-        if (is_array($data)) {
-            foreach ($data as $dataItem) {
-                $transactionListItem = new OnePica_AvaTax16_Transaction_ListItemResponse();
-                $result[] = $transactionListItem->fillData($dataItem);
-            }
+        $transactionListResponse = new OnePica_AvaTax16_Transaction_ListResponse();
+        $this->_setErrorDataToResponseIfExists($transactionListResponse, $curl);
+        if (!$transactionListResponse->getHasError()) {
+            $transactionListResponse->fillData($data);
         }
-        return $result;
+        return $transactionListResponse;
     }
 
     /**
