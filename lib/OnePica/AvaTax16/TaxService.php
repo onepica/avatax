@@ -148,4 +148,37 @@ class OnePica_AvaTax16_TaxService extends OnePica_AvaTax16_ResourceAbstract
             $recalculate, $comment);
         return $documentResponse;
     }
+
+    /**
+     * Get Transaction
+     *
+     * @param string $transactionType
+     * @param string $documentCode
+     * @return OnePica_AvaTax16_Document_Response $documentResponse
+     */
+    public function getTransaction($transactionType, $documentCode)
+    {
+        $transactionResource = $this->_getTaxResource('transaction');
+        $documentResponse = $transactionResource->getTransaction($transactionType, $documentCode);
+        return $documentResponse;
+    }
+
+    /**
+     * Get List Of Transactions
+     *
+     * @param string $transactionType
+     * @param int $limit
+     * @param string $startDate
+     * @param string $endDate
+     * @param string $startCode (not implemented)
+     * @return OnePica_AvaTax16_Transaction_ListResponse $transactionListResponse
+     */
+    public function getListOfTransactions($transactionType, $limit = null, $startDate = null, $endDate = null,
+        $startCode = null)
+    {
+        $transactionResource = $this->_getTaxResource('transaction');
+        $transactionListResponse = $transactionResource->getListOfTransactions($transactionType, $limit, $startDate,
+            $endDate, $startCode);
+        return $transactionListResponse;
+    }
 }
