@@ -176,13 +176,15 @@ class OnePica_AvaTax16_Document_Part
                 $propertyType = $this->_propertyComplexTypes[$propName]['type'];
                 if (isset($this->_propertyComplexTypes[$propName]['isArrayOf'])) {
                     $items = null;
-                    foreach ($value as $itemKey => $itemData) {
-                        $item = $this->_createItemAndFillData($propertyType, $itemData);
-                        $items[$itemKey] = $item;
+                    if (count($value) > 0) {
+                        foreach ($value as $itemKey => $itemData) {
+                            $item = $this->_createItemAndFillData($propertyType, $itemData);
+                            $items[$itemKey] = $item;
+                        }
                     }
                     $this->$method($items);
                 } else {
-                    $item = $this->_createItemAndFillData($propertyType, $value);
+                    $item = $value ? $this->_createItemAndFillData($propertyType, $value) : null;
                     $this->$method($item);
                 }
             } else {
