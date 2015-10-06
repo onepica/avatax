@@ -17,52 +17,14 @@
  */
 
 /**
- * Class OnePica_AvaTax16_Config
+ * Class OnePica_AvaTax16_Calculation
  */
-class OnePica_AvaTax16_Calculation
+class OnePica_AvaTax16_Calculation extends OnePica_AvaTax16_ResourceAbstract
 {
     /**
-     * Config
-     *
-     * @var OnePica_AvaTax16_Config
+     * Url path for calculations
      */
-    protected $_config;
-
-    /**
-     * Construct
-     *
-     * @param OnePica_AvaTax16_Config $config
-     */
-    public function __construct($config)
-    {
-        $this->_config = $config;
-    }
-
-    /**
-     * Get config
-     *
-     * @return OnePica_AvaTax16_Config
-     */
-    public function getConfig()
-    {
-        return $this->_config;
-    }
-
-    /**
-     * Get Curl Object with headers from config
-     *
-     * @return OnePica_AvaTax16_IO_Curl
-     */
-    protected function _getCurlObjectWithHeaders()
-    {
-        $curl = new OnePica_AvaTax16_IO_Curl();
-        $config = $this->getConfig();
-        $curl->setHeader('Authorization', $config->getAuthorizationHeader());
-        $curl->setHeader('Accept', $config->getAcceptHeader());
-        $curl->setHeader('Content-Type', $config->getContentTypeHeader());
-        $curl->setHeader('User-Agent', $config->getUserAgent());
-        return $curl;
-    }
+    const CALCULATION_URL_PATH = '/calculations';
 
     /**
      * Create Calculation
@@ -125,7 +87,7 @@ class OnePica_AvaTax16_Calculation
      * @param string $startDate
      * @param string $endDate
      * @param string $startCode (not implemented)
-     * @return OnePica_AvaTax16_Calculation_ListItemResponse[] $result
+     * @return OnePica_AvaTax16_Calculation_ListResponse $calculationListResponse
      */
     public function getListOfCalculations($transactionType, $limit = null, $startDate = null, $endDate = null,
         $startCode = null)
@@ -150,13 +112,11 @@ class OnePica_AvaTax16_Calculation
         $curl->get($getUrl, $filterData);
         $data = $curl->getResponse();
 
-        $result = array();
-        if (is_array($data)) {
-            foreach ($data as $dataItem) {
-                $calculationListItem = new OnePica_AvaTax16_Calculation_ListItemResponse();
-                $result[] = $calculationListItem->fillData($dataItem);
-            }
+        $calculationListResponse = new OnePica_AvaTax16_Calculation_ListResponse();
+        $this->_setErrorDataToResponseIfExists($calculationListResponse, $curl);
+        if (!$calculationListResponse->getHasError()) {
+            $calculationListResponse->fillData($data);
         }
-        return $result;
+        return $calculationListResponse;
     }
 }

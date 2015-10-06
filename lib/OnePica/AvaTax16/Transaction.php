@@ -22,6 +22,16 @@
 class OnePica_AvaTax16_Transaction extends OnePica_AvaTax16_ResourceAbstract
 {
     /**
+     * Url path for calculations
+     */
+    const CALCULATION_URL_PATH = '/calculations';
+
+    /**
+     * Url path for transactions
+     */
+    const TRANSACTION_URL_PATH = '/transactions';
+
+    /**
      * Create Transaction
      *
      * @param OnePica_AvaTax16_Document_Request $documentRequest

@@ -22,6 +22,11 @@
 class OnePica_AvaTax16_AddressResolution extends OnePica_AvaTax16_ResourceAbstract
 {
     /**
+     * Url path for address resolution
+     */
+    const ADDRESS_RESOLUTION_URL_PATH = '/address';
+
+    /**
      * Resolve a Single Address
      *
      * @param OnePica_AvaTax16_Document_Part_Location_Address $address
