@@ -32,9 +32,13 @@ class OnePica_AvaTax16_TaxService extends OnePica_AvaTax16_ResourceAbstract
      * Construct
      *
      * @param OnePica_AvaTax16_Config $config
+     * @throws OnePica_AvaTax16_Exception
      */
     public function __construct($config)
     {
+        if (!$config->isValid()) {
+            throw new OnePica_AvaTax16_Exception("Not valid data in config!");
+        }
         $this->_config = $config;
     }
 

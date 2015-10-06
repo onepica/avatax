@@ -107,6 +107,7 @@ class OnePica_AvaTax16_Document_Part
      * Convert object data to array
      *
      * @return array
+     * @throws OnePica_AvaTax16_Exception
      */
     public function toArray()
     {
@@ -167,7 +168,7 @@ class OnePica_AvaTax16_Document_Part
         foreach ($data as $key => $value) {
             $propName = '_' . $key;
             $method = 'set' . ucfirst($key);
-            if (!property_exists ($this , $propName)) {
+            if (!property_exists ($this, $propName)) {
                 // skip unknown property received from response to prevent error
                 continue;
             }
