@@ -36,14 +36,12 @@ class OnePica_AvaTax16_Calculation extends OnePica_AvaTax16_ResourceAbstract
     {
         $postUrl = $this->_config->getBaseUrl() . self::CALCULATION_URL_PATH;
         $postData = $documentRequest->toArray();
-        $curl = $this->_getCurlObjectWithHeaders();
-        $curl->post($postUrl, $postData);
-        $data = $curl->getResponse();
-        $documentResponse = new OnePica_AvaTax16_Document_Response();
-        $this->_setErrorDataToResponseIfExists($documentResponse, $curl);
-        if (!$documentResponse->getHasError()) {
-            $documentResponse->fillData($data);
-        }
+        $requestOptions = array(
+            'requestType' => 'POST',
+            'data'        => $postData,
+            'returnClass' => 'OnePica_AvaTax16_Document_Response'
+        );
+        $documentResponse = $this->_sendRequestAndGetResponseObject($postUrl, $requestOptions);
         return $documentResponse;
     }
 
@@ -68,14 +66,11 @@ class OnePica_AvaTax16_Calculation extends OnePica_AvaTax16_ResourceAbstract
                 . '/'
                 . $documentCode;
 
-        $curl = $this->_getCurlObjectWithHeaders();
-        $curl->get($getUrl);
-        $data = $curl->getResponse();
-        $documentResponse = new OnePica_AvaTax16_Document_Response();
-        $this->_setErrorDataToResponseIfExists($documentResponse, $curl);
-        if (!$documentResponse->getHasError()) {
-            $documentResponse->fillData($data);
-        }
+        $requestOptions = array(
+            'requestType' => 'GET',
+            'returnClass' => 'OnePica_AvaTax16_Document_Response'
+        );
+        $documentResponse = $this->_sendRequestAndGetResponseObject($getUrl, $requestOptions);
         return $documentResponse;
     }
 
@@ -102,21 +97,18 @@ class OnePica_AvaTax16_Calculation extends OnePica_AvaTax16_ResourceAbstract
                 . '/'
                 . $transactionType;
         $filterData = array(
-            'limit' => $limit,
+            'limit'     => $limit,
             'startDate' => $startDate,
-            'endDate' => $endDate,
+            'endDate'   => $endDate,
             'startCode' => $startCode,
         );
 
-        $curl = $this->_getCurlObjectWithHeaders();
-        $curl->get($getUrl, $filterData);
-        $data = $curl->getResponse();
-
-        $calculationListResponse = new OnePica_AvaTax16_Calculation_ListResponse();
-        $this->_setErrorDataToResponseIfExists($calculationListResponse, $curl);
-        if (!$calculationListResponse->getHasError()) {
-            $calculationListResponse->fillData($data);
-        }
+        $requestOptions = array(
+            'requestType' => 'GET',
+            'data'        => $filterData,
+            'returnClass' => 'OnePica_AvaTax16_Calculation_ListResponse'
+        );
+        $calculationListResponse = $this->_sendRequestAndGetResponseObject($getUrl, $requestOptions);
         return $calculationListResponse;
     }
 }

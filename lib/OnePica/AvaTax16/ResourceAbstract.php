@@ -90,4 +90,40 @@ abstract class OnePica_AvaTax16_ResourceAbstract
             $response->setErrors($errors);
         }
     }
+
+    /**
+     * Send Request To Service And Get Response Object
+     *
+     * @param string $url
+     * @param array $options
+     * @return mixed $result
+     */
+    protected function _sendRequestAndGetResponseObject($url, $options = array())
+    {
+        $requestType = (isset($options['requestType'])) ? $options['requestType'] : 'GET';
+        $data = (isset($options['data'])) ? $options['data'] : null;
+        $returnClass = (isset($options['returnClass'])) ? $options['returnClass'] : null;
+        $curl = $this->_getCurlObjectWithHeaders();
+        $result = null;
+        switch ($requestType) {
+            case 'GET':
+                $curl->get($url, $data);
+                break;
+            case 'POST':
+                $curl->post($url, $data);
+                break;
+        }
+        if (isset($returnClass)) {
+            $responseObject = new $returnClass();
+            $this->_setErrorDataToResponseIfExists($responseObject, $curl);
+            if (!$responseObject->getHasError()) {
+                $responseData = $curl->getResponse();
+                $responseObject->fillData($responseData);
+            }
+            $result = $responseObject;
+        } else {
+            $result = $curl->getResponse();
+        }
+        return $result;
+    }
 }
