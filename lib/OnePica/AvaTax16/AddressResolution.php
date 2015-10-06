@@ -44,14 +44,12 @@ class OnePica_AvaTax16_AddressResolution extends OnePica_AvaTax16_ResourceAbstra
             . '/resolve';
 
         $postData = $address->toArray();
-        $curl = $this->_getCurlObjectWithHeaders();
-        $curl->post($postUrl, $postData);
-        $data = $curl->getResponse();
-        $result = new OnePica_AvaTax16_AddressResolution_ResolveSingleAddressResponse();
-        $this->_setErrorDataToResponseIfExists($result, $curl);
-        if (!$result->getHasError()) {
-            $result->fillData($data);
-        }
+        $requestOptions = array(
+            'requestType' => 'POST',
+            'data'        => $postData,
+            'returnClass' => 'OnePica_AvaTax16_AddressResolution_ResolveSingleAddressResponse'
+        );
+        $result = $this->_sendRequestAndGetResponseObject($postUrl, $requestOptions);
         return $result;
     }
 }
