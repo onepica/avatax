@@ -212,4 +212,17 @@ class OnePica_AvaTax16_TaxService extends OnePica_AvaTax16_ResourceAbstract
             $documentCode, $type, $comment);
         return $transitionTransactionStateResponse;
     }
+
+    /**
+     * Resolve a Single Address
+     *
+     * @param OnePica_AvaTax16_Document_Part_Location_Address $address
+     * @return OnePica_AvaTax16_AddressResolution_ResolveSingleAddressResponse $resolvedAddressResponse
+     */
+    public function resolveSingleAddress($address)
+    {
+        $addressResolutionResource = $this->_getTaxResource('addressResolution');
+        $resolvedAddressResponse = $addressResolutionResource->resolveSingleAddress($address);
+        return $resolvedAddressResponse;
+    }
 }
