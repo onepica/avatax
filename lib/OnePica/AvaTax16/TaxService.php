@@ -181,4 +181,35 @@ class OnePica_AvaTax16_TaxService extends OnePica_AvaTax16_ResourceAbstract
             $endDate, $startCode);
         return $transactionListResponse;
     }
+
+    /**
+     * Get Transaction Input
+     *
+     * @param string $transactionType
+     * @param string $documentCode
+     * @return OnePica_AvaTax16_Document_Request $transactionInput
+     */
+    public function getTransactionInput($transactionType, $documentCode)
+    {
+        $transactionResource = $this->_getTaxResource('transaction');
+        $transactionInput = $transactionResource->getTransactionInput($transactionType, $documentCode);
+        return $transactionInput;
+    }
+
+    /**
+     * Transition Transaction State
+     *
+     * @param string $transactionType
+     * @param string $documentCode
+     * @param string $type
+     * @param string $comment
+     * @return OnePica_AvaTax16_Transaction_TransitionTransactionStateResponse $transitionTransactionStateResponse
+     */
+    public function transitionTransactionState($transactionType, $documentCode, $type, $comment)
+    {
+        $transactionResource = $this->_getTaxResource('transaction');
+        $transitionTransactionStateResponse = $transactionResource->transitionTransactionState($transactionType,
+            $documentCode, $type, $comment);
+        return $transitionTransactionStateResponse;
+    }
 }
