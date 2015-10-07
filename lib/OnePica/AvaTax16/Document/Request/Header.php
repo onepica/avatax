@@ -157,6 +157,7 @@ class OnePica_AvaTax16_Document_Request_Header extends OnePica_AvaTax16_Document
      * @var string
      */
     protected $_defaultUseType;
+
     /**
      * Purchase Order Number
      *

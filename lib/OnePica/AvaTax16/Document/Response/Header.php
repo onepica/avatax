@@ -145,12 +145,18 @@ class OnePica_AvaTax16_Document_Response_Header extends OnePica_AvaTax16_Documen
     protected $_defaultTaxPayerCode;
 
     /**
-     * Default Tax Payer Code
-     * (Not currently supported)
+     * Default Buyer Type
      *
      * @var string
      */
-    protected $_defaultEntityUseType;
+    protected $_defaultBuyerType;
+
+    /**
+     * Default Use Type
+     *
+     * @var string
+     */
+    protected $_defaultUseType;
 
     /**
      * Purchase Order Number

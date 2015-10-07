@@ -26,7 +26,7 @@ class OnePica_AvaTax16_Document_Response_Line extends OnePica_AvaTax16_Document_
      *
      * @var array
      */
-    protected $_requiredProperties = array('_lineCode', '_extendedAmount');
+    protected $_requiredProperties = array('_lineCode', '_lineAmount');
 
     /**
      * Types of complex properties
@@ -73,26 +73,11 @@ class OnePica_AvaTax16_Document_Response_Line extends OnePica_AvaTax16_Document_
     protected $_avalaraGoodsAndServicesModifierType;
 
     /**
-     * Quantity
-     *
-     * @var float
-     */
-    protected $_quantity;
-
-    /**
      * Number Of Items
      *
      * @var float
      */
     protected $_numberOfItems;
-
-    /**
-     * Extended Amount
-     * (Required)
-     *
-     * @var float
-     */
-    protected $_extendedAmount;
 
     /**
      * Line Amount
@@ -132,20 +117,18 @@ class OnePica_AvaTax16_Document_Response_Line extends OnePica_AvaTax16_Document_
     protected $_taxPayerCode;
 
     /**
-     * Use Type
-     * (Not currently supported)
-     *
-     * @var string
-     */
-    protected $_useType;
-
-    /**
      * Buyer Type
-     * (Not currently supported)
      *
      * @var string
      */
     protected $_buyerType;
+
+    /**
+     * Use Type
+     *
+     * @var string
+     */
+    protected $_useType;
 
     /**
      * Line Attributes
@@ -154,14 +137,6 @@ class OnePica_AvaTax16_Document_Response_Line extends OnePica_AvaTax16_Document_
      * @var string
      */
     protected $_lineAttributes;
-
-    /**
-     * Entity Use Type
-     * (Not currently supported)
-     *
-     * @var string
-     */
-    protected $_entityUseType;
 
     /**
      * Tax Override Amount
@@ -193,34 +168,6 @@ class OnePica_AvaTax16_Document_Response_Line extends OnePica_AvaTax16_Document_
      * @var OnePica_AvaTax16_Document_Response_Line_CalculatedTax
      */
     protected $_calculatedTax;
-
-    /**
-     * Nature
-     *
-     * @var string
-     */
-    protected $_nature;
-
-    /**
-     * State
-     *
-     * @var string
-     */
-    protected $_state;
-
-    /**
-     * Domain
-     *
-     * @var string
-     */
-    protected $_domain;
-
-    /**
-     * Domain
-     *
-     * @var string
-     */
-    protected $_form;
 
     /**
      * Set Metadata
