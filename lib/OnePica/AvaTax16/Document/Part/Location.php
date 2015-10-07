@@ -60,7 +60,7 @@ class OnePica_AvaTax16_Document_Part_Location extends OnePica_AvaTax16_Document_
     protected $_address;
 
     /**
-     * latitude and longitude
+     * Latitude and longitude
      *
      * @var OnePica_AvaTax16_Document_Part_Location_LatLong
      */
@@ -98,12 +98,18 @@ class OnePica_AvaTax16_Document_Part_Location extends OnePica_AvaTax16_Document_
     protected $_addressTaxPayerCode;
 
     /**
-     * Address Entity Use Type
-     * (Not currently supported)
+     * Address Buyer Type
      *
      * @var string
      */
-    protected $_addressEntityUseType;
+    protected $_addressBuyerType;
+
+    /**
+     * Address Use Type
+     *
+     * @var string
+     */
+    protected $_addressUseType;
 
     /**
      * Set Address

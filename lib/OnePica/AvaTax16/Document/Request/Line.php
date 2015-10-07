@@ -26,7 +26,7 @@ class OnePica_AvaTax16_Document_Request_Line extends OnePica_AvaTax16_Document_P
      *
      * @var array
      */
-    protected $_requiredProperties = array('_lineCode', '_extendedAmount');
+    protected $_requiredProperties = array('_lineCode', '_lineAmount');
 
     /**
      * Types of complex properties
@@ -70,19 +70,19 @@ class OnePica_AvaTax16_Document_Request_Line extends OnePica_AvaTax16_Document_P
     protected $_avalaraGoodsAndServicesModifierType;
 
     /**
-     * Quantity
+     * Number Of Items
      *
      * @var float
      */
-    protected $_quantity;
+    protected $_numberOfItems;
 
     /**
-     * Extended Amount
+     * Line Amount (The total cost of this line. In its simplest form lineAmount = unit price * numberOfItems)
      * (Required)
      *
      * @var float
      */
-    protected $_extendedAmount;
+    protected $_lineAmount;
 
     /**
      * Item Description
@@ -115,12 +115,18 @@ class OnePica_AvaTax16_Document_Request_Line extends OnePica_AvaTax16_Document_P
     protected $_taxPayerCode;
 
     /**
-     * Entity Use Type
-     * (Not currently supported)
+     * Buyer Type
      *
      * @var string
      */
-    protected $_entityUseType;
+    protected $_buyerType;
+
+    /**
+     * Use Type
+     *
+     * @var string
+     */
+    protected $_useType;
 
     /**
      * Tax Override Amount
