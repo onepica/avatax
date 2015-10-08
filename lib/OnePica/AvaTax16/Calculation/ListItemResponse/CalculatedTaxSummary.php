@@ -63,6 +63,20 @@ class OnePica_AvaTax16_Calculation_ListItemResponse_CalculatedTaxSummary
     protected $_taxByType;
 
     /**
+     * Subtotal Taxable
+     *
+     * @var float
+     */
+    protected $_subtotalTaxable;
+
+    /**
+     * Subtotal Exempt
+     *
+     * @var float
+     */
+    protected $_subtotalExempt;
+
+    /**
      * Tax
      *
      * @var float
