@@ -229,4 +229,26 @@ class OnePica_AvaTax16_TaxService extends OnePica_AvaTax16_ResourceAbstract
         $resolvedAddressResponse = $addressResolutionResource->resolveSingleAddress($address);
         return $resolvedAddressResponse;
     }
+
+    /**
+     * Ping
+     * Is used to test if service is available
+     *
+     * @return OnePica_AvaTax16_AddressResolution_PingResponse $pingResponse
+     */
+    public function ping()
+    {
+        // set some predefined address to ping API service
+        $address = new OnePica_AvaTax16_Document_Part_Location_Address();
+        $address->setLine1('Avenue');
+        $address->setZipcode('10022');
+        $address->setCountry('USA');
+        $addressResolutionResource = $this->_getTaxResource('addressResolution');
+        $resolvedAddress = $addressResolutionResource->resolveSingleAddress($address);
+        // set data to response object
+        $pingResponse = new OnePica_AvaTax16_AddressResolution_PingResponse();
+        $pingResponse->setHasError($resolvedAddress->getHasError());
+        $pingResponse->setErrors($resolvedAddress->getErrors());
+        return $pingResponse;
+    }
 }
