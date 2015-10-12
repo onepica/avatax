@@ -41,7 +41,7 @@ class OnePica_AvaTax16_Calculation extends OnePica_AvaTax16_ResourceAbstract
             'data'        => $postData,
             'returnClass' => 'OnePica_AvaTax16_Document_Response'
         );
-        $documentResponse = $this->_sendRequestAndGetResponseObject($postUrl, $requestOptions);
+        $documentResponse = $this->_sendRequest($postUrl, $requestOptions);
         return $documentResponse;
     }
 
@@ -70,7 +70,7 @@ class OnePica_AvaTax16_Calculation extends OnePica_AvaTax16_ResourceAbstract
             'requestType' => 'GET',
             'returnClass' => 'OnePica_AvaTax16_Document_Response'
         );
-        $documentResponse = $this->_sendRequestAndGetResponseObject($getUrl, $requestOptions);
+        $documentResponse = $this->_sendRequest($getUrl, $requestOptions);
         return $documentResponse;
     }
 
@@ -108,7 +108,7 @@ class OnePica_AvaTax16_Calculation extends OnePica_AvaTax16_ResourceAbstract
             'data'        => $filterData,
             'returnClass' => 'OnePica_AvaTax16_Calculation_ListResponse'
         );
-        $calculationListResponse = $this->_sendRequestAndGetResponseObject($getUrl, $requestOptions);
+        $calculationListResponse = $this->_sendRequest($getUrl, $requestOptions);
         return $calculationListResponse;
     }
 }

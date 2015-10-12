@@ -98,7 +98,7 @@ abstract class OnePica_AvaTax16_ResourceAbstract
      * @param array $options
      * @return mixed $result
      */
-    protected function _sendRequestAndGetResponseObject($url, $options = array())
+    protected function _sendRequest($url, $options = array())
     {
         $requestType = (isset($options['requestType'])) ? $options['requestType'] : 'GET';
         $data = (isset($options['data'])) ? $options['data'] : null;

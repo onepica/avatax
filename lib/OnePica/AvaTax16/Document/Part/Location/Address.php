@@ -119,5 +119,5 @@ class OnePica_AvaTax16_Document_Part_Location_Address extends OnePica_AvaTax16_D
      *
      * @var string
      */
-    protected $_postCode;
+    protected $_postcode;
 }
