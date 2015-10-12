@@ -42,5 +42,6 @@ lib/**
 !lib/AvaTax/
 !lib/AvaTax/**
 !lib/OnePica/
+!lib/OnePica/autoload.php
 !lib/OnePica/AvaTax16/
 !lib/OnePica/AvaTax16/**
