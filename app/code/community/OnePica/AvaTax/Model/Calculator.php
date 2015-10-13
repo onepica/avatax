@@ -42,5 +42,14 @@ abstract class OnePica_AvaTax_Model_Calculator
         // init service
         $this->_service = new OnePica_AvaTax_Model_Calculator_Service_Avatax();
     }
-}
 
+    /**
+     * Get Service
+     *
+     * return mixed
+     */
+    protected function _getService()
+    {
+        return $this->_service;
+    }
+}

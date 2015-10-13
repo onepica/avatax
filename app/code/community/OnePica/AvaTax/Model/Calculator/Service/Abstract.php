@@ -26,4 +26,3 @@
 abstract class OnePica_AvaTax_Model_Calculator_Service_Abstract
 {
 }
-
