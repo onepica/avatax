@@ -26,6 +26,34 @@
 abstract class OnePica_AvaTax_Model_Service_Abstract
 {
     /**
+     * Service config
+     *
+     * @var array
+     */
+    protected $_config = array();
+
+    /**
+     * Set service config
+     *
+     * @param mixed $config
+     * @return $this
+     */
+    public function setConfig($config)
+    {
+        $this->_config = $config;
+    }
+
+    /**
+     * Get service config
+     *
+     * @return string
+     */
+    public function getConfig()
+    {
+        return $this->_config;
+    }
+
+    /**
      * Get rates from Service
      *
      * @param Mage_Sales_Model_Quote_Item $item
