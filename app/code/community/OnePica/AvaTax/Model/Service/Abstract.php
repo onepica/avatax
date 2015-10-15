@@ -39,4 +39,12 @@ abstract class OnePica_AvaTax_Model_Service_Abstract
      * @return array
      */
     abstract public function getRatesData();
+
+    /**
+     * Get tax detail summary
+     *
+     * @param int|null $addressId
+     * @return array
+     */
+    abstract public function getSummary($addressId);
 }

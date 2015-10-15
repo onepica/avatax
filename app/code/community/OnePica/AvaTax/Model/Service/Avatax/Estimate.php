@@ -418,4 +418,32 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
     {
         return $this->_rates;
     }
+
+    /**
+     * Get tax detail summary
+     *
+     * @param int|null $addressId
+     * @return array
+     */
+    public function getSummary($addressId = null)
+    {
+        $summary = null;
+
+        if ($addressId) {
+            $timestamp = 0;
+            foreach ($this->_rates as $row) {
+                if (isset($row['address_id']) && $row['address_id'] == $addressId && $row['timestamp'] > $timestamp) {
+                    $summary = $row['summary'];
+                    $timestamp = $row['timestamp'];
+                }
+            }
+        }
+
+        if ($summary === null) {
+            $requestKey = Mage::getSingleton('avatax/session')->getLastRequestKey();
+            $summary = isset($this->_rates[$requestKey]['summary']) ? $this->_rates[$requestKey]['summary'] : array();
+        }
+
+        return $summary;
+    }
 }

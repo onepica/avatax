@@ -156,24 +156,7 @@ class OnePica_AvaTax_Model_Calculator
      */
     public function getSummary($addressId = null)
     {
-        $summary = null;
-        $ratesData = $this->_getRatesData();
-        if ($addressId) {
-            $timestamp = 0;
-            foreach ($ratesData as $row) {
-                if (isset($row['address_id']) && $row['address_id'] == $addressId && $row['timestamp'] > $timestamp) {
-                    $summary = $row['summary'];
-                    $timestamp = $row['timestamp'];
-                }
-            }
-        }
-
-        if ($summary === null) {
-            $requestKey = Mage::getSingleton('avatax/session')->getLastRequestKey();
-            $summary = isset($ratesData[$requestKey]['summary']) ? $ratesData[$requestKey]['summary'] : array();
-        }
-
-        return $summary;
+        return $this->_getService()->getSummary($addressId);
     }
 
     /**

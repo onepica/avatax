@@ -72,4 +72,15 @@ class OnePica_AvaTax_Model_Service_Avatax
     {
         return $this->_getEstimateResource()->getRatesData();
     }
+
+    /**
+     * Get tax detail summary
+     *
+     * @param int|null $addressId
+     * @return array
+     */
+    public function getSummary($addressId = null)
+    {
+        return $this->_getEstimateResource()->getSummary($addressId);
+    }
 }
