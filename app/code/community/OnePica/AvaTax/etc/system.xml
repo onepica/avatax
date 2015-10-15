@@ -21,6 +21,7 @@
         <tax>
             <tab>sales</tab>
             <groups>
+                <!-- Use service folder name for group name -->
                 <avatax translate="label comment">
                     <label>AvaTax</label>
                     <comment><![CDATA[

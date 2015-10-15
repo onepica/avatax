@@ -43,6 +43,10 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
      */
     public function collect(Mage_Sales_Model_Quote_Address $address)
     {
+        $service = Mage::getModel('avatax/factory')->getServiceInstance();
+Zend_Debug::dump($service);die;
+
+
         $this->_setAddress($address);
         parent::collect($address);
 

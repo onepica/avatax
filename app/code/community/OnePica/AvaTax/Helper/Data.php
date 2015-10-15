@@ -633,4 +633,25 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
 
         return ceil($fact * $value) / $fact;
     }
+
+    /**
+     * Get exist services folder name
+     *
+     * @return array
+     */
+    public function getExistServices()
+    {
+        $path = Mage::getModuleDir('', 'OnePica_AvaTax') . DS . 'Model' . DS . 'Service';
+        $service = array();
+        if ($handle = opendir($path)) {
+            $i = 1;
+            while (false !== ($entry = readdir($handle))) {
+                if (is_dir($path . DS . $entry) && $entry != '.' && $entry != '..'){
+                    $service[$i] = $entry;
+                    $i++;
+                }
+            }
+        }
+        return $service;
+    }
 }
