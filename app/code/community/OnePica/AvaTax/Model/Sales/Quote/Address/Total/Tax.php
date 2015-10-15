@@ -48,8 +48,8 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
 
         if ($address->getPostcode() && $address->getPostcode() != '-') {
             $store = $address->getQuote()->getStore();
-            /** @var OnePica_AvaTax_Model_Avatax_Estimate $calculator */
-            $calculator = Mage::getModel('avatax/avatax_estimate');
+            /** @var OnePica_AvaTax_Model_Calculator $calculator */
+            $calculator = Mage::getModel('avatax/calculator');
 
             $address->setTotalAmount($this->getCode(), 0);
             $address->setBaseTotalAmount($this->getCode(), 0);
@@ -183,7 +183,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
         $amount = $address->getTaxAmount();
 
         $fullInfo = array();
-        $summary = Mage::getModel('avatax/avatax_estimate')->getSummary($address->getId());
+        $summary = Mage::getModel('avatax/calculator')->getSummary($address->getId());
 
         foreach ($summary as $key => $row) {
             $id = 'avatax-' . $key;

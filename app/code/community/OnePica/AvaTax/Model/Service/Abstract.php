@@ -16,14 +16,27 @@
  */
 
 /**
- * Class OnePica_AvaTax_Model_Calculator_Service_Avatax
+ * abstract class OnePica_AvaTax_Model_Service_Abstract
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
 
-class OnePica_AvaTax_Model_Calculator_Service_Avatax
-    extends OnePica_AvaTax_Model_Calculator_Service_Abstract
+abstract class OnePica_AvaTax_Model_Service_Abstract
 {
+    /**
+     * Get rates from Service
+     *
+     * @param Mage_Sales_Model_Quote_Item $item
+     * @return string
+     */
+    abstract public function getRates($item);
+
+    /**
+     * Get rates data
+     *
+     * @return array
+     */
+    abstract public function getRatesData();
 }
