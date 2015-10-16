@@ -226,7 +226,7 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     {
         if (in_array($class, self::$_classes)) {
             /** @var OnePica_AvaTax_Helper_Data $helper */
-            $helper = Mage::helper('avatax');
+            $helper = Mage::helper('avatax/lib');
             $helper->loadFunctions();
             $helper->loadClass($class);
         }
@@ -486,7 +486,7 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
      */
     protected function _isRegionFilterAll()
     {
-        return (int)$this->_getDataHelper()->getRegionFilterModByCurrentScope()
+        return (int)Mage::helper('avatax/address')->getRegionFilterModByCurrentScope()
                === OnePica_AvaTax_Model_Config::REGIONFILTER_ALL;
     }
 
@@ -498,8 +498,8 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     protected function _canNotBeAddressValidated()
     {
         return (bool)array_diff(
-            $this->_getDataHelper()->getTaxableCountryByCurrentScope(),
-            $this->_getDataHelper()->getAddressValidationCountries()
+            Mage::helper('avatax/address')->getTaxableCountryByCurrentScope(),
+            Mage::helper('avatax/address')->getAddressValidationCountries()
         );
     }
 

@@ -240,7 +240,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
 
         $line = new Line();
         $line->setNo($lineNumber);
-        $line->setItemCode(Mage::helper('avatax')->getShippingSku($storeId));
+        $line->setItemCode(Mage::helper('avatax/config')->getShippingSku($storeId));
         $line->setDescription('Shipping costs');
         $line->setTaxCode($taxClass);
         $line->setQty(1);
@@ -277,14 +277,14 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
 
         $line = new Line();
         $line->setNo($lineNumber);
-        $line->setItemCode(Mage::helper('avatax')->getGwOrderSku($storeId));
+        $line->setItemCode(Mage::helper('avatax/config')->getGwOrderSku($storeId));
         $line->setDescription('Gift Wrap Order Amount');
         $line->setTaxCode($this->_getGiftTaxClassCode($storeId));
         $line->setQty(1);
         $line->setAmount($amount);
         $line->setDiscounted(false);
 
-        $this->_lineToItemId[$lineNumber] = Mage::helper('avatax')->getGwOrderSku($storeId);
+        $this->_lineToItemId[$lineNumber] = Mage::helper('avatax/config')->getGwOrderSku($storeId);
         $this->_lines[$lineNumber] = $line;
         $this->_request->setLines($this->_lines);
         return $lineNumber;
@@ -315,14 +315,14 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
 
         $line = new Line();
         $line->setNo($lineNumber);
-        $line->setItemCode(Mage::helper('avatax')->getGwItemsSku($storeId));
+        $line->setItemCode(Mage::helper('avatax/config')->getGwItemsSku($storeId));
         $line->setDescription('Gift Wrap Items Amount');
         $line->setTaxCode($this->_getGiftTaxClassCode($storeId));
         $line->setQty(1);
         $line->setAmount($amount);
         $line->setDiscounted(false);
 
-        $this->_lineToItemId[$lineNumber] = Mage::helper('avatax')->getGwItemsSku($storeId);
+        $this->_lineToItemId[$lineNumber] = Mage::helper('avatax/config')->getGwItemsSku($storeId);
         $this->_lines[$lineNumber] = $line;
         $this->_request->setLines($this->_lines);
         return $lineNumber;
@@ -353,14 +353,14 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
 
         $line = new Line();
         $line->setNo($lineNumber);
-        $line->setItemCode(Mage::helper('avatax')->getGwPrintedCardSku($storeId));
+        $line->setItemCode(Mage::helper('avatax/config')->getGwPrintedCardSku($storeId));
         $line->setDescription('Gift Wrap Printed Card Amount');
         $line->setTaxCode($this->_getGiftTaxClassCode($storeId));
         $line->setQty(1);
         $line->setAmount($amount);
         $line->setDiscounted(false);
 
-        $this->_lineToItemId[$lineNumber] = Mage::helper('avatax')->getGwPrintedCardSku($storeId);
+        $this->_lineToItemId[$lineNumber] = Mage::helper('avatax/config')->getGwPrintedCardSku($storeId);
         $this->_lines[$lineNumber] = $line;
         $this->_request->setLines($this->_lines);
         return $lineNumber;
@@ -378,7 +378,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
     {
         if ($positive != 0) {
             $lineNumber = count($this->_lines);
-            $identifier = Mage::helper('avatax')->getPositiveAdjustmentSku($storeId);
+            $identifier = Mage::helper('avatax/config')->getPositiveAdjustmentSku($storeId);
 
             $line = new Line();
             $line->setNo($lineNumber);
@@ -396,7 +396,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
 
         if ($negative != 0) {
             $lineNumber = count($this->_lines);
-            $identifier = Mage::helper('avatax')->getNegativeAdjustmentSku($storeId);
+            $identifier = Mage::helper('avatax/config')->getNegativeAdjustmentSku($storeId);
 
             $line = new Line();
             $line->setNo($lineNumber);
