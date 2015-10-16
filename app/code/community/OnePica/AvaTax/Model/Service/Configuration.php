@@ -46,7 +46,8 @@ class OnePica_AvaTax_Model_Service_Configuration extends Varien_Object
      */
     private function _getActiveServiceConfig()
     {
-        $this->setActiveService(Mage::getConfig()->getNode('default/tax/avatax/active_service'));
+        $store = Mage::app()->getStore();
+        $this->setActiveService(Mage::helper('avatax')->getActiveService($store));
         $configuration = Mage::getStoreConfig('tax/' . strtolower($this->getActiveService()),
             Mage::app()->getSafeStore()->getId());
 

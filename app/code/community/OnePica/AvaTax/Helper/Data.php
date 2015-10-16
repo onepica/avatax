@@ -633,4 +633,16 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
 
         return ceil($fact * $value) / $fact;
     }
+
+    /**
+     * Get active service
+     *
+     * @param $store
+     *
+     * @return string
+     */
+    public function getActiveService($store)
+    {
+        return $this->_getConfig('active_service', $store);
+    }
 }

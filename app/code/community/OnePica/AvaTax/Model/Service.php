@@ -48,6 +48,8 @@ class OnePica_AvaTax_Model_Service extends Mage_Core_Model_Factory
 
     /**
      * @param null|OnePica_AvaTax_Model_Service_Configuration $serviceConfig
+     *
+     * @return $this
      */
     public function setServiceConfig($serviceConfig)
     {
