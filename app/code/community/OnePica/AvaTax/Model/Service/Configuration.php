@@ -1,27 +1,37 @@
 <?php
 
 /**
- * The abstract base AvaTax model
+ * OnePica_AvaTax
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0), a
+ * copy of which is available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
+ * @copyright  Copyright (c) 2009 One Pica, Inc.
+ * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
 /**
- * Quote model
-
+ * The abstract base AvaTax model
+ *
  * @method string getActiveService()
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
+
 class OnePica_AvaTax_Model_Service_Configuration extends Varien_Object
 {
-    const AVATAX_ACTIVE_SERVICE = 'Avatax';
 
     /**
+     * Class constructor
+     *
      * OnePica_AvaTax_Model_Service_Configuration constructor.
      */
     public function __construct()
@@ -36,15 +46,9 @@ class OnePica_AvaTax_Model_Service_Configuration extends Varien_Object
      */
     private function _getActiveServiceConfig()
     {
-        $configuration = array();
-        $services      = Mage::helper('avatax')->getExistServices();
-        foreach ($services as $service) {
-            if ($service == self::AVATAX_ACTIVE_SERVICE) {
-                $this->setActiveService($service);
-                $configuration = Mage::getStoreConfig('tax/' . strtolower($service),
-                    Mage::app()->getSafeStore()->getId());
-            }
-        }
+        $this->setActiveService(Mage::getConfig()->getNode('default/tax/avatax/active_service'));
+        $configuration = Mage::getStoreConfig('tax/' . strtolower($this->getActiveService()),
+            Mage::app()->getSafeStore()->getId());
 
         return $configuration;
     }
