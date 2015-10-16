@@ -167,15 +167,6 @@ class OnePica_AvaTax_Model_Calculator
      */
     public function isProductCalculated($item)
     {
-        // check if item has methods as far as shipping, gift wrapping, printed card item comes as Varien_Object
-        if (method_exists($item, 'isChildrenCalculated') && method_exists($item, 'getParentItem')) {
-            if ($item->isChildrenCalculated() && !$item->getParentItem()) {
-                return true;
-            }
-            if (!$item->isChildrenCalculated() && $item->getParentItem()) {
-                return true;
-            }
-        }
-        return false;
+        return $this->_getService()->isProductCalculated($item);
     }
 }

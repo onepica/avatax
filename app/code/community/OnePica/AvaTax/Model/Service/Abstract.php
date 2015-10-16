@@ -75,4 +75,12 @@ abstract class OnePica_AvaTax_Model_Service_Abstract
      * @return array
      */
     abstract public function getSummary($addressId);
+
+    /**
+     * Test to see if the product carries its own numbers or is calculated based on parent or children
+     *
+     * @param Mage_Sales_Model_Quote_Item|Mage_Sales_Model_Order_Item|mixed $item
+     * @return bool
+     */
+    abstract public function isProductCalculated($item);
 }

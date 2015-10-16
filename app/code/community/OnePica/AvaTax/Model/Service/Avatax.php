@@ -83,4 +83,15 @@ class OnePica_AvaTax_Model_Service_Avatax
     {
         return $this->_getEstimateResource()->getSummary($addressId);
     }
+
+    /**
+     * Test to see if the product carries its own numbers or is calculated based on parent or children
+     *
+     * @param Mage_Sales_Model_Quote_Item|Mage_Sales_Model_Order_Item|mixed $item
+     * @return bool
+     */
+    public function isProductCalculated($item)
+    {
+        return $this->_getEstimateResource()->isProductCalculated($item);
+    }
 }
