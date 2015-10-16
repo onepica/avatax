@@ -22,7 +22,6 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-
 class OnePica_AvaTax_Model_Calculator
 {
     /**
@@ -55,19 +54,7 @@ class OnePica_AvaTax_Model_Calculator
 
     /**
      * Get rates from Service
-     *
-     * @param Mage_Sales_Model_Quote_Item $item
-     * @return string
-     */
-    protected function _getRates($item)
-    {
-        return $this->_getService()->getRates($item);
-    }
-
-    /**
-     * Get rates data
-     * An array of rates that acts as a cache
-     * Example: $_rates[$cachekey] = array(
+     * Example: $_ratesData = array(
      *     'timestamp' => 1325015952
      *     'summary' => array(
      *         array('name'=>'NY STATE TAX', 'rate'=>4, 'amt'=>6),
@@ -79,11 +66,12 @@ class OnePica_AvaTax_Model_Calculator
      *         'Shipping' => array('rate'=>0, 'amt'=>0)
      *     )
      * )
+     * @param Mage_Sales_Model_Quote_Item $item
      * @return array
      */
-    protected function _getRatesData()
+    protected function _getRates($item)
     {
-        return $this->_getService()->getRatesData();
+        return $this->_getService()->getRates($item);
     }
 
     /**
@@ -97,10 +85,9 @@ class OnePica_AvaTax_Model_Calculator
         if ($this->isProductCalculated($item)) {
             return 0;
         } else {
-            $key = $this->_getRates($item);
             $id = $item->getSku();
-            $ratesData = $this->_getRatesData();
-            return isset($ratesData[$key]['items'][$id]['rate']) ? $ratesData[$key]['items'][$id]['rate'] : 0;
+            $ratesData = $this->_getRates($item);
+            return isset($ratesData['items'][$id]['rate']) ? $ratesData['items'][$id]['rate'] : 0;
         }
     }
 
@@ -115,10 +102,9 @@ class OnePica_AvaTax_Model_Calculator
         if ($item->getParentItemId()) {
             return 0;
         }
-        $key = $this->_getRates($item);
-        $ratesData = $this->_getRatesData();
+        $ratesData = $this->_getRates($item);
         $id = $item->getSku();
-        return isset($ratesData[$key]['gw_items'][$id]['amt']) ? $ratesData[$key]['gw_items'][$id]['amt'] : 0;
+        return isset($ratesData['gw_items'][$id]['amt']) ? $ratesData['gw_items'][$id]['amt'] : 0;
     }
 
     /**
@@ -139,10 +125,9 @@ class OnePica_AvaTax_Model_Calculator
                 }
                 return $tax;
             } else {
-                $key = $this->_getRates($item);
-                $ratesData = $this->_getRatesData();
+                $ratesData = $this->_getRates($item);;
                 $id = $item->getSku();
-                return isset($ratesData[$key]['items'][$id]['amt']) ? $ratesData[$key]['items'][$id]['amt'] : 0;
+                return isset($ratesData['items'][$id]['amt']) ? $ratesData['items'][$id]['amt'] : 0;
             }
         }
         return 0;

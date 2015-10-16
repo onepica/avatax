@@ -22,7 +22,6 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-
 class OnePica_AvaTax_Model_Service_Avatax
     extends OnePica_AvaTax_Model_Service_Abstract
 {
@@ -56,21 +55,11 @@ class OnePica_AvaTax_Model_Service_Avatax
      * Get rates from Avalara
      *
      * @param Mage_Sales_Model_Quote_Item $item
-     * @return string
+     * @return array
      */
     public function getRates($item)
     {
         return $this->_getEstimateResource()->getRates($item);
-    }
-
-    /**
-     * Get rates data
-     *
-     * @return array
-     */
-    public function getRatesData()
-    {
-        return $this->_getEstimateResource()->getRatesData();
     }
 
     /**

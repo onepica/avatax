@@ -57,16 +57,9 @@ abstract class OnePica_AvaTax_Model_Service_Abstract
      * Get rates from Service
      *
      * @param Mage_Sales_Model_Quote_Item $item
-     * @return string
-     */
-    abstract public function getRates($item);
-
-    /**
-     * Get rates data
-     *
      * @return array
      */
-    abstract public function getRatesData();
+    abstract public function getRates($item);
 
     /**
      * Get tax detail summary

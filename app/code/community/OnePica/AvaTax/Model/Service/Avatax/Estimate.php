@@ -22,7 +22,6 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-
 class OnePica_AvaTax_Model_Service_Avatax_Estimate
     extends OnePica_AvaTax_Model_Service_Avatax_Abstract
 {
@@ -73,7 +72,6 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
      */
     protected $_productGiftPair = array();
 
-
     /**
      * Loads any saved rates in session
      */
@@ -95,7 +93,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
      * Get rates from Avalara
      *
      * @param Mage_Sales_Model_Quote_Item $item
-     * @return string
+     * @return array
      */
     public function getRates($item)
     {
@@ -173,8 +171,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
             Mage::getSingleton('avatax/session')->setRates($this->_rates);
         }
 
-        //return $requestKey so it doesn't have to be calculated again
-        return $requestKey;
+        return $this->_rates[$requestKey];
     }
 
     /**
@@ -407,16 +404,6 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
     protected function _getTaxArrayCodeByLine($line)
     {
         return isset($this->_productGiftPair[$line->getNo()]) ? 'gw_items' : 'items';
-    }
-
-    /**
-     * Get rates data
-     *
-     * @return array
-     */
-    public function getRatesData()
-    {
-        return $this->_rates;
     }
 
     /**
