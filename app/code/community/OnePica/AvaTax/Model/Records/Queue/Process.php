@@ -22,7 +22,7 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Records_Queue_Process extends OnePica_AvaTax_Model_Abstract
+class OnePica_AvaTax_Model_Records_Queue_Process
 {
     /**
      * Remove the Failed process

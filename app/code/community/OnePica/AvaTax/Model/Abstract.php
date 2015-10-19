@@ -21,6 +21,8 @@
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
+ * @todo       This file should be removed in the end of development AVTNG-28
+ *             Now it is used for old models structure
  */
 abstract class OnePica_AvaTax_Model_Abstract extends Varien_Object
 {
