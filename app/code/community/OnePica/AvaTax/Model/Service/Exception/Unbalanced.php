@@ -11,19 +11,17 @@
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
- * @copyright  Copyright (c) 2015 One Pica, Inc.
+ * @copyright  Copyright (c) 2009 One Pica, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
 /**
- * Class OnePica_AvaTax_Model_Calculator_Service_Avatax
+ * Unbalanced Exception class
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-
-class OnePica_AvaTax_Model_Calculator_Service_Avatax
-    extends OnePica_AvaTax_Model_Calculator_Service_Abstract
+class OnePica_AvaTax_Model_Service_Exception_Unbalanced extends Exception
 {
 }
