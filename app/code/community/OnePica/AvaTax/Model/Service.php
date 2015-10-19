@@ -1,7 +1,7 @@
 <?php
 
  /**
- * OnePica_AvaTax
+ * OnePica_AvaTax_Model_Service
  *
  * NOTICE OF LICENSE
  *
@@ -12,12 +12,12 @@
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
- * @copyright  Copyright (c) 2009 One Pica, Inc.
+ * @copyright  Copyright (c) 2015 One Pica, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
  /**
- * The abstract base AvaTax model
+ * The fabric AvaTax model
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
@@ -26,23 +26,27 @@
 
 class OnePica_AvaTax_Model_Service extends Mage_Core_Model_Factory
 {
+    /**
+     * Path to service model
+     */
+    const XML_PATH_INDEX_INDEX_MODEL = 'avatax/service_';
 
     /**
      * Get factory method
      *
-     * @param $service
+     * @param string $service
      * @param array $options
      * @return Mage_Core_Model_Abstract|null|OnePica_AvaTax_Model_Service_Abstract
-     * @throws OnePica_SocialPost_Model_Api_Exception
+     * @throws OnePica_AvaTax_Exception
      */
     public function factory($service, array $options = array())
     {
         if (!$service) {
-            throw new OnePica_SocialPost_Model_Api_Exception("Not defined service name.");;
+            throw new OnePica_AvaTax_Exception("Service name is not defined.");
         }
-        $model = Mage::getModel('avatax/service_' . $service, $options);
+        $model = $this->getModel(self::XML_PATH_INDEX_INDEX_MODEL . $service, $options);
         if (!$model) {
-            throw new OnePica_SocialPost_Model_Api_Exception("Could not found service Service model '$service'.");
+            throw new OnePica_AvaTax_Exception("Could not found service Service model " . $service);
         }
         return $model;
     }
