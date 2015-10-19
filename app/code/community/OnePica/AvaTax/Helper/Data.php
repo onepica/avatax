@@ -24,15 +24,6 @@
  */
 class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
 {
-    /**
-     * Path to is AvaTax disabled.
-     */
-    const XML_PATH_TO_TAX_AVATAX_LOG_STATUS = 'tax/avatax/log_status';
-
-    /**
-     * Path to the logging type
-     */
-    const XML_PATH_TO_TAX_AVATAX_LOG_TYPE_LIST = 'tax/avatax/log_type_list';
 
     /**
      * Check if avatax extension is enabled
@@ -43,7 +34,7 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function isAvataxEnabled($store = null)
     {
-        return (Mage::getStoreConfig(OnePica_AvaTax_Helper_Config::XML_PATH_TO_TAX_AVATAX_ACTION, $store)
+        return ($this->_getConfigData()->getStatusAvataxAction($store)
             != OnePica_AvaTax_Model_Config::ACTION_DISABLE);
     }
 
@@ -66,7 +57,7 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getLogMode($store = null)
     {
-        return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_LOG_STATUS, $store);
+        return $this->_getConfigData()->getConfigLogMode($store);
     }
 
     /**
@@ -78,7 +69,7 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getLogType($store = null)
     {
-        return explode(",", Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_LOG_TYPE_LIST, $store));
+        return explode(",", $this->_getConfigData()->getLogTypeList($store));
     }
 
     /**
@@ -92,7 +83,7 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
         $storeCollection = Mage::app()->getStores();
 
         foreach ($storeCollection as $store) {
-            $disabled |= Mage::getStoreConfig(OnePica_AvaTax_Helper_Config::XML_PATH_TO_TAX_AVATAX_ACTION, $store->getId())
+            $disabled |= $this->_getConfigData()->getStatusAvataxAction($store->getId())
                 == OnePica_AvaTax_Model_Config::ACTION_DISABLE;
         }
 
@@ -112,5 +103,14 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
         $fact = pow(10, $precision);
 
         return ceil($fact * $value) / $fact;
+    }
+
+    /**
+     * Get config helper
+     * @return OnePica_AvaTax_Helper_Config
+     */
+    private function _getConfigData()
+    {
+        return Mage::helper('avatax/config');
     }
 }

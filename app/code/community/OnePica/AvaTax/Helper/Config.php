@@ -135,6 +135,16 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
     const XML_PATH_TO_TAX_AVATAX_TAXABLE_COUNTRY = 'tax/avatax/taxable_country';
 
     /**
+     * Path to the logging type
+     */
+    const XML_PATH_TO_TAX_AVATAX_LOG_TYPE_LIST = 'tax/avatax/log_type_list';
+
+    /**
+     * Path to is AvaTax disabled.
+     */
+    const XML_PATH_TO_TAX_AVATAX_LOG_STATUS = 'tax/avatax/log_status';
+
+    /**
      * Returns full stop on error
      *
      * @param null|bool|int|Mage_Core_Model_Store $store
@@ -323,6 +333,17 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Get avatax status
+     *
+     * @param $storeId
+     * @return mixed
+     */
+    public function getStatusAvataxAction($storeId = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_ACTION, $storeId);
+    }
+
+    /**
      * Get backend message
      *
      * @param $storeId
@@ -383,6 +404,16 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Get region filter fist
+     * @param null $storeId
+     * @return mixed
+     */
+    public function getLogTypeList($storeId = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_LOG_TYPE_LIST, $storeId);
+    }
+
+    /**
      * Get region filter mode
      * @param null $storeId
      * @return mixed
@@ -411,5 +442,17 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
     public function getTaxableCountry($storeId = null)
     {
         return  Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_TAXABLE_COUNTRY, $storeId);
+    }
+
+    /**
+     * Returns the logging level
+     *
+     * @param null|bool|int|Mage_Core_Model_Store $store
+     *
+     * @return int
+     */
+    public function getConfigLogMode($store = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_LOG_STATUS, $store);
     }
 }

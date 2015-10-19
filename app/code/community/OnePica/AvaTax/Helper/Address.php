@@ -82,7 +82,7 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
     {
         $filter = false;
 
-        if (Mage::getStoreConfig(OnePica_AvaTax_Helper_Config::XML_PATH_TO_TAX_AVATAX_ACTION, $storeId)
+        if ($this->_getConfigData()->getStatusAvataxAction($storeId)
             == OnePica_AvaTax_Model_Config::ACTION_DISABLE) {
             return false;
         }
@@ -256,7 +256,7 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
         //is action enabled?
         $action = $object->getOrder() ?
             OnePica_AvaTax_Model_Config::ACTION_CALC_SUBMIT : OnePica_AvaTax_Model_Config::ACTION_CALC;
-        if (Mage::getStoreConfig(OnePica_AvaTax_Helper_Config::XML_PATH_TO_TAX_AVATAX_ACTION, $storeId) < $action) {
+        if ($this->_getConfigData()->getStatusAvataxAction($storeId) < $action) {
             return false;
         }
 
@@ -275,6 +275,10 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
         return true;
     }
 
+    /**
+     * Get config helper
+     * @return OnePica_AvaTax_Helper_Config
+     */
     private function _getConfigData()
     {
         return Mage::helper('avatax/config');
