@@ -99,8 +99,8 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
                     || $address->getUseForShipping()
                 ) {
                     $shippingItem = new Varien_Object();
-                    $shippingItem->setSku(Mage::helper('avatax')->getShippingSku($store->getId()));
-                    $shippingItem->setProductId(Mage::helper('avatax')->getShippingSku($store->getId()));
+                    $shippingItem->setSku(Mage::helper('avatax/config')->getShippingSku($store->getId()));
+                    $shippingItem->setProductId(Mage::helper('avatax/config')->getShippingSku($store->getId()));
                     $shippingItem->setAddress($address);
                     $baseShippingTax = $calculator->getItemTax($shippingItem);
                     $shippingTax = $store->convertPrice($baseShippingTax);
@@ -122,8 +122,8 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
 
                 if ($address->getGwPrice() > 0) {
                     $gwOrderItem = new Varien_Object();
-                    $gwOrderItem->setSku(Mage::helper('avatax')->getGwOrderSku($store->getId()));
-                    $gwOrderItem->setProductId(Mage::helper('avatax')->getGwOrderSku($store->getId()));
+                    $gwOrderItem->setSku(Mage::helper('avatax/config')->getGwOrderSku($store->getId()));
+                    $gwOrderItem->setProductId(Mage::helper('avatax/config')->getGwOrderSku($store->getId()));
                     $gwOrderItem->setAddress($address);
                     $baseGwOrderTax = $calculator->getItemTax($gwOrderItem);
                     $gwOrderTax = $store->convertPrice($baseGwOrderTax);
@@ -137,8 +137,8 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
 
                 if ($address->getGwAddPrintedCard()) {
                     $gwPrintedCardItem = new Varien_Object();
-                    $gwPrintedCardItem->setSku(Mage::helper('avatax')->getGwPrintedCardSku($store->getId()));
-                    $gwPrintedCardItem->setProductId(Mage::helper('avatax')->getGwPrintedCardSku($store->getId()));
+                    $gwPrintedCardItem->setSku(Mage::helper('avatax/config')->getGwPrintedCardSku($store->getId()));
+                    $gwPrintedCardItem->setProductId(Mage::helper('avatax/config')->getGwPrintedCardSku($store->getId()));
                     $gwPrintedCardItem->setAddress($address);
                     $baseGwPrintedCardTax = $calculator->getItemTax($gwPrintedCardItem);
                     $gwPrintedCardTax = $store->convertPrice($baseGwPrintedCardTax);
@@ -164,7 +164,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
     protected function _isAddressActionable($address)
     {
         /** @var OnePica_AvaTax_Helper_Data $helper */
-        $helper = Mage::helper('avatax');
+        $helper = Mage::helper('avatax/address');
         $storeId = $address->getQuote()->getStoreId();
         return $helper->isAddressActionable($address, $storeId, OnePica_AvaTax_Model_Config::REGIONFILTER_TAX);
     }

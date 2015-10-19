@@ -142,11 +142,11 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
 
         if ($result->getResultCode() != SeverityLevel::$Success) {
             self::$_hasError = true;
-            if (Mage::helper('avatax')->fullStopOnError($storeId)) {
-                Mage::helper('avatax')->addErrorMessage($storeId);
+            if (Mage::helper('avatax/config')->fullStopOnError($storeId)) {
+                Mage::helper('avatax/errors')->addErrorMessage($storeId);
             }
         } else {
-            Mage::helper('avatax')->removeErrorMessage();
+            Mage::helper('avatax/errors')->removeErrorMessage();
         }
 
         return $result;
@@ -167,8 +167,8 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
         $this->_request->setDocDate($this->_getDateModel()->date('Y-m-d'));
         $this->_request->setExemptionNo('');
         $this->_request->setDiscount(0.00); //cannot be used in Magento
-        $this->_request->setSalespersonCode(Mage::helper('avatax')->getSalesPersonCode($storeId));
-        $this->_request->setLocationCode(Mage::helper('avatax')->getLocationCode($storeId));
+        $this->_request->setSalespersonCode(Mage::helper('avatax/config')->getSalesPersonCode($storeId));
+        $this->_request->setLocationCode(Mage::helper('avatax/config')->getLocationCode($storeId));
         $this->_request->setCountry(Mage::getStoreConfig('shipping/origin/country_id', $storeId));
         $this->_request->setCurrencyCode(Mage::app()->getStore($storeId)->getBaseCurrencyCode());
         $this->_addCustomer($object);
@@ -486,7 +486,7 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
     {
         $value = null;
         $helperMethod = 'getRef' . $refNumber . 'AttributeCode';
-        $refCode = Mage::helper('avatax')->{$helperMethod}($storeId);
+        $refCode = Mage::helper('avatax/config')->{$helperMethod}($storeId);
         if ($refCode && $product->getResource()->getAttribute($refCode)) {
             try {
                 $value = (string)$product->getResource()->getAttribute($refCode)->getFrontend()->getValue($product);
