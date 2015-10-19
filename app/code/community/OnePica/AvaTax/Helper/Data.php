@@ -25,6 +25,16 @@
 class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
 {
     /**
+     * Path to is AvaTax disabled.
+     */
+    const XML_PATH_TO_TAX_AVATAX_LOG_STATUS = 'tax/avatax/log_status';
+
+    /**
+     * Path to the logging type
+     */
+    const XML_PATH_TO_TAX_AVATAX_LOG_TYPE_LIST = 'tax/avatax/log_type_list';
+
+    /**
      * Check if avatax extension is enabled
      *
      * @param null|bool|int|Mage_Core_Model_Store $store $store
@@ -33,7 +43,8 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function isAvataxEnabled($store = null)
     {
-        return ($this->_getConfig('action', $store) != OnePica_AvaTax_Model_Config::ACTION_DISABLE);
+        return (Mage::getStoreConfig(OnePica_AvaTax_Helper_Config::XML_PATH_TO_TAX_AVATAX_ACTION, $store)
+            != OnePica_AvaTax_Model_Config::ACTION_DISABLE);
     }
 
     /**
@@ -47,19 +58,6 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Returns a config value from the admin.
-     *
-     * @param string $path
-     * @param null|bool|int|Mage_Core_Model_Store $store
-     *
-     * @return string
-     */
-    protected function _getConfig($path, $store = null)
-    {
-        return Mage::getSingleton('avatax/config')->getConfig($path, $store);
-    }
-
-    /**
      * Returns the logging level
      *
      * @param null|bool|int|Mage_Core_Model_Store $store
@@ -68,7 +66,7 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getLogMode($store = null)
     {
-        return $this->_getConfig('log_status', $store);
+        return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_LOG_STATUS, $store);
     }
 
     /**
@@ -80,7 +78,7 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getLogType($store = null)
     {
-        return explode(",", $this->_getConfig('log_type_list', $store));
+        return explode(",", Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_LOG_TYPE_LIST, $store));
     }
 
     /**
@@ -94,7 +92,7 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
         $storeCollection = Mage::app()->getStores();
 
         foreach ($storeCollection as $store) {
-            $disabled |= Mage::getStoreConfig('tax/avatax/action', $store->getId())
+            $disabled |= Mage::getStoreConfig(OnePica_AvaTax_Helper_Config::XML_PATH_TO_TAX_AVATAX_ACTION, $store->getId())
                 == OnePica_AvaTax_Model_Config::ACTION_DISABLE;
         }
 

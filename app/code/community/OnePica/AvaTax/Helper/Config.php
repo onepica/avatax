@@ -24,19 +24,76 @@
  */
 class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
 {
+    /**
+     * Path to full stop on error
+     */
+    const XML_PATH_TO_TAX_AVATAX_ERROR_STOP = 'tax/avatax/error_full_stop';
 
     /**
-     * Returns a config value from the admin.
-     *
-     * @param string $path
-     * @param null|bool|int|Mage_Core_Model_Store $store
-     *
-     * @return string
+     * Path to shipping line item faked sku
      */
-    protected function _getConfig($path, $store = null)
-    {
-        return Mage::getSingleton('avatax/config')->getConfig($path, $store);
-    }
+    const XML_PATH_TO_TAX_AVATAX_SHIPPING_SKU = 'tax/avatax/shipping_sku';
+
+    /**
+     * Path to giftwraporder line item faked sku
+     */
+    const XML_PATH_TO_TAX_AVATAX_GW_ORDER_SKU = 'tax/avatax/gw_order_sku';
+
+    /**
+     * Path to giftwrapitems line item faked sku
+     */
+    const XML_PATH_TO_TAX_AVATAX_GW_ITEMS_SKU = 'tax/avatax/gw_items_sku';
+
+    /**
+     * Path to giftwrapprintedcard line item faked sku
+     */
+    const XML_PATH_TO_TAX_AVATAX_GW_PRINTED_CARD_SKU = 'tax/avatax/gw_printed_card_sku';
+
+    /**
+     * Path to shipping line item faked sku
+     */
+    const XML_PATH_TO_TAX_AVATAX_SALES_PERSON_CODE = 'tax/avatax/sales_person_code';
+
+    /**
+     * Path to attribute code for the location code to send to Avalara
+     */
+    const XML_PATH_TO_TAX_AVATAX_LOCATION_CODE = 'tax/avatax/location_code';
+
+    /**
+     * Path to the positive adjustment identifier to send to Avalara
+     */
+    const XML_PATH_TO_TAX_AVATAX_ADJUSTMENT_POSITIVE_SKU = 'tax/avatax/adjustment_positive_sku';
+
+    /**
+     * Path to the negative adjustment identifier to send to Avalara
+     */
+    const XML_PATH_TO_TAX_AVATAX_ADJUSTMENT_NEGATIVE_SKU = 'tax/avatax/adjustment_negative_sku';
+
+    /**
+     * Path to the required field list
+     */
+    const XML_PATH_TO_TAX_AVATAX_FIELD_REQUIRED_LIST = 'tax/avatax/field_required_list';
+
+    /**
+     * Path to the rules for field
+     */
+    const XML_PATH_TO_TAX_AVATAX_FIELD_RULE = 'tax/avatax/field_rule';
+
+    /**
+     * Path to attribute code for the reference code 1 to send to Avalara
+     */
+    const XML_PATH_TO_TAX_AVATAX_LINE_REF1_CODE = 'tax/avatax/line_ref1_code';
+
+    /**
+     * Path to attribute code for the reference code 2 to send to Avalara
+     */
+    const XML_PATH_TO_TAX_AVATAX_LINE_REF2_CODE = 'tax/avatax/line_ref2_code';
+
+    /**
+     * Path to is AvaTax disabled.
+     */
+    const XML_PATH_TO_TAX_AVATAX_ACTION = 'tax/avatax/action';
+
 
     /**
      * Returns full stop on error
@@ -47,7 +104,7 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
      */
     public function fullStopOnError($store = null)
     {
-        return (bool)$this->_getConfig('error_full_stop', $store);
+        return (bool)Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_ERROR_STOP, $store);
     }
 
     /**
@@ -59,7 +116,7 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
      */
     public function getShippingSku($store = null)
     {
-        return $this->_getConfig('shipping_sku', $store);
+        return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_ERROR_STOP, $store);
     }
 
     /**
@@ -71,7 +128,7 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
      */
     public function getGwOrderSku($store = null)
     {
-        return $this->_getConfig('gw_order_sku', $store);
+        return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_GW_ORDER_SKU, $store);
     }
 
     /**
@@ -83,7 +140,7 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
      */
     public function getGwItemsSku($store = null)
     {
-        return $this->_getConfig('gw_items_sku', $store);
+        return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_GW_ITEMS_SKU, $store);
     }
 
     /**
@@ -95,7 +152,7 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
      */
     public function getGwPrintedCardSku($store = null)
     {
-        return $this->_getConfig('gw_printed_card_sku', $store);
+        return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_GW_PRINTED_CARD_SKU, $store);
     }
 
     /**
@@ -107,7 +164,7 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
      */
     public function getSalesPersonCode($store = null)
     {
-        return $this->_getConfig('sales_person_code', $store);
+        return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_SALES_PERSON_CODE, $store);
     }
 
     /**
@@ -119,7 +176,7 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
      */
     public function getLocationCode($store = null)
     {
-        return $this->_getConfig('location_code', $store);
+        return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_LOCATION_CODE, $store);
     }
 
     /**
@@ -131,7 +188,7 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
      */
     public function getPositiveAdjustmentSku($store = null)
     {
-        return $this->_getConfig('adjustment_positive_sku', $store);
+        return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_ADJUSTMENT_POSITIVE_SKU, $store);
     }
 
     /**
@@ -143,7 +200,7 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
      */
     public function getNegativeAdjustmentSku($store = null)
     {
-        return $this->_getConfig('adjustment_negative_sku', $store);
+        return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_ADJUSTMENT_NEGATIVE_SKU, $store);
     }
 
     /**
@@ -155,7 +212,7 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
      */
     public function getFieldRequiredList($store = null)
     {
-        return $this->_getConfig('field_required_list', $store);
+        return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_FIELD_REQUIRED_LIST, $store);
     }
 
     /**
@@ -167,7 +224,7 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
      */
     public function getFieldRule($store = null)
     {
-        return $this->_getConfig('field_rule', $store);
+        return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_FIELD_RULE, $store);
     }
 
     /**
@@ -179,7 +236,7 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
      */
     public function getRef1AttributeCode($store = null)
     {
-        return $this->_getConfig('line_ref1_code', $store);
+        return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_LINE_REF1_CODE, $store);
     }
 
     /**
@@ -191,9 +248,13 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
      */
     public function getRef2AttributeCode($store = null)
     {
-        return $this->_getConfig('line_ref2_code', $store);
+        return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_LINE_REF2_CODE, $store);
     }
 
+    public function get()
+    {
+
+    }
     /**
      * Returns the path to the etc directory.
      *
@@ -216,9 +277,9 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
         $storeId   = Mage::app()->getRequest()->get('store');
 
         if ($websiteId && !$storeId) {
-            return !(bool)Mage::app()->getWebsite($websiteId)->getConfig('tax/avatax/action');
+            return !(bool)Mage::app()->getWebsite($websiteId)->getConfig(self::XML_PATH_TO_TAX_AVATAX_ACTION);
         }
 
-        return !(bool)Mage::getStoreConfig('tax/avatax/action', $storeId);
+        return !(bool)Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_ACTION, $storeId);
     }
 }
