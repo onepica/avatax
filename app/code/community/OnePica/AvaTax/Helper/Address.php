@@ -25,36 +25,6 @@
 class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
 {
     /**
-     * Xml path to taxable_country config
-     */
-    const XML_PATH_TO_TAX_AVATAX_TAXABLE_COUNTRY = 'tax/avatax/taxable_country';
-
-    /**
-     * Xml path to region_filter_mode
-     */
-    const XML_PATH_TO_TAX_AVATAX_REGION_FILTER_MODE = 'tax/avatax/region_filter_mode';
-
-    /**
-     * Xml path to region_filter_mode
-     */
-    const XML_PATH_TO_TAX_AVATAX_REGION_FILTER_LIST = 'tax/avatax/region_filter_list';
-
-    /**
-     * Path to address validation countries
-     */
-    const XML_PATH_TO_TAX_AVATAX_ADDRESS_VALIDATION_COUNTRIES = 'tax/avatax/address_validation_countries';
-
-    /**
-     * Path to is address validate
-     */
-    const XML_PATH_TO_TAX_AVATAX_VALIDATE_ADDRESS = 'tax/avatax/validate_address';
-
-    /**
-     * Path to is address normalization on
-     */
-    const XML_PATH_TO_TAX_AVATAX_NORMALIZE_ADDRESS = 'tax/avatax/normalize_address';
-
-    /**
      * Determines if address normalization is enabled
      *
      * @param Mage_Customer_Model_Address $address
@@ -67,7 +37,7 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
         if (!$this->isAddressActionable($address, $storeId, OnePica_AvaTax_Model_Config::REGIONFILTER_ALL, true)) {
             return false;
         }
-        return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_NORMALIZE_ADDRESS, $storeId);
+        return $this->_getConfigData()->getNormalizeAddress($storeId);
     }
 
     /**
@@ -83,7 +53,7 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
         if (!$this->isAddressActionable($address, $storeId, OnePica_AvaTax_Model_Config::REGIONFILTER_ALL, true)) {
             return false;
         }
-        return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_VALIDATE_ADDRESS, $storeId);
+        return $this->_getConfigData()->getValidateAddress($storeId);
     }
 
     /**
@@ -93,7 +63,7 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
      */
     public function getAddressValidationCountries()
     {
-        return explode(',', Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_ADDRESS_VALIDATION_COUNTRIES));
+        return explode(',', $this->_getConfigData()->getAddressValidationCountries());
     }
 
     /**
@@ -174,7 +144,7 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
      */
     public function getRegionFilterModByStore($storeId = null)
     {
-        return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_REGION_FILTER_MODE, $storeId);
+        return $this->_getConfigData()->getRegionFilterMode($storeId);
     }
 
     /**
@@ -205,7 +175,7 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
      */
     public function getRegionFilterModByWebsite($websiteId)
     {
-        return Mage::app()->getWebsite($websiteId)->getConfig(self::XML_PATH_TO_TAX_AVATAX_REGION_FILTER_MODE);
+        return $this->_getConfigData()->getConfigRegionFilterModByWebsite($websiteId);
     }
 
     /**
@@ -219,7 +189,7 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
     protected function _getFilterRegion($address, $storeId)
     {
         $filter        = false;
-        $regionFilters = explode(',', Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_REGION_FILTER_LIST, $storeId));
+        $regionFilters = explode(',', $this->_getConfigData()->getRegionFilterList($storeId));
         $entityId      = $address->getRegionId() ?: $address->getCountryId();
         if (!in_array($entityId, $regionFilters)) {
             $filter = 'region';
@@ -236,7 +206,7 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
      */
     public function getTaxableCountryByStore($storeId = null)
     {
-        return explode(',', Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_TAXABLE_COUNTRY, $storeId));
+        return explode(',', $this->_getConfigData()->getTaxableCountry($storeId));
     }
 
     /**
@@ -250,7 +220,7 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
     {
         return explode(',', Mage::app()
             ->getWebsite($websiteId)
-            ->getConfig(self::XML_PATH_TO_TAX_AVATAX_TAXABLE_COUNTRY)
+            ->getConfig(OnePica_AvaTax_Helper_Config::XML_PATH_TO_TAX_AVATAX_TAXABLE_COUNTRY)
         );
     }
 
@@ -303,5 +273,10 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
         }
 
         return true;
+    }
+
+    private function _getConfigData()
+    {
+        return Mage::helper('avatax/config');
     }
 }

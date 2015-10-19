@@ -29,15 +29,6 @@ class OnePica_AvaTax_Helper_Errors extends Mage_Core_Helper_Abstract
      */
     const CALCULATE_ERROR_MESSAGE_IDENTIFIER = 'avatax_calculate_error';
 
-    /**
-     * Path to error in backend massage
-     */
-    const CALCULATE_ERROR_BACKEND_MESSAGE = 'error_backend_message';
-
-    /**
-     * Path to error frontend message
-     */
-    const CALCULATE_ERROR_FRONTEND_MESSAGE = 'error_frontend_message';
 
     /**
      * Adds error message if there is an error
@@ -97,9 +88,9 @@ class OnePica_AvaTax_Helper_Errors extends Mage_Core_Helper_Abstract
     public function getErrorMessage($store = null)
     {
         if (Mage::app()->getStore()->isAdmin()) {
-            return Mage::getStoreConfig(self::CALCULATE_ERROR_BACKEND_MESSAGE, $store);
+            return Mage::helper('avatax/config')->getErrorBackendMessage($store);
         } else {
-            return Mage::getStoreConfig(self::CALCULATE_ERROR_FRONTEND_MESSAGE, $store);
+            return Mage::helper('avatax/config')->getErrorFrontendMessage($store);
         }
     }
 }

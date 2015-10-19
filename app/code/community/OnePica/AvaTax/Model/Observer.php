@@ -424,13 +424,13 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     protected function _checkSkuFields($storeId)
     {
         $errors = array();
-        if (!Mage::getStoreConfig('tax/avatax/shipping_sku', $storeId)) {
+        if (!Mage::helper('avatax/config')->getShippingSku($storeId)) {
             $errors[] = Mage::helper('avatax')->__('You must enter a shipping sku');
         }
-        if (!Mage::getStoreConfig('tax/avatax/adjustment_positive_sku', $storeId)) {
+        if (!Mage::helper('avatax/config')->getPositiveAdjustmentSku($storeId)) {
             $errors[] = Mage::helper('avatax')->__('You must enter an adjustment refund sku');
         }
-        if (!Mage::getStoreConfig('tax/avatax/adjustment_negative_sku', $storeId)) {
+        if (!Mage::helper('avatax/config')->getNegativeAdjustmentSku($storeId)) {
             $errors[] = Mage::helper('avatax')->__('You must enter an adjustment fee sku');
 
             return $errors;

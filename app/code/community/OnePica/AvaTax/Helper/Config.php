@@ -94,6 +94,45 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
      */
     const XML_PATH_TO_TAX_AVATAX_ACTION = 'tax/avatax/action';
 
+    /**
+     * Path to error in backend massage
+     */
+    const CALCULATE_ERROR_BACKEND_MESSAGE = 'tax/avatax/error_backend_message';
+
+    /**
+     * Path to error frontend message
+     */
+    const CALCULATE_ERROR_FRONTEND_MESSAGE = 'tax/avatax/error_frontend_message';
+
+    /**
+     * Path to is address normalization on
+     */
+    const XML_PATH_TO_TAX_AVATAX_NORMALIZE_ADDRESS = 'tax/avatax/normalize_address';
+
+    /**
+     * Path to is address validate
+     */
+    const XML_PATH_TO_TAX_AVATAX_VALIDATE_ADDRESS = 'tax/avatax/validate_address';
+
+    /**
+     * Path to address validation countries
+     */
+    const XML_PATH_TO_TAX_AVATAX_ADDRESS_VALIDATION_COUNTRIES = 'tax/avatax/address_validation_countries';
+
+    /**
+     * Xml path to region_filter_mode
+     */
+    const XML_PATH_TO_TAX_AVATAX_REGION_FILTER_LIST = 'tax/avatax/region_filter_list';
+
+    /**
+     * Xml path to region_filter_mode
+     */
+    const XML_PATH_TO_TAX_AVATAX_REGION_FILTER_MODE = 'tax/avatax/region_filter_mode';
+
+    /**
+     * Xml path to taxable_country config
+     */
+    const XML_PATH_TO_TAX_AVATAX_TAXABLE_COUNTRY = 'tax/avatax/taxable_country';
 
     /**
      * Returns full stop on error
@@ -116,7 +155,7 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
      */
     public function getShippingSku($store = null)
     {
-        return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_ERROR_STOP, $store);
+        return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_SHIPPING_SKU, $store);
     }
 
     /**
@@ -281,5 +320,96 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
         }
 
         return !(bool)Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_ACTION, $storeId);
+    }
+
+    /**
+     * Get backend message
+     *
+     * @param $storeId
+     * @return mixed
+     */
+    public function getErrorBackendMessage($storeId = null)
+    {
+        return Mage::getStoreConfig(self::CALCULATE_ERROR_BACKEND_MESSAGE, $storeId);
+    }
+
+    /**
+     * Get frontend message
+     *
+     * @param $storeId
+     * @return mixed
+     */
+    public function getErrorFrontendMessage($storeId = null)
+    {
+        return Mage::getStoreConfig(self::CALCULATE_ERROR_FRONTEND_MESSAGE, $storeId);
+    }
+
+    /**
+     * Get normalize address
+     * @return mixed
+     */
+    public function getNormalizeAddress($storeId = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_NORMALIZE_ADDRESS, $storeId);
+    }
+
+    /**
+     * Get validate address
+     * @return mixed
+     */
+    public function getValidateAddress($storeId = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_VALIDATE_ADDRESS, $storeId);
+    }
+
+    /**
+     * Get address validation countries
+     * @param null $storeId
+     * @return mixed
+     */
+    public function getAddressValidationCountries($storeId = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_ADDRESS_VALIDATION_COUNTRIES, $storeId);
+    }
+
+    /**
+     * Get region filter fist
+     * @param null $storeId
+     * @return mixed
+     */
+    public function getRegionFilterList($storeId = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_REGION_FILTER_LIST, $storeId);
+    }
+
+    /**
+     * Get region filter mode
+     * @param null $storeId
+     * @return mixed
+     */
+    public function getRegionFilterMode($storeId = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_REGION_FILTER_MODE, $storeId);
+    }
+
+    /**
+     * Get region filter mode
+     * @param null $websiteId
+     * @return mixed
+     * @throws Mage_Core_Exception
+     */
+    public function getConfigRegionFilterModByWebsite($websiteId = null)
+    {
+        return Mage::app()->getWebsite($websiteId)->getConfig(self::XML_PATH_TO_TAX_AVATAX_REGION_FILTER_MODE);
+    }
+
+    /**
+     * Get taxable country
+     * @param null $storeId
+     * @return mixed
+     */
+    public function getTaxableCountry($storeId = null)
+    {
+        return  Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_TAXABLE_COUNTRY, $storeId);
     }
 }
