@@ -38,7 +38,7 @@ class OnePica_AvaTax_Model_Service_Avatax
     public function __construct()
     {
         // init resources
-        $this->_estimateResource = new OnePica_AvaTax_Model_Service_Avatax_Estimate();
+        $this->_estimateResource = mage::getModel('avatax/service_avatax_estimate');
     }
 
     /**

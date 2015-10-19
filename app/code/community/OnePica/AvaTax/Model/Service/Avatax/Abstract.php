@@ -104,55 +104,6 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
     }
 
     /**
-     * Sends a request to the Avatax server
-     *
-     * @param int $storeId
-     * @return mixed
-     */
-    protected function _send($storeId)
-    {
-        /** @var OnePica_AvaTax_Model_Config $config */
-        $config = Mage::getSingleton('avatax/config')->init($storeId);
-        $connection = $config->getTaxConnection();
-        $result = null;
-        $message = null;
-
-        try {
-            $result = $connection->getTax($this->_request);
-        } catch (Exception $exception) {
-            $message = new Message();
-            $message->setSummary($exception->getMessage());
-        }
-
-        if (!isset($result) || !is_object($result) || !$result->getResultCode()) {
-            $actualResult = $result;
-            $result = new Varien_Object();
-            $result->setResultCode(SeverityLevel::$Exception)
-                ->setActualResult($actualResult)
-                ->setMessages(array($message));
-        }
-
-        $this->_log(
-            OnePica_AvaTax_Model_Source_Logtype::GET_TAX,
-            $this->_request,
-            $result,
-            $storeId,
-            $config->getParams()
-        );
-
-        if ($result->getResultCode() != SeverityLevel::$Success) {
-            self::$_hasError = true;
-            if (Mage::helper('avatax')->fullStopOnError($storeId)) {
-                Mage::helper('avatax')->addErrorMessage($storeId);
-            }
-        } else {
-            Mage::helper('avatax')->removeErrorMessage();
-        }
-
-        return $result;
-    }
-
-    /**
      * Adds additional transaction based data
      *
      * @param OnePica_AvaTax_Model_Sales_Quote_Address|Mage_Sales_Model_Order $object

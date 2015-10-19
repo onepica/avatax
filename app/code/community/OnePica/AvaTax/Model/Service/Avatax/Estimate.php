@@ -23,7 +23,7 @@
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
 class OnePica_AvaTax_Model_Service_Avatax_Estimate
-    extends OnePica_AvaTax_Model_Service_Avatax_Abstract
+    extends OnePica_AvaTax_Model_Service_Avatax_Tax
 {
     /**
      * Length of time in minutes for cached rates
