@@ -38,7 +38,7 @@ class OnePica_AvaTax_Model_Service extends Mage_Core_Model_Factory
     public function factory($service, array $options = array())
     {
         if (!$service) {
-            return null;
+            throw new OnePica_SocialPost_Model_Api_Exception("Not defined service name.");;
         }
         $model = Mage::getModel('avatax/service_' . $service, $options);
         if (!$model) {
