@@ -24,6 +24,33 @@
  */
 abstract class OnePica_AvaTax_Model_Service_Abstract
 {
+    /**
+     * Service config
+     *
+     * @var array
+     */
+    protected $_config = array();
+
+    /**
+     * Set service config
+     *
+     * @param mixed $config
+     * @return $this
+     */
+    public function setConfig($config)
+    {
+        $this->_config = $config;
+    }
+
+    /**
+     * Get service config
+     *
+     * @return string
+     */
+    public function getConfig()
+    {
+        return $this->_config;
+    }
 
     /**
      * Get rates from Service
@@ -50,8 +77,30 @@ abstract class OnePica_AvaTax_Model_Service_Abstract
     abstract public function isProductCalculated($item);
 
     /**
+     * Save order in AvaTax system
+     *
+     * @see OnePica_AvaTax_Model_Observer::salesOrderPlaceAfter()
+     * @param Mage_Sales_Model_Order_Invoice     $invoice
+     * @param OnePica_AvaTax_Model_Records_Queue $queue
+     * @return bool
+     */
+    abstract public function invoice($invoice, $queue);
+
+    /**
+     * Save order in AvaTax system
+     *
+     * @see OnePica_AvaTax_Model_Observer::salesOrderPlaceAfter()
+     * @param Mage_Sales_Model_Order_Creditmemo $creditmemo
+     * @param OnePica_AvaTax_Model_Records_Queue $queue
+     * @return bool
+     */
+    abstract public function creditmemo($creditmemo, $queue);
+
+    /**
      * Get config helper
+     *
      * @return OnePica_AvaTax_Helper_Config
+     * @todo moved to calculator. Maybe should be removed from this class
      */
     protected function _getConfigHelper()
     {

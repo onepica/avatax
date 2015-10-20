@@ -153,12 +153,15 @@ class OnePica_AvaTax_Model_Records_Queue_Process
             ->addFieldToFilter('status', array('neq' => OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_FAILED))
             ->addFieldToFilter('status', array('neq' => OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_COMPLETE))
             ->addFieldToFilter('status', array('neq' => OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_UNBALANCED));
+
+        /** @var OnePica_AvaTax_Model_Calculator $calculator */
+        $calculator = Mage::getModel('avatax/calculator');
         foreach ($queue as $item) {
             $item->setAttempt($item->getAttempt() + 1);
             try {
                 $invoice = Mage::getModel('sales/order_invoice')->load($item->getEntityId());
                 if ($invoice->getId()) {
-                    Mage::getModel('avatax/avatax_invoice')->invoice($invoice, $item);
+                    $calculator->invoice($invoice, $item);
                 }
                 $item->setStatus(OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_COMPLETE)->setMessage(null)->save();
             } catch (OnePica_AvaTax_Model_Avatax_Exception_Unbalanced $e) {
@@ -191,12 +194,15 @@ class OnePica_AvaTax_Model_Records_Queue_Process
             ->addFieldToFilter('status', array('neq' => OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_FAILED))
             ->addFieldToFilter('status', array('neq' => OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_COMPLETE))
             ->addFieldToFilter('status', array('neq' => OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_UNBALANCED));
+
+        /** @var OnePica_AvaTax_Model_Calculator $calculator */
+        $calculator = Mage::getModel('avatax/calculator');
         foreach ($queue as $item) {
             $item->setAttempt($item->getAttempt() + 1);
             try {
                 $creditmemo = Mage::getModel('sales/order_creditmemo')->load($item->getEntityId());
                 if ($creditmemo->getId()) {
-                    Mage::getModel('avatax/avatax_invoice')->creditmemo($creditmemo, $item);
+                    $calculator->creditmemo($creditmemo, $item);
                 }
                 $item->setStatus(OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_COMPLETE)
                     ->setMessage(null)

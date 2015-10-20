@@ -40,7 +40,6 @@ class OnePica_AvaTax_Model_Service_Avatax
         // init resources
         $this->_estimateResource = mage::getModel('avatax/service_avatax_estimate');
     }
-
     /**
      * Get estimate resource
      *
@@ -48,7 +47,23 @@ class OnePica_AvaTax_Model_Service_Avatax
      */
     protected function _getEstimateResource()
     {
+        if (!$this->_estimateResource) {
+            $this->_estimateResource = Mage::getModel('avatax/service_avatax_estimate');
+        }
         return $this->_estimateResource;
+    }
+
+    /**
+     * Get invoice resource
+     *
+     * return mixed
+     */
+    protected function _getInvoiceResource()
+    {
+        if (!$this->_invoiceResource) {
+            $this->_invoiceResource = Mage::getModel('avatax/service_avatax_invoice');
+        }
+        return $this->_invoiceResource;
     }
 
     /**
@@ -92,5 +107,37 @@ class OnePica_AvaTax_Model_Service_Avatax
     public function getAddressValidator(Mage_Customer_Model_Address_Abstract $address)
     {
         return Mage::getModel('avatax/service_avatax_address', $address);
+    }
+
+    /**
+     * Save order in AvaTax system
+     *
+     * @see OnePica_AvaTax_Model_Observer::salesOrderPlaceAfter()
+     * @param Mage_Sales_Model_Order_Invoice     $invoice
+     * @param OnePica_AvaTax_Model_Records_Queue $queue
+     * @return bool
+     * @throws OnePica_AvaTax_Exception
+     * @throws OnePica_AvaTax_Model_Service_Exception_Commitfailure
+     * @throws OnePica_AvaTax_Model_Service_Exception_Unbalanced
+     */
+    public function invoice($invoice, $queue)
+    {
+        return $this->_getInvoiceResource()->invoice($invoice, $queue);
+    }
+
+    /**
+     * Save order in AvaTax system
+     *
+     * @see OnePica_AvaTax_Model_Observer::salesOrderPlaceAfter()
+     * @param Mage_Sales_Model_Order_Creditmemo $creditmemo
+     * @param OnePica_AvaTax_Model_Records_Queue $queue
+     * @return mixed
+     * @throws OnePica_AvaTax_Exception
+     * @throws OnePica_AvaTax_Model_Service_Exception_Commitfailure
+     * @throws OnePica_AvaTax_Model_Service_Exception_Unbalanced
+     */
+    public function creditmemo($creditmemo, $queue)
+    {
+        return $this->_getInvoiceResource()->creditmemo($creditmemo, $queue);
     }
 }
