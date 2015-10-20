@@ -83,4 +83,14 @@ class OnePica_AvaTax_Model_Service_Avatax
     {
         return $this->_getEstimateResource()->isProductCalculated($item);
     }
+
+    /**
+     * Get avatax address validator
+     * @param $address
+     * @return OnePica_AvaTax_Model_Service_Avatax_Address
+     */
+    public function getAddressValidator(Mage_Customer_Model_Address_Abstract $address)
+    {
+        return Mage::getModel('avatax/service_avatax_address', $address);
+    }
 }

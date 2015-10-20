@@ -27,7 +27,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address extends Mage_Sales_Model_Quote_Ad
     /**
      * Avatax address validator instance
      *
-     * @var OnePica_AvaTax_Model_Avatax_Address
+     * @var
      */
     protected $_avataxValidator = null;
 
@@ -51,10 +51,10 @@ class OnePica_AvaTax_Model_Sales_Quote_Address extends Mage_Sales_Model_Quote_Ad
     /**
      * Avatax address validator mutator method
      *
-     * @param OnePica_AvaTax_Model_Avatax_Address $object
+     * @param  $object
      * @return $this
      */
-    public function setAvataxValidator(OnePica_AvaTax_Model_Avatax_Address $object)
+    public function setAvataxValidator( $object)
     {
         $this->_avataxValidator = $object;
         return $this;
@@ -100,7 +100,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address extends Mage_Sales_Model_Quote_Ad
                 || $this->getUseForShipping()/* <1.9 */ || $useForShipping/* >=1.9 */) {
             if (!isset(self::$_validationResult[$this->getAddressId()])) {
                 if (!$this->getAvataxValidator()) {
-                    $validator = Mage::getModel('avatax/avatax_address')->setAddress($this);
+                    $validator = Mage::getModel('avatax/validator')->getServiceValidator($this);
                     $this->setAvataxValidator($validator);
                 }
 

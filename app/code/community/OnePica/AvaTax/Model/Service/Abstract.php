@@ -57,4 +57,11 @@ abstract class OnePica_AvaTax_Model_Service_Abstract
     {
         return Mage::helper('avatax/config');
     }
+
+    /**
+     * Get service address validator
+     * @param Mage_Customer_Model_Address_Abstract $address
+     * @return mixed
+     */
+    abstract public function getAddressValidator(Mage_Customer_Model_Address_Abstract $address);
 }
