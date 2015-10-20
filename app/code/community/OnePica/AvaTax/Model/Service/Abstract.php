@@ -22,36 +22,8 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-
 abstract class OnePica_AvaTax_Model_Service_Abstract
 {
-    /**
-     * Service config
-     *
-     * @var array
-     */
-    protected $_config = array();
-
-    /**
-     * Set service config
-     *
-     * @param mixed $config
-     * @return $this
-     */
-    public function setConfig($config)
-    {
-        $this->_config = $config;
-    }
-
-    /**
-     * Get service config
-     *
-     * @return string
-     */
-    public function getConfig()
-    {
-        return $this->_config;
-    }
 
     /**
      * Get rates from Service
@@ -76,4 +48,13 @@ abstract class OnePica_AvaTax_Model_Service_Abstract
      * @return bool
      */
     abstract public function isProductCalculated($item);
+
+    /**
+     * Get config helper
+     * @return OnePica_AvaTax_Helper_Config
+     */
+    protected function _getConfigHelper()
+    {
+        return Mage::helper('avatax/config');
+    }
 }
