@@ -153,4 +153,13 @@ class OnePica_AvaTax_Model_Calculator
     {
         return $this->_getService()->isProductCalculated($item);
     }
+
+    /**
+     * Get config helper
+     * @return OnePica_AvaTax_Helper_Config
+     */
+    protected function _getConfigHelper()
+    {
+        return Mage::helper('avatax/config');
+    }
 }

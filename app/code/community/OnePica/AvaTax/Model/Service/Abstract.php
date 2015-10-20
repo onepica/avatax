@@ -100,7 +100,6 @@ abstract class OnePica_AvaTax_Model_Service_Abstract
      * Get config helper
      *
      * @return OnePica_AvaTax_Helper_Config
-     * @todo moved to calculator. Maybe should be removed from this class
      */
     protected function _getConfigHelper()
     {
