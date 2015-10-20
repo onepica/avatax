@@ -145,6 +145,12 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
     const XML_PATH_TO_TAX_AVATAX_LOG_STATUS = 'tax/avatax/log_status';
 
     /**
+     * Path to active avatax service
+     */
+    const XML_PATH_TO_TAX_AVATAX_ACTIVE_SERVICE = 'tax/avatax/active_service';
+
+
+    /**
      * Returns full stop on error
      *
      * @param null|bool|int|Mage_Core_Model_Store $store
@@ -454,5 +460,17 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
     public function getConfigLogMode($store = null)
     {
         return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_LOG_STATUS, $store);
+    }
+
+    /**
+     * Get active avatax service
+     *
+     * @param null|bool|int|Mage_Core_Model_Store $store
+     *
+     * @return int
+     */
+    public function getAvataxActiveService($store = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_ACTIVE_SERVICE, $store);
     }
 }

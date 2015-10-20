@@ -26,26 +26,25 @@ class OnePica_AvaTax_Model_Calculator
 {
     /**
      * Service
-     *
-     * @var mixed
+     * @var OnePica_AvaTax_Model_Service_Abstract
      */
     protected $_service;
 
     /**
-     * Construct
-     *
-     * @todo implement logic to init correct service
+     * Class constructor
+     * @param array $params
+     * @throws OnePica_AvaTax_Exception
      */
-    public function __construct()
+    public function __construct($params = array())
     {
-        // init service
-        $this->_service = new OnePica_AvaTax_Model_Service_Avatax();
+        $activeService = $this->_getConfigHelper()->getAvataxActiveService();
+        $this->_service = Mage::getSingleton('avatax/service')->factory($activeService, $params);
     }
 
     /**
      * Get Service
      *
-     * return mixed
+     * return OnePica_AvaTax_Model_Service_Abstract
      */
     protected function _getService()
     {
