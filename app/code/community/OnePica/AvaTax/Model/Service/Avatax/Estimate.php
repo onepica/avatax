@@ -163,7 +163,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
                 //failure
             } else {
                 $this->_rates[$requestKey]['failure'] = true;
-                if (Mage::helper('avatax')->fullStopOnError($address->getStoreId())) {
+                if (Mage::helper('avatax/config')->fullStopOnError($address->getStoreId())) {
                     $address->getQuote()->setHasError(true);
                 }
             }
@@ -200,7 +200,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
 
         $line = new Line();
         $line->setNo($lineNumber);
-        $shippingSku = Mage::helper('avatax')->getShippingSku($storeId);
+        $shippingSku = Mage::helper('avatax/config')->getShippingSku($storeId);
         $line->setItemCode($shippingSku ? $shippingSku : 'Shipping');
         $line->setDescription('Shipping costs');
         $line->setTaxCode($taxClass);
@@ -210,7 +210,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
 
         $this->_lines[$lineNumber] = $line;
         $this->_request->setLines($this->_lines);
-        $this->_lineToLineId[$lineNumber] = Mage::helper('avatax')->getShippingSku($storeId);
+        $this->_lineToLineId[$lineNumber] = Mage::helper('avatax/config')->getShippingSku($storeId);
         return $lineNumber;
     }
 
@@ -232,7 +232,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
 
         $line = new Line();
         $line->setNo($lineNumber);
-        $gwOrderSku = Mage::helper('avatax')->getGwOrderSku($storeId);
+        $gwOrderSku = Mage::helper('avatax/config')->getGwOrderSku($storeId);
         $line->setItemCode($gwOrderSku ? $gwOrderSku : 'GwOrderAmount');
         $line->setDescription('Gift Wrap Order Amount');
         $line->setTaxCode($this->_getGiftTaxClassCode($storeId));
@@ -242,7 +242,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
 
         $this->_lines[$lineNumber] = $line;
         $this->_request->setLines($this->_lines);
-        $this->_lineToLineId[$lineNumber] = Mage::helper('avatax')->getGwOrderSku($storeId);
+        $this->_lineToLineId[$lineNumber] = Mage::helper('avatax/config')->getGwOrderSku($storeId);
         return $lineNumber;
     }
 
@@ -264,7 +264,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
 
         $line = new Line();
         $line->setNo($lineNumber);
-        $gwItemsSku = Mage::helper('avatax')->getGwItemsSku($storeId);
+        $gwItemsSku = Mage::helper('avatax/config')->getGwItemsSku($storeId);
         $line->setItemCode($gwItemsSku ? $gwItemsSku : 'GwItemsAmount');
         $line->setDescription('Gift Wrap Items Amount');
         $line->setTaxCode($this->_getGiftTaxClassCode($storeId));
@@ -274,7 +274,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
 
         $this->_lines[$lineNumber] = $line;
         $this->_request->setLines($this->_lines);
-        $this->_lineToLineId[$lineNumber] = Mage::helper('avatax')->getGwItemsSku($storeId);
+        $this->_lineToLineId[$lineNumber] = Mage::helper('avatax/config')->getGwItemsSku($storeId);
         $this->_productGiftPair[$lineNumber] = $item->getSku();
 
         return $lineNumber;
@@ -298,7 +298,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
 
         $line = new Line();
         $line->setNo($lineNumber);
-        $gwPrintedCardSku = Mage::helper('avatax')->getGwPrintedCardSku($storeId);
+        $gwPrintedCardSku = Mage::helper('avatax/config')->getGwPrintedCardSku($storeId);
         $line->setItemCode($gwPrintedCardSku ? $gwPrintedCardSku : 'GwPrintedCardAmount');
         $line->setDescription('Gift Wrap Printed Card Amount');
         $line->setTaxCode($this->_getGiftTaxClassCode($storeId));
@@ -308,7 +308,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
 
         $this->_lines[$lineNumber] = $line;
         $this->_request->setLines($this->_lines);
-        $this->_lineToLineId[$lineNumber] = Mage::helper('avatax')->getGwPrintedCardSku($storeId);
+        $this->_lineToLineId[$lineNumber] = Mage::helper('avatax/config')->getGwPrintedCardSku($storeId);
         return $lineNumber;
     }
 

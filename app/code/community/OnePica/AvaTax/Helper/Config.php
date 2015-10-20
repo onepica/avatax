@@ -149,6 +149,11 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
      */
     const XML_PATH_TO_TAX_AVATAX_ACTIVE_SERVICE = 'tax/avatax/active_service';
 
+    /**
+     * Path to active avatax service
+     */
+    const XML_PATH_TO_SHIPPING_ORIGIN_COUNTRY_ID = 'shipping/origin/country_id';
+
 
     /**
      * Returns full stop on error
@@ -472,5 +477,17 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
     public function getAvataxActiveService($store = null)
     {
         return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_ACTIVE_SERVICE, $store);
+    }
+
+    /**
+     * Get shipping origin country_id
+     *
+     * @param null|bool|int|Mage_Core_Model_Store $store
+     *
+     * @return int
+     */
+    public function getShippingOriginCountryId($store = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_TO_SHIPPING_ORIGIN_COUNTRY_ID, $store);
     }
 }
