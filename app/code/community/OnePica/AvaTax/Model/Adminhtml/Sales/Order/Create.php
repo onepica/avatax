@@ -51,7 +51,7 @@ class OnePica_AvaTax_Model_Adminhtml_Sales_Order_Create extends Mage_Adminhtml_M
                 $result = $this->getShippingAddress()->validate();
                 if ($result !== true) {
                     $storeId = $this->_session->getStore()->getId();
-                    if (Mage::helper('avatax')->fullStopOnError($storeId)) {
+                    if (Mage::helper('avatax/config')->fullStopOnError($storeId)) {
                         foreach ($result as $error) {
                             $this->getSession()->addError($error);
                         }

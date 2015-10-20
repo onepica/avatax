@@ -52,8 +52,8 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Grand extends Mage_Sales_Mo
      */
     protected function _isAddressActionable($address)
     {
-        /** @var OnePica_AvaTax_Helper_Data $helper */
-        $helper = Mage::helper('avatax');
+        /** @var OnePica_AvaTax_Helper_Address $helper */
+        $helper = Mage::helper('avatax/address');
         $storeId = $address->getQuote()->getStoreId();
         return $helper->isAddressActionable($address, $storeId, OnePica_AvaTax_Model_Config::REGIONFILTER_TAX);
     }

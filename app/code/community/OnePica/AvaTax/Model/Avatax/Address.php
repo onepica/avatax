@@ -158,11 +158,11 @@ class OnePica_AvaTax_Model_Avatax_Address extends OnePica_AvaTax_Model_Abstract
 
         /** @var Mage_Sales_Model_Quote $quote */
         $quote = $this->_mageAddress->getQuote();
-        $isAddressValidationOn = $this->_getDataHelper()->isAddressValidationOn($this->_mageAddress, $this->_storeId);
-        $isAddressNormalizationOn = $this->_getDataHelper()->isAddressNormalizationOn(
+        $isAddressValidationOn = Mage::helper('avatax/address')->isAddressValidationOn($this->_mageAddress, $this->_storeId);
+        $isAddressNormalizationOn = Mage::helper('avatax/address')->isAddressNormalizationOn(
             $this->_mageAddress, $this->_storeId
         );
-        $isAddressActionable = $this->_getDataHelper()->isAddressActionable($this->_mageAddress, $quote->getStoreId());
+        $isAddressActionable = Mage::helper('avatax/address')->isAddressActionable($this->_mageAddress, $quote->getStoreId());
         //if there is no use cases for AvaTax services, return address as valid without doing a lookup
         if (!$isAddressValidationOn && !$isAddressNormalizationOn && !$isAddressActionable) {
             return true;
@@ -259,8 +259,8 @@ class OnePica_AvaTax_Model_Avatax_Address extends OnePica_AvaTax_Model_Abstract
         /** @var Mage_Checkout_Model_Session $session */
         $session = Mage::getSingleton('checkout/session');
         if ($session->getPostType() == 'onepage') {
-            $requiredFields = explode(",", $this->getHelper()->getFieldRequiredList());
-            $fieldRules = explode(",", $this->getHelper()->getFieldRule());
+            $requiredFields = explode(",", Mage::helper('avatax/config')->getFieldRequiredList());
+            $fieldRules = explode(",", Mage::helper('avatax/config')->getFieldRule());
             foreach ($requiredFields as $field) {
                 $requiredFlag = 0;
                 foreach ($fieldRules as $rule) {

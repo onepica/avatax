@@ -32,14 +32,14 @@ class OnePica_AvaTax_Model_Adminhtml_Config extends Mage_Adminhtml_Model_Config
      */
     protected function _initSectionsAndTabs()
     {
-        if ($this->_getDataHelper()->isAvaTaxDisabled()) {
+        if ($this->_getConfigHelper()->isAvaTaxDisabled()) {
             $config = Mage::getConfig()->loadModulesConfiguration('system.xml')
                 ->applyExtends();
 
             Mage::dispatchEvent('adminhtml_init_system_config', array('config' => $config));
 
             //these 4 lines are the only added content
-            $configFile = $this->_getDataHelper()->getEtcPath() . DS . 'system-disabled.xml';
+            $configFile = $this->_getConfigHelper()->getEtcPath() . DS . 'system-disabled.xml';
             /** @var Mage_Core_Model_Config_Base $mergeModel */
             $mergeModel = Mage::getModel('core/config_base');
             $mergeModel->loadFile($configFile);
@@ -56,10 +56,10 @@ class OnePica_AvaTax_Model_Adminhtml_Config extends Mage_Adminhtml_Model_Config
     /**
      * Get data helper
      *
-     * @return \OnePica_AvaTax_Helper_Data
+     * @return \OnePica_AvaTax_Helper_Config
      */
-    protected function _getDataHelper()
+    protected function _getConfigHelper()
     {
-        return Mage::helper('avatax');
+        return Mage::helper('avatax/config');
     }
 }
