@@ -94,7 +94,7 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
 
         if ((int)$invoice->getOrigData('state') !== Mage_Sales_Model_Order_Invoice::STATE_PAID
             && (int)$invoice->getState() === Mage_Sales_Model_Order_Invoice::STATE_PAID
-            && Mage::helper('avatax')->isObjectActionable($invoice)
+            && Mage::helper('avatax/address')->isObjectActionable($invoice)
         ) {
             Mage::getModel('avatax_records/queue')
                 ->setEntity($invoice)
@@ -117,7 +117,7 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
         /* @var $creditmemo Mage_Sales_Model_Order_Creditmemo */
         $creditmemo = $observer->getEvent()->getCreditmemo();
         if (!$creditmemo->getOrigData($creditmemo->getIdFieldName())
-            && Mage::helper('avatax')->isObjectActionable($creditmemo)
+            && Mage::helper('avatax/address')->isObjectActionable($creditmemo)
         ) {
             Mage::getModel('avatax_records/queue')
                 ->setEntity($creditmemo)

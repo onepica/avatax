@@ -26,12 +26,14 @@ class OnePica_AvaTax_Model_Calculator
 {
     /**
      * Service
+     *
      * @var OnePica_AvaTax_Model_Service_Abstract
      */
     protected $_service;
 
     /**
      * Class constructor
+     *
      * @param array $params
      * @throws OnePica_AvaTax_Exception
      */
@@ -184,5 +186,15 @@ class OnePica_AvaTax_Model_Calculator
     public function creditmemo($creditmemo, $queue)
     {
         return $this->_getService()->creditmemo($creditmemo, $queue);
+    }
+
+    /**
+     * Get config helper
+     *
+     * @return OnePica_AvaTax_Helper_Config
+     */
+    protected function _getConfigHelper()
+    {
+        return Mage::helper('avatax/config');
     }
 }
