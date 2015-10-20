@@ -33,12 +33,20 @@ class OnePica_AvaTax_Model_Service_Avatax
     protected $_estimateResource;
 
     /**
+     * Invoice Resource
+     *
+     * @var mixed
+     */
+    protected $_invoiceResource;
+
+    /**
      * Construct
      */
     public function __construct()
     {
         // init resources
         $this->_estimateResource = mage::getModel('avatax/service_avatax_estimate');
+        $this->_invoiceResource = mage::getModel('avatax/service_avatax_invoice');
     }
 
     /**
@@ -49,6 +57,16 @@ class OnePica_AvaTax_Model_Service_Avatax
     protected function _getEstimateResource()
     {
         return $this->_estimateResource;
+    }
+
+    /**
+     * Get invoice resource
+     *
+     * return mixed
+     */
+    protected function _getInvoiceResource()
+    {
+        return $this->_invoiceResource;
     }
 
     /**
@@ -82,5 +100,37 @@ class OnePica_AvaTax_Model_Service_Avatax
     public function isProductCalculated($item)
     {
         return $this->_getEstimateResource()->isProductCalculated($item);
+    }
+
+    /**
+     * Save order in AvaTax system
+     *
+     * @see OnePica_AvaTax_Model_Observer::salesOrderPlaceAfter()
+     * @param Mage_Sales_Model_Order_Invoice     $invoice
+     * @param OnePica_AvaTax_Model_Records_Queue $queue
+     * @return bool
+     * @throws OnePica_AvaTax_Exception
+     * @throws OnePica_AvaTax_Model_Service_Exception_Commitfailure
+     * @throws OnePica_AvaTax_Model_Service_Exception_Unbalanced
+     */
+    public function invoice($invoice, $queue)
+    {
+        return $this->_getInvoiceResource()->invoice($invoice, $queue);
+    }
+
+    /**
+     * Save order in AvaTax system
+     *
+     * @see OnePica_AvaTax_Model_Observer::salesOrderPlaceAfter()
+     * @param Mage_Sales_Model_Order_Creditmemo $creditmemo
+     * @param OnePica_AvaTax_Model_Records_Queue $queue
+     * @return mixed
+     * @throws OnePica_AvaTax_Exception
+     * @throws OnePica_AvaTax_Model_Service_Exception_Commitfailure
+     * @throws OnePica_AvaTax_Model_Service_Exception_Unbalanced
+     */
+    public function creditmemo($creditmemo, $queue)
+    {
+        return $this->_getInvoiceResource()->creditmemo($creditmemo, $queue);
     }
 }

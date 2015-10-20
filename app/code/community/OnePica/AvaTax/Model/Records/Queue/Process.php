@@ -158,7 +158,7 @@ class OnePica_AvaTax_Model_Records_Queue_Process
             try {
                 $invoice = Mage::getModel('sales/order_invoice')->load($item->getEntityId());
                 if ($invoice->getId()) {
-                    Mage::getModel('avatax/avatax_invoice')->invoice($invoice, $item);
+                    Mage::getModel('avatax/calculator')->invoice($invoice, $item);
                 }
                 $item->setStatus(OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_COMPLETE)->setMessage(null)->save();
             } catch (OnePica_AvaTax_Model_Avatax_Exception_Unbalanced $e) {
@@ -196,7 +196,7 @@ class OnePica_AvaTax_Model_Records_Queue_Process
             try {
                 $creditmemo = Mage::getModel('sales/order_creditmemo')->load($item->getEntityId());
                 if ($creditmemo->getId()) {
-                    Mage::getModel('avatax/avatax_invoice')->creditmemo($creditmemo, $item);
+                    Mage::getModel('avatax/calculator')->creditmemo($creditmemo, $item);
                 }
                 $item->setStatus(OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_COMPLETE)
                     ->setMessage(null)

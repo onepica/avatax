@@ -76,4 +76,24 @@ abstract class OnePica_AvaTax_Model_Service_Abstract
      * @return bool
      */
     abstract public function isProductCalculated($item);
+
+    /**
+     * Save order in AvaTax system
+     *
+     * @see OnePica_AvaTax_Model_Observer::salesOrderPlaceAfter()
+     * @param Mage_Sales_Model_Order_Invoice     $invoice
+     * @param OnePica_AvaTax_Model_Records_Queue $queue
+     * @return bool
+     */
+    abstract public function invoice($invoice, $queue);
+
+    /**
+     * Save order in AvaTax system
+     *
+     * @see OnePica_AvaTax_Model_Observer::salesOrderPlaceAfter()
+     * @param Mage_Sales_Model_Order_Creditmemo $creditmemo
+     * @param OnePica_AvaTax_Model_Records_Queue $queue
+     * @return bool
+     */
+    abstract public function creditmemo($creditmemo, $queue);
 }

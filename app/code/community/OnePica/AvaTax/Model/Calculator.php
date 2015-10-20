@@ -154,4 +154,36 @@ class OnePica_AvaTax_Model_Calculator
     {
         return $this->_getService()->isProductCalculated($item);
     }
+
+    /**
+     * Save order in AvaTax system
+     *
+     * @see OnePica_AvaTax_Model_Observer::salesOrderPlaceAfter()
+     * @param Mage_Sales_Model_Order_Invoice     $invoice
+     * @param OnePica_AvaTax_Model_Records_Queue $queue
+     * @return bool
+     * @throws OnePica_AvaTax_Exception
+     * @throws OnePica_AvaTax_Model_Service_Exception_Commitfailure
+     * @throws OnePica_AvaTax_Model_Service_Exception_Unbalanced
+     */
+    public function invoice($invoice, $queue)
+    {
+        return $this->_getService()->invoice($invoice, $queue);
+    }
+
+    /**
+     * Save order in AvaTax system
+     *
+     * @see OnePica_AvaTax_Model_Observer::salesOrderPlaceAfter()
+     * @param Mage_Sales_Model_Order_Creditmemo $creditmemo
+     * @param OnePica_AvaTax_Model_Records_Queue $queue
+     * @return mixed
+     * @throws OnePica_AvaTax_Exception
+     * @throws OnePica_AvaTax_Model_Service_Exception_Commitfailure
+     * @throws OnePica_AvaTax_Model_Service_Exception_Unbalanced
+     */
+    public function creditmemo($creditmemo, $queue)
+    {
+        return $this->_getService()->creditmemo($creditmemo, $queue);
+    }
 }
