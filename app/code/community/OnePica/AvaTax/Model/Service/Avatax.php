@@ -40,22 +40,15 @@ class OnePica_AvaTax_Model_Service_Avatax
     protected $_invoiceResource;
 
     /**
-     * Construct
-     */
-    public function __construct()
-    {
-        // init resources
-        $this->_estimateResource = Mage::getModel('avatax/service_avatax_estimate');
-        $this->_invoiceResource = Mage::getModel('avatax/service_avatax_invoice');
-    }
-
-    /**
      * Get estimate resource
      *
      * return mixed
      */
     protected function _getEstimateResource()
     {
+        if (!$this->_estimateResource) {
+            $this->_estimateResource = Mage::getModel('avatax/service_avatax_estimate');
+        }
         return $this->_estimateResource;
     }
 
@@ -66,6 +59,9 @@ class OnePica_AvaTax_Model_Service_Avatax
      */
     protected function _getInvoiceResource()
     {
+        if (!$this->_invoiceResource) {
+            $this->_invoiceResource = Mage::getModel('avatax/service_avatax_invoice');
+        }
         return $this->_invoiceResource;
     }
 
