@@ -189,6 +189,17 @@ class OnePica_AvaTax_Model_Calculator
     }
 
     /**
+     * Tries to ping AvaTax service with provided credentials
+     *
+     * @param int $storeId
+     * @return bool|array
+     */
+    public function ping($storeId)
+    {
+        return $this->_getService()->ping($storeId);
+    }
+
+    /**
      * Get config helper
      *
      * @return OnePica_AvaTax_Helper_Config

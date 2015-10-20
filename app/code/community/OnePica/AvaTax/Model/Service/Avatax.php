@@ -40,6 +40,13 @@ class OnePica_AvaTax_Model_Service_Avatax
     protected $_invoiceResource;
 
     /**
+     * Ping Resource
+     *
+     * @var mixed
+     */
+    protected $_pingResource;
+
+    /**
      * Get estimate resource
      *
      * return mixed
@@ -63,6 +70,19 @@ class OnePica_AvaTax_Model_Service_Avatax
             $this->_invoiceResource = Mage::getModel('avatax/service_avatax_invoice');
         }
         return $this->_invoiceResource;
+    }
+
+    /**
+     * Get ping resource
+     *
+     * return mixed
+     */
+    protected function _getPingResource()
+    {
+        if (!$this->_pingResource) {
+            $this->_pingResource = Mage::getModel('avatax/service_avatax_ping');
+        }
+        return $this->_pingResource;
     }
 
     /**
@@ -128,5 +148,16 @@ class OnePica_AvaTax_Model_Service_Avatax
     public function creditmemo($creditmemo, $queue)
     {
         return $this->_getInvoiceResource()->creditmemo($creditmemo, $queue);
+    }
+
+    /**
+     * Tries to ping AvaTax service with provided credentials
+     *
+     * @param int $storeId
+     * @return bool|array
+     */
+    public function ping($storeId)
+    {
+        return $this->_getPingResource()->ping($storeId);
     }
 }
