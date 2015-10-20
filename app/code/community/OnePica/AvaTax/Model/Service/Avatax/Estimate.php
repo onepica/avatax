@@ -171,7 +171,8 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
             Mage::getSingleton('avatax/session')->setRates($this->_rates);
         }
 
-        return $this->_rates[$requestKey];
+        $rates = isset($this->_rates[$requestKey]) ? $this->_rates[$requestKey] : array();
+        return $rates;
     }
 
     /**
