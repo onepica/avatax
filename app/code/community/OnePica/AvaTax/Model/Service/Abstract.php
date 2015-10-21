@@ -97,6 +97,14 @@ abstract class OnePica_AvaTax_Model_Service_Abstract
     abstract public function creditmemo($creditmemo, $queue);
 
     /**
+     * Tries to ping AvaTax service with provided credentials
+     *
+     * @param int $storeId
+     * @return bool|array
+     */
+    abstract public function ping($storeId);
+
+    /**
      * Get config helper
      *
      * @return OnePica_AvaTax_Helper_Config

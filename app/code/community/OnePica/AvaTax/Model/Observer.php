@@ -379,7 +379,7 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     protected function _sendPing($storeId)
     {
         $errors = array();
-        $ping = Mage::getSingleton('avatax/avatax_ping')->ping($storeId);
+        $ping = Mage::getSingleton('avatax/calculator')->ping($storeId);
         if ($ping !== true) {
             $errors[] = $ping;
         }
