@@ -4,10 +4,10 @@
  */
 
 /**
- * 
+ *
  *
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Batch
  */
 class BatchSaveResult extends BaseResult {
@@ -21,5 +21,3 @@ class BatchSaveResult extends BaseResult {
   public function getEstimatedCompletion(){return $this->EstimatedCompletion;} // dateTime
 
 }
-
-?>

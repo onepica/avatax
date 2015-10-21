@@ -13,34 +13,31 @@
  * </p>
  *
  * @see CommitTaxResult
- *  
+ *
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Tax
  */
- 
+
 class CommitTaxRequest extends TaxRequest
 {
 	private $NewDocCode;  //string
-	
+
 	/**
-	 * As on this version of SDK DocCode can be changed during commit using NewDocCode. 
+	 * As on this version of SDK DocCode can be changed during commit using NewDocCode.
 	 *
 	 * @return string
 	 */
 	public function getNewDocCode() { return $this->NewDocCode; }
-	
+
 	/**
-	 * As on this version of SDK DocCode can be changed during commit using NewDocCode. 
+	 * As on this version of SDK DocCode can be changed during commit using NewDocCode.
 	 *
 	 * @param string $value
 	 */
 	public function setNewDocCode($value) { $this->NewDocCode = $value; }
-	
-	
-	
+
+
+
 
 }
-
-
-?>

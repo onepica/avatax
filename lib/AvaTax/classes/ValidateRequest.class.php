@@ -5,7 +5,7 @@
 
 /**
  * Data wrapper used internally to pass arguments within {@link AddressServiceSoap#validate}. End users should not need to use this class.
- * 
+ *
  * <pre>
  * <b>Example:</b>
  * $svc = new AddressServiceSoap();
@@ -32,7 +32,7 @@
  * @copyright � 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Address
  */
- 
+
  //public function validate($address, $textCase = 'Default', $coordinates = false)
     //{
        // $request = new ValidateRequest($address, ($textCase ? $textCase : TextCase::$Default), $coordinates);
@@ -46,14 +46,14 @@ class ValidateRequest
     private $TextCase = 'Default';
     private $Coordinates = false;
     private $Taxability=false;
-    
+
     public function __construct($address = null, $textCase = 'Default', $coordinates = false)
     {
         $this->setAddress($address);
         $this->setTextCase($textCase);
         $this->setCoordinates($coordinates);
     }
-    
+
     // mutators
     /**
      * The address to Validate.
@@ -75,7 +75,7 @@ class ValidateRequest
      * @var Address
      * @return $this
      */
-    
+
     public function setAddress(&$value) { $this->Address = $value; return $this; }
 
     /**
@@ -100,19 +100,19 @@ class ValidateRequest
      * @see TextCase
      * @return $this
      */
-    
-    public function setTextCase($value) 
-	{ 
-		if($value) 
-		{ 
-			TextCase::Validate($value); 
-			$this->TextCase = $value; 
-		} 
-		else 
-		{ 
-			$this->TextCase = TextCase::$Default; 
-		} 
-		return $this; 
+
+    public function setTextCase($value)
+	{
+		if($value)
+		{
+			TextCase::Validate($value);
+			$this->TextCase = $value;
+		}
+		else
+		{
+			$this->TextCase = TextCase::$Default;
+		}
+		return $this;
 	}
 
     /**
@@ -125,8 +125,8 @@ class ValidateRequest
      * @return $this
      */
     public function setCoordinates($value) { $this->Coordinates = ($value ? true : false); return $this; }
-    
-    
+
+
     //@author:swetal
     public function setTaxability($value)
     {
@@ -152,9 +152,9 @@ class ValidateRequest
      *
      * @return Address
      */
-    
+
     public function getAddress() { return $this->Address; }
-    
+
     /**
      * The casing to apply to the validated address(es).
      * <pre>
@@ -176,9 +176,9 @@ class ValidateRequest
      * @return string
      * @see TextCase
      */
-    
+
     public function getTextCase() { return $this->TextCase; }
-    
+
     /**
      * Returns whether to return the coordinates value for this ValidateRequest.
      *  <p>
@@ -190,5 +190,3 @@ class ValidateRequest
 
     public function getCoordinates() { return $this->Coordinates; }
 }
-
-?>

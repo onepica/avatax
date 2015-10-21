@@ -6,20 +6,20 @@
 /**
  * Result data returned from {@link TaxServiceSoap#reconcileTaxHistory}.
  * @see ReconcileTaxHistoryRequest
- * 
+ *
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Tax
  */
 
 class ReconcileTaxHistoryResult //extends SearchTaxHistoryResult
 {
 // SearchTaxHistoryResult innards - work around a bug in SoapClient
-	
+
     public $GetTaxResults;     // array of GetTaxResult
     private $RecordCount; // int
     private $LastDocCode; //string
-    
+
 
 
     /**
@@ -55,13 +55,13 @@ class ReconcileTaxHistoryResult //extends SearchTaxHistoryResult
      	}
      	else
      	{
-     		return null; 
+     		return null;
      	}
      }
-    
+
     public function setRecordCount($value){$this->RecordCount=$value;} // int
   	public function getRecordCount(){return $this->RecordCount;} // int
-  	
+
   	public function setLastDocCode($value)
   	{
   		$this->LastDocCode=$value;
@@ -71,8 +71,8 @@ class ReconcileTaxHistoryResult //extends SearchTaxHistoryResult
   		return $this->LastDocCode;
   	}
 
-    
-    
+
+
 // BaseResult innards - work around a bug in SoapClient
 
 /**
@@ -105,7 +105,5 @@ class ReconcileTaxHistoryResult //extends SearchTaxHistoryResult
     public function getMessages() { return EnsureIsArray($this->Messages->Message); }
 
 
-	
-}
 
-?>
+}

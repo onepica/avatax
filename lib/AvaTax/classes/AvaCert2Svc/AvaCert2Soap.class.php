@@ -2,16 +2,16 @@
 
 /**
  * AvaCert2Soap class
- * 
- *  
- * 
+ *
+ *
+ *
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   AvaCert2
  */
 class AvaCert2Soap extends AvalaraSoapClient {
 
-  static $servicePath = '/AvaCert2/AvaCert2Svc.asmx';	
+  static $servicePath = '/AvaCert2/AvaCert2Svc.asmx';
   private static $classmap = array(
                                     'CustomerSave' => 'CustomerSave',
                                     'CustomerSaveRequest' => 'CustomerSaveRequest',
@@ -40,7 +40,7 @@ class AvaCert2Soap extends AvalaraSoapClient {
                                     'CertificateImageGetRequest' => 'CertificateImageGetRequest',
                                     'FormatType' => 'FormatType',
                                     'CertificateImageGetResult' => 'CertificateImageGetResult',
-                                    'BaseRequest' => 'BaseRequest',                                    
+                                    'BaseRequest' => 'BaseRequest',
                                     'RequestType' => 'RequestType',
                                     'BaseResult' => 'BaseResult',
                                     'SeverityLevel' => 'SeverityLevel',
@@ -54,15 +54,15 @@ class AvaCert2Soap extends AvalaraSoapClient {
 public function __construct($configurationName = 'Default')
     {
         $config = new ATConfig($configurationName);
-        
+
         $this->client = new DynamicSoapClient   (
             $config->avacert2WSDL,
             array
             (
-                'location' => $config->url.$config->avacert2Service, 
+                'location' => $config->url.$config->avacert2Service,
                 'trace' => $config->trace,
                 'classmap' => AvaCert2Soap::$classmap
-            ), 
+            ),
             $config
         );
     }
@@ -87,14 +87,14 @@ public function __construct($configurationName = 'Default')
    *
    * $customerSaveRequest = new CustomerSaveRequest();
    * $customerSaveRequest->setCustomer($customer);
-   * 
+   *
    * $customerSaveResult= $avacert2Service->customerSave($customerSaveRequest);
-   * </pre> 
+   * </pre>
    *
    * @param CustomerSave $parameters
    * @return CustomerSaveResult
    */
-  public function CustomerSave(CustomerSaveRequest $customerSaveRequest) {    
+  public function CustomerSave(CustomerSaveRequest $customerSaveRequest) {
       return $this->client->CustomerSave(array('CustomerSaveRequest' => $customerSaveRequest))->CustomerSaveResult;
   }
 
@@ -109,27 +109,27 @@ public function __construct($configurationName = 'Default')
    * $certificateRequestInitiateRequest->setCommunicationMode(CommunicationMode::$EMAIL);
    * $certificateRequestInitiateRequest->setCustomMessage("Thank you!");
    *
-   * $certificateRequestInitiateResult= $avacert2Service->certificateRequestInitiate($certificateRequestInitiateRequest); 
+   * $certificateRequestInitiateResult= $avacert2Service->certificateRequestInitiate($certificateRequestInitiateRequest);
    * </pre>
-   * 
+   *
    * @param CertificateRequestInitiate $parameters
    * @return CertificateRequestInitiateResult
    */
-  public function CertificateRequestInitiate(CertificateRequestInitiateRequest $certificateRequestInitiateRequest) {    
+  public function CertificateRequestInitiate(CertificateRequestInitiateRequest $certificateRequestInitiateRequest) {
       return $this->client->CertificateRequestInitiate(array('CertificateRequestInitiateRequest' => $certificateRequestInitiateRequest))->CertificateRequestInitiateResult;
   }
-  
+
   /**
-   * This method retrieves all certificates from vCert for a particular customer. 
-   * 
+   * This method retrieves all certificates from vCert for a particular customer.
+   *
    * <pre>
    * $certificateGetRequest=new CertificateGetRequest();
    * $certificateGetRequest->setCompanyCode("DEFAULT");
    * $certificateGetRequest->setCustomerCode("AVALARA");
    *
-   * $certificateGetResult= $avacert2Service->certificateGet($certificateGetRequest); 
+   * $certificateGetResult= $avacert2Service->certificateGet($certificateGetRequest);
    * </pre>
-   * 
+   *
    * @param CertificateGet $parameters
    * @return CertificateGetResult
    */
@@ -139,16 +139,16 @@ public function __construct($configurationName = 'Default')
 
 
   /**
-   * This method retrieves all certificate requests from vCert for a particular customer. 
-   * 
+   * This method retrieves all certificate requests from vCert for a particular customer.
+   *
    * <pre>
    * $certificateRequestGetRequest=new CertificateRequestGetRequest();
    * $certificateRequestGetRequest->setCompanyCode("DEFAULT");
    * $certificateRequestGetRequest->setCustomerCode("AVALARA");
    * $certificateRequestGetRequest->setRequestStatus(CertificateRequestStatus::$OPEN);
    *
-   * $certificateRequestGetResult= $avacert2Service->certificateRequestGet($certificateRequestGetRequest); 
-   * </pre> 
+   * $certificateRequestGetResult= $avacert2Service->certificateRequestGet($certificateRequestGetRequest);
+   * </pre>
    *
    * @param CertificateRequestGet $parameters
    * @return CertificateRequestGetResult
@@ -158,8 +158,8 @@ public function __construct($configurationName = 'Default')
   }
 
   /**
-   * This method retrieves all certificate requests from vCert for a particular customer. 
-   * 
+   * This method retrieves all certificate requests from vCert for a particular customer.
+   *
    * <pre>
    * $certificateImageGetRequest=new CertificateImageGetRequest();
    * $certificateImageGetRequest->setCompanyCode("DEFAULT");
@@ -167,8 +167,8 @@ public function __construct($configurationName = 'Default')
    * $certificateImageGetRequest->setFormat(FormatType::$PNG);
    * $certificateImageGetRequest->setPageNumber(1);
    *
-   * $certificateImageGetResult= $avacert2Service->certificateImageGet($certificateImageGetRequest); 
-   * </pre>  
+   * $certificateImageGetResult= $avacert2Service->certificateImageGet($certificateImageGetRequest);
+   * </pre>
    *
    * @param CertificateImageGet $parameters
    * @return CertificateImageGetResult
@@ -176,9 +176,9 @@ public function __construct($configurationName = 'Default')
   public function CertificateImageGet(CertificateImageGetRequest $certificateImageGetRequest) {
   	return $this->client->CertificateImageGet(array('CertificateImageGetRequest' => $certificateImageGetRequest))->CertificateImageGetResult;
   }
-  
+
   /**
-   * Verifies connectivity to the web service and returns version information about the service. 
+   * Verifies connectivity to the web service and returns version information about the service.
    *
    * @param Ping $parameters
    * @return PingResult
@@ -205,5 +205,3 @@ public function __construct($configurationName = 'Default')
   }
 
 }
-
-?>
