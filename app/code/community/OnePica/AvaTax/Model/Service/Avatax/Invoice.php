@@ -103,7 +103,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
             $this->_addStatusHistoryComment($order, $message);
 
             if ($result->getTotalTax() != $invoice->getBaseTaxAmount()) {
-                throw new OnePica_AvaTax_Model_Avatax_Exception_Unbalanced(
+                throw new OnePica_AvaTax_Model_Service_Exception_Unbalanced(
                     'Collected: '. $invoice->getBaseTaxAmount() . ', Actual: ' . $result->getTotalTax()
                 );
             }
@@ -114,7 +114,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
             foreach ($result->getMessages() as $message) {
                 $messages[] = $message->getSummary();
             }
-            throw new OnePica_AvaTax_Model_Avatax_Exception_Commitfailure(implode(' // ', $messages));
+            throw new OnePica_AvaTax_Model_Service_Exception_Commitfailure(implode(' // ', $messages));
         }
 
         return true;
@@ -198,7 +198,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
             $this->_addStatusHistoryComment($order, $message);
 
             if ($result->getTotalTax() != ($creditmemo->getBaseTaxAmount() * -1)) {
-                throw new OnePica_AvaTax_Model_Avatax_Exception_Unbalanced(
+                throw new OnePica_AvaTax_Model_Service_Exception_Unbalanced(
                     'Collected: ' . $creditmemo->getTaxAmount() . ', Actual: ' . $result->getTotalTax()
                 );
             }
@@ -208,7 +208,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
             foreach ($result->getMessages() as $message) {
                 $messages[] = $message->getSummary();
             }
-            throw new OnePica_AvaTax_Model_Avatax_Exception_Commitfailure(implode(' // ', $messages));
+            throw new OnePica_AvaTax_Model_Service_Exception_Commitfailure(implode(' // ', $messages));
         }
 
         return $result;
@@ -240,7 +240,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
 
         $line = new Line();
         $line->setNo($lineNumber);
-        $line->setItemCode(Mage::helper('avatax/config')->getShippingSku($storeId));
+        $line->setItemCode($this->_getConfigHelper()->getShippingSku($storeId));
         $line->setDescription('Shipping costs');
         $line->setTaxCode($taxClass);
         $line->setQty(1);
@@ -277,14 +277,14 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
 
         $line = new Line();
         $line->setNo($lineNumber);
-        $line->setItemCode(Mage::helper('avatax/config')->getGwOrderSku($storeId));
+        $line->setItemCode($this->_getConfigHelper()->getGwOrderSku($storeId));
         $line->setDescription('Gift Wrap Order Amount');
         $line->setTaxCode($this->_getGiftTaxClassCode($storeId));
         $line->setQty(1);
         $line->setAmount($amount);
         $line->setDiscounted(false);
 
-        $this->_lineToItemId[$lineNumber] = Mage::helper('avatax/config')->getGwOrderSku($storeId);
+        $this->_lineToItemId[$lineNumber] = $this->_getConfigHelper()->getGwOrderSku($storeId);
         $this->_lines[$lineNumber] = $line;
         $this->_request->setLines($this->_lines);
         return $lineNumber;
@@ -315,14 +315,14 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
 
         $line = new Line();
         $line->setNo($lineNumber);
-        $line->setItemCode(Mage::helper('avatax/config')->getGwItemsSku($storeId));
+        $line->setItemCode($this->_getConfigHelper()->getGwItemsSku($storeId));
         $line->setDescription('Gift Wrap Items Amount');
         $line->setTaxCode($this->_getGiftTaxClassCode($storeId));
         $line->setQty(1);
         $line->setAmount($amount);
         $line->setDiscounted(false);
 
-        $this->_lineToItemId[$lineNumber] = Mage::helper('avatax/config')->getGwItemsSku($storeId);
+        $this->_lineToItemId[$lineNumber] = $this->_getConfigHelper()->getGwItemsSku($storeId);
         $this->_lines[$lineNumber] = $line;
         $this->_request->setLines($this->_lines);
         return $lineNumber;
@@ -353,14 +353,14 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
 
         $line = new Line();
         $line->setNo($lineNumber);
-        $line->setItemCode(Mage::helper('avatax/config')->getGwPrintedCardSku($storeId));
+        $line->setItemCode($this->_getConfigHelper()->getGwPrintedCardSku($storeId));
         $line->setDescription('Gift Wrap Printed Card Amount');
         $line->setTaxCode($this->_getGiftTaxClassCode($storeId));
         $line->setQty(1);
         $line->setAmount($amount);
         $line->setDiscounted(false);
 
-        $this->_lineToItemId[$lineNumber] = Mage::helper('avatax/config')->getGwPrintedCardSku($storeId);
+        $this->_lineToItemId[$lineNumber] = $this->_getConfigHelper()->getGwPrintedCardSku($storeId);
         $this->_lines[$lineNumber] = $line;
         $this->_request->setLines($this->_lines);
         return $lineNumber;
@@ -378,7 +378,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
     {
         if ($positive != 0) {
             $lineNumber = count($this->_lines);
-            $identifier = Mage::helper('avatax/config')->getPositiveAdjustmentSku($storeId);
+            $identifier = $this->_getConfigHelper()->getPositiveAdjustmentSku($storeId);
 
             $line = new Line();
             $line->setNo($lineNumber);
@@ -396,7 +396,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
 
         if ($negative != 0) {
             $lineNumber = count($this->_lines);
-            $identifier = Mage::helper('avatax/config')->getNegativeAdjustmentSku($storeId);
+            $identifier = $this->_getConfigHelper()->getNegativeAdjustmentSku($storeId);
 
             $line = new Line();
             $line->setNo($lineNumber);
