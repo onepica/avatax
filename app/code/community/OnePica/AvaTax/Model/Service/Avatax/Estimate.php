@@ -163,7 +163,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
                 //failure
             } else {
                 $this->_rates[$requestKey]['failure'] = true;
-                if (Mage::helper('avatax/config')->fullStopOnError($address->getStoreId())) {
+                if ($this->_getConfigHelper()->fullStopOnError($address->getStoreId())) {
                     $address->getQuote()->setHasError(true);
                 }
             }
@@ -201,7 +201,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
 
         $line = new Line();
         $line->setNo($lineNumber);
-        $shippingSku = Mage::helper('avatax/config')->getShippingSku($storeId);
+        $shippingSku = $this->_getConfigHelper()->getShippingSku($storeId);
         $line->setItemCode($shippingSku ? $shippingSku : 'Shipping');
         $line->setDescription('Shipping costs');
         $line->setTaxCode($taxClass);
@@ -211,7 +211,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
 
         $this->_lines[$lineNumber] = $line;
         $this->_request->setLines($this->_lines);
-        $this->_lineToLineId[$lineNumber] = Mage::helper('avatax/config')->getShippingSku($storeId);
+        $this->_lineToLineId[$lineNumber] = $this->_getConfigHelper()->getShippingSku($storeId);
         return $lineNumber;
     }
 
@@ -233,7 +233,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
 
         $line = new Line();
         $line->setNo($lineNumber);
-        $gwOrderSku = Mage::helper('avatax/config')->getGwOrderSku($storeId);
+        $gwOrderSku = $this->_getConfigHelper()->getGwOrderSku($storeId);
         $line->setItemCode($gwOrderSku ? $gwOrderSku : 'GwOrderAmount');
         $line->setDescription('Gift Wrap Order Amount');
         $line->setTaxCode($this->_getGiftTaxClassCode($storeId));
@@ -243,7 +243,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
 
         $this->_lines[$lineNumber] = $line;
         $this->_request->setLines($this->_lines);
-        $this->_lineToLineId[$lineNumber] = Mage::helper('avatax/config')->getGwOrderSku($storeId);
+        $this->_lineToLineId[$lineNumber] = $this->_getConfigHelper()->getGwOrderSku($storeId);
         return $lineNumber;
     }
 
@@ -265,7 +265,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
 
         $line = new Line();
         $line->setNo($lineNumber);
-        $gwItemsSku = Mage::helper('avatax/config')->getGwItemsSku($storeId);
+        $gwItemsSku = $this->_getConfigHelper()->getGwItemsSku($storeId);
         $line->setItemCode($gwItemsSku ? $gwItemsSku : 'GwItemsAmount');
         $line->setDescription('Gift Wrap Items Amount');
         $line->setTaxCode($this->_getGiftTaxClassCode($storeId));
@@ -275,7 +275,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
 
         $this->_lines[$lineNumber] = $line;
         $this->_request->setLines($this->_lines);
-        $this->_lineToLineId[$lineNumber] = Mage::helper('avatax/config')->getGwItemsSku($storeId);
+        $this->_lineToLineId[$lineNumber] = $this->_getConfigHelper()->getGwItemsSku($storeId);
         $this->_productGiftPair[$lineNumber] = $item->getSku();
 
         return $lineNumber;
@@ -299,7 +299,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
 
         $line = new Line();
         $line->setNo($lineNumber);
-        $gwPrintedCardSku = Mage::helper('avatax/config')->getGwPrintedCardSku($storeId);
+        $gwPrintedCardSku = $this->_getConfigHelper()->getGwPrintedCardSku($storeId);
         $line->setItemCode($gwPrintedCardSku ? $gwPrintedCardSku : 'GwPrintedCardAmount');
         $line->setDescription('Gift Wrap Printed Card Amount');
         $line->setTaxCode($this->_getGiftTaxClassCode($storeId));
@@ -309,7 +309,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
 
         $this->_lines[$lineNumber] = $line;
         $this->_request->setLines($this->_lines);
-        $this->_lineToLineId[$lineNumber] = Mage::helper('avatax/config')->getGwPrintedCardSku($storeId);
+        $this->_lineToLineId[$lineNumber] = $this->_getConfigHelper()->getGwPrintedCardSku($storeId);
         return $lineNumber;
     }
 
