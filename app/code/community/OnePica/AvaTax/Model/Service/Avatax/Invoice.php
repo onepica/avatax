@@ -103,7 +103,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
             $this->_addStatusHistoryComment($order, $message);
 
             if ($result->getTotalTax() != $invoice->getBaseTaxAmount()) {
-                throw new OnePica_AvaTax_Model_Avatax_Exception_Unbalanced(
+                throw new OnePica_AvaTax_Model_Service_Exception_Unbalanced(
                     'Collected: '. $invoice->getBaseTaxAmount() . ', Actual: ' . $result->getTotalTax()
                 );
             }
@@ -114,7 +114,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
             foreach ($result->getMessages() as $message) {
                 $messages[] = $message->getSummary();
             }
-            throw new OnePica_AvaTax_Model_Avatax_Exception_Commitfailure(implode(' // ', $messages));
+            throw new OnePica_AvaTax_Model_Service_Exception_Commitfailure(implode(' // ', $messages));
         }
 
         return true;
@@ -198,7 +198,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
             $this->_addStatusHistoryComment($order, $message);
 
             if ($result->getTotalTax() != ($creditmemo->getBaseTaxAmount() * -1)) {
-                throw new OnePica_AvaTax_Model_Avatax_Exception_Unbalanced(
+                throw new OnePica_AvaTax_Model_Service_Exception_Unbalanced(
                     'Collected: ' . $creditmemo->getTaxAmount() . ', Actual: ' . $result->getTotalTax()
                 );
             }
@@ -208,7 +208,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
             foreach ($result->getMessages() as $message) {
                 $messages[] = $message->getSummary();
             }
-            throw new OnePica_AvaTax_Model_Avatax_Exception_Commitfailure(implode(' // ', $messages));
+            throw new OnePica_AvaTax_Model_Service_Exception_Commitfailure(implode(' // ', $messages));
         }
 
         return $result;
