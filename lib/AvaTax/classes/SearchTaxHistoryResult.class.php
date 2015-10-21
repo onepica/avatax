@@ -8,9 +8,9 @@
  * This class encapsulates the data and methods used by {@link ReconcileTaxHistoryResult}.
  *
  * @see ReconcileTaxHistoryRequest
- * 
+ *
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Tax
  */
 
@@ -46,7 +46,7 @@ class SearchTaxHistoryResult //extends BaseResult
      */
 
     public function getTaxResults() { return EnsureIsArray($this->GetTaxResults->GetTaxResult); }
-    
+
     /**
      * Indicates the last Document Code ({@link GetTaxResult#getDocId}) the results list.
      * <p>
@@ -63,7 +63,7 @@ class SearchTaxHistoryResult //extends BaseResult
      */
 
     public function getLastDocId() { return $this->LastDocId; }
-    
+
 // BaseResult innards - work around a bug in SoapClient
 
 /**
@@ -98,5 +98,3 @@ class SearchTaxHistoryResult //extends BaseResult
 
 
 }
-
-?>

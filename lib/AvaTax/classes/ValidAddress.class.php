@@ -32,9 +32,9 @@
  * </pre>
  *
  * @see Address
- * 
+ *
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Address
  */
 
@@ -98,7 +98,7 @@ class ValidAddress //extends Address - or it should - SoapClient has issues mapp
  * @param Address
  * @return boolean
  */
- 
+
 	public function equals(&$other)
 	{
 		return $this === $other || (
@@ -117,23 +117,23 @@ class ValidAddress //extends Address - or it should - SoapClient has issues mapp
 	}
 
 
-        
+
     /**
      * Address line 4.
-     * 
+     *
      * @return line4 - Address line 4
      */
 
     public function getLine4() { return $this->Line4; }
-	
+
     /**
      * County Name.
-     * 
+     *
      * @return county - County Name
      */
 
     public function getCounty() { return $this->County; }
-	
+
    /**
      * Federal Information Processing Standards Code (USA).
      * <p> This is a unique code representing each geographic combination of state, county, and city.
@@ -158,9 +158,9 @@ class ValidAddress //extends Address - or it should - SoapClient has issues mapp
      *
      * @return fipsCode
      */
-	
+
     public function getFipsCode() { return $this->FipsCode; }
-	
+
 	    /**
      * The carrier route associated with the input address (USA).
      * <p>The CarrierRoute Property is a 4 character string set
@@ -228,7 +228,7 @@ class ValidAddress //extends Address - or it should - SoapClient has issues mapp
      */
 
     public function getPostNet() { return $this->PostNet; }
-	
+
 	    /**
      * Address Type - The type of address that was coded
      * (PO Box, Rural Route, and so on), using the input address.
@@ -261,12 +261,12 @@ class ValidAddress //extends Address - or it should - SoapClient has issues mapp
      * @see AddressType
 	 * @return string
 	 */
-	 
+
     public function getAddressType() { return $this->AddressType; }
-	
+
     /**
      * Gets the latitude value for this ValidAddress.
-     * 
+     *
      * @return latitude
      */
 
@@ -274,14 +274,14 @@ class ValidAddress //extends Address - or it should - SoapClient has issues mapp
 
     /**
      * Gets the longitude value for this ValidAddress.
-     * 
+     *
      * @return longitude
      */
-	 
+
     public function getLongitude() { return $this->Longitude; }
 
     // mutators
-	
+
 /**#@+
  * Mutator
  * @access public
@@ -304,25 +304,25 @@ class ValidAddress //extends Address - or it should - SoapClient has issues mapp
  * @param integer
  * @return Address
  */
-    public function setTaxRegionId($value) { $this->TaxRegionId = $value; return $this; }    
+    public function setTaxRegionId($value) { $this->TaxRegionId = $value; return $this; }
     /**
      * Address line 4.
-     * 
+     *
      * @param line4 - Address line 4
      * @var string
      */
 
     public function setLine4($value) { $this->Line4 = $value; return $this; }
-	
+
     /**
      * County Name.
-     * 
+     *
      * @param county - County Name
      * @var string
      */
 
     public function setCounty($value) { $this->County= $value; return $this; }
-	
+
     /**
      * Federal Information Processing Standards Code (USA).
      * <p> This is a unique code representing each geographic combination of state, county, and city.
@@ -348,9 +348,9 @@ class ValidAddress //extends Address - or it should - SoapClient has issues mapp
      * @param fipsCode
      * @var string
      */
- 
+
     public function setFipsCode($value) { $this->FipsCode= $value; return $this; }
-	
+
 	/**
      * The carrier route associated with the input address (USA).
      * <p>The CarrierRoute Property is a 4 character string set
@@ -420,7 +420,7 @@ class ValidAddress //extends Address - or it should - SoapClient has issues mapp
      */
 
     public function setPostNet($value) { $this->PostNet= $value; return $this; }
-	
+
     /**
      * Address Type - The type of address that was coded
      * (PO Box, Rural Route, and so on), using the input address.
@@ -454,12 +454,12 @@ class ValidAddress //extends Address - or it should - SoapClient has issues mapp
 	 * @param addressType
      * @var string
 	 */
-	 
+
     public function setAddressType($value) { $this->AddressType= $value; return $this; }
-	
+
     /**
      * Sets the latitude value for this ValidAddress.
-     * 
+     *
      * @param latitude
      */
 
@@ -467,14 +467,12 @@ class ValidAddress //extends Address - or it should - SoapClient has issues mapp
 
     /**
      * Sets the longitude value for this ValidAddress.
-     * 
+     *
      * @param longitude
      */
 
     public function setLongitude($value) { $this->Longitude= $value; return $this; }
-    
-    
-    
-}
 
-?>
+
+
+}

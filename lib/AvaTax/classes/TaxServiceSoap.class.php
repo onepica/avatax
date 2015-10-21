@@ -5,7 +5,7 @@
 
 /**
  * Proxy interface for the Avalara Tax Web Service.  It contains methods that perform remote calls
- * to the Avalara Tax Service. 
+ * to the Avalara Tax Service.
  *
  * TaxServiceSoap reads its configuration values from static variables defined
  * in ATConfig.class.php. This file must be properly configured with your security credentials.
@@ -18,7 +18,7 @@
  * </pre>
  *
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Tax
  */
 
@@ -54,21 +54,21 @@ class TaxServiceSoap extends AvalaraSoapClient
 		'ApplyPaymentRequest'=>'ApplyPaymentRequest',
 		'ApplyPaymentResult'=>'ApplyPaymentResult',
 		'BaseResult'=>'BaseResult',
-		'TaxOverride'=>'TaxOverride'			
+		'TaxOverride'=>'TaxOverride'
 		);
-        
+
 public function __construct($configurationName = 'Default')
     {
         $config = new ATConfig($configurationName);
-        
+
         $this->client = new DynamicSoapClient   (
             $config->taxWSDL,
             array
             (
-                'location' => $config->url.$config->taxService, 
+                'location' => $config->url.$config->taxService,
                 'trace' => $config->trace,
                 'classmap' => TaxServiceSoap::$classmap
-            ), 
+            ),
             $config
         );
     }
@@ -100,7 +100,7 @@ public function __construct($configurationName = 'Default')
      * Otherwise the request must specify all of {@link PostTaxRequest#getCompanyCode}, see {@link PostTaxRequest#getDocCode}
      * and {@link PostTaxRequest#getDocType} in order to uniquely identify the document.
      * </p>
-     *  
+     *
      * @param getTaxHistoryRequest a {@link GetTaxHistoryRequest} object indicating the document for which history should be retrieved.
      * @return a {@link GetTaxHistoryResult} object
      * @throws SoapFault
@@ -129,11 +129,11 @@ public function __construct($configurationName = 'Default')
      * @return a {@link PostTaxResult} object
      * @throws SoapFault
      */
-	 
+
     /*public com.avalara.avatax.services.tax.PostTaxResult postTax(com.avalara.avatax.services.tax.PostTaxRequest postTaxRequest) throws SoapFault;
 	*/
     public function postTax(&$postTaxRequest)
-    {		
+    {
 		return $this->client->PostTax(array('PostTaxRequest'=>$postTaxRequest))->PostTaxResult;
     }
 
@@ -153,7 +153,7 @@ public function __construct($configurationName = 'Default')
      * @return a {@link CommitTaxResult} object
      * @throws SoapFault
      */
-	 
+
     /*public com.avalara.avatax.services.tax.CommitTaxResult commitTax(com.avalara.avatax.services.tax.CommitTaxRequest commitTaxRequest) throws SoapFault;
 	*/
 	public function commitTax(&$commitTaxRequest)
@@ -235,7 +235,7 @@ public function __construct($configurationName = 'Default')
      * @return a {@link AdjustTaxResult} object
      * @throws SoapFault
      */
-	 
+
     /*public com.avalara.avatax.services.tax.CommitTaxResult commitTax(com.avalara.avatax.services.tax.CommitTaxRequest commitTaxRequest) throws SoapFault;
 	*/
 	public function adjustTax(&$adjustTaxRequest)
@@ -246,13 +246,13 @@ public function __construct($configurationName = 'Default')
     /**
      * Checks authentication of and authorization to one or more
      * operations on the service.
-     * 
+     *
      * This operation allows pre-authorization checking of any
      * or all operations. It will return a comma delimited set of
      * operation names which will be all or a subset of the requested
      * operation names.  For security, it will never return operation
      * names other than those requested (no phishing allowed).
-     * 
+     *
      * <b>Example:</b><br>
      * <code> isAuthorized("GetTax,PostTax")</code>
      *
@@ -261,13 +261,13 @@ public function __construct($configurationName = 'Default')
      * @return IsAuthorizedResult
      * @throws SoapFault
      */
-	 
+
 
     public function isAuthorized($operations)
     {
         return $this->client->IsAuthorized(array('Operations' => $operations))->IsAuthorizedResult;
     }
-    
+
     /**
      * Verifies connectivity to the web service and returns version
      * information about the service.
@@ -284,20 +284,18 @@ public function __construct($configurationName = 'Default')
     {
         return $this->client->Ping(array('Message' => $message))->PingResult;
     }
-    
+
     /**
-     * This method is used to apply a payment to a document for cash basis accounting. Applies a payment date to an existing invoice 
-	 * It sets the document PaymentDate and changes the reporting date from the DocDate default. It may be called before or after a document is committed. It should not be used for accrual basis accounting       
+     * This method is used to apply a payment to a document for cash basis accounting. Applies a payment date to an existing invoice
+	 * It sets the document PaymentDate and changes the reporting date from the DocDate default. It may be called before or after a document is committed. It should not be used for accrual basis accounting
      *
      * @param ApplyPaymentRequest $applyPaymentRequest
      * @return ApplyPaymentResult
      */
-    
+
     public function applyPayment(&$applyPaymentRequest)
-    {		
+    {
 		return $this->client->ApplyPayment(array('ApplyPaymentRequest' => $applyPaymentRequest))->ApplyPaymentResult;
-    }    		    
+    }
 
 }
-
-?>

@@ -6,16 +6,16 @@
 /**
  * Result data returned from {@link TaxSvcSoap#cancelTax}
  * @see CancelTaxRequest
- *  
+ *
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Tax
- * 
+ *
  */
 
 class CancelTaxResult // extends BaseResult
 {
-    
+
 
 // BaseResult innards - workaround a bug in SoapClient
 
@@ -31,7 +31,7 @@ class CancelTaxResult // extends BaseResult
  * @var array of Message.
  */
     private $Messages = array();
-	
+
 	private $DocId;
 
 /**
@@ -39,9 +39,9 @@ class CancelTaxResult // extends BaseResult
  * @return string
  */
     public function getTransactionId() { return $this->TransactionId; }
-	
+
 	public function getDocId() { return $this->DocId; }
-	
+
 /**
  * Accessor
  * @return string
@@ -56,5 +56,3 @@ class CancelTaxResult // extends BaseResult
 
 
 }
-
-?>
