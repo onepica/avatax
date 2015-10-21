@@ -25,34 +25,6 @@
 abstract class OnePica_AvaTax_Model_Service_Abstract
 {
     /**
-     * Service config
-     *
-     * @var array
-     */
-    protected $_config = array();
-
-    /**
-     * Set service config
-     *
-     * @param mixed $config
-     * @return $this
-     */
-    public function setConfig($config)
-    {
-        $this->_config = $config;
-    }
-
-    /**
-     * Get service config
-     *
-     * @return string
-     */
-    public function getConfig()
-    {
-        return $this->_config;
-    }
-
-    /**
      * Get rates from Service
      *
      * @param Mage_Sales_Model_Quote_Item $item
@@ -103,15 +75,4 @@ abstract class OnePica_AvaTax_Model_Service_Abstract
      * @return bool|array
      */
     abstract public function ping($storeId);
-
-    /**
-     * Get config helper
-     *
-     * @return OnePica_AvaTax_Helper_Config
-     * @todo moved to calculator. Maybe should be removed from this class
-     */
-    protected function _getConfigHelper()
-    {
-        return Mage::helper('avatax/config');
-    }
 }
