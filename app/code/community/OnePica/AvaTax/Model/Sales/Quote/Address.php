@@ -32,13 +32,6 @@ class OnePica_AvaTax_Model_Sales_Quote_Address extends Mage_Sales_Model_Quote_Ad
     protected $_avataxValidator = null;
 
     /**
-     * Validation results array (to avoid double valiadation of same address)
-     *
-     * @var array
-     */
-    static protected $_validationResult = array();
-
-    /**
      * Avatax address validator accessor method
      *
      * @return OnePica_AvaTax_Model_Avatax_Address
@@ -54,7 +47,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address extends Mage_Sales_Model_Quote_Ad
      * @param  $object
      * @return $this
      */
-    public function setAvataxValidator( $object)
+    public function setAvataxValidator($object)
     {
         $this->_avataxValidator = $object;
         return $this;
@@ -97,17 +90,14 @@ class OnePica_AvaTax_Model_Sales_Quote_Address extends Mage_Sales_Model_Quote_Ad
         $useForShipping = isset($data['use_for_shipping']) ? (int)$data['use_for_shipping'] : 0;
 
         if ($this->getAddressType() == self::TYPE_SHIPPING
-                || $this->getUseForShipping()/* <1.9 */ || $useForShipping/* >=1.9 */) {
-            if (!isset(self::$_validationResult[$this->getAddressId()])) {
-                if (!$this->getAvataxValidator()) {
-                    $validator = Mage::getModel('avatax/validator')->getServiceValidator($this);
-                    $this->setAvataxValidator($validator);
-                }
-
-                self::$_validationResult[$this->getAddressId()] = $this->getAvataxValidator()->validate();
+            || $this->getUseForShipping()/* <1.9 */ || $useForShipping/* >=1.9 */
+        ) {
+            if (!$this->getAvataxValidator()) {
+                $validator = Mage::getModel('avatax/validator')->getServiceValidator($this);
+                $this->setAvataxValidator($validator);
             }
 
-            return self::$_validationResult[$this->getAddressId()];
+            return $this->getAvataxValidator()->validate();
         }
 
         return $result;
@@ -138,7 +128,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address extends Mage_Sales_Model_Quote_Ad
      */
     public function addTotalAmount($code, $amount)
     {
-        $amount = $this->getTotalAmount($code)+$amount;
+        $amount = $this->getTotalAmount($code) + $amount;
         $this->setTotalAmount($code, $amount);
         return $this;
     }
@@ -152,7 +142,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address extends Mage_Sales_Model_Quote_Ad
      */
     public function addBaseTotalAmount($code, $amount)
     {
-        $amount = $this->getBaseTotalAmount($code)+$amount;
+        $amount = $this->getBaseTotalAmount($code) + $amount;
         $this->setBaseTotalAmount($code, $amount);
         return $this;
     }
@@ -168,7 +158,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address extends Mage_Sales_Model_Quote_Ad
     {
         $this->_totalAmounts[$code] = $amount;
         if ($code != 'subtotal') {
-            $code = $code.'_amount';
+            $code = $code . '_amount';
         }
         $this->setData($code, $amount);
         return $this;
@@ -185,9 +175,9 @@ class OnePica_AvaTax_Model_Sales_Quote_Address extends Mage_Sales_Model_Quote_Ad
     {
         $this->_baseTotalAmounts[$code] = $amount;
         if ($code != 'subtotal') {
-            $code = $code.'_amount';
+            $code = $code . '_amount';
         }
-        $this->setData('base_'.$code, $amount);
+        $this->setData('base_' . $code, $amount);
         return $this;
     }
 
@@ -200,7 +190,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address extends Mage_Sales_Model_Quote_Ad
     public function getTotalAmount($code)
     {
         if (isset($this->_totalAmounts[$code])) {
-            return  $this->_totalAmounts[$code];
+            return $this->_totalAmounts[$code];
         }
         return 0;
     }
@@ -214,7 +204,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address extends Mage_Sales_Model_Quote_Ad
     public function getBaseTotalAmount($code)
     {
         if (isset($this->_baseTotalAmounts[$code])) {
-            return  $this->_baseTotalAmounts[$code];
+            return $this->_baseTotalAmounts[$code];
         }
         return 0;
     }

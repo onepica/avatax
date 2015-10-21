@@ -63,11 +63,11 @@ class OnePica_AvaTax_Model_Service_Avatax_Tax extends OnePica_AvaTax_Model_Servi
 
         if ($result->getResultCode() != SeverityLevel::$Success) {
             self::$_hasError = true;
-            if (Mage::helper('avatax/config')->fullStopOnError($storeId)) {
-                Mage::helper('avatax/errors')->addErrorMessage($storeId);
+            if ($this->_configHelper()->fullStopOnError($storeId)) {
+                $this->_getErrorsHelper()->addErrorMessage($storeId);
             }
         } else {
-            Mage::helper('avatax/errors')->removeErrorMessage();
+            $this->_getErrorsHelper()->removeErrorMessage();
         }
 
         return $result;
