@@ -24,7 +24,6 @@
  */
 abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends Varien_Object
 {
-
     /**
      * Avatax cache tag
      */
@@ -227,8 +226,8 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends Varien_Objec
 
     /**
      * Save cache
-     * @param $data
-     * @param $id
+     *
+     * @param mixed $data
      * @return $this
      */
     protected function _saveCache($data)
@@ -588,8 +587,13 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends Varien_Objec
     public function isProductCalculated($item)
     {
         // check if item has methods as far as shipping, gift wrapping, printed card item comes as Varien_Object
-        if (method_exists($item, 'isChildrenCalculated') || method_exists($item, 'getParentItem')) {
-            return true;
+        if (method_exists($item, 'isChildrenCalculated') && method_exists($item, 'getParentItem')) {
+            if ($item->isChildrenCalculated() && !$item->getParentItem()) {
+                return true;
+            }
+            if (!$item->isChildrenCalculated() && $item->getParentItem()) {
+                return true;
+            }
         }
         return false;
     }
