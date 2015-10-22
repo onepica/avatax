@@ -75,4 +75,21 @@ abstract class OnePica_AvaTax_Model_Service_Abstract
      * @return bool|array
      */
     abstract public function ping($storeId);
+
+    /**
+     * Get service address validator
+     * @param Mage_Customer_Model_Address_Abstract $address
+     * @return mixed
+     */
+    abstract public function getAddressValidator(Mage_Customer_Model_Address_Abstract $address);
+
+    /**
+     * Get config helper
+     *
+     * @return OnePica_AvaTax_Helper_Config
+     */
+    protected function _getConfigHelper()
+    {
+        return Mage::helper('avatax/config');
+    }
 }

@@ -42,7 +42,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
      * Save order in AvaTax system
      *
      * @see OnePica_AvaTax_Model_Observer::salesOrderPlaceAfter()
-     * @param Mage_Sales_Model_Order_Invoice     $invoice
+     * @param Mage_Sales_Model_Order_Invoice $invoice
      * @param OnePica_AvaTax_Model_Records_Queue $queue
      * @return bool
      * @throws OnePica_AvaTax_Exception
@@ -99,7 +99,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
 
         //if successful
         if ($result->getResultCode() == SeverityLevel::$Success) {
-            $message = Mage::helper('avatax')->__('Invoice #%s was saved to AvaTax', $result->getDocCode());
+            $message = $this->getHelper()->__('Invoice #%s was saved to AvaTax', $result->getDocCode());
             $this->_addStatusHistoryComment($order, $message);
 
             if ($result->getTotalTax() != $invoice->getBaseTaxAmount()) {
@@ -194,7 +194,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
 
         //if successful
         if ($result->getResultCode() == SeverityLevel::$Success) {
-            $message = Mage::helper('avatax')->__('Credit memo #%s was saved to AvaTax', $result->getDocCode());
+            $message = $this->getHelper()->__('Credit memo #%s was saved to AvaTax', $result->getDocCode());
             $this->_addStatusHistoryComment($order, $message);
 
             if ($result->getTotalTax() != ($creditmemo->getBaseTaxAmount() * -1)) {

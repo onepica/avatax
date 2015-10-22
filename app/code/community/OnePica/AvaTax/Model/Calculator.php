@@ -160,7 +160,7 @@ class OnePica_AvaTax_Model_Calculator
      * Save order in AvaTax system
      *
      * @see OnePica_AvaTax_Model_Observer::salesOrderPlaceAfter()
-     * @param Mage_Sales_Model_Order_Invoice     $invoice
+     * @param Mage_Sales_Model_Order_Invoice $invoice
      * @param OnePica_AvaTax_Model_Records_Queue $queue
      * @return bool
      * @throws OnePica_AvaTax_Exception

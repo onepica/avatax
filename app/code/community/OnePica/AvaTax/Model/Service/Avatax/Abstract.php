@@ -22,7 +22,7 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract  extends Varien_Object
+abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends Varien_Object
 {
     /**
      * Flag that states if there was an error
@@ -60,6 +60,105 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract  extends Varien_Obje
     protected $_helper = null;
 
     /**
+     * The module address helper
+     *
+     * @var OnePica_AvaTax_Helper_Address
+     */
+    protected $_addressHelper = null;
+
+    /**
+     * The module config helper
+     *
+     * @var OnePica_AvaTax_Helper_Config
+     */
+    protected $_getConfigHelper = null;
+
+    /**
+     * The module config helper
+     *
+     * @var OnePica_AvaTax_Model_Service_Avatax_Invoice
+     */
+    protected $_errorsHelper = null;
+
+    /**
+     * The module config helper
+     *
+     * @var OnePica_AvaTax_Model_Service_Avatax_Tax
+     */
+    protected $_libHelper = null;
+
+    /**
+     * Avatax cache tag
+     */
+    const AVATAX_SERVICE_CACHE = 'avatax_cache';
+
+    /**
+     * Class pre-constructor
+     */
+    protected function _construct()
+    {
+        $this->addData(array('cache_lifetime' => false));
+        $this->addCacheTag(array(
+            self::AVATAX_SERVICE_CACHE,
+            Mage::app()->getStore()->getId(),
+            (int)Mage::app()->getStore()->isCurrentlySecure()
+        ));
+    }
+
+    /**
+     * Get Key for caching block content
+     *
+     * @return string
+     */
+    public function getCacheKey()
+    {
+        $key = $this->getData(self::AVATAX_SERVICE_CACHE);
+        $key = array_values($key); // ignore array keys
+        $key = implode('|', $key);
+        $key = sha1($key);
+        $this->setData('cache_key', $key);
+        return $key;
+    }
+
+    /**
+     * Add tag to block
+     *
+     * @param string|array $tag
+     * @return Mage_Core_Block_Abstract
+     */
+    public function addCacheTag($tag)
+    {
+        $tag = is_array($tag) ? $tag : array($tag);
+        $tags = !$this->hasData(self::AVATAX_SERVICE_CACHE) ?
+            $tag : array_merge($this->getData(self::AVATAX_SERVICE_CACHE), $tag);
+        $this->setData(self::AVATAX_SERVICE_CACHE, $tags);
+        return $this;
+    }
+
+    /**
+     * Load block html from cache storage
+     *
+     * @return string | false
+     */
+    protected function _loadCache($id)
+    {
+        if (is_null($this->getCacheLifetime()) || !Mage::app()->useCache(self::AVATAX_SERVICE_CACHE)) {
+            return false;
+        }
+        return Mage::app()->loadCache($id);
+    }
+
+    /**
+     * Save cache
+     * @param $data
+     * @param $id
+     */
+    protected function _saveCache($data, $id)
+    {
+        Mage::app()->saveCache($data, $id, $this->getData('cache_key'), $this->getCacheLifetime());
+    }
+
+    /**
      * Logs a debug message
      *
      * @param string $type
@@ -72,7 +171,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract  extends Varien_Obje
     protected function _log($type, $request, $result, $storeId = null, $additional = null)
     {
         if ($result->getResultCode() == SeverityLevel::$Success) {
-            switch (Mage::helper('avatax')->getLogMode($storeId)) {
+            switch ($this->getHelper()->getLogMode($storeId)) {
                 case OnePica_AvaTax_Model_Source_Logmode::ERRORS:
                     return $this;
                     break;
@@ -82,7 +181,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract  extends Varien_Obje
             }
         }
 
-        if (in_array($type, Mage::helper('avatax')->getLogType($storeId))) {
+        if (in_array($type, $this->getHelper()->getLogType($storeId))) {
             Mage::getModel('avatax_records/log')
                 ->setStoreId($storeId)
                 ->setLevel($result->getResultCode())
@@ -116,6 +215,45 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract  extends Varien_Obje
             $this->_helper = Mage::helper('avatax');
         }
         return $this->_helper;
+    }
+
+    /**
+     * Returns the AvaTax helper.
+     *
+     * @return OnePica_AvaTax_Helper_Address
+     */
+    public function _getAddressHelper()
+    {
+        if (!$this->_addressHelper) {
+            $this->_addressHelper = Mage::helper('avatax/address');
+        }
+        return $this->_addressHelper;
+    }
+
+    /**
+     * Returns the AvaTax helper.
+     *
+     * @return OnePica_AvaTax_Helper_Config
+     */
+    public function _getConfigHelper()
+    {
+        if (!$this->_getConfigHelper) {
+            $this->_getConfigHelper = Mage::helper('avatax/config');
+        }
+        return $this->_getConfigHelper;
+    }
+
+    /**
+     * Returns the AvaTax helper.
+     *
+     * @return OnePica_AvaTax_Helper_Config
+     */
+    public function _getErrorsHelper()
+    {
+        if (!$this->_errorsHelper) {
+            $this->_errorsHelper = Mage::helper('avatax/errors');
+        }
+        return $this->_errorsHelper;
     }
 
     //@startSkipCommitHooks
@@ -218,7 +356,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract  extends Varien_Obje
     {
         if ($object instanceof Mage_Sales_Model_Order) {
             return $this->_getVatIdByOrder($object);
-         }
+        }
 
         return $this->_getVatIdByQuoteAddress($object);
     }
@@ -282,7 +420,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract  extends Varien_Obje
                 break;
             case OnePica_AvaTax_Model_Source_Customercodeformat::CUST_ID:
             default:
-                $customerCode = $object->getCustomerId() ? $object->getCustomerId() : 'guest-'.$object->getId();
+                $customerCode = $object->getCustomerId() ? $object->getCustomerId() : 'guest-' . $object->getId();
                 break;
         }
 
@@ -363,13 +501,8 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract  extends Varien_Obje
     public function isProductCalculated($item)
     {
         // check if item has methods as far as shipping, gift wrapping, printed card item comes as Varien_Object
-        if (method_exists($item, 'isChildrenCalculated') && method_exists($item, 'getParentItem')) {
-            if ($item->isChildrenCalculated() && !$item->getParentItem()) {
-                return true;
-            }
-            if (!$item->isChildrenCalculated() && $item->getParentItem()) {
-                return true;
-            }
+        if (method_exists($item, 'isChildrenCalculated') || method_exists($item, 'getParentItem')) {
+            return true;
         }
         return false;
     }
@@ -508,8 +641,8 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract  extends Varien_Obje
      * Get proper ref value for given product
      *
      * @param Mage_Catalog_Model_Product $product
-     * @param int                        $refNumber
-     * @param int                        $storeId
+     * @param int $refNumber
+     * @param int $storeId
      * @return null|string
      */
     protected function _getRefValueByProductAndNumber($product, $refNumber, $storeId)
@@ -577,15 +710,5 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract  extends Varien_Obje
         }
 
         return $object->getStoreId();
-    }
-
-    /**
-     * Get config helper
-     *
-     * @return OnePica_AvaTax_Helper_Config
-     */
-    protected function _getConfigHelper()
-    {
-        return Mage::helper('avatax/config');
     }
 }
