@@ -194,6 +194,15 @@
                 </observers>
             </controller_action_predispatch_checkout_onepage_index>
         </events>
+        <cache>
+            <types>
+                <avatax module="onepica_avatax" translate="label description">
+                    <label>Avatax cache</label>
+                    <description>Cache avatax request</description>
+                    <tags>AVATAX</tags>
+                </avatax>
+            </types>
+        </cache>
     </global>
     <frontend>
         <layout>

@@ -24,6 +24,17 @@
  */
 abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends Varien_Object
 {
+
+    /**
+     * Avatax cache tag
+     */
+    const AVATAX_SERVICE_CACHE_GROUP = 'avatax_cache_tags';
+
+    /**
+     * Avatax cache tag
+     */
+    const AVATAX_CACHE_GROUP = 'avatax';
+
     /**
      * Flag that states if there was an error
      *
@@ -88,18 +99,19 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends Varien_Objec
     protected $_libHelper = null;
 
     /**
-     * Avatax cache tag
+     * Model cache tag for clear cache in after save and after delete
      */
-    const AVATAX_SERVICE_CACHE = 'avatax_cache';
+    protected $_cacheTag = self::AVATAX_SERVICE_CACHE_GROUP;
 
     /**
      * Class pre-constructor
      */
     protected function _construct()
     {
+        $this->_getApp()->useCache(self::AVATAX_CACHE_GROUP);
         $this->addData(array('cache_lifetime' => false));
         $this->addCacheTag(array(
-            self::AVATAX_SERVICE_CACHE,
+            self::AVATAX_SERVICE_CACHE_GROUP,
             Mage::app()->getStore()->getId(),
             (int)Mage::app()->getStore()->isCurrentlySecure()
         ));
@@ -112,12 +124,75 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends Varien_Objec
      */
     public function getCacheKey()
     {
-        $key = $this->getData(self::AVATAX_SERVICE_CACHE);
+        $key = $this->getCacheKeyInfo();
         $key = array_values($key); // ignore array keys
         $key = implode('|', $key);
         $key = sha1($key);
-        $this->setData('cache_key', $key);
         return $key;
+    }
+
+    /**
+     * Get list of cache tags applied to model object.
+     * Return false if cache tags are not supported by model
+     *
+     * @return array | false
+     */
+    public function getCacheTags()
+    {
+        $tags = false;
+        if ($this->_cacheTag) {
+            if ($this->_cacheTag === true) {
+                $tags = array();
+            } else {
+                if (is_array($this->_cacheTag)) {
+                    $tags = $this->_cacheTag;
+                } else {
+                    $tags = array($this->_cacheTag);
+                }
+                $idTags = $this->getCacheIdTags();
+                if ($idTags) {
+                    $tags = array_merge($tags, $idTags);
+                }
+            }
+        }
+        return $tags;
+    }
+
+    /**
+     * Get cache key for tags
+     *
+     * @param string $cacheKey
+     * @return string
+     */
+    protected function _getTagsCacheKey($cacheKey = null)
+    {
+        $cacheKey = !empty($cacheKey) ? $cacheKey : $this->getCacheKey();
+        $cacheKey = md5($cacheKey . '_tags');
+        return $cacheKey;
+    }
+
+    /**
+     * Get cache key informative items
+     *
+     * @return array
+     */
+    public function getCacheKeyInfo()
+    {
+        return array(
+            'AVATAX_CACHE',
+            Mage::app()->getStore()->getId(),
+            (int)Mage::app()->getStore()->isCurrentlySecure(),
+        );
+    }
+
+    /**
+     * Get block cache life time
+     *
+     * @return int
+     */
+    public function getCacheLifetime()
+    {
+        return $this->getData('cache_lifetime');
     }
 
     /**
@@ -129,9 +204,9 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends Varien_Objec
     public function addCacheTag($tag)
     {
         $tag = is_array($tag) ? $tag : array($tag);
-        $tags = !$this->hasData(self::AVATAX_SERVICE_CACHE) ?
-            $tag : array_merge($this->getData(self::AVATAX_SERVICE_CACHE), $tag);
-        $this->setData(self::AVATAX_SERVICE_CACHE, $tags);
+        $tags = !$this->hasData(self::AVATAX_CACHE_GROUP) ?
+            $tag : array_merge($this->getData(self::AVATAX_CACHE_GROUP), $tag);
+        $this->setData(self::AVATAX_CACHE_GROUP, $tags);
         return $this;
     }
 
@@ -140,22 +215,34 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends Varien_Objec
      *
      * @return string | false
      */
-    protected function _loadCache($id)
+    protected function _loadCache()
     {
-        if (is_null($this->getCacheLifetime()) || !Mage::app()->useCache(self::AVATAX_SERVICE_CACHE)) {
+        if (!$this->_getApp()->useCache(self::AVATAX_CACHE_GROUP)) {
             return false;
         }
-        return Mage::app()->loadCache($id);
+        $cacheKey = $this->getCacheKey();
+        $cacheData = $this->_getApp()->loadCache($cacheKey);
+        return $cacheData;
     }
 
     /**
      * Save cache
      * @param $data
      * @param $id
+     * @return $this
      */
-    protected function _saveCache($data, $id)
+    protected function _saveCache($data)
     {
-        Mage::app()->saveCache($data, $id, $this->getData('cache_key'), $this->getCacheLifetime());
+        $cacheKey = $this->getCacheKey();
+        $tags = $this->getCacheTags();
+        Mage::app()->saveCache($data, $cacheKey, $tags, $this->getCacheLifetime());
+        $this->_getApp()->saveCache(
+            json_encode($tags),
+            $this->_getTagsCacheKey($cacheKey),
+            $tags,
+            $this->getCacheLifetime()
+        );
+        return $this;
     }
 
     /**
@@ -710,5 +797,15 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends Varien_Objec
         }
 
         return $object->getStoreId();
+    }
+
+    /**
+     * Retrieve application instance
+     *
+     * @return Mage_Core_Model_App
+     */
+    protected function _getApp()
+    {
+        return Mage::app();
     }
 }

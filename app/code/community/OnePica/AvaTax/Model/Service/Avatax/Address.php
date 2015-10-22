@@ -27,7 +27,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
     /**
      * Avatax adddres cache tag
      */
-    const AVATAX_SERVICE_CACHE_ADDRESS = 'avatax_cache_address';
+    const AVATAX_SERVICE_CACHE_ADDRESS = 'avatax_cache_address_';
 
     /**
      * An array of previously checked addresses
@@ -111,6 +111,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
         $this->_storeId = Mage::app()->getStore()->getId();
         $this->_mageAddress = $address;
         $this->_convertRequestAddress();
+        $this->addCacheTag(array($this->_mageAddress->getId()));
         return $this;
     }
 
@@ -170,8 +171,9 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
             );
         }
 
-        if ($this->_loadCache(self::AVATAX_SERVICE_CACHE_ADDRESS . $this->_mageAddress->getId())){
-            return $this->_loadCache(self::AVATAX_SERVICE_CACHE_ADDRESS . $this->_mageAddress->getId());
+        $result = $this->_loadCache();
+        if ($result !== false) {
+            return $result;
         }
 
         /** @var Mage_Sales_Model_Quote $quote */
@@ -207,7 +209,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
         $this->_addressNormalization($isAddressNormalizationOn, $result);
 
         $addressValidationResult = $this->_addressValidation($isAddressValidationOn, $isAddressActionable, $result);
-        $this->_saveCache($addressValidationResult, self::AVATAX_SERVICE_CACHE_ADDRESS . $this->_mageAddress->getId());
+        $this->_saveCache($addressValidationResult);
         if ($addressValidationResult) {
             return $addressValidationResult;
         }
