@@ -173,7 +173,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
 
         $result = $this->_loadCache();
         if ($result !== false) {
-            return $result;
+            return boolval($result);
         }
 
         /** @var Mage_Sales_Model_Quote $quote */
