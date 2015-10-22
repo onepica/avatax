@@ -9,52 +9,52 @@
  * @see ArrayOfTaxDetail
  * @see TaxLine
  * @see GetTaxResult
- * 
+ *
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Tax
  */
 
 class TaxDetail
 {
 
-	private $JurisType;     //JurisdictionType 
-	private $JurisCode;     //string 
-	private $TaxType;     //TaxType 
-	
+	private $JurisType;     //JurisdictionType
+	private $JurisCode;     //string
+	private $TaxType;     //TaxType
+
 	private $Base;		//decimal // See Taxable
-	private $Taxable;     //decimal 
-	private $Rate;		//decimal 
-	
-	private $Tax;		//decimal 
-	private $NonTaxable;     //decimal 
-	private $Exemption;     //decimal 
-	private $JurisName;     //string 
-	private $TaxName;     //string 
+	private $Taxable;     //decimal
+	private $Rate;		//decimal
+
+	private $Tax;		//decimal
+	private $NonTaxable;     //decimal
+	private $Exemption;     //decimal
+	private $JurisName;     //string
+	private $TaxName;     //string
 	private $TaxAuthorityType;  // int
-	
+
 	//@author:swetal
 	//Added new properties to upgrade it to 5.3 interface
 	private $Country;	//string
 	private $Region; 	//string
 	private $TaxCalculated;	//decimal
 	private $TaxGroup;	//string
-	
+
 	//Task# 25610
 	private $StateAssignedNo;
-	
+
 	public function getStateAssignedNo()
 	{
 		return $this->StateAssignedNo;
 	}
- 
-	
-	
+
+
+
 	/**
      * Gets the JurisdictionType.
      * <p>
-     * 
-     
+     *
+
 	 * </p>
      * @see JurisdictionType
 	   @see GetTaxResults
@@ -62,7 +62,7 @@ class TaxDetail
      */
 
 	public function getJurisType() {return $this->JurisType; }
-	
+
 	/**
      * Gets the JurisCode.
      * <p>
@@ -93,7 +93,7 @@ class TaxDetail
      */
 
 	public function getTaxable() {return $this->Taxable; }
-	
+
   /**
      * Gets the Taxable amount.
      * <p>
@@ -125,7 +125,7 @@ class TaxDetail
      */
 
 	public function getTax() {return $this->Tax; }
-	
+
 	 /**
      * Gets the non-taxable amount..
      * <p>
@@ -134,7 +134,7 @@ class TaxDetail
 	   @see GetTaxResults
      * @return decimal
      */
-  
+
 	public function getNonTaxable() {return $this->NonTaxable; }
 
 
@@ -160,7 +160,7 @@ class TaxDetail
 
 	public function getJurisName() {return $this->JurisName; }
 	/**
-     * 
+     *
      * <p>
 	Gets the taxName value.
 	It further defines tax and jurisdiction.         * </p>
@@ -179,18 +179,12 @@ class TaxDetail
      */
 
 	public function getTaxAuthorityType() {return $this->TaxAuthorityType; }
-	
+
 	//@author:swetal
-	public function getCountry(){ return $this->Country;}	
-	public function getRegion(){ return $this->Region;} 	
-	public function getTaxCalculated(){ return $this->TaxCalculated;}	
-	public function getTaxGroup(){ return $this->TaxGroup;}	
+	public function getCountry(){ return $this->Country;}
+	public function getRegion(){ return $this->Region;}
+	public function getTaxCalculated(){ return $this->TaxCalculated;}
+	public function getTaxGroup(){ return $this->TaxGroup;}
 
-	    
+
 }
-
-	
-	
-	
-
-?>

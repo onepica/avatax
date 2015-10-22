@@ -18,7 +18,7 @@
  * </pre>
  *
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Address
  */
 
@@ -26,24 +26,24 @@ class IsAuthorizedResult //extends BaseResult
 {
     private $Operations;
     private $Expires;
-    
+
     /**
      * Authorized operations for the user.
      *
      * @return string
      */
     public function getOperations() { return $this->Operations; }
-    
+
     /**
-     * Indicates the subscription expiration date in yyyy-mm-dd format 
+     * Indicates the subscription expiration date in yyyy-mm-dd format
      *
      * @return date
      */
     public function getExpires() { return $this->Expires; }
-    
+
     public function setOperations($value) { $this->Operations = $value; return $this; }
     public function setExpires($value) { $this->Expires = $value; return $this; }
-	
+
 	//BaseResult innards - workaround for SoapClient bug
 	/**
  * @var string
@@ -76,5 +76,3 @@ class IsAuthorizedResult //extends BaseResult
 
 
 }
-
-?>

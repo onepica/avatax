@@ -8,9 +8,9 @@
  * This depends on the accuracy of the address as well as the
  * precision level of the state provided jurisdiction boundaries.
  * @see TaxLine
- * 
+ *
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Tax
 */
 
@@ -22,8 +22,8 @@ class BoundaryLevel extends Enum
 	 *
 	 * @var unknown_type
 	 */
-	public static $Address		= 'Address'; //enum 
-	
+	public static $Address		= 'Address'; //enum
+
 	/**
 	 *5-digit zip precision
 	 *
@@ -36,10 +36,10 @@ class BoundaryLevel extends Enum
 	 *
 	 * @var unknown_type
 	 */
-	public static $Zip5			= 'Zip5'; //enum 
-	
+	public static $Zip5			= 'Zip5'; //enum
 
-    
+
+
 	public static function Values()
 	{
 		return array(
@@ -49,10 +49,7 @@ class BoundaryLevel extends Enum
 		);
 	}
 
-    
+
     // Unfortunate boiler plate due to polymorphism issues on static functions
     public static function Validate($value) { self::__Validate($value,self::Values(),__CLASS__); }
 }
-	
-
-?>

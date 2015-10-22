@@ -2,27 +2,27 @@
 /**
  * AvaTaxBatchSvc.class.php
  */
- 
+
 /**
  * Defines class loading search path.
- * 
+ *
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
- * @package   Base 
+ * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Base
  */
- 
-function __autoload($class_name) 
-{    
+
+function __autoload($class_name)
+{
     require_once $class_name . '.class.php';
 }
 
-function EnsureIsArray( $obj ) 
+function EnsureIsArray( $obj )
 {
-    if( is_object($obj)) 
+    if( is_object($obj))
 	{
         $item[0] = $obj;
-    } 
-	else 
+    }
+	else
 	{
         $item = (array)$obj;
     }
@@ -44,7 +44,7 @@ function xml_pretty_printer($xml, $html_output=FALSE)
     $xml_obj = new SimpleXMLElement($xml);
     $xml_lines = explode("n", $xml_obj->asXML());
     $indent_level = 0;
-    
+
     $new_xml_lines = array();
     foreach ($xml_lines as $xml_line) {
         if (preg_match('#(<[a-z0-9:-]+((s+[a-z0-9:-]+="[^"]+")*)?>.*<s*/s*[^>]+>)|(<[a-z0-9:-]+((s+[a-z0-9:-]+="[^"]+")*)?s*/s*>)#i', $xml_line)) {
@@ -67,10 +67,7 @@ function xml_pretty_printer($xml, $html_output=FALSE)
             $new_xml_lines[] = $new_line;
         }
     }
-    
+
     $xml = join("n", $new_xml_lines);
     return ($html_output) ? '<pre>' . htmlentities($xml) . '</pre>' : $xml;
 }
-
-
-?>

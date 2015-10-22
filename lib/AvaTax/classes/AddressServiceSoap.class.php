@@ -2,9 +2,9 @@
 /**
  * AddressServiceSoap.class.php
  */
- 
+
 /**
- * Proxy interface for the Avalara Address Web Service. 
+ * Proxy interface for the Avalara Address Web Service.
  *
  * AddressServiceSoap reads its configuration values from static variables defined
  * in ATConfig.class.php. This file must be properly configured with your security credentials.
@@ -16,9 +16,9 @@
  * </pre>
  *
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Address
- * 
+ *
  */
 
 class AddressServiceSoap extends AvalaraSoapClient
@@ -30,20 +30,20 @@ class AddressServiceSoap extends AvalaraSoapClient
                                     'ValidateRequest' => 'ValidateRequest',
                                     'BaseAddress' => 'BaseAddress',
                                     'ValidAddress' => 'ValidAddress',
-                                    'TextCase' => 'TextCase',                                    
-                                    'ValidateResult' => 'ValidateResult',                                    
+                                    'TextCase' => 'TextCase',
+                                    'ValidateResult' => 'ValidateResult',
                                     'BaseResult' => 'BaseResult',
                                     'SeverityLevel' => 'SeverityLevel',
                                     'Message' => 'Message',
                                     'Profile' => 'Profile',
-                                    'Ping' => 'Ping',                                    
+                                    'Ping' => 'Ping',
                                     'PingResult' => 'PingResult',
-                                    'IsAuthorized' => 'IsAuthorized',                                    
+                                    'IsAuthorized' => 'IsAuthorized',
                                     'IsAuthorizedResult' => 'IsAuthorizedResult');
-        
+
     /**
      * Construct a proxy for Avalara's Address Web Service using the default URL as coded in the class or programatically set.
-     * 
+     *
      * <b>Example:</b>
      * <pre>
      *  $port = new AddressServiceSoap();
@@ -61,10 +61,10 @@ class AddressServiceSoap extends AvalaraSoapClient
             $config->addressWSDL,
             array
             (
-                'location' => $config->url.$config->addressService, 
+                'location' => $config->url.$config->addressService,
                 'trace' => $config->trace,
                 'classmap' => AddressServiceSoap::$classmap
-            ), 
+            ),
             $config
         );
     }
@@ -72,13 +72,13 @@ class AddressServiceSoap extends AvalaraSoapClient
     /**
      * Checks authentication of and authorization to one or more
      * operations on the service.
-     * 
+     *
      * This operation allows pre-authorization checking of any
      * or all operations. It will return a comma delimited set of
      * operation names which will be all or a subset of the requested
      * operation names.  For security, it will never return operation
      * names other than those requested (no phishing allowed).
-     * 
+     *
      * <b>Example:</b><br>
      * <code> isAuthorized("GetTax,PostTax")</code>
      *
@@ -92,7 +92,7 @@ class AddressServiceSoap extends AvalaraSoapClient
     {
         return $this->client->IsAuthorized(array('Operations' => $operations))->IsAuthorizedResult;
     }
-    
+
     /**
      * Verifies connectivity to the web service and returns version
      * information about the service.
@@ -109,7 +109,7 @@ class AddressServiceSoap extends AvalaraSoapClient
     {
         return $this->client->Ping(array('Message' => $message))->PingResult;
     }
-    
+
     /**
      * Validates an address and returns a normalized address or error.
      * {@link ValidAddress} objects in a {@link ValidateResult} object.
@@ -139,11 +139,7 @@ class AddressServiceSoap extends AvalaraSoapClient
 	 public function validate($validateRequest)
     {
         return $this->client->Validate(array('ValidateRequest' => $validateRequest))->ValidateResult;
-    }     
+    }
 
 
 }
-
-
-
-?>
