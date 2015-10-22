@@ -120,12 +120,11 @@ class OnePica_AvaTax_Model_Service_Avatax
 
     /**
      * Get avatax address validator
-     * @param $address
      * @return OnePica_AvaTax_Model_Service_Avatax_Address
      */
-    public function getAddressValidator(Mage_Customer_Model_Address_Abstract $address)
+    public function getAddressValidator()
     {
-        return Mage::getSingleton('avatax/service_avatax_address', $address);
+        return Mage::getSingleton('avatax/service_avatax_address');
     }
 
     /**

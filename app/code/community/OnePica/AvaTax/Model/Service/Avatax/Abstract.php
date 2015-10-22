@@ -64,7 +64,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends Varien_Objec
      *
      * @var OnePica_AvaTax_Helper_Address
      */
-    protected $_addressHelper = null;
+    protected $_getAddressHelper = null;
 
     /**
      * The module config helper
@@ -224,10 +224,10 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends Varien_Objec
      */
     public function _getAddressHelper()
     {
-        if (!$this->_addressHelper) {
-            $this->_addressHelper = Mage::helper('avatax/address');
+        if (!$this->_getAddressHelper) {
+            $this->_getAddressHelper = Mage::helper('avatax/address');
         }
-        return $this->_addressHelper;
+        return $this->_getAddressHelper;
     }
 
     /**

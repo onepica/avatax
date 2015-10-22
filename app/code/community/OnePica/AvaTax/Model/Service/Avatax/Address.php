@@ -70,16 +70,12 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
     /**
      * Loads any saved addresses in session
      */
-    public function __construct(Mage_Customer_Model_Address_Abstract $address)
+    public function __construct()
     {
         $addresses = Mage::getSingleton('avatax/session')->getAddresses();
         if (is_array($addresses)) {
             $this->_cache = $addresses;
         }
-
-        $this->_storeId = Mage::app()->getStore()->getId();
-        $this->_mageAddress = $address;
-        $this->_convertRequestAddress();
     }
 
     /**
@@ -180,11 +176,11 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
 
         /** @var Mage_Sales_Model_Quote $quote */
         $quote = $this->_mageAddress->getQuote();
-        $isAddressValidationOn = $this->_addressHelper()->isAddressValidationOn($this->_mageAddress, $this->_storeId);
-        $isAddressNormalizationOn = $this->_addressHelper()->isAddressNormalizationOn(
+        $isAddressValidationOn = $this->_getAddressHelper()->isAddressValidationOn($this->_mageAddress, $this->_storeId);
+        $isAddressNormalizationOn = $this->_getAddressHelper()->isAddressNormalizationOn(
             $this->_mageAddress, $this->_storeId
         );
-        $isAddressActionable = $this->_addressHelper()->isAddressActionable($this->_mageAddress, $quote->getStoreId());
+        $isAddressActionable = $this->_getAddressHelper()->isAddressActionable($this->_mageAddress, $quote->getStoreId());
         //if there is no use cases for AvaTax services, return address as valid without doing a lookup
         if (!$isAddressValidationOn && !$isAddressNormalizationOn && !$isAddressActionable) {
             return true;
