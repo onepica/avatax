@@ -4,10 +4,10 @@
  */
 
 /**
- * 
+ *
  *
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Batch
  */
 class BatchProcessRequest //extends FilterRequest
@@ -18,9 +18,9 @@ class BatchProcessRequest //extends FilterRequest
   function __construct()
   {
   	$this->MaxCount=0;
-  	
+
   }
-  
+
   public function setFilters($value){$this->Filters=$value;} // string
   public function getFilters(){return $this->Filters;} // string
 
@@ -28,5 +28,3 @@ class BatchProcessRequest //extends FilterRequest
   public function getMaxCount(){return $this->MaxCount;} // int
 
 }
-
-?>

@@ -4,9 +4,9 @@
  */
 
 /**
- * 
+ *
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Batch
  */
 class BatchFile {
@@ -19,7 +19,7 @@ class BatchFile {
   private $Name; // string
   private $Size; // int
   private $ErrorCount; // int
-  
+
   function __construct()
   {
   	$this->BatchFileId=0;
@@ -55,5 +55,3 @@ class BatchFile {
   public function getErrorCount(){return $this->ErrorCount;} // int
 
 }
-
-?>

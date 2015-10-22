@@ -8,7 +8,7 @@
  * and indicates the state of the document in tax history.
  *
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Tax
  */
 
@@ -22,42 +22,42 @@ class DocStatus extends Enum
 	 * @var unknown_type
 	 */
 	public static $Temporary= 'Temporary';
-	
+
 	/**
 	 *  A saved document (DocumentType was SalesInvoice, PurchaseInvoice, ReturnInvoice) ready to be posted.
 	 *
 	 * @var DocStatus
 	 */
     public static $Saved	= 'Saved';
-    
+
     /**
 	 *  A posted document (not committed).
 	 *
 	 * @var DocStatus
 	 */
     public static $Posted	= 'Posted';
-    
+
     /**
 	 *  A posted document that has been committed.
 	 *
 	 * @var DocStatus
 	 */
     public static $Committed	= 'Committed';
-    
+
     /**
 	 *  A committed document that has been cancelled.
 	 *
 	 * @var DocStatus
 	 */
     public static $Cancelled	= 'Cancelled';
-    
+
     /**
 	 * Enter description here...
 	 *
 	 * @var DocStatus
 	 */
     public static $Adjusted	= 'Adjusted';
-    
+
     /**
 	 * Any status (used for searching)
 	 *
@@ -65,7 +65,7 @@ class DocStatus extends Enum
 	 */
 	public static $Any		= 'Any';
 
-    
+
 	public static function Values()
 	{
 		return array(
@@ -75,12 +75,10 @@ class DocStatus extends Enum
 			DocStatus::$Committed,
 			DocStatus::$Cancelled,
 			DocStatus::$Adjusted,
-			DocStatus::$Any		
+			DocStatus::$Any
 		);
 	}
     // Unfortunate boiler plate due to polymorphism issues on static functions
     public static function Validate($value) { self::__Validate($value,self::Values(),__CLASS__); }
 
 }
-
-?>

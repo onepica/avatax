@@ -7,9 +7,9 @@
  * A cancel code is set on a {@link CancelTaxRequest} and specifies the reason the
  * tax calculation is being canceled (or in the case of posting, returned to its prior state).
  * @see CancelTaxRequest
- * 
+ *
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Tax
 */
 class CancelCode extends Enum
@@ -39,7 +39,7 @@ class CancelCode extends Enum
      */
 
     public static $DocDeleted			= 'DocDeleted';
-    
+
     /**
      * Specifies the document was voided within the client's application and
      * should be removed from the AvaTax records; If the document within AvaTax
@@ -50,7 +50,7 @@ class CancelCode extends Enum
     public static $DocVoided			= 'DocVoided';
     public static $AdjustmentCancelled	= 'AdjustmentCancelled';
 
-    
+
 	public static function Values()
 	{
 		return array(
@@ -61,10 +61,8 @@ class CancelCode extends Enum
 			CancelCode::$AdjustmentCancelled
 		);
 	}
-	
-    // Unfortunate boiler plate due to polymorphism issues on static functions
-    public static function Validate($value) { self::__Validate($value,self::Values(),__CLASS__); }	
-	
-}
 
-?>
+    // Unfortunate boiler plate due to polymorphism issues on static functions
+    public static function Validate($value) { self::__Validate($value,self::Values(),__CLASS__); }
+
+}

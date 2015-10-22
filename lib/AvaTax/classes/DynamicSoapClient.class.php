@@ -2,7 +2,7 @@
 /**
  * DynamicSoapClient.class.php
  */
- 
+
 /**
  * Private implementation class for all Avalara web service clients.
  *
@@ -12,19 +12,19 @@
  * @see AvalaraSoapClient
  * @see AddressServiceSoap
  * @see TaxServiceSoap
- *  
+ *
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Base
  */
- 
+
 class DynamicSoapClient extends SoapClient
 {
     private $config;
     public function __construct($wsdl,$options,&$config)
     {
         parent::__construct($wsdl,$options);
-        $this->config = $config; 
+        $this->config = $config;
     }
 
 	public function __call($n,$args)
@@ -34,10 +34,10 @@ class DynamicSoapClient extends SoapClient
         	$result = $this->__soapCall($n,$args,NULL,array($securityHeader,$profileHeader));
         return $result;
 	}
-    
+
     private function securityXML()
     {
-        return 
+        return
             '<wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" SOAP-ENV:mustUnderstand="1">'.
                 '<wsse:UsernameToken>'.
                     '<wsse:Username>'.$this->config->account.'</wsse:Username>'.
@@ -46,17 +46,15 @@ class DynamicSoapClient extends SoapClient
                 '</wsse:UsernameToken>'.
             '</wsse:Security>';
     }
-    
+
     private function profileXML()
     {
-        return 
+        return
             '<Profile xmlns="http://avatax.avalara.com/services" SOAP-ENV:actor="http://schemas.xmlsoap.org/soap/actor/next" SOAP-ENV:mustUnderstand="0">'.
                 '<Name>'.$this->config->name.'</Name>'.
             	'<Client>'.$this->config->client.'</Client>'.
-                '<Adapter>'.$this->config->adapter.'</Adapter>'.        		
+                '<Adapter>'.$this->config->adapter.'</Adapter>'.
             '</Profile>';
     }
-    
-}
 
-?>
+}

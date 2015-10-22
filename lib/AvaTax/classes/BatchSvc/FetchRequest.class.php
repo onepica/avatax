@@ -4,10 +4,10 @@
  */
 
 /**
- * 
+ *
  *
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Batch
  */
 class FetchRequest {
@@ -18,7 +18,7 @@ class FetchRequest {
   private $PageIndex; // int
   private $PageSize; // int
   private $RecordCount; // int
-  
+
   function __construct()
   {
   	$this->MaxCount=0;
@@ -49,5 +49,3 @@ class FetchRequest {
   public function getRecordCount(){return $this->RecordCount;} // int
 
 }
-
-?>

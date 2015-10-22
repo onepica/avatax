@@ -563,5 +563,3 @@ class GetTaxRequest
 
 
 }
-
-?>
