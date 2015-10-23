@@ -22,23 +22,34 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Source_Logtype
+class OnePica_AvaTax_Model_Source_Avatax16_Logtype
 {
     /**
-     * Gets the list of type for the admin config dropdown
-     * @return array
-     * @throws OnePica_AvaTax_Exception
+     * Calculation type
      */
-    public function toOptionArray()
+    const CALCULATION = 'calculation';
+
+    /**
+     * Get tax type
+     */
+    const TRANSACTION = 'transaction';
+
+    /**
+     * Gets the list of type for the admin config dropdown
+     *
+     * @return array
+     */
+    public function toArray()
     {
-        $activeService = Mage::helper('avatax/config')->getActiveService(Mage::app()->getStore());
-        if (!$activeService) {
-            throw new OnePica_AvaTax_Exception('Service source model is not defined.');
-        }
-        $model = Mage::getModel('avatax/source_' . $activeService . '_logtype');
-        if (!$model) {
-            throw new OnePica_AvaTax_Exception('Could not found source model ' . $activeService);
-        }
-        return $model->toArray();
+        return array(
+            array(
+                'value' => self::CALCULATION,
+                'label' => Mage::helper('avatax')->__('Calculation')
+            ),
+            array(
+                'value' => self::TRANSACTION,
+                'label' => Mage::helper('avatax')->__('Transaction')
+            ),
+        );
     }
 }

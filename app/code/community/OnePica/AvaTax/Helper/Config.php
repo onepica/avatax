@@ -474,7 +474,7 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
      *
      * @return int
      */
-    public function getAvataxActiveService($store = null)
+    public function getActiveService($store = null)
     {
         return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_ACTIVE_SERVICE, $store);
     }

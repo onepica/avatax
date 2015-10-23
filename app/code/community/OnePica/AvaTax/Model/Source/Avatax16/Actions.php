@@ -16,29 +16,35 @@
  */
 
 /**
+ * @class OnePica_AvaTax_Model_Source_Avatax16_Actions
  * Actions source model
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Source_Actions
+class OnePica_AvaTax_Model_Source_Avatax16_Actions
 {
     /**
      * Gets the list of cache methods for the admin config dropdown
+     *
      * @return array
-     * @throws OnePica_AvaTax_Exception
      */
-    public function toOptionArray()
+    public function toArray()
     {
-        $activeService = Mage::helper('avatax/config')->getActiveService(Mage::app()->getStore());
-        if (!$activeService) {
-            throw new OnePica_AvaTax_Exception('Service source model is not defined.');
-        }
-        $model = Mage::getModel('avatax/source_' . $activeService . '_actions');
-        if (!$model) {
-            throw new OnePica_AvaTax_Exception('Could not found source model ' . $activeService);
-        }
-        return $model->toArray();
+        return array(
+            array(
+                'value' => OnePica_AvaTax_Model_Config::ACTION_DISABLE,
+                'label' => Mage::helper('avatax')->__('Disable')
+            ),
+            array(
+                'value' => OnePica_AvaTax_Model_Config::ACTION_CALC,
+                'label' => Mage::helper('avatax')->__('Enable: calculate tax')
+            ),
+            array(
+                'value' => OnePica_AvaTax_Model_Config::ACTION_CALC_SUBMIT,
+                'label' => Mage::helper('avatax')->__('Enable: calculate tax, submit data')
+            )
+        );
     }
 }
