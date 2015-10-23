@@ -82,9 +82,6 @@ class OnePica_AvaTax_Model_Service_Avatax16_Config extends Varien_Object
      */
     public function _getConfigHelper()
     {
-        if (is_null($this->_getConfigHelper)) {
-            $this->_getConfigHelper = Mage::helper('avatax/config');
-        }
-        return $this->_getConfigHelper;
+        return Mage::helper('avatax/config');
     }
 }
