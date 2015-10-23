@@ -116,7 +116,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax16_Abstract
      */
     protected function _log($type, $request, $result, $storeId = null, $additional = null)
     {
-        if ($result->getHasError() === true) {
+        if ($result->getHasError() === false) {
             switch ($this->getHelper()->getLogMode($storeId)) {
                 case OnePica_AvaTax_Model_Source_Logmode::ERRORS:
                     return $this;
