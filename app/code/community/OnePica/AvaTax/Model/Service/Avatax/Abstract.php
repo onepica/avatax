@@ -297,10 +297,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends Varien_Objec
      */
     public function getHelper()
     {
-        if (!$this->_helper) {
-            $this->_helper = Mage::helper('avatax');
-        }
-        return $this->_helper;
+        return Mage::helper('avatax');
     }
 
     /**
@@ -310,10 +307,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends Varien_Objec
      */
     public function _getAddressHelper()
     {
-        if (!$this->_getAddressHelper) {
-            $this->_getAddressHelper = Mage::helper('avatax/address');
-        }
-        return $this->_getAddressHelper;
+        return Mage::helper('avatax/address');
     }
 
     /**
@@ -323,10 +317,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends Varien_Objec
      */
     public function _getConfigHelper()
     {
-        if (!$this->_getConfigHelper) {
-            $this->_getConfigHelper = Mage::helper('avatax/config');
-        }
-        return $this->_getConfigHelper;
+        return Mage::helper('avatax/config');
     }
 
     /**
@@ -336,10 +327,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends Varien_Objec
      */
     public function _getErrorsHelper()
     {
-        if (!$this->_errorsHelper) {
-            $this->_errorsHelper = Mage::helper('avatax/errors');
-        }
-        return $this->_errorsHelper;
+        return Mage::helper('avatax/errors');
     }
 
     //@startSkipCommitHooks
