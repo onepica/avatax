@@ -71,10 +71,13 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
 
         $quote = $address->getQuote();
         $storeId = $quote->getStore()->getId();
+        $configModel = Mage::getSingleton('avatax/service_avatax16_config')->init($storeId);
+        $config = $configModel->getConfig();
 
         // Set up document for request
         $this->_request = new OnePica_AvaTax16_Document_Request();
 
+        // set up header
         $header = new OnePica_AvaTax16_Document_Request_Header();
         $header->setAccountId($config->getAccountId());
         $header->setCompanyCode($config->getCompanyCode());
@@ -83,6 +86,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         $header->setCustomerCode($this->_getConfigHelper()->getSalesPersonCode($storeId));
         $header->setVendorCode('VENDOR');
         $header->setTransactionDate($this->_getDateModel()->date('Y-m-d'));
+        $header->setDefaultLocations($this->_getHeaderDefaultLocations($address));
 
         $this->_request->setHeader($header);
 

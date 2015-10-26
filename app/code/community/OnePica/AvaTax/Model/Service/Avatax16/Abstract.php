@@ -30,6 +30,16 @@ abstract class OnePica_AvaTax_Model_Service_Avatax16_Abstract
     const TRANSACTION_TYPE_SALE = 'Sale';
 
     /**
+     * Tax location purpose ship from
+     */
+    const TAX_LOCATION_PURPOSE_SHIP_FROM = 'ShipFrom';
+
+    /**
+     * Tax location purpose ship to
+     */
+    const TAX_LOCATION_PURPOSE_SHIP_TO = 'ShipTo';
+
+    /**
      * Returns the AvaTax helper.
      *
      * @return OnePica_AvaTax_Helper_Data
