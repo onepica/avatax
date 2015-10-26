@@ -25,6 +25,11 @@
 abstract class OnePica_AvaTax_Model_Service_Avatax16_Abstract
 {
     /**
+     * Transaction type sale
+     */
+    const TRANSACTION_TYPE_SALE = 'Sale';
+
+    /**
      * Returns the AvaTax helper.
      *
      * @return OnePica_AvaTax_Helper_Data
@@ -100,5 +105,15 @@ abstract class OnePica_AvaTax_Model_Service_Avatax16_Abstract
                 ->save();
         }
         return $this;
+    }
+
+    /**
+     * Get date model
+     *
+     * @return Mage_Core_Model_Date
+     */
+    protected function _getDateModel()
+    {
+        return Mage::getSingleton('core/date');
     }
 }
