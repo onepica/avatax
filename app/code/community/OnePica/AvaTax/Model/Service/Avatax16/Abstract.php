@@ -25,44 +25,13 @@
 abstract class OnePica_AvaTax_Model_Service_Avatax16_Abstract
 {
     /**
-     * The module helper
-     *
-     * @var OnePica_AvaTax_Helper_Data
-     */
-    protected $_helper = null;
-
-    /**
-     * The module address helper
-     *
-     * @var OnePica_AvaTax_Helper_Address
-     */
-    protected $_addressHelper = null;
-
-    /**
-     * The module config helper
-     *
-     * @var OnePica_AvaTax_Helper_Config
-     */
-    protected $_configHelper = null;
-
-    /**
-     * The module config helper
-     *
-     * @var OnePica_AvaTax_Helper_Errors
-     */
-    protected $_errorsHelper = null;
-
-    /**
      * Returns the AvaTax helper.
      *
      * @return OnePica_AvaTax_Helper_Data
      */
     protected function _getHelper()
     {
-        if (!$this->_helper) {
-            $this->_helper = Mage::helper('avatax');
-        }
-        return $this->_helper;
+        return Mage::helper('avatax');
     }
 
     /**
@@ -72,10 +41,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax16_Abstract
      */
     protected function _getAddressHelper()
     {
-        if (!$this->_addressHelper) {
-            $this->_addressHelper = Mage::helper('avatax/address');
-        }
-        return $this->_addressHelper;
+        return Mage::helper('avatax/address');
     }
 
     /**
@@ -85,10 +51,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax16_Abstract
      */
     protected function _getConfigHelper()
     {
-        if (!$this->_configHelper) {
-            $this->_configHelper = Mage::helper('avatax/config');
-        }
-        return $this->_configHelper;
+        return Mage::helper('avatax/config');
     }
 
     /**
@@ -98,10 +61,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax16_Abstract
      */
     protected function _getErrorsHelper()
     {
-        if (!$this->_errorsHelper) {
-            $this->_errorsHelper = Mage::helper('avatax/errors');
-        }
-        return $this->_errorsHelper;
+        return Mage::helper('avatax/errors');
     }
 
     /**
@@ -117,7 +77,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax16_Abstract
     protected function _log($type, $request, $result, $storeId = null, $additional = null)
     {
         if ($result->getHasError() === false) {
-            switch ($this->getHelper()->getLogMode($storeId)) {
+            switch ($this->_getHelper()->getLogMode($storeId)) {
                 case OnePica_AvaTax_Model_Source_Logmode::ERRORS:
                     return $this;
                     break;
@@ -129,7 +89,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax16_Abstract
         $level = $result->getHasError() ? OnePica_AvaTax_Model_Records_Log::LOG_LEVEL_ERROR
             : OnePica_AvaTax_Model_Records_Log::LOG_LEVEL_SUCCESS;
 
-        if (in_array($type, $this->getHelper()->getLogType($storeId))) {
+        if (in_array($type, $this->_getHelper()->getLogType($storeId))) {
             Mage::getModel('avatax_records/log')
                 ->setStoreId($storeId)
                 ->setLevel($level)
