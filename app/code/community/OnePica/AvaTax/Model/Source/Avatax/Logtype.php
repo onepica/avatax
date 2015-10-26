@@ -63,7 +63,7 @@ class OnePica_AvaTax_Model_Source_Avatax_Logtype
             ),
             array(
                 'value' => self::GET_TAX,
-                'label' => Mage::helper('avatax')->__('Get Tax')
+                'label' => Mage::helper('avatax')->__('GetTax')
             ),
             array(
                 'value' => self::FILTER,
