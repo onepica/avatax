@@ -25,14 +25,34 @@
 class OnePica_AvaTax_Model_Source_Avatax16_Logtype
 {
     /**
-     * Calculation type
+     * Ping type
      */
-    const CALCULATION = 'calculation';
+    const PING = 'Ping';
 
     /**
-     * Get tax type
+     * Get Calculation type
      */
-    const TRANSACTION = 'transaction';
+    const CALCULATION = 'Calculation';
+
+    /**
+     * Get Transaction type
+     */
+    const TRANSACTION = 'Transaction';
+
+    /**
+     * Filter type
+     */
+    const FILTER = 'Filter';
+
+    /**
+     * Validate type
+     */
+    const VALIDATE = 'Validate';
+
+    /**
+     * Queue type
+     */
+    const QUEUE = 'Queue';
 
     /**
      * Gets the list of type for the admin config dropdown
@@ -43,6 +63,10 @@ class OnePica_AvaTax_Model_Source_Avatax16_Logtype
     {
         return array(
             array(
+                'value' => self::PING,
+                'label' => Mage::helper('avatax')->__('Ping')
+            ),
+            array(
                 'value' => self::CALCULATION,
                 'label' => Mage::helper('avatax')->__('Calculation')
             ),
@@ -50,6 +74,18 @@ class OnePica_AvaTax_Model_Source_Avatax16_Logtype
                 'value' => self::TRANSACTION,
                 'label' => Mage::helper('avatax')->__('Transaction')
             ),
+            array(
+                'value' => self::FILTER,
+                'label' => Mage::helper('avatax')->__('Filter')
+            ),
+            array(
+                'value' => self::VALIDATE,
+                'label' => Mage::helper('avatax')->__('Validate')
+            ),
+            array(
+                'value' => self::QUEUE,
+                'label' => Mage::helper('avatax')->__('Queue')
+            )
         );
     }
 }
