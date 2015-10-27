@@ -22,7 +22,7 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-abstract class OnePica_AvaTax_Model_Service_Abstract
+abstract class OnePica_AvaTax_Model_Service_Abstract extends Varien_Object
 {
     /**
      * Get rates from Service

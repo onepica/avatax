@@ -22,47 +22,8 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-abstract class OnePica_AvaTax_Model_Service_Avatax16_Abstract
+abstract class OnePica_AvaTax_Model_Service_Avatax16_Abstract extends OnePica_AvaTax_Model_Service_Abstract_Tools
 {
-    /**
-     * Returns the AvaTax helper.
-     *
-     * @return OnePica_AvaTax_Helper_Data
-     */
-    protected function _getHelper()
-    {
-        return Mage::helper('avatax');
-    }
-
-    /**
-     * Returns the AvaTax helper.
-     *
-     * @return OnePica_AvaTax_Helper_Address
-     */
-    protected function _getAddressHelper()
-    {
-        return Mage::helper('avatax/address');
-    }
-
-    /**
-     * Returns the AvaTax helper.
-     *
-     * @return OnePica_AvaTax_Helper_Config
-     */
-    protected function _getConfigHelper()
-    {
-        return Mage::helper('avatax/config');
-    }
-
-    /**
-     * Returns the AvaTax helper.
-     *
-     * @return OnePica_AvaTax_Helper_Config
-     */
-    protected function _getErrorsHelper()
-    {
-        return Mage::helper('avatax/errors');
-    }
 
     /**
      * Logs a debug message

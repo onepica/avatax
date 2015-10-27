@@ -23,7 +23,7 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Service_Avatax16_Config extends Varien_Object
+class OnePica_AvaTax_Model_Service_Avatax16_Config extends OnePica_AvaTax_Model_Service_Abstract_Tools
 {
     /**
      * The AvaTax AvaTax16 object.
@@ -75,13 +75,5 @@ class OnePica_AvaTax_Model_Service_Avatax16_Config extends Varien_Object
         return $this;
     }
 
-    /**
-     * Returns the AvaTax helper.
-     *
-     * @return OnePica_AvaTax_Helper_Config
-     */
-    public function _getConfigHelper()
-    {
-        return Mage::helper('avatax/config');
-    }
+
 }

@@ -26,6 +26,37 @@ class OnePica_AvaTax_Model_Service_Avatax16
     extends OnePica_AvaTax_Model_Service_Abstract
 {
     /**
+     * Class constructor
+     */
+    function __construct()
+    {
+        parent::__construct();
+        $this->setConfig(Mage::getSingleton('avatax/config')->init(Mage::app()->getStore()));
+    }
+
+    /**
+     * Avatax16 config
+     * @var null|OnePica_AvaTax_Model_Service_Avatax16_Config
+     */
+    private $_config = null;
+
+    /**
+     * @return null|OnePica_AvaTax_Model_Service_Avatax16_Config
+     */
+    public function getConfig()
+    {
+        return $this->_config;
+    }
+
+    /**
+     * @param null|OnePica_AvaTax_Model_Service_Avatax16_Config $config
+     */
+    public function setConfig($config)
+    {
+        $this->_config = $config;
+    }
+
+    /**
      * Get rates from Service
      *
      * @param Mage_Sales_Model_Quote_Item $item
@@ -101,6 +132,7 @@ class OnePica_AvaTax_Model_Service_Avatax16
      */
     public function getAddressValidator()
     {
-        return null;
+        return Mage::getSingleton('avatax/service_avatax16_address', array('active_service' => $this));
     }
+
 }
