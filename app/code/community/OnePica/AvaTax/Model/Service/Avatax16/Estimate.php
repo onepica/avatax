@@ -90,6 +90,113 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
 
         $this->_request->setHeader($header);
 
+        $this->_addItemsInCart($item);
+
         return array();
+    }
+
+    /**
+     * Adds all items in the cart to the request
+     *
+     * @param Mage_Sales_Model_Quote_Item $item
+     * @return int
+     */
+    protected function _addItemsInCart($item)
+    {
+        if ($item->getAddress() instanceof Mage_Sales_Model_Quote_Address) {
+            $items = $item->getAddress()->getAllItems();
+        } elseif ($item->getQuote() instanceof Mage_Sales_Model_Quote) {
+            $items = $item->getQuote()->getAllItems();
+        } else {
+            $items = array();
+        }
+
+        if (count($items) > 0) {
+            $this->_initProductCollection($items);
+            $this->_initTaxClassCollection($item->getAddress());
+            foreach ($items as $item) {
+                /** @var Mage_Sales_Model_Quote_Item $item */
+                $this->_newLine($item);
+            }
+            $this->_request->setLines($this->_lines);
+        }
+
+        return count($this->_lines);
+    }
+
+    /**
+     * Makes a Line object from a product item object
+     *
+     * @param Varien_Object|Mage_Sales_Model_Quote_Item $item
+     * @return int|bool
+     */
+    protected function _newLine($item)
+    {
+        $this->_addGwItemsAmount($item);
+        if ($this->isProductCalculated($item)) {
+            return false;
+        }
+        $product = $this->_getProductByProductId($item->getProductId());
+        $taxClass = $this->_getTaxClassCodeByProduct($product);
+        $price = $item->getBaseRowTotal() - $item->getBaseDiscountAmount();
+        $lineNumber = count($this->_lines);
+
+        $line = new OnePica_AvaTax16_Document_Request_Line();
+        $line->setLineCode($lineNumber);
+        $line->setItemCode(substr($item->getSku(), 0, 50));
+        $line->setNumberOfItems($item->getQty());
+        $line->setlineAmount($price);
+        $line->setItemDescription($item->getName());
+        $line->setDiscounted($item->getDiscountAmount() ? true : false);
+
+        if ($taxClass) {
+            $line->setTaxCode($taxClass);
+        }
+        $ref1Value = $this->_getRefValueByProductAndNumber($product, 1, $item->getStoreId());
+        if ($ref1Value) {
+            $line->setRef1($ref1Value);
+        }
+        $ref2Value = $this->_getRefValueByProductAndNumber($product, 2, $item->getStoreId());
+        if ($ref2Value) {
+            $line->setRef2($ref2Value);
+        }
+
+        $this->_lines[$lineNumber] = $line;
+        $this->_lineToLineId[$lineNumber] = $item->getSku();
+        return $lineNumber;
+    }
+
+    /**
+     * Adds giftwrapitems cost to request as item
+     *
+     * @param Mage_Sales_Model_Quote_Item $item
+     * @return int|bool
+     */
+    protected function _addGwItemsAmount($item)
+    {
+        if (!$item->getGwId()) {
+            return false;
+        }
+        $lineNumber = count($this->_lines);
+        $storeId = $item->getQuote()->getStoreId();
+        //Add gift wrapping price(for individual items)
+        $gwItemsAmount = $item->getGwBasePrice() * $item->getQty();
+
+        $line = new OnePica_AvaTax16_Document_Request_Line();
+        $line->setLineCode($lineNumber);
+        $gwItemsSku = $this->_getConfigHelper()->getGwItemsSku($storeId);
+        $line->setItemCode($gwItemsSku ? $gwItemsSku : 'GwItemsAmount');
+        $line->setItemDescription('Gift Wrap Items Amount');
+        $line->setTaxCode($this->_getGiftTaxClassCode($storeId));
+        $line->setNumberOfItems($item->getQty());
+        $line->setlineAmount($gwItemsAmount);
+        $line->setDiscounted(false);
+
+        $this->_lines[$lineNumber] = $line;
+        $this->_request->setLines($this->_lines);
+        $this->_lineToLineId[$lineNumber] = $this->_getConfigHelper()->getGwItemsSku($storeId);
+        $this->_productGiftPair[$lineNumber] = $item->getSku();
+
+        return $lineNumber;
     }
 }

@@ -80,6 +80,16 @@ abstract class OnePica_AvaTax_Model_Service_Avatax16_Abstract
     }
 
     /**
+     * Get gift wrapping data helper
+     *
+     * @return \Enterprise_GiftWrapping_Helper_Data
+     */
+    protected function _getGiftWrappingDataHelper()
+    {
+        return Mage::helper('enterprise_giftwrapping');
+    }
+
+    /**
      * Logs a debug message
      *
      * @param string $type
@@ -125,5 +135,25 @@ abstract class OnePica_AvaTax_Model_Service_Avatax16_Abstract
     protected function _getDateModel()
     {
         return Mage::getSingleton('core/date');
+    }
+
+    /**
+     * Test to see if the product carries its own numbers or is calculated based on parent or children
+     *
+     * @param Mage_Sales_Model_Quote_Item|Mage_Sales_Model_Order_Item|mixed $item
+     * @return bool
+     */
+    public function isProductCalculated($item)
+    {
+        // check if item has methods as far as shipping, gift wrapping, printed card item comes as Varien_Object
+        if (method_exists($item, 'isChildrenCalculated') && method_exists($item, 'getParentItem')) {
+            if ($item->isChildrenCalculated() && !$item->getParentItem()) {
+                return true;
+            }
+            if (!$item->isChildrenCalculated() && $item->getParentItem()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

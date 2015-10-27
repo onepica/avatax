@@ -39,6 +39,20 @@ class OnePica_AvaTax_Model_Service_Avatax16_Tax extends OnePica_AvaTax_Model_Ser
     protected $_lines = array();
 
     /**
+     * Product collection for items to be calculated
+     *
+     * @var Mage_Catalog_Model_Resource_Product_Collection
+     */
+    protected $_productCollection = null;
+
+    /**
+     * Tax class collection for items to be calculated
+     *
+     * @var Mage_Tax_Model_Resource_Class_Collection
+     */
+    protected $_taxClassCollection = null;
+
+    /**
      * Get the orgin address for the request
      *
      * @param null|bool|int|Mage_Core_Model_Store $store
@@ -121,5 +135,179 @@ class OnePica_AvaTax_Model_Service_Avatax16_Tax extends OnePica_AvaTax_Model_Ser
         );
 
         return $defaultLocations;
+    }
+
+    /**
+     * Init product collection for items to be calculated
+     *
+     * @param Mage_Sales_Model_Mysql4_Order_Invoice_Item_Collection|array $items
+     * @return $this
+     */
+    protected function _initProductCollection($items)
+    {
+        $productIds = array();
+        foreach ($items as $item) {
+            if (!$this->isProductCalculated($item)) {
+                $productIds[] = $item->getProductId();
+            }
+        }
+        $this->_productCollection = Mage::getModel('catalog/product')->getCollection()
+            ->addAttributeToSelect('*')
+            ->addAttributeToFilter('entity_id', array('in' => $productIds));
+        return $this;
+    }
+
+    /**
+     * Init tax class collection for items to be calculated
+     *
+     * @param Mage_Sales_Model_Order_Invoice|Mage_Sales_Model_Order_Creditmemo|Mage_Sales_Model_Quote_Address $object
+     * @return $this
+     * @throws OnePica_AvaTax_Exception
+     */
+    protected function _initTaxClassCollection($object)
+    {
+        $taxClassIds = array();
+        foreach ($this->_getProductCollection() as $product) {
+            if (!in_array($product->getTaxClassId(), $taxClassIds)) {
+                $taxClassIds[] = $product->getTaxClassId();
+            }
+        }
+        $gwTaxClassId = $this->_getGwTaxClassId($object);
+
+        if (0 !== $gwTaxClassId) {
+            $taxClassIds[] = $gwTaxClassId;
+        }
+        $this->_taxClassCollection = Mage::getModel('tax/class')->getCollection()
+            ->addFieldToFilter('class_id', array('in' => $taxClassIds));
+
+        return $this;
+    }
+
+    /**
+     * Get product collection for items to be calculated
+     *
+     * @return Mage_Catalog_Model_Resource_Product_Collection
+     * @throws OnePica_AvaTax_Exception
+     */
+    protected function _getProductCollection()
+    {
+        if (!$this->_productCollection) {
+            throw new OnePica_AvaTax_Exception('Product collection should be set before usage');
+        }
+
+        return $this->_productCollection;
+    }
+
+    /**
+     * Get tax class collection for items to be calculated
+     *
+     * @return Mage_Tax_Model_Resource_Class_Collection
+     * @throws OnePica_AvaTax_Exception
+     */
+    protected function _getTaxClassCollection()
+    {
+        if (!$this->_taxClassCollection) {
+            throw new OnePica_AvaTax_Exception('Tax class collection should be set before usage');
+        }
+
+        return $this->_taxClassCollection;
+    }
+
+    /**
+     * Get gift wrapping tax class id
+     *
+     * @param Mage_Sales_Model_Order_Invoice|Mage_Sales_Model_Order_Creditmemo|Mage_Sales_Model_Quote_Address $object
+     * @return int
+     */
+    protected function _getGwTaxClassId($object)
+    {
+        if (Mage::getEdition() !== Mage::EDITION_ENTERPRISE) {
+            return 0;
+        }
+        if (!$object->getGwPrice()
+            && !$object->getGwItemsPrice()
+            && !$object->getGwPrintedCardPrice()
+        ) {
+            return 0;
+        }
+
+        if ($object instanceof Mage_Sales_Model_Quote_Address) {
+            $storeId = $object->getQuote()->getStoreId();
+        } else {
+            $storeId = $object->getStoreId();
+        }
+
+        return $this->_getWrappingTaxClass($storeId);
+    }
+
+    /**
+     * Get gift wrapping tax class config value
+     *
+     * @param int $storeId
+     * @return int
+     */
+    protected function _getWrappingTaxClass($storeId)
+    {
+        return (int)$this->_getGiftWrappingDataHelper()->getWrappingTaxClass($storeId);
+    }
+
+    /**
+     * Get product from collection by given product id
+     *
+     * @param int $productId
+     * @return Mage_Catalog_Model_Product
+     * @throws OnePica_AvaTax_Exception
+     */
+    protected function _getProductByProductId($productId)
+    {
+        return $this->_getProductCollection()->getItemById($productId);
+    }
+
+    /**
+     * Get Avatax tax code for given product
+     *
+     * @param Mage_Catalog_Model_Product $product
+     * @return string
+     */
+    protected function _getTaxClassCodeByProduct($product)
+    {
+        $taxClass = $this->_getTaxClassCollection()->getItemById($product->getTaxClassId());
+        return $taxClass ? $taxClass->getOpAvataxCode() : '';
+    }
+
+    /**
+     * Get gift Avatax tax class code
+     *
+     * @param int $storeId
+     * @return string
+     */
+    protected function _getGiftTaxClassCode($storeId)
+    {
+        $taxClassId = $this->_getWrappingTaxClass($storeId);
+        $taxClass = $this->_getTaxClassCollection()->getItemById($taxClassId);
+        return $taxClass ? $taxClass->getOpAvataxCode() : '';
+    }
+
+    /**
+     * Get proper ref value for given product
+     *
+     * @param Mage_Catalog_Model_Product $product
+     * @param int $refNumber
+     * @param int $storeId
+     * @return null|string
+     */
+    protected function _getRefValueByProductAndNumber($product, $refNumber, $storeId)
+    {
+        $value = null;
+        $helperMethod = 'getRef' . $refNumber . 'AttributeCode';
+        $refCode = $this->_getConfigHelper()->{$helperMethod}($storeId);
+        if ($refCode && $product->getResource()->getAttribute($refCode)) {
+            try {
+                $value = (string)$product->getResource()->getAttribute($refCode)->getFrontend()->getValue($product);
+            } catch (Exception $e) {
+                Mage::logException($e);
+            }
+        }
+        return $value;
     }
 }
