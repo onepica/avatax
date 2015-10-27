@@ -40,6 +40,26 @@ abstract class OnePica_AvaTax_Model_Service_Avatax16_Abstract
     const TAX_LOCATION_PURPOSE_SHIP_TO = 'ShipTo';
 
     /**
+     * Default GW items sku
+     */
+    const DEFAULT_GW_ITEMS_SKU = 'GwItemsAmount';
+
+    /**
+     * Default GW items description
+     */
+    const DEFAULT_GW_ITEMS_DESCRIPTION = 'Gift Wrap Items Amount';
+
+    /**
+     * Default shipping items sku
+     */
+    const DEFAULT_SHIPPING_ITEMS_SKU = 'Shipping';
+
+    /**
+     * Default shipping items description
+     */
+    const DEFAULT_SHIPPING_ITEMS_DESCRIPTION = 'Shipping costs';
+
+    /**
      * Returns the AvaTax helper.
      *
      * @return OnePica_AvaTax_Helper_Data
