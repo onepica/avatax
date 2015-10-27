@@ -70,6 +70,16 @@ abstract class OnePica_AvaTax_Model_Service_Avatax16_Abstract
     const DEFAULT_GW_ORDER_DESCRIPTION = 'Gift Wrap Order Amount';
 
     /**
+     * Default GW printed card sku
+     */
+    const DEFAULT_GW_PRINTED_CARD_SKU = 'GwPrintedCardAmount';
+
+    /**
+     * Default GW printed card description
+     */
+    const DEFAULT_GW_PRINTED_CARD_DESCRIPTION = 'Gift Wrap Printed Card Amount';
+
+    /**
      * Returns the AvaTax helper.
      *
      * @return OnePica_AvaTax_Helper_Data

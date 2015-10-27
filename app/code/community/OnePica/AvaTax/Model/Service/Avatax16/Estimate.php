@@ -94,6 +94,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         $this->_addShipping($address);
         //Added code for calculating tax for giftwrap items (order)
         $this->_addGwOrderAmount($address);
+        $this->_addGwPrintedCardAmount($address);
 
         return array();
     }
@@ -261,6 +262,38 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         $this->_lines[$lineNumber] = $line;
         $this->_request->setLines($this->_lines);
         $this->_lineToLineId[$lineNumber] = $gwOrderSku;
+        return $lineNumber;
+    }
+
+    /**
+     * Adds giftwrap printed card cost to request as item
+     *
+     * @param Mage_Sales_Model_Quote
+     * @return int|bool
+     */
+    protected function _addGwPrintedCardAmount($address)
+    {
+        if (!$address->getGwPrintedCardPrice()) {
+            return false;
+        }
+        $lineNumber = count($this->_lines);
+        $storeId = $address->getQuote()->getStore()->getId();
+        //Add printed card price
+        $gwPrintedCardAmount = $address->getGwPrintedCardBasePrice();
+
+        $line = new OnePica_AvaTax16_Document_Request_Line();
+        $line->setLineCode($lineNumber);
+        $gwPrintedCardSku = $this->_getConfigHelper()->getGwPrintedCardSku($storeId);
+        $line->setItemCode($gwPrintedCardSku ? $gwPrintedCardSku : self::DEFAULT_GW_PRINTED_CARD_SKU);
+        $line->setItemDescription(self::DEFAULT_GW_PRINTED_CARD_DESCRIPTION);
+        $line->setTaxCode($this->_getGiftTaxClassCode($storeId));
+        $line->setNumberOfItems(1);
+        $line->setlineAmount($gwPrintedCardAmount);
+        $line->setDiscounted(false);
+
+        $this->_lines[$lineNumber] = $line;
+        $this->_request->setLines($this->_lines);
+        $this->_lineToLineId[$lineNumber] = $gwPrintedCardSku;
         return $lineNumber;
     }
 }
