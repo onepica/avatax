@@ -60,6 +60,16 @@ abstract class OnePica_AvaTax_Model_Service_Avatax16_Abstract
     const DEFAULT_SHIPPING_ITEMS_DESCRIPTION = 'Shipping costs';
 
     /**
+     * Default GW order sku
+     */
+    const DEFAULT_GW_ORDER_SKU = 'GwOrderAmount';
+
+    /**
+     * Default GW order description
+     */
+    const DEFAULT_GW_ORDER_DESCRIPTION = 'Gift Wrap Order Amount';
+
+    /**
      * Returns the AvaTax helper.
      *
      * @return OnePica_AvaTax_Helper_Data

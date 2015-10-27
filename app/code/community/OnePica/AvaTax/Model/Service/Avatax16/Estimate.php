@@ -92,6 +92,8 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
 
         $this->_addItemsInCart($item);
         $this->_addShipping($address);
+        //Added code for calculating tax for giftwrap items (order)
+        $this->_addGwOrderAmount($address);
 
         return array();
     }
@@ -227,6 +229,38 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         $this->_lines[$lineNumber] = $line;
         $this->_request->setLines($this->_lines);
         $this->_lineToLineId[$lineNumber] = $shippingSku;
+        return $lineNumber;
+    }
+
+    /**
+     * Adds giftwraporder cost to request as item (for order)
+     *
+     * @param Mage_Sales_Model_Quote_Address $address
+     * @return int|bool
+     */
+    protected function _addGwOrderAmount($address)
+    {
+        if (!$address->getGwPrice()) {
+            return false;
+        }
+        $lineNumber = count($this->_lines);
+        $storeId = $address->getQuote()->getStore()->getId();
+        //Add gift wrapping price(for entire order)
+        $gwOrderAmount = $address->getGwBasePrice();
+
+        $line = new OnePica_AvaTax16_Document_Request_Line();
+        $line->setLineCode($lineNumber);
+        $gwOrderSku = $this->_getConfigHelper()->getGwOrderSku($storeId);
+        $line->setItemCode($gwOrderSku ? $gwOrderSku : self::DEFAULT_GW_ORDER_SKU);
+        $line->setItemDescription(self::DEFAULT_GW_ORDER_DESCRIPTION);
+        $line->setTaxCode($this->_getGiftTaxClassCode($storeId));
+        $line->setNumberOfItems(1);
+        $line->setlineAmount($gwOrderAmount);
+        $line->setDiscounted(false);
+
+        $this->_lines[$lineNumber] = $line;
+        $this->_request->setLines($this->_lines);
+        $this->_lineToLineId[$lineNumber] = $gwOrderSku;
         return $lineNumber;
     }
 }
