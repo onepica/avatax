@@ -96,6 +96,23 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         $this->_addGwOrderAmount($address);
         $this->_addGwPrintedCardAmount($address);
 
+        //check to see if we can/need to make the request to Avalara
+        $requestKey = $this->_genRequestKey();
+        $makeRequest = empty($this->_rates[$requestKey]['items']);
+        //@startSkipCommitHooks
+        $makeRequest &= count($this->_lineToLineId) ? true : false;
+
+        $hasDestinationAddress = false;
+        if ($this->_request->getHeader() && $this->_request->getHeader()->getDefaultLocations()) {
+            $locations = $this->_request->getHeader()->getDefaultLocations();
+            $hasDestinationAddress = isset($locations[self::TAX_LOCATION_PURPOSE_SHIP_TO]) ? true :false;;
+        }
+
+        $makeRequest &= $hasDestinationAddress;
+        $makeRequest &= $address->getId() ? true : false;
+        $makeRequest &= !isset($this->_rates[$requestKey]['failure']);
+        //@finishSkipCommitHooks
+
         return array();
     }
 
@@ -295,5 +312,17 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         $this->_request->setLines($this->_lines);
         $this->_lineToLineId[$lineNumber] = $gwPrintedCardSku;
         return $lineNumber;
+    }
+
+    /**
+     * Generates a hash key for the exact request
+     *
+     * @return string
+     */
+    protected function _genRequestKey()
+    {
+        $hash = sprintf("%u", crc32(serialize($this->_request)));
+        Mage::getSingleton('avatax/session')->setLastRequestKey($hash);
+        return $hash;
     }
 }
