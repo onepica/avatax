@@ -96,7 +96,7 @@ class OnePica_AvaTax16_Document_Part
     public function isValid()
     {
         foreach ($this as $key => $value) {
-            if (in_array($key, $this->_requiredProperties) && !$value) {
+            if (in_array($key, $this->_requiredProperties) && (null === $value)) {
                 return false;
             }
         }
