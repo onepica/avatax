@@ -228,7 +228,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         $line->setNumberOfItems($item->getQty());
         $line->setlineAmount($price);
         $line->setItemDescription($item->getName());
-        $line->setDiscounted($item->getDiscountAmount() ? true : false);
+        $line->setDiscounted($item->getDiscountAmount() ? 'true' : 'false');
 
         if ($taxClass) {
             $line->setTaxCode($taxClass);
@@ -271,7 +271,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         $line->setTaxCode($this->_getGiftTaxClassCode($storeId));
         $line->setNumberOfItems($item->getQty());
         $line->setlineAmount($gwItemsAmount);
-        $line->setDiscounted(false);
+        $line->setDiscounted('false');
 
         $this->_lines[$lineNumber] = $line;
         $this->_setLinesToRequest();
@@ -302,7 +302,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         $line->setTaxCode($taxClass);
         $line->setNumberOfItems(1);
         $line->setlineAmount($shippingAmount);
-        $line->setDiscounted(false);
+        $line->setDiscounted('false');
 
         $this->_lines[$lineNumber] = $line;
         $this->_setLinesToRequest();
@@ -334,7 +334,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         $line->setTaxCode($this->_getGiftTaxClassCode($storeId));
         $line->setNumberOfItems(1);
         $line->setlineAmount($gwOrderAmount);
-        $line->setDiscounted(false);
+        $line->setDiscounted('false');
 
         $this->_lines[$lineNumber] = $line;
         $this->_setLinesToRequest();
@@ -366,7 +366,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         $line->setTaxCode($this->_getGiftTaxClassCode($storeId));
         $line->setNumberOfItems(1);
         $line->setlineAmount($gwPrintedCardAmount);
-        $line->setDiscounted(false);
+        $line->setDiscounted('false');
 
         $this->_lines[$lineNumber] = $line;
         $this->_setLinesToRequest();
@@ -381,7 +381,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
      */
     protected function _genRequestKey()
     {
-        $hash = sprintf("%u", crc32(serialize($this->_request)));
+        $hash = sprintf("%u", crc32(serialize($this->_request))) .'u';
         Mage::getSingleton('avatax/session')->setLastRequestKey($hash);
         return $hash;
     }

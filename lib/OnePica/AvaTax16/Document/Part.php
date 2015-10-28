@@ -118,7 +118,7 @@ class OnePica_AvaTax16_Document_Part
         foreach ($this as $key => $value) {
             if (in_array($key, $this->_excludedProperties)
                 || in_array($key, array('_requiredProperties', '_excludedProperties', '_propertyComplexTypes'))
-                || !$value) {
+                || (null === $value)) {
                 // skip property
                 continue;
             }
