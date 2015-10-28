@@ -340,11 +340,11 @@
                             </import_export>
                             <avatax_queue translate="title" module="avatax">
                                 <title>AvaTax Order Sync Queue</title>
-                                <action>avatax/adminhtml_grid/queue</action>
+                                <action>adminhtml/avaTax_grid/queue</action>
                             </avatax_queue>
                             <avatax_log translate="title" module="avatax">
                                 <title>AvaTax Log</title>
-                                <action>avatax/adminhtml_grid/log</action>
+                                <action>adminhtml/avaTax_grid/log</action>
                             </avatax_log>
                         </children>
                     </tax>
