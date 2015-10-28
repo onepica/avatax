@@ -150,7 +150,7 @@ class OnePica_AvaTax16_Document_Part
                 }
                 break;
             case 'simple':
-                $result = $item;
+                $result = (string) $item;
                 break;
         }
 

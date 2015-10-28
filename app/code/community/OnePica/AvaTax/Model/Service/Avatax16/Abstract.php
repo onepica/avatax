@@ -80,6 +80,11 @@ abstract class OnePica_AvaTax_Model_Service_Avatax16_Abstract
     const DEFAULT_GW_PRINTED_CARD_DESCRIPTION = 'Gift Wrap Printed Card Amount';
 
     /**
+     * Response result code exception
+     */
+    const RESPONSE_RESULT_CODE_EXCEPTION = 'Exception';
+
+    /**
      * Returns the AvaTax helper.
      *
      * @return OnePica_AvaTax_Helper_Data
@@ -133,8 +138,8 @@ abstract class OnePica_AvaTax_Model_Service_Avatax16_Abstract
      * Logs a debug message
      *
      * @param string $type
-     * @param string $request the request string
-     * @param string $result the result string
+     * @param mixed $request the request string
+     * @param mixed $result the result string
      * @param int $storeId id of the store the call is make for
      * @param mixed $additional any other info
      * @return $this
@@ -152,15 +157,18 @@ abstract class OnePica_AvaTax_Model_Service_Avatax16_Abstract
             }
         }
         $level = $result->getHasError() ? OnePica_AvaTax_Model_Records_Log::LOG_LEVEL_ERROR
-            : OnePica_AvaTax_Model_Records_Log::LOG_LEVEL_SUCCESS;
+                                        : OnePica_AvaTax_Model_Records_Log::LOG_LEVEL_SUCCESS;
+
+        $requestLog = ($request instanceof OnePica_AvaTax16_Document_Part) ? $request->toArray() : $request;
+        $resultLog = ($result instanceof OnePica_AvaTax16_Document_Part) ? $request->toArray() : $result;
 
         if (in_array($type, $this->_getHelper()->getLogType($storeId))) {
             Mage::getModel('avatax_records/log')
                 ->setStoreId($storeId)
                 ->setLevel($level)
                 ->setType($type)
-                ->setRequest(print_r($request, true))
-                ->setResult(print_r($result, true))
+                ->setRequest(print_r($requestLog, true))
+                ->setResult(print_r($resultLog, true))
                 ->setAdditional($additional)
                 ->save();
         }

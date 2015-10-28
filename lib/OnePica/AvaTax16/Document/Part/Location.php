@@ -39,13 +39,6 @@ class OnePica_AvaTax16_Document_Part_Location extends OnePica_AvaTax16_Document_
     );
 
     /**
-     * Required properties
-     *
-     * @var array
-     */
-    protected $_requiredProperties = array('_taxLocationPurpose');
-
-    /**
      * Tax Location Purpose
      * (Required)
      *

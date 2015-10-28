@@ -102,6 +102,8 @@ class OnePica_AvaTax_Model_Service_Avatax16_Tax extends OnePica_AvaTax_Model_Ser
     protected function _newAddress($line1, $line2, $city, $state, $zip, $country = 'USA')
     {
         $address = new OnePica_AvaTax16_Document_Part_Location_Address();
+        // set required field line1 if it is empty
+        $line1 = ($line1) ? $line1 : '_';
         $address->setLine1($line1);
         $address->setLine2($line2);
         $address->setCity($city);
@@ -309,5 +311,26 @@ class OnePica_AvaTax_Model_Service_Avatax16_Tax extends OnePica_AvaTax_Model_Ser
             }
         }
         return $value;
+    }
+
+    /**
+     * Get new line code
+     *
+     * @return string
+     */
+    protected function _getNewLineCode()
+    {
+        return count($this->_lines) + 1;
+    }
+
+    /**
+     * Set lines to request object
+     * Avalara should receive lines as numeric array starting from 0
+     *
+     * @return $this
+     */
+    protected function _setLinesToRequest()
+    {
+        $this->_request->setLines(array_values($this->_lines));
     }
 }

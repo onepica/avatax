@@ -113,7 +113,43 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         $makeRequest &= !isset($this->_rates[$requestKey]['failure']);
         //@finishSkipCommitHooks
 
-        return array();
+        //make request if needed and save results in cache
+        if ($makeRequest) {
+            /** @var OnePica_AvaTax16_Document_Response $result */
+            $result = $this->_send($quote->getStoreId());
+            $this->_rates[$requestKey] = array(
+                'timestamp' => $this->_getDateModel()->timestamp(),
+                'address_id' => $address->getId(),
+                'summary' => array(),
+                'items' => array(),
+                'gw_items' => array()
+            );
+
+            //success
+            if (!$result->getHasError()) {
+                foreach ($result->getLines() as $ctl) {
+                    /** @var OnePica_AvaTax16_Document_Response_Line $ctl */
+                    $id = $this->_getItemIdByLine($ctl);
+                    $code = $this->_getTaxArrayCodeByLine($ctl);
+                    $this->_rates[$requestKey][$code][$id] = array(
+                        'rate' => $this->_getLineRate($ctl),
+                        'amt' => $ctl->getCalculatedTax()->getTax(),
+                    );
+                }
+                $this->_rates[$requestKey]['summary'] = $this->_getSummaryFromResponse($result);
+            //failure
+            } else {
+                $this->_rates[$requestKey]['failure'] = true;
+                if ($this->_getConfigHelper()->fullStopOnError($address->getStoreId())) {
+                    $address->getQuote()->setHasError(true);
+                }
+            }
+
+            Mage::getSingleton('avatax/session')->setAvatax16Rates($this->_rates);
+        }
+
+        $rates = isset($this->_rates[$requestKey]) ? $this->_rates[$requestKey] : array();
+        return $rates;
     }
 
     /**
@@ -139,7 +175,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
                 /** @var Mage_Sales_Model_Quote_Item $item */
                 $this->_newLine($item);
             }
-            $this->_request->setLines($this->_lines);
+            $this->_setLinesToRequest();
         }
 
         return count($this->_lines);
@@ -160,7 +196,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         $product = $this->_getProductByProductId($item->getProductId());
         $taxClass = $this->_getTaxClassCodeByProduct($product);
         $price = $item->getBaseRowTotal() - $item->getBaseDiscountAmount();
-        $lineNumber = count($this->_lines);
+        $lineNumber = $this->_getNewLineCode();
 
         $line = new OnePica_AvaTax16_Document_Request_Line();
         $line->setLineCode($lineNumber);
@@ -198,7 +234,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         if (!$item->getGwId()) {
             return false;
         }
-        $lineNumber = count($this->_lines);
+        $lineNumber = $this->_getNewLineCode();
         $storeId = $item->getQuote()->getStoreId();
         //Add gift wrapping price(for individual items)
         $gwItemsAmount = $item->getGwBasePrice() * $item->getQty();
@@ -214,7 +250,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         $line->setDiscounted(false);
 
         $this->_lines[$lineNumber] = $line;
-        $this->_request->setLines($this->_lines);
+        $this->_setLinesToRequest();
         $this->_lineToLineId[$lineNumber] = $this->_getConfigHelper()->getGwItemsSku($storeId);
         $this->_productGiftPair[$lineNumber] = $item->getSku();
 
@@ -229,7 +265,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
      */
     protected function _addShipping($address)
     {
-        $lineNumber = count($this->_lines);
+        $lineNumber = $this->_getNewLineCode();
         $storeId = $address->getQuote()->getStore()->getId();
         $taxClass = Mage::helper('tax')->getShippingTaxClass($storeId);
         $shippingAmount = (float) $address->getBaseShippingAmount();
@@ -245,7 +281,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         $line->setDiscounted(false);
 
         $this->_lines[$lineNumber] = $line;
-        $this->_request->setLines($this->_lines);
+        $this->_setLinesToRequest();
         $this->_lineToLineId[$lineNumber] = $shippingSku;
         return $lineNumber;
     }
@@ -261,7 +297,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         if (!$address->getGwPrice()) {
             return false;
         }
-        $lineNumber = count($this->_lines);
+        $lineNumber = $this->_getNewLineCode();
         $storeId = $address->getQuote()->getStore()->getId();
         //Add gift wrapping price(for entire order)
         $gwOrderAmount = $address->getGwBasePrice();
@@ -277,7 +313,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         $line->setDiscounted(false);
 
         $this->_lines[$lineNumber] = $line;
-        $this->_request->setLines($this->_lines);
+        $this->_setLinesToRequest();
         $this->_lineToLineId[$lineNumber] = $gwOrderSku;
         return $lineNumber;
     }
@@ -293,7 +329,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         if (!$address->getGwPrintedCardPrice()) {
             return false;
         }
-        $lineNumber = count($this->_lines);
+        $lineNumber = $this->_getNewLineCode();
         $storeId = $address->getQuote()->getStore()->getId();
         //Add printed card price
         $gwPrintedCardAmount = $address->getGwPrintedCardBasePrice();
@@ -309,7 +345,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         $line->setDiscounted(false);
 
         $this->_lines[$lineNumber] = $line;
-        $this->_request->setLines($this->_lines);
+        $this->_setLinesToRequest();
         $this->_lineToLineId[$lineNumber] = $gwPrintedCardSku;
         return $lineNumber;
     }
@@ -324,5 +360,117 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         $hash = sprintf("%u", crc32(serialize($this->_request)));
         Mage::getSingleton('avatax/session')->setLastRequestKey($hash);
         return $hash;
+    }
+
+    /**
+     * Sends a request to the Avatax16 server
+     *
+     * @param int $storeId
+     * @return mixed
+     */
+    protected function _send($storeId)
+    {
+        /** @var OnePica_AvaTax_Model_Service_Avatax16_Config $config */
+        $configModel = Mage::getSingleton('avatax/service_avatax16_config')->init($storeId);
+        $config = $configModel->getConfig();
+        $connection = new OnePica_AvaTax16_TaxService($config);
+        $result = null;
+        $message = null;
+
+        try {
+            $result = $connection->createCalculation($this->_request);
+        } catch (Exception $exception) {
+            $message = new Message();
+            $message->setSummary($exception->getMessage());
+        }
+
+        if (!isset($result) || !is_object($result)) {
+            $actualResult = $result;
+            $result = new Varien_Object();
+            $result->setHasError(true)
+                ->setResultCode(self::RESPONSE_RESULT_CODE_EXCEPTION)
+                ->setActualResult($actualResult)
+                ->setMessages(array($message));
+        }
+
+        $this->_log(
+            OnePica_AvaTax_Model_Source_Avatax16_Logtype::CALCULATION,
+            $this->_request,
+            $result,
+            $storeId,
+            $config
+        );
+
+        if ($result->getHasError()) {
+            if ($this->_getConfigHelper()->fullStopOnError($storeId)) {
+                $this->_getErrorsHelper()->addErrorMessage($storeId);
+            }
+        } else {
+            $this->_getErrorsHelper()->removeErrorMessage();
+        }
+
+        return $result;
+    }
+
+    /**
+     * Get item id/code for given line
+     *
+     * @param OnePica_AvaTax16_Document_Response_Line $line
+     * @return string|int
+     */
+    protected function _getItemIdByLine($line)
+    {
+        return isset($this->_productGiftPair[$line->getLineCode()])
+            ? $this->_productGiftPair[$line->getLineCode()]
+            : $this->_lineToLineId[$line->getLineCode()];
+    }
+
+    /**
+     * Get tax array code for given line
+     *
+     * @param OnePica_AvaTax16_Document_Response_Line $line
+     * @return string
+     */
+    protected function _getTaxArrayCodeByLine($line)
+    {
+        return isset($this->_productGiftPair[$line->getLineCode()]) ? 'gw_items' : 'items';
+    }
+
+    /**
+     * Get line rate
+     *
+     * @param OnePica_AvaTax16_Document_Response_Line $line
+     * @return float
+     */
+    protected function _getLineRate($line)
+    {
+        $rate = 0;
+        if ($line->getCalculatedTax()->getTax()) {
+            foreach ($line->getCalculatedTax()->getDetails() as $detail) {
+                $rate += $detail->getRate();
+            }
+        }
+        return $rate * 100;
+    }
+
+    /**
+     * Get line rate
+     *
+     * @param OnePica_AvaTax16_Document_Response $response
+     * @return array
+     */
+    protected function _getSummaryFromResponse($response)
+    {
+        $result = array();
+        foreach ($response->getCalculatedTaxSummary()->getTaxByType() as $taxItemByType) {
+            foreach ($taxItemByType->getJurisdictions() as $data) {
+                $result[] = array(
+                    'name' => $data->getJurisdictionName() . '_' . $data->getJurisdictionType(),
+                    'rate' => '',
+                    'amt' => $data->getTax()
+                );
+            }
+        }
+        return $result;
     }
 }
