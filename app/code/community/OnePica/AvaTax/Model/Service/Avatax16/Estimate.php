@@ -25,6 +25,13 @@
 class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Model_Service_Avatax16_Tax
 {
     /**
+     * Length of time in minutes for cached rates
+     *
+     * @var int
+     */
+    const CACHE_TTL = 120;
+
+    /**
      * An array of rates that acts as a cache
      * Example: $_rates[$cachekey] = array(
      *     'timestamp' => 1325015952
@@ -56,6 +63,23 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
      * @var array
      */
     protected $_productGiftPair = array();
+
+    /**
+     * Loads any saved rates in session
+     */
+    protected function _construct()
+    {
+        $rates = Mage::getSingleton('avatax/session')->getAvatax16Rates();
+        if (is_array($rates)) {
+            foreach ($rates as $key => $rate) {
+                if ($rate['timestamp'] < $this->_getDateModel()->timestamp('-' . self::CACHE_TTL . ' minutes')) {
+                    unset($rates[$key]);
+                }
+            }
+            $this->_rates = $rates;
+        }
+        return parent::_construct();
+    }
 
     /**
      * Get rates from Avalara
@@ -472,5 +496,33 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
             }
         }
         return $result;
+    }
+
+    /**
+     * Get tax detail summary
+     *
+     * @param int|null $addressId
+     * @return array
+     */
+    public function getSummary($addressId = null)
+    {
+        $summary = null;
+
+        if ($addressId) {
+            $timestamp = 0;
+            foreach ($this->_rates as $row) {
+                if (isset($row['address_id']) && $row['address_id'] == $addressId && $row['timestamp'] > $timestamp) {
+                    $summary = $row['summary'];
+                    $timestamp = $row['timestamp'];
+                }
+            }
+        }
+
+        if ($summary === null) {
+            $requestKey = Mage::getSingleton('avatax/session')->getLastRequestKey();
+            $summary = isset($this->_rates[$requestKey]['summary']) ? $this->_rates[$requestKey]['summary'] : array();
+        }
+
+        return $summary;
     }
 }

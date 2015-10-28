@@ -22,7 +22,7 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-abstract class OnePica_AvaTax_Model_Service_Avatax16_Abstract
+abstract class OnePica_AvaTax_Model_Service_Avatax16_Abstract extends Varien_Object
 {
     /**
      * Transaction type sale
@@ -160,7 +160,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax16_Abstract
                                         : OnePica_AvaTax_Model_Records_Log::LOG_LEVEL_SUCCESS;
 
         $requestLog = ($request instanceof OnePica_AvaTax16_Document_Part) ? $request->toArray() : $request;
-        $resultLog = ($result instanceof OnePica_AvaTax16_Document_Part) ? $request->toArray() : $result;
+        $resultLog = ($result instanceof OnePica_AvaTax16_Document_Part) ? $result->toArray() : $result;
 
         if (in_array($type, $this->_getHelper()->getLogType($storeId))) {
             Mage::getModel('avatax_records/log')

@@ -63,7 +63,7 @@ class OnePica_AvaTax_Model_Service_Avatax16
      */
     public function getSummary($addressId)
     {
-        return array();
+        return $this->_getEstimateResource()->getSummary($addressId);
     }
 
     /**
@@ -74,7 +74,7 @@ class OnePica_AvaTax_Model_Service_Avatax16
      */
     public function isProductCalculated($item)
     {
-        return null;
+        return $this->_getEstimateResource()->isProductCalculated($item);
     }
 
     /**
