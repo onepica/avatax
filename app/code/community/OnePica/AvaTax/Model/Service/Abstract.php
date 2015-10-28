@@ -82,6 +82,31 @@ abstract class OnePica_AvaTax_Model_Service_Abstract extends Varien_Object
      */
     abstract public function getAddressValidator();
 
+
+    /**
+     * Service config.
+     * @var null|OnePica_AvaTax_Model_Service_Abstract_Tools
+     */
+    private $_config = null;
+
+    /**
+     * Get service config.
+     * @return null|OnePica_AvaTax_Model_Service_Abstract_Tools
+     */
+    public function getServiceConfig()
+    {
+        return $this->_config;
+    }
+
+    /**
+     * Set service config.
+     * @param null|OnePica_AvaTax_Model_Service_Abstract_Tools $config
+     */
+    public function setServiceConfig($config)
+    {
+        $this->_config = $config;
+    }
+
     /**
      * Get config helper
      *
