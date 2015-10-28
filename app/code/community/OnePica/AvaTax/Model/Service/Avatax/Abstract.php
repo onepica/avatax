@@ -18,6 +18,8 @@
 /**
  * Avatax service abstract model
  *
+ * @method getService() OnePica_AvaTax_Model_Service_Avatax
+ *
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>

@@ -72,6 +72,11 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
      */
     public function __construct()
     {
+        $args = func_get_args();
+        if (empty($args[0])) {
+            $args[0] = array();
+        }
+        parent::__construct($args[0]);
         $addresses = Mage::getSingleton('avatax/session')->getAddresses();
         if (is_array($addresses)) {
             $this->_cache = $addresses;

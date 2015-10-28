@@ -50,13 +50,16 @@ abstract class OnePica_AvaTax_Model_Service_Avatax16_Abstract extends OnePica_Av
         $level = $result->getHasError() ? OnePica_AvaTax_Model_Records_Log::LOG_LEVEL_ERROR
             : OnePica_AvaTax_Model_Records_Log::LOG_LEVEL_SUCCESS;
 
+        $requestLog = ($request instanceof OnePica_AvaTax16_Document_Part) ? $request->toArray() : $request;
+        $resultLog = ($result instanceof OnePica_AvaTax16_Document_Part) ? $result->toArray() : $result;
+
         if (in_array($type, $this->_getHelper()->getLogType($storeId))) {
             Mage::getModel('avatax_records/log')
                 ->setStoreId($storeId)
                 ->setLevel($level)
                 ->setType($type)
-                ->setRequest(print_r($request, true))
-                ->setResult(print_r($result, true))
+                ->setRequest(print_r($requestLog, true))
+                ->setResult(print_r($resultLog, true))
                 ->setAdditional($additional)
                 ->save();
         }

@@ -40,18 +40,19 @@ class OnePica_AvaTax_Model_Service_Avatax16_Config extends OnePica_AvaTax_Model_
     protected $_getConfigHelper = null;
 
     /**
+     * Set AvaTax16 lib Config
      * @param OnePica_AvaTax16_Config $config
      */
-    public function setConfig($config)
+    public function setLibConfig($config)
     {
         $this->_config = $config;
     }
 
     /**
-     * Get Avatax16 config
+     * Get Avatax16 lib config
      * @return OnePica_AvaTax16_Config
      */
-    public function getConfig()
+    public function getLibConfig()
     {
         return $this->_config;
     }
@@ -65,11 +66,11 @@ class OnePica_AvaTax_Model_Service_Avatax16_Config extends OnePica_AvaTax_Model_
     public function init($storeId)
     {
         if (is_null($this->_config)) {
-            $this->setConfig(new OnePica_AvaTax16_Config());
-            $this->getConfig()->setBaseUrl($this->_getConfigHelper()->getServiceUrl($storeId));
-            $this->getConfig()->setAccountId($this->_getConfigHelper()->getServiceAccountId($storeId));
-            $this->getConfig()->setCompanyCode($this->_getConfigHelper()->getCompanyCode($storeId));
-            $this->getConfig()->setAuthorizationHeader($this->_getConfigHelper()->getServiceKey($storeId));
+            $this->setLibConfig(Mage::getModel('OnePica_AvaTax16_Config'));
+            $this->getLibConfig()->setBaseUrl($this->_getConfigHelper()->getServiceUrl($storeId));
+            $this->getLibConfig()->setAccountId($this->_getConfigHelper()->getServiceAccountId($storeId));
+            $this->getLibConfig()->setCompanyCode($this->_getConfigHelper()->getCompanyCode($storeId));
+            $this->getLibConfig()->setAuthorizationHeader($this->_getConfigHelper()->getServiceKey($storeId));
         }
 
         return $this;
