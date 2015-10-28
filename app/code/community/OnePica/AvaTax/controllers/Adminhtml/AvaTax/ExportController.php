@@ -22,7 +22,7 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Adminhtml_ExportController extends Mage_Adminhtml_Controller_Action
+class OnePica_AvaTax_Adminhtml_AvaTax_ExportController extends Mage_Adminhtml_Controller_Action
 {
     /**
      * Check if is allowed
