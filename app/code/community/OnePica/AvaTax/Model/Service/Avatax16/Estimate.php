@@ -381,7 +381,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
      */
     protected function _genRequestKey()
     {
-        $hash = sprintf("%u", crc32(serialize($this->_request))) .'u';
+        $hash = sprintf("%u", crc32(serialize($this->_request)));
         Mage::getSingleton('avatax/session')->setLastRequestKey($hash);
         return $hash;
     }
