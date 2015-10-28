@@ -296,13 +296,13 @@
     </frontend>
     <admin>
         <routers>
-            <avatax>
-                <use>admin</use>
+            <adminhtml>
                 <args>
-                    <module>OnePica_AvaTax</module>
-                    <frontName>avatax</frontName>
+                    <modules>
+                        <avatax after="Mage_Adminhtml">OnePica_AvaTax_Adminhtml</avatax>
+                    </modules>
                 </args>
-            </avatax>
+            </adminhtml>
         </routers>
     </admin>
     <!-- the adminhtml section is repeated in config.xml & adminhtml.xml for backwards compatibility -->
