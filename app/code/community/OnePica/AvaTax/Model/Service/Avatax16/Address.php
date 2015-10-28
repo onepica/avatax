@@ -29,7 +29,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
     /**
      * Avatax adddres cache tag
      */
-    const AVATAX_SERVICE_CACHE_ADDRESS = 'avatax16_cache_address_';
+    const AVATAX16_SERVICE_CACHE_ADDRESS = 'avatax16_cache_address_';
 
     /**
      * The Mage Address object
@@ -79,7 +79,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
     protected function _construct()
     {
         $this->addCacheTag(array(
-            self::AVATAX_SERVICE_CACHE_ADDRESS
+            self::AVATAX16_SERVICE_CACHE_ADDRESS
         ));
     }
 
@@ -199,10 +199,10 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
                 $this->__('An address must be set before validation.')
             );
         }
-
+        $this->addCacheTag(array('address_' .$this->getAddress()->getId()));
         $result = $this->_loadCache();
         if ($result !== false) {
-            return boolval($result);
+            return !empty($result) ? true : false;
         }
 
         /** @var Mage_Sales_Model_Quote $quote */
