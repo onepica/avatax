@@ -53,7 +53,7 @@ class OnePica_AvaTax_Block_Adminhtml_Notification_Toolbar extends Mage_Adminhtml
      */
     public function getQueueGridUrl()
     {
-        return $this->getUrl('avatax/adminhtml_grid/queue');
+        return $this->getUrl('adminhtml/avaTax_grid/queue');
     }
 
     /**

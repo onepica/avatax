@@ -40,20 +40,20 @@ class OnePica_AvaTax_Block_Adminhtml_System_Config_Form_Field_Export
         );
 
         $data1 = array(
-            'label'     => Mage::helper('avatax')->__('Export Logs'),
-            'onclick'   => 'setLocation(\'' . Mage::helper('adminhtml')->getUrl("avatax/adminhtml_export/log", $params)
-                . '\')',
-            'class'     => '',
+            'label'   => Mage::helper('avatax')->__('Export Logs'),
+            'onclick' => 'setLocation(\'' . Mage::helper('adminhtml')->getUrl('adminhtml/avaTax_export/log', $params)
+                         . '\')',
+            'class'   => '',
         );
         $data2 = array(
-            'label'     => Mage::helper('avatax')->__('Export Queue'),
-            'onclick'   => 'setLocation(\''
-                . Mage::helper('adminhtml')->getUrl("avatax/adminhtml_export/queue", $params)
-                . '\')',
-            'class'     => '',
+            'label'   => Mage::helper('avatax')->__('Export Queue'),
+            'onclick' => 'setLocation(\''
+                         . Mage::helper('adminhtml')->getUrl('adminhtml/avaTax_export/queue', $params)
+                         . '\')',
+            'class'   => '',
         );
 
-        $html  = $buttonBlock->setData($data1)->toHtml() . ' &nbsp; ';
+        $html = $buttonBlock->setData($data1)->toHtml() . ' &nbsp; ';
         $html .= $buttonBlock->setData($data2)->toHtml();
 
         return $html;
