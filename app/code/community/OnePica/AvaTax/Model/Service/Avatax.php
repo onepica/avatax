@@ -47,16 +47,27 @@ class OnePica_AvaTax_Model_Service_Avatax
     protected $_pingResource;
 
     /**
+     * Class constructor
+     */
+    public function __construct()
+    {
+        $args = func_get_args();
+        if (empty($args[0])) {
+            $args[0] = array();
+        }
+
+        parent::__construct($args[0]);
+        $this->setServiceConfig(Mage::getSingleton('avatax/service_avatax_config')->init(Mage::app()->getStore()));
+    }
+
+    /**
      * Get estimate resource
      *
      * return mixed
      */
     protected function _getEstimateResource()
     {
-        if (!$this->_estimateResource) {
-            $this->_estimateResource = Mage::getModel('avatax/service_avatax_estimate');
-        }
-        return $this->_estimateResource;
+        return Mage::getSingleton('avatax/service_avatax_estimate', array('service' => $this));
     }
 
     /**
@@ -66,10 +77,7 @@ class OnePica_AvaTax_Model_Service_Avatax
      */
     protected function _getInvoiceResource()
     {
-        if (!$this->_invoiceResource) {
-            $this->_invoiceResource = Mage::getModel('avatax/service_avatax_invoice');
-        }
-        return $this->_invoiceResource;
+        return Mage::getSingleton('avatax/service_avatax_invoice', array('service' => $this));
     }
 
     /**
@@ -79,10 +87,7 @@ class OnePica_AvaTax_Model_Service_Avatax
      */
     protected function _getPingResource()
     {
-        if (!$this->_pingResource) {
-            $this->_pingResource = Mage::getModel('avatax/service_avatax_ping');
-        }
-        return $this->_pingResource;
+        return Mage::getSingleton('avatax/service_avatax_ping', array('service' => $this));
     }
 
     /**
@@ -124,7 +129,7 @@ class OnePica_AvaTax_Model_Service_Avatax
      */
     public function getAddressValidator()
     {
-        return Mage::getSingleton('avatax/service_avatax_address');
+        return Mage::getSingleton('avatax/service_avatax_address', array('service' => $this));
     }
 
     /**

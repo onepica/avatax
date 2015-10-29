@@ -24,27 +24,19 @@
  */
 class OnePica_AvaTax_Model_Service_Avatax_Config extends OnePica_AvaTax_Model_Service_Abstract_Config
 {
-
-    /**
-     * The AvaTax ATConfig object.
-     *
-     * @var ATConfig
-     */
-    protected $_config = null;
-
     /**
      * The AvaTax TaxServiceSoap object.
      *
      * @var TaxServiceSoap
      */
-    protected $_taxConnection;
+    protected $_taxConnection = null;
 
     /**
      * The AvaTax AddressServiceSoap object.
      *
      * @var AddressServiceSoap
      */
-    protected $_addressConnection;
+    protected $_addressConnection = null;
 
     /**
      * Initializes the AvaTax SDK with connection settings found in the Admin config.
@@ -54,13 +46,13 @@ class OnePica_AvaTax_Model_Service_Avatax_Config extends OnePica_AvaTax_Model_Se
      */
     public function init($storeId)
     {
-        if (!$this->_config) {
+        if (is_null($this->_config)) {
             $this->_config = new ATConfig(
                 self::CONFIG_KEY,
                 array(
-                    'url'     => $this->getConfig('url', $storeId),
-                    'account' => $this->getConfig('account', $storeId),
-                    'license' => $this->getConfig('license', $storeId),
+                    'url'     => Mage::helper('avatax/config')->getServiceUrl($storeId),
+                    'account' => Mage::helper('avatax/config')->getServiceAccountId($storeId),
+                    'license' => Mage::helper('avatax/config')->getServiceKey($storeId),
                     'trace'   => (Mage::helper('avatax')
                         ->getLogMode($storeId) == OnePica_AvaTax_Model_Source_Logmode::DEBUG) ? true : false,
                     'client'  => $this->getClientName()
@@ -110,7 +102,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Config extends OnePica_AvaTax_Model_Se
      */
     public function getAddressConnection()
     {
-        if (!$this->_addressConnection) {
+        if (is_null($this->_addressConnection)) {
             $this->_addressConnection = new AddressServiceSoap(self::CONFIG_KEY);
         }
         return $this->_addressConnection;
@@ -123,32 +115,10 @@ class OnePica_AvaTax_Model_Service_Avatax_Config extends OnePica_AvaTax_Model_Se
      */
     public function getTaxConnection()
     {
-        if (!$this->_taxConnection) {
+        if (is_null($this->_taxConnection)) {
             $this->_taxConnection = new TaxServiceSoap(self::CONFIG_KEY);
         }
         return $this->_taxConnection;
-    }
-
-    /**
-     * Returns the AvaTax ATConfig object
-     *
-     * @return ATConfig
-     */
-    public function getParams()
-    {
-        return $this->_config;
-    }
-
-    /**
-     * Returns data from the admin system config.
-     *
-     * @param string $path
-     * @param int $store
-     * @return string
-     */
-    public function getConfig($path, $store = null)
-    {
-        return Mage::getStoreConfig('tax/avatax/' . $path, $store);
     }
 
     /**
@@ -158,8 +128,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Config extends OnePica_AvaTax_Model_Se
      */
     public function normalizeAddress()
     {
-        $storeId = Mage::app()->getStore()->getId();
-        return $this->getConfig('normalize_address', $storeId);
+        return Mage::helper('avatax/config')->getNormalizeAddress(Mage::app()->getStore());
     }
 
     /**
@@ -170,6 +139,6 @@ class OnePica_AvaTax_Model_Service_Avatax_Config extends OnePica_AvaTax_Model_Se
      */
     public function getCompanyCode($store = null)
     {
-        return $this->getConfig('company_code', $store);
+        return Mage::helper('avatax/config')->getCompanyCode($store);
     }
 }
