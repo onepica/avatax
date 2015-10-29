@@ -33,19 +33,19 @@ class OnePica_AvaTax_Model_Source_Actions
     {
         return array(
             array(
-                'value' => OnePica_AvaTax_Model_Config::ACTION_DISABLE,
+                'value' => OnePica_AvaTax_Model_Service_Avatax_Config::ACTION_DISABLE,
                 'label' => Mage::helper('avatax')->__('Disable')
             ),
             array(
-                'value' => OnePica_AvaTax_Model_Config::ACTION_CALC,
+                'value' => OnePica_AvaTax_Model_Service_Avatax_Config::ACTION_CALC,
                 'label' => Mage::helper('avatax')->__('Enable: calculate tax')
             ),
             array(
-                'value' => OnePica_AvaTax_Model_Config::ACTION_CALC_SUBMIT,
+                'value' => OnePica_AvaTax_Model_Service_Avatax_Config::ACTION_CALC_SUBMIT,
                 'label' => Mage::helper('avatax')->__('Enable: calculate tax, submit data')
             ),
             array(
-                'value' => OnePica_AvaTax_Model_Config::ACTION_CALC_SUBMIT_COMMIT,
+                'value' => OnePica_AvaTax_Model_Service_Avatax_Config::ACTION_CALC_SUBMIT_COMMIT,
                 'label' => Mage::helper('avatax')->__('Enable: calculate tax, submit data, and commit')
             )
         );

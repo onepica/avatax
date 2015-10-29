@@ -22,7 +22,7 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Config extends Varien_Object
+class OnePica_AvaTax_Helper_Data extends Varien_Object
 {
     /**
      * Config key

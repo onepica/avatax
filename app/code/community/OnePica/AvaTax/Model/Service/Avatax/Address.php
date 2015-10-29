@@ -173,7 +173,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
 
         $result = $this->_loadCache();
         if ($result !== false) {
-            return boolval($result);
+            return !empty($result) ? true : false;
         }
 
         /** @var Mage_Sales_Model_Quote $quote */
@@ -314,7 +314,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
     protected function _sendAddressValidationRequest()
     {
         /** @var OnePica_AvaTax_Model_Config $config */
-        $config = Mage::getSingleton('avatax/config')->init($this->_storeId);
+        $config = Mage::getSingleton('avatax/service_avatax_config')->init($this->_storeId);
         $client = $config->getAddressConnection();
         $request = new ValidateRequest($this->_requestAddress, TextCase::$Mixed, 0);
         $request->setTaxability(true);

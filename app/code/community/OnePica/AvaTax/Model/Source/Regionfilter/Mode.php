@@ -33,15 +33,15 @@ class OnePica_AvaTax_Model_Source_Regionfilter_Mode
     {
         return array(
             array(
-                'value' => OnePica_AvaTax_Model_Config::REGIONFILTER_OFF,
+                'value' => OnePica_AvaTax_Model_Service_Avatax_Config::REGIONFILTER_OFF,
                 'label' => Mage::helper('avatax')->__('None')
             ),
             array(
-                'value' => OnePica_AvaTax_Model_Config::REGIONFILTER_TAX,
+                'value' => OnePica_AvaTax_Model_Service_Avatax_Config::REGIONFILTER_TAX,
                 'label' => Mage::helper('avatax')->__('Filter tax calculations')
             ),
             array(
-                'value' => OnePica_AvaTax_Model_Config::REGIONFILTER_ALL,
+                'value' => OnePica_AvaTax_Model_Service_Avatax_Config::REGIONFILTER_ALL,
                 'label' => Mage::helper('avatax')->__('Filter tax calculations & address options')
             )
         );
