@@ -141,7 +141,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
             }
         }
 
-        if (in_array($type, $this->getHelper()->getLogType($storeId))) {
+        if (in_array($type, $this->_getHelper()->getLogType($storeId))) {
             Mage::getModel('avatax_records/log')
                 ->setStoreId($storeId)
                 ->setLevel($result->getResultCode())
@@ -172,7 +172,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
      */
     protected function _setCompanyCode($storeId = null)
     {
-        $config = Mage::getSingleton('avatax/config');
+        $config = Mage::getSingleton('avatax/service_avatax16_config');
         $this->_request->setCompanyCode($config->getCompanyCode($storeId));
         return $this;
     }

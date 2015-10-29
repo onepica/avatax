@@ -325,7 +325,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
         $request->setTaxability(true);
         $result = $client->Validate($request);
         $this->_log(
-            OnePica_AvaTax_Model_Source_Logtype::VALIDATE,
+            OnePica_AvaTax_Model_Source_Avatax_Logtype::VALIDATE,
             $request,
             $result,
             $this->_storeId,

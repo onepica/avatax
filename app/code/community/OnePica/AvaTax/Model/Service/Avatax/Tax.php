@@ -54,7 +54,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Tax extends OnePica_AvaTax_Model_Servi
         }
 
         $this->_log(
-            OnePica_AvaTax_Model_Source_Logtype::GET_TAX,
+            OnePica_AvaTax_Model_Source_Avatax_Logtype::GET_TAX,
             $this->_request,
             $result,
             $storeId,
