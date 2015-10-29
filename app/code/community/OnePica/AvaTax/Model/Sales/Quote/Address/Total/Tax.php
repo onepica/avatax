@@ -166,7 +166,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
         /** @var OnePica_AvaTax_Helper_Data $helper */
         $helper = Mage::helper('avatax/address');
         $storeId = $address->getQuote()->getStoreId();
-        return $helper->isAddressActionable($address, $storeId, OnePica_AvaTax_Model_Config::REGIONFILTER_TAX);
+        return $helper->isAddressActionable($address, $storeId, OnePica_AvaTax_Model_Service_Abstract_Config::REGIONFILTER_TAX);
     }
 
     /**

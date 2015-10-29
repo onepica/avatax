@@ -22,7 +22,7 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-abstract class OnePica_AvaTax_Model_Service_Avatax16_Abstract extends Varien_Object
+abstract class OnePica_AvaTax_Model_Service_Avatax16_Abstract extends OnePica_AvaTax_Model_Service_Abstract_Tools
 {
     /**
      * Transaction type sale
@@ -158,6 +158,9 @@ abstract class OnePica_AvaTax_Model_Service_Avatax16_Abstract extends Varien_Obj
         }
         $level = $result->getHasError() ? OnePica_AvaTax_Model_Records_Log::LOG_LEVEL_ERROR
                                         : OnePica_AvaTax_Model_Records_Log::LOG_LEVEL_SUCCESS;
+
+        $requestLog = ($request instanceof OnePica_AvaTax16_Document_Part) ? $request->toArray() : $request;
+        $resultLog = ($result instanceof OnePica_AvaTax16_Document_Part) ? $result->toArray() : $result;
 
         $requestLog = ($request instanceof OnePica_AvaTax16_Document_Part) ? $request->toArray() : $request;
         $resultLog = ($result instanceof OnePica_AvaTax16_Document_Part) ? $result->toArray() : $result;

@@ -44,7 +44,7 @@ class OnePica_AvaTax_Model_Service extends Mage_Core_Model_Factory
         if (!$service) {
             throw new OnePica_AvaTax_Exception('Service name is not defined.');
         }
-        $model = $this->getModel(self::XML_PATH_INDEX_INDEX_MODEL . $service, $options);
+        $model = $this->getSingleton(self::XML_PATH_INDEX_INDEX_MODEL . $service, $options);
         if (!$model) {
             throw new OnePica_AvaTax_Exception('Could not found service model ' . $service);
         }

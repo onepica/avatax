@@ -16,8 +16,7 @@
  */
 
 /**
- * Class OnePica_AvaTax_Model_Service_Avatax16
- *
+ * @class OnePica_AvaTax_Model_Service_Avatax16
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
@@ -33,6 +32,20 @@ class OnePica_AvaTax_Model_Service_Avatax16
     protected $_estimateResource;
 
     /**
+     * Class constructor
+     */
+    public function __construct()
+    {
+        $args = func_get_args();
+        if (empty($args[0])) {
+            $args[0] = array();
+        }
+
+        parent::__construct($args[0]);
+        $this->setServiceConfig(Mage::getSingleton('avatax/service_avatax16_config')->init(Mage::app()->getStore()));
+    }
+
+    /**
      * Get estimate resource
      *
      * return mixed
@@ -44,6 +57,7 @@ class OnePica_AvaTax_Model_Service_Avatax16
         }
         return $this->_estimateResource;
     }
+
     /**
      * Get rates from Service
      *
@@ -81,7 +95,7 @@ class OnePica_AvaTax_Model_Service_Avatax16
      * Save order in AvaTax system
      *
      * @see OnePica_AvaTax_Model_Observer::salesOrderPlaceAfter()
-     * @param Mage_Sales_Model_Order_Invoice     $invoice
+     * @param Mage_Sales_Model_Order_Invoice $invoice
      * @param OnePica_AvaTax_Model_Records_Queue $queue
      * @return bool
      */
@@ -111,16 +125,16 @@ class OnePica_AvaTax_Model_Service_Avatax16
      */
     public function ping($storeId)
     {
-        return true;
+        return Mage::getModel('avatax/service_avatax16_ping', array('service' => $this))->ping($storeId);
     }
 
     /**
      * Get service address validator
      *
-     * @return mixed
+     * @return OnePica_AvaTax_Model_Service_Abstract_Tools
      */
     public function getAddressValidator()
     {
-        return null;
+        return Mage::getSingleton('avatax/service_avatax16_address', array('service' => $this));
     }
 }

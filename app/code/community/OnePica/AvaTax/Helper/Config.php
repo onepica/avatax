@@ -443,7 +443,7 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
      * @param $storeId
      * @return mixed
      */
-    public function getStatusAvataxAction($storeId = null)
+    public function getStatusServiceAction($storeId = null)
     {
         return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_ACTION, $storeId);
     }

@@ -16,13 +16,13 @@
  */
 
 /**
- * abstract class OnePica_AvaTax_Model_Service_Abstract
- *
+ * Abstract class OnePica_AvaTax_Model_Service_Abstract
+ * @class OnePica_AvaTax_Model_Service_Abstract
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-abstract class OnePica_AvaTax_Model_Service_Abstract
+abstract class OnePica_AvaTax_Model_Service_Abstract extends Varien_Object
 {
     /**
      * Get rates from Service
@@ -81,6 +81,30 @@ abstract class OnePica_AvaTax_Model_Service_Abstract
      * @return mixed
      */
     abstract public function getAddressValidator();
+
+    /**
+     * Service config.
+     * @var null|OnePica_AvaTax_Model_Service_Abstract_Config
+     */
+    private $_config = null;
+
+    /**
+     * Get service config.
+     * @return null|OnePica_AvaTax_Model_Service_Abstract_Config
+     */
+    public function getServiceConfig()
+    {
+        return $this->_config;
+    }
+
+    /**
+     * Set service config.
+     * @param null|OnePica_AvaTax_Model_Service_Abstract_Config $config
+     */
+    public function setServiceConfig($config)
+    {
+        $this->_config = $config;
+    }
 
     /**
      * Get config helper

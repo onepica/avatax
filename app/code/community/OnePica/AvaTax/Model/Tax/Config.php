@@ -33,7 +33,7 @@ class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
      */
     public function discountTax($store = null)
     {
-        if (Mage::helper('avatax')->isAvataxEnabled($store)) {
+        if (Mage::helper('avatax')->isServiceEnabled($store)) {
             return false;
         }
 
