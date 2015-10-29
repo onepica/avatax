@@ -26,6 +26,25 @@ class OnePica_AvaTax_Model_Service_Avatax16
     extends OnePica_AvaTax_Model_Service_Abstract
 {
     /**
+     * Estimate Resource
+     *
+     * @var mixed
+     */
+    protected $_estimateResource;
+
+    /**
+     * Get estimate resource
+     *
+     * return mixed
+     */
+    protected function _getEstimateResource()
+    {
+        if (!$this->_estimateResource) {
+            $this->_estimateResource = Mage::getModel('avatax/service_avatax16_estimate');
+        }
+        return $this->_estimateResource;
+    }
+    /**
      * Get rates from Service
      *
      * @param Mage_Sales_Model_Quote_Item $item
@@ -33,7 +52,7 @@ class OnePica_AvaTax_Model_Service_Avatax16
      */
     public function getRates($item)
     {
-        return array();
+        return $this->_getEstimateResource()->getRates($item);
     }
 
     /**
@@ -44,7 +63,7 @@ class OnePica_AvaTax_Model_Service_Avatax16
      */
     public function getSummary($addressId)
     {
-        return array();
+        return $this->_getEstimateResource()->getSummary($addressId);
     }
 
     /**
@@ -55,7 +74,7 @@ class OnePica_AvaTax_Model_Service_Avatax16
      */
     public function isProductCalculated($item)
     {
-        return null;
+        return $this->_getEstimateResource()->isProductCalculated($item);
     }
 
     /**
@@ -97,6 +116,7 @@ class OnePica_AvaTax_Model_Service_Avatax16
 
     /**
      * Get service address validator
+     *
      * @return mixed
      */
     public function getAddressValidator()

@@ -96,7 +96,7 @@ class OnePica_AvaTax16_Document_Part
     public function isValid()
     {
         foreach ($this as $key => $value) {
-            if (in_array($key, $this->_requiredProperties) && !$value) {
+            if (in_array($key, $this->_requiredProperties) && (null === $value)) {
                 return false;
             }
         }
@@ -118,7 +118,7 @@ class OnePica_AvaTax16_Document_Part
         foreach ($this as $key => $value) {
             if (in_array($key, $this->_excludedProperties)
                 || in_array($key, array('_requiredProperties', '_excludedProperties', '_propertyComplexTypes'))
-                || !$value) {
+                || (null === $value)) {
                 // skip property
                 continue;
             }
@@ -150,7 +150,7 @@ class OnePica_AvaTax16_Document_Part
                 }
                 break;
             case 'simple':
-                $result = $item;
+                $result = (string) $item;
                 break;
         }
 

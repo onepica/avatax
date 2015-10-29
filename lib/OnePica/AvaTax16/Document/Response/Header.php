@@ -34,14 +34,6 @@ class OnePica_AvaTax16_Document_Response_Header extends OnePica_AvaTax16_Documen
     );
 
     /**
-     * Required properties
-     *
-     * @var array
-     */
-    protected $_requiredProperties = array('_accountId', '_companyCode', '_transactionType', '_documentCode',
-        '_customerCode', '_vendorCode', '_transactionDate', '_defaultLocations');
-
-    /**
      * Account Id
      * (Required)
      *

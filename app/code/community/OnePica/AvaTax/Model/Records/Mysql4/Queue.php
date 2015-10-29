@@ -94,11 +94,11 @@ class OnePica_AvaTax_Model_Records_Mysql4_Queue extends Mage_Core_Model_Mysql4_A
         $logStatus = Mage::getStoreConfig('tax/avatax/log_status', $storeId);
         if ($logStatus) {
             $logTypes = Mage::helper('avatax')->getLogType($storeId);
-            if (in_array(OnePica_AvaTax_Model_Source_Logtype::QUEUE, $logTypes)) {
+            if (in_array(OnePica_AvaTax_Model_Source_Avatax_Logtype::QUEUE, $logTypes)) {
                 Mage::getModel('avatax_records/log')
                     ->setStoreId($object->getStoreId())
                     ->setLevel(OnePica_AvaTax_Model_Records_Log::LOG_LEVEL_SUCCESS)
-                    ->setType(OnePica_AvaTax_Model_Source_Logtype::QUEUE)
+                    ->setType(OnePica_AvaTax_Model_Source_Avatax_Logtype::QUEUE)
                     ->setRequest(print_r($object->getData(), true))
                     ->setResult($result)
                     ->save();
