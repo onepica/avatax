@@ -96,7 +96,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         $quote = $address->getQuote();
         $storeId = $quote->getStore()->getId();
         $configModel = Mage::getSingleton('avatax/service_avatax16_config')->init($storeId);
-        $config = $configModel->getConfig();
+        $config = $configModel->getLibConfig();
 
         // Set up document for request
         $this->_request = new OnePica_AvaTax16_Document_Request();
@@ -403,7 +403,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
     {
         /** @var OnePica_AvaTax_Model_Service_Avatax16_Config $config */
         $configModel = Mage::getSingleton('avatax/service_avatax16_config')->init($storeId);
-        $config = $configModel->getConfig();
+        $config = $configModel->getLibConfig();
         $connection = new OnePica_AvaTax16_TaxService($config);
         $result = null;
         $message = null;
