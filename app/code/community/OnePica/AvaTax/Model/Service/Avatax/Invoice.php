@@ -99,7 +99,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
 
         //if successful
         if ($result->getResultCode() == SeverityLevel::$Success) {
-            $message = $this->getHelper()->__('Invoice #%s was saved to AvaTax', $result->getDocCode());
+            $message = $this->_getHelper()->__('Invoice #%s was saved to AvaTax', $result->getDocCode());
             $this->_addStatusHistoryComment($order, $message);
 
             if ($result->getTotalTax() != $invoice->getBaseTaxAmount()) {
@@ -194,7 +194,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
 
         //if successful
         if ($result->getResultCode() == SeverityLevel::$Success) {
-            $message = $this->getHelper()->__('Credit memo #%s was saved to AvaTax', $result->getDocCode());
+            $message = $this->_getHelper()->__('Credit memo #%s was saved to AvaTax', $result->getDocCode());
             $this->_addStatusHistoryComment($order, $message);
 
             if ($result->getTotalTax() != ($creditmemo->getBaseTaxAmount() * -1)) {
