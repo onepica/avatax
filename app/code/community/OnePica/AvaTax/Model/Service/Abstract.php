@@ -16,8 +16,8 @@
  */
 
 /**
- * abstract class OnePica_AvaTax_Model_Service_Abstract
- *
+ * Abstract class OnePica_AvaTax_Model_Service_Abstract
+ * @class OnePica_AvaTax_Model_Service_Abstract
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>

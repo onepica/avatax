@@ -16,8 +16,7 @@
  */
 
 /**
- * Class OnePica_AvaTax_Model_Service_Avatax16
- *
+ * @class OnePica_AvaTax_Model_Service_Avatax16
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
@@ -26,12 +25,37 @@ class OnePica_AvaTax_Model_Service_Avatax16
     extends OnePica_AvaTax_Model_Service_Abstract
 {
     /**
+     * Estimate Resource
+     *
+     * @var mixed
+     */
+    protected $_estimateResource;
+
+    /**
      * Class constructor
      */
     public function __construct()
     {
-        parent::__construct();
+        $args = func_get_args();
+        if (empty($args[0])) {
+            $args[0] = array();
+        }
+
+        parent::__construct($args[0]);
         $this->setServiceConfig(Mage::getSingleton('avatax/service_avatax16_config')->init(Mage::app()->getStore()));
+    }
+
+    /**
+     * Get estimate resource
+     *
+     * return mixed
+     */
+    protected function _getEstimateResource()
+    {
+        if (!$this->_estimateResource) {
+            $this->_estimateResource = Mage::getModel('avatax/service_avatax16_estimate');
+        }
+        return $this->_estimateResource;
     }
 
     /**
@@ -42,7 +66,7 @@ class OnePica_AvaTax_Model_Service_Avatax16
      */
     public function getRates($item)
     {
-        return array();
+        return $this->_getEstimateResource()->getRates($item);
     }
 
     /**
@@ -53,7 +77,7 @@ class OnePica_AvaTax_Model_Service_Avatax16
      */
     public function getSummary($addressId)
     {
-        return array();
+        return $this->_getEstimateResource()->getSummary($addressId);
     }
 
     /**
@@ -64,7 +88,7 @@ class OnePica_AvaTax_Model_Service_Avatax16
      */
     public function isProductCalculated($item)
     {
-        return null;
+        return $this->_getEstimateResource()->isProductCalculated($item);
     }
 
     /**
@@ -106,11 +130,11 @@ class OnePica_AvaTax_Model_Service_Avatax16
 
     /**
      * Get service address validator
-     * @return mixed
+     *
+     * @return OnePica_AvaTax_Model_Service_Abstract_Tools
      */
     public function getAddressValidator()
     {
         return Mage::getSingleton('avatax/service_avatax16_address', array('service' => $this));
     }
-
 }

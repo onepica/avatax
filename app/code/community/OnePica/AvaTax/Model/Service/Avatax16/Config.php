@@ -82,4 +82,13 @@ class OnePica_AvaTax_Model_Service_Avatax16_Config extends OnePica_AvaTax_Model_
         return $this->_connection;
     }
 
+    /**
+     * Returns the AvaTax helper.
+     *
+     * @return OnePica_AvaTax_Helper_Config
+     */
+    public function _getConfigHelper()
+    {
+        return Mage::helper('avatax/config');
+    }
 }

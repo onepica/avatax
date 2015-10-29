@@ -27,6 +27,16 @@
 abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaTax_Model_Service_Abstract_Tools
 {
     /**
+     * Avatax cache tag
+     */
+    const AVATAX_SERVICE_CACHE_GROUP = 'avatax_cache_tags';
+
+    /**
+     * Avatax cache tag
+     */
+    const AVATAX_CACHE_GROUP = 'avatax';
+
+    /**
      * Flag that states if there was an error
      *
      * @var bool
@@ -90,6 +100,25 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
     protected $_libHelper = null;
 
     /**
+     * Model cache tag for clear cache in after save and after delete
+     */
+    protected $_cacheTag = self::AVATAX_SERVICE_CACHE_GROUP;
+
+    /**
+     * Class pre-constructor
+     */
+    protected function _construct()
+    {
+        $this->_getApp()->useCache(self::AVATAX_CACHE_GROUP);
+        $this->addData(array('cache_lifetime' => false));
+        $this->addCacheTag(array(
+            self::AVATAX_SERVICE_CACHE_GROUP,
+            Mage::app()->getStore()->getId(),
+            (int)Mage::app()->getStore()->isCurrentlySecure()
+        ));
+    }
+
+    /**
      * Logs a debug message
      *
      * @param string $type
@@ -102,7 +131,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
     protected function _log($type, $request, $result, $storeId = null, $additional = null)
     {
         if ($result->getResultCode() == SeverityLevel::$Success) {
-            switch ($this->_getHelper()->getLogMode($storeId)) {
+            switch ($this->getHelper()->getLogMode($storeId)) {
                 case OnePica_AvaTax_Model_Source_Logmode::ERRORS:
                     return $this;
                     break;
@@ -112,7 +141,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
             }
         }
 
-        if (in_array($type, $this->_getHelper()->getLogType($storeId))) {
+        if (in_array($type, $this->getHelper()->getLogType($storeId))) {
             Mage::getModel('avatax_records/log')
                 ->setStoreId($storeId)
                 ->setLevel($result->getResultCode())

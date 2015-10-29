@@ -39,7 +39,7 @@ class OnePica_AvaTax_Model_Calculator extends Mage_Core_Model_Factory
      */
     public function __construct($params = array())
     {
-        $activeService = $this->_getConfigHelper()->getAvataxActiveService();
+        $activeService = $this->_getConfigHelper()->getActiveService();
         $this->_service = Mage::getSingleton('avatax/service')->factory($activeService, $params);
     }
 
