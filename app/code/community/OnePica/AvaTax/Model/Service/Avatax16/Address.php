@@ -18,7 +18,7 @@
 /**
  * Class OnePica_AvaTax_Model_Service_Avatax16_Address
  *
- * @method OnePica_AvaTax_Model_Service_Avatax16 getService()
+ * @method getService() OnePica_AvaTax_Model_Service_Avatax16
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
@@ -340,7 +340,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
         $resolvedAddress = $taxService->resolveSingleAddress($this->getLocationAddress());
 
         $this->_log(
-            OnePica_AvaTax_Model_Source_Logtype::VALIDATE,
+            OnePica_AvaTax_Model_Source_Avatax_Logtype::VALIDATE,
             $this->getLocationAddress(),
             $resolvedAddress,
             $this->_storeId,

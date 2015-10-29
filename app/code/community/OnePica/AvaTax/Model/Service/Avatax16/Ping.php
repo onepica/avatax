@@ -55,7 +55,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Ping extends OnePica_AvaTax_Model_Se
             $result->setMessage($message);
         }
         $this->_log(
-            OnePica_AvaTax_Model_Source_Logtype::PING,
+            OnePica_AvaTax_Model_Source_Avatax_Logtype::PING,
             new stdClass(),
             $result,
             $storeId,

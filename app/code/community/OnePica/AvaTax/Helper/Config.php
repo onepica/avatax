@@ -172,6 +172,11 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
     /**
      * Path to active avatax service
      */
+    const XML_PATH_TO_TAX_AVATAX_ONEPAGE_NORMALIZE_MESSAGE = 'tax/avatax/onepage_normalize_message';
+
+    /**
+     * Path to active avatax service
+     */
     const XML_PATH_TO_SHIPPING_ORIGIN_COUNTRY_ID = 'shipping/origin/country_id';
 
     /**
@@ -643,5 +648,17 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
     public function getDefaultBuyerType($store = null)
     {
         return Mage::getStoreConfig(self::XML_PATH_TO_DEFAULT_BUYER_TYPE, $store);
+    }
+
+    /**
+     * Get onepage normalize message
+     *
+     * @param null|bool|int|Mage_Core_Model_Store $store
+     *
+     * @return int
+     */
+    public function getOnepageNormalizeMessage($store = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_ONEPAGE_NORMALIZE_MESSAGE, $store);
     }
 }
