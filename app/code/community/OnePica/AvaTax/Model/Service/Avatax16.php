@@ -28,7 +28,7 @@ class OnePica_AvaTax_Model_Service_Avatax16
     /**
      * Class constructor
      */
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
         $this->setServiceConfig(Mage::getSingleton('avatax/service_avatax16_config')->init(Mage::app()->getStore()));
@@ -71,7 +71,7 @@ class OnePica_AvaTax_Model_Service_Avatax16
      * Save order in AvaTax system
      *
      * @see OnePica_AvaTax_Model_Observer::salesOrderPlaceAfter()
-     * @param Mage_Sales_Model_Order_Invoice     $invoice
+     * @param Mage_Sales_Model_Order_Invoice $invoice
      * @param OnePica_AvaTax_Model_Records_Queue $queue
      * @return bool
      */

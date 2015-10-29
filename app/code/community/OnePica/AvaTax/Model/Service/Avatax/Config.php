@@ -22,57 +22,8 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Helper_Data extends Varien_Object
+class OnePica_AvaTax_Model_Service_Avatax_Config extends OnePica_AvaTax_Model_Service_Abstract_Config
 {
-    /**
-     * Config key
-     */
-    const CONFIG_KEY = 'Magento';
-
-    /**
-     * App name
-     */
-    const APP_NAME = 'OP_AvaTax by One Pica';
-
-    /**
-     * Disable action
-     */
-    const ACTION_DISABLE = 0;
-
-    /**
-     * Calculate action
-     */
-    const ACTION_CALC = 1;
-
-    /**
-     * Calculate, submit action
-     */
-    const ACTION_CALC_SUBMIT = 2;
-
-    /**
-     * Calculate, submit, commit action
-     */
-    const ACTION_CALC_SUBMIT_COMMIT = 3;
-
-    /**
-     * Region filter disable mode
-     */
-    const REGIONFILTER_OFF = 0;
-
-    /**
-     * Region filter tax mode
-     */
-    const REGIONFILTER_TAX = 1;
-
-    /**
-     * Region filter all mode
-     */
-    const REGIONFILTER_ALL = 2;
-
-    /**
-     * Number of times a queue item will try to send
-     */
-    const QUEUE_ATTEMPT_MAX = 5;
 
     /**
      * The AvaTax ATConfig object.

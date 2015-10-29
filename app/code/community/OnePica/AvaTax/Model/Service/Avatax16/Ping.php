@@ -41,6 +41,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Ping extends OnePica_AvaTax_Model_Se
         $result = null;
         $message = array();
         try {
+            /** @var OnePica_AvaTax16_AddressResolution_PingResponse $result */
             $result = $connection->ping();
         } catch (Exception $exception) {
             $message = $exception->getMessage();
@@ -53,7 +54,6 @@ class OnePica_AvaTax_Model_Service_Avatax16_Ping extends OnePica_AvaTax_Model_Se
             $result->setActualResult($actualResult);
             $result->setMessage($message);
         }
-
         $this->_log(
             OnePica_AvaTax_Model_Source_Logtype::PING,
             new stdClass(),
@@ -61,9 +61,14 @@ class OnePica_AvaTax_Model_Service_Avatax16_Ping extends OnePica_AvaTax_Model_Se
             $storeId,
             $config->getParams()
         );
-        foreach ($result->getErrors() as $message) {
-            $message[] = Mage::getSingleton('core/session')->addNotice($this->__($message->getSummary()));
+        if ($result->getHasError()) {
+            if (is_array($result->getErrors())) {
+                foreach ($result->getErrors() as $message) {
+                    $message[] = $this->__($message->getSummary());
+                }
+                $message = implode(' ', $message);
+            }
         }
-        return (!$result->getHasError()) ? true : implode(' ', $message);
+        return (!$result->getHasError()) ? true : $message;
     }
 }

@@ -85,7 +85,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
         $this->_request->setStatusDate($statusDate);
 
         $configAction = Mage::getStoreConfig('tax/avatax/action', $order->getStoreId());
-        $commitAction = OnePica_AvaTax_Model_Config::ACTION_CALC_SUBMIT_COMMIT;
+        $commitAction = OnePica_AvaTax_Model_Service_Abstract_Config::ACTION_CALC_SUBMIT_COMMIT;
         $this->_request->setCommit(($configAction == $commitAction) ? true : false);
 
         foreach ($items as $item) {
@@ -180,7 +180,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
         $this->_request->setStatusDate($statusDate);
 
         $configAction = Mage::getStoreConfig('tax/avatax/action', $order->getStoreId());
-        $commitAction = OnePica_AvaTax_Model_Config::ACTION_CALC_SUBMIT_COMMIT;
+        $commitAction = OnePica_AvaTax_Model_Service_Abstract_Config::ACTION_CALC_SUBMIT_COMMIT;
         $this->_request->setCommit(($configAction == $commitAction) ? true : false);
 
         foreach ($items as $item) {

@@ -34,7 +34,7 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
      */
     public function isAddressNormalizationOn($address, $storeId)
     {
-        if (!$this->isAddressActionable($address, $storeId, OnePica_AvaTax_Model_Config::REGIONFILTER_ALL, true)) {
+        if (!$this->isAddressActionable($address, $storeId, OnePica_AvaTax_Model_Service_Abstract_Config::REGIONFILTER_ALL, true)) {
             return false;
         }
         return $this->_getConfigData()->getNormalizeAddress($storeId);
@@ -50,7 +50,7 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
      */
     public function isAddressValidationOn($address, $storeId)
     {
-        if (!$this->isAddressActionable($address, $storeId, OnePica_AvaTax_Model_Config::REGIONFILTER_ALL, true)) {
+        if (!$this->isAddressActionable($address, $storeId, OnePica_AvaTax_Model_Service_Abstract_Config::REGIONFILTER_ALL, true)) {
             return false;
         }
         return $this->_getConfigData()->getValidateAddress($storeId);
@@ -76,14 +76,14 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
      *
      * @return bool
      */
-    public function isAddressActionable($address, $storeId, $filterMode = OnePica_AvaTax_Model_Config::REGIONFILTER_ALL,
+    public function isAddressActionable($address, $storeId, $filterMode = OnePica_AvaTax_Model_Service_Abstract_Config::REGIONFILTER_ALL,
                                         $isAddressValidation = false
     )
     {
         $filter = false;
 
-        if ($this->_getConfigData()->getStatusAvataxAction($storeId)
-            == OnePica_AvaTax_Model_Config::ACTION_DISABLE) {
+        if ($this->_getConfigData()->getStatusServiceAction($storeId)
+            == OnePica_AvaTax_Model_Service_Abstract_Config::ACTION_DISABLE) {
             return false;
         }
 
@@ -92,7 +92,7 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
         }
 
         if ($isAddressValidation && $filter
-            && ((int)$this->getRegionFilterModByStore($storeId) !== OnePica_AvaTax_Model_Config::REGIONFILTER_ALL)
+            && ((int)$this->getRegionFilterModByStore($storeId) !== OnePica_AvaTax_Model_Service_Abstract_Config::REGIONFILTER_ALL)
         ) {
             $filter = false;
         }
@@ -119,7 +119,7 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
                 $filterLog[] = $key;
                 Mage::getSingleton('avatax/session')->setFilterLog($filterLog);
 
-                $type = ($filterMode == OnePica_AvaTax_Model_Config::REGIONFILTER_TAX) ?
+                $type = ($filterMode == OnePica_AvaTax_Model_Service_Abstract_Config::REGIONFILTER_TAX) ?
                     'tax_calc' : 'tax_calc|address_opts';
                 Mage::getModel('avatax_records/log')
                     ->setStoreId($storeId)
@@ -255,8 +255,8 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
 
         //is action enabled?
         $action = $object->getOrder() ?
-            OnePica_AvaTax_Model_Config::ACTION_CALC_SUBMIT : OnePica_AvaTax_Model_Config::ACTION_CALC;
-        if ($this->_getConfigData()->getStatusAvataxAction($storeId) < $action) {
+            OnePica_AvaTax_Model_Service_Abstract_Config::ACTION_CALC_SUBMIT : OnePica_AvaTax_Model_Service_Abstract_Config::ACTION_CALC;
+        if ($this->_getConfigData()->getStatusServiceAction($storeId) < $action) {
             return false;
         }
 
@@ -268,7 +268,7 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
         }
 
         //is the region filtered?
-        if (!$this->isAddressActionable($shippingAddress, $storeId, OnePica_AvaTax_Model_Config::REGIONFILTER_TAX)) {
+        if (!$this->isAddressActionable($shippingAddress, $storeId, OnePica_AvaTax_Model_Service_Abstract_Config::REGIONFILTER_TAX)) {
             return false;
         }
 

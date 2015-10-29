@@ -193,6 +193,19 @@ class OnePica_AvaTax_Model_Service_Abstract_Tools extends Varien_Object
         return $this;
     }
 
+    //@startSkipCommitHooks
+    /**
+     * Alias to the helper translate method.
+     *
+     * @return string
+     */
+    public function __()
+    {
+        $args = func_get_args();
+        return call_user_func_array(array($this->_getHelper(), '__'), $args);
+    }
+    //@finishSkipCommitHooks
+
     /**
      * Retrieve application instance
      *

@@ -135,19 +135,6 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
         return Mage::getSingleton('avatax/session');
     }
 
-    //@startSkipCommitHooks
-    /**
-     * Alias to the helper translate method.
-     *
-     * @return string
-     */
-    public function __()
-    {
-        $args = func_get_args();
-        return call_user_func_array(array($this->_getHelper(), '__'), $args);
-    }
-    //@finishSkipCommitHooks
-
     /**
      * Sets the company code on the request
      *

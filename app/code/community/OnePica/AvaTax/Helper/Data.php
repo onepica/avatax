@@ -32,10 +32,10 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
      *
      * @return bool
      */
-    public function isAvataxEnabled($store = null)
+    public function isServiceEnabled($store = null)
     {
-        return ($this->_getConfigData()->getStatusAvataxAction($store)
-            != OnePica_AvaTax_Model_Config::ACTION_DISABLE);
+        return ($this->_getConfigData()->getStatusServiceAction($store)
+            != OnePica_AvaTax_Model_Service_Abstract_Config::ACTION_DISABLE);
     }
 
     /**
@@ -83,8 +83,8 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
         $storeCollection = Mage::app()->getStores();
 
         foreach ($storeCollection as $store) {
-            $disabled |= $this->_getConfigData()->getStatusAvataxAction($store->getId())
-                == OnePica_AvaTax_Model_Config::ACTION_DISABLE;
+            $disabled |= $this->_getConfigData()->getStatusServiceAction($store->getId())
+                == OnePica_AvaTax_Model_Service_Abstract_Config::ACTION_DISABLE;
         }
 
         return $disabled;

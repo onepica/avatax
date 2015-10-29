@@ -75,7 +75,7 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     public function salesQuoteCollectTotalsBefore(Varien_Event_Observer $observer)
     {
         $storeId = $observer->getEvent()->getQuote()->getStoreId();
-        if (Mage::getStoreConfig('tax/avatax/action', $storeId) != OnePica_AvaTax_Model_Config::ACTION_DISABLE) {
+        if (Mage::getStoreConfig('tax/avatax/action', $storeId) != OnePica_AvaTax_Model_Service_Abstract_Config::ACTION_DISABLE) {
             Mage::getConfig()->setNode('global/sales/quote/totals/tax/class', 'avatax/sales_quote_address_total_tax');
         }
         return $this;
@@ -267,18 +267,18 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     protected function _prepareWarnings($storeId)
     {
         $warnings = array();
-        if (strpos(Mage::getStoreConfig('tax/avatax/url', $storeId), 'development.avalara.net') !== false) {
+        if (strpos(Mage::helper('avatax/config')->getServiceUrl($storeId), 'development.avalara.net') !== false) {
             $warnings[] = Mage::helper('avatax')->__(
                 'You are using the AvaTax development connection URL. If you are receiving errors about authentication, please ensure that you have a development account.'
             );
         }
-        if (Mage::getStoreConfig('tax/avatax/action', $storeId) == OnePica_AvaTax_Model_Config::ACTION_DISABLE) {
+        if (Mage::helper('avatax/config')->getStatusServiceAction($storeId) == OnePica_AvaTax_Model_Service_Abstract_Config::ACTION_DISABLE) {
             $warnings[] = Mage::helper('avatax')->__('All AvaTax services are disabled');
         }
-        if (Mage::getStoreConfig('tax/avatax/action', $storeId) == OnePica_AvaTax_Model_Config::ACTION_CALC) {
+        if (Mage::helper('avatax/config')->getStatusServiceAction($storeId) == OnePica_AvaTax_Model_Service_Abstract_Config::ACTION_CALC) {
             $warnings[] = Mage::helper('avatax')->__('Orders will not be sent to the AvaTax system');
         }
-        if (Mage::getStoreConfig('tax/avatax/action', $storeId) == OnePica_AvaTax_Model_Config::ACTION_CALC_SUBMIT) {
+        if (Mage::helper('avatax/config')->getStatusServiceAction($storeId) == OnePica_AvaTax_Model_Service_Abstract_Config::ACTION_CALC_SUBMIT) {
             $warnings[] = Mage::helper('avatax')->__('Orders will be sent but never committed to the AvaTax system');
         }
         if (!Mage::getResourceModel('cron/schedule_collection')->count()) {
@@ -487,7 +487,7 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     protected function _isRegionFilterAll()
     {
         return (int)Mage::helper('avatax/address')->getRegionFilterModByCurrentScope()
-               === OnePica_AvaTax_Model_Config::REGIONFILTER_ALL;
+               === OnePica_AvaTax_Model_Service_Abstract_Config::REGIONFILTER_ALL;
     }
 
     /**

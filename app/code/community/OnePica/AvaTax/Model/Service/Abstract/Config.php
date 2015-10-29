@@ -25,6 +25,56 @@
 abstract class OnePica_AvaTax_Model_Service_Abstract_Config extends Varien_Object
 {
     /**
+     * Config key
+     */
+    const CONFIG_KEY = 'Magento';
+
+    /**
+     * App name
+     */
+    const APP_NAME = 'OP_AvaTax by One Pica';
+
+    /**
+     * Calculate action
+     */
+    const ACTION_CALC = 1;
+
+    /**
+     * Calculate, submit action
+     */
+    const ACTION_CALC_SUBMIT = 2;
+
+    /**
+     * Calculate, submit, commit action
+     */
+    const ACTION_CALC_SUBMIT_COMMIT = 3;
+
+    /**
+     * Region filter disable mode
+     */
+    const REGIONFILTER_OFF = 0;
+
+    /**
+     * Region filter tax mode
+     */
+    const REGIONFILTER_TAX = 1;
+
+    /**
+     * Number of times a queue item will try to send
+     */
+    const QUEUE_ATTEMPT_MAX = 5;
+
+    /**
+     * Disable action
+     */
+    const ACTION_DISABLE = 0;
+
+    /**
+     * Region filter all mode
+     */
+    const REGIONFILTER_ALL = 2;
+
+    /**
      * Resource  connection
      * @var
      */

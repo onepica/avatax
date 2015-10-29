@@ -22,7 +22,7 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-abstract class OnePica_AvaTax_Model_Service_Abstract
+abstract class OnePica_AvaTax_Model_Service_Abstract extends Varien_Object
 {
     /**
      * Get rates from Service
@@ -82,8 +82,6 @@ abstract class OnePica_AvaTax_Model_Service_Abstract
      */
     abstract public function getAddressValidator();
 
-<<<<<<< Updated upstream
-=======
     /**
      * Service config.
      * @var null|OnePica_AvaTax_Model_Service_Abstract_Config
@@ -108,7 +106,6 @@ abstract class OnePica_AvaTax_Model_Service_Abstract
         $this->_config = $config;
     }
 
->>>>>>> Stashed changes
     /**
      * Get config helper
      *

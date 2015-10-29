@@ -169,7 +169,7 @@ class OnePica_AvaTax_Model_Records_Queue_Process
                     ->setMessage($e->getMessage())
                     ->save();
             } catch (Exception $e) {
-                $status = ($item->getAttempt() >= OnePica_AvaTax_Model_Config::QUEUE_ATTEMPT_MAX) ?
+                $status = ($item->getAttempt() >= OnePica_AvaTax_Model_Service_Abstract_Config::QUEUE_ATTEMPT_MAX) ?
                     OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_FAILED :
                     OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_RETRY;
                 $item->setStatus($status)
@@ -212,7 +212,7 @@ class OnePica_AvaTax_Model_Records_Queue_Process
                     ->setMessage($e->getMessage())
                     ->save();
             } catch (Exception $e) {
-                $status = ($item->getAttempt() >= OnePica_AvaTax_Model_Config::QUEUE_ATTEMPT_MAX) ?
+                $status = ($item->getAttempt() >= OnePica_AvaTax_Model_Service_Abstract_Config::QUEUE_ATTEMPT_MAX) ?
                     OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_FAILED :
                     OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_RETRY;
                 $item->setStatus($status)
