@@ -111,6 +111,13 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         $header->setVendorCode('VENDOR');
         $header->setTransactionDate($this->_getDateModel()->date('Y-m-d'));
         $header->setDefaultLocations($this->_getHeaderDefaultLocations($address));
+        $header->setDefaultAvalaraGoodsAndServicesType($this->_getConfigHelper()
+            ->getDefaultAvalaraGoodsAndServicesType($storeId));
+        $header->setDefaultAvalaraGoodsAndServicesModifierType($this->_getConfigHelper()
+            ->getDefaultAvalaraGoodsAndServicesModifierType($storeId));
+        $header->setDefaultTaxPayerCode($this->_getConfigHelper()->getDefaultTaxPayerCode($storeId));
+        $header->setDefaultUseType($this->_getConfigHelper()->getDefaultUseType($storeId));
+        $header->setDefaultBuyerType($this->_getConfigHelper()->getDefaultBuyerType($storeId));
 
         $this->_request->setHeader($header);
 
