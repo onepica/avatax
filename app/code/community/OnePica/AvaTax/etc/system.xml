@@ -288,6 +288,54 @@
                             <show_in_store>1</show_in_store>
                         </line_ref2_code>
 
+                        <default_avalara_goods_and_services_type translate="label comment">
+                            <label>Default Avalara Goods And Services Type</label>
+                            <comment>Optional.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>271</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </default_avalara_goods_and_services_type>
+                        <default_avalara_goods_and_services_modifier_type translate="label comment">
+                            <label>Default Avalara Goods And Services Modifier Type</label>
+                            <comment>Optional.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>272</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </default_avalara_goods_and_services_modifier_type>
+                        <default_tax_payer_code translate="label comment">
+                            <label>Default Tax Payer Code</label>
+                            <comment>Optional.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>273</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </default_tax_payer_code>
+                        <default_use_type translate="label comment">
+                            <label>Default Use Type</label>
+                            <comment>Optional.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>avatax/source_avatax16_usetype</source_model>
+                            <sort_order>274</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </default_use_type>
+                        <default_buyer_type translate="label comment">
+                            <label>Default Buyer Type</label>
+                            <comment>Optional.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>avatax/source_avatax16_buyertype</source_model>
+                            <sort_order>275</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </default_buyer_type>
+
                         <title_address_validation translate="label">
                             <label><![CDATA[<strong>Shipping Address Options</strong>]]></label>
                             <frontend_type>label</frontend_type>

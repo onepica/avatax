@@ -121,6 +121,14 @@ class OnePica_AvaTax16_Document_Request_Header extends OnePica_AvaTax16_Document
     protected $_taxCalculationDate;
 
     /**
+     * Default Avalara Goods And Services Type
+     * (Not currently supported)
+     *
+     * @var string
+     */
+    protected $_defaultAvalaraGoodsAndServicesType;
+
+    /**
      * Default Avalara Goods And Services Modifier Type
      * (Not currently supported)
      *
