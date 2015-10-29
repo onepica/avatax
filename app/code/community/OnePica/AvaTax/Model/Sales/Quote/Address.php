@@ -92,7 +92,8 @@ class OnePica_AvaTax_Model_Sales_Quote_Address extends Mage_Sales_Model_Quote_Ad
         if ($this->getAddressType() == self::TYPE_SHIPPING
             || $this->getUseForShipping()/* <1.9 */ || $useForShipping/* >=1.9 */
         ) {
-            if (!$this->getAvataxValidator()) {
+            if (is_null($this->getAvataxValidator())) {
+                /** @var OnePica_AvaTax_Model_Service_Abstract $validator */
                 $validator = Mage::getModel('avatax/validator')->getServiceAddressValidator();
                 $validator->setAddress($this);
                 $this->setAvataxValidator($validator);

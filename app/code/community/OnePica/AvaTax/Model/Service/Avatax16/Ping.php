@@ -17,12 +17,15 @@
 
 /**
  * The AvaTax Ping model
+ * @class OnePica_AvaTax_Model_Service_Avatax16_Ping
+ *
+ * @method getService() OnePica_AvaTax_Model_Service_Avatax16
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Service_Avatax_Ping extends OnePica_AvaTax_Model_Service_Avatax_Abstract
+class OnePica_AvaTax_Model_Service_Avatax16_Ping extends OnePica_AvaTax_Model_Service_Avatax16_Abstract
 {
     /**
      * Tries to ping AvaTax service with provided credentials
@@ -32,26 +35,25 @@ class OnePica_AvaTax_Model_Service_Avatax_Ping extends OnePica_AvaTax_Model_Serv
      */
     public function ping($storeId = null)
     {
-        /** @var OnePica_AvaTax_Model_Config $config */
-        $config = Mage::getSingleton('avatax/service_avatax_config')->init($storeId);
+        /** @var OnePica_AvaTax_Model_Service_Avatax16_Config $config */
+        $config = $this->getService()->getServiceConfig();
         $connection = $config->getTaxConnection();
         $result = null;
-        $message = null;
-
+        $message = array();
         try {
+            /** @var OnePica_AvaTax16_AddressResolution_PingResponse $result */
             $result = $connection->ping();
         } catch (Exception $exception) {
             $message = $exception->getMessage();
         }
 
-        if (!isset($result) || !is_object($result) || !$result->getResultCode()) {
+        if (!isset($result) || !is_object($result) || !$result->getHasError()) {
             $actualResult = $result;
             $result = new Varien_Object();
-            $result->setResultCode(SeverityLevel::$Exception);
+            $result->setHasError($result->getHasError());
             $result->setActualResult($actualResult);
             $result->setMessage($message);
         }
-
         $this->_log(
             OnePica_AvaTax_Model_Source_Logtype::PING,
             new stdClass(),
@@ -59,7 +61,14 @@ class OnePica_AvaTax_Model_Service_Avatax_Ping extends OnePica_AvaTax_Model_Serv
             $storeId,
             $config->getParams()
         );
-
-        return ($result->getResultCode() == SeverityLevel::$Success) ? true : $result->getMessage();
+        if ($result->getHasError()) {
+            if (is_array($result->getErrors())) {
+                foreach ($result->getErrors() as $message) {
+                    $message[] = $this->__($message->getSummary());
+                }
+                $message = implode(' ', $message);
+            }
+        }
+        return (!$result->getHasError()) ? true : $message;
     }
 }

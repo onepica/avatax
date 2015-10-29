@@ -46,7 +46,7 @@ class OnePica_AvaTax_Model_Adminhtml_Sales_Order_Create extends Mage_Adminhtml_M
             return $this;
         }
 
-        if (Mage::helper('avatax')->isAvataxEnabled()) {
+        if (Mage::helper('avatax')->isServiceEnabled()) {
             if (!Mage::app()->getFrontController()->getRequest()->getParam('isAjax')) {
                 $result = $this->getShippingAddress()->validate();
                 if ($result !== true) {

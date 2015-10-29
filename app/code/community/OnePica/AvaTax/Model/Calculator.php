@@ -22,7 +22,7 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Calculator
+class OnePica_AvaTax_Model_Calculator extends Mage_Core_Model_Factory
 {
     /**
      * Service

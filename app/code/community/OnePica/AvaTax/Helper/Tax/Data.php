@@ -37,7 +37,7 @@ class OnePica_AvaTax_Helper_Tax_Data extends Mage_Tax_Helper_Data
      */
     public function priceIncludesTax($store = null)
     {
-        if (Mage::helper('avatax')->isAvataxEnabled($store)) {
+        if (Mage::helper('avatax')->isServiceEnabled($store)) {
             return false;
         }
         return parent::priceIncludesTax($store);
@@ -51,7 +51,7 @@ class OnePica_AvaTax_Helper_Tax_Data extends Mage_Tax_Helper_Data
      */
     public function shippingPriceIncludesTax($store = null)
     {
-        if (Mage::helper('avatax')->isAvataxEnabled($store)) {
+        if (Mage::helper('avatax')->isServiceEnabled($store)) {
             return false;
         }
         return parent::shippingPriceIncludesTax($store);
@@ -65,7 +65,7 @@ class OnePica_AvaTax_Helper_Tax_Data extends Mage_Tax_Helper_Data
      */
     public function getShippingTaxClass($store)
     {
-        if (Mage::helper('avatax')->isAvataxEnabled($store)) {
+        if (Mage::helper('avatax')->isServiceEnabled($store)) {
             return self::AVATAX_SHIPPING_TAX_CLASS;
         }
         return parent::getShippingTaxClass($store);
@@ -79,7 +79,7 @@ class OnePica_AvaTax_Helper_Tax_Data extends Mage_Tax_Helper_Data
      */
     public function getTaxBasedOn($store = null)
     {
-        if (Mage::helper('avatax')->isAvataxEnabled($store)) {
+        if (Mage::helper('avatax')->isServiceEnabled($store)) {
             return 'shipping';
         }
         return parent::getTaxBasedOn($store);
@@ -93,7 +93,7 @@ class OnePica_AvaTax_Helper_Tax_Data extends Mage_Tax_Helper_Data
      */
     public function applyTaxOnCustomPrice($store = null)
     {
-        if (Mage::helper('avatax')->isAvataxEnabled($store)) {
+        if (Mage::helper('avatax')->isServiceEnabled($store)) {
             return true;
         }
         return parent::applyTaxOnCustomPrice($store);
@@ -107,7 +107,7 @@ class OnePica_AvaTax_Helper_Tax_Data extends Mage_Tax_Helper_Data
      */
     public function applyTaxOnOriginalPrice($store = null)
     {
-        if (Mage::helper('avatax')->isAvataxEnabled($store)) {
+        if (Mage::helper('avatax')->isServiceEnabled($store)) {
             return false;
         }
         return parent::applyTaxOnOriginalPrice($store);
@@ -121,7 +121,7 @@ class OnePica_AvaTax_Helper_Tax_Data extends Mage_Tax_Helper_Data
      */
     public function applyTaxAfterDiscount($store = null)
     {
-        if (Mage::helper('avatax')->isAvataxEnabled($store)) {
+        if (Mage::helper('avatax')->isServiceEnabled($store)) {
             return true;
         }
         return parent::applyTaxAfterDiscount($store);

@@ -80,6 +80,26 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
     const XML_PATH_TO_TAX_AVATAX_FIELD_RULE = 'tax/avatax/field_rule';
 
     /**
+     * Path to the rules for url
+     */
+    const XML_PATH_TO_TAX_AVATAX_URL = 'tax/avatax/url';
+
+    /**
+     * Path to the rules for url
+     */
+    const XML_PATH_TO_TAX_AVATAX_ACCOUNT = 'tax/avatax/account';
+
+    /**
+     * Path to the rules for url
+     */
+    const XML_PATH_TO_TAX_AVATAX_KEY = 'tax/avatax/license';
+
+    /**
+     * Path to the rules for url
+     */
+    const XML_PATH_TO_TAX_AVATAX_COMPANY_CODE = 'tax/avatax/company_code';
+
+    /**
      * Path to attribute code for the reference code 1 to send to Avalara
      */
     const XML_PATH_TO_TAX_AVATAX_LINE_REF1_CODE = 'tax/avatax/line_ref1_code';
@@ -177,6 +197,54 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
     public function getShippingSku($store = null)
     {
         return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_SHIPPING_SKU, $store);
+    }
+
+    /**
+     * Returns service url
+     *
+     * @param null|bool|int|Mage_Core_Model_Store $store
+     *
+     * @return string
+     */
+    public function getServiceUrl($store = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_URL, $store);
+    }
+
+    /**
+     * Returns service account id
+     *
+     * @param null|bool|int|Mage_Core_Model_Store $store
+     *
+     * @return string
+     */
+    public function getServiceAccountId($store = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_ACCOUNT, $store);
+    }
+
+    /**
+     * Returns service account id
+     *
+     * @param null|bool|int|Mage_Core_Model_Store $store
+     *
+     * @return string
+     */
+    public function getServiceKey($store = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_KEY, $store);
+    }
+
+    /**
+     * Returns service account id
+     *
+     * @param null|bool|int|Mage_Core_Model_Store $store
+     *
+     * @return string
+     */
+    public function getCompanyCode($store = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_COMPANY_CODE, $store);
     }
 
     /**
@@ -349,7 +417,7 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
      * @param $storeId
      * @return mixed
      */
-    public function getStatusAvataxAction($storeId = null)
+    public function getStatusServiceAction($storeId = null)
     {
         return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_ACTION, $storeId);
     }

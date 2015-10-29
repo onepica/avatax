@@ -18,22 +18,14 @@
 /**
  * Avatax service abstract model
  *
+ * @method getService() OnePica_AvaTax_Model_Service_Avatax
+ *
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends Varien_Object
+abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaTax_Model_Service_Abstract_Tools
 {
-    /**
-     * Avatax cache tag
-     */
-    const AVATAX_SERVICE_CACHE_GROUP = 'avatax_cache_tags';
-
-    /**
-     * Avatax cache tag
-     */
-    const AVATAX_CACHE_GROUP = 'avatax';
-
     /**
      * Flag that states if there was an error
      *
@@ -98,153 +90,6 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends Varien_Objec
     protected $_libHelper = null;
 
     /**
-     * Model cache tag for clear cache in after save and after delete
-     */
-    protected $_cacheTag = self::AVATAX_SERVICE_CACHE_GROUP;
-
-    /**
-     * Class pre-constructor
-     */
-    protected function _construct()
-    {
-        $this->_getApp()->useCache(self::AVATAX_CACHE_GROUP);
-        $this->addData(array('cache_lifetime' => false));
-        $this->addCacheTag(array(
-            self::AVATAX_SERVICE_CACHE_GROUP,
-            Mage::app()->getStore()->getId(),
-            (int)Mage::app()->getStore()->isCurrentlySecure()
-        ));
-    }
-
-    /**
-     * Get Key for caching block content
-     *
-     * @return string
-     */
-    public function getCacheKey()
-    {
-        $key = $this->getCacheKeyInfo();
-        $key = array_values($key); // ignore array keys
-        $key = implode('|', $key);
-        $key = sha1($key);
-        return $key;
-    }
-
-    /**
-     * Get list of cache tags applied to model object.
-     * Return false if cache tags are not supported by model
-     *
-     * @return array | false
-     */
-    public function getCacheTags()
-    {
-        $tags = false;
-        if ($this->_cacheTag) {
-            if ($this->_cacheTag === true) {
-                $tags = array();
-            } else {
-                if (is_array($this->_cacheTag)) {
-                    $tags = $this->_cacheTag;
-                } else {
-                    $tags = array($this->_cacheTag);
-                }
-                $idTags = $this->getCacheIdTags();
-                if ($idTags) {
-                    $tags = array_merge($tags, $idTags);
-                }
-            }
-        }
-        return $tags;
-    }
-
-    /**
-     * Get cache key for tags
-     *
-     * @param string $cacheKey
-     * @return string
-     */
-    protected function _getTagsCacheKey($cacheKey = null)
-    {
-        $cacheKey = !empty($cacheKey) ? $cacheKey : $this->getCacheKey();
-        $cacheKey = md5($cacheKey . '_tags');
-        return $cacheKey;
-    }
-
-    /**
-     * Get cache key informative items
-     *
-     * @return array
-     */
-    public function getCacheKeyInfo()
-    {
-        return array(
-            'AVATAX_CACHE',
-            Mage::app()->getStore()->getId(),
-            (int)Mage::app()->getStore()->isCurrentlySecure(),
-        );
-    }
-
-    /**
-     * Get block cache life time
-     *
-     * @return int
-     */
-    public function getCacheLifetime()
-    {
-        return $this->getData('cache_lifetime');
-    }
-
-    /**
-     * Add tag to block
-     *
-     * @param string|array $tag
-     * @return Mage_Core_Block_Abstract
-     */
-    public function addCacheTag($tag)
-    {
-        $tag = is_array($tag) ? $tag : array($tag);
-        $tags = !$this->hasData(self::AVATAX_CACHE_GROUP) ?
-            $tag : array_merge($this->getData(self::AVATAX_CACHE_GROUP), $tag);
-        $this->setData(self::AVATAX_CACHE_GROUP, $tags);
-        return $this;
-    }
-
-    /**
-     * Load block html from cache storage
-     *
-     * @return string | false
-     */
-    protected function _loadCache()
-    {
-        if (!$this->_getApp()->useCache(self::AVATAX_CACHE_GROUP)) {
-            return false;
-        }
-        $cacheKey = $this->getCacheKey();
-        $cacheData = $this->_getApp()->loadCache($cacheKey);
-        return $cacheData;
-    }
-
-    /**
-     * Save cache
-     *
-     * @param mixed $data
-     * @return $this
-     */
-    protected function _saveCache($data)
-    {
-        $cacheKey = $this->getCacheKey();
-        $tags = $this->getCacheTags();
-        Mage::app()->saveCache($data, $cacheKey, $tags, $this->getCacheLifetime());
-        $this->_getApp()->saveCache(
-            json_encode($tags),
-            $this->_getTagsCacheKey($cacheKey),
-            $tags,
-            $this->getCacheLifetime()
-        );
-        return $this;
-    }
-
-    /**
      * Logs a debug message
      *
      * @param string $type
@@ -257,7 +102,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends Varien_Objec
     protected function _log($type, $request, $result, $storeId = null, $additional = null)
     {
         if ($result->getResultCode() == SeverityLevel::$Success) {
-            switch ($this->getHelper()->getLogMode($storeId)) {
+            switch ($this->_getHelper()->getLogMode($storeId)) {
                 case OnePica_AvaTax_Model_Source_Logmode::ERRORS:
                     return $this;
                     break;
@@ -267,7 +112,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends Varien_Objec
             }
         }
 
-        if (in_array($type, $this->getHelper()->getLogType($storeId))) {
+        if (in_array($type, $this->_getHelper()->getLogType($storeId))) {
             Mage::getModel('avatax_records/log')
                 ->setStoreId($storeId)
                 ->setLevel($result->getResultCode())
@@ -289,71 +134,6 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends Varien_Objec
     {
         return Mage::getSingleton('avatax/session');
     }
-
-    /**
-     * Returns the AvaTax helper.
-     *
-     * @return OnePica_AvaTax_Helper_Data
-     */
-    public function getHelper()
-    {
-        if (!$this->_helper) {
-            $this->_helper = Mage::helper('avatax');
-        }
-        return $this->_helper;
-    }
-
-    /**
-     * Returns the AvaTax helper.
-     *
-     * @return OnePica_AvaTax_Helper_Address
-     */
-    public function _getAddressHelper()
-    {
-        if (!$this->_getAddressHelper) {
-            $this->_getAddressHelper = Mage::helper('avatax/address');
-        }
-        return $this->_getAddressHelper;
-    }
-
-    /**
-     * Returns the AvaTax helper.
-     *
-     * @return OnePica_AvaTax_Helper_Config
-     */
-    public function _getConfigHelper()
-    {
-        if (!$this->_getConfigHelper) {
-            $this->_getConfigHelper = Mage::helper('avatax/config');
-        }
-        return $this->_getConfigHelper;
-    }
-
-    /**
-     * Returns the AvaTax helper.
-     *
-     * @return OnePica_AvaTax_Helper_Config
-     */
-    public function _getErrorsHelper()
-    {
-        if (!$this->_errorsHelper) {
-            $this->_errorsHelper = Mage::helper('avatax/errors');
-        }
-        return $this->_errorsHelper;
-    }
-
-    //@startSkipCommitHooks
-    /**
-     * Alias to the helper translate method.
-     *
-     * @return string
-     */
-    public function __()
-    {
-        $args = func_get_args();
-        return call_user_func_array(array($this->getHelper(), '__'), $args);
-    }
-    //@finishSkipCommitHooks
 
     /**
      * Sets the company code on the request
