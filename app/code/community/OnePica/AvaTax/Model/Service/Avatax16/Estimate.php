@@ -102,22 +102,10 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         $this->_request = new OnePica_AvaTax16_Document_Request();
 
         // set up header
-        $header = new OnePica_AvaTax16_Document_Request_Header();
-        $header->setAccountId($config->getAccountId());
-        $header->setCompanyCode($config->getCompanyCode());
-        $header->setTransactionType(self::TRANSACTION_TYPE_SALE);
+        $header = $this->_getRequestHeaderWithMainValues($storeId);
         $header->setDocumentCode('quote-' . $address->getId());
-        $header->setCustomerCode($this->_getConfigHelper()->getSalesPersonCode($storeId));
-        $header->setVendorCode(self::DEFAULT_VENDOR_CODE);
         $header->setTransactionDate($this->_getDateModel()->date('Y-m-d'));
         $header->setDefaultLocations($this->_getHeaderDefaultLocations($address));
-        $header->setDefaultAvalaraGoodsAndServicesType($this->_getConfigHelper()
-            ->getDefaultAvalaraGoodsAndServicesType($storeId));
-        $header->setDefaultAvalaraGoodsAndServicesModifierType($this->_getConfigHelper()
-            ->getDefaultAvalaraGoodsAndServicesModifierType($storeId));
-        $header->setDefaultTaxPayerCode($this->_getConfigHelper()->getDefaultTaxPayerCode($storeId));
-        $header->setDefaultUseType($this->_getConfigHelper()->getDefaultUseType($storeId));
-        $header->setDefaultBuyerType($this->_getConfigHelper()->getDefaultBuyerType($storeId));
 
         $this->_request->setHeader($header);
 

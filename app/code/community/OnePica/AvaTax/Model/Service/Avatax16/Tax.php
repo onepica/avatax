@@ -334,4 +334,33 @@ class OnePica_AvaTax_Model_Service_Avatax16_Tax extends OnePica_AvaTax_Model_Ser
     {
         $this->_request->setLines(array_values($this->_lines));
     }
+
+    /**
+     * Get Request Header With Main Values
+     *
+     * @param int $storeId
+     * @return OnePica_AvaTax16_Document_Request_Header
+     */
+    protected function _getRequestHeaderWithMainValues($storeId)
+    {
+        $configModel = $this->getService()->getServiceConfig()->init($storeId);
+        $config = $configModel->getLibConfig();
+        // header generation
+        $header = new OnePica_AvaTax16_Document_Request_Header();
+        $header->setAccountId($config->getAccountId());
+        $header->setCompanyCode($config->getCompanyCode());
+        $header->setTransactionType(self::TRANSACTION_TYPE_SALE);
+        $header->setCustomerCode($this->_getConfigHelper()->getSalesPersonCode($storeId));
+        $header->setVendorCode(self::DEFAULT_VENDOR_CODE);
+
+        $header->setDefaultAvalaraGoodsAndServicesType($this->_getConfigHelper()
+            ->getDefaultAvalaraGoodsAndServicesType($storeId));
+        $header->setDefaultAvalaraGoodsAndServicesModifierType($this->_getConfigHelper()
+            ->getDefaultAvalaraGoodsAndServicesModifierType($storeId));
+        $header->setDefaultTaxPayerCode($this->_getConfigHelper()->getDefaultTaxPayerCode($storeId));
+        $header->setDefaultUseType($this->_getConfigHelper()->getDefaultUseType($storeId));
+        $header->setDefaultBuyerType($this->_getConfigHelper()->getDefaultBuyerType($storeId));
+
+        return $header;
+    }
 }
