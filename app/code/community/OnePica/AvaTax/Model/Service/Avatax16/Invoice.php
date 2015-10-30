@@ -81,6 +81,11 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         $this->_request->setHeader($header);
 
         $this->_addShipping($invoice);
+        $items = $invoice->getItemsCollection();
+        $this->_initProductCollection($items);
+        $this->_initTaxClassCollection($invoice);
+        //Added code for calculating tax for giftwrap items
+        $this->_addGwOrderAmount($invoice);
     }
 
     /**
@@ -114,6 +119,40 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         $line->setDiscounted('false');
 
         $this->_lineToItemId[$lineNumber] = $shippingSku;
+        $this->_lines[$lineNumber] = $line;
+        $this->_setLinesToRequest();
+        return $lineNumber;
+    }
+
+    /**
+     * Adds giftwraporder cost to request as item
+     *
+     * @param Mage_Sales_Model_Order_Invoice|Mage_Sales_Model_Order_Creditmemo $object
+     * @param bool $credit
+     * @return int|bool
+     */
+    protected function _addGwOrderAmount($object, $credit = false)
+    {
+        if ($object->getGwPrice() == 0) {
+            return false;
+        }
+
+        $lineNumber = $this->_getNewLineCode();
+        $storeId = $object->getStore()->getId();
+        $amount = $object->getGwBasePrice();
+        $amount = $credit ? (-1 * $amount) : $amount;
+
+        $line = new OnePica_AvaTax16_Document_Request_Line();
+        $line->setLineCode($lineNumber);
+        $gwOrderSku = $this->_getConfigHelper()->getGwOrderSku($storeId);
+        $line->setItemCode($gwOrderSku ? $gwOrderSku : self::DEFAULT_GW_ORDER_SKU);
+        $line->setItemDescription(self::DEFAULT_GW_ORDER_DESCRIPTION);
+        $line->setTaxCode($this->_getGiftTaxClassCode($storeId));
+        $line->setNumberOfItems(1);
+        $line->setlineAmount($amount);
+        $line->setDiscounted('false');
+
+        $this->_lineToItemId[$lineNumber] = $gwOrderSku;
         $this->_lines[$lineNumber] = $line;
         $this->_setLinesToRequest();
         return $lineNumber;
