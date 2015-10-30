@@ -53,7 +53,7 @@ class OnePica_AvaTax_Model_Service_Avatax16
     protected function _getEstimateResource()
     {
         if (!$this->_estimateResource) {
-            $this->_estimateResource = Mage::getModel('avatax/service_avatax16_estimate');
+            $this->_estimateResource = Mage::getModel('avatax/service_avatax16_estimate', array('service' => $this));
         }
         return $this->_estimateResource;
     }
