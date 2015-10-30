@@ -88,6 +88,12 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         $this->_addGwOrderAmount($invoice);
         $this->_addGwItemsAmount($invoice);
         $this->_addGwPrintedCardAmount($invoice);
+
+        foreach ($items as $item) {
+            /** @var Mage_Sales_Model_Order_Invoice_Item $item */
+            $this->_newLine($item);
+        }
+        $this->_setLinesToRequest();
     }
 
     /**
@@ -228,6 +234,71 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         $this->_lines[$lineNumber] = $line;
         $this->_setLinesToRequest();
         return $lineNumber;
+    }
+
+    /**
+     * Makes a Line object from a product item object
+     *
+     * @param Mage_Sales_Model_Order_Invoice_Item|Mage_Sales_Model_Order_Creditmemo_Item $item
+     * @param bool $credit
+     * @return null|bool
+     */
+    protected function _newLine($item, $credit = false)
+    {
+        if ($this->isProductCalculated($item->getOrderItem())) {
+            return false;
+        }
+        if ($item->getQty() == 0) {
+            return false;
+        }
+
+        $lineNumber = $this->_getNewLineCode();
+        $storeId = $this->_retrieveStoreIdFromItem($item);
+        $product = $this->_getProductByProductId($item->getProductId());
+        $taxClass = $this->_getTaxClassCodeByProduct($product);
+        $price = $item->getBaseRowTotal() - $item->getBaseDiscountAmount();
+        $price = $credit ? (-1 * $price) : $price;
+
+        $line = new OnePica_AvaTax16_Document_Request_Line();
+        $line->setLineCode($lineNumber);
+        $line->setItemCode(substr($item->getSku(), 0, 50));
+        $line->setItemDescription($item->getName());
+        $line->setNumberOfItems($item->getQty());
+        $line->setlineAmount($price);
+        $line->setDiscounted($item->getBaseDiscountAmount() ? 'true' : 'false');
+
+        if ($taxClass) {
+            $line->setTaxCode($taxClass);
+        }
+        $ref1Value = $this->_getRefValueByProductAndNumber($product, 1, $storeId);
+        if ($ref1Value) {
+            $line->setRef1($ref1Value);
+        }
+        $ref2Value = $this->_getRefValueByProductAndNumber($product, 2, $storeId);
+        if ($ref2Value) {
+            $line->setRef2($ref2Value);
+        }
+
+        $this->_lineToItemId[$lineNumber] = $item->getOrderItemId();
+        $this->_lines[$lineNumber] = $line;
+    }
+
+    /**
+     * Retrieve store id from item
+     *
+     * @param Mage_Sales_Model_Order_Invoice_Item|Mage_Sales_Model_Order_Creditmemo_Item $item
+     * @return int
+     */
+    protected function _retrieveStoreIdFromItem($item)
+    {
+        $storeId = null;
+        if ($item instanceof Mage_Sales_Model_Order_Invoice_Item) {
+            $storeId = $item->getInvoice()->getStoreId();
+        } else {
+            $storeId = $item->getCreditmemo()->getStoreId();
+        }
+
+        return $storeId;
     }
 
     /**
