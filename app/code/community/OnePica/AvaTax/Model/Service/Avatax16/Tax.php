@@ -121,11 +121,12 @@ class OnePica_AvaTax_Model_Service_Avatax16_Tax extends OnePica_AvaTax_Model_Ser
      */
     protected function _getHeaderDefaultLocations($address)
     {
-        $quote = $address->getQuote();
+        $entity = $address->getQuote() ? $address->getQuote() : $address->getOrder();
+        $storeId = $entity->getStoreId();
 
         $locationFrom = new OnePica_AvaTax16_Document_Part_Location();
         $locationFrom->setTaxLocationPurpose(self::TAX_LOCATION_PURPOSE_SHIP_FROM);
-        $locationFrom->setAddress($this->_getOriginAddress($quote->getStoreId()));
+        $locationFrom->setAddress($this->_getOriginAddress($storeId));
 
         $locationTo = new OnePica_AvaTax16_Document_Part_Location();
         $locationTo->setTaxLocationPurpose(self::TAX_LOCATION_PURPOSE_SHIP_TO);
