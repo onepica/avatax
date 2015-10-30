@@ -79,6 +79,44 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         $header->setDefaultBuyerType($this->_getConfigHelper()->getDefaultBuyerType($storeId));
 
         $this->_request->setHeader($header);
+
+        $this->_addShipping($invoice);
+    }
+
+    /**
+     * Adds shipping cost to request as item
+     *
+     * @param Mage_Sales_Model_Order_Invoice|Mage_Sales_Model_Order_Creditmemo $object
+     * @param bool $credit
+     * @return int|bool
+     */
+    protected function _addShipping($object, $credit = false)
+    {
+        if ($object->getBaseShippingAmount() == 0) {
+            return false;
+        }
+
+        $lineNumber = $this->_getNewLineCode();;
+        $storeId = $object->getStore()->getId();
+        $taxClass = Mage::helper('tax')->getShippingTaxClass($storeId);
+
+        $amount = $object->getBaseShippingAmount();
+        $amount = $credit ? (-1 * $amount) : $amount;
+
+        $line = new OnePica_AvaTax16_Document_Request_Line();
+        $line->setLineCode($lineNumber);
+        $shippingSku = $this->_getConfigHelper()->getShippingSku($storeId);
+        $line->setItemCode($shippingSku ? $shippingSku : self::DEFAULT_SHIPPING_ITEMS_SKU);
+        $line->setItemDescription(self::DEFAULT_SHIPPING_ITEMS_DESCRIPTION);
+        $line->setTaxCode($taxClass);
+        $line->setNumberOfItems(1);
+        $line->setlineAmount($amount);
+        $line->setDiscounted('false');
+
+        $this->_lineToItemId[$lineNumber] = $shippingSku;
+        $this->_lines[$lineNumber] = $line;
+        $this->_setLinesToRequest();
+        return $lineNumber;
     }
 
     /**
