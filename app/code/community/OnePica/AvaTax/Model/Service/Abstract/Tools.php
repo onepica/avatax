@@ -68,6 +68,8 @@ class OnePica_AvaTax_Model_Service_Abstract_Tools extends Varien_Object
     public function getCacheKey()
     {
         $key = $this->getCacheKeyInfo();
+        $idTags = $this->getData(self::AVATAX_CACHE_GROUP);
+        $key = array_merge($key, $idTags);
         $key = array_values($key); // ignore array keys
         $key = implode('|', $key);
         $key = sha1($key);

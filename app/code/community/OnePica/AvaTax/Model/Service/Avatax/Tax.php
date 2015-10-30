@@ -33,7 +33,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Tax extends OnePica_AvaTax_Model_Servi
     protected function _send($storeId)
     {
         /** @var OnePica_AvaTax_Model_Config $config */
-        $config = Mage::getSingleton('avatax/service_avatax_config')->init($storeId);
+        $config = $this->getService()->getServiceConfig();
         $connection = $config->getTaxConnection();
         $result = null;
         $message = null;

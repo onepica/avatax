@@ -125,7 +125,7 @@ class OnePica_AvaTax_Model_Service_Avatax16
      */
     public function ping($storeId)
     {
-        return Mage::getModel('avatax/service_avatax16_ping', array('service' => $this))->ping($storeId);
+        return Mage::getSingleton('avatax/service_avatax16_ping', array('service' => $this))->ping($storeId);
     }
 
     /**

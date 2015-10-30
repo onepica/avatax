@@ -199,7 +199,8 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
                 $this->__('An address must be set before validation.')
             );
         }
-        $this->addCacheTag(array('address_' .$this->getAddress()->getId()));
+
+        $this->_setCacheTags();
         $result = $this->_loadCache();
         if ($result !== false) {
             return !empty($result) ? true : false;
@@ -240,6 +241,24 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
     }
 
     /**
+     * Set cache tags for this class
+     *
+     */
+    private function _setCacheTags()
+    {
+        $this->addCacheTag(array('address_' . $this->getAddress()->getId(),
+                                 'quote_id_' . $this->getAddress()->getQuoteId(),
+                                 'address_type_' . $this->getAddress()->getAddressType(),
+                                 'email_' . $this->getAddress()->getEmail(),
+                                 'street_' . implode($this->getAddress()->getStreet()),
+                                 'city_' . $this->getAddress()->getCity(),
+                                 'region_id_' . $this->getAddress()->getRegionId(),
+                                 'postcode_' . $this->getAddress()->getPostcode(),
+                                 'country_id_' . $this->getAddress()->getCountryId(),
+        ));
+    }
+
+    /**
      * Address validation
      *
      * @param int $isAddressValidationOn
@@ -256,7 +275,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
             } else {
                 $errors = array();
                 foreach ($result->getErrors() as $message) {
-                    $errors[] = $this->__($message->getSummary());
+                    $errors[] = $this->__($message);
                 }
                 return $errors;
             }
@@ -268,7 +287,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
                 if (!$this->getAddress()->getAddressNotified()) {
                     $this->getAddress()->setAddressNotified(true);
                     foreach ($result->getErrors() as $message) {
-                        Mage::getSingleton('core/session')->addNotice($this->__($message->getSummary()));
+                        Mage::getSingleton('core/session')->addNotice($this->__($message));
                     }
                 }
                 return true;
@@ -283,7 +302,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
             } else {
                 $errors = array();
                 foreach ($result->getErrors() as $message) {
-                    $errors[] = $this->__($message->getSummary());
+                    $errors[] = $this->__($message);
                 }
                 return $errors;
             }
