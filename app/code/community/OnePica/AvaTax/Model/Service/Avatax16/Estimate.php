@@ -108,7 +108,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         $header->setTransactionType(self::TRANSACTION_TYPE_SALE);
         $header->setDocumentCode('quote-' . $address->getId());
         $header->setCustomerCode($this->_getConfigHelper()->getSalesPersonCode($storeId));
-        $header->setVendorCode('VENDOR');
+        $header->setVendorCode(self::DEFAULT_VENDOR_CODE);
         $header->setTransactionDate($this->_getDateModel()->date('Y-m-d'));
         $header->setDefaultLocations($this->_getHeaderDefaultLocations($address));
         $header->setDefaultAvalaraGoodsAndServicesType($this->_getConfigHelper()
@@ -136,7 +136,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         $hasDestinationAddress = false;
         if ($this->_request->getHeader() && $this->_request->getHeader()->getDefaultLocations()) {
             $locations = $this->_request->getHeader()->getDefaultLocations();
-            $hasDestinationAddress = isset($locations[self::TAX_LOCATION_PURPOSE_SHIP_TO]) ? true :false;;
+            $hasDestinationAddress = isset($locations[self::TAX_LOCATION_PURPOSE_SHIP_TO]) ? true : false;
         }
 
         $makeRequest &= $hasDestinationAddress;
