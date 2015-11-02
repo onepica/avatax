@@ -85,6 +85,16 @@ abstract class OnePica_AvaTax_Model_Service_Avatax16_Abstract extends OnePica_Av
     const RESPONSE_RESULT_CODE_EXCEPTION = 'Exception';
 
     /**
+     * Default vendor code
+     */
+    const DEFAULT_VENDOR_CODE = 'Vendor';
+
+    /**
+     * Service date format
+     */
+    const SERVICE_DATE_FORMAT = 'Y-MM-dd';
+
+    /**
      * Returns the AvaTax helper.
      *
      * @return OnePica_AvaTax_Helper_Data
