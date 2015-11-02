@@ -53,9 +53,6 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
             throw new OnePica_AvaTax_Exception($this->__('There is no address attached to this order'));
         }
 
-        $configModel = $this->getService()->getServiceConfig()->init($storeId);
-        $config = $configModel->getLibConfig();
-
         // Set up document for request
         $this->_request = new OnePica_AvaTax16_Document_Request();
 
@@ -82,6 +79,29 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
             $this->_newLine($item);
         }
         $this->_setLinesToRequest();
+
+        //send to AvaTax
+        $result = $this->_send($order->getStoreId());
+
+        //if successful
+        if (!$result->getHasError()) {
+            $message = $this->_getHelper()->__('Invoice #%s was saved to AvaTax', $result->getHeader()->getDocumentCode());
+            $this->_addStatusHistoryComment($order, $message);
+
+            $totalTax = $result->getCalculatedTaxSummary()->getTotalTax();
+            if ($totalTax != $invoice->getBaseTaxAmount()) {
+                throw new OnePica_AvaTax_Model_Service_Exception_Unbalanced(
+                    'Collected: '. $invoice->getBaseTaxAmount() . ', Actual: ' . $totalTax
+                );
+            }
+
+            //if not successful
+        } else {
+            $messages = print_r($result->getErrors(), true);
+            throw new OnePica_AvaTax_Model_Service_Exception_Commitfailure($messages);
+        }
+
+        return true;
     }
 
     /**
@@ -298,6 +318,74 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
      */
     protected function _convertGmtDate($gmt, $storeId)
     {
-        return Mage::app()->getLocale()->storeDate($storeId, $gmt)->toString(Varien_Date::DATE_INTERNAL_FORMAT);
+        $date = date('m-d-Y H:i:s', strtotime($gmt));
+        return Mage::app()->getLocale()->storeDate($storeId, $date)->toString(self::SERVICE_DATE_FORMAT);
+    }
+
+    /**
+     * Sends a request to the Avatax16 server
+     *
+     * @param int $storeId
+     * @return mixed
+     */
+    protected function _send($storeId)
+    {
+        /** @var OnePica_AvaTax_Model_Service_Avatax16_Config $configModel */
+        $configModel = $this->getService()->getServiceConfig()->init($storeId);
+        $config = $configModel->getLibConfig();
+        $connection = $configModel->getTaxConnection();
+        $result = null;
+        $message = null;
+
+        try {
+            $result = $connection->createTransaction($this->_request);
+        } catch (Exception $exception) {
+            $message = new Message();
+            $message->setSummary($exception->getMessage());
+        }
+
+        if (!isset($result) || !is_object($result)) {
+            $actualResult = $result;
+            $result = new Varien_Object();
+            $result->setHasError(true)
+                ->setResultCode(self::RESPONSE_RESULT_CODE_EXCEPTION)
+                ->setActualResult($actualResult)
+                ->setMessages(array($message));
+        }
+
+        $this->_log(
+            OnePica_AvaTax_Model_Source_Avatax16_Logtype::TRANSACTION,
+            $this->_request,
+            $result,
+            $storeId,
+            $config
+        );
+
+        if ($result->getHasError()) {
+            if ($this->_getConfigHelper()->fullStopOnError($storeId)) {
+                $this->_getErrorsHelper()->addErrorMessage($storeId);
+            }
+        } else {
+            $this->_getErrorsHelper()->removeErrorMessage();
+        }
+
+        return $result;
+    }
+
+    /**
+     * Adds a comment to order history. Method choosen based on Magento version.
+     *
+     * @param Mage_Sales_Model_Order $order
+     * @param string $comment
+     * @return self
+     */
+    protected function _addStatusHistoryComment($order, $comment)
+    {
+        if (method_exists($order, 'addStatusHistoryComment')) {
+            $order->addStatusHistoryComment($comment)->save();
+        } elseif (method_exists($order, 'addStatusToHistory')) {
+            $order->addStatusToHistory($order->getStatus(), $comment, false)->save();;
+        }
+        return $this;
     }
 }
