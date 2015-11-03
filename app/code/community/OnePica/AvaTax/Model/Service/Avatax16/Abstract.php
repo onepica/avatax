@@ -115,6 +115,16 @@ abstract class OnePica_AvaTax_Model_Service_Avatax16_Abstract extends OnePica_Av
     const DEFAULT_NEGATIVE_ADJUSTMENT_DESCRIPTION = 'Adjustment fee';
 
     /**
+     * Document code invoice prefix
+     */
+    const DOCUMENT_CODE_INVOICE_PREFIX = 'I';
+
+    /**
+     * Document code creditmemo prefix
+     */
+    const DOCUMENT_CODE_CREDITMEMO_PREFIX = 'C';
+
+    /**
      * Returns the AvaTax helper.
      *
      * @return OnePica_AvaTax_Helper_Data

@@ -59,7 +59,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
 
         // set up header
         $header = $this->_getRequestHeaderWithMainValues($storeId);
-        $header->setDocumentCode('I' . $invoice->getIncrementId());
+        $header->setDocumentCode($this->_getInvoiceDocumentCode($invoice));
         $header->setTransactionDate($invoiceDate);
         $header->setTaxCalculationDate($this->_getDateModel()->date('Y-m-d'));
         $header->setDefaultLocations($this->_getHeaderDefaultLocations($shippingAddress));
@@ -133,7 +133,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
 
         // set up header
         $header = $this->_getRequestHeaderWithMainValues($storeId);
-        $header->setDocumentCode('C' . $creditmemo->getIncrementId());
+        $header->setDocumentCode($this->_getCreditmemoDocumentCode($creditmemo));
         $header->setTransactionDate($creditmemoDate);
         $header->setTaxCalculationDate($this->_getDateModel()->date('Y-m-d'));
         $header->setDefaultLocations($this->_getHeaderDefaultLocations($shippingAddress));
@@ -510,5 +510,25 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
             $order->addStatusToHistory($order->getStatus(), $comment, false)->save();;
         }
         return $this;
+    }
+
+    /**
+     * Get document code for invoice
+     * @param Mage_Sales_Model_Order_Invoice $invoice
+     * @return string
+     */
+    protected function _getInvoiceDocumentCode($invoice)
+    {
+        return self::DOCUMENT_CODE_INVOICE_PREFIX . $invoice->getIncrementId();
+    }
+
+    /**
+     * Get document code for creditmemo
+     * @param Mage_Sales_Model_Order_Creditmemo $creditmemo
+     * @return string
+     */
+    protected function _getCreditmemoDocumentCode($creditmemo)
+    {
+        return self::DOCUMENT_CODE_CREDITMEMO_PREFIX . $creditmemo->getIncrementId();
     }
 }
