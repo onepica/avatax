@@ -441,7 +441,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
 
         $line = new Line();
         $line->setNo(count($this->_lines));
-        $line->setItemCode($this->_getItemCode($product, $item));
+        $line->setItemCode($this->_getItemCode($product, $item, $storeId));
         $line->setDescription($item->getName());
         $line->setQty($item->getQty());
         $line->setAmount($price);
@@ -497,14 +497,16 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
      *
      * @param Mage_Catalog_Model_Product                                                 $product
      * @param Mage_Sales_Model_Order_Invoice_Item|Mage_Sales_Model_Order_Creditmemo_Item $item
+     * @param int|Mage_Core_Model_Store                                                  $storeId
      * @return string
      */
-    protected function _getItemCode($product, $item)
+    protected function _getItemCode($product, $item, $storeId)
     {
-        $itemCode = $this->_getUpcCode($product);
+        $itemCode = $this->_getUpcCode($product, $storeId);
         if (empty($itemCode)) {
             $itemCode = $item->getSku();
         }
+
         return substr($itemCode, 0, 50);
     }
 }
