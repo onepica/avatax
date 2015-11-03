@@ -19,7 +19,7 @@
 <config>
     <modules>
         <OnePica_AvaTax>
-            <version>2.6.1.4</version>
+            <version>2.6.3.0</version>
         </OnePica_AvaTax>
     </modules>
     <global>
@@ -215,13 +215,14 @@
     </frontend>
     <admin>
         <routers>
-            <avatax>
-                <use>admin</use>
+            <adminhtml>
                 <args>
-                    <module>OnePica_AvaTax</module>
-                    <frontName>avatax</frontName>
+                    <modules>
+                        <avatax after="Mage_Adminhtml">OnePica_AvaTax_Adminhtml</avatax>
+                        <frontName>avatax</frontName>
+                    </modules>
                 </args>
-            </avatax>
+            </adminhtml>
         </routers>
     </admin>
     <!-- the adminhtml section is repeated in config.xml & adminhtml.xml for backwards compatibility -->
@@ -259,11 +260,11 @@
                             </import_export>
                             <avatax_queue translate="title" module="avatax">
                                 <title>AvaTax Order Sync Queue</title>
-                                <action>avatax/adminhtml_grid/queue</action>
+                                <action>adminhtml/avaTax_grid/queue</action>
                             </avatax_queue>
                             <avatax_log translate="title" module="avatax">
                                 <title>AvaTax Log</title>
-                                <action>avatax/adminhtml_grid/log</action>
+                                <action>adminhtml/avaTax_grid/log</action>
                             </avatax_log>
                         </children>
                     </tax>
