@@ -39,7 +39,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
      * this could be a problem, but Avatax doesn't support those locations yet.
      *
      * @param   Mage_Sales_Model_Quote_Address $address
-     * @return  Mage_Tax_Model_Sales_Total_Quote
+     * @return  $this
      */
     public function collect(Mage_Sales_Model_Quote_Address $address)
     {
@@ -149,10 +149,46 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
                     $this->_addAmount($gwPrintedCardTax);
                     $this->_addBaseAmount($baseGwPrintedCardTax);
                 }
+
+                $this->_saveAppliedTax($address);
             }
         }
 
         return $this;
+    }
+
+    /**
+     * Save applied tax
+     *
+     * @param Mage_Sales_Model_Quote_Address $address
+     */
+    protected function _saveAppliedTax($address)
+    {
+        $fullInfo = array();
+        $summary = $this->_getCalculator()->getSummary($address->getId());
+
+        foreach ($summary as $key => $row) {
+            $id = 'avatax-' . $key;
+            $fullInfo[$id] = array(
+                'rates'       => array(
+                    array(
+                        'code'     => $row['name'],
+                        'title'    => $row['name'],
+                        'percent'  => $row['rate'],
+                        'position' => $key,
+                        'priority' => $key,
+                        'rule_id'  => 0
+                    )
+                ),
+                'percent'     => $row['rate'],
+                'id'          => $id,
+                'process'     => 0,
+                'amount'      => $row['amt'],
+                'base_amount' => $row['amt']
+            );
+        }
+
+        $address->setAppliedTaxes($fullInfo);
     }
 
     /**
@@ -166,7 +202,12 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
         /** @var OnePica_AvaTax_Helper_Data $helper */
         $helper = Mage::helper('avatax/address');
         $storeId = $address->getQuote()->getStoreId();
-        return $helper->isAddressActionable($address, $storeId, OnePica_AvaTax_Model_Service_Abstract_Config::REGIONFILTER_TAX);
+
+        return $helper->isAddressActionable(
+            $address,
+            $storeId,
+            OnePica_AvaTax_Model_Service_Abstract_Config::REGIONFILTER_TAX
+        );
     }
 
     /**
@@ -237,6 +278,16 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
         }
 
         return $this;
+    }
+
+    /**
+     * Get calculator model
+     *
+     * @return OnePica_AvaTax_Model_Calculator
+     */
+    protected function _getCalculator()
+    {
+        return Mage::getModel('avatax/calculator');
     }
 
     /* BELOW ARE MAGE CORE PROPERTIES AND METHODS ADDED FOR OLDER VERSION COMPATABILITY */
