@@ -48,6 +48,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         $order = $invoice->getOrder();
         $storeId = $order->getStoreId();
         $invoiceDate = $this->_convertGmtDate($invoice->getCreatedAt(), $storeId);
+        $orderDate = $this->_convertGmtDate($order->getCreatedAt(), $storeId);
 
         $shippingAddress = ($order->getShippingAddress()) ? $order->getShippingAddress() : $order->getBillingAddress();
         if (!$shippingAddress) {
@@ -61,7 +62,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         $header = $this->_getRequestHeaderWithMainValues($storeId);
         $header->setDocumentCode($this->_getInvoiceDocumentCode($invoice));
         $header->setTransactionDate($invoiceDate);
-        $header->setTaxCalculationDate($this->_getDateModel()->date('Y-m-d'));
+        $header->setTaxCalculationDate($orderDate);
         $header->setDefaultLocations($this->_getHeaderDefaultLocations($shippingAddress));
 
         $this->_request->setHeader($header);
@@ -122,6 +123,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         $order = $creditmemo->getOrder();
         $storeId = $order->getStoreId();
         $creditmemoDate = $this->_convertGmtDate($creditmemo->getCreatedAt(), $storeId);
+        $orderDate = $this->_convertGmtDate($order->getCreatedAt(), $storeId);
 
         $shippingAddress = ($order->getShippingAddress()) ? $order->getShippingAddress() : $order->getBillingAddress();
         if (!$shippingAddress) {
@@ -135,7 +137,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         $header = $this->_getRequestHeaderWithMainValues($storeId);
         $header->setDocumentCode($this->_getCreditmemoDocumentCode($creditmemo));
         $header->setTransactionDate($creditmemoDate);
-        $header->setTaxCalculationDate($this->_getDateModel()->date('Y-m-d'));
+        $header->setTaxCalculationDate($orderDate);
         $header->setDefaultLocations($this->_getHeaderDefaultLocations($shippingAddress));
 
         $this->_request->setHeader($header);
