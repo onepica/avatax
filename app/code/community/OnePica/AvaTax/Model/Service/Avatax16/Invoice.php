@@ -492,14 +492,6 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
             $config
         );
 
-        if ($result->getHasError()) {
-            if ($this->_getConfigHelper()->fullStopOnError($storeId)) {
-                $this->_getErrorsHelper()->addErrorMessage($storeId);
-            }
-        } else {
-            $this->_getErrorsHelper()->removeErrorMessage();
-        }
-
         return $result;
     }
 
