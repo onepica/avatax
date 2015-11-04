@@ -101,7 +101,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Tax extends OnePica_AvaTax_Model_Ser
      */
     protected function _newAddress($line1, $line2, $city, $state, $zip, $country = 'USA')
     {
-        $address = new OnePica_AvaTax16_Document_Part_Location_Address();
+        $address = $this->_getNewDocumentPartLocationAddressObject();
         // set required field line1 if it is empty
         $line1 = ($line1) ? $line1 : '_';
         $address->setLine1($line1);
@@ -124,11 +124,11 @@ class OnePica_AvaTax_Model_Service_Avatax16_Tax extends OnePica_AvaTax_Model_Ser
         $entity = $address->getQuote() ? $address->getQuote() : $address->getOrder();
         $storeId = $entity->getStoreId();
 
-        $locationFrom = new OnePica_AvaTax16_Document_Part_Location();
+        $locationFrom = $this->_getNewDocumentPartLocationObject();
         $locationFrom->setTaxLocationPurpose(self::TAX_LOCATION_PURPOSE_SHIP_FROM);
         $locationFrom->setAddress($this->_getOriginAddress($storeId));
 
-        $locationTo = new OnePica_AvaTax16_Document_Part_Location();
+        $locationTo = $this->_getNewDocumentPartLocationObject();
         $locationTo->setTaxLocationPurpose(self::TAX_LOCATION_PURPOSE_SHIP_TO);
         $locationTo->setAddress($this->_getDestinationAddress($address));
 
@@ -346,7 +346,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Tax extends OnePica_AvaTax_Model_Ser
         $configModel = $this->getServiceConfig()->init($storeId);
         $config = $configModel->getLibConfig();
         // header generation
-        $header = new OnePica_AvaTax16_Document_Request_Header();
+        $header = $this->_getNewDocumentRequestHeaderObject();
         $header->setAccountId($config->getAccountId());
         $header->setCompanyCode($config->getCompanyCode());
         $header->setTransactionType(self::TRANSACTION_TYPE_SALE);

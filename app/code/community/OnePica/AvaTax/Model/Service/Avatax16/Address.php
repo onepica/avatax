@@ -173,7 +173,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
     protected function _initAddressResolution()
     {
         if (is_null($this->getLocationAddress())) {
-            $this->setLocationAddress(new OnePica_AvaTax16_Document_Part_Location_Address());
+            $this->setLocationAddress($this->_getNewDocumentPartLocationAddressObject());
         }
         $address = $this->getAddress()->getStreet();
         if (is_array($address) && isset($address[0])) {
@@ -359,7 +359,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
      */
     protected function _sendAddressValidationRequest()
     {
-        $taxService = new OnePica_AvaTax16_TaxService($this->getServiceConfig()->getLibConfig());
+        $taxService = $this->getServiceConfig()->getTaxConnection();
         /** @var OnePica_AvaTax16_AddressResolution_ResolveSingleAddressResponse $resolvedAddress */
         $resolvedAddress = $taxService->resolveSingleAddress($this->getLocationAddress());
 

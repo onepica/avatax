@@ -54,7 +54,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         }
 
         // Set up document for request
-        $this->_request = new OnePica_AvaTax16_Document_Request();
+        $this->_request = $this->_getNewDocumentRequestObject();
 
         // set up header
         $header = $this->_getRequestHeaderWithMainValues($storeId);
@@ -124,7 +124,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         $amount = $object->getBaseShippingAmount();
         $amount = $credit ? (-1 * $amount) : $amount;
 
-        $line = new OnePica_AvaTax16_Document_Request_Line();
+        $line = $this->_getNewDocumentRequestLineObject();
         $line->setLineCode($lineNumber);
         $shippingSku = $this->_getConfigHelper()->getShippingSku($storeId);
         $line->setItemCode($shippingSku ? $shippingSku : self::DEFAULT_SHIPPING_ITEMS_SKU);
@@ -158,7 +158,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         $amount = $object->getGwBasePrice();
         $amount = $credit ? (-1 * $amount) : $amount;
 
-        $line = new OnePica_AvaTax16_Document_Request_Line();
+        $line = $this->_getNewDocumentRequestLineObject();
         $line->setLineCode($lineNumber);
         $gwOrderSku = $this->_getConfigHelper()->getGwOrderSku($storeId);
         $line->setItemCode($gwOrderSku ? $gwOrderSku : self::DEFAULT_GW_ORDER_SKU);
@@ -193,7 +193,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         $amount = $object->getGwItemsBasePrice();
         $amount = $credit ? (-1 * $amount) : $amount;
 
-        $line = new OnePica_AvaTax16_Document_Request_Line();
+        $line = $this->_getNewDocumentRequestLineObject();
         $line->setLineCode($lineNumber);
         $gwItemsSku = $this->_getConfigHelper()->getGwItemsSku($storeId);
         $line->setItemCode($gwItemsSku ? $gwItemsSku : self::DEFAULT_GW_ITEMS_SKU);
@@ -228,7 +228,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         $amount = $object->getGwPrintedCardBasePrice();
         $amount = $credit ? (-1 * $amount) : $amount;
 
-        $line = new OnePica_AvaTax16_Document_Request_Line();
+        $line = $this->_getNewDocumentRequestLineObject();
         $line->setLineCode($lineNumber);
         $gwPrintedCardSku = $this->_getConfigHelper()->getGwPrintedCardSku($storeId);
         $line->setItemCode($gwPrintedCardSku ? $gwPrintedCardSku : self::DEFAULT_GW_PRINTED_CARD_SKU);
@@ -267,7 +267,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         $price = $item->getBaseRowTotal() - $item->getBaseDiscountAmount();
         $price = $credit ? (-1 * $price) : $price;
 
-        $line = new OnePica_AvaTax16_Document_Request_Line();
+        $line = $this->_getNewDocumentRequestLineObject();
         $line->setLineCode($lineNumber);
         $line->setItemCode(substr($item->getSku(), 0, 50));
         $line->setItemDescription($item->getName());
