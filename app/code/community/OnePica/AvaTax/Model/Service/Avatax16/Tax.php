@@ -353,6 +353,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Tax extends OnePica_AvaTax_Model_Ser
         $header->setCustomerCode($this->_getConfigHelper()->getSalesPersonCode($storeId));
         $header->setVendorCode(self::DEFAULT_VENDOR_CODE);
 
+        /** @todo: Remove this code if we will not use those properties
         $header->setDefaultAvalaraGoodsAndServicesType($this->_getConfigHelper()
             ->getDefaultAvalaraGoodsAndServicesType($storeId));
         $header->setDefaultAvalaraGoodsAndServicesModifierType($this->_getConfigHelper()
@@ -360,6 +361,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Tax extends OnePica_AvaTax_Model_Ser
         $header->setDefaultTaxPayerCode($this->_getConfigHelper()->getDefaultTaxPayerCode($storeId));
         $header->setDefaultUseType($this->_getConfigHelper()->getDefaultUseType($storeId));
         $header->setDefaultBuyerType($this->_getConfigHelper()->getDefaultBuyerType($storeId));
+        */
 
         return $header;
     }
