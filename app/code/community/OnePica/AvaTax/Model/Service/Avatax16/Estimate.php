@@ -95,7 +95,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
 
         $quote = $address->getQuote();
         $storeId = $quote->getStore()->getId();
-        $configModel = $this->getService()->getServiceConfig()->init($storeId);
+        $configModel = $this->getServiceConfig();
         $config = $configModel->getLibConfig();
 
         // Set up document for request
@@ -402,7 +402,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
     protected function _send($storeId)
     {
         /** @var OnePica_AvaTax_Model_Service_Avatax16_Config $configModel */
-        $configModel = $this->getService()->getServiceConfig()->init($storeId);
+        $configModel = $this->getServiceConfig();
         $config = $configModel->getLibConfig();
         $connection = $configModel->getTaxConnection();
         $result = null;

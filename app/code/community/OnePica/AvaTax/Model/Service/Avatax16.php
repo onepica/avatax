@@ -34,14 +34,11 @@ class OnePica_AvaTax_Model_Service_Avatax16
     /**
      * Class constructor
      */
-    public function __construct()
+    public function __construct($args)
     {
-        $args = func_get_args();
-        if (empty($args[0])) {
-            $args[0] = array();
+        if (isset($args['address'])) {
+            $this->setAddress($args['address']);
         }
-
-        parent::__construct($args[0]);
         $this->setServiceConfig(Mage::getSingleton('avatax/service_avatax16_config')->init(Mage::app()->getStore()));
     }
 
@@ -52,10 +49,28 @@ class OnePica_AvaTax_Model_Service_Avatax16
      */
     protected function _getEstimateResource()
     {
-        if (!$this->_estimateResource) {
-            $this->_estimateResource = Mage::getModel('avatax/service_avatax16_estimate', array('service' => $this));
-        }
-        return $this->_estimateResource;
+        return Mage::getSingleton('avatax/service_avatax16_estimate', array('service_config' => $this->getServiceConfig()));
+    }
+
+    /**
+     * Get ping resource
+     *
+     * return mixed
+     */
+    protected function _getPingResource()
+    {
+        return Mage::getSingleton('avatax/service_avatax16_ping', array('service_config' => $this->getServiceConfig()));
+    }
+
+    /**
+     * Get Address Validator resource
+     *
+     * return mixed
+     */
+    protected function _getAddressValidatorResource($address)
+    {
+        return Mage::getSingleton('avatax/service_avatax16_address',
+            array('service_config' => $this->getServiceConfig(), 'address' => $address));
     }
 
     /**
@@ -125,7 +140,7 @@ class OnePica_AvaTax_Model_Service_Avatax16
      */
     public function ping($storeId)
     {
-        return Mage::getSingleton('avatax/service_avatax16_ping', array('service' => $this))->ping($storeId);
+        return $this->_getPingResource()->ping($storeId);
     }
 
     /**
@@ -133,8 +148,8 @@ class OnePica_AvaTax_Model_Service_Avatax16
      *
      * @return OnePica_AvaTax_Model_Service_Abstract_Tools
      */
-    public function getAddressValidator()
+    public function getAddressValidator($address)
     {
-        return Mage::getSingleton('avatax/service_avatax16_address', array('service' => $this));
+        return $this->_getAddressValidatorResource($address);
     }
 }

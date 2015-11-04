@@ -51,12 +51,6 @@ class OnePica_AvaTax_Model_Service_Avatax
      */
     public function __construct()
     {
-        $args = func_get_args();
-        if (empty($args[0])) {
-            $args[0] = array();
-        }
-
-        parent::__construct($args[0]);
         $this->setServiceConfig(Mage::getSingleton('avatax/service_avatax_config')->init(Mage::app()->getStore()));
     }
 
@@ -67,7 +61,7 @@ class OnePica_AvaTax_Model_Service_Avatax
      */
     protected function _getEstimateResource()
     {
-        return Mage::getSingleton('avatax/service_avatax_estimate', array('service' => $this));
+        return Mage::getSingleton('avatax/service_avatax_estimate', array('service_config' => $this));
     }
 
     /**
@@ -77,7 +71,7 @@ class OnePica_AvaTax_Model_Service_Avatax
      */
     protected function _getInvoiceResource()
     {
-        return Mage::getSingleton('avatax/service_avatax_invoice', array('service' => $this));
+        return Mage::getSingleton('avatax/service_avatax_invoice', array('service_config' => $this->getServiceConfig()));
     }
 
     /**
@@ -87,7 +81,17 @@ class OnePica_AvaTax_Model_Service_Avatax
      */
     protected function _getPingResource()
     {
-        return Mage::getSingleton('avatax/service_avatax_ping', array('service' => $this));
+        return Mage::getSingleton('avatax/service_avatax_ping', array('service_config' => $this->getServiceConfig()));
+    }
+
+    /**
+     * Get address validator resource
+     *
+     * return mixed
+     */
+    protected function _getAddressValidator()
+    {
+        return Mage::getSingleton('avatax/service_avatax_address', array('service_config' => $this->getServiceConfig()));
     }
 
     /**
@@ -129,7 +133,7 @@ class OnePica_AvaTax_Model_Service_Avatax
      */
     public function getAddressValidator()
     {
-        return Mage::getSingleton('avatax/service_avatax_address', array('service' => $this));
+        return $this->_getAddressValidator();
     }
 
     /**

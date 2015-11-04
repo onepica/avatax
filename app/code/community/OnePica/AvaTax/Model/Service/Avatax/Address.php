@@ -70,27 +70,13 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
     /**
      * Loads any saved addresses in session
      */
-    public function __construct()
+    public function _construct()
     {
-        $args = func_get_args();
-        if (empty($args[0])) {
-            $args[0] = array();
-        }
-        parent::__construct($args[0]);
         $addresses = Mage::getSingleton('avatax/session')->getAddresses();
         if (is_array($addresses)) {
             $this->_cache = $addresses;
         }
-    }
-
-    /**
-     * Class pre-constructor
-     */
-    protected function _construct()
-    {
-        $this->addCacheTag(array(
-            self::AVATAX_SERVICE_CACHE_ADDRESS
-        ));
+        parent::_construct();
     }
 
     /**
@@ -319,7 +305,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
     protected function _sendAddressValidationRequest()
     {
         /** @var OnePica_AvaTax_Model_Config $config */
-        $config = $this->getService()->getServiceConfig();
+        $config = $this->getServiceConfig();
         /** @var AddressServiceSoap $client */
         $client = $config->getAddressConnection();
         $request = new ValidateRequest($this->_requestAddress, TextCase::$Mixed, 0);

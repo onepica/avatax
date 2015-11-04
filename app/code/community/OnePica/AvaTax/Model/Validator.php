@@ -57,9 +57,9 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
      *
      * @return mixed|OnePica_AvaTax_Model_Service_Avatax_Abstract
      */
-    public function getServiceAddressValidator()
+    public function getServiceAddressValidator($address)
     {
-        return $this->_getService()->getAddressValidator();
+        return $this->_getService()->getAddressValidator($address)->validate();
     }
 
     /**

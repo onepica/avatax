@@ -54,6 +54,14 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
     protected $_responseAddress = null;
 
     /**
+     * An array of previously checked addresses
+     * Example: $_cache[$key] = serialize($resultObjectFromAvalara)
+     *
+     * @var array
+     */
+    protected $_cache = array();
+
+    /**
      * Saves the store id
      *
      * @var int
@@ -61,26 +69,27 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
     protected $_storeId = null;
 
     /**
-     * Loads any saved addresses in session
+     * Class pre-constructor
      */
-    public function __construct()
+    public function _construct()
     {
-        $args = func_get_args();
-        if (empty($args[0])) {
-            $args[0] = array();
+        $addresses = Mage::getSingleton('avatax/session')->getAddresses();
+        if (is_array($addresses)) {
+            $this->_cache = $addresses;
         }
-        parent::__construct($args[0]);
-
+        parent::_construct();
     }
 
     /**
-     * Class pre-constructor
+     * Saves any current addresses to session
      */
-    protected function _construct()
+    public function __destruct()
     {
-        $this->addCacheTag(array(
-            self::AVATAX16_SERVICE_CACHE_ADDRESS
-        ));
+        Mage::getSingleton('avatax/session')->setAddresses($this->_cache);
+
+        if (method_exists(get_parent_class(), '__destruct')) {
+            parent::__destruct();
+        }
     }
 
     /**
@@ -200,11 +209,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
             );
         }
 
-        $this->_setCacheTags();
-        $result = $this->_loadCache();
-        if ($result !== false) {
-            return !empty($result) ? true : false;
-        }
+
 
         /** @var Mage_Sales_Model_Quote $quote */
         $quote = $this->getAddress()->getQuote();
@@ -217,13 +222,16 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
         if (!$isAddressValidationOn && !$isAddressNormalizationOn && !$isAddressActionable) {
             return true;
         }
-
-        if ($this->getAddress()->getPostcode() && $this->getAddress()->getPostcode() != '-') {
+        $key = $this->getAddress()->getCacheHashKey();
+        if (array_key_exists($key, $this->_cache)) {
+            $result = unserialize($this->_cache[$key]);
+        } elseif ($this->getAddress()->getPostcode() && $this->getAddress()->getPostcode() != '-') {
             $checkFieldsResult = $this->_checkFields();
             if ($checkFieldsResult) {
                 return $checkFieldsResult;
             }
             $result = $this->_sendAddressValidationRequest();
+            $this->_cache[$key] = serialize($result);
         } else {
             $errors = array();
             $errors[] = $this->__('Invalid ZIP/Postal Code.');
@@ -232,30 +240,13 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
         $this->_addressNormalization($isAddressNormalizationOn, $result);
 
         $addressValidationResult = $this->_addressValidation($isAddressValidationOn, $isAddressActionable, $result);
-        $this->_saveCache($addressValidationResult);
+
+        Mage::getSingleton('avatax/session')->setAvatax16AddressValidation($addressValidationResult);
         if ($addressValidationResult) {
             return $addressValidationResult;
         }
 
         return true;
-    }
-
-    /**
-     * Set cache tags for this class
-     *
-     */
-    private function _setCacheTags()
-    {
-        $this->addCacheTag(array('address_' . $this->getAddress()->getId(),
-                                 'quote_id_' . $this->getAddress()->getQuoteId(),
-                                 'address_type_' . $this->getAddress()->getAddressType(),
-                                 'email_' . $this->getAddress()->getEmail(),
-                                 'street_' . implode($this->getAddress()->getStreet()),
-                                 'city_' . $this->getAddress()->getCity(),
-                                 'region_id_' . $this->getAddress()->getRegionId(),
-                                 'postcode_' . $this->getAddress()->getPostcode(),
-                                 'country_id_' . $this->getAddress()->getCountryId(),
-        ));
     }
 
     /**
@@ -354,7 +345,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
      */
     protected function _sendAddressValidationRequest()
     {
-        $taxService = new OnePica_AvaTax16_TaxService($this->getService()->getServiceConfig()->getLibConfig());
+        $taxService = new OnePica_AvaTax16_TaxService($this->getServiceConfig()->getLibConfig());
         /** @var OnePica_AvaTax16_AddressResolution_ResolveSingleAddressResponse $resolvedAddress */
         $resolvedAddress = $taxService->resolveSingleAddress($this->getLocationAddress());
 
@@ -363,7 +354,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
             $this->getLocationAddress(),
             $resolvedAddress,
             $this->_storeId,
-            $this->getService()->getServiceConfig()->getData()
+            $this->getServiceConfig()->getData()
         );
 
         return $resolvedAddress;
