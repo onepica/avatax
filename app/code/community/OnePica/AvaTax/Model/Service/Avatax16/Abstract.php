@@ -95,6 +95,36 @@ abstract class OnePica_AvaTax_Model_Service_Avatax16_Abstract extends OnePica_Av
     const SERVICE_DATE_FORMAT = 'Y-MM-dd';
 
     /**
+     * Default positive adjustment code
+     */
+    const DEFAULT_POSITIVE_ADJUSTMENT_CODE = 'positive-adjustment';
+
+    /**
+     * Default positive adjustment description
+     */
+    const DEFAULT_POSITIVE_ADJUSTMENT_DESCRIPTION = 'Adjustment refund';
+
+    /**
+     * Default negative adjustment code
+     */
+    const DEFAULT_NEGATIVE_ADJUSTMENT_CODE = 'negative-adjustment';
+
+    /**
+     * Default negative adjustment description
+     */
+    const DEFAULT_NEGATIVE_ADJUSTMENT_DESCRIPTION = 'Adjustment fee';
+
+    /**
+     * Document code invoice prefix
+     */
+    const DOCUMENT_CODE_INVOICE_PREFIX = 'I';
+
+    /**
+     * Document code creditmemo prefix
+     */
+    const DOCUMENT_CODE_CREDITMEMO_PREFIX = 'C';
+
+    /**
      * Returns the AvaTax helper.
      *
      * @return OnePica_AvaTax_Helper_Data

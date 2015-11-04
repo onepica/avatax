@@ -141,7 +141,7 @@ class OnePica_AvaTax_Model_Service_Avatax16
      */
     public function creditmemo($creditmemo, $queue)
     {
-        return null;
+        return $this->_getInvoiceResource()->creditmemo($creditmemo, $queue);
     }
 
     /**

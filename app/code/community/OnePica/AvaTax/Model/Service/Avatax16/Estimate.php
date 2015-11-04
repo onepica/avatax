@@ -226,13 +226,18 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         if ($taxClass) {
             $line->setTaxCode($taxClass);
         }
+
+        $metadata = null;
         $ref1Value = $this->_getRefValueByProductAndNumber($product, 1, $item->getStoreId());
         if ($ref1Value) {
-            $line->setRef1($ref1Value);
+            $metadata['ref1'] = $ref1Value;
         }
         $ref2Value = $this->_getRefValueByProductAndNumber($product, 2, $item->getStoreId());
         if ($ref2Value) {
-            $line->setRef2($ref2Value);
+            $metadata['ref2'] = $ref2Value;
+        }
+        if ($metadata) {
+            $line->setMetadata($metadata);
         }
 
         $this->_lines[$lineNumber] = $line;
