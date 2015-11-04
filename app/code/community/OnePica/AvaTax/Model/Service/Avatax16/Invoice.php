@@ -131,7 +131,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         }
 
         // Set up document for request
-        $this->_request = new OnePica_AvaTax16_Document_Request();
+        $this->_request = $this->_getNewDocumentRequestObject();
 
         // set up header
         $header = $this->_getRequestHeaderWithMainValues($storeId);
@@ -201,7 +201,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
             $identifier = $this->_getConfigHelper()->getPositiveAdjustmentSku($storeId);
             $identifier = $identifier ? $identifier : self::DEFAULT_POSITIVE_ADJUSTMENT_CODE;
 
-            $line = new OnePica_AvaTax16_Document_Request_Line();
+            $line = $this->_getNewDocumentRequestLineObject();
             $line->setLineCode($lineNumber);
             $line->setItemCode($identifier);
             $line->setItemDescription(self::DEFAULT_POSITIVE_ADJUSTMENT_DESCRIPTION);
@@ -221,7 +221,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
             $identifier = $this->_getConfigHelper()->getNegativeAdjustmentSku($storeId);
             $identifier = $identifier ? $identifier : self::DEFAULT_NEGATIVE_ADJUSTMENT_CODE;
 
-            $line = new OnePica_AvaTax16_Document_Request_Line();
+            $line = $this->_getNewDocumentRequestLineObject();
             $line->setLineCode($lineNumber);
             $line->setItemCode($identifier);
             $line->setItemDescription(self::DEFAULT_NEGATIVE_ADJUSTMENT_DESCRIPTION);
@@ -250,7 +250,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
             return false;
         }
 
-        $lineNumber = $this->_getNewLineCode();;
+        $lineNumber = $this->_getNewLineCode();
         $storeId = $object->getStore()->getId();
         $taxClass = Mage::helper('tax')->getShippingTaxClass($storeId);
 
@@ -514,13 +514,14 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         if (method_exists($order, 'addStatusHistoryComment')) {
             $order->addStatusHistoryComment($comment)->save();
         } elseif (method_exists($order, 'addStatusToHistory')) {
-            $order->addStatusToHistory($order->getStatus(), $comment, false)->save();;
+            $order->addStatusToHistory($order->getStatus(), $comment, false)->save();
         }
         return $this;
     }
 
     /**
      * Get document code for invoice
+     *
      * @param Mage_Sales_Model_Order_Invoice $invoice
      * @return string
      */
@@ -531,6 +532,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
 
     /**
      * Get document code for creditmemo
+     *
      * @param Mage_Sales_Model_Order_Creditmemo $creditmemo
      * @return string
      */
