@@ -373,12 +373,48 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
         foreach ($items as $item) {
             if (!$this->isProductCalculated($item)) {
                 $productIds[] = $item->getProductId();
+                $simpleProductId = $this->_getSimpleProductIdByConfigurable($item);
+                if ($simpleProductId) {
+                    $productIds[] = $simpleProductId;
+                }
             }
         }
+
         $this->_productCollection = Mage::getModel('catalog/product')->getCollection()
             ->addAttributeToSelect('*')
             ->addAttributeToFilter('entity_id', array('in' => $productIds));
+
         return $this;
+    }
+
+    /**
+     * Get simple product id from configurable item
+     *
+     * @param Mage_Sales_Model_Order_Invoice_Item|Mage_Sales_Model_Order_Creditmemo_Item|Mage_Sales_Model_Order_Invoice_Item $item
+     * @return int
+     */
+    protected function _getSimpleProductIdByConfigurable($item)
+    {
+        if ($item instanceof Mage_Sales_Model_Quote_Item
+            && ($item->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE)
+        ) {
+            $children = $item->getChildren();
+            if (isset($children[0]) && $children[0]->getProductId()) {
+                return $children[0]->getProductId();
+            }
+        }
+
+        if (($item instanceof Mage_Sales_Model_Order_Invoice_Item
+             || $item instanceof Mage_Sales_Model_Order_Creditmemo_Item)
+            && $item->getOrderItem()->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE
+        ) {
+            $children = $item->getOrderItem()->getChildrenItems();
+            if (isset($children[0]) && $children[0]->getProductId()) {
+                return $children[0]->getProductId();
+            }
+        }
+
+        return 0;
     }
 
     /**
