@@ -69,6 +69,22 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
     protected $_storeId = null;
 
     /**
+     * OnePica_AvaTax_Model_Service_Avatax16_Address constructor.
+     * @param $data
+     * @internal param Mage_Customer_Model_Address_Abstract $_address
+     */
+    public function __construct($data)
+    {
+        if (isset($data['service_config'])){
+            $this->setServiceConfig($data['service_config']);
+        }
+        if (isset($data['address'])){
+            $this->setAddress($data['address']);
+        }
+        parent::_construct();
+    }
+
+    /**
      * Class pre-constructor
      */
     public function _construct()
@@ -121,7 +137,6 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
         $this->_storeId = Mage::app()->getStore()->getId();
         $this->_address = $address;
         $this->_initAddressResolution();
-        $this->addCacheTag(array($this->_address->getId()));
         return $this;
     }
 
@@ -208,7 +223,6 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
                 $this->__('An address must be set before validation.')
             );
         }
-
 
 
         /** @var Mage_Sales_Model_Quote $quote */

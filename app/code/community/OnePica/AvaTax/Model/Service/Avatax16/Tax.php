@@ -343,7 +343,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Tax extends OnePica_AvaTax_Model_Ser
      */
     protected function _getRequestHeaderWithMainValues($storeId)
     {
-        $configModel = $this->getService()->getServiceConfig()->init($storeId);
+        $configModel = $this->getServiceConfig()->init($storeId);
         $config = $configModel->getLibConfig();
         // header generation
         $header = new OnePica_AvaTax16_Document_Request_Header();

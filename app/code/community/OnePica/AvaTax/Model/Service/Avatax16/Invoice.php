@@ -331,7 +331,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
     protected function _send($storeId)
     {
         /** @var OnePica_AvaTax_Model_Service_Avatax16_Config $configModel */
-        $configModel = $this->getService()->getServiceConfig()->init($storeId);
+        $configModel = $this->getServiceConfig();
         $config = $configModel->getLibConfig();
         $connection = $configModel->getTaxConnection();
         $result = null;

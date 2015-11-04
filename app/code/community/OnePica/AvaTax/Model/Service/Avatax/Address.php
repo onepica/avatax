@@ -162,11 +162,6 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
             );
         }
 
-        $result = $this->_loadCache();
-        if ($result !== false) {
-            return !empty($result) ? true : false;
-        }
-
         /** @var Mage_Sales_Model_Quote $quote */
         $quote = $this->_mageAddress->getQuote();
         $isAddressValidationOn = $this->_getAddressHelper()->isAddressValidationOn($this->_mageAddress, $this->_storeId);
@@ -200,7 +195,6 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
         $this->_addressNormalization($isAddressNormalizationOn, $result);
 
         $addressValidationResult = $this->_addressValidation($isAddressValidationOn, $isAddressActionable, $result);
-        $this->_saveCache($addressValidationResult);
         if ($addressValidationResult) {
             return $addressValidationResult;
         }

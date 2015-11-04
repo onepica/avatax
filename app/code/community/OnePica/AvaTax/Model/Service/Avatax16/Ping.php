@@ -19,7 +19,6 @@
  * The AvaTax Ping model
  * @class OnePica_AvaTax_Model_Service_Avatax16_Ping
  *
- * @method getService() OnePica_AvaTax_Model_Service_Avatax16
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
