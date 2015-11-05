@@ -47,14 +47,6 @@ class OnePica_AvaTax_Model_Service_Avatax
     protected $_pingResource;
 
     /**
-     * Class constructor
-     */
-    public function __construct()
-    {
-        $this->setServiceConfig(Mage::getSingleton('avatax/service_avatax_config')->init(Mage::app()->getStore()));
-    }
-
-    /**
      * Get estimate resource
      *
      * return mixed
@@ -85,15 +77,14 @@ class OnePica_AvaTax_Model_Service_Avatax
     }
 
     /**
-     * Get address validator resource
+     * Get Address Validator resource
      *
      * return mixed
      */
-    protected function _getAddressValidator()
+    protected function _getAddressValidatorResource($address)
     {
-        return Mage::getSingleton('avatax/service_avatax_address', array('service_config' => $this->getServiceConfig()));
+        return Mage::getSingleton('avatax/service_avatax_address', array('service_config' => $this->getServiceConfig(), 'address' => $address));
     }
-
     /**
      * Get rates from Avalara
      *
@@ -131,9 +122,9 @@ class OnePica_AvaTax_Model_Service_Avatax
      * Get avatax address validator
      * @return OnePica_AvaTax_Model_Service_Avatax_Address
      */
-    public function getAddressValidator()
+    public function getAddressValidator($address)
     {
-        return $this->_getAddressValidator();
+        return $this->_getAddressValidatorResource($address);
     }
 
     /**

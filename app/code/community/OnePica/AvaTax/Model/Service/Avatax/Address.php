@@ -298,10 +298,8 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
      */
     protected function _sendAddressValidationRequest()
     {
-        /** @var OnePica_AvaTax_Model_Config $config */
-        $config = $this->getServiceConfig();
         /** @var AddressServiceSoap $client */
-        $client = $config->getAddressConnection();
+        $client = $this->getServiceConfig()->getAddressConnection();
         $request = new ValidateRequest($this->_requestAddress, TextCase::$Mixed, 0);
         $request->setTaxability(true);
         $result = $client->Validate($request);
@@ -310,7 +308,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
             $request,
             $result,
             $this->_storeId,
-            $config->getParams()
+            $this->getServiceConfig()->getParams()
         );
 
         return $result;

@@ -59,7 +59,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Config extends OnePica_AvaTax_Model_
     public function init($storeId)
     {
         if (is_null($this->_config)) {
-            $this->setLibConfig(Mage::getModel('OnePica_AvaTax16_Config'));
+            $this->setLibConfig($this->_getLibConfig());
             $this->getLibConfig()->setBaseUrl($this->_getConfigHelper()->getServiceUrl($storeId));
             $this->getLibConfig()->setAccountId($this->_getConfigHelper()->getServiceAccountId($storeId));
             $this->getLibConfig()->setCompanyCode($this->_getConfigHelper()->getCompanyCode($storeId));
@@ -70,6 +70,15 @@ class OnePica_AvaTax_Model_Service_Avatax16_Config extends OnePica_AvaTax_Model_
     }
 
     /**
+     * Get lib config
+     * @return OnePica_AvaTax16_Config
+     */
+    private function _getLibConfig()
+    {
+        return new OnePica_AvaTax16_Config();
+    }
+
+    /**
      * Get resource connection
      * @return null|OnePica_AvaTax16_TaxService
      */
@@ -77,7 +86,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Config extends OnePica_AvaTax_Model_
     {
         if (is_null($this->_connection)){
             $this->init(Mage::app()->getStore());
-            $this->_connection = new OnePica_AvaTax16_TaxService($this->getLibConfig());
+            $this->_connection = $this->_getAvatax16Service();
         }
         return $this->_connection;
     }
@@ -90,5 +99,14 @@ class OnePica_AvaTax_Model_Service_Avatax16_Config extends OnePica_AvaTax_Model_
     public function _getConfigHelper()
     {
         return Mage::helper('avatax/config');
+    }
+
+    /**
+     * Get object OnePica_AvaTax16_TaxService
+     * @return OnePica_AvaTax16_TaxService
+     */
+    protected function _getAvatax16Service()
+    {
+        return new OnePica_AvaTax16_TaxService($this->getLibConfig());
     }
 }
