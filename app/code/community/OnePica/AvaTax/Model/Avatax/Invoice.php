@@ -471,7 +471,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
     protected function _getProductForItemCode($item)
     {
         $product = $this->_getProductByProductId($item->getProductId());
-        if ($item->getOrderItem()->getProductType() !== Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE) {
+        if (!$this->_isConfigurable($item)) {
             return $product;
         }
 

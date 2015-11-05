@@ -390,13 +390,14 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
     /**
      * Get simple product id from configurable item
      *
-     * @param Mage_Sales_Model_Order_Invoice_Item|Mage_Sales_Model_Order_Creditmemo_Item|Mage_Sales_Model_Order_Invoice_Item $item
+     * @param Mage_Sales_Model_Quote_Item|Mage_Sales_Model_Order_Creditmemo_Item|Mage_Sales_Model_Order_Invoice_Item $item
      * @return int
      */
     protected function _getSimpleProductIdByConfigurable($item)
     {
-        if ($item instanceof Mage_Sales_Model_Quote_Item
-            && ($item->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE)
+        if (($item instanceof Mage_Sales_Model_Quote_Item
+            || $item instanceof Mage_Sales_Model_Quote_Address_Item)
+            && $this->_isConfigurable($item)
         ) {
             $children = $item->getChildren();
             if (isset($children[0]) && $children[0]->getProductId()) {
@@ -406,7 +407,7 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
 
         if (($item instanceof Mage_Sales_Model_Order_Invoice_Item
              || $item instanceof Mage_Sales_Model_Order_Creditmemo_Item)
-            && $item->getOrderItem()->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE
+            && $this->_isConfigurable($item)
         ) {
             $children = $item->getOrderItem()->getChildrenItems();
             if (isset($children[0]) && $children[0]->getProductId()) {
@@ -415,6 +416,31 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
         }
 
         return 0;
+    }
+
+    /**
+     * Checks if item is configurable
+     *
+     * @param Mage_Sales_Model_Quote_Address_Item|Mage_Sales_Model_Quote_Item|Mage_Sales_Model_Order_Creditmemo_Item|Mage_Sales_Model_Order_Invoice_Item $item
+     * @return bool
+     */
+    protected function _isConfigurable($item)
+    {
+        if ($item instanceof Mage_Sales_Model_Quote_Item) {
+            return $item->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE;
+        }
+
+        if ($item instanceof Mage_Sales_Model_Quote_Address_Item) {
+            return $item->getProduct()->getTypeId() === Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE;
+        }
+
+        if (($item instanceof Mage_Sales_Model_Order_Invoice_Item
+             || $item instanceof Mage_Sales_Model_Order_Creditmemo_Item)
+        ) {
+            return $item->getOrderItem()->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE;
+        }
+
+        return false;
     }
 
     /**

@@ -474,13 +474,13 @@ class OnePica_AvaTax_Model_Avatax_Estimate extends OnePica_AvaTax_Model_Avatax_A
     /**
      * Retrieve product for item code
      *
-     * @param Mage_Sales_Model_Quote_Item $item
+     * @param Mage_Sales_Model_Quote_Address_Item|Mage_Sales_Model_Quote_Item $item
      * @return null|Mage_Catalog_Model_Product
      */
     protected function _getProductForItemCode($item)
     {
         $product = $this->_getProductByProductId($item->getProductId());
-        if ($item->getProductType() !== Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE) {
+        if (!$this->_isConfigurable($item)) {
             return $product;
         }
 
