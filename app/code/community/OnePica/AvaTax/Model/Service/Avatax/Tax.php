@@ -61,15 +61,6 @@ class OnePica_AvaTax_Model_Service_Avatax_Tax extends OnePica_AvaTax_Model_Servi
             $config->getParams()
         );
 
-        if ($result->getResultCode() != SeverityLevel::$Success) {
-            self::$_hasError = true;
-            if ($this->_getConfigHelper()->fullStopOnError($storeId)) {
-                $this->_getErrorsHelper()->addErrorMessage($storeId);
-            }
-        } else {
-            $this->_getErrorsHelper()->removeErrorMessage();
-        }
-
         return $result;
     }
 }

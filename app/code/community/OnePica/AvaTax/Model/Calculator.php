@@ -65,14 +65,29 @@ class OnePica_AvaTax_Model_Calculator extends Mage_Core_Model_Factory
      *     'items' => array(
      *         5 => array('rate'=>8.875, 'amt'=>13.31),
      *         'Shipping' => array('rate'=>0, 'amt'=>0)
-     *     )
+     *     ),
+     *    // if error on get tax
+     *     'failure' => true
      * )
      * @param Mage_Sales_Model_Quote_Item $item
      * @return array
      */
     protected function _getRates($item)
     {
-        return $this->_getService()->getRates($item);
+        $rates = $this->_getService()->getRates($item);
+        /** @var OnePica_AvaTax_Model_Sales_Quote_Address $address */
+        $address = $item->getAddress();
+        $storeId = $address->getStoreId();
+        if (isset($rates['failure'])
+            && ($rates['failure'] === true)
+            && $this->_getConfigHelper()->fullStopOnError($storeId)
+        ) {
+            $address->getQuote()->setHasError(true);
+            $this->_getErrorsHelper()->addErrorMessage($storeId);
+        } else {
+            $this->_getErrorsHelper()->removeErrorMessage();
+        }
+        return $rates;
     }
 
     /**
@@ -207,5 +222,15 @@ class OnePica_AvaTax_Model_Calculator extends Mage_Core_Model_Factory
     protected function _getConfigHelper()
     {
         return Mage::helper('avatax/config');
+    }
+
+    /**
+     * Returns the AvaTax helper.
+     *
+     * @return OnePica_AvaTax_Helper_Config
+     */
+    protected function _getErrorsHelper()
+    {
+        return Mage::helper('avatax/errors');
     }
 }

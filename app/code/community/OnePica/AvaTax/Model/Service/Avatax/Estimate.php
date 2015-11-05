@@ -163,12 +163,13 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
                 //failure
             } else {
                 $this->_rates[$requestKey]['failure'] = true;
-                if ($this->_getConfigHelper()->fullStopOnError($address->getStoreId())) {
-                    $address->getQuote()->setHasError(true);
-                }
             }
 
             Mage::getSingleton('avatax/session')->setRates($this->_rates);
+        }
+
+        if (isset($this->_rates[$requestKey]['failure'])) {
+            $address->getQuote()->setData('estimate_tax_error', true);
         }
 
         $rates = isset($this->_rates[$requestKey]) ? $this->_rates[$requestKey] : array();

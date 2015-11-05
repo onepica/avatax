@@ -157,12 +157,12 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
             //failure
             } else {
                 $this->_rates[$requestKey]['failure'] = true;
-                if ($this->_getConfigHelper()->fullStopOnError($address->getStoreId())) {
-                    $address->getQuote()->setHasError(true);
-                }
             }
-
             Mage::getSingleton('avatax/session')->setAvatax16Rates($this->_rates);
+        }
+
+        if (isset($this->_rates[$requestKey]['failure'])) {
+            $address->getQuote()->setData('estimate_tax_error', true);
         }
 
         $rates = isset($this->_rates[$requestKey]) ? $this->_rates[$requestKey] : array();
@@ -422,14 +422,6 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
             $storeId,
             $config
         );
-
-        if ($result->getHasError()) {
-            if ($this->_getConfigHelper()->fullStopOnError($storeId)) {
-                $this->_getErrorsHelper()->addErrorMessage($storeId);
-            }
-        } else {
-            $this->_getErrorsHelper()->removeErrorMessage();
-        }
 
         return $result;
     }
