@@ -26,13 +26,6 @@
 class OnePica_AvaTax_Model_Service_Avatax16_Config extends OnePica_AvaTax_Model_Service_Abstract_Config
 {
     /**
-     * The AvaTax config helper.
-     *
-     * @var OnePica_AvaTax_Helper_Config
-     */
-    protected $_getConfigHelper = null;
-
-    /**
      * Set AvaTax16 lib Config
      *
      * @param OnePica_AvaTax16_Config $config
@@ -91,7 +84,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Config extends OnePica_AvaTax_Model_
      *
      * @return OnePica_AvaTax_Helper_Config
      */
-    public function _getConfigHelper()
+    protected function _getConfigHelper()
     {
         return Mage::helper('avatax/config');
     }
