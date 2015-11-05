@@ -161,10 +161,6 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
             Mage::getSingleton('avatax/session')->setAvatax16Rates($this->_rates);
         }
 
-        if (isset($this->_rates[$requestKey]['failure'])) {
-            $address->getQuote()->setData('estimate_tax_error', true);
-        }
-
         $rates = isset($this->_rates[$requestKey]) ? $this->_rates[$requestKey] : array();
         return $rates;
     }

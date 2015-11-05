@@ -82,6 +82,7 @@ class OnePica_AvaTax_Model_Calculator extends Mage_Core_Model_Factory
             && ($rates['failure'] === true)
             && $this->_getConfigHelper()->fullStopOnError($storeId)
         ) {
+            $address->getQuote()->setData('estimate_tax_error', true);
             $address->getQuote()->setHasError(true);
             $this->_getErrorsHelper()->addErrorMessage($storeId);
         } else {
