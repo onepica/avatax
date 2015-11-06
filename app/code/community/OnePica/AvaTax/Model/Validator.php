@@ -105,7 +105,6 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
         }
         /** @var Varien_Object $result */
         $result = $this->_getService()->getAddressValidator($address)->validate();
-//        Zend_Debug::dump($result);die;
         $this->_addressNormalization($isAddressNormalizationOn, $result);
 
         $addressValidationResult = $this->_addressValidation($isAddressValidationOn, $isAddressActionable, $result);
@@ -247,9 +246,7 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
         $street = array($this->getResponseAddress()->getLine1(), $this->getResponseAddress()->getLine2());
         $region = Mage::getModel('directory/region')
             ->loadByCode($this->getResponseAddress()->getState(), $this->getAddress()->getCountryId());
-Zend_Debug::dump($this->getResponseAddress()->getState());
-Zend_Debug::dump($this->getAddress()->getCountryId());
-        die;
+
         $this->getAddress()->setStreet($street)
             ->setCity($this->getResponseAddress()->getCity())
             ->setRegionId($region->getId())

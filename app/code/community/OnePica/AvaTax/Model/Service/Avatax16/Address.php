@@ -32,6 +32,11 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
     const AVATAX16_SERVICE_CACHE_ADDRESS = 'avatax16_cache_address_';
 
     /**
+     * Avatax service response
+     */
+    const AVATAX16_SERVICE_RESPONSE = 'Rooftop';
+
+    /**
      * The Mage Address object
      *
      * @var Mage_Customer_Model_Address_Abstract
@@ -204,12 +209,11 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
             $result = $this->_sendAddressValidationRequest();
             Mage::getSingleton('avatax/session')->setAvatax16AddressValidation(serialize($result));
         }
-//Zend_Debug::dump($result);
         $response = new Varien_Object();
         $response->setHasError($result->getHasError());
         $response->setErrors($result->getErrors());
         $response->setAddress(new Varien_Object($result->getAddress()->toArray()));
-        $response->setResolution($result->getResolutionQuality() === 'Rooftop');
+        $response->setResolution($result->getResolutionQuality() == self::AVATAX16_SERVICE_RESPONSE);
         $response->setRequiredProperties($result->getAddress()->getRequiredProperties());
         $response->setExcludedProperties($result->getExcludedProperties());
 
