@@ -21,6 +21,7 @@
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
+ * @todo       Remove this class if we will not use those properties
  */
 class OnePica_AvaTax_Model_Source_Avatax16_Usetype
 {

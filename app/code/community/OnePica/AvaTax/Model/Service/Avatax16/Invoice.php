@@ -56,7 +56,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         }
 
         // Set up document for request
-        $this->_request = new OnePica_AvaTax16_Document_Request();
+        $this->_request = $this->_getNewDocumentRequestObject();
 
         // set up header
         $header = $this->_getRequestHeaderWithMainValues($storeId);
@@ -131,7 +131,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         }
 
         // Set up document for request
-        $this->_request = new OnePica_AvaTax16_Document_Request();
+        $this->_request = $this->_getNewDocumentRequestObject();
 
         // set up header
         $header = $this->_getRequestHeaderWithMainValues($storeId);
@@ -201,7 +201,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
             $identifier = $this->_getConfigHelper()->getPositiveAdjustmentSku($storeId);
             $identifier = $identifier ? $identifier : self::DEFAULT_POSITIVE_ADJUSTMENT_CODE;
 
-            $line = new OnePica_AvaTax16_Document_Request_Line();
+            $line = $this->_getNewDocumentRequestLineObject();
             $line->setLineCode($lineNumber);
             $line->setItemCode($identifier);
             $line->setItemDescription(self::DEFAULT_POSITIVE_ADJUSTMENT_DESCRIPTION);
@@ -221,7 +221,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
             $identifier = $this->_getConfigHelper()->getNegativeAdjustmentSku($storeId);
             $identifier = $identifier ? $identifier : self::DEFAULT_NEGATIVE_ADJUSTMENT_CODE;
 
-            $line = new OnePica_AvaTax16_Document_Request_Line();
+            $line = $this->_getNewDocumentRequestLineObject();
             $line->setLineCode($lineNumber);
             $line->setItemCode($identifier);
             $line->setItemDescription(self::DEFAULT_NEGATIVE_ADJUSTMENT_DESCRIPTION);
@@ -250,14 +250,14 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
             return false;
         }
 
-        $lineNumber = $this->_getNewLineCode();;
+        $lineNumber = $this->_getNewLineCode();
         $storeId = $object->getStore()->getId();
         $taxClass = Mage::helper('tax')->getShippingTaxClass($storeId);
 
         $amount = $object->getBaseShippingAmount();
         $amount = $credit ? (-1 * $amount) : $amount;
 
-        $line = new OnePica_AvaTax16_Document_Request_Line();
+        $line = $this->_getNewDocumentRequestLineObject();
         $line->setLineCode($lineNumber);
         $shippingSku = $this->_getConfigHelper()->getShippingSku($storeId);
         $line->setItemCode($shippingSku ? $shippingSku : self::DEFAULT_SHIPPING_ITEMS_SKU);
@@ -291,7 +291,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         $amount = $object->getGwBasePrice();
         $amount = $credit ? (-1 * $amount) : $amount;
 
-        $line = new OnePica_AvaTax16_Document_Request_Line();
+        $line = $this->_getNewDocumentRequestLineObject();
         $line->setLineCode($lineNumber);
         $gwOrderSku = $this->_getConfigHelper()->getGwOrderSku($storeId);
         $line->setItemCode($gwOrderSku ? $gwOrderSku : self::DEFAULT_GW_ORDER_SKU);
@@ -326,7 +326,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         $amount = $object->getGwItemsBasePrice();
         $amount = $credit ? (-1 * $amount) : $amount;
 
-        $line = new OnePica_AvaTax16_Document_Request_Line();
+        $line = $this->_getNewDocumentRequestLineObject();
         $line->setLineCode($lineNumber);
         $gwItemsSku = $this->_getConfigHelper()->getGwItemsSku($storeId);
         $line->setItemCode($gwItemsSku ? $gwItemsSku : self::DEFAULT_GW_ITEMS_SKU);
@@ -361,7 +361,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         $amount = $object->getGwPrintedCardBasePrice();
         $amount = $credit ? (-1 * $amount) : $amount;
 
-        $line = new OnePica_AvaTax16_Document_Request_Line();
+        $line = $this->_getNewDocumentRequestLineObject();
         $line->setLineCode($lineNumber);
         $gwPrintedCardSku = $this->_getConfigHelper()->getGwPrintedCardSku($storeId);
         $line->setItemCode($gwPrintedCardSku ? $gwPrintedCardSku : self::DEFAULT_GW_PRINTED_CARD_SKU);
@@ -400,7 +400,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         $price = $item->getBaseRowTotal() - $item->getBaseDiscountAmount();
         $price = $credit ? (-1 * $price) : $price;
 
-        $line = new OnePica_AvaTax16_Document_Request_Line();
+        $line = $this->_getNewDocumentRequestLineObject();
         $line->setLineCode($lineNumber);
         $line->setItemCode(substr($item->getSku(), 0, 50));
         $line->setItemDescription($item->getName());
@@ -478,7 +478,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         try {
             $result = $connection->createTransaction($this->_request);
         } catch (Exception $exception) {
-            $message = new Message();
+            $message = $this->_getNewServiceMessageObject();
             $message->setSummary($exception->getMessage());
         }
 
@@ -514,13 +514,14 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         if (method_exists($order, 'addStatusHistoryComment')) {
             $order->addStatusHistoryComment($comment)->save();
         } elseif (method_exists($order, 'addStatusToHistory')) {
-            $order->addStatusToHistory($order->getStatus(), $comment, false)->save();;
+            $order->addStatusToHistory($order->getStatus(), $comment, false)->save();
         }
         return $this;
     }
 
     /**
      * Get document code for invoice
+     *
      * @param Mage_Sales_Model_Order_Invoice $invoice
      * @return string
      */
@@ -531,6 +532,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
 
     /**
      * Get document code for creditmemo
+     *
      * @param Mage_Sales_Model_Order_Creditmemo $creditmemo
      * @return string
      */

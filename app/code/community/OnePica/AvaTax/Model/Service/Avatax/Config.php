@@ -46,7 +46,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Config extends OnePica_AvaTax_Model_Se
      */
     public function init($storeId)
     {
-        if (is_null($this->_config)) {
+        if (null === $this->_config) {
             $this->_config = new ATConfig(
                 self::CONFIG_KEY,
                 array(
@@ -64,35 +64,14 @@ class OnePica_AvaTax_Model_Service_Avatax_Config extends OnePica_AvaTax_Model_Se
     }
 
     /**
-     * Generates client name to pass with communications
-     *
-     * Parts:
-     * - MyERP: the ERP that this connector is for (not always applicable)
-     * - Majver: version info for the ERP (not always applicable)
-     * - MinVer: version info for the ERP (not always applicable)
-     * - MyConnector: Name of the OEM�s connector AND the name of the OEM (company)  *required*
-     * - Majver: OEM�s connector version *required*
-     * - MinVer: OEM�s connector version *required*
+     * Get client name to pass with communications
      *
      * @example Magento,1.4,.0.1,OP_AvaTax by One Pica,2,0.1
      * @return string
      */
     public function getClientName()
     {
-        $mageVersion = Mage::getVersion();
-        $mageVerParts = explode('.', $mageVersion, 2);
-
-        $opVersion = Mage::getResourceModel('core/resource')->getDbVersion('avatax_records_setup');
-        $opVerParts = explode('.', $opVersion, 2);
-
-        $part = array();
-        $part[] = self::CONFIG_KEY;
-        $part[] = $mageVerParts[0];
-        $part[] = $mageVerParts[1];
-        $part[] = self::APP_NAME;
-        $part[] = $opVerParts[0];
-        $part[] = $opVerParts[1];
-        return implode(',', $part);
+        return $this->_getHelper()->getClientName();
     }
 
     /**
@@ -102,7 +81,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Config extends OnePica_AvaTax_Model_Se
      */
     public function getAddressConnection()
     {
-        if (is_null($this->_addressConnection)) {
+        if (null === $this->_addressConnection) {
             $this->_addressConnection = new AddressServiceSoap(self::CONFIG_KEY);
         }
         return $this->_addressConnection;
@@ -115,7 +94,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Config extends OnePica_AvaTax_Model_Se
      */
     public function getTaxConnection()
     {
-        if (is_null($this->_taxConnection)) {
+        if (null === $this->_taxConnection) {
             $this->_taxConnection = new TaxServiceSoap(self::CONFIG_KEY);
         }
         return $this->_taxConnection;
