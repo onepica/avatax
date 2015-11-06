@@ -54,7 +54,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Config extends OnePica_AvaTax_Model_
     public function init($storeId)
     {
         if (null === $this->_config) {
-            $this->setLibConfig(new OnePica_AvaTax16_Config());
+            $this->setLibConfig($this->_getNewServiceConfigObject());
             $this->getLibConfig()->setBaseUrl($this->_getConfigHelper()->getServiceUrl($storeId));
             $this->getLibConfig()->setAccountId($this->_getConfigHelper()->getServiceAccountId($storeId));
             $this->getLibConfig()->setCompanyCode($this->_getConfigHelper()->getCompanyCode($storeId));
@@ -63,6 +63,16 @@ class OnePica_AvaTax_Model_Service_Avatax16_Config extends OnePica_AvaTax_Model_
         }
 
         return $this;
+    }
+
+    /**
+     * Get New Service Config Object
+     *
+     * @return OnePica_AvaTax16_Config
+     */
+    protected function _getNewServiceConfigObject()
+    {
+        return new OnePica_AvaTax16_Config();
     }
 
     /**

@@ -294,4 +294,14 @@ abstract class OnePica_AvaTax_Model_Service_Avatax16_Abstract extends OnePica_Av
     {
         return new OnePica_AvaTax16_Document_Request_Line();
     }
+
+    /**
+     * Get New Service Message Object
+     *
+     * @return Varien_Object
+     */
+    protected function _getNewServiceMessageObject()
+    {
+        return new Varien_Object();
+    }
 }

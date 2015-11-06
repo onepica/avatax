@@ -75,9 +75,9 @@ class OnePica_AvaTax_Model_Calculator extends Mage_Core_Model_Factory
     protected function _getRates($item)
     {
         $rates = $this->_getService()->getRates($item);
-        /** @var OnePica_AvaTax_Model_Sales_Quote_Address $address */
-        $address = $item->getAddress();
         if (isset($rates['failure']) && ($rates['failure'] === true)) {
+            /** @var OnePica_AvaTax_Model_Sales_Quote_Address $address */
+            $address = $item->getAddress();
             // set error flag for processing estimation errors on upper level
             $address->getQuote()->setData('estimate_tax_error', true);
         }

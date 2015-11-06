@@ -398,7 +398,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         try {
             $result = $connection->createCalculation($this->_request);
         } catch (Exception $exception) {
-            $message = new Varien_Object();
+            $message = $this->_getNewServiceMessageObject();
             $message->setSummary($exception->getMessage());
         }
 

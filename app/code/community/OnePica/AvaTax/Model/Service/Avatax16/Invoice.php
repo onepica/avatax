@@ -478,7 +478,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         try {
             $result = $connection->createTransaction($this->_request);
         } catch (Exception $exception) {
-            $message = new Varien_Object();
+            $message = $this->_getNewServiceMessageObject();
             $message->setSummary($exception->getMessage());
         }
 
