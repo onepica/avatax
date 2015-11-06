@@ -35,7 +35,7 @@ class OnePica_AvaTax_Model_Avatax_Address extends OnePica_AvaTax_Model_Abstract
     /**
      * The Mage Address object
      *
-     * @var Mage_Customer_Model_Address_Abstract
+     * @var OnePica_AvaTax_Model_Sales_Quote_Address
      */
     protected $_mageAddress = null;
 
@@ -162,7 +162,12 @@ class OnePica_AvaTax_Model_Avatax_Address extends OnePica_AvaTax_Model_Abstract
         $isAddressNormalizationOn = $this->_getDataHelper()->isAddressNormalizationOn(
             $this->_mageAddress, $this->_storeId
         );
-        $isAddressActionable = $this->_getDataHelper()->isAddressActionable($this->_mageAddress, $quote->getStoreId());
+        $isAddressActionable = $this->_getDataHelper()->isAddressActionable(
+            $this->_mageAddress,
+            $quote->getStoreId(),
+            OnePica_AvaTax_Model_Config::REGIONFILTER_ALL,
+            true
+        );
         //if there is no use cases for AvaTax services, return address as valid without doing a lookup
         if (!$isAddressValidationOn && !$isAddressNormalizationOn && !$isAddressActionable) {
             return true;
@@ -183,6 +188,7 @@ class OnePica_AvaTax_Model_Avatax_Address extends OnePica_AvaTax_Model_Abstract
         } else {
             $errors = array();
             $errors[] = $this->__('Invalid ZIP/Postal Code.');
+
             return $errors;
         }
 
@@ -322,7 +328,7 @@ class OnePica_AvaTax_Model_Avatax_Address extends OnePica_AvaTax_Model_Abstract
     /**
      * Address normalization
      *
-     * @param $isAddressNormalizationOn
+     * @param bool $isAddressNormalizationOn
      * @param ValidateResult $result
      * @return $this
      * @throws \OnePica_AvaTax_Model_Avatax_Address_Exception
