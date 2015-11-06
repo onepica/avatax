@@ -24,12 +24,10 @@
  */
 class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
 {
-
     /**
      * Check if avatax extension is enabled
      *
      * @param null|bool|int|Mage_Core_Model_Store $store $store
-     *
      * @return bool
      */
     public function isServiceEnabled($store = null)
@@ -52,7 +50,6 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
      * Returns the logging level
      *
      * @param null|bool|int|Mage_Core_Model_Store $store
-     *
      * @return int
      */
     public function getLogMode($store = null)
@@ -64,7 +61,6 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
      * Returns the logging type
      *
      * @param null|bool|int|Mage_Core_Model_Store $store
-     *
      * @return string
      */
     public function getLogType($store = null)
@@ -95,7 +91,6 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
      *
      * @param float $value
      * @param int $precision
-     *
      * @return float
      */
     public function roundUp($value, $precision)
@@ -107,10 +102,43 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Get config helper
+     *
      * @return OnePica_AvaTax_Helper_Config
      */
     private function _getConfigData()
     {
         return Mage::helper('avatax/config');
+    }
+
+    /**
+     * Generates client name for requests
+     *
+     * Parts:
+     * - MyERP: the ERP that this connector is for (not always applicable)
+     * - Majver: version info for the ERP (not always applicable)
+     * - MinVer: version info for the ERP (not always applicable)
+     * - MyConnector: Name of the OEM's connector AND the name of the OEM (company)  *required*
+     * - Majver: OEM's connector version *required*
+     * - MinVer: OEM's connector version *required*
+     *
+     * @example Magento,1.4,.0.1,OP_AvaTax by One Pica,2,0.1
+     * @return string
+     */
+    public function getClientName()
+    {
+        $mageVersion = Mage::getVersion();
+        $mageVerParts = explode('.', $mageVersion, 2);
+
+        $opVersion = Mage::getResourceModel('core/resource')->getDbVersion('avatax_records_setup');
+        $opVerParts = explode('.', $opVersion, 2);
+
+        $part = array();
+        $part[] = OnePica_AvaTax_Model_Service_Abstract_Config::CONFIG_KEY;
+        $part[] = $mageVerParts[0];
+        $part[] = $mageVerParts[1];
+        $part[] = OnePica_AvaTax_Model_Service_Abstract_Config::APP_NAME;
+        $part[] = $opVerParts[0];
+        $part[] = $opVerParts[1];
+        return implode(',', $part);
     }
 }

@@ -95,11 +95,9 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
 
         $quote = $address->getQuote();
         $storeId = $quote->getStore()->getId();
-        $configModel = $this->getServiceConfig();
-        $config = $configModel->getLibConfig();
 
         // Set up document for request
-        $this->_request = new OnePica_AvaTax16_Document_Request();
+        $this->_request = $this->_getNewDocumentRequestObject();
 
         // set up header
         $header = $this->_getRequestHeaderWithMainValues($storeId);
@@ -159,11 +157,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
             //failure
             } else {
                 $this->_rates[$requestKey]['failure'] = true;
-                if ($this->_getConfigHelper()->fullStopOnError($address->getStoreId())) {
-                    $address->getQuote()->setHasError(true);
-                }
             }
-
             Mage::getSingleton('avatax/session')->setAvatax16Rates($this->_rates);
         }
 
@@ -217,7 +211,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         $price = $item->getBaseRowTotal() - $item->getBaseDiscountAmount();
         $lineNumber = $this->_getNewLineCode();
 
-        $line = new OnePica_AvaTax16_Document_Request_Line();
+        $line = $this->_getNewDocumentRequestLineObject();
         $line->setLineCode($lineNumber);
         $line->setItemCode(substr($item->getSku(), 0, 50));
         $line->setNumberOfItems($item->getQty());
@@ -263,7 +257,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         //Add gift wrapping price(for individual items)
         $gwItemsAmount = $item->getGwBasePrice() * $item->getQty();
 
-        $line = new OnePica_AvaTax16_Document_Request_Line();
+        $line = $this->_getNewDocumentRequestLineObject();
         $line->setLineCode($lineNumber);
         $gwItemsSku = $this->_getConfigHelper()->getGwItemsSku($storeId);
         $line->setItemCode($gwItemsSku ? $gwItemsSku : self::DEFAULT_GW_ITEMS_SKU);
@@ -294,7 +288,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         $taxClass = Mage::helper('tax')->getShippingTaxClass($storeId);
         $shippingAmount = (float) $address->getBaseShippingAmount();
 
-        $line = new OnePica_AvaTax16_Document_Request_Line();
+        $line = $this->_getNewDocumentRequestLineObject();
         $line->setLineCode($lineNumber);
         $shippingSku = $this->_getConfigHelper()->getShippingSku($storeId);
         $line->setItemCode($shippingSku ? $shippingSku : self::DEFAULT_SHIPPING_ITEMS_SKU);
@@ -326,7 +320,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         //Add gift wrapping price(for entire order)
         $gwOrderAmount = $address->getGwBasePrice();
 
-        $line = new OnePica_AvaTax16_Document_Request_Line();
+        $line = $this->_getNewDocumentRequestLineObject();
         $line->setLineCode($lineNumber);
         $gwOrderSku = $this->_getConfigHelper()->getGwOrderSku($storeId);
         $line->setItemCode($gwOrderSku ? $gwOrderSku : self::DEFAULT_GW_ORDER_SKU);
@@ -358,7 +352,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         //Add printed card price
         $gwPrintedCardAmount = $address->getGwPrintedCardBasePrice();
 
-        $line = new OnePica_AvaTax16_Document_Request_Line();
+        $line = $this->_getNewDocumentRequestLineObject();
         $line->setLineCode($lineNumber);
         $gwPrintedCardSku = $this->_getConfigHelper()->getGwPrintedCardSku($storeId);
         $line->setItemCode($gwPrintedCardSku ? $gwPrintedCardSku : self::DEFAULT_GW_PRINTED_CARD_SKU);
@@ -404,7 +398,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         try {
             $result = $connection->createCalculation($this->_request);
         } catch (Exception $exception) {
-            $message = new Message();
+            $message = $this->_getNewServiceMessageObject();
             $message->setSummary($exception->getMessage());
         }
 
@@ -424,14 +418,6 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
             $storeId,
             $config
         );
-
-        if ($result->getHasError()) {
-            if ($this->_getConfigHelper()->fullStopOnError($storeId)) {
-                $this->_getErrorsHelper()->addErrorMessage($storeId);
-            }
-        } else {
-            $this->_getErrorsHelper()->removeErrorMessage();
-        }
 
         return $result;
     }

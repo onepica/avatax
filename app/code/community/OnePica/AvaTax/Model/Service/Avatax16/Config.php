@@ -26,14 +26,8 @@
 class OnePica_AvaTax_Model_Service_Avatax16_Config extends OnePica_AvaTax_Model_Service_Abstract_Config
 {
     /**
-     * The AvaTax config helper.
-     *
-     * @var OnePica_AvaTax_Helper_Config
-     */
-    protected $_getConfigHelper = null;
-
-    /**
      * Set AvaTax16 lib Config
+     *
      * @param OnePica_AvaTax16_Config $config
      */
     public function setLibConfig($config)
@@ -43,6 +37,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Config extends OnePica_AvaTax_Model_
 
     /**
      * Get Avatax16 lib config
+     *
      * @return OnePica_AvaTax16_Config
      */
     public function getLibConfig()
@@ -54,37 +49,40 @@ class OnePica_AvaTax_Model_Service_Avatax16_Config extends OnePica_AvaTax_Model_
      * Initializes the AvaTax16 SDK with connection settings found in the Admin config.
      *
      * @param int $storeId
-     * @return OnePica_AvaTax_Model_Config
+     * @return OnePica_AvaTax_Model_Service_Avatax16_Config
      */
     public function init($storeId)
     {
-        if (is_null($this->_config)) {
-            $this->setLibConfig($this->_getLibConfig());
+        if (null === $this->_config) {
+            $this->setLibConfig($this->_getNewServiceConfigObject());
             $this->getLibConfig()->setBaseUrl($this->_getConfigHelper()->getServiceUrl($storeId));
             $this->getLibConfig()->setAccountId($this->_getConfigHelper()->getServiceAccountId($storeId));
             $this->getLibConfig()->setCompanyCode($this->_getConfigHelper()->getCompanyCode($storeId));
             $this->getLibConfig()->setAuthorizationHeader($this->_getConfigHelper()->getServiceKey($storeId));
+            $this->getLibConfig()->setUserAgent($this->getClientName());
         }
 
         return $this;
     }
 
     /**
-     * Get lib config
+     * Get New Service Config Object
+     *
      * @return OnePica_AvaTax16_Config
      */
-    private function _getLibConfig()
+    protected function _getNewServiceConfigObject()
     {
         return new OnePica_AvaTax16_Config();
     }
 
     /**
      * Get resource connection
+     *
      * @return null|OnePica_AvaTax16_TaxService
      */
     public function getTaxConnection()
     {
-        if (is_null($this->_connection)){
+        if (null === $this->_connection) {
             $this->init(Mage::app()->getStore());
             $this->_connection = $this->_getAvatax16Service();
         }
@@ -96,7 +94,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Config extends OnePica_AvaTax_Model_
      *
      * @return OnePica_AvaTax_Helper_Config
      */
-    public function _getConfigHelper()
+    protected function _getConfigHelper()
     {
         return Mage::helper('avatax/config');
     }
@@ -108,5 +106,16 @@ class OnePica_AvaTax_Model_Service_Avatax16_Config extends OnePica_AvaTax_Model_
     protected function _getAvatax16Service()
     {
         return new OnePica_AvaTax16_TaxService($this->getLibConfig());
+    }
+
+    /**
+     * Get client name
+     *
+     * @example Magento,1.4,.0.1,OP_AvaTax by One Pica,2,0.1
+     * @return string
+     */
+    public function getClientName()
+    {
+        return $this->_getHelper()->getClientName();
     }
 }

@@ -163,9 +163,6 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
                 //failure
             } else {
                 $this->_rates[$requestKey]['failure'] = true;
-                if ($this->_getConfigHelper()->fullStopOnError($address->getStoreId())) {
-                    $address->getQuote()->setHasError(true);
-                }
             }
 
             Mage::getSingleton('avatax/session')->setRates($this->_rates);
