@@ -81,7 +81,7 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
      *
      * @return mixed|OnePica_AvaTax_Model_Service_Avatax_Abstract
      */
-    public function getServiceAddressValidator($address)
+    public function validate($address)
     {
         $this->setAddress($address);
         /** @var Mage_Sales_Model_Quote $quote */
@@ -98,15 +98,15 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
             if ($checkFieldsResult) {
                 return $checkFieldsResult;
             }
+            /** @var Varien_Object $result */
+            $result = $this->_getService()->getAddressValidator($address)->validate();
         } else {
             $errors = array();
             $errors[] = $this->__('Invalid ZIP/Postal Code.');
             return $errors;
         }
-        /** @var Varien_Object $result */
-        $result = $this->_getService()->getAddressValidator($address)->validate();
-        $this->_addressNormalization($isAddressNormalizationOn, $result);
 
+        $this->_addressNormalization($isAddressNormalizationOn, $result);
         $addressValidationResult = $this->_addressValidation($isAddressValidationOn, $isAddressActionable, $result);
         if ($addressValidationResult) {
             return $addressValidationResult;
@@ -134,12 +134,12 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
      */
     protected function _addressValidation($isAddressValidationOn, $isAddressActionable, $result)
     {
+        $errors = array();
         if ($isAddressValidationOn == OnePica_AvaTax_Model_Source_Addressvalidation::ENABLED_PREVENT_ORDER) {
-            if (!$result->getHasError()) {
+            if (!$result->getHasError() && $result->getResolution()) {
                 $this->getAddress()->setAddressValidated(true);
                 return true;
             } else {
-                $errors = array();
                 foreach ($result->getErrors() as $message) {
                     $errors[] = $this->__($message);
                 }
@@ -147,7 +147,7 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
             }
         } elseif ($isAddressValidationOn == OnePica_AvaTax_Model_Source_Addressvalidation::ENABLED_ALLOW_ORDER) {
             $this->getAddress()->setAddressValidated(true);
-            if (!$result->getHasError()) {
+            if (!$result->getHasError() && $result->getResolution()) {
                 return true;
             } else {
                 if (!$this->getAddress()->getAddressNotified()) {
@@ -162,18 +162,16 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
             //a valid address isn't required, but Avalara has to say there is
             //enough info to drill down to a tax jurisdiction to calc on
         } elseif (!$isAddressValidationOn && $isAddressActionable) {
-            if (count($result->getTaxAuthorities()) > 0) {
+            if ($result->getResolution()) {
                 $this->getAddress()->setAddressValidated(true);
                 return true;
             } else {
-                $errors = array();
                 foreach ($result->getErrors() as $message) {
                     $errors[] = $this->__($message);
                 }
                 return $errors;
             }
         }
-
         return null;
     }
 
@@ -221,7 +219,7 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
      * @return $this
      * @throws OnePica_AvaTax_Model_Service_Exception_Address
      */
-    protected function _addressNormalization($isAddressNormalizationOn ,Varien_Object $result)
+    protected function _addressNormalization($isAddressNormalizationOn, Varien_Object $result)
     {
         if ($isAddressNormalizationOn && !$result->getHasError()) {
             if ($result->getAddress() instanceof Varien_Object) {

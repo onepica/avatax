@@ -397,7 +397,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         /** @var OnePica_AvaTax_Model_Service_Avatax16_Config $configModel */
         $configModel = $this->getServiceConfig();
         $config = $configModel->getLibConfig();
-        $connection = $configModel->getTaxConnection();
+        $connection = $configModel->getAddressConnection();
         $result = null;
         $message = null;
 

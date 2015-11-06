@@ -34,7 +34,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
     /**
      * Avatax service response
      */
-    const AVATAX16_SERVICE_RESPONSE = 'Rooftop';
+    protected $_successResponse = array('Rooftop');
 
     /**
      * The Mage Address object
@@ -156,7 +156,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
     /**
      * @return OnePica_AvaTax16_Document_Part_Location_Address
      */
-    public function getLocaleObject()
+    public function getLocationAddressObject()
     {
         if (is_null($this->_localeObject)){
             $this->_localeObject = new OnePica_AvaTax16_Document_Part_Location_Address();
@@ -172,7 +172,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
     protected function _initAddressResolution()
     {
         if (is_null($this->getLocationAddress())) {
-            $this->setLocationAddress($this->getLocaleObject());
+            $this->setLocationAddress($this->getLocationAddressObject());
         }
         $address = $this->getAddress()->getStreet();
         if (is_array($address) && isset($address[0])) {
@@ -191,7 +191,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
      * Validates the address with the AvaTax validation API.
      * Returns true on success and an array with an error on failure.
      *
-     * @return array|bool
+     * @return Varien_Object
      * @throws OnePica_AvaTax_Model_Service_Exception_Address
      */
     public function validate()
@@ -207,13 +207,13 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
             $result = unserialize($this->_cache[$key]);
         } else {
             $result = $this->_sendAddressValidationRequest();
-            Mage::getSingleton('avatax/session')->setAvatax16AddressValidation(serialize($result));
+            $this->_cache[$key] = serialize($result);
         }
         $response = new Varien_Object();
         $response->setHasError($result->getHasError());
         $response->setErrors($result->getErrors());
         $response->setAddress(new Varien_Object($result->getAddress()->toArray()));
-        $response->setResolution($result->getResolutionQuality() == self::AVATAX16_SERVICE_RESPONSE);
+        $response->setResolution(in_array($result->getResolutionQuality()), $this->_successResponse);
         $response->setRequiredProperties($result->getAddress()->getRequiredProperties());
         $response->setExcludedProperties($result->getExcludedProperties());
 

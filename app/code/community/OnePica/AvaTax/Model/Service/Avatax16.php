@@ -32,6 +32,15 @@ class OnePica_AvaTax_Model_Service_Avatax16
     protected $_estimateResource;
 
     /**
+     * OnePica_AvaTax_Model_Service_Avatax16 constructor.
+     * @param mixed
+     */
+    public function __construct()
+    {
+        $this->setServiceConfig(Mage::getSingleton('avatax/service_avatax16_config')->init(Mage::app()->getStore()));
+    }
+
+    /**
      * Get estimate resource
      *
      * return mixed

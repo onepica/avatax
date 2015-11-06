@@ -47,13 +47,22 @@ class OnePica_AvaTax_Model_Service_Avatax
     protected $_pingResource;
 
     /**
+     * OnePica_AvaTax_Model_Service_Avatax constructor.
+     * @internal param mixed
+     */
+    public function __construct()
+    {
+        $this->setServiceConfig(Mage::getSingleton('avatax/service_avatax_config')->init(Mage::app()->getStore()));
+    }
+
+    /**
      * Get estimate resource
      *
      * return mixed
      */
     protected function _getEstimateResource()
     {
-        return Mage::getSingleton('avatax/service_avatax_estimate', array('service_config' => $this));
+        return Mage::getSingleton('avatax/service_avatax_estimate', array('service_config' => $this->getServiceConfig()));
     }
 
     /**

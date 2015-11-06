@@ -102,7 +102,6 @@ abstract class OnePica_AvaTax_Model_Service_Abstract extends Varien_Object
         if (isset($args['address'])) {
             $this->setAddress($args['address']);
         }
-        $this->setServiceConfig(Mage::getSingleton('avatax/service_avatax16_config')->init(Mage::app()->getStore()));
         parent::_construct();
     }
 
