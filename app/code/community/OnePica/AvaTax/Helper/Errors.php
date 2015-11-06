@@ -93,4 +93,47 @@ class OnePica_AvaTax_Helper_Errors extends Mage_Core_Helper_Abstract
             return Mage::helper('avatax/config')->getErrorFrontendMessage($store);
         }
     }
+
+    /**
+     * Get config helper
+     *
+     * @return OnePica_AvaTax_Helper_Config
+     */
+    private function _getConfigHelper()
+    {
+        return Mage::helper('avatax/config');
+    }
+
+    /**
+     * Returns full stop on error
+     *
+     * @param Mage_Sales_Model_Quote $quote
+     * @return bool
+     */
+    public function fullStopOnError($quote)
+    {
+        if ($quote->getData('estimate_tax_error') && $this->_getFullStopOnErrorMode($quote->getStoreId())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Returns full stop on error mode
+     *
+     * @param null|int $storeId
+     * @return bool
+     */
+    protected function _getFullStopOnErrorMode($storeId = null)
+    {
+        $validateAddress = $this->_getConfigHelper()->getValidateAddress($storeId);
+        $errorFullStop = $this->_getConfigHelper()->fullStopOnError($storeId);
+        $enablePreventOrderConst = OnePica_AvaTax_Model_Source_Addressvalidation::ENABLED_PREVENT_ORDER;
+        if (!$validateAddress && $errorFullStop || $validateAddress == $enablePreventOrderConst) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

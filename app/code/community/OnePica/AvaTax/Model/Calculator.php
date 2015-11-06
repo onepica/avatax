@@ -77,16 +77,9 @@ class OnePica_AvaTax_Model_Calculator extends Mage_Core_Model_Factory
         $rates = $this->_getService()->getRates($item);
         /** @var OnePica_AvaTax_Model_Sales_Quote_Address $address */
         $address = $item->getAddress();
-        $storeId = $address->getStoreId();
-        if (isset($rates['failure'])
-            && ($rates['failure'] === true)
-            && $this->_getConfigHelper()->fullStopOnError($storeId)
-        ) {
+        if (isset($rates['failure']) && ($rates['failure'] === true)) {
+            // set error flag for processing estimation errors on upper level
             $address->getQuote()->setData('estimate_tax_error', true);
-            $address->getQuote()->setHasError(true);
-            $this->_getErrorsHelper()->addErrorMessage($storeId);
-        } else {
-            $this->_getErrorsHelper()->removeErrorMessage();
         }
         return $rates;
     }
