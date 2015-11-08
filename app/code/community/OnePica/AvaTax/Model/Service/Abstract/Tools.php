@@ -26,21 +26,6 @@
 class OnePica_AvaTax_Model_Service_Abstract_Tools extends Varien_Object
 {
     /**
-     * Avatax cache tag
-     */
-    const AVATAX_SERVICE_CACHE_GROUP = 'avatax_cache_tags';
-
-    /**
-     * Avatax cache tag
-     */
-    const AVATAX_CACHE_GROUP = 'avatax';
-
-    /**
-     * Model cache tag for clear cache in after save and after delete
-     */
-    protected $_cacheTag = self::AVATAX_SERVICE_CACHE_GROUP;
-
-    /**
      * Length of time in minutes for cached rates
      *
      * @var int

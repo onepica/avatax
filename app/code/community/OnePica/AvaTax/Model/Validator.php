@@ -290,4 +290,14 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
         $this->_responseAddress = $responseAddress;
     }
 
+    /**
+     * Alias to the helper translate method.
+     *
+     * @return string
+     */
+    public function __()
+    {
+        $args = func_get_args();
+        return call_user_func_array(array(Mage::helper('avatax'), '__'), $args);
+    }
 }

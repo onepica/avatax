@@ -27,11 +27,6 @@
 class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model_Service_Avatax16_Abstract
 {
     /**
-     * Avatax adddres cache tag
-     */
-    const AVATAX16_SERVICE_CACHE_ADDRESS = 'avatax16_cache_address_';
-
-    /**
      * Avatax service response
      */
     protected $_successResponse = array('Rooftop');
@@ -158,7 +153,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
      */
     public function getLocationAddressObject()
     {
-        if (is_null($this->_localeObject)){
+        if (is_null($this->_localeObject)) {
             $this->_localeObject = new OnePica_AvaTax16_Document_Part_Location_Address();
         }
         return $this->_localeObject;
@@ -209,13 +204,17 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
             $result = $this->_sendAddressValidationRequest();
             $this->_cache[$key] = serialize($result);
         }
+//        Zend_Debug::dump($result);
+//        die;
         $response = new Varien_Object();
         $response->setHasError($result->getHasError());
         $response->setErrors($result->getErrors());
-        $response->setAddress(new Varien_Object($result->getAddress()->toArray()));
-        $response->setResolution(in_array($result->getResolutionQuality()), $this->_successResponse);
-        $response->setRequiredProperties($result->getAddress()->getRequiredProperties());
+        if (!$response->getHasError()) {
+            $response->setAddress(new Varien_Object($result->getAddress()->toArray()));
+            $response->setRequiredProperties($result->getAddress()->getRequiredProperties());
+        }
         $response->setExcludedProperties($result->getExcludedProperties());
+        $response->setResolution(in_array($result->getResolutionQuality(), $this->_successResponse));
 
         return $response;
     }

@@ -25,11 +25,6 @@
 class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_Service_Avatax_Abstract
 {
     /**
-     * Avatax adddres cache tag
-     */
-    const AVATAX_SERVICE_CACHE_ADDRESS = 'avatax_cache_address_';
-
-    /**
      * An array of previously checked addresses
      * Example: $_cache[$key] = serialize($resultObjectFromAvalara)
      *
@@ -139,8 +134,8 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
      */
     protected function _convertRequestAddress()
     {
-        $this->getLocationAddressObject()->setLine1($this->getMageAddress()->getStreet(1));
-        $this->getLocationAddressObject()->setLine2($this->getMageAddress()->getStreet(2));
+        $this->getLocationAddressObject()->setLine1($this->getMageAddress()->getStreet());
+        $this->getLocationAddressObject()->setLine2($this->getMageAddress()->getStreet());
         $this->getLocationAddressObject()->setCity($this->getMageAddress()->getCity());
         $this->getLocationAddressObject()->setRegion($this->getMageAddress()->getRegionCode());
         $this->getLocationAddressObject()->setCountry($this->getMageAddress()->getCountry());
