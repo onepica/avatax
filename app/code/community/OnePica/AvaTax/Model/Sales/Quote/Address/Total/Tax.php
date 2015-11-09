@@ -61,12 +61,14 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
 
             //Added check for calculating tax for regions filtered in the admin
             if ($this->_isAddressActionable($address)) {
+                $itemTaxGroups = array();
                 /** @var Mage_Sales_Model_Quote_Item $item */
                 foreach ($address->getAllItems() as $item) {
                     $item->setAddress($address);
                     $baseAmount = $calculator->getItemTax($item);
 
                     $giftBaseTaxTotalAmount = $calculator->getItemGiftTax($item);
+                    $itemTaxGroups[$item->getId()] = $calculator->getItemTaxGroup($item);
                     $giftTaxTotalAmount = $store->convertPrice($giftBaseTaxTotalAmount);
                     $giftBaseTaxAmount = $this->_getDataHelper()
                         ->roundUp($giftBaseTaxTotalAmount / $item->getQty(), 2);
@@ -150,6 +152,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
                     $this->_addBaseAmount($baseGwPrintedCardTax);
                 }
 
+                $this->_setTaxForItems($address, $itemTaxGroups);
                 $this->_saveAppliedTax($address);
             }
         }
@@ -168,7 +171,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
         $summary = $this->_getCalculator()->getSummary($address->getId());
 
         foreach ($summary as $key => $row) {
-            $id = 'avatax-' . $key;
+            $id = $row['name'];
             $fullInfo[$id] = array(
                 'rates'       => array(
                     array(
@@ -208,6 +211,23 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
             $storeId,
             OnePica_AvaTax_Model_Service_Abstract_Config::REGIONFILTER_TAX
         );
+    }
+
+    /**
+     * Set tax for items
+     *
+     * @param \Mage_Sales_Model_Quote_Address $address
+     * @param array                           $itemTaxGroups
+     * @return $this
+     */
+    protected function _setTaxForItems(Mage_Sales_Model_Quote_Address $address, $itemTaxGroups)
+    {
+        if ($address->getQuote()->getTaxesForItems()) {
+            $itemTaxGroups += $address->getQuote()->getTaxesForItems();
+        }
+        $address->getQuote()->setTaxesForItems($itemTaxGroups);
+
+        return $this;
     }
 
     /**

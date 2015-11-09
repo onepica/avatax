@@ -152,11 +152,12 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
                     $code = $this->_getTaxArrayCodeByLine($ctl);
                     $this->_rates[$requestKey][$code][$id] = array(
                         'rate' => $this->_getLineRate($ctl),
-                        'amt' => $ctl->getCalculatedTax()->getTax(),
+                        'amt'  => $ctl->getCalculatedTax()->getTax(),
+                        'jurisdiction_rates' => $this->_getItemJurisdictionRate($ctl)
                     );
                 }
                 $this->_rates[$requestKey]['summary'] = $this->_getSummaryFromResponse($result);
-            //failure
+                //failure
             } else {
                 $this->_rates[$requestKey]['failure'] = true;
                 if ($this->_getConfigHelper()->fullStopOnError($address->getStoreId())) {
@@ -481,11 +482,13 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
     protected function _getSummaryFromResponse($response)
     {
         $result = array();
+        $rates = $this->_getShippingJurisdictionsRate($response);
         foreach ($response->getCalculatedTaxSummary()->getTaxByType() as $taxItemByType) {
             foreach ($taxItemByType->getJurisdictions() as $data) {
+                $jurisdiction = $data->getJurisdictionName() . '_' . $data->getJurisdictionType();
                 $result[] = array(
-                    'name' => $data->getJurisdictionName() . '_' . $data->getJurisdictionType(),
-                    'rate' => '',
+                    'name' => $jurisdiction,
+                    'rate' => isset($rates[$jurisdiction]) ? $rates[$jurisdiction] : 0,
                     'amt' => $data->getTax()
                 );
             }
@@ -519,5 +522,45 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         }
 
         return $summary;
+    }
+
+    /**
+     * Get Jurisdictions rate array
+     *
+     * @param OnePica_AvaTax16_Document_Response $response
+     * @return array
+     */
+    protected function _getShippingJurisdictionsRate($response)
+    {
+        $rates = array();
+        /** @var OnePica_AvaTax16_Document_Response_Line $line */
+        foreach ($response->getLines() as $line) {
+            if ($line->getItemCode() !== OnePica_AvaTax_Model_Service_Avatax16_Abstract::DEFAULT_SHIPPING_ITEMS_SKU) {
+                continue;
+            }
+            foreach ($line->getCalculatedTax()->getDetails() as $detail) {
+                $rates[$detail->getJurisdictionName() . '_' . $detail->getJurisdictionType()] = $detail->getRate() * 100;
+            }
+        }
+
+        return $rates;
+    }
+
+    /**
+     * Get item jurisdiction rate
+     *
+     * @param OnePica_AvaTax16_Document_Response_Line $line
+     * @return array
+     */
+    protected function _getItemJurisdictionRate($line)
+    {
+        $rates = array();
+        if ($line->getCalculatedTax()->getTax()) {
+            foreach ($line->getCalculatedTax()->getDetails() as $detail) {
+                $rates[$detail->getJurisdictionName() . '_' . $detail->getJurisdictionType()] = $detail->getRate() * 100;
+            }
+        }
+
+        return $rates;
     }
 }
