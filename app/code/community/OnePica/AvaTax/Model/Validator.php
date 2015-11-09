@@ -88,7 +88,12 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
         $quote = $address->getQuote();
         $isAddressValidationOn = $this->_getAddressHelper()->isAddressValidationOn($address, $quote->getStoreId());
         $isAddressNormalizationOn = $this->_getAddressHelper()->isAddressNormalizationOn($address, $quote->getStoreId());
-        $isAddressActionable = $this->_getAddressHelper()->isAddressActionable($address, $quote->getStoreId());
+        $isAddressActionable = $this->_getAddressHelper()->isAddressActionable(
+            $address,
+            $quote->getStoreId(),
+            OnePica_AvaTax_Model_Service_Abstract_Config::REGIONFILTER_ALL,
+            true
+        );
         //if there is no use cases for AvaTax services, return address as valid without doing a lookup
         if (!$isAddressValidationOn && !$isAddressNormalizationOn && !$isAddressActionable) {
             return true;
