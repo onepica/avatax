@@ -29,6 +29,11 @@ class OnePica_AvaTax_Helper_Errors extends Mage_Core_Helper_Abstract
      */
     const CALCULATE_ERROR_MESSAGE_IDENTIFIER = 'avatax_calculate_error';
 
+    /**
+     * Identifier for validation notice
+     */
+    const VALIDATION_NOTICE_IDENTIFIER = 'avatax_validation_notice';
+
 
     /**
      * Adds error message if there is an error
