@@ -102,7 +102,7 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
         }
 
         if ($isAddressValidation && !$filter
-            && !in_array($address->getCountryId(), $this->getAddressValidationCountries($storeId))
+            && !in_array($address->getCountryId(), $this->getAddressValidationCountries())
         ) {
             $filter = 'country';
         }
