@@ -170,14 +170,17 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
         }
         $response = new Varien_Object();
         if ($result instanceof ValidateResult) {
-            $response->setHasError($result->getResultCode() == SeverityLevel::$Error);
-            $errors = $result->getMessages();
-            if ($response->getHasError() && is_array($errors) && isset($errors[0])) {
-                $convertErrors = array();
-                foreach ($errors as $element) {
-                    $convertErrors[] =$element->getSummary();
+            $hasError = $result->getResultCode() === SeverityLevel::$Error;
+            $response->setHasError($hasError);
+            if ($hasError) {
+                $errors = $result->getMessages();
+                if ($response->getHasError() && is_array($errors) && isset($errors[0])) {
+                    $convertErrors = array();
+                    foreach ($errors as $element) {
+                        $convertErrors[] = $element->getSummary();
+                    }
+                    $response->setErrors($convertErrors);
                 }
-                $response->setErrors($convertErrors);
             }
             $address = $result->getValidAddresses();
             if (is_array($address) && isset($address[0]) && $address[0]) {
