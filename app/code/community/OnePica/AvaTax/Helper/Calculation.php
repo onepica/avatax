@@ -24,6 +24,63 @@ class OnePica_AvaTax_Helper_Calculation
     extends Mage_Core_Helper_Abstract
 {
     /**
+     * Get simple product id from configurable item
+     *
+     * @param Mage_Sales_Model_Quote_Item|Mage_Sales_Model_Order_Creditmemo_Item|Mage_Sales_Model_Order_Invoice_Item $item
+     * @return int
+     */
+    public function getSimpleProductIdByConfigurable($item)
+    {
+        if (($item instanceof Mage_Sales_Model_Quote_Item
+             || $item instanceof Mage_Sales_Model_Quote_Address_Item)
+            && $this->isConfigurable($item)
+        ) {
+            /** @var Mage_Catalog_Model_Product[] $children */
+            $children = $item->getChildren();
+            if (isset($children[0]) && $children[0]->getProductId()) {
+                return $children[0]->getProductId();
+            }
+        }
+
+        if (($item instanceof Mage_Sales_Model_Order_Invoice_Item
+             || $item instanceof Mage_Sales_Model_Order_Creditmemo_Item)
+            && $this->isConfigurable($item)
+        ) {
+            $children = $item->getOrderItem()->getChildrenItems();
+            if (isset($children[0]) && $children[0]->getProductId()) {
+                return $children[0]->getProductId();
+            }
+        }
+
+        return 0;
+    }
+
+    /**
+     * Checks if item is configurable
+     *
+     * @param Mage_Sales_Model_Quote_Address_Item|Mage_Sales_Model_Quote_Item|Mage_Sales_Model_Order_Creditmemo_Item|Mage_Sales_Model_Order_Invoice_Item $item
+     * @return bool
+     */
+    public function isConfigurable($item)
+    {
+        if ($item instanceof Mage_Sales_Model_Quote_Item) {
+            return $item->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE;
+        }
+
+        if ($item instanceof Mage_Sales_Model_Quote_Address_Item) {
+            return $item->getProduct()->getTypeId() === Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE;
+        }
+
+        if (($item instanceof Mage_Sales_Model_Order_Invoice_Item
+             || $item instanceof Mage_Sales_Model_Order_Creditmemo_Item)
+        ) {
+            return $item->getOrderItem()->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE;
+        }
+
+        return false;
+    }
+
+    /**
      * Get item code
      *
      * @param Mage_Catalog_Model_Product $product

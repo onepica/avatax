@@ -152,11 +152,16 @@ class OnePica_AvaTax_Model_Service_Avatax16_Tax extends OnePica_AvaTax_Model_Ser
         foreach ($items as $item) {
             if (!$this->isProductCalculated($item)) {
                 $productIds[] = $item->getProductId();
+                $simpleProductId = $this->_getCalculationHelper()->getSimpleProductIdByConfigurable($item);
+                if ($simpleProductId) {
+                    $productIds[] = $simpleProductId;
+                }
             }
         }
         $this->_productCollection = Mage::getModel('catalog/product')->getCollection()
             ->addAttributeToSelect('*')
             ->addAttributeToFilter('entity_id', array('in' => $productIds));
+
         return $this;
     }
 
