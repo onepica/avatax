@@ -102,6 +102,46 @@ class OnePica_AvaTax_Model_Calculator extends Mage_Core_Model_Factory
     }
 
     /**
+     * Get item tax group
+     *
+     * @param Mage_Sales_Model_Quote_Item $item
+     * @return array
+     */
+    public function getItemTaxGroup($item)
+    {
+        if ($this->isProductCalculated($item)) {
+            return array();
+        }
+
+        $id = $item->getSku();
+        $ratesData = $this->_getRates($item);
+
+        $jurisdictionRates = isset($ratesData['items'][$id]['jurisdiction_rates'])
+            ? $ratesData['items'][$id]['jurisdiction_rates']
+            : array();
+
+        $taxGroup = array();
+        foreach ($jurisdictionRates as $jurisdiction => $rate) {
+            $taxGroup[] = array(
+                'rates'   => array(
+                    array(
+                        'code'     => $jurisdiction,
+                        'title'    => $jurisdiction,
+                        'percent'  => $rate,
+                        'position' => 0,
+                        'priority' => 0,
+                        'rule_id'  => 0
+                    )
+                ),
+                'percent' => $rate,
+                'id'      => $jurisdiction
+            );
+        }
+
+        return $taxGroup;
+    }
+
+    /**
      * Get item tax
      *
      * @param Mage_Sales_Model_Quote_Item $item
