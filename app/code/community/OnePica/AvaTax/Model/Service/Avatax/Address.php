@@ -120,7 +120,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
      */
     public function getLocationAddressObject()
     {
-        if (is_null($this->_requestAddress)){
+        if (is_null($this->_requestAddress)) {
             $this->_requestAddress = new Address();
         }
         return $this->_requestAddress;
@@ -134,8 +134,8 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
      */
     protected function _convertRequestAddress()
     {
-        $this->getLocationAddressObject()->setLine1($this->getMageAddress()->getStreet());
-        $this->getLocationAddressObject()->setLine2($this->getMageAddress()->getStreet());
+        $this->getLocationAddressObject()->setLine1($this->getMageAddress()->getStreet(1));
+        $this->getLocationAddressObject()->setLine2($this->getMageAddress()->getStreet(2));
         $this->getLocationAddressObject()->setCity($this->getMageAddress()->getCity());
         $this->getLocationAddressObject()->setRegion($this->getMageAddress()->getRegionCode());
         $this->getLocationAddressObject()->setCountry($this->getMageAddress()->getCountry());
@@ -169,38 +169,41 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
             $this->_cache[$key] = serialize($result);
         }
         $response = new Varien_Object();
-        $response->setHasError($result->getResultCode() == SeverityLevel::$Error);
-        $errors = $result->getMessages();
-        if($response->getHasError() && is_array($errors) && isset($errors[0])){
-            $convertErrors = new Varien_Object();
-            foreach($errors as $element){
-                $convertErrors->setErrors($element->getSummary());
+        if ($result instanceof ValidateResult) {
+            $response->setHasError($result->getResultCode() == SeverityLevel::$Error);
+            $errors = $result->getMessages();
+            if ($response->getHasError() && is_array($errors) && isset($errors[0])) {
+                $convertErrors = array();
+                foreach ($errors as $element) {
+                    $convertErrors[] =$element->getSummary();
+                }
+                $response->setErrors($convertErrors);
             }
-            $response->setErrors($convertErrors);
-        $address = $result->getValidAddresses();
+            $address = $result->getValidAddresses();
+            if (is_array($address) && isset($address[0]) && $address[0]) {
+                /** @var ValidAddress $address */
+                $address = $address[0];
+                $addressConvert = new Varien_Object();
+                $addressConvert->setLine1($address->getLine1());
+                $addressConvert->setLine2($address->getLine2());
+                $addressConvert->setCity($address->getCity());
+                $addressConvert->setRegion($address->getRegion());
+                $addressConvert->setPostalCode($address->getPostalCode());
+                $addressConvert->setCountry($address->getCountry());
+                $addressConvert->setCounty($address->getCounty());
+                $addressConvert->setFipsCode($address->getFipsCode());
+                $addressConvert->setCarrierRoute($address->getCarrierRoute());
+                $addressConvert->setPostNet($address->getPostNet());
+                $addressConvert->setAddressType($address->getAddressType());
+                $addressConvert->setLatitude($address->getLatitude());
+                $addressConvert->setLongitude($address->getLongitude());
+                $addressConvert->setTaxRegionId($address->getTaxRegionId());
+                $response->setAddress($addressConvert);
+            }
+            /** Set is success */
+            $response->setResolution($result->getResultCode() == SeverityLevel::$Success);
         }
 
-        if (is_array($address) && isset($address[0]) && $address[0] instanceof ValidAddress){
-            /** @var ValidAddress $address */
-            $address = $address[0];
-            $addressConvert = new Varien_Object();
-            $addressConvert->setLine1($address->getLine1());
-            $addressConvert->setLine2($address->getLine2());
-            $addressConvert->setCity($address->getCity());
-            $addressConvert->setRegion($address->getRegion());
-            $addressConvert->setPostalCode($address->getPostalCode());
-            $addressConvert->setCountry($address->getCountry());
-            $addressConvert->setCounty($address->getCounty());
-            $addressConvert->setFipsCode($address->getFipsCode());
-            $addressConvert->setCarrierRoute($address->getCarrierRoute());
-            $addressConvert->setPostNet($address->getPostNet());
-            $addressConvert->setAddressType($address->getAddressType());
-            $addressConvert->setLatitude($address->getLatitude());
-            $addressConvert->setLongitude($address->getLongitude());
-            $addressConvert->setTaxRegionId($address->getTaxRegionId());
-            $response->setAddress($addressConvert);
-        }
-        $response->setResolution($result->getResultCode() == SeverityLevel::$Success);
 
         return $response;
     }
@@ -236,6 +239,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
     {
         return new ValidateRequest($this->getLocationAddressObject(), TextCase::$Mixed, 0);
     }
+
     /**
      * Address normalization
      *

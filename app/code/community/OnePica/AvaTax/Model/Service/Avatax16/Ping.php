@@ -19,7 +19,6 @@
  * The AvaTax Ping model
  * @class OnePica_AvaTax_Model_Service_Avatax16_Ping
  *
- *
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
@@ -45,7 +44,6 @@ class OnePica_AvaTax_Model_Service_Avatax16_Ping extends OnePica_AvaTax_Model_Se
         } catch (Exception $exception) {
             $message = $exception->getMessage();
         }
-
         if (!isset($result) || !is_object($result) || !$result->getHasError()) {
             $actualResult = $result;
             $result = new Varien_Object();
@@ -62,10 +60,11 @@ class OnePica_AvaTax_Model_Service_Avatax16_Ping extends OnePica_AvaTax_Model_Se
         );
         if ($result->getHasError()) {
             if (is_array($result->getErrors())) {
-                foreach ($result->getErrors() as $message) {
-                    $message[] = $this->__($message);
+                $messages = array();
+                foreach ($result->getErrors() as $messageItem) {
+                    $messages[] = $this->__($messageItem);
                 }
-                $message = implode(' ', $message);
+                $message = implode(' ', $messages);
             }
         }
         return (!$result->getHasError()) ? true : $message;

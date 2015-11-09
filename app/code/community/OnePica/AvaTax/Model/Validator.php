@@ -158,7 +158,7 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
                 if (!$this->getAddress()->getAddressNotified()) {
                     $this->getAddress()->setAddressNotified(true);
                     foreach ($result->getErrors() as $message) {
-                        Mage::getSingleton('core/session')->addNotice($this->__($message));
+                        $this->_addValidateNotice($this->__($message));
                     }
                 }
                 return true;
@@ -304,5 +304,19 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
     {
         $args = func_get_args();
         return call_user_func_array(array(Mage::helper('avatax'), '__'), $args);
+    }
+
+    /**
+     * Add validation notice
+     *
+     * @param string $message
+     * @return $this
+     */
+    protected function _addValidateNotice($message)
+    {
+        $notice = Mage::getSingleton('core/message')->notice($message);
+        $notice->setIdentifier(OnePica_AvaTax_Helper_Errors::VALIDATION_NOTICE_IDENTIFIER);
+        Mage::getSingleton('core/session')->addMessage($notice);
+        return $this;
     }
 }

@@ -154,7 +154,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
     public function getLocationAddressObject()
     {
         if (is_null($this->_localeObject)) {
-            $this->_localeObject = new OnePica_AvaTax16_Document_Part_Location_Address();
+            $this->_localeObject = $this->_getNewDocumentPartLocationAddressObject();
         }
         return $this->_localeObject;
     }
@@ -177,7 +177,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
         $this->getLocationAddress()->setline1($address ? $address : '_');
         $this->getLocationAddress()->setCity($this->getAddress()->getCity());
         $this->getLocationAddress()->setCountry($this->getAddress()->getCountryId());
-        $this->getLocationAddress()->setState($this->getAddress()->getRegionId());
+        $this->getLocationAddress()->setState($this->getAddress()->getRegionCode());
         $this->getLocationAddress()->setZipcode($this->getAddress()->getPostcode());
         return $this;
     }
@@ -209,7 +209,10 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
         $response->setHasError($result->getHasError());
         $response->setErrors($result->getErrors());
         if (!$response->getHasError()) {
-            $response->setAddress(new Varien_Object($result->getAddress()->toArray()));
+            $addressData = new Varien_Object($result->getAddress()->toArray());
+            // fix for Varien_Object construct function with properties names
+            $addressData->setPostalCode($addressData->getData('postalCode'));
+            $response->setAddress($addressData);
             $response->setRequiredProperties($result->getAddress()->getRequiredProperties());
         }
         $response->setExcludedProperties($result->getExcludedProperties());
@@ -217,7 +220,9 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
 
         // if we have bad resolution we should set error with message
         if (!$response->getResolution()) {
-            $response->setErrors(array($this->__('Unable to validate address.')));
+            $errors = $result->getErrors();
+            $errors[] = $this->__('Unable to validate address.');
+            $response->setErrors($errors);
         }
 
         return $response;
