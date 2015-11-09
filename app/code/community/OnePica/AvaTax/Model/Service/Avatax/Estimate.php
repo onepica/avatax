@@ -357,7 +357,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         $lineNumber = count($this->_lines);
         $line = new Line();
         $line->setNo($lineNumber);
-        $line->setItemCode(substr($item->getSku(), 0, 50));
+        $line->setItemCode($this->_getCalculationHelper()->getItemCode($product, $item->getStoreId()));
         $line->setDescription($item->getName());
         $line->setQty($item->getQty());
         $line->setAmount($price);
