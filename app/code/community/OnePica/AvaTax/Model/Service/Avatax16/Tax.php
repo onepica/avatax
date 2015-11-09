@@ -303,14 +303,9 @@ class OnePica_AvaTax_Model_Service_Avatax16_Tax extends OnePica_AvaTax_Model_Ser
     {
         $value = null;
         $helperMethod = 'getRef' . $refNumber . 'AttributeCode';
-        $refCode = $this->_getConfigHelper()->{$helperMethod}($storeId);
-        if ($refCode && $product->getResource()->getAttribute($refCode)) {
-            try {
-                $value = (string)$product->getResource()->getAttribute($refCode)->getFrontend()->getValue($product);
-            } catch (Exception $e) {
-                Mage::logException($e);
-            }
-        }
+        $code = $this->_getConfigHelper()->{$helperMethod}($storeId);
+        $value = $this->_getCalculationHelper()->getProductAttributeValue($product, $code);
+
         return $value;
     }
 
@@ -364,5 +359,15 @@ class OnePica_AvaTax_Model_Service_Avatax16_Tax extends OnePica_AvaTax_Model_Ser
         */
 
         return $header;
+    }
+
+    /**
+     * Get calculation helper
+     *
+     * @return \OnePica_AvaTax_Helper_Calculation
+     */
+    protected function _getCalculationHelper()
+    {
+        return Mage::helper('avatax/calculation');
     }
 }

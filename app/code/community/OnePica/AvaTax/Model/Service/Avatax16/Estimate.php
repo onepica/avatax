@@ -214,7 +214,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
 
         $line = $this->_getNewDocumentRequestLineObject();
         $line->setLineCode($lineNumber);
-        $line->setItemCode(substr($item->getSku(), 0, 50));
+        $line->setItemCode($this->_getCalculationHelper()->getItemCode($product, $item->getStoreId()));
         $line->setNumberOfItems($item->getQty());
         $line->setlineAmount($price);
         $line->setItemDescription($item->getName());
