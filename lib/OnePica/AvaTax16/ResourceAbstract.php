@@ -78,8 +78,14 @@ abstract class OnePica_AvaTax16_ResourceAbstract
             $errors = array();
             $responseData = $curl->getResponse();
             if ($responseData instanceof stdClass) {
-                if (isset($responseData->errors)) {
-                    $errors = (array) $responseData->errors;
+                if (isset($responseData->errors) && count($responseData->errors)) {
+                    foreach ($responseData->errors as $value) {
+                        if (is_array($value)) {
+                            $errors[] = implode(' ', $value);
+                        } else {
+                            $errors[] = $value;
+                        }
+                    }
                 }
                 if (isset($responseData->message)) {
                     $errors['message'] = $responseData->message;
