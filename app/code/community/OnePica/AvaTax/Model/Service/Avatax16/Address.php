@@ -154,7 +154,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
     public function getLocationAddressObject()
     {
         if (is_null($this->_localeObject)) {
-            $this->_localeObject = new OnePica_AvaTax16_Document_Part_Location_Address();
+            $this->_localeObject = $this->_getNewDocumentPartLocationAddressObject();
         }
         return $this->_localeObject;
     }
