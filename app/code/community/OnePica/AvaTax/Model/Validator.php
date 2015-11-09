@@ -139,6 +139,8 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
             if (!$result->getHasError() && $result->getResolution()) {
                 $this->getAddress()->setAddressValidated(true);
                 return true;
+            } elseif (!$result->getHasError() && !$result->getResolution()){
+                $errors[] = $this->__('Bad response.');
             } else {
                 foreach ($result->getErrors() as $message) {
                     $errors[] = $this->__($message);

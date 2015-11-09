@@ -29,7 +29,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
     /**
      * Avatax service response
      */
-    protected $_successResponse = array('Rooftop');
+    protected $_successResponse = array('Rooftop', 'PostalCentroidGood');
 
     /**
      * The Mage Address object
@@ -204,8 +204,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
             $result = $this->_sendAddressValidationRequest();
             $this->_cache[$key] = serialize($result);
         }
-//        Zend_Debug::dump($result);
-//        die;
+
         $response = new Varien_Object();
         $response->setHasError($result->getHasError());
         $response->setErrors($result->getErrors());
