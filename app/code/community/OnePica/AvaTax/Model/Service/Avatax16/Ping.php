@@ -19,7 +19,6 @@
  * The AvaTax Ping model
  * @class OnePica_AvaTax_Model_Service_Avatax16_Ping
  *
- * @method getService() OnePica_AvaTax_Model_Service_Avatax16
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
@@ -36,7 +35,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Ping extends OnePica_AvaTax_Model_Se
     public function ping($storeId = null)
     {
         /** @var OnePica_AvaTax_Model_Service_Avatax16_Config $config */
-        $config = $this->getService()->getServiceConfig();
+        $config = $this->getServiceConfig();
         $connection = $config->getTaxConnection();
         $result = null;
         $message = array();
@@ -64,7 +63,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Ping extends OnePica_AvaTax_Model_Se
         if ($result->getHasError()) {
             if (is_array($result->getErrors())) {
                 foreach ($result->getErrors() as $message) {
-                    $message[] = $this->__($message->getSummary());
+                    $message[] = $this->__($message);
                 }
                 $message = implode(' ', $message);
             }

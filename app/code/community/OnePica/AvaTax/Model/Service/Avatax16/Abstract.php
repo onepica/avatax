@@ -95,6 +95,36 @@ abstract class OnePica_AvaTax_Model_Service_Avatax16_Abstract extends OnePica_Av
     const SERVICE_DATE_FORMAT = 'Y-MM-dd';
 
     /**
+     * Default positive adjustment code
+     */
+    const DEFAULT_POSITIVE_ADJUSTMENT_CODE = 'positive-adjustment';
+
+    /**
+     * Default positive adjustment description
+     */
+    const DEFAULT_POSITIVE_ADJUSTMENT_DESCRIPTION = 'Adjustment refund';
+
+    /**
+     * Default negative adjustment code
+     */
+    const DEFAULT_NEGATIVE_ADJUSTMENT_CODE = 'negative-adjustment';
+
+    /**
+     * Default negative adjustment description
+     */
+    const DEFAULT_NEGATIVE_ADJUSTMENT_DESCRIPTION = 'Adjustment fee';
+
+    /**
+     * Document code invoice prefix
+     */
+    const DOCUMENT_CODE_INVOICE_PREFIX = 'I';
+
+    /**
+     * Document code creditmemo prefix
+     */
+    const DOCUMENT_CODE_CREDITMEMO_PREFIX = 'C';
+
+    /**
      * Returns the AvaTax helper.
      *
      * @return OnePica_AvaTax_Helper_Data
@@ -213,5 +243,65 @@ abstract class OnePica_AvaTax_Model_Service_Avatax16_Abstract extends OnePica_Av
             }
         }
         return false;
+    }
+
+    /**
+     * Get New Document Part Location Address Object
+     *
+     * @return OnePica_AvaTax16_Document_Part_Location_Address
+     */
+    protected function _getNewDocumentPartLocationAddressObject()
+    {
+        return new OnePica_AvaTax16_Document_Part_Location_Address();
+    }
+
+    /**
+     * Get New Document Part Location Object
+     *
+     * @return OnePica_AvaTax16_Document_Part_Location
+     */
+    protected function _getNewDocumentPartLocationObject()
+    {
+        return new OnePica_AvaTax16_Document_Part_Location();
+    }
+
+    /**
+     * Get New Document Request Header Object
+     *
+     * @return OnePica_AvaTax16_Document_Request_Header
+     */
+    protected function _getNewDocumentRequestHeaderObject()
+    {
+        return new OnePica_AvaTax16_Document_Request_Header();
+    }
+
+    /**
+     * Get New Document Request Object
+     *
+     * @return OnePica_AvaTax16_Document_Request
+     */
+    protected function _getNewDocumentRequestObject()
+    {
+        return new OnePica_AvaTax16_Document_Request();
+    }
+
+    /**
+     * Get New Document Request Line Object
+     *
+     * @return OnePica_AvaTax16_Document_Request_Line
+     */
+    protected function _getNewDocumentRequestLineObject()
+    {
+        return new OnePica_AvaTax16_Document_Request_Line();
+    }
+
+    /**
+     * Get New Service Message Object
+     *
+     * @return Varien_Object
+     */
+    protected function _getNewServiceMessageObject()
+    {
+        return new Varien_Object();
     }
 }

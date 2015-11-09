@@ -288,6 +288,7 @@
                             <show_in_store>1</show_in_store>
                         </line_ref2_code>
 
+                   <!-- TODO: Remove this code if we will not use those properties
                         <default_avalara_goods_and_services_type translate="label comment">
                             <label>Default Avalara Goods And Services Type</label>
                             <comment>Optional.</comment>
@@ -334,7 +335,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </default_buyer_type>
+                        </default_buyer_type> -->
 
                         <title_address_validation translate="label">
                             <label><![CDATA[<strong>Shipping Address Options</strong>]]></label>
