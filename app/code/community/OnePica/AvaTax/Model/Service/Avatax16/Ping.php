@@ -60,13 +60,20 @@ class OnePica_AvaTax_Model_Service_Avatax16_Ping extends OnePica_AvaTax_Model_Se
             $storeId,
             $config->getParams()
         );
+        $message = array();
         if ($result->getHasError()) {
-            if (is_array($result->getErrors())) {
-                foreach ($result->getErrors() as $message) {
-                    $message[] = $this->__($message);
+            $errors = $result->getErrors();
+
+            foreach ($errors as $type) {
+                if (is_string($type)) {
+                    $message[] = $type;
+                } elseif(is_array($type)) {
+                    foreach ($type as $info) {
+                        $message[] = $this->__($info);
+                    }
                 }
-                $message = implode(' ', $message);
             }
+            $message = implode(' ', $message);
         }
         return (!$result->getHasError()) ? true : $message;
     }
