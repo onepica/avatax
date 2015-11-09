@@ -422,6 +422,10 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
         foreach ($items as $item) {
             if (!$this->isProductCalculated($item)) {
                 $productIds[] = $item->getProductId();
+                $simpleProductId = $this->_getCalculationHelper()->getSimpleProductIdByConfigurable($item);
+                if ($simpleProductId) {
+                    $productIds[] = $simpleProductId;
+                }
             }
         }
         $this->_productCollection = Mage::getModel('catalog/product')->getCollection()

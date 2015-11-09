@@ -441,7 +441,13 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
 
         $line = new Line();
         $line->setNo(count($this->_lines));
-        $line->setItemCode($this->_getCalculationHelper()->getItemCode($product, $storeId, $item));
+        $line->setItemCode(
+            $this->_getCalculationHelper()->getItemCode(
+                $this->_getProductForItemCode($item),
+                $storeId,
+                $item
+            )
+        );
         $line->setDescription($item->getName());
         $line->setQty($item->getQty());
         $line->setAmount($price);
@@ -460,6 +466,29 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
 
         $this->_lineToItemId[count($this->_lines)] = $item->getOrderItemId();
         $this->_lines[] = $line;
+    }
+
+    /**
+     * Retrieve product for item code
+     *
+     * @param Mage_Sales_Model_Order_Invoice_Item|Mage_Sales_Model_Order_Creditmemo_Item $item
+     * @return null|Mage_Catalog_Model_Product
+     * @throws OnePica_AvaTax_Exception
+     */
+    protected function _getProductForItemCode($item)
+    {
+        $product = $this->_getProductByProductId($item->getProductId());
+        if (!$this->_getCalculationHelper()->isConfigurable($item)) {
+            return $product;
+        }
+
+        $children = $item->getOrderItem()->getChildrenItems();
+
+        if (isset($children[0]) && $children[0]->getProductId()) {
+            $product = $this->_getProductByProductId($children[0]->getProductId());
+        }
+
+        return $product;
     }
 
     /**
