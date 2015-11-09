@@ -148,7 +148,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
      * Validates the address with the AvaTax validation API.
      * Returns true on success and an array with an error on failure.
      *
-     * @return array|bool
+     * @return Varien_Object
      * @throws OnePica_AvaTax_Model_Service_Exception_Address
      */
     public function validate()
