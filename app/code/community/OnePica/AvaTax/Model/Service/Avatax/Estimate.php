@@ -98,7 +98,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
     public function getRates($item)
     {
         if (self::$_hasError) {
-            return 'error';
+            return array('failure' => true);
         }
 
         /** @var OnePica_AvaTax_Model_Sales_Quote_Address $address */

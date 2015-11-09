@@ -662,4 +662,42 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
         }
         return $this;
     }
+
+    /**
+     * Delete validation notices on successful order place on multiple checkout
+     *
+     * @param Varien_Event_Observer $observer
+     * @return $this
+     */
+    public function checkoutSubmitAllAfter(Varien_Event_Observer $observer)
+    {
+        $this->_deleteValidateNotices();
+        return $this;
+    }
+
+    /**
+     * Delete validation notices on successful order place
+     *
+     * @param Varien_Event_Observer $observer
+     * @return $this
+     */
+    public function salesModelServiceQuoteSubmitAfter(Varien_Event_Observer $observer)
+    {
+        $this->_deleteValidateNotices();
+        return $this;
+    }
+
+    /**
+     * Delete validation notices
+     *
+     * @return $this
+     */
+    protected function _deleteValidateNotices()
+    {
+        /** @var Mage_Checkout_Model_Session $session */
+        $session = Mage::getSingleton('core/session');
+        $messages = $session->getMessages();
+        $messages->deleteMessageByIdentifier(OnePica_AvaTax_Helper_Errors::VALIDATION_NOTICE_IDENTIFIER);
+        return $this;
+    }
 }
