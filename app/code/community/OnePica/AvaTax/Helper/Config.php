@@ -205,6 +205,15 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
      */
     const XML_PATH_TO_DEFAULT_BUYER_TYPE = 'tax/avatax/default_buyer_type';
 
+    /**
+     * Path to upc status
+     */
+    const XML_PATH_TO_AVATAX_UPC_CHECK_STATUS = 'tax/avatax/upc_check_status';
+
+    /**
+     * Path to upc attribute code
+     */
+    const PATH_TO_AVATAX_UPC_ATTRIBUTE_CODE = 'tax/avatax/upc_attribute_code';
 
     /**
      * Returns full stop on error
@@ -410,10 +419,13 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
         return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_LINE_REF2_CODE, $store);
     }
 
+    /**
+     * Get
+     */
     public function get()
     {
-
     }
+
     /**
      * Returns the path to the etc directory.
      *
@@ -445,7 +457,7 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
     /**
      * Get avatax status
      *
-     * @param $storeId
+     * @param int|Mage_Core_Model_Store $storeId
      * @return mixed
      */
     public function getStatusServiceAction($storeId = null)
@@ -456,7 +468,7 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
     /**
      * Get backend message
      *
-     * @param $storeId
+     * @param int|Mage_Core_Model_Store $storeId
      * @return mixed
      */
     public function getErrorBackendMessage($storeId = null)
@@ -467,7 +479,7 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
     /**
      * Get frontend message
      *
-     * @param $storeId
+     * @param int|Mage_Core_Model_Store $storeId
      * @return mixed
      */
     public function getErrorFrontendMessage($storeId = null)
@@ -477,6 +489,7 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
 
     /**
      * Get normalize address
+     *
      * @return mixed
      */
     public function getNormalizeAddress($storeId = null)
@@ -486,6 +499,7 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
 
     /**
      * Get validate address
+     *
      * @return mixed
      */
     public function getValidateAddress($storeId = null)
@@ -495,7 +509,8 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
 
     /**
      * Get address validation countries
-     * @param null $storeId
+     *
+     * @param int|Mage_Core_Model_Store $storeId
      * @return mixed
      */
     public function getAddressValidationCountries($storeId = null)
@@ -505,7 +520,8 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
 
     /**
      * Get region filter fist
-     * @param null $storeId
+     *
+     * @param int|Mage_Core_Model_Store $storeId
      * @return mixed
      */
     public function getRegionFilterList($storeId = null)
@@ -515,7 +531,8 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
 
     /**
      * Get region filter fist
-     * @param null $storeId
+     *
+     * @param int|Mage_Core_Model_Store $storeId
      * @return mixed
      */
     public function getLogTypeList($storeId = null)
@@ -525,7 +542,8 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
 
     /**
      * Get region filter mode
-     * @param null $storeId
+     *
+     * @param int|Mage_Core_Model_Store $storeId
      * @return mixed
      */
     public function getRegionFilterMode($storeId = null)
@@ -535,7 +553,8 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
 
     /**
      * Get region filter mode
-     * @param null $websiteId
+     *
+     * @param int|Mage_Core_Model_Store $websiteId
      * @return mixed
      * @throws Mage_Core_Exception
      */
@@ -546,7 +565,8 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
 
     /**
      * Get taxable country
-     * @param null $storeId
+     *
+     * @param int|Mage_Core_Model_Store $storeId
      * @return mixed
      */
     public function getTaxableCountry($storeId = null)
@@ -660,5 +680,20 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
     public function getOnepageNormalizeMessage($store = null)
     {
         return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_ONEPAGE_NORMALIZE_MESSAGE, $store);
+    }
+
+    /**
+     * Get UPC attributeCode
+     *
+     * @param int|Mage_Core_Model_Store $storeId
+     * @return string
+     */
+    public function getUpcAttributeCode($storeId = null)
+    {
+        if (!(bool)Mage::getStoreConfig(self::XML_PATH_TO_AVATAX_UPC_CHECK_STATUS, $storeId)) {
+            return '';
+        }
+
+        return (string)Mage::getStoreConfig(self::PATH_TO_AVATAX_UPC_ATTRIBUTE_CODE, $storeId);
     }
 }
