@@ -218,7 +218,34 @@ class OnePica_AvaTax_Model_Calculator extends Mage_Core_Model_Factory
      */
     public function invoice($invoice, $queue)
     {
-        return $this->_getService()->invoice($invoice, $queue);
+        $order = $invoice->getOrder();
+        $shippingAddress = ($order->getShippingAddress()) ? $order->getShippingAddress() : $order->getBillingAddress();
+        if (!$shippingAddress) {
+            throw new OnePica_AvaTax_Exception($this->_getHelper()->__('There is no address attached to this order'));
+        }
+
+        /** @var OnePica_AvaTax_Model_Service_Result_Invoice $invoiceResult */
+        $invoiceResult = $this->_getService()->invoice($invoice, $queue);
+
+        //if successful
+        if (!$invoiceResult->getHasError()) {
+            $message = $this->_getHelper()->__('Invoice #%s was saved to AvaTax', $invoiceResult->getDocumentCode());
+            $this->_addStatusHistoryComment($order, $message);
+
+            $totalTax = $invoiceResult->getTotalTax();
+            if ($totalTax != $invoice->getBaseTaxAmount()) {
+                throw new OnePica_AvaTax_Model_Service_Exception_Unbalanced(
+                    'Collected: '. $invoice->getBaseTaxAmount() . ', Actual: ' . $totalTax
+                );
+            }
+
+            //if not successful
+        } else {
+            $messages = $invoiceResult->getErrors();
+            throw new OnePica_AvaTax_Model_Service_Exception_Commitfailure(implode(' // ', $messages));
+        }
+
+        return true;
     }
 
     /**
@@ -266,5 +293,32 @@ class OnePica_AvaTax_Model_Calculator extends Mage_Core_Model_Factory
     protected function _getErrorsHelper()
     {
         return Mage::helper('avatax/errors');
+    }
+
+    /**
+     * Returns the AvaTax helper.
+     *
+     * @return OnePica_AvaTax_Helper_Data
+     */
+    protected function _getHelper()
+    {
+        return Mage::helper('avatax');
+    }
+
+    /**
+     * Adds a comment to order history. Method choosen based on Magento version.
+     *
+     * @param Mage_Sales_Model_Order $order
+     * @param string $comment
+     * @return $this
+     */
+    protected function _addStatusHistoryComment($order, $comment)
+    {
+        if (method_exists($order, 'addStatusHistoryComment')) {
+            $order->addStatusHistoryComment($comment)->save();
+        } elseif (method_exists($order, 'addStatusToHistory')) {
+            $order->addStatusToHistory($order->getStatus(), $comment, false)->save();
+        }
+        return $this;
     }
 }
