@@ -525,23 +525,6 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
     }
 
     /**
-     * Adds a comment to order history. Method choosen based on Magento version.
-     *
-     * @param Mage_Sales_Model_Order $order
-     * @param string $comment
-     * @return self
-     */
-    protected function _addStatusHistoryComment($order, $comment)
-    {
-        if (method_exists($order, 'addStatusHistoryComment')) {
-            $order->addStatusHistoryComment($comment)->save();
-        } elseif (method_exists($order, 'addStatusToHistory')) {
-            $order->addStatusToHistory($order->getStatus(), $comment, false)->save();
-        }
-        return $this;
-    }
-
-    /**
      * Get document code for invoice
      *
      * @param Mage_Sales_Model_Order_Invoice $invoice
