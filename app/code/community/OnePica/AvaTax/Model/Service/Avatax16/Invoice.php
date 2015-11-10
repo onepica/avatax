@@ -118,9 +118,6 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         $orderDate = $this->_convertGmtDate($order->getCreatedAt(), $storeId);
 
         $shippingAddress = ($order->getShippingAddress()) ? $order->getShippingAddress() : $order->getBillingAddress();
-        if (!$shippingAddress) {
-            throw new OnePica_AvaTax_Exception($this->__('There is no address attached to this order'));
-        }
 
         // Set up document for request
         $this->_request = $this->_getNewDocumentRequestObject();
@@ -158,24 +155,23 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         //send to AvaTax
         $result = $this->_send($order->getStoreId());
 
+        /** @var OnePica_AvaTax_Model_Service_Result_Creditmemo $creditmemoResult */
+        $creditmemoResult = Mage::getModel('avatax/service_result_creditmemo');
+        $creditmemoResult->setHasError($result->getHasError());
+
         //if successful
         if (!$result->getHasError()) {
-            $message = $this->_getHelper()->__('Credit memo #%s was saved to AvaTax', $result->getHeader()->getDocumentCode());
-            $this->_addStatusHistoryComment($order, $message);
-
             $totalTax = $result->getCalculatedTaxSummary()->getTotalTax();
-            if ($totalTax != ($creditmemo->getBaseTaxAmount() * -1)) {
-                throw new OnePica_AvaTax_Model_Service_Exception_Unbalanced(
-                    'Collected: ' . $creditmemo->getTaxAmount() . ', Actual: ' . $totalTax
-                );
-            }
+            $creditmemoResult->setTotalTax($totalTax);
+            $documentCode = $result->getHeader()->getDocumentCode();
+            $creditmemoResult->setDocumentCode($documentCode);
+
             //if not successful
         } else {
-            $messages = print_r($result->getErrors(), true);
-            throw new OnePica_AvaTax_Model_Service_Exception_Commitfailure($messages);
+            $creditmemoResult->setErrors($result->getErrors());
         }
 
-        return $result;
+        return $creditmemoResult;
     }
 
     /**

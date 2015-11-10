@@ -261,7 +261,34 @@ class OnePica_AvaTax_Model_Calculator extends Mage_Core_Model_Factory
      */
     public function creditmemo($creditmemo, $queue)
     {
-        return $this->_getService()->creditmemo($creditmemo, $queue);
+        $order = $creditmemo->getOrder();
+        $shippingAddress = ($order->getShippingAddress()) ? $order->getShippingAddress() : $order->getBillingAddress();
+        if (!$shippingAddress) {
+            throw new OnePica_AvaTax_Exception($this->_getHelper()->__('There is no address attached to this order'));
+        }
+
+        /** @var OnePica_AvaTax_Model_Service_Result_Creditmemo $creditmemoResult */
+        $creditmemoResult = $this->_getService()->creditmemo($creditmemo, $queue);
+
+        //if successful
+        if (!$creditmemoResult->getHasError()) {
+            $message = $this->_getHelper()->__('Credit memo #%s was saved to AvaTax', $creditmemoResult->getDocumentCode());
+            $this->_addStatusHistoryComment($order, $message);
+
+            $totalTax = $creditmemoResult->getTotalTax();
+            if ($totalTax != ($creditmemo->getTaxAmount() * -1)) {
+                throw new OnePica_AvaTax_Model_Service_Exception_Unbalanced(
+                    'Collected: '. $creditmemo->getTaxAmount() . ', Actual: ' . $totalTax
+                );
+            }
+
+            //if not successful
+        } else {
+            $messages = $creditmemoResult->getErrors();
+            throw new OnePica_AvaTax_Model_Service_Exception_Commitfailure(implode(' // ', $messages));
+        }
+
+        return true;
     }
 
     /**
