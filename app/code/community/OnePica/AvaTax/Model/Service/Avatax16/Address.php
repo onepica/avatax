@@ -69,7 +69,8 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
 
     /**
      * OnePica_AvaTax_Model_Service_Avatax16_Address constructor.
-     * @param $data
+     *
+     * @param array $data
      * @internal param Mage_Customer_Model_Address_Abstract $_address
      */
     public function __construct($data)
@@ -80,7 +81,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
         if (isset($data['address'])) {
             $this->setAddress($data['address']);
         }
-        parent::_construct();
+        self::_construct();
     }
 
     /**
@@ -109,6 +110,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
 
     /**
      * Getter for address resolution
+     *
      * @return OnePica_AvaTax16_Document_Part_Location_Address
      */
     public function getLocationAddress()
@@ -118,6 +120,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
 
     /**
      * Setter for address resolution
+     *
      * @param OnePica_AvaTax16_Document_Part_Location_Address $addressResolution
      */
     public function setLocationAddress($addressResolution)
@@ -141,6 +144,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
 
     /**
      * Address getter
+     *
      * @return Mage_Customer_Model_Address_Abstract
      */
     public function getAddress()
@@ -149,11 +153,13 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
     }
 
     /**
+     * Get Location Address Object
+     *
      * @return OnePica_AvaTax16_Document_Part_Location_Address
      */
     public function getLocationAddressObject()
     {
-        if (is_null($this->_localeObject)) {
+        if (null === $this->_localeObject) {
             $this->_localeObject = $this->_getNewDocumentPartLocationAddressObject();
         }
         return $this->_localeObject;
@@ -166,7 +172,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
      */
     protected function _initAddressResolution()
     {
-        if (is_null($this->getLocationAddress())) {
+        if (null === $this->getLocationAddress()) {
             $this->setLocationAddress($this->getLocationAddressObject());
         }
         $address = $this->getAddress()->getStreet();
@@ -236,7 +242,8 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
     protected function _sendAddressValidationRequest()
     {
         /** @var OnePica_AvaTax16_AddressResolution_ResolveSingleAddressResponse $resolvedAddress */
-        $resolvedAddress = $this->getServiceConfig()->getTaxConnection()->resolveSingleAddress($this->getLocationAddress());
+        $resolvedAddress = $this->getServiceConfig()->getTaxConnection()
+                         ->resolveSingleAddress($this->getLocationAddress());
 
         $this->_log(
             OnePica_AvaTax_Model_Source_Avatax_Logtype::VALIDATE,
