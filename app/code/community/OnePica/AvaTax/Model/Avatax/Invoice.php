@@ -441,7 +441,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
 
         $line = new Line();
         $line->setNo(count($this->_lines));
-        $line->setItemCode(substr($item->getSku(), 0, 50));
+        $line->setItemCode($this->_getItemCode($this->_getProductForItemCode($item), $item, $storeId));
         $line->setDescription($item->getName());
         $line->setQty($item->getQty());
         $line->setAmount($price);
@@ -460,6 +460,28 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
 
         $this->_lineToItemId[count($this->_lines)] = $item->getOrderItemId();
         $this->_lines[] = $line;
+    }
+
+    /**
+     * Retrieve product for item code
+     *
+     * @param Mage_Sales_Model_Order_Invoice_Item|Mage_Sales_Model_Order_Creditmemo_Item $item
+     * @return null|Mage_Catalog_Model_Product
+     */
+    protected function _getProductForItemCode($item)
+    {
+        $product = $this->_getProductByProductId($item->getProductId());
+        if (!$this->_isConfigurable($item)) {
+            return $product;
+        }
+
+        $children = $item->getOrderItem()->getChildrenItems();
+
+        if (isset($children[0]) && $children[0]->getProductId()) {
+            $product = $this->_getProductByProductId($children[0]->getProductId());
+        }
+
+        return $product;
     }
 
     /**
@@ -490,5 +512,23 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
     protected function _convertGmtDate($gmt, $storeId)
     {
         return Mage::app()->getLocale()->storeDate($storeId, $gmt)->toString(Varien_Date::DATE_INTERNAL_FORMAT);
+    }
+
+    /**
+     * Get item code
+     *
+     * @param Mage_Catalog_Model_Product                                                 $product
+     * @param Mage_Sales_Model_Order_Invoice_Item|Mage_Sales_Model_Order_Creditmemo_Item $item
+     * @param int|Mage_Core_Model_Store                                                  $storeId
+     * @return string
+     */
+    protected function _getItemCode($product, $item, $storeId)
+    {
+        $itemCode = $this->_getUpcCode($product, $storeId);
+        if (empty($itemCode)) {
+            $itemCode = $item->getSku();
+        }
+
+        return substr($itemCode, 0, 50);
     }
 }

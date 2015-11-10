@@ -373,12 +373,74 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
         foreach ($items as $item) {
             if (!$this->isProductCalculated($item)) {
                 $productIds[] = $item->getProductId();
+                $simpleProductId = $this->_getSimpleProductIdByConfigurable($item);
+                if ($simpleProductId) {
+                    $productIds[] = $simpleProductId;
+                }
             }
         }
+
         $this->_productCollection = Mage::getModel('catalog/product')->getCollection()
             ->addAttributeToSelect('*')
             ->addAttributeToFilter('entity_id', array('in' => $productIds));
+
         return $this;
+    }
+
+    /**
+     * Get simple product id from configurable item
+     *
+     * @param Mage_Sales_Model_Quote_Item|Mage_Sales_Model_Order_Creditmemo_Item|Mage_Sales_Model_Order_Invoice_Item $item
+     * @return int
+     */
+    protected function _getSimpleProductIdByConfigurable($item)
+    {
+        if (($item instanceof Mage_Sales_Model_Quote_Item
+            || $item instanceof Mage_Sales_Model_Quote_Address_Item)
+            && $this->_isConfigurable($item)
+        ) {
+            $children = $item->getChildren();
+            if (isset($children[0]) && $children[0]->getProductId()) {
+                return $children[0]->getProductId();
+            }
+        }
+
+        if (($item instanceof Mage_Sales_Model_Order_Invoice_Item
+             || $item instanceof Mage_Sales_Model_Order_Creditmemo_Item)
+            && $this->_isConfigurable($item)
+        ) {
+            $children = $item->getOrderItem()->getChildrenItems();
+            if (isset($children[0]) && $children[0]->getProductId()) {
+                return $children[0]->getProductId();
+            }
+        }
+
+        return 0;
+    }
+
+    /**
+     * Checks if item is configurable
+     *
+     * @param Mage_Sales_Model_Quote_Address_Item|Mage_Sales_Model_Quote_Item|Mage_Sales_Model_Order_Creditmemo_Item|Mage_Sales_Model_Order_Invoice_Item $item
+     * @return bool
+     */
+    protected function _isConfigurable($item)
+    {
+        if ($item instanceof Mage_Sales_Model_Quote_Item) {
+            return $item->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE;
+        }
+
+        if ($item instanceof Mage_Sales_Model_Quote_Address_Item) {
+            return $item->getProduct()->getTypeId() === Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE;
+        }
+
+        if (($item instanceof Mage_Sales_Model_Order_Invoice_Item
+             || $item instanceof Mage_Sales_Model_Order_Creditmemo_Item)
+        ) {
+            return $item->getOrderItem()->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE;
+        }
+
+        return false;
     }
 
     /**
@@ -480,20 +542,14 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
      * @param Mage_Catalog_Model_Product $product
      * @param int                        $refNumber
      * @param int                        $storeId
-     * @return null|string
+     * @return string
      */
     protected function _getRefValueByProductAndNumber($product, $refNumber, $storeId)
     {
-        $value = null;
         $helperMethod = 'getRef' . $refNumber . 'AttributeCode';
         $refCode = Mage::helper('avatax')->{$helperMethod}($storeId);
-        if ($refCode && $product->getResource()->getAttribute($refCode)) {
-            try {
-                $value = (string)$product->getResource()->getAttribute($refCode)->getFrontend()->getValue($product);
-            } catch (Exception $e) {
-                Mage::logException($e);
-            }
-        }
+        $value = $this->_getProductAttributeValue($product, $refCode);
+
         return $value;
     }
 
@@ -547,5 +603,66 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
         }
 
         return $object->getStoreId();
+    }
+
+    /**
+     * Get product attribute value
+     *
+     * @param Mage_Catalog_Model_Product $product
+     * @param string                     $code
+     * @return string
+     */
+    protected function _getProductAttributeValue($product, $code)
+    {
+        $value = '';
+        if ($code && $product->getResource()->getAttribute($code)) {
+            try {
+                $value = (string)$product->getResource()
+                    ->getAttribute($code)
+                    ->getFrontend()
+                    ->getValue($product);
+            } catch (Exception $e) {
+                Mage::logException($e);
+            }
+        }
+        return $value;
+    }
+
+    /**
+     * Get UPC code from product
+     *
+     * @param Mage_Catalog_Model_Product $product
+     * @param int|Mage_Core_Model_Store  $storeId
+     * @return string
+     */
+    protected function _getUpcCode($product, $storeId)
+    {
+        $upc = $this->_getProductAttributeValue(
+            $product,
+            $this->_getUpcAttributeCode($storeId)
+        );
+
+        return !empty($upc) ? 'UPC:' . $upc : '';
+    }
+
+    /**
+     * Get UPC attribute code
+     *
+     * @param int|Mage_Core_Model_Store $storeId
+     * @return string
+     */
+    protected function _getUpcAttributeCode($storeId)
+    {
+        return $this->_getDataHelper()->getUpcAttributeCode($storeId);
+    }
+
+    /**
+     * Get data helper
+     *
+     * @return OnePica_AvaTax_Helper_Data
+     */
+    protected function _getDataHelper()
+    {
+        return Mage::helper('avatax');
     }
 }
