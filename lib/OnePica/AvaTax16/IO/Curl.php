@@ -262,7 +262,6 @@ class OnePica_AvaTax16_IO_Curl
         $this->setOpt(CURLINFO_HEADER_OUT, true);
         $this->setOpt(CURLOPT_HEADERFUNCTION, array($this, 'headerCallback'));
         $this->setOpt(CURLOPT_RETURNTRANSFER, true);
-        $this->setOpt(CURLOPT_SSL_VERIFYPEER, false);
         $this->_headers = new OnePica_AvaTax16_IO_CaseInsensitiveArray();
         $this->setURL($base_url);
     }
