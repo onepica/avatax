@@ -272,7 +272,8 @@ class OnePica_AvaTax_Model_Calculator extends Mage_Core_Model_Factory
 
         //if successful
         if (!$creditmemoResult->getHasError()) {
-            $message = $this->_getHelper()->__('Credit memo #%s was saved to AvaTax', $creditmemoResult->getDocumentCode());
+            $message = $this->_getHelper()
+                     ->__('Credit memo #%s was saved to AvaTax', $creditmemoResult->getDocumentCode());
             $this->_addStatusHistoryComment($order, $message);
 
             $totalTax = $creditmemoResult->getTotalTax();
