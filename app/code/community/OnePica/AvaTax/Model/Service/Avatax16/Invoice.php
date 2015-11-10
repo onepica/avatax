@@ -79,6 +79,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         //send to AvaTax
         $result = $this->_send($order->getStoreId());
 
+        /** @var OnePica_AvaTax_Model_Service_Result_Invoice $invoiceResult */
         $invoiceResult = Mage::getModel('avatax/service_result_invoice');
         $invoiceResult->setHasError($result->getHasError());
 

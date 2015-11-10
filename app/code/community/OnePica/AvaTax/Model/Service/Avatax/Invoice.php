@@ -44,10 +44,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
      * @see OnePica_AvaTax_Model_Observer::salesOrderPlaceAfter()
      * @param Mage_Sales_Model_Order_Invoice $invoice
      * @param OnePica_AvaTax_Model_Records_Queue $queue
-     * @return bool
-     * @throws OnePica_AvaTax_Exception
-     * @throws OnePica_AvaTax_Model_Service_Exception_Commitfailure
-     * @throws OnePica_AvaTax_Model_Service_Exception_Unbalanced
+     * @return OnePica_AvaTax_Model_Service_Result_Invoice
      */
     public function invoice($invoice, $queue)
     {
@@ -58,9 +55,6 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
         $statusDate = $this->_convertGmtDate($queue->getUpdatedAt(), $storeId);
 
         $shippingAddress = ($order->getShippingAddress()) ? $order->getShippingAddress() : $order->getBillingAddress();
-        if (!$shippingAddress) {
-            throw new OnePica_AvaTax_Exception($this->__('There is no address attached to this order'));
-        }
 
         $this->_request = new GetTaxRequest();
         $this->_request->setDocCode($invoice->getIncrementId());
@@ -97,16 +91,17 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
         //send to AvaTax
         $result = $this->_send($order->getStoreId());
 
-        //if successful
-        if ($result->getResultCode() == SeverityLevel::$Success) {
-            $message = $this->_getHelper()->__('Invoice #%s was saved to AvaTax', $result->getDocCode());
-            $this->_addStatusHistoryComment($order, $message);
+        /** @var OnePica_AvaTax_Model_Service_Result_Invoice $invoiceResult */
+        $invoiceResult = Mage::getModel('avatax/service_result_invoice');
+        $resultHasError = $result->getResultCode() == SeverityLevel::$Success;
+        $invoiceResult->setHasError($resultHasError);
 
-            if ($result->getTotalTax() != $invoice->getBaseTaxAmount()) {
-                throw new OnePica_AvaTax_Model_Service_Exception_Unbalanced(
-                    'Collected: '. $invoice->getBaseTaxAmount() . ', Actual: ' . $result->getTotalTax()
-                );
-            }
+        //if successful
+        if ($resultHasError) {
+            $totalTax = $result->getTotalTax();
+            $invoiceResult->setTotalTax($totalTax);
+            $documentCode = $result->getDocCode();
+            $invoiceResult->setDocumentCode($documentCode);
 
             //if not successful
         } else {
@@ -114,10 +109,10 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
             foreach ($result->getMessages() as $message) {
                 $messages[] = $message->getSummary();
             }
-            throw new OnePica_AvaTax_Model_Service_Exception_Commitfailure(implode(' // ', $messages));
+            $invoiceResult->setErrors($messages);
         }
 
-        return true;
+        return $invoiceResult;
     }
 
     /**
