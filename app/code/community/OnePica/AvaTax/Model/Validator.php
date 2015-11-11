@@ -108,7 +108,7 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
             if ($checkFieldsResult) {
                 return $checkFieldsResult;
             }
-            /** @var Varien_Object $result */
+            /** @var OnePica_AvaTax_Model_Service_Result_AddressValidate $result */
             $result = $this->_getService()->getAddressValidator($address)->validate();
         } else {
             $errors = array();
@@ -140,7 +140,7 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
      *
      * @param int $isAddressValidationOn
      * @param int $isAddressActionable
-     * @param OnePica_AvaTax16_AddressResolution_ResolveSingleAddressResponse $result
+     * @param OnePica_AvaTax_Model_Service_Result_AddressValidate $result
      * @return array|bool|null
      */
     protected function _addressValidation($isAddressValidationOn, $isAddressActionable, $result)
