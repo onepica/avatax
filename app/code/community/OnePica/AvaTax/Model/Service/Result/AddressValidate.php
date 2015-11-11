@@ -121,7 +121,7 @@ class OnePica_AvaTax_Model_Service_Result_AddressValidate
     /**
      * Get Address
      *
-     * @return bool
+     * @return OnePica_AvaTax_Model_Service_Result_Address
      */
     public function getAddress()
     {
