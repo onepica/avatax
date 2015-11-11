@@ -226,11 +226,12 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
      * Address normalization
      *
      * @param bool $isAddressNormalizationOn
-     * @param Varien_Object $result
+     * @param OnePica_AvaTax_Model_Service_Result_AddressValidate $result
      * @return $this
      * @throws OnePica_AvaTax_Model_Service_Exception_Address
      */
-    protected function _addressNormalization($isAddressNormalizationOn, Varien_Object $result)
+    protected function _addressNormalization($isAddressNormalizationOn,
+        OnePica_AvaTax_Model_Service_Result_AddressValidate $result)
     {
         if ($isAddressNormalizationOn && !$result->getHasError()) {
             if ($result->getAddress() instanceof OnePica_AvaTax_Model_Service_Result_Address) {
