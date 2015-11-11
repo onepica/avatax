@@ -215,13 +215,17 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
         $response->setHasError($result->getHasError());
         $response->setErrors($result->getErrors());
         if (!$response->getHasError()) {
-            $addressData = new Varien_Object($result->getAddress()->toArray());
-            // fix for Varien_Object construct function with properties names
-            $addressData->setPostalCode($addressData->getData('postalCode'));
-            $response->setAddress($addressData);
-            $response->setRequiredProperties($result->getAddress()->getRequiredProperties());
+            $resultAddress = Mage::getModel('avatax/service_result_address');
+            $address = $result->getAddress();
+            $resultAddress->setLine1($address->getLine1());
+            $resultAddress->setLine2($address->getLine2());
+            $resultAddress->setCity($address->getCity());
+            $resultAddress->setState($address->getState());
+            $resultAddress->setPostalCode($address->getPostalCode());
+            $resultAddress->setCountry($address->getCountry());
+
+            $response->setAddress($resultAddress);
         }
-        $response->setExcludedProperties($result->getExcludedProperties());
         $response->setResolution(in_array($result->getResolutionQuality(), $this->_successResponse));
 
         // if we have bad resolution we should set error with message

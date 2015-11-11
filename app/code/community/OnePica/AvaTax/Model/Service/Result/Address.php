@@ -22,7 +22,7 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-abstract class OnePica_AvaTax_Model_Service_Result_Address
+class OnePica_AvaTax_Model_Service_Result_Address
 {
     /**
      * Line 1
@@ -46,11 +46,11 @@ abstract class OnePica_AvaTax_Model_Service_Result_Address
     protected $_city;
 
     /**
-     * Region
+     * State
      *
      * @var string
      */
-    protected $_region;
+    protected $_state;
 
     /**
      * Country
@@ -133,24 +133,24 @@ abstract class OnePica_AvaTax_Model_Service_Result_Address
     }
 
     /**
-     * Get Region
+     * Get State
      *
      * @return string|null
      */
-    public function getRegion()
+    public function getState()
     {
-        return $this->_region;
+        return $this->_state;
     }
 
     /**
-     * Set Region
+     * Set State
      *
      * @param string $value
      * @return $this
      */
-    public function setRegion($value)
+    public function setState($value)
     {
-        $this->_region = $value;
+        $this->_state = $value;
         return $this;
     }
 
