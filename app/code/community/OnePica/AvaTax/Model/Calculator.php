@@ -277,7 +277,7 @@ class OnePica_AvaTax_Model_Calculator extends Mage_Core_Model_Factory
             $this->_addStatusHistoryComment($order, $message);
 
             $totalTax = $creditmemoResult->getTotalTax();
-            if ($totalTax != ($creditmemo->getTaxAmount() * -1)) {
+            if ($totalTax != ($creditmemo->getBaseTaxAmount() * -1)) {
                 throw new OnePica_AvaTax_Model_Service_Exception_Unbalanced(
                     'Collected: '. $creditmemo->getTaxAmount() . ', Actual: ' . $totalTax
                 );
