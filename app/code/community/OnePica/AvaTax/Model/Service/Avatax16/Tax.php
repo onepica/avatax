@@ -338,10 +338,11 @@ class OnePica_AvaTax_Model_Service_Avatax16_Tax extends OnePica_AvaTax_Model_Ser
     /**
      * Get Request Header With Main Values
      *
-     * @param int $storeId
-     * @return OnePica_AvaTax16_Document_Request_Header
+     * @param int                                                             $storeId
+     * @param OnePica_AvaTax_Model_Sales_Quote_Address|Mage_Sales_Model_Order $object
+     * @return \OnePica_AvaTax16_Document_Request_Header
      */
-    protected function _getRequestHeaderWithMainValues($storeId)
+    protected function _getRequestHeaderWithMainValues($storeId, $object)
     {
         $configModel = $this->getServiceConfig()->init($storeId);
         $config = $configModel->getLibConfig();
@@ -350,7 +351,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Tax extends OnePica_AvaTax_Model_Ser
         $header->setAccountId($config->getAccountId());
         $header->setCompanyCode($config->getCompanyCode());
         $header->setTransactionType(self::TRANSACTION_TYPE_SALE);
-        $header->setCustomerCode($this->_getConfigHelper()->getSalesPersonCode($storeId));
+        $header->setCustomerCode($this->_getCalculationHelper()->getCustomerCode($object));
         $header->setVendorCode(self::DEFAULT_VENDOR_CODE);
 
         /** @todo: Remove this code if we will not use those properties

@@ -100,7 +100,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         $this->_request = $this->_getNewDocumentRequestObject();
 
         // set up header
-        $header = $this->_getRequestHeaderWithMainValues($storeId);
+        $header = $this->_getRequestHeaderWithMainValues($storeId, $address);
         $header->setDocumentCode('quote-' . $address->getId());
         $header->setTransactionDate($this->_getDateModel()->date('Y-m-d'));
         $header->setDefaultLocations($this->_getHeaderDefaultLocations($address));

@@ -59,7 +59,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         $this->_request = $this->_getNewDocumentRequestObject();
 
         // set up header
-        $header = $this->_getRequestHeaderWithMainValues($storeId);
+        $header = $this->_getRequestHeaderWithMainValues($storeId, $order);
         $header->setDocumentCode($this->_getInvoiceDocumentCode($invoice));
         $header->setTransactionDate($invoiceDate);
         $header->setTaxCalculationDate($orderDate);
@@ -134,7 +134,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         $this->_request = $this->_getNewDocumentRequestObject();
 
         // set up header
-        $header = $this->_getRequestHeaderWithMainValues($storeId);
+        $header = $this->_getRequestHeaderWithMainValues($storeId, $order);
         $header->setDocumentCode($this->_getCreditmemoDocumentCode($creditmemo));
         $header->setTransactionDate($creditmemoDate);
         $header->setTaxCalculationDate($orderDate);
