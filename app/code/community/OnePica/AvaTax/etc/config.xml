@@ -219,7 +219,6 @@
                 <args>
                     <modules>
                         <avatax after="Mage_Adminhtml">OnePica_AvaTax_Adminhtml</avatax>
-                        <frontName>avatax</frontName>
                     </modules>
                 </args>
             </adminhtml>
