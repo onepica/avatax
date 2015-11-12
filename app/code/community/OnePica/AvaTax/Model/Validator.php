@@ -24,7 +24,6 @@
  */
 class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
 {
-
     /**
      * The AvaTax Response (Normalized) Address object.
      * This is the normalized Ava address returned by the validation request.
@@ -35,6 +34,7 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
 
     /**
      * Service
+     *
      * @var OnePica_AvaTax_Model_Service_Abstract
      */
     protected $_service;
@@ -48,6 +48,7 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
 
     /**
      * Class constructor
+     *
      * @param array $params
      * @throws OnePica_AvaTax_Exception
      */
@@ -59,11 +60,15 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
 
     /**
      * Set Address
+     *
      * @param Mage_Customer_Model_Address_Abstract $address
+     * @return $this
      */
     public function setAddress($address)
     {
         $this->_address = $address;
+
+        return $this;
     }
 
     /**
@@ -79,7 +84,9 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
     /**
      * Get service address validator
      *
-     * @return mixed|OnePica_AvaTax_Model_Service_Avatax_Abstract
+     * @param OnePica_AvaTax_Model_Sales_Quote_Address $address
+     * @return bool|array|null
+     * @throws \OnePica_AvaTax_Model_Service_Exception_Address
      */
     public function validate($address)
     {
@@ -87,7 +94,8 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
         /** @var Mage_Sales_Model_Quote $quote */
         $quote = $address->getQuote();
         $isAddressValidationOn = $this->_getAddressHelper()->isAddressValidationOn($address, $quote->getStoreId());
-        $isAddressNormalizationOn = $this->_getAddressHelper()->isAddressNormalizationOn($address, $quote->getStoreId());
+        $isAddressNormalizationOn = $this->_getAddressHelper()
+            ->isAddressNormalizationOn($address, $quote->getStoreId());
         $isAddressActionable = $this->_getAddressHelper()->isAddressActionable(
             $address,
             $quote->getStoreId(),
@@ -122,6 +130,7 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
 
     /**
      * Get config helper
+     *
      * @return OnePica_AvaTax_Helper_Config
      */
     protected function _getConfigHelper()
@@ -132,8 +141,8 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
     /**
      * Address validation
      *
-     * @param int $isAddressValidationOn
-     * @param int $isAddressActionable
+     * @param int                                                             $isAddressValidationOn
+     * @param int                                                             $isAddressActionable
      * @param OnePica_AvaTax16_AddressResolution_ResolveSingleAddressResponse $result
      * @return array|bool|null
      */
@@ -143,11 +152,13 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
         if ($isAddressValidationOn == OnePica_AvaTax_Model_Source_Addressvalidation::ENABLED_PREVENT_ORDER) {
             if (!$result->getHasError() && $result->getResolution()) {
                 $this->getAddress()->setAddressValidated(true);
+
                 return true;
             } else {
                 foreach ($result->getErrors() as $message) {
                     $errors[] = $this->__($message);
                 }
+
                 return $errors;
             }
         } elseif ($isAddressValidationOn == OnePica_AvaTax_Model_Source_Addressvalidation::ENABLED_ALLOW_ORDER) {
@@ -161,6 +172,7 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
                         $this->_addValidateNotice($this->__($message));
                     }
                 }
+
                 return true;
             }
 
@@ -169,14 +181,17 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
         } elseif (!$isAddressValidationOn && $isAddressActionable) {
             if ($result->getResolution()) {
                 $this->getAddress()->setAddressValidated(true);
+
                 return true;
             } else {
                 foreach ($result->getErrors() as $message) {
                     $errors[] = $this->__($message);
                 }
+
                 return $errors;
             }
         }
+
         return null;
     }
 
@@ -219,7 +234,7 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
     /**
      * Address normalization
      *
-     * @param $isAddressNormalizationOn
+     * @param bool          $isAddressNormalizationOn
      * @param Varien_Object $result
      * @return $this
      * @throws OnePica_AvaTax_Model_Service_Exception_Address
@@ -237,7 +252,6 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
 
         return $this;
     }
-
 
     /**
      * Sets attributes from the AvaTax Response address on the Mage address.
@@ -257,6 +271,7 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
             ->setCountryId($this->getResponseAddress()->getCountry())
             ->save()
             ->setAddressNormalized(true);
+
         return $this;
     }
 
@@ -272,6 +287,7 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
 
     /**
      * Address getter
+     *
      * @return Mage_Customer_Model_Address_Abstract
      */
     public function getAddress()
@@ -280,6 +296,8 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
     }
 
     /**
+     * Get response address
+     *
      * @return OnePica_AvaTax16_Document_Part_Location_Address
      */
     public function getResponseAddress()
@@ -288,17 +306,23 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
     }
 
     /**
+     * Set response address
+     *
      * @param OnePica_AvaTax16_Document_Part_Location_Address $responseAddress
+     * @return $this
      */
     public function setResponseAddress($responseAddress)
     {
         $this->_responseAddress = $responseAddress;
+
+        return $this;
     }
 
     /**
      * Alias to the helper translate method.
      *
      * @return string
+     * @skipPublicMethodNaming __
      */
     public function __()
     {
@@ -317,6 +341,7 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
         $notice = Mage::getSingleton('core/message')->notice($message);
         $notice->setIdentifier(OnePica_AvaTax_Helper_Errors::VALIDATION_NOTICE_IDENTIFIER);
         Mage::getSingleton('core/session')->addMessage($notice);
+
         return $this;
     }
 }
