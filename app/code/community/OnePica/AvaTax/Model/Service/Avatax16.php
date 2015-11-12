@@ -81,7 +81,7 @@ class OnePica_AvaTax_Model_Service_Avatax16
      */
     protected function _getAddressValidatorResource($address)
     {
-        return Mage::getSingleton('avatax/service_avatax16_address',
+        return Mage::getModel('avatax/service_avatax16_address',
             array('service_config' => $this->getServiceConfig(), 'address' => $address));
     }
 
