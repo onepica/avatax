@@ -35,6 +35,7 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
 
     /**
      * Service
+     *
      * @var OnePica_AvaTax_Model_Service_Abstract
      */
     protected $_service;
@@ -48,6 +49,7 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
 
     /**
      * Class constructor
+     *
      * @param array $params
      * @throws OnePica_AvaTax_Exception
      */
@@ -59,6 +61,7 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
 
     /**
      * Set Address
+     *
      * @param Mage_Customer_Model_Address_Abstract $address
      */
     public function setAddress($address)
@@ -79,6 +82,7 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
     /**
      * Get service address validator
      *
+     * @param Mage_Customer_Model_Address_Abstract $address
      * @return mixed|OnePica_AvaTax_Model_Service_Avatax_Abstract
      */
     public function validate($address)
@@ -87,7 +91,8 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
         /** @var Mage_Sales_Model_Quote $quote */
         $quote = $address->getQuote();
         $isAddressValidationOn = $this->_getAddressHelper()->isAddressValidationOn($address, $quote->getStoreId());
-        $isAddressNormalizationOn = $this->_getAddressHelper()->isAddressNormalizationOn($address, $quote->getStoreId());
+        $isAddressNormalizationOn = $this->_getAddressHelper()
+                                  ->isAddressNormalizationOn($address, $quote->getStoreId());
         $isAddressActionable = $this->_getAddressHelper()->isAddressActionable(
             $address,
             $quote->getStoreId(),
@@ -103,7 +108,7 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
             if ($checkFieldsResult) {
                 return $checkFieldsResult;
             }
-            /** @var Varien_Object $result */
+            /** @var OnePica_AvaTax_Model_Service_Result_AddressValidate $result */
             $result = $this->_getService()->getAddressValidator($address)->validate();
         } else {
             $errors = array();
@@ -122,6 +127,7 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
 
     /**
      * Get config helper
+     *
      * @return OnePica_AvaTax_Helper_Config
      */
     protected function _getConfigHelper()
@@ -134,7 +140,7 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
      *
      * @param int $isAddressValidationOn
      * @param int $isAddressActionable
-     * @param OnePica_AvaTax16_AddressResolution_ResolveSingleAddressResponse $result
+     * @param OnePica_AvaTax_Model_Service_Result_AddressValidate $result
      * @return array|bool|null
      */
     protected function _addressValidation($isAddressValidationOn, $isAddressActionable, $result)
@@ -219,15 +225,16 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
     /**
      * Address normalization
      *
-     * @param $isAddressNormalizationOn
-     * @param Varien_Object $result
+     * @param bool $isAddressNormalizationOn
+     * @param OnePica_AvaTax_Model_Service_Result_AddressValidate $result
      * @return $this
      * @throws OnePica_AvaTax_Model_Service_Exception_Address
      */
-    protected function _addressNormalization($isAddressNormalizationOn, Varien_Object $result)
+    protected function _addressNormalization($isAddressNormalizationOn,
+        OnePica_AvaTax_Model_Service_Result_AddressValidate $result)
     {
         if ($isAddressNormalizationOn && !$result->getHasError()) {
-            if ($result->getAddress() instanceof Varien_Object) {
+            if ($result->getAddress() instanceof OnePica_AvaTax_Model_Service_Result_Address) {
                 $this->setResponseAddress($result->getAddress());
                 $this->_convertResponseAddress();
             } else {
@@ -237,7 +244,6 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
 
         return $this;
     }
-
 
     /**
      * Sets attributes from the AvaTax Response address on the Mage address.
@@ -272,6 +278,7 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
 
     /**
      * Address getter
+     *
      * @return Mage_Customer_Model_Address_Abstract
      */
     public function getAddress()
@@ -280,6 +287,8 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
     }
 
     /**
+     * Get Response Address
+     *
      * @return OnePica_AvaTax16_Document_Part_Location_Address
      */
     public function getResponseAddress()
@@ -288,6 +297,8 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
     }
 
     /**
+     * Set Response Address
+     *
      * @param OnePica_AvaTax16_Document_Part_Location_Address $responseAddress
      */
     public function setResponseAddress($responseAddress)
