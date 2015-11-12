@@ -33,6 +33,7 @@ class OnePica_AvaTax_Model_Service_Avatax16
 
     /**
      * OnePica_AvaTax_Model_Service_Avatax16 constructor.
+     *
      * @param mixed
      */
     public function __construct()
@@ -75,7 +76,8 @@ class OnePica_AvaTax_Model_Service_Avatax16
     /**
      * Get Address Validator resource
      *
-     * return OnePica_AvaTax_Model_Service_Avatax16_Address
+     * @param OnePica_AvaTax_Model_Sales_Quote_Address $address
+     * @return OnePica_AvaTax_Model_Service_Avatax16_Address
      */
     protected function _getAddressValidatorResource($address)
     {
@@ -120,7 +122,7 @@ class OnePica_AvaTax_Model_Service_Avatax16
      * Save order in AvaTax system
      *
      * @see OnePica_AvaTax_Model_Observer::salesOrderPlaceAfter()
-     * @param Mage_Sales_Model_Order_Invoice $invoice
+     * @param Mage_Sales_Model_Order_Invoice     $invoice
      * @param OnePica_AvaTax_Model_Records_Queue $queue
      * @return bool
      */
@@ -133,7 +135,7 @@ class OnePica_AvaTax_Model_Service_Avatax16
      * Save order in AvaTax system
      *
      * @see OnePica_AvaTax_Model_Observer::salesOrderPlaceAfter()
-     * @param Mage_Sales_Model_Order_Creditmemo $creditmemo
+     * @param Mage_Sales_Model_Order_Creditmemo  $creditmemo
      * @param OnePica_AvaTax_Model_Records_Queue $queue
      * @return bool
      */
@@ -156,7 +158,8 @@ class OnePica_AvaTax_Model_Service_Avatax16
     /**
      * Get service address validator
      *
-     * @return OnePica_AvaTax_Model_Service_Avatax16_Address
+     * @param OnePica_AvaTax_Model_Sales_Quote_Address $address
+     * @return \OnePica_AvaTax_Model_Service_Avatax16_Address
      */
     public function getAddressValidator($address)
     {
