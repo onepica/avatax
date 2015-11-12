@@ -24,6 +24,86 @@ class OnePica_AvaTax_Helper_Calculation
     extends Mage_Core_Helper_Abstract
 {
     /**
+     * Sets the customer info if available
+     *
+     * @param OnePica_AvaTax_Model_Sales_Quote_Address|Mage_Sales_Model_Order $object
+     * @return $this
+     */
+    public function getCustomerCode($object)
+    {
+
+        /** @var Mage_Customer_Model_Customer $customer */
+        $customer = Mage::getModel('customer/customer');
+
+        if ($object->getCustomerId()) {
+            $customer->load($object->getCustomerId());
+        }
+
+        switch ($this->_getConfigHelper()->getCustomerCodeFormat($object->getStoreId())) {
+            case OnePica_AvaTax_Model_Source_Customercodeformat::LEGACY:
+                $customerCode = $this->_getLegacyCustomerCode($object, $customer);
+                break;
+            case OnePica_AvaTax_Model_Source_Customercodeformat::CUST_EMAIL:
+                $customerCode = $this->_getCustomerEmail($object, $customer)
+                    ?: $this->_getCustomerId($object);
+                break;
+            case OnePica_AvaTax_Model_Source_Customercodeformat::CUST_ID:
+            default:
+                $customerCode = $this->_getCustomerId($object);
+                break;
+        }
+
+        return $customerCode;
+    }
+
+    /**
+     * Retrieve customer email
+     *
+     * @param OnePica_AvaTax_Model_Sales_Quote_Address|Mage_Sales_Model_Order $object
+     * @param Mage_Customer_Model_Customer                                    $customer
+     * @return string
+     */
+    protected function _getCustomerEmail($object, $customer)
+    {
+        return $object->getCustomerEmail()
+            ?: $customer->getEmail();
+    }
+
+    /**
+     * Retrieve customer id
+     *
+     * @param OnePica_AvaTax_Model_Sales_Quote_Address|Mage_Sales_Model_Order $object
+     * @return string
+     */
+    protected function _getCustomerId($object)
+    {
+        return $object->getCustomerId()
+            ? $object->getCustomerId()
+            : 'guest-' . $object->getId();
+    }
+
+    /**
+     * Get legacy customer code
+     *
+     * @param OnePica_AvaTax_Model_Sales_Quote_Address|Mage_Sales_Model_Order $object
+     * @param Mage_Customer_Model_Customer                                    $customer
+     * @return string
+     */
+    protected function _getLegacyCustomerCode($object, $customer)
+    {
+        if ($customer->getId()) {
+            $customerCode = $customer->getName() . ' (' . $customer->getId() . ')';
+
+            return $customerCode;
+        }
+
+        $address = $object->getBillingAddress() ?: $object;
+        $customerCode = $address->getFirstname() . ' ' . $address->getLastname() . ' (Guest)';
+
+        return $customerCode;
+    }
+
+    /**
      * Get simple product id from configurable item
      *
      * @param Mage_Sales_Model_Quote_Item|Mage_Sales_Model_Order_Creditmemo_Item|Mage_Sales_Model_Order_Invoice_Item $item
