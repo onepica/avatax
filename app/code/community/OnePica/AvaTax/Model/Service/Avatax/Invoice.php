@@ -48,6 +48,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
      */
     public function invoice($invoice, $queue)
     {
+        $this->_lines = array();
         $order = $invoice->getOrder();
         $storeId = $order->getStoreId();
         $invoiceDate = $this->_convertGmtDate($invoice->getCreatedAt(), $storeId);
@@ -125,6 +126,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
      */
     public function creditmemo($creditmemo, $queue)
     {
+        $this->_lines = array();
         $order = $creditmemo->getOrder();
         $storeId = $order->getStoreId();
         $orderDate = $this->_convertGmtDate($order->getCreatedAt(), $storeId);
