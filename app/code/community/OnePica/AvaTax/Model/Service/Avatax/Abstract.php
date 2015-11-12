@@ -273,41 +273,53 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
     /**
      * Sets the customer info if available
      *
-     * @param Mage_Sales_Model_Quote|Mage_Sales_Model_Order $object
+     * @param OnePica_AvaTax_Model_Sales_Quote_Address|Mage_Sales_Model_Order $object
      * @return $this
      */
     protected function _addCustomer($object)
     {
-        $format = Mage::getStoreConfig('tax/avatax/cust_code_format', $object->getStoreId());
-        $customer = Mage::getModel('customer/customer');
+        $this->_request->setCustomerUsageType($this->_getCustomerUsageType());
+        $this->_request->setCustomerCode($this->_getCalculationHelper()->getCustomerCode($object));
 
-        if ($object->getCustomerId()) {
-            $customer->load($object->getCustomerId());
-            $taxClass = Mage::getModel('tax/class')->load($customer->getTaxClassId())->getOpAvataxCode();
-            $this->_request->setCustomerUsageType($taxClass);
-        }
-
-        switch ($format) {
-            case OnePica_AvaTax_Model_Source_Customercodeformat::LEGACY:
-                if ($customer->getId()) {
-                    $customerCode = $customer->getName() . ' (' . $customer->getId() . ')';
-                } else {
-                    $address = $object->getBillingAddress() ? $object->getBillingAddress() : $object;
-                    $customerCode = $address->getFirstname() . ' ' . $address->getLastname() . ' (Guest)';
-                }
-                break;
-            case OnePica_AvaTax_Model_Source_Customercodeformat::CUST_EMAIL:
-                $customerCode = $object->getCustomerEmail() ? $object->getCustomerEmail() : $customer->getEmail();
-                break;
-            case OnePica_AvaTax_Model_Source_Customercodeformat::CUST_ID:
-            default:
-                $customerCode = $object->getCustomerId() ? $object->getCustomerId() : 'guest-' . $object->getId();
-                break;
-        }
-
-        $this->_request->setCustomerCode($customerCode);
         return $this;
     }
+
+    /**
+     * Get customer usage type
+     *
+     * @return string
+     */
+    protected function _getCustomerUsageType()
+    {
+        return Mage::getModel('tax/class')->load($this->_getTaxClassId())->getOpAvataxCode();
+    }
+
+    /**
+     * Get tax class id
+     *
+     * @return int
+     */
+    protected function _getTaxClassId()
+    {
+        return Mage::getSingleton('customer/group')
+            ->load($this->_getCustomerGroupId())
+            ->getTaxClassId();
+    }
+
+    /**
+     * Get customer group id
+     *
+     * @return int
+     */
+    protected function _getCustomerGroupId()
+    {
+        if (Mage::app()->getStore()->isAdmin()) {
+            return Mage::getSingleton('adminhtml/sales_order_create')->getCustomerGroupId();
+        }
+
+        return Mage::getSingleton('customer/session')->getCustomerGroupId();
+    }
+
 
     /**
      * Adds the orgin address to the request
