@@ -95,6 +95,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
 
         $quote = $address->getQuote();
         $storeId = $quote->getStore()->getId();
+        $transactionDate = $this->_convertGmtDate($address->getCreatedAt(), $storeId);
 
         // Set up document for request
         $this->_request = $this->_getNewDocumentRequestObject();
@@ -102,7 +103,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         // set up header
         $header = $this->_getRequestHeaderWithMainValues($storeId);
         $header->setDocumentCode('quote-' . $address->getId());
-        $header->setTransactionDate($this->_getDateModel()->date('Y-m-d'));
+        $header->setTransactionDate($transactionDate);
         $header->setDefaultLocations($this->_getHeaderDefaultLocations($address));
 
         $this->_request->setHeader($header);

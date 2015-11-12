@@ -471,19 +471,6 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
     }
 
     /**
-     * Retrieve converted date taking into account the current time zone and store.
-     *
-     * @param string $gmt
-     * @param int    $storeId
-     * @return string
-     */
-    protected function _convertGmtDate($gmt, $storeId)
-    {
-        $date = date('m-d-Y H:i:s', strtotime($gmt));
-        return Mage::app()->getLocale()->storeDate($storeId, $date)->toString(self::SERVICE_DATE_FORMAT);
-    }
-
-    /**
      * Sends a request to the Avatax16 server
      *
      * @param int $storeId
