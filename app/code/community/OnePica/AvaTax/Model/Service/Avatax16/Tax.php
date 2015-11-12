@@ -73,18 +73,19 @@ class OnePica_AvaTax_Model_Service_Avatax16_Tax extends OnePica_AvaTax_Model_Ser
     /**
      * Get the shipping address for the request
      *
-     * @param OnePica_AvaTax_Model_Sales_Quote_Address
+     * @param OnePica_AvaTax_Model_Sales_Quote_Address $address
      * @return OnePica_AvaTax16_Document_Part_Location_Address
      */
     protected function _getDestinationAddress($address)
     {
         $street1 = $address->getStreet(1);
         $street2 = $address->getStreet(2);
-        $city = $address->getCity();
+        $city = (string)$address->getCity();
         $zip = $address->getPostcode();
         $state = Mage::getModel('directory/region')->load($address->getRegionId())->getCode();
         $country = $address->getCountry();
         $address = $this->_newAddress($street1, $street2, $city, $state, $zip, $country);
+
         return $address;
     }
 
