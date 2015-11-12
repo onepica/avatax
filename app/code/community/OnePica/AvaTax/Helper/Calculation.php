@@ -31,7 +31,6 @@ class OnePica_AvaTax_Helper_Calculation
      */
     public function getCustomerCode($object)
     {
-
         /** @var Mage_Customer_Model_Customer $customer */
         $customer = Mage::getModel('customer/customer');
 
