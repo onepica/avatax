@@ -375,4 +375,18 @@ class OnePica_AvaTax_Model_Service_Avatax16_Tax extends OnePica_AvaTax_Model_Ser
     {
         return Mage::helper('avatax/calculation');
     }
+
+    /**
+     * Retrieve converted date taking into account the current time zone and store.
+     *
+     * @param string $gmt
+     * @param int    $storeId
+     * @return string
+     */
+    protected function _convertGmtDate($gmt, $storeId)
+    {
+        return Mage::app()->getLocale()
+            ->storeDate($storeId, $gmt, false, Varien_Date::DATETIME_INTERNAL_FORMAT)
+            ->toString(Varien_Date::DATE_INTERNAL_FORMAT);
+    }
 }
