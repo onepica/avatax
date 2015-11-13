@@ -278,48 +278,11 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
      */
     protected function _addCustomer($object)
     {
-        $this->_request->setCustomerUsageType($this->_getCustomerUsageType());
+        $this->_request->setCustomerUsageType($this->_getCalculationHelper()->getCustomerOpAvataxCode());
         $this->_request->setCustomerCode($this->_getCalculationHelper()->getCustomerCode($object));
 
         return $this;
     }
-
-    /**
-     * Get customer usage type
-     *
-     * @return string
-     */
-    protected function _getCustomerUsageType()
-    {
-        return Mage::getModel('tax/class')->load($this->_getTaxClassId())->getOpAvataxCode();
-    }
-
-    /**
-     * Get tax class id
-     *
-     * @return int
-     */
-    protected function _getTaxClassId()
-    {
-        return Mage::getSingleton('customer/group')
-            ->load($this->_getCustomerGroupId())
-            ->getTaxClassId();
-    }
-
-    /**
-     * Get customer group id
-     *
-     * @return int
-     */
-    protected function _getCustomerGroupId()
-    {
-        if (Mage::app()->getStore()->isAdmin()) {
-            return Mage::getSingleton('adminhtml/sales_order_create')->getCustomerGroupId();
-        }
-
-        return Mage::getSingleton('customer/session')->getCustomerGroupId();
-    }
-
 
     /**
      * Adds the orgin address to the request
