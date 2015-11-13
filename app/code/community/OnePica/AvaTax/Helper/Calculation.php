@@ -103,6 +103,42 @@ class OnePica_AvaTax_Helper_Calculation
     }
 
     /**
+     * Get customer usage type
+     *
+     * @return string
+     */
+    public function getCustomerOpAvataxCode()
+    {
+        return Mage::getModel('tax/class')->load($this->_getTaxClassId())->getOpAvataxCode();
+    }
+
+    /**
+     * Get tax class id
+     *
+     * @return int
+     */
+    protected function _getTaxClassId()
+    {
+        return Mage::getSingleton('customer/group')
+            ->load($this->_getCustomerGroupId())
+            ->getTaxClassId();
+    }
+
+    /**
+     * Get customer group id
+     *
+     * @return int
+     */
+    protected function _getCustomerGroupId()
+    {
+        if (Mage::app()->getStore()->isAdmin()) {
+            return Mage::getSingleton('adminhtml/sales_order_create')->getCustomerGroupId();
+        }
+
+        return Mage::getSingleton('customer/session')->getCustomerGroupId();
+    }
+
+    /**
      * Get simple product id from configurable item
      *
      * @param Mage_Sales_Model_Quote_Item|Mage_Sales_Model_Order_Creditmemo_Item|Mage_Sales_Model_Order_Invoice_Item $item
