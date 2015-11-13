@@ -64,6 +64,8 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
 
     /**
      * Loads any saved addresses in session
+     *
+     * @param array $data
      */
     public function __construct($data)
     {
@@ -107,6 +109,8 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
     }
 
     /**
+     * Get Mage Address
+     *
      * @return Mage_Customer_Model_Address_Abstract
      */
     public function getMageAddress()
@@ -116,16 +120,16 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
 
     /**
      * Get request address object
+     *
      * @return Address
      */
     public function getLocationAddressObject()
     {
-        if (is_null($this->_requestAddress)) {
+        if (null === $this->_requestAddress) {
             $this->_requestAddress = new Address();
         }
         return $this->_requestAddress;
     }
-
 
     /**
      * Sets attributes from the Mage address on the AvaTax Request address.
@@ -148,7 +152,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
      * Validates the address with the AvaTax validation API.
      * Returns true on success and an array with an error on failure.
      *
-     * @return Varien_Object
+     * @return OnePica_AvaTax_Model_Service_Result_AddressValidate $addressValidationResult
      * @throws OnePica_AvaTax_Model_Service_Exception_Address
      */
     public function validate()
@@ -168,47 +172,41 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
             $result = $this->_sendAddressValidationRequest();
             $this->_cache[$key] = serialize($result);
         }
-        $response = new Varien_Object();
+        /** @var OnePica_AvaTax_Model_Service_Result_AddressValidate $addressValidationResult */
+        $addressValidationResult = Mage::getModel('avatax/service_result_addressValidate');
         if ($result instanceof ValidateResult) {
             $hasError = $result->getResultCode() === SeverityLevel::$Error;
-            $response->setHasError($hasError);
+            $addressValidationResult->setHasError($hasError);
             if ($hasError) {
                 $errors = $result->getMessages();
-                if ($response->getHasError() && is_array($errors) && isset($errors[0])) {
+                if ($addressValidationResult->getHasError() && is_array($errors) && isset($errors[0])) {
                     $convertErrors = array();
                     foreach ($errors as $element) {
                         $convertErrors[] = $element->getSummary();
                     }
-                    $response->setErrors($convertErrors);
+                    $addressValidationResult->setErrors($convertErrors);
                 }
             }
             $address = $result->getValidAddresses();
             if (is_array($address) && isset($address[0]) && $address[0]) {
                 /** @var ValidAddress $address */
                 $address = $address[0];
-                $addressConvert = new Varien_Object();
-                $addressConvert->setLine1($address->getLine1());
-                $addressConvert->setLine2($address->getLine2());
-                $addressConvert->setCity($address->getCity());
-                $addressConvert->setRegion($address->getRegion());
-                $addressConvert->setPostalCode($address->getPostalCode());
-                $addressConvert->setCountry($address->getCountry());
-                $addressConvert->setCounty($address->getCounty());
-                $addressConvert->setFipsCode($address->getFipsCode());
-                $addressConvert->setCarrierRoute($address->getCarrierRoute());
-                $addressConvert->setPostNet($address->getPostNet());
-                $addressConvert->setAddressType($address->getAddressType());
-                $addressConvert->setLatitude($address->getLatitude());
-                $addressConvert->setLongitude($address->getLongitude());
-                $addressConvert->setTaxRegionId($address->getTaxRegionId());
-                $response->setAddress($addressConvert);
+                 /** @var OnePica_AvaTax_Model_Service_Result_Address $resultAddress */
+                $resultAddress = Mage::getModel('avatax/service_result_address');
+                $resultAddress->setLine1($address->getLine1());
+                $resultAddress->setLine2($address->getLine2());
+                $resultAddress->setCity($address->getCity());
+                $resultAddress->setState($address->getRegion());
+                $resultAddress->setPostalCode($address->getPostalCode());
+                $resultAddress->setCountry($address->getCountry());
+
+                $addressValidationResult->setAddress($resultAddress);
             }
             /** Set is success */
-            $response->setResolution($result->getResultCode() == SeverityLevel::$Success);
+            $addressValidationResult->setResolution($result->getResultCode() == SeverityLevel::$Success);
         }
 
-
-        return $response;
+        return $addressValidationResult;
     }
 
     /**
@@ -236,6 +234,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
 
     /**
      * Get validation request
+     *
      * @return ValidateRequest
      */
     private function _getAddressValidationRequest()
@@ -246,10 +245,10 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
     /**
      * Address normalization
      *
-     * @param $isAddressNormalizationOn
+     * @param bool $isAddressNormalizationOn
      * @param ValidateResult $result
      * @return $this
-     * @throws \OnePica_AvaTax_Model_Service_Exception_Address
+     * @throws OnePica_AvaTax_Model_Service_Exception_Address
      */
     protected function _addressNormalization($isAddressNormalizationOn, $result)
     {

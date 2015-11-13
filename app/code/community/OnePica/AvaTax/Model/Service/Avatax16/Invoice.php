@@ -37,10 +37,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
      * @see OnePica_AvaTax_Model_Observer::salesOrderPlaceAfter()
      * @param Mage_Sales_Model_Order_Invoice $invoice
      * @param OnePica_AvaTax_Model_Records_Queue $queue
-     * @return bool
-     * @throws OnePica_AvaTax_Exception
-     * @throws OnePica_AvaTax_Model_Service_Exception_Commitfailure
-     * @throws OnePica_AvaTax_Model_Service_Exception_Unbalanced
+     * @return OnePica_AvaTax_Model_Service_Result_Invoice
      */
     public function invoice($invoice, $queue)
     {
@@ -51,9 +48,6 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         $orderDate = $this->_convertGmtDate($order->getCreatedAt(), $storeId);
 
         $shippingAddress = ($order->getShippingAddress()) ? $order->getShippingAddress() : $order->getBillingAddress();
-        if (!$shippingAddress) {
-            throw new OnePica_AvaTax_Exception($this->__('There is no address attached to this order'));
-        }
 
         // Set up document for request
         $this->_request = $this->_getNewDocumentRequestObject();
@@ -85,25 +79,23 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         //send to AvaTax
         $result = $this->_send($order->getStoreId());
 
+        /** @var OnePica_AvaTax_Model_Service_Result_Invoice $invoiceResult */
+        $invoiceResult = Mage::getModel('avatax/service_result_invoice');
+        $invoiceResult->setHasError($result->getHasError());
+
         //if successful
         if (!$result->getHasError()) {
-            $message = $this->_getHelper()->__('Invoice #%s was saved to AvaTax', $result->getHeader()->getDocumentCode());
-            $this->_addStatusHistoryComment($order, $message);
-
             $totalTax = $result->getCalculatedTaxSummary()->getTotalTax();
-            if ($totalTax != $invoice->getBaseTaxAmount()) {
-                throw new OnePica_AvaTax_Model_Service_Exception_Unbalanced(
-                    'Collected: '. $invoice->getBaseTaxAmount() . ', Actual: ' . $totalTax
-                );
-            }
+            $invoiceResult->setTotalTax($totalTax);
+            $documentCode = $result->getHeader()->getDocumentCode();
+            $invoiceResult->setDocumentCode($documentCode);
 
-            //if not successful
+        //if not successful
         } else {
-            $messages = print_r($result->getErrors(), true);
-            throw new OnePica_AvaTax_Model_Service_Exception_Commitfailure($messages);
+            $invoiceResult->setErrors($result->getErrors());
         }
 
-        return true;
+        return $invoiceResult;
     }
 
     /**
@@ -126,9 +118,6 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         $orderDate = $this->_convertGmtDate($order->getCreatedAt(), $storeId);
 
         $shippingAddress = ($order->getShippingAddress()) ? $order->getShippingAddress() : $order->getBillingAddress();
-        if (!$shippingAddress) {
-            throw new OnePica_AvaTax_Exception($this->__('There is no address attached to this order'));
-        }
 
         // Set up document for request
         $this->_request = $this->_getNewDocumentRequestObject();
@@ -166,24 +155,23 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         //send to AvaTax
         $result = $this->_send($order->getStoreId());
 
+        /** @var OnePica_AvaTax_Model_Service_Result_Creditmemo $creditmemoResult */
+        $creditmemoResult = Mage::getModel('avatax/service_result_creditmemo');
+        $creditmemoResult->setHasError($result->getHasError());
+
         //if successful
         if (!$result->getHasError()) {
-            $message = $this->_getHelper()->__('Credit memo #%s was saved to AvaTax', $result->getHeader()->getDocumentCode());
-            $this->_addStatusHistoryComment($order, $message);
-
             $totalTax = $result->getCalculatedTaxSummary()->getTotalTax();
-            if ($totalTax != ($creditmemo->getBaseTaxAmount() * -1)) {
-                throw new OnePica_AvaTax_Model_Service_Exception_Unbalanced(
-                    'Collected: ' . $creditmemo->getTaxAmount() . ', Actual: ' . $totalTax
-                );
-            }
+            $creditmemoResult->setTotalTax($totalTax);
+            $documentCode = $result->getHeader()->getDocumentCode();
+            $creditmemoResult->setDocumentCode($documentCode);
+
             //if not successful
         } else {
-            $messages = print_r($result->getErrors(), true);
-            throw new OnePica_AvaTax_Model_Service_Exception_Commitfailure($messages);
+            $creditmemoResult->setErrors($result->getErrors());
         }
 
-        return $result;
+        return $creditmemoResult;
     }
 
     /**
@@ -255,7 +243,9 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         $taxClass = Mage::helper('tax')->getShippingTaxClass($storeId);
 
         $amount = $object->getBaseShippingAmount();
+        //@startSkipCommitHooks
         $amount = $credit ? (-1 * $amount) : $amount;
+        //@finishSkipCommitHooks
 
         $line = $this->_getNewDocumentRequestLineObject();
         $line->setLineCode($lineNumber);
@@ -289,7 +279,9 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         $lineNumber = $this->_getNewLineCode();
         $storeId = $object->getStore()->getId();
         $amount = $object->getGwBasePrice();
+        //@startSkipCommitHooks
         $amount = $credit ? (-1 * $amount) : $amount;
+        //@finishSkipCommitHooks
 
         $line = $this->_getNewDocumentRequestLineObject();
         $line->setLineCode($lineNumber);
@@ -324,7 +316,9 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         $storeId = $object->getStore()->getId();
 
         $amount = $object->getGwItemsBasePrice();
+        //@startSkipCommitHooks
         $amount = $credit ? (-1 * $amount) : $amount;
+        //@finishSkipCommitHooks
 
         $line = $this->_getNewDocumentRequestLineObject();
         $line->setLineCode($lineNumber);
@@ -359,7 +353,9 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         $storeId = $object->getStore()->getId();
 
         $amount = $object->getGwPrintedCardBasePrice();
+        //@startSkipCommitHooks
         $amount = $credit ? (-1 * $amount) : $amount;
+        //@finishSkipCommitHooks
 
         $line = $this->_getNewDocumentRequestLineObject();
         $line->setLineCode($lineNumber);
@@ -398,11 +394,14 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         $product = $this->_getProductByProductId($item->getProductId());
         $taxClass = $this->_getTaxClassCodeByProduct($product);
         $price = $item->getBaseRowTotal() - $item->getBaseDiscountAmount();
+        //@startSkipCommitHooks
         $price = $credit ? (-1 * $price) : $price;
+        //@finishSkipCommitHooks
 
         $line = $this->_getNewDocumentRequestLineObject();
         $line->setLineCode($lineNumber);
-        $line->setItemCode($this->_getCalculationHelper()->getItemCode($this->_getProductForItemCode($item), $storeId, $item));
+        $line->setItemCode($this->_getCalculationHelper()
+             ->getItemCode($this->_getProductForItemCode($item), $storeId, $item));
         $line->setItemDescription($item->getName());
         $line->setNumberOfItems($item->getQty());
         $line->setlineAmount($price);
@@ -510,23 +509,6 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         );
 
         return $result;
-    }
-
-    /**
-     * Adds a comment to order history. Method choosen based on Magento version.
-     *
-     * @param Mage_Sales_Model_Order $order
-     * @param string $comment
-     * @return self
-     */
-    protected function _addStatusHistoryComment($order, $comment)
-    {
-        if (method_exists($order, 'addStatusHistoryComment')) {
-            $order->addStatusHistoryComment($comment)->save();
-        } elseif (method_exists($order, 'addStatusToHistory')) {
-            $order->addStatusToHistory($order->getStatus(), $comment, false)->save();
-        }
-        return $this;
     }
 
     /**

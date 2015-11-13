@@ -192,7 +192,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
      * Validates the address with the AvaTax validation API.
      * Returns true on success and an array with an error on failure.
      *
-     * @return Varien_Object
+     * @return OnePica_AvaTax_Model_Service_Result_AddressValidate $addressValidationResult
      * @throws OnePica_AvaTax_Model_Service_Exception_Address
      */
     public function validate()
@@ -211,27 +211,33 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
             $this->_cache[$key] = serialize($result);
         }
 
-        $response = new Varien_Object();
-        $response->setHasError($result->getHasError());
-        $response->setErrors($result->getErrors());
-        if (!$response->getHasError()) {
-            $addressData = new Varien_Object($result->getAddress()->toArray());
-            // fix for Varien_Object construct function with properties names
-            $addressData->setPostalCode($addressData->getData('postalCode'));
-            $response->setAddress($addressData);
-            $response->setRequiredProperties($result->getAddress()->getRequiredProperties());
+        /** @var OnePica_AvaTax_Model_Service_Result_AddressValidate $addressValidationResult */
+        $addressValidationResult = Mage::getModel('avatax/service_result_addressValidate');
+        $addressValidationResult->setHasError($result->getHasError());
+        $addressValidationResult->setErrors($result->getErrors());
+        if (!$addressValidationResult->getHasError()) {
+            /** @var OnePica_AvaTax_Model_Service_Result_Address $resultAddress */
+            $resultAddress = Mage::getModel('avatax/service_result_address');
+            $address = $result->getAddress();
+            $resultAddress->setLine1($address->getLine1());
+            $resultAddress->setLine2($address->getLine2());
+            $resultAddress->setCity($address->getCity());
+            $resultAddress->setState($address->getState());
+            $resultAddress->setPostalCode($address->getPostalCode());
+            $resultAddress->setCountry($address->getCountry());
+
+            $addressValidationResult->setAddress($resultAddress);
         }
-        $response->setExcludedProperties($result->getExcludedProperties());
-        $response->setResolution(in_array($result->getResolutionQuality(), $this->_successResponse));
+        $addressValidationResult->setResolution(in_array($result->getResolutionQuality(), $this->_successResponse));
 
         // if we have bad resolution we should set error with message
-        if (!$response->getResolution()) {
+        if (!$addressValidationResult->getResolution()) {
             $errors = $result->getErrors();
             $errors[] = $this->__('Unable to validate address.');
-            $response->setErrors($errors);
+            $addressValidationResult->setErrors($errors);
         }
 
-        return $response;
+        return $addressValidationResult;
     }
 
     /**
