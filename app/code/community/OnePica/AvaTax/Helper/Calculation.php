@@ -37,8 +37,10 @@ class OnePica_AvaTax_Helper_Calculation
         if ($object->getCustomerId()) {
             $customer->load($object->getCustomerId());
         }
+        // get store id from object or from quote
+        $storeId = $object->getStoreId() ?: ($object->getQuote() ? $object->getQuote()->getStoreId() : null);
 
-        switch ($this->_getConfigHelper()->getCustomerCodeFormat($object->getStoreId())) {
+        switch ($this->_getConfigHelper()->getCustomerCodeFormat($storeId)) {
             case OnePica_AvaTax_Model_Source_Customercodeformat::LEGACY:
                 $customerCode = $this->_getLegacyCustomerCode($object, $customer);
                 break;
