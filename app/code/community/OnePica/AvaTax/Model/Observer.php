@@ -272,13 +272,19 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
                 'You are using the AvaTax development connection URL. If you are receiving errors about authentication, please ensure that you have a development account.'
             );
         }
-        if (Mage::helper('avatax/config')->getStatusServiceAction($storeId) == OnePica_AvaTax_Model_Service_Abstract_Config::ACTION_DISABLE) {
+        if (Mage::helper('avatax/config')->getStatusServiceAction($storeId)
+            == OnePica_AvaTax_Model_Service_Abstract_Config::ACTION_DISABLE
+        ) {
             $warnings[] = Mage::helper('avatax')->__('All AvaTax services are disabled');
         }
-        if (Mage::helper('avatax/config')->getStatusServiceAction($storeId) == OnePica_AvaTax_Model_Service_Abstract_Config::ACTION_CALC) {
+        if (Mage::helper('avatax/config')->getStatusServiceAction($storeId)
+            == OnePica_AvaTax_Model_Service_Abstract_Config::ACTION_CALC
+        ) {
             $warnings[] = Mage::helper('avatax')->__('Orders will not be sent to the AvaTax system');
         }
-        if (Mage::helper('avatax/config')->getStatusServiceAction($storeId) == OnePica_AvaTax_Model_Service_Abstract_Config::ACTION_CALC_SUBMIT) {
+        if (Mage::helper('avatax/config')->getStatusServiceAction($storeId)
+            == OnePica_AvaTax_Model_Service_Abstract_Config::ACTION_CALC_SUBMIT
+        ) {
             $warnings[] = Mage::helper('avatax')->__('Orders will be sent but never committed to the AvaTax system');
         }
         if (!Mage::getResourceModel('cron/schedule_collection')->count()) {
@@ -288,7 +294,8 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
             );
         }
         if ($this->_isRegionFilterAll() && $this->_canNotBeAddressValidated()) {
-            $warnings[] = Mage::helper('avatax')->__('Please be aware that address validation will not work for addresses outside United States and Canada');
+            $warnings[] = Mage::helper('avatax')
+                ->__('Please be aware that address validation will not work for addresses outside United States and Canada');
         }
 
         return $warnings;
@@ -565,7 +572,8 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
      */
     public function controllerActionPredispatchCheckoutCartIndex(Varien_Event_Observer $observer)
     {
-        $this->_handleTaxEstimation();
+        $this->_addErrorMessage($this->_getQuote());
+
         return $this;
     }
 
@@ -578,9 +586,23 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     {
         $quote = $this->_getQuote();
         $quote->collectTotals();
+        $this->_addErrorMessage($quote);
+
+        return $this;
+    }
+
+    /**
+     * Add error message if estimation has error
+     *
+     * @param Mage_Sales_Model_Quote $quote
+     * @return $this
+     */
+    protected function _addErrorMessage($quote)
+    {
         if ($quote->getData('estimate_tax_error')) {
             $this->_getErrorsHelper()->addErrorMessage($quote->getStoreId());
         }
+
         return $this;
     }
 
