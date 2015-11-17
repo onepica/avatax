@@ -165,7 +165,7 @@ class OnePica_AvaTax_Model_Service_Result_AddressValidate
      */
     public function setIsTaxable($isTaxable)
     {
-        $this->_isTaxable = (bool)$isTaxable;
+        $this->_isTaxable = $isTaxable;
 
         return $this;
     }
