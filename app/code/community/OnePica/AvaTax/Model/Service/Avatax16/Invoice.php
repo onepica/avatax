@@ -193,7 +193,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
             $line->setLineCode($lineNumber);
             $line->setItemCode($identifier);
             $line->setItemDescription(self::DEFAULT_POSITIVE_ADJUSTMENT_DESCRIPTION);
-            $line->setTaxCode($identifier);
+            $line->setAvalaraGoodsAndServicesType($identifier);
             $line->setNumberOfItems(1);
             $line->setlineAmount($positive * -1);
             $line->setDiscounted('false');
@@ -213,7 +213,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
             $line->setLineCode($lineNumber);
             $line->setItemCode($identifier);
             $line->setItemDescription(self::DEFAULT_NEGATIVE_ADJUSTMENT_DESCRIPTION);
-            $line->setTaxCode($identifier);
+            $line->setAvalaraGoodsAndServicesType($identifier);
             $line->setNumberOfItems(1);
             $line->setlineAmount($negative);
             $line->setDiscounted('false');
@@ -252,7 +252,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         $shippingSku = $this->_getConfigHelper()->getShippingSku($storeId);
         $line->setItemCode($shippingSku ? $shippingSku : self::DEFAULT_SHIPPING_ITEMS_SKU);
         $line->setItemDescription(self::DEFAULT_SHIPPING_ITEMS_DESCRIPTION);
-        $line->setTaxCode($taxClass);
+        $line->setAvalaraGoodsAndServicesType($taxClass);
         $line->setNumberOfItems(1);
         $line->setlineAmount($amount);
         $line->setDiscounted('false');
@@ -288,7 +288,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         $gwOrderSku = $this->_getConfigHelper()->getGwOrderSku($storeId);
         $line->setItemCode($gwOrderSku ? $gwOrderSku : self::DEFAULT_GW_ORDER_SKU);
         $line->setItemDescription(self::DEFAULT_GW_ORDER_DESCRIPTION);
-        $line->setTaxCode($this->_getGiftTaxClassCode($storeId));
+        $line->setAvalaraGoodsAndServicesType($this->_getGiftTaxClassCode($storeId));
         $line->setNumberOfItems(1);
         $line->setlineAmount($amount);
         $line->setDiscounted('false');
@@ -325,7 +325,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         $gwItemsSku = $this->_getConfigHelper()->getGwItemsSku($storeId);
         $line->setItemCode($gwItemsSku ? $gwItemsSku : self::DEFAULT_GW_ITEMS_SKU);
         $line->setItemDescription(self::DEFAULT_GW_ITEMS_DESCRIPTION);
-        $line->setTaxCode($this->_getGiftTaxClassCode($storeId));
+        $line->setAvalaraGoodsAndServicesType($this->_getGiftTaxClassCode($storeId));
         $line->setNumberOfItems(1);
         $line->setlineAmount($amount);
         $line->setDiscounted('false');
@@ -362,7 +362,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         $gwPrintedCardSku = $this->_getConfigHelper()->getGwPrintedCardSku($storeId);
         $line->setItemCode($gwPrintedCardSku ? $gwPrintedCardSku : self::DEFAULT_GW_PRINTED_CARD_SKU);
         $line->setItemDescription(self::DEFAULT_GW_PRINTED_CARD_DESCRIPTION);
-        $line->setTaxCode($this->_getGiftTaxClassCode($storeId));
+        $line->setAvalaraGoodsAndServicesType($this->_getGiftTaxClassCode($storeId));
         $line->setNumberOfItems(1);
         $line->setlineAmount($amount);
         $line->setDiscounted('false');
@@ -408,7 +408,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         $line->setDiscounted($item->getBaseDiscountAmount() ? 'true' : 'false');
 
         if ($taxClass) {
-            $line->setTaxCode($taxClass);
+            $line->setAvalaraGoodsAndServicesType($taxClass);
         }
 
         $metadata = null;
