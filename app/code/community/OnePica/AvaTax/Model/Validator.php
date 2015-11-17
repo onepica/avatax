@@ -206,10 +206,20 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
                     if (preg_match("/street\d/", $field)) {
                         $field = "street";
                     }
-                    if ($field == "country") {
-                        $field = "country_id";
+
+                    switch ($field) {
+                        case 'country':
+                            $fieldValue = $this->getAddress()->getCountry();
+                            break;
+                        case 'region':
+                            $fieldValue = $this->getAddress()->getRegion();
+                            break;
+                        default:
+                            $fieldValue = $this->getAddress()->getData($field);
+                            break;
                     }
-                    if ($this->getAddress()->getData($field) == $rule || !$this->getAddress()->getData($field)) {
+
+                    if ($fieldValue == $rule || !$fieldValue) {
                         $requiredFlag = 1;
                     }
                 }
