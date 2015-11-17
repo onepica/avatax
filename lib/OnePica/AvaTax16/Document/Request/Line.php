@@ -56,13 +56,6 @@ class OnePica_AvaTax16_Document_Request_Line extends OnePica_AvaTax16_Document_P
     protected $_itemCode;
 
     /**
-     * Tax code
-     *
-     * @var string
-     */
-    protected $_taxCode;
-
-    /**
      * Avalara Goods And Services Type
      *
      * @var string
