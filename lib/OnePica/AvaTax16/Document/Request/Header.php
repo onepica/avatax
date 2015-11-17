@@ -39,7 +39,7 @@ class OnePica_AvaTax16_Document_Request_Header extends OnePica_AvaTax16_Document
      * @var array
      */
     protected $_requiredProperties = array('_accountId', '_companyCode', '_transactionType', '_documentCode',
-        '_customerCode', '_vendorCode', '_transactionDate', '_defaultLocations');
+        '_customerCode', '_transactionDate', '_defaultLocations');
 
     /**
      * Account Id
