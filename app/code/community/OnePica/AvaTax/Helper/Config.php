@@ -221,6 +221,11 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
     const PATH_TO_AVATAX_UPC_ATTRIBUTE_CODE = 'tax/avatax/upc_attribute_code';
 
     /**
+     * Path to avatax16 address validation message
+     */
+    const PATH_TO_AVATAX16_ADDRESS_VALIDATION_MESSAGE = 'tax/avatax/avatax16_onepage_validate_address_message';
+
+    /**
      * Returns full stop on error
      *
      * @param null|bool|int|Mage_Core_Model_Store $store
@@ -711,5 +716,16 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
     public function getCustomerCodeFormat($store)
     {
         return (string)Mage::getStoreConfig(self::PATH_TAX_AVATAX_CUST_CODE_FORMAT, $store);
+    }
+
+    /**
+     * Get avatax16 address validation message
+     *
+     * @param int|Mage_Core_Model_Store $store
+     * @return string
+     */
+    public function getAvatax16AddressValidationMessage($store)
+    {
+        return (string)Mage::getStoreConfig(self::PATH_TO_AVATAX16_ADDRESS_VALIDATION_MESSAGE, $store);
     }
 }
