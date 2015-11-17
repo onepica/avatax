@@ -53,6 +53,13 @@ class OnePica_AvaTax_Model_Service_Result_AddressValidate
     protected $_address;
 
     /**
+     * Is taxable
+     *
+     * @var bool
+     */
+    protected $_isTaxable = false;
+
+    /**
      * Get Has Error
      *
      * @return bool
@@ -137,6 +144,29 @@ class OnePica_AvaTax_Model_Service_Result_AddressValidate
     public function setAddress($address)
     {
         $this->_address = $address;
+        return $this;
+    }
+
+    /**
+     * Is taxable
+     *
+     * @return bool
+     */
+    public function isTaxable()
+    {
+        return $this->_isTaxable;
+    }
+
+    /**
+     * Set isTaxable
+     *
+     * @param bool $isTaxable
+     * @return $this
+     */
+    public function setIsTaxable($isTaxable)
+    {
+        $this->_isTaxable = (bool)$isTaxable;
+
         return $this;
     }
 }
