@@ -164,7 +164,7 @@ class OnePica_AvaTax_Model_Records_Queue_Process
                     $calculator->invoice($invoice, $item);
                 }
                 $item->setStatus(OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_COMPLETE)->setMessage(null)->save();
-            } catch (OnePica_AvaTax_Model_Avatax_Exception_Unbalanced $e) {
+            } catch (OnePica_AvaTax_Model_Service_Exception_Unbalanced $e) {
                 $item->setStatus(OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_UNBALANCED)
                     ->setMessage($e->getMessage())
                     ->save();
@@ -207,7 +207,7 @@ class OnePica_AvaTax_Model_Records_Queue_Process
                 $item->setStatus(OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_COMPLETE)
                     ->setMessage(null)
                     ->save();
-            } catch (OnePica_AvaTax_Model_Avatax_Exception_Unbalanced $e) {
+            } catch (OnePica_AvaTax_Model_Service_Exception_Unbalanced $e) {
                 $item->setStatus(OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_UNBALANCED)
                     ->setMessage($e->getMessage())
                     ->save();
