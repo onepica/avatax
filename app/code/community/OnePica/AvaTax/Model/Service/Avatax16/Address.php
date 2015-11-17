@@ -29,7 +29,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
     /**
      * Avatax service response
      */
-    protected $_successResponse = array('Rooftop', 'PostalCentroidGood');
+    protected $_successResponse = array('Rooftop');
 
     /**
      * The Mage Address object
@@ -86,6 +86,8 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
 
     /**
      * Class pre-constructor
+     *
+     * @skipPublicMethodNaming _construct
      */
     public function _construct()
     {
