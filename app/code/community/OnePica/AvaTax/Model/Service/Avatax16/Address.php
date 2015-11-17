@@ -217,6 +217,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
         $addressValidationResult = Mage::getModel('avatax/service_result_addressValidate');
         $addressValidationResult->setHasError($result->getHasError());
         $addressValidationResult->setErrors($result->getErrors());
+        $addressValidationResult->setIsTaxable($result->getTaxAuthorities());
         if (!$addressValidationResult->getHasError()) {
             /** @var OnePica_AvaTax_Model_Service_Result_Address $resultAddress */
             $resultAddress = Mage::getModel('avatax/service_result_address');

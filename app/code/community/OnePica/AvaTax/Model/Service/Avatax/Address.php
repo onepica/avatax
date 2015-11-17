@@ -204,6 +204,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
             }
             /** Set is success */
             $addressValidationResult->setResolution($result->getResultCode() == SeverityLevel::$Success);
+            $addressValidationResult->setIsTaxable($result->isTaxable());
         }
 
         return $addressValidationResult;

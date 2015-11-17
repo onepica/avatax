@@ -175,7 +175,7 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
             //a valid address isn't required, but Avalara has to say there is
             //enough info to drill down to a tax jurisdiction to calc on
         } elseif (!$isAddressValidationOn && $isAddressActionable) {
-            if ($result->getResolution()) {
+            if ($result->isTaxable()) {
                 $this->getAddress()->setAddressValidated(true);
                 return true;
             } else {
@@ -185,6 +185,7 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
                 return $errors;
             }
         }
+
         return null;
     }
 
