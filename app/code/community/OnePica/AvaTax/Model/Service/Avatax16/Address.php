@@ -29,7 +29,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
     /**
      * Avatax service response
      */
-    protected $_successResponse = array('Rooftop', 'PostalCentroidGood');
+    protected $_successResponse = array('Rooftop');
 
     /**
      * The Mage Address object
@@ -86,6 +86,8 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
 
     /**
      * Class pre-constructor
+     *
+     * @skipPublicMethodNaming _construct
      */
     public function _construct()
     {
@@ -145,7 +147,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
     /**
      * Address getter
      *
-     * @return Mage_Customer_Model_Address_Abstract
+     * @return OnePica_AvaTax_Model_Sales_Quote_Address
      */
     public function getAddress()
     {
@@ -215,6 +217,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
         $addressValidationResult = Mage::getModel('avatax/service_result_addressValidate');
         $addressValidationResult->setHasError($result->getHasError());
         $addressValidationResult->setErrors($result->getErrors());
+        $addressValidationResult->setIsTaxable((bool)$result->getTaxAuthorities());
         if (!$addressValidationResult->getHasError()) {
             /** @var OnePica_AvaTax_Model_Service_Result_Address $resultAddress */
             $resultAddress = Mage::getModel('avatax/service_result_address');
@@ -232,8 +235,9 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
 
         // if we have bad resolution we should set error with message
         if (!$addressValidationResult->getResolution()) {
-            $errors = $result->getErrors();
-            $errors[] = $this->__('Unable to validate address.');
+            $errors[] = $this->_getConfigHelper()->getAvatax16AddressValidationMessage(
+                $this->getAddress()->getQuote()->getStoreId()
+            );
             $addressValidationResult->setErrors($errors);
         }
 

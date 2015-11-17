@@ -394,6 +394,7 @@
                 <onepage_normalize_message>Your shipping address has been modified during our validation process. Please confirm the address to the right is accurate.</onepage_normalize_message>
                 <multiaddress_normalize_message>Your shipping addresses have been modified during our validation process. Please confirm they are still correct.</multiaddress_normalize_message>
                 <validate_address_message>The address '%s' appears invalid. Please correct it or select another address.</validate_address_message>
+                <avatax16_onepage_validate_address_message>Unable to validate address.</avatax16_onepage_validate_address_message>
             </avatax>
             <calculation>
                 <based_on>shipping</based_on>
