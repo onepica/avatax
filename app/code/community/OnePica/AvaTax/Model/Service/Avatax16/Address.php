@@ -147,7 +147,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
     /**
      * Address getter
      *
-     * @return Mage_Customer_Model_Address_Abstract
+     * @return OnePica_AvaTax_Model_Sales_Quote_Address
      */
     public function getAddress()
     {
@@ -235,8 +235,9 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
 
         // if we have bad resolution we should set error with message
         if (!$addressValidationResult->getResolution()) {
-            $errors = $result->getErrors();
-            $errors[] = $this->__('Unable to validate address.');
+            $errors[] = $this->_getConfigHelper()->getAvatax16AddressValidationMessage(
+                $this->getAddress()->getQuote()->getStoreId()
+            );
             $addressValidationResult->setErrors($errors);
         }
 
