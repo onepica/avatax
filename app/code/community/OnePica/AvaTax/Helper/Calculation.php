@@ -37,8 +37,10 @@ class OnePica_AvaTax_Helper_Calculation
         if ($object->getCustomerId()) {
             $customer->load($object->getCustomerId());
         }
+        // get store id from object or from quote
+        $storeId = $this->_getStoreIdFromSalesObject($object);
 
-        switch ($this->_getConfigHelper()->getCustomerCodeFormat($object->getStoreId())) {
+        switch ($this->_getConfigHelper()->getCustomerCodeFormat($storeId)) {
             case OnePica_AvaTax_Model_Source_Customercodeformat::LEGACY:
                 $customerCode = $this->_getLegacyCustomerCode($object, $customer);
                 break;
@@ -56,6 +58,24 @@ class OnePica_AvaTax_Helper_Calculation
     }
 
     /**
+     * Get store id from quote address or order object
+     *
+     * @param OnePica_AvaTax_Model_Sales_Quote_Address|Mage_Sales_Model_Order $object
+     * @return int|null
+     */
+    protected function _getStoreIdFromSalesObject($object)
+    {
+        $storeId = null;
+        if ($object instanceof Mage_Sales_Model_Order) {
+            $storeId = $object->getStoreId();
+        } elseif ($object instanceof OnePica_AvaTax_Model_Sales_Quote_Address) {
+            $storeId = $object->getQuote()->getStoreId();
+        }
+
+        return $storeId;
+    }
+
+    /**
      * Retrieve customer email
      *
      * @param OnePica_AvaTax_Model_Sales_Quote_Address|Mage_Sales_Model_Order $object
@@ -64,8 +84,16 @@ class OnePica_AvaTax_Helper_Calculation
      */
     protected function _getCustomerEmail($object, $customer)
     {
-        return $object->getCustomerEmail()
-            ?: $customer->getEmail();
+        if ($object->getCustomerEmail()) {
+            $email = $object->getCustomerEmail();
+        } else {
+            $email = $customer->getEmail();
+        }
+        if (!$email) {
+            $email = $object->getEmail();
+        }
+
+        return $email;
     }
 
     /**
@@ -105,37 +133,27 @@ class OnePica_AvaTax_Helper_Calculation
     /**
      * Get customer usage type
      *
+     * @param OnePica_AvaTax_Model_Sales_Quote_Address|Mage_Sales_Model_Order $object
      * @return string
      */
-    public function getCustomerOpAvataxCode()
+    public function getCustomerOpAvataxCode($object)
     {
-        return Mage::getModel('tax/class')->load($this->_getTaxClassId())->getOpAvataxCode();
+        return Mage::getModel('tax/class')->load($this->_getTaxClassId($object))->getOpAvataxCode();
     }
 
     /**
      * Get tax class id
      *
+     * @param OnePica_AvaTax_Model_Sales_Quote_Address|Mage_Sales_Model_Order $object
      * @return int
      */
-    protected function _getTaxClassId()
+    protected function _getTaxClassId($object)
     {
-        return Mage::getSingleton('customer/group')
-            ->load($this->_getCustomerGroupId())
-            ->getTaxClassId();
-    }
-
-    /**
-     * Get customer group id
-     *
-     * @return int
-     */
-    protected function _getCustomerGroupId()
-    {
-        if (Mage::app()->getStore()->isAdmin()) {
-            return Mage::getSingleton('adminhtml/sales_order_create')->getCustomerGroupId();
+        if ($object instanceof OnePica_AvaTax_Model_Sales_Quote_Address) {
+            return $object->getQuote()->getCustomerTaxClassId();
         }
 
-        return Mage::getSingleton('customer/session')->getCustomerGroupId();
+        return Mage::getSingleton('customer/group')->load($object->getCustomerGroupId())->getTaxClassId();
     }
 
     /**
