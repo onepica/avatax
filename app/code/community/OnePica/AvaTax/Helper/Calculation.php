@@ -64,7 +64,15 @@ class OnePica_AvaTax_Helper_Calculation
      */
     protected function _getCustomerEmail($object, $customer)
     {
-        $email = ($object->getCustomerEmail() ?: $customer->getEmail()) ?: $object->getEmail();
+        if ($object->getCustomerEmail()) {
+            $email = $object->getCustomerEmail();
+        } else {
+            $email = $customer->getEmail();
+        }
+        if (!$email) {
+            $email = $object->getEmail();
+        }
+
         return $email;
     }
 
