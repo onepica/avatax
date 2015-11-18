@@ -22,10 +22,6 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-
-/**
- * Class OnePica_AvaTax_Model_Service_Abstract_Tools
- */
 class OnePica_AvaTax_Model_Service_Abstract_Tools extends Varien_Object
 {
     /**
