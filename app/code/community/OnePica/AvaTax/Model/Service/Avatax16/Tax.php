@@ -353,6 +353,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Tax extends OnePica_AvaTax_Model_Ser
         $header->setCompanyCode($config->getCompanyCode());
         $header->setTransactionType(self::TRANSACTION_TYPE_SALE);
         $header->setCustomerCode($this->_getCalculationHelper()->getCustomerCode($object));
+        $header->setDefaultTaxPayerCode($this->_getVatId($object));
         /** @todo: Remove this code if this field is not required by extesion and Avalara
         $header->setVendorCode(self::DEFAULT_VENDOR_CODE); */
         $header->setCurrency(Mage::app()->getStore($storeId)->getBaseCurrencyCode());
