@@ -105,37 +105,27 @@ class OnePica_AvaTax_Helper_Calculation
     /**
      * Get customer usage type
      *
+     * @param OnePica_AvaTax_Model_Sales_Quote_Address|Mage_Sales_Model_Order $object
      * @return string
      */
-    public function getCustomerOpAvataxCode()
+    public function getCustomerOpAvataxCode($object)
     {
-        return Mage::getModel('tax/class')->load($this->_getTaxClassId())->getOpAvataxCode();
+        return Mage::getModel('tax/class')->load($this->_getTaxClassId($object))->getOpAvataxCode();
     }
 
     /**
      * Get tax class id
      *
+     * @param OnePica_AvaTax_Model_Sales_Quote_Address|Mage_Sales_Model_Order $object
      * @return int
      */
-    protected function _getTaxClassId()
+    protected function _getTaxClassId($object)
     {
-        return Mage::getSingleton('customer/group')
-            ->load($this->_getCustomerGroupId())
-            ->getTaxClassId();
-    }
-
-    /**
-     * Get customer group id
-     *
-     * @return int
-     */
-    protected function _getCustomerGroupId()
-    {
-        if (Mage::app()->getStore()->isAdmin()) {
-            return Mage::getSingleton('adminhtml/sales_order_create')->getCustomerGroupId();
+        if ($object instanceof OnePica_AvaTax_Model_Sales_Quote_Address) {
+            return $object->getQuote()->getCustomerTaxClassId();
         }
 
-        return Mage::getSingleton('customer/session')->getCustomerGroupId();
+        return Mage::getSingleton('customer/group')->load($object->getCustomerGroupId())->getTaxClassId();
     }
 
     /**
