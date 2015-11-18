@@ -511,7 +511,9 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
      */
     protected function _convertGmtDate($gmt, $storeId)
     {
-        return Mage::app()->getLocale()->storeDate($storeId, $gmt)->toString(Varien_Date::DATE_INTERNAL_FORMAT);
+        return Mage::app()->getLocale()
+            ->storeDate($storeId, $gmt, false, Varien_Date::DATETIME_INTERNAL_FORMAT)
+            ->toString(Varien_Date::DATE_INTERNAL_FORMAT);
     }
 
     /**
