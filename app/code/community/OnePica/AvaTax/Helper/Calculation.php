@@ -69,7 +69,7 @@ class OnePica_AvaTax_Helper_Calculation
         if ($object instanceof Mage_Sales_Model_Order) {
             $storeId = $object->getStoreId();
         } elseif ($object instanceof OnePica_AvaTax_Model_Sales_Quote_Address) {
-            $storeId = $object->getQuote() ? $object->getQuote()->getStoreId() : null;
+            $storeId = $object->getQuote()->getStoreId();
         }
 
         return $storeId;
