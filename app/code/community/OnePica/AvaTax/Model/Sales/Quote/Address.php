@@ -24,7 +24,6 @@
  */
 class OnePica_AvaTax_Model_Sales_Quote_Address extends Mage_Sales_Model_Quote_Address
 {
-
     /**
      * Creates a hash key based on only address data for caching
      *
@@ -46,7 +45,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address extends Mage_Sales_Model_Quote_Ad
      */
     public function validate()
     {
-        if (!Mage::helper('avatax/config')->fullStopOnError()) {
+        if (!$this->_getConfigHelper()->fullStopOnError($this->getQuote()->getStoreId())) {
             return true;
         }
 
@@ -174,5 +173,15 @@ class OnePica_AvaTax_Model_Sales_Quote_Address extends Mage_Sales_Model_Quote_Ad
             return $this->_baseTotalAmounts[$code];
         }
         return 0;
+    }
+
+    /**
+     * Get avatax config helper
+     *
+     * @return OnePica_AvaTax_Helper_Config
+     */
+    protected function _getConfigHelper()
+    {
+        return Mage::helper('avatax/config');
     }
 }
