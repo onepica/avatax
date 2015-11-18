@@ -197,7 +197,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
             $line->setNumberOfItems(1);
             $line->setlineAmount($positive * -1);
             $line->setDiscounted('false');
-            $line->setTaxIncluded('true');
+            //$line->setTaxIncluded('true');
 
             $this->_lineToItemId[$lineNumber] = $identifier;
             $this->_lines[$lineNumber] = $line;
@@ -217,7 +217,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
             $line->setNumberOfItems(1);
             $line->setlineAmount($negative);
             $line->setDiscounted('false');
-            $line->setTaxIncluded('true');
+            //$line->setTaxIncluded('true');
 
             $this->_lineToItemId[$lineNumber] = $identifier;
             $this->_lines[$lineNumber] = $line;
