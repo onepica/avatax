@@ -278,7 +278,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
      */
     protected function _addCustomer($object)
     {
-        $this->_request->setCustomerUsageType($this->_getCalculationHelper()->getCustomerOpAvataxCode());
+        $this->_request->setCustomerUsageType($this->_getCalculationHelper()->getCustomerOpAvataxCode($object));
         $this->_request->setCustomerCode($this->_getCalculationHelper()->getCustomerCode($object));
 
         return $this;
