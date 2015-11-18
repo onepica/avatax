@@ -17,8 +17,8 @@
 
 /**
  * The AvaTax Ping model
- * @class OnePica_AvaTax_Model_Service_Avatax16_Ping
  *
+ * @class OnePica_AvaTax_Model_Service_Avatax16_Ping
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
@@ -37,13 +37,15 @@ class OnePica_AvaTax_Model_Service_Avatax16_Ping extends OnePica_AvaTax_Model_Se
         $config = $this->getServiceConfig();
         $connection = $config->getTaxConnection();
         $result = null;
-        $message = array();
+        $message = '';
+
         try {
             /** @var OnePica_AvaTax16_AddressResolution_PingResponse $result */
             $result = $connection->ping();
         } catch (Exception $exception) {
             $message = $exception->getMessage();
         }
+
         if (!isset($result) || !is_object($result) || !$result->getHasError()) {
             $actualResult = $result;
             $result = new Varien_Object();
@@ -51,6 +53,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Ping extends OnePica_AvaTax_Model_Se
             $result->setActualResult($actualResult);
             $result->setMessage($message);
         }
+
         $this->_log(
             OnePica_AvaTax_Model_Source_Avatax_Logtype::PING,
             new stdClass(),
@@ -58,15 +61,21 @@ class OnePica_AvaTax_Model_Service_Avatax16_Ping extends OnePica_AvaTax_Model_Se
             $storeId,
             $config->getParams()
         );
+
         if ($result->getHasError()) {
             if (is_array($result->getErrors())) {
                 $messages = array();
                 foreach ($result->getErrors() as $messageItem) {
                     $messages[] = $this->__($messageItem);
                 }
-                $message = implode(' ', $messages);
+                $message .= implode(' ', $messages);
             }
         }
+
+        if (!$message) {
+            $message = $this->__('The user or account could not be authenticated.');
+        }
+
         return (!$result->getHasError()) ? true : $message;
     }
 }
