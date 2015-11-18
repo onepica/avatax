@@ -23,6 +23,9 @@
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
 
+/**
+ * Class OnePica_AvaTax_Model_Service_Abstract_Tools
+ */
 class OnePica_AvaTax_Model_Service_Abstract_Tools extends Varien_Object
 {
     /**
@@ -44,6 +47,20 @@ class OnePica_AvaTax_Model_Service_Abstract_Tools extends Varien_Object
         return call_user_func_array(array($this->_getHelper(), '__'), $args);
     }
     //@finishSkipCommitHooks
+
+    /**
+     * Retrieve converted date taking into account the current time zone and store.
+     *
+     * @param string $gmt
+     * @param int    $storeId
+     * @return string
+     */
+    protected function _convertGmtDate($gmt, $storeId)
+    {
+        return Mage::app()->getLocale()
+            ->storeDate($storeId, $gmt, false, Varien_Date::DATETIME_INTERNAL_FORMAT)
+            ->toString(Varien_Date::DATE_INTERNAL_FORMAT);
+    }
 
     /**
      * Retrieve application instance
