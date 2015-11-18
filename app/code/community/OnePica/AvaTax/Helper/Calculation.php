@@ -38,7 +38,7 @@ class OnePica_AvaTax_Helper_Calculation
             $customer->load($object->getCustomerId());
         }
         // get store id from object or from quote
-        $storeId = $object->getStoreId() ?: ($object->getQuote() ? $object->getQuote()->getStoreId() : null);
+        $storeId = $this->_getStoreIdFromSalesObject($object);
 
         switch ($this->_getConfigHelper()->getCustomerCodeFormat($storeId)) {
             case OnePica_AvaTax_Model_Source_Customercodeformat::LEGACY:
@@ -55,6 +55,21 @@ class OnePica_AvaTax_Helper_Calculation
         }
 
         return $customerCode;
+    }
+
+    /**
+     * Get store id from quote address or order object
+     *
+     * @param OnePica_AvaTax_Model_Sales_Quote_Address|Mage_Sales_Model_Order $object
+     * @return int|null
+     */
+    protected function _getStoreIdFromSalesObject($object)
+    {
+        $storeId = $object->getStoreId();
+        if (!$storeId) {
+            $storeId = $object->getQuote() ? $object->getQuote()->getStoreId() : null;
+        }
+        return $storeId;
     }
 
     /**
