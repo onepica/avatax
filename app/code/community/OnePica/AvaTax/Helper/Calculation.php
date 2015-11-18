@@ -65,10 +65,13 @@ class OnePica_AvaTax_Helper_Calculation
      */
     protected function _getStoreIdFromSalesObject($object)
     {
-        $storeId = $object->getStoreId();
-        if (!$storeId) {
+        $storeId = null;
+        if ($object instanceof Mage_Sales_Model_Order) {
+            $storeId = $object->getStoreId();
+        } elseif ($object instanceof OnePica_AvaTax_Model_Sales_Quote_Address) {
             $storeId = $object->getQuote() ? $object->getQuote()->getStoreId() : null;
         }
+
         return $storeId;
     }
 
