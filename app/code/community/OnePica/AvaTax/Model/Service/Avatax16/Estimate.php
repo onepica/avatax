@@ -556,7 +556,9 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         $rates = array();
         /** @var OnePica_AvaTax16_Document_Response_Line $line */
         foreach ($response->getLines() as $line) {
-            if ($line->getItemCode() !== OnePica_AvaTax_Model_Service_Avatax16_Abstract::DEFAULT_SHIPPING_ITEMS_SKU) {
+            if ($line->getItemCode() !== OnePica_AvaTax_Model_Service_Avatax16_Abstract::DEFAULT_SHIPPING_ITEMS_SKU
+                || !$line->getCalculatedTax()->getTax()
+            ) {
                 continue;
             }
             foreach ($line->getCalculatedTax()->getDetails() as $detail) {
