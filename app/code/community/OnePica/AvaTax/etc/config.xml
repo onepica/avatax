@@ -266,15 +266,6 @@
                 </observers>
             </checkout_submit_all_after>
         </events>
-        <cache>
-            <types>
-                <avatax module="onepica_avatax" translate="label description">
-                    <label>Avatax cache</label>
-                    <description>Cache avatax request</description>
-                    <tags>AVATAX</tags>
-                </avatax>
-            </types>
-        </cache>
     </global>
     <frontend>
         <layout>
