@@ -341,10 +341,12 @@
                             <avatax_queue translate="title" module="avatax">
                                 <title>AvaTax Order Sync Queue</title>
                                 <action>adminhtml/avaTax_grid/queue</action>
+                                <resource>avatax</resource>
                             </avatax_queue>
                             <avatax_log translate="title" module="avatax">
                                 <title>AvaTax Log</title>
                                 <action>adminhtml/avaTax_grid/log</action>
+                                <resource>avatax</resource>
                             </avatax_log>
                         </children>
                     </tax>
