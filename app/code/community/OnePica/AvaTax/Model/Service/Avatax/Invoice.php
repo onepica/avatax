@@ -151,8 +151,8 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
         $this->_addGwPrintedCardAmount($creditmemo, true);
 
         $this->_addAdjustments(
-            $creditmemo->getAdjustmentPositive(),
-            $creditmemo->getAdjustmentNegative(),
+            $creditmemo->getBaseAdjustmentPositive(),
+            $creditmemo->getBaseAdjustmentNegative(),
             $order->getStoreId()
         );
         $this->_setOriginAddress($order->getStoreId());
