@@ -84,13 +84,21 @@ class OnePica_AvaTax_Helper_Calculation
      */
     protected function _getCustomerEmail($object, $customer)
     {
-        if ($object->getCustomerEmail()) {
-            $email = $object->getCustomerEmail();
-        } else {
-            $email = $customer->getEmail();
-        }
-        if (!$email) {
+        $email = null;
+        if ($object instanceof OnePica_AvaTax_Model_Sales_Quote_Address) {
             $email = $object->getEmail();
+            if (!$email) {
+                // get email from billing in case the $object is shipping address
+                $email = $object->getQuote()->getBillingAddress()
+                       ? $object->getQuote()->getBillingAddress()->getEmail()
+                       : null;
+            }
+        } elseif ($object instanceof Mage_Sales_Model_Order) {
+            $email = $object->getCustomerEmail();
+        }
+
+        if (!$email) {
+            $email = $customer->getEmail();
         }
 
         return $email;
