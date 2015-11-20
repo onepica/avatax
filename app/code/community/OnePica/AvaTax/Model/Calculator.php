@@ -74,6 +74,8 @@ class OnePica_AvaTax_Model_Calculator extends Mage_Core_Model_Factory
      */
     protected function _getRates($item)
     {
+        $storeId = $item->getAddress()->getQuote()->getStoreId();
+        $this->reInitConfig($storeId);
         $rates = $this->_getService()->getRates($item);
         if (isset($rates['failure']) && ($rates['failure'] === true)) {
             /** @var OnePica_AvaTax_Model_Sales_Quote_Address $address */
@@ -219,6 +221,8 @@ class OnePica_AvaTax_Model_Calculator extends Mage_Core_Model_Factory
     public function invoice($invoice, $queue)
     {
         $order = $invoice->getOrder();
+        $storeId = $order->getStoreId();
+        $this->reInitConfig($storeId);
         $shippingAddress = ($order->getShippingAddress()) ? $order->getShippingAddress() : $order->getBillingAddress();
         if (!$shippingAddress) {
             throw new OnePica_AvaTax_Exception($this->_getHelper()->__('There is no address attached to this order'));
@@ -262,6 +266,8 @@ class OnePica_AvaTax_Model_Calculator extends Mage_Core_Model_Factory
     public function creditmemo($creditmemo, $queue)
     {
         $order = $creditmemo->getOrder();
+        $storeId = $order->getStoreId();
+        $this->reInitConfig($storeId);
         $shippingAddress = ($order->getShippingAddress()) ? $order->getShippingAddress() : $order->getBillingAddress();
         if (!$shippingAddress) {
             throw new OnePica_AvaTax_Exception($this->_getHelper()->__('There is no address attached to this order'));
@@ -295,11 +301,13 @@ class OnePica_AvaTax_Model_Calculator extends Mage_Core_Model_Factory
     /**
      * Tries to ping AvaTax service with provided credentials
      *
-     * @param int $storeId
+     * @param int|null $storeId
      * @return bool|array
      */
     public function ping($storeId)
     {
+        $storeId = Mage::app()->getStore($storeId)->getStoreId();
+        $this->reInitConfig($storeId);
         return $this->_getService()->ping($storeId);
     }
 
@@ -348,5 +356,16 @@ class OnePica_AvaTax_Model_Calculator extends Mage_Core_Model_Factory
             $order->addStatusToHistory($order->getStatus(), $comment, false)->save();
         }
         return $this;
+    }
+
+    /**
+     * Re-init ServiceConfig
+     *
+     * @param int $storeId
+     * @return mixed
+     */
+    public function reInitConfig($storeId)
+    {
+        $this->_getService()->reInitConfig($storeId);
     }
 }

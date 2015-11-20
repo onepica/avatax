@@ -25,11 +25,32 @@ class OnePica_AvaTax_Model_Service_Avatax16
     extends OnePica_AvaTax_Model_Service_Abstract
 {
     /**
-     * Estimate Resource
+     * Estimate Resources
      *
-     * @var mixed
+     * @var mixed[]
      */
-    protected $_estimateResource;
+    protected $_estimateResources;
+
+    /**
+     * Invoice Resources
+     *
+     * @var mixed[]
+     */
+    protected $_invoiceResources;
+
+    /**
+     * Ping Resources
+     *
+     * @var mixed[]
+     */
+    protected $_pingResources;
+
+    /**
+     * Address Validation Resources
+     *
+     * @var mixed[]
+     */
+    protected $_addressValidationResources;
 
     /**
      * OnePica_AvaTax_Model_Service_Avatax16 constructor.
@@ -38,7 +59,23 @@ class OnePica_AvaTax_Model_Service_Avatax16
      */
     public function __construct()
     {
-        $this->setServiceConfig(Mage::getSingleton('avatax/service_avatax16_config')->init(Mage::app()->getStore()));
+        $storeId = Mage::app()->getStore()->getStoreId();
+        $this->reInitConfig($storeId);
+    }
+
+    /**
+     * Re-init ServiceConfig
+     *
+     * @param int $storeId
+     * @return $this
+     */
+    public function reInitConfig($storeId)
+    {
+        $this->setCurrentStoreId($storeId);
+        if (!$this->getServiceConfig()) {
+            $this->setServiceConfig(Mage::getModel('avatax/service_avatax16_config')->init($this->getCurrentStoreId()));
+        }
+        return $this;
     }
 
     /**
@@ -48,8 +85,12 @@ class OnePica_AvaTax_Model_Service_Avatax16
      */
     protected function _getEstimateResource()
     {
-        return Mage::getSingleton('avatax/service_avatax16_estimate',
-            array('service_config' => $this->getServiceConfig()));
+        if (!isset($this->_estimateResources[$this->getCurrentStoreId()])) {
+            $this->_estimateResources[$this->getCurrentStoreId()] = Mage::getModel('avatax/service_avatax16_estimate',
+                array('service_config' => $this->getServiceConfig()));
+        }
+        $resource = $this->_estimateResources[$this->getCurrentStoreId()];
+        return $resource;
     }
 
     /**
@@ -59,8 +100,12 @@ class OnePica_AvaTax_Model_Service_Avatax16
      */
     protected function _getInvoiceResource()
     {
-        return Mage::getSingleton('avatax/service_avatax16_invoice',
-            array('service_config' => $this->getServiceConfig()));
+        if (!isset($this->_invoiceResources[$this->getCurrentStoreId()])) {
+            $this->_invoiceResources[$this->getCurrentStoreId()] = Mage::getModel('avatax/service_avatax16_invoice',
+                array('service_config' => $this->getServiceConfig()));
+        }
+        $resource = $this->_invoiceResources[$this->getCurrentStoreId()];
+        return $resource;
     }
 
     /**
@@ -70,7 +115,12 @@ class OnePica_AvaTax_Model_Service_Avatax16
      */
     protected function _getPingResource()
     {
-        return Mage::getSingleton('avatax/service_avatax16_ping', array('service_config' => $this->getServiceConfig()));
+        if (!isset($this->_pingResources[$this->getCurrentStoreId()])) {
+            $this->_pingResources[$this->getCurrentStoreId()] = Mage::getModel('avatax/service_avatax16_ping',
+                array('service_config' => $this->getServiceConfig()));
+        }
+        $resource = $this->_pingResources[$this->getCurrentStoreId()];
+        return $resource;
     }
 
     /**
@@ -81,8 +131,14 @@ class OnePica_AvaTax_Model_Service_Avatax16
      */
     protected function _getAddressValidatorResource($address)
     {
-        return Mage::getModel('avatax/service_avatax16_address',
-            array('service_config' => $this->getServiceConfig(), 'address' => $address));
+        if (!isset($this->_addressValidationResources[$this->getCurrentStoreId()])) {
+            $this->_addressValidationResources[$this->getCurrentStoreId()] =
+                Mage::getModel('avatax/service_avatax16_address',
+                    array('service_config' => $this->getServiceConfig(), 'address' => $address)
+                );
+        }
+        $resource = $this->_addressValidationResources[$this->_currentStoreId];
+        return $resource;
     }
 
     /**
