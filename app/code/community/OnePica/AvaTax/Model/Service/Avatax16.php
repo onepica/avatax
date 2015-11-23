@@ -25,32 +25,32 @@ class OnePica_AvaTax_Model_Service_Avatax16
     extends OnePica_AvaTax_Model_Service_Abstract
 {
     /**
-     * Estimate Resources
+     * Estimate Resource
      *
-     * @var mixed[]
+     * @var mixed
      */
-    protected $_estimateResources;
+    protected $_estimateResource;
 
     /**
-     * Invoice Resources
+     * Invoice Resource
      *
-     * @var mixed[]
+     * @var mixed
      */
-    protected $_invoiceResources;
+    protected $_invoiceResource;
 
     /**
-     * Ping Resources
+     * Ping Resource
      *
-     * @var mixed[]
+     * @var mixed
      */
-    protected $_pingResources;
+    protected $_pingResource;
 
     /**
-     * Address Validation Resources
+     * Address Validation Resource
      *
-     * @var mixed[]
+     * @var mixed
      */
-    protected $_addressValidationResources;
+    protected $_addressValidationResource;
 
     /**
      * OnePica_AvaTax_Model_Service_Avatax16 constructor.
@@ -60,67 +60,85 @@ class OnePica_AvaTax_Model_Service_Avatax16
     public function __construct()
     {
         $storeId = Mage::app()->getStore()->getStoreId();
-        $this->reInitConfig($storeId);
+        $this->setStoreId($storeId);
     }
 
     /**
-     * Re-init ServiceConfig
+     * Set Store Id
      *
      * @param int $storeId
      * @return $this
      */
-    public function reInitConfig($storeId)
+    public function setStoreId($storeId)
     {
         $this->setCurrentStoreId($storeId);
         if (!$this->getServiceConfig()) {
             $this->setServiceConfig(Mage::getModel('avatax/service_avatax16_config')->init($this->getCurrentStoreId()));
         }
+
+        // update service config for each resource
+        if (null !== $this->_estimateResource) {
+            $this->_estimateResource->setServiceConfig($this->getServiceConfig());
+        }
+
+        if (null !== $this->_invoiceResource) {
+            $this->_invoiceResource->setServiceConfig($this->getServiceConfig());
+        }
+
+        if (null !== $this->_pingResource) {
+            $this->_pingResource->setServiceConfig($this->getServiceConfig());
+        }
+
+        if (null !== $this->_addressValidationResource) {
+            $this->_addressValidationResource->setServiceConfig($this->getServiceConfig());
+        }
+
         return $this;
     }
 
     /**
      * Get estimate resource
      *
-     * return mixed
+     * return OnePica_AvaTax_Model_Service_Avatax16_Estimate
      */
     protected function _getEstimateResource()
     {
-        if (!isset($this->_estimateResources[$this->getCurrentStoreId()])) {
-            $this->_estimateResources[$this->getCurrentStoreId()] = Mage::getModel('avatax/service_avatax16_estimate',
+        if (null === $this->_estimateResource) {
+            $this->_estimateResource = Mage::getModel('avatax/service_avatax16_estimate',
                 array('service_config' => $this->getServiceConfig()));
         }
-        $resource = $this->_estimateResources[$this->getCurrentStoreId()];
-        return $resource;
+
+        return $this->_estimateResource;
     }
 
     /**
      * Get invoice resource
      *
-     * return mixed
+     * return OnePica_AvaTax_Model_Service_Avatax16_Invoice
      */
     protected function _getInvoiceResource()
     {
-        if (!isset($this->_invoiceResources[$this->getCurrentStoreId()])) {
-            $this->_invoiceResources[$this->getCurrentStoreId()] = Mage::getModel('avatax/service_avatax16_invoice',
+        if (null === $this->_invoiceResource) {
+            $this->_invoiceResource = Mage::getModel('avatax/service_avatax16_invoice',
                 array('service_config' => $this->getServiceConfig()));
         }
-        $resource = $this->_invoiceResources[$this->getCurrentStoreId()];
-        return $resource;
+
+        return $this->_invoiceResource;
     }
 
     /**
      * Get ping resource
      *
-     * return mixed
+     * return OnePica_AvaTax_Model_Service_Avatax16_Ping
      */
     protected function _getPingResource()
     {
-        if (!isset($this->_pingResources[$this->getCurrentStoreId()])) {
-            $this->_pingResources[$this->getCurrentStoreId()] = Mage::getModel('avatax/service_avatax16_ping',
+        if (null === $this->_pingResource) {
+            $this->_pingResource = Mage::getModel('avatax/service_avatax16_ping',
                 array('service_config' => $this->getServiceConfig()));
         }
-        $resource = $this->_pingResources[$this->getCurrentStoreId()];
-        return $resource;
+
+        return $this->_pingResource;
     }
 
     /**
@@ -131,14 +149,14 @@ class OnePica_AvaTax_Model_Service_Avatax16
      */
     protected function _getAddressValidatorResource($address)
     {
-        if (!isset($this->_addressValidationResources[$this->getCurrentStoreId()])) {
-            $this->_addressValidationResources[$this->getCurrentStoreId()] =
+        if (null === $this->_addressValidationResource) {
+            $this->_addressValidationResource =
                 Mage::getModel('avatax/service_avatax16_address',
                     array('service_config' => $this->getServiceConfig(), 'address' => $address)
                 );
         }
-        $resource = $this->_addressValidationResources[$this->_currentStoreId];
-        return $resource;
+
+        return $this->_addressValidationResource;
     }
 
     /**

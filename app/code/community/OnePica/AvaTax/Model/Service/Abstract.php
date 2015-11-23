@@ -86,12 +86,12 @@ abstract class OnePica_AvaTax_Model_Service_Abstract extends Varien_Object
     abstract public function getAddressValidator($address);
 
     /**
-     * Re-init ServiceConfig
+     * Set Store Id
      *
      * @param int $storeId
      * @return mixed
      */
-    abstract public function reInitConfig($storeId);
+    abstract public function setStoreId($storeId);
 
     /**
      * Service configs for each store

@@ -75,7 +75,7 @@ class OnePica_AvaTax_Model_Calculator extends Mage_Core_Model_Factory
     protected function _getRates($item)
     {
         $storeId = $item->getAddress()->getQuote()->getStoreId();
-        $this->reInitConfig($storeId);
+        $this->setStoreId($storeId);
         $rates = $this->_getService()->getRates($item);
         if (isset($rates['failure']) && ($rates['failure'] === true)) {
             /** @var OnePica_AvaTax_Model_Sales_Quote_Address $address */
@@ -222,7 +222,7 @@ class OnePica_AvaTax_Model_Calculator extends Mage_Core_Model_Factory
     {
         $order = $invoice->getOrder();
         $storeId = $order->getStoreId();
-        $this->reInitConfig($storeId);
+        $this->setStoreId($storeId);
         $shippingAddress = ($order->getShippingAddress()) ? $order->getShippingAddress() : $order->getBillingAddress();
         if (!$shippingAddress) {
             throw new OnePica_AvaTax_Exception($this->_getHelper()->__('There is no address attached to this order'));
@@ -267,7 +267,7 @@ class OnePica_AvaTax_Model_Calculator extends Mage_Core_Model_Factory
     {
         $order = $creditmemo->getOrder();
         $storeId = $order->getStoreId();
-        $this->reInitConfig($storeId);
+        $this->setStoreId($storeId);
         $shippingAddress = ($order->getShippingAddress()) ? $order->getShippingAddress() : $order->getBillingAddress();
         if (!$shippingAddress) {
             throw new OnePica_AvaTax_Exception($this->_getHelper()->__('There is no address attached to this order'));
@@ -307,7 +307,7 @@ class OnePica_AvaTax_Model_Calculator extends Mage_Core_Model_Factory
     public function ping($storeId)
     {
         $storeId = Mage::app()->getStore($storeId)->getStoreId();
-        $this->reInitConfig($storeId);
+        $this->setStoreId($storeId);
         return $this->_getService()->ping($storeId);
     }
 
@@ -359,13 +359,14 @@ class OnePica_AvaTax_Model_Calculator extends Mage_Core_Model_Factory
     }
 
     /**
-     * Re-init ServiceConfig
+     * Set Store Id
      *
      * @param int $storeId
-     * @return mixed
+     * @return $this
      */
-    public function reInitConfig($storeId)
+    public function setStoreId($storeId)
     {
-        $this->_getService()->reInitConfig($storeId);
+        $this->_getService()->setStoreId($storeId);
+        return $this;
     }
 }
