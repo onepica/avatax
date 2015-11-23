@@ -47,52 +47,116 @@ class OnePica_AvaTax_Model_Service_Avatax
     protected $_pingResource;
 
     /**
+     * Address Validation Resource
+     *
+     * @var mixed
+     */
+    protected $_addressValidationResource;
+
+    /**
      * OnePica_AvaTax_Model_Service_Avatax constructor.
+     *
      * @internal param mixed
      */
     public function __construct()
     {
-        $this->setServiceConfig(Mage::getSingleton('avatax/service_avatax_config')->init(Mage::app()->getStore()));
+        $storeId = Mage::app()->getStore()->getStoreId();
+        $this->setStoreId($storeId);
+    }
+
+    /**
+     * Set Store Id
+     *
+     * @param int $storeId
+     * @return $this
+     */
+    public function setStoreId($storeId)
+    {
+        $this->setCurrentStoreId($storeId);
+        if (!$this->getServiceConfig()) {
+            $this->setServiceConfig(Mage::getModel('avatax/service_avatax_config')->init($this->getCurrentStoreId()));
+        }
+
+        // update service config for each resource
+        if (null !== $this->_estimateResource) {
+            $this->_estimateResource->setServiceConfig($this->getServiceConfig());
+        }
+
+        if (null !== $this->_invoiceResource) {
+            $this->_invoiceResource->setServiceConfig($this->getServiceConfig());
+        }
+
+        if (null !== $this->_pingResource) {
+            $this->_pingResource->setServiceConfig($this->getServiceConfig());
+        }
+
+        if (null !== $this->_addressValidationResource) {
+            $this->_addressValidationResource->setServiceConfig($this->getServiceConfig());
+        }
+
+        return $this;
     }
 
     /**
      * Get estimate resource
      *
-     * return mixed
+     * return OnePica_AvaTax_Model_Service_Avatax_Estimate
      */
     protected function _getEstimateResource()
     {
-        return Mage::getSingleton('avatax/service_avatax_estimate', array('service_config' => $this->getServiceConfig()));
+        if (null === $this->_estimateResource) {
+            $this->_estimateResource = Mage::getModel('avatax/service_avatax_estimate',
+                array('service_config' => $this->getServiceConfig()));
+        }
+
+        return $this->_estimateResource;
     }
 
     /**
      * Get invoice resource
      *
-     * return mixed
+     * return OnePica_AvaTax_Model_Service_Avatax_Invoice
      */
     protected function _getInvoiceResource()
     {
-        return Mage::getSingleton('avatax/service_avatax_invoice', array('service_config' => $this->getServiceConfig()));
+        if (null === $this->_invoiceResource) {
+            $this->_invoiceResource = Mage::getModel('avatax/service_avatax_invoice',
+                array('service_config' => $this->getServiceConfig()));
+        }
+
+        return $this->_invoiceResource;
     }
 
     /**
      * Get ping resource
      *
-     * return mixed
+     * return OnePica_AvaTax_Model_Service_Avatax_Ping
      */
     protected function _getPingResource()
     {
-        return Mage::getSingleton('avatax/service_avatax_ping', array('service_config' => $this->getServiceConfig()));
+        if (null === $this->_pingResource) {
+            $this->_pingResource = Mage::getModel('avatax/service_avatax_ping',
+                array('service_config' => $this->getServiceConfig()));
+        }
+
+        return $this->_pingResource;
     }
 
     /**
      * Get Address Validator resource
      *
-     * return mixed
+     * return OnePica_AvaTax_Model_Service_Avatax_Address
      */
     protected function _getAddressValidatorResource($address)
     {
-        return Mage::getSingleton('avatax/service_avatax_address', array('service_config' => $this->getServiceConfig(), 'address' => $address));
+        if (null === $this->_addressValidationResource) {
+            $this->_addressValidationResource =
+                Mage::getModel('avatax/service_avatax_address',
+                    array('service_config' => $this->getServiceConfig(), 'address' => $address)
+                );
+        }
+
+        return $this->_addressValidationResource;
     }
     /**
      * Get rates from Avalara
@@ -129,6 +193,7 @@ class OnePica_AvaTax_Model_Service_Avatax
 
     /**
      * Get avatax address validator
+     *
      * @return OnePica_AvaTax_Model_Service_Avatax_Address
      */
     public function getAddressValidator($address)
