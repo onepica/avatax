@@ -89,10 +89,6 @@ class OnePica_AvaTax_Model_Service_Avatax16
             $this->_pingResource->setServiceConfig($this->getServiceConfig());
         }
 
-        if (null !== $this->_addressValidationResource) {
-            $this->_addressValidationResource->setServiceConfig($this->getServiceConfig());
-        }
-
         return $this;
     }
 
@@ -149,14 +145,9 @@ class OnePica_AvaTax_Model_Service_Avatax16
      */
     protected function _getAddressValidatorResource($address)
     {
-        if (null === $this->_addressValidationResource) {
-            $this->_addressValidationResource =
-                Mage::getModel('avatax/service_avatax16_address',
-                    array('service_config' => $this->getServiceConfig(), 'address' => $address)
-                );
-        }
-
-        return $this->_addressValidationResource;
+        return Mage::getModel('avatax/service_avatax16_address',
+            array('service_config' => $this->getServiceConfig(), 'address' => $address)
+        );
     }
 
     /**
