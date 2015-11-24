@@ -46,13 +46,6 @@ class OnePica_AvaTax_Model_Service_Avatax16
     protected $_pingResource;
 
     /**
-     * Address Validation Resource
-     *
-     * @var mixed
-     */
-    protected $_addressValidationResource;
-
-    /**
      * OnePica_AvaTax_Model_Service_Avatax16 constructor.
      *
      * @param mixed

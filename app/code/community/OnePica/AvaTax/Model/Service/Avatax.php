@@ -47,13 +47,6 @@ class OnePica_AvaTax_Model_Service_Avatax
     protected $_pingResource;
 
     /**
-     * Address Validation Resource
-     *
-     * @var mixed
-     */
-    protected $_addressValidationResource;
-
-    /**
      * OnePica_AvaTax_Model_Service_Avatax constructor.
      *
      * @internal param mixed
@@ -145,8 +138,7 @@ class OnePica_AvaTax_Model_Service_Avatax
      */
     protected function _getAddressValidatorResource($address)
     {
-        return $this->_addressValidationResource
-            = Mage::getModel('avatax/service_avatax_address',
+        return Mage::getModel('avatax/service_avatax_address',
             array('service_config' => $this->getServiceConfig(), 'address' => $address)
         );
     }
