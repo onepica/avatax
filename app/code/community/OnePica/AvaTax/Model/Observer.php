@@ -578,6 +578,20 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     }
 
     /**
+     * Add error message if tax estimation has problems when creating order in admin
+     *
+     * @param Varien_Event_Observer $observer
+     * @return $this
+     */
+    public function controllerActionPredispatchAdminhtmlSalesOrderCreateLoadBlock(Varien_Event_Observer $observer)
+    {
+        $adminQuote = Mage::getSingleton('adminhtml/session_quote')->getQuote();
+        $this->_addErrorMessage($adminQuote);
+
+        return $this;
+    }
+
+    /**
      * Add error message if tax estimation has problems
      *
      * @return $this
