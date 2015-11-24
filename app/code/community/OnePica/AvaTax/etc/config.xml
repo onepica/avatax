@@ -265,6 +265,15 @@
                     </avatax>
                 </observers>
             </checkout_submit_all_after>
+            <controller_action_postdispatch_adminhtml_sales_order_create_loadBlock>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer</class>
+                        <method>controllerActionPredispatchAdminhtmlSalesOrderCreateLoadBlock</method>
+                    </avatax>
+                </observers>
+            </controller_action_postdispatch_adminhtml_sales_order_create_loadBlock>
         </events>
     </global>
     <frontend>
