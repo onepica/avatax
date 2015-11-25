@@ -33,28 +33,55 @@ class OnePica_AvaTax_Model_Adminhtml_Config extends Mage_Adminhtml_Model_Config
     protected function _initSectionsAndTabs()
     {
         if ($this->_getConfigHelper()->isAvaTaxDisabled()) {
-            $config = Mage::getConfig()->loadModulesConfiguration('system.xml')
-                ->applyExtends();
-
-            Mage::dispatchEvent('adminhtml_init_system_config', array('config' => $config));
-
-            //these 4 lines are the only added content
-            $configFile = $this->_getConfigHelper()->getEtcPath() . DS . 'system-disabled.xml';
-            /** @var Mage_Core_Model_Config_Base $mergeModel */
-            $mergeModel = Mage::getModel('core/config_base');
-            $mergeModel->loadFile($configFile);
-            $config = $config->extend($mergeModel, true);
-            $this->_sections = $config->getNode('sections');
-            $this->_tabs = $config->getNode('tabs');
+            $this->_addCustomConfig('system-disabled.xml');
         } else {
-            parent::_initSectionsAndTabs();
+            $this->_getDataHelper()->isAvatax16()
+                ? $this->_addCustomConfig('system-avatax16.xml')
+                : parent::_initSectionsAndTabs();
         }
 
         return $this;
     }
 
     /**
-     * Get data helper
+     * Added custom config
+     *
+     * @param string $customConfig
+     * @return $this
+     */
+    protected function _addCustomConfig($customConfig)
+    {
+        $config = Mage::getConfig()->loadModulesConfiguration('system.xml')->applyExtends();
+
+        Mage::dispatchEvent('adminhtml_init_system_config', array('config' => $config));
+
+        //these 4 lines are the only added content
+        $configFile = $this->_getConfigHelper()->getEtcPath() . DS . $customConfig;
+
+        /** @var Mage_Core_Model_Config_Base $mergeModel */
+        $mergeModel = Mage::getModel('core/config_base');
+        $mergeModel->loadFile($configFile);
+
+        $config = $config->extend($mergeModel, true);
+
+        $this->_sections = $config->getNode('sections');
+        $this->_tabs = $config->getNode('tabs');
+
+        return $this;
+    }
+
+    /**
+     * Get avatax data helper
+     *
+     * @return OnePica_AvaTax_Helper_Data
+     */
+    protected function _getDataHelper()
+    {
+        return Mage::helper('avatax/data');
+    }
+
+    /**
+     * Get avatax config helper
      *
      * @return \OnePica_AvaTax_Helper_Config
      */
