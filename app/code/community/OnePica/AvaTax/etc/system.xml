@@ -393,15 +393,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </normalize_address>
-                        <avatax16_onepage_validate_address_message translate="label comment">
-                            <label>Address Validation Error</label>
-                            <comment>Only applies if address validation is enabled</comment>
-                            <frontend_type>textarea</frontend_type>
-                            <sort_order>325</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </avatax16_onepage_validate_address_message>
                         <onepage_normalize_message translate="label comment">
                             <label>Onepage Checkout Address Normalized Notice</label>
                             <comment>Only applies if address normalization is enabled</comment>
@@ -573,6 +564,15 @@
                         </shipping>
                     </fields>
                 </display>
+                <sales_display>
+                    <fields>
+                        <full_summary>
+                            <show_in_default>0</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </full_summary>
+                    </fields>
+                </sales_display>
             </groups>
         </tax>
         <shipping>
