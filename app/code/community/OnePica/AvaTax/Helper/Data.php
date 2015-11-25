@@ -37,6 +37,16 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Is avatax 16 service type
+     *
+     * @return bool
+     */
+    public function isAvatax16()
+    {
+        return $this->_getConfigData()->getActiveService() === OnePica_AvaTax_Helper_Config::AVATAX16_SERVICE_TYPE;
+    }
+
+    /**
      * Gets the documenation url
      *
      * @return string
