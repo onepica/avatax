@@ -26,6 +26,58 @@
 abstract class OnePica_AvaTax_Model_Service_Abstract extends Varien_Object
 {
     /**
+     * Estimate Resource
+     *
+     * @var mixed
+     */
+    protected $_estimateResource;
+
+    /**
+     * Invoice Resource
+     *
+     * @var mixed
+     */
+    protected $_invoiceResource;
+
+    /**
+     * Ping Resource
+     *
+     * @var mixed
+     */
+    protected $_pingResource;
+
+    /**
+     * Set Store Id
+     *
+     * @param int $storeId
+     * @return $this
+     */
+    public function setStoreId($storeId)
+    {
+        $this->setCurrentStoreId($storeId);
+        if (!$this->getServiceConfig()) {
+            $this->setServiceConfig(
+                Mage::getModel($this->_getServiceConfigClassName())->init($this->getCurrentStoreId())
+            );
+        }
+
+        // update service config for each resource
+        if (null !== $this->_estimateResource) {
+            $this->_estimateResource->setServiceConfig($this->getServiceConfig());
+        }
+
+        if (null !== $this->_invoiceResource) {
+            $this->_invoiceResource->setServiceConfig($this->getServiceConfig());
+        }
+
+        if (null !== $this->_pingResource) {
+            $this->_pingResource->setServiceConfig($this->getServiceConfig());
+        }
+
+        return $this;
+    }
+
+    /**
      * Get rates from Service
      *
      * @param Mage_Sales_Model_Quote_Item $item
@@ -86,12 +138,11 @@ abstract class OnePica_AvaTax_Model_Service_Abstract extends Varien_Object
     abstract public function getAddressValidator($address);
 
     /**
-     * Set Store Id
+     * Get service config class name
      *
-     * @param int $storeId
-     * @return mixed
+     * @return string
      */
-    abstract public function setStoreId($storeId);
+    abstract protected function _getServiceConfigClassName();
 
     /**
      * Service configs for each store
