@@ -33,10 +33,12 @@ class OnePica_AvaTax_Model_Adminhtml_Config extends Mage_Adminhtml_Model_Config
     protected function _initSectionsAndTabs()
     {
         if ($this->_getConfigHelper()->isAvaTaxDisabled()) {
-            $this->_addCustomConfig('system-disabled.xml');
+            $this->_getDataHelper()->isAvatax16()
+                ? $this->_addCustomConfig(array('system-disabled.xml', 'system-avatax16-disabled.xml'))
+                : $this->_addCustomConfig(array('system-disabled.xml'));
         } else {
             $this->_getDataHelper()->isAvatax16()
-                ? $this->_addCustomConfig('system-avatax16.xml')
+                ? $this->_addCustomConfig(array('system-avatax16.xml'))
                 : parent::_initSectionsAndTabs();
         }
 
@@ -46,23 +48,25 @@ class OnePica_AvaTax_Model_Adminhtml_Config extends Mage_Adminhtml_Model_Config
     /**
      * Added custom config
      *
-     * @param string $customConfig
+     * @param array $customConfig
      * @return $this
      */
-    protected function _addCustomConfig($customConfig)
+    protected function _addCustomConfig(array $customConfig)
     {
         $config = Mage::getConfig()->loadModulesConfiguration('system.xml')->applyExtends();
 
         Mage::dispatchEvent('adminhtml_init_system_config', array('config' => $config));
 
-        //these 4 lines are the only added content
-        $configFile = $this->_getConfigHelper()->getEtcPath() . DS . $customConfig;
+        foreach ($customConfig as $item) {
+            //these 4 lines are the only added content
+            $configFile = $this->_getConfigHelper()->getEtcPath() . DS . $item;
 
-        /** @var Mage_Core_Model_Config_Base $mergeModel */
-        $mergeModel = Mage::getModel('core/config_base');
-        $mergeModel->loadFile($configFile);
+            /** @var Mage_Core_Model_Config_Base $mergeModel */
+            $mergeModel = Mage::getModel('core/config_base');
+            $mergeModel->loadFile($configFile);
 
-        $config = $config->extend($mergeModel, true);
+            $config = $config->extend($mergeModel, true);
+        }
 
         $this->_sections = $config->getNode('sections');
         $this->_tabs = $config->getNode('tabs');
