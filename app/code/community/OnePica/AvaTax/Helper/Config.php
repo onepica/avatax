@@ -225,6 +225,13 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
      */
     const PATH_TO_AVATAX16_ADDRESS_VALIDATION_MESSAGE = 'tax/avatax/avatax16_onepage_validate_address_message';
 
+    /**#@+
+     * Service types
+     */
+    const AVATAX16_SERVICE_TYPE = 'avatax16';
+    const AVATAX_SERVICE_TYPE   = 'avatax';
+    /**#@-*/
+
     /**
      * Returns full stop on error
      *
