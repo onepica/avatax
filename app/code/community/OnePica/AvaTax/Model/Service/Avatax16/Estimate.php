@@ -503,13 +503,13 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
     protected function _getSummaryFromResponse($response)
     {
         $result = array();
-        $subtotal = $response->getCalculatedTaxSummary()->getSubtotal();
+        $grandTotal = $response->getCalculatedTaxSummary()->getGrandTotal();
         foreach ($response->getCalculatedTaxSummary()->getTaxByType() as $taxItemByType) {
             foreach ($taxItemByType->getJurisdictions() as $data) {
                 $jurisdiction = $data->getJurisdictionName() . ' ' . $data->getJurisdictionType();
                 $result[] = array(
                     'name' => $jurisdiction,
-                    'rate' => $this->_calculateRate($data->getTax(), $subtotal),
+                    'rate' => $this->_calculateRate($data->getTax(), $grandTotal),
                     'amt'  => $data->getTax()
                 );
             }
@@ -568,11 +568,11 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
      * Calculate rate
      *
      * @param float $rate
-     * @param float $subtotal
+     * @param float $grandTotal
      * @return float
      */
-    protected function _calculateRate($rate, $subtotal)
+    protected function _calculateRate($rate, $grandTotal)
     {
-        return $this->_getHelper()->roundUp($rate / $subtotal, 4) * 100;
+        return $this->_getHelper()->roundUp($rate / $grandTotal, 4) * 100;
     }
 }
