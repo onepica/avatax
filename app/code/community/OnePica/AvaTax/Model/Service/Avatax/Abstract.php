@@ -306,26 +306,6 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
     }
 
     /**
-     * Test to see if the product carries its own numbers or is calculated based on parent or children
-     *
-     * @param Mage_Sales_Model_Quote_Item|Mage_Sales_Model_Order_Item|mixed $item
-     * @return bool
-     */
-    public function isProductCalculated($item)
-    {
-        // check if item has methods as far as shipping, gift wrapping, printed card item comes as Varien_Object
-        if (method_exists($item, 'isChildrenCalculated') && method_exists($item, 'getParentItem')) {
-            if ($item->isChildrenCalculated() && !$item->getParentItem()) {
-                return true;
-            }
-            if (!$item->isChildrenCalculated() && $item->getParentItem()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
      * Init product collection for items to be calculated
      *
      * @param Mage_Sales_Model_Mysql4_Order_Invoice_Item_Collection|array $items
