@@ -259,6 +259,19 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     }
 
     /**
+     * Set post type for checkout session when 'controller_action_predispatch_checkout_multishipping_index' event
+     *
+     * @param Varien_Event_Observer $observer
+     * @return $this
+     */
+    public function controllerActionPredispatchCheckoutMultishippingIndex(Varien_Event_Observer $observer)
+    {
+        $session = Mage::getSingleton('checkout/session');
+        $session->setPostType('multishipping');
+        return $this;
+    }
+
+    /**
      * Prepare warnings array
      *
      * @param int $storeId

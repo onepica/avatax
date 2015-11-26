@@ -198,7 +198,10 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
     {
         /** @var Mage_Checkout_Model_Session $session */
         $session = Mage::getSingleton('checkout/session');
-        if ($session->getPostType() == 'onepage') {
+        if ($session->getPostType() == 'onepage'
+            || $session->getPostType() == 'multishipping'
+            || Mage::app()->getStore()->isAdmin()
+        ) {
             $requiredFields = explode(",", $this->_getConfigHelper()->getFieldRequiredList());
             $fieldRules = explode(",", $this->_getConfigHelper()->getFieldRule());
             foreach ($requiredFields as $field) {
