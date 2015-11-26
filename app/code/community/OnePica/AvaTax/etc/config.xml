@@ -193,6 +193,15 @@
                     </avatax>
                 </observers>
             </controller_action_predispatch_checkout_onepage_index>
+            <controller_action_predispatch_checkout_multishipping_index>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer</class>
+                        <method>controllerActionPredispatchCheckoutMultishippingIndex</method>
+                    </avatax>
+                </observers>
+            </controller_action_predispatch_checkout_multishipping_index>
             <controller_action_predispatch_checkout_cart_index>
                 <observers>
                     <avatax>
