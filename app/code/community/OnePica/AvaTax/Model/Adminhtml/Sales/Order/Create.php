@@ -36,7 +36,6 @@ class OnePica_AvaTax_Model_Adminhtml_Sales_Order_Create extends Mage_Adminhtml_M
      *
      * @param array $address
      * @return $this
-     * @throws Mage_Core_Exception
      */
     public function setShippingAddress($address)
     {
