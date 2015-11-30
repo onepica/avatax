@@ -626,7 +626,7 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
      */
     protected function _addErrorMessage($quote)
     {
-        if ($this->_getErrorsHelper()->fullStopOnError($quote)) {
+        if ($this->_getErrorsHelper()->canShowEstimationError($quote)) {
             $this->_getErrorsHelper()->addErrorMessage($quote->getStoreId());
         }
 

@@ -34,7 +34,6 @@ class OnePica_AvaTax_Helper_Errors extends Mage_Core_Helper_Abstract
      */
     const VALIDATION_NOTICE_IDENTIFIER = 'avatax_validation_notice';
 
-
     /**
      * Adds error message if there is an error
      *
@@ -107,6 +106,21 @@ class OnePica_AvaTax_Helper_Errors extends Mage_Core_Helper_Abstract
     private function _getConfigHelper()
     {
         return Mage::helper('avatax/config');
+    }
+
+    /**
+     * Can show estimation errors
+     *
+     * @param Mage_Sales_Model_Quote $quote
+     * @return bool
+     */
+    public function canShowEstimationError($quote)
+    {
+        if ($quote->getData('estimate_tax_error') && $this->_getConfigHelper()->fullStopOnError($quote->getStoreId())) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
