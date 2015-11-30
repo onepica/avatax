@@ -106,7 +106,7 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
             return true;
         }
         if ($address->getPostcode() && $address->getPostcode() != '-') {
-            $checkFieldsResult = $this->_checkFields();
+            $checkFieldsResult = $this->_checkFields($quote->getStoreId());
             if ($checkFieldsResult) {
                 return $checkFieldsResult;
             }
@@ -192,9 +192,10 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
     /**
      * Check fields
      *
+     * @param int $storeId
      * @return array|null
      */
-    protected function _checkFields()
+    protected function _checkFields($storeId = null)
     {
         /** @var Mage_Checkout_Model_Session $session */
         $session = Mage::getSingleton('checkout/session');
@@ -202,8 +203,8 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
             || $session->getPostType() == 'multishipping'
             || Mage::app()->getStore()->isAdmin()
         ) {
-            $requiredFields = explode(",", $this->_getConfigHelper()->getFieldRequiredList());
-            $fieldRules = explode(",", $this->_getConfigHelper()->getFieldRule());
+            $requiredFields = explode(",", $this->_getConfigHelper()->getFieldRequiredList($storeId));
+            $fieldRules = explode(",", $this->_getConfigHelper()->getFieldRule($storeId));
             foreach ($requiredFields as $field) {
                 $requiredFlag = 0;
                 foreach ($fieldRules as $rule) {
