@@ -503,19 +503,45 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
     protected function _getSummaryFromResponse($response)
     {
         $result = array();
-        $grandTotal = $response->getCalculatedTaxSummary()->getGrandTotal();
+        $rates = $this->_getJurisdictionsRate($response);
         foreach ($response->getCalculatedTaxSummary()->getTaxByType() as $taxItemByType) {
             foreach ($taxItemByType->getJurisdictions() as $data) {
                 $jurisdiction = $data->getJurisdictionName() . ' ' . $data->getJurisdictionType();
                 $result[] = array(
                     'name' => $jurisdiction,
-                    'rate' => $this->_calculateRate($data->getTax(), $grandTotal),
+                    'rate' => isset($rates[$jurisdiction]) ? $rates[$jurisdiction] : 0,
                     'amt'  => $data->getTax()
                 );
             }
         }
 
         return $result;
+    }
+
+    /**
+     * Get Jurisdictions rate array
+     *
+     * @param OnePica_AvaTax16_Document_Response $response
+     * @return array
+     */
+    protected function _getJurisdictionsRate($response)
+    {
+        $rates = array();
+        /** @var OnePica_AvaTax16_Document_Response_Line $line */
+        foreach ($response->getLines() as $line) {
+            if (!$line->getCalculatedTax()->getTax()) {
+                continue;
+            }
+            foreach ($line->getCalculatedTax()->getDetails() as $detail) {
+                $jurisdiction = $detail->getJurisdictionName() . ' ' . $detail->getJurisdictionType();
+                if (isset($rates[$jurisdiction]) && $rates[$jurisdiction] !== 0) {
+                    continue;
+                }
+                $rates[$jurisdiction] = $detail->getRate() * 100;
+            }
+        }
+
+        return $rates;
     }
 
     /**
@@ -562,17 +588,5 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         }
 
         return $rates;
-    }
-
-    /**
-     * Calculate rate
-     *
-     * @param float $rate
-     * @param float $grandTotal
-     * @return float
-     */
-    protected function _calculateRate($rate, $grandTotal)
-    {
-        return $this->_getHelper()->roundUp($rate / $grandTotal, 4) * 100;
     }
 }
