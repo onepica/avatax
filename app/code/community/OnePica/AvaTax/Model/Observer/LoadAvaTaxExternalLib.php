@@ -99,7 +99,7 @@ class OnePica_AvaTax_Model_Observer_LoadAvaTaxExternalLib extends OnePica_AvaTax
      * @param Varien_Event_Observer $observer
      * @return $this
      */
-    public function handle(Varien_Event_Observer $observer)
+    public function execute(Varien_Event_Observer $observer)
     {
         $this->loadAvaTaxExternalLib();
         return $this;

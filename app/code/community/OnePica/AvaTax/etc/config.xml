@@ -162,7 +162,7 @@
                     <avatax>
                         <type>singleton</type>
                         <class>avatax/observer_loadAvaTaxExternalLib</class>
-                        <method>handle</method>
+                        <method>execute</method>
                     </avatax>
                 </observers>
             </controller_front_init_before>
@@ -171,7 +171,7 @@
                     <avatax>
                         <type>singleton</type>
                         <class>avatax/observer_loadAvaTaxExternalLib</class>
-                        <method>handle</method>
+                        <method>execute</method>
                     </avatax>
                 </observers>
             </default>
