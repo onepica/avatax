@@ -206,8 +206,8 @@
                 <observers>
                     <avatax>
                         <type>singleton</type>
-                        <class>avatax/observer</class>
-                        <method>controllerActionPredispatchCheckoutCartIndex</method>
+                        <class>avatax/observer_controllerActionPredispatchCheckoutCartIndex</class>
+                        <method>execute</method>
                     </avatax>
                 </observers>
             </controller_action_predispatch_checkout_cart_index>
