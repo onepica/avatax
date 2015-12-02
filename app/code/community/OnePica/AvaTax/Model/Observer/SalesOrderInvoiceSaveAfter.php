@@ -27,7 +27,6 @@ class OnePica_AvaTax_Model_Observer_SalesOrderInvoiceSaveAfter extends OnePica_A
     /**
      * Create a sales invoice record in Avalara
      *
-     *
      * @param Varien_Event_Observer $observer
      * @return $this
      */
