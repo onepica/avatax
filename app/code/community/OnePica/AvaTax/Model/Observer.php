@@ -39,18 +39,6 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     }
 
     /**
-     * Observer to clean the log every so often so it does not get too big.
-     *
-     * @return $this
-     */
-    public function cleanLog()
-    {
-        $days = floatval(Mage::getStoreConfig('tax/avatax/log_lifetime'));
-        Mage::getModel('avatax_records/log')->deleteLogsByInterval($days);
-        return $this;
-    }
-
-    /**
      * Set post type for checkout session when 'controller_action_predispatch_checkout_cart_estimatePost' event
      *
      * @param Varien_Event_Observer $observer

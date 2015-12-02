@@ -432,7 +432,7 @@
             <avatax_cleanlog>
                 <schedule><cron_expr>0 0 * * *</cron_expr></schedule>
                 <run>
-                    <model>avatax/observer::cleanLog</model>
+                    <model>avatax/observer_cleanLog::execute</model>
                 </run>
             </avatax_cleanlog>
         </jobs>
