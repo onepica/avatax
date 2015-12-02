@@ -11,26 +11,26 @@
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
- * @copyright  Copyright (c) 2009 One Pica, Inc.
+ * @copyright  Copyright (c) 2015 One Pica, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
 /**
- * Avatax Observer
+ * Avatax Observer CheckoutSubmitAllAfter
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Observer extends OnePica_AvaTax_Model_Observer_Abstract
+class OnePica_AvaTax_Model_Observer_CheckoutSubmitAllAfter extends OnePica_AvaTax_Model_Observer_Abstract
 {
     /**
-     * Delete validation notices on successful order place
+     * Delete validation notices on successful order place on multiple checkout
      *
      * @param Varien_Event_Observer $observer
      * @return $this
      */
-    public function salesModelServiceQuoteSubmitAfter(Varien_Event_Observer $observer)
+    public function execute(Varien_Event_Observer $observer)
     {
         $this->_deleteValidateNotices();
         return $this;

@@ -269,8 +269,8 @@
                 <observers>
                     <avatax>
                         <type>singleton</type>
-                        <class>avatax/observer</class>
-                        <method>checkoutSubmitAllAfter</method>
+                        <class>avatax/observer_checkoutSubmitAllAfter</class>
+                        <method>execute</method>
                     </avatax>
                 </observers>
             </checkout_submit_all_after>

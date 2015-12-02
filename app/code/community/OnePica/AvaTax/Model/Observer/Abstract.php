@@ -110,4 +110,18 @@ abstract class OnePica_AvaTax_Model_Observer_Abstract extends Mage_Core_Model_Ab
         }
         return $this;
     }
+
+    /**
+     * Delete validation notices
+     *
+     * @return $this
+     */
+    protected function _deleteValidateNotices()
+    {
+        /** @var Mage_Checkout_Model_Session $session */
+        $session = Mage::getSingleton('core/session');
+        $messages = $session->getMessages();
+        $messages->deleteMessageByIdentifier(OnePica_AvaTax_Helper_Errors::VALIDATION_NOTICE_IDENTIFIER);
+        return $this;
+    }
 }
