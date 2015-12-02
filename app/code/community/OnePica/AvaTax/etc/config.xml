@@ -125,8 +125,8 @@
                 <observers>
                     <avatax>
                         <type>singleton</type>
-                        <class>avatax/observer</class>
-                        <method>salesOrderInvoiceSaveAfter</method>
+                        <class>avatax/observer_salesOrderInvoiceSaveAfter</class>
+                        <method>execute</method>
                     </avatax>
                 </observers>
             </sales_order_invoice_save_after>

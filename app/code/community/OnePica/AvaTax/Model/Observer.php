@@ -25,31 +25,6 @@
 class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
 {
     /**
-     * Create a sales invoice record in Avalara
-     *
-     * @param Varien_Event_Observer $observer
-     * @return $this
-     */
-    public function salesOrderInvoiceSaveAfter(Varien_Event_Observer $observer)
-    {
-        /** @var Mage_Sales_Model_Order_Invoice $invoice */
-        $invoice = $observer->getEvent()->getInvoice();
-
-        if ((int)$invoice->getOrigData('state') !== Mage_Sales_Model_Order_Invoice::STATE_PAID
-            && (int)$invoice->getState() === Mage_Sales_Model_Order_Invoice::STATE_PAID
-            && Mage::helper('avatax/address')->isObjectActionable($invoice)
-        ) {
-            Mage::getModel('avatax_records/queue')
-                ->setEntity($invoice)
-                ->setType(OnePica_AvaTax_Model_Records_Queue::QUEUE_TYPE_INVOICE)
-                ->setStatus(OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_PENDING)
-                ->save();
-        }
-
-        return $this;
-    }
-
-    /**
      * Create a return invoice record in Avalara
      *
      * @param Varien_Event_Observer $observer
