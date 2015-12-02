@@ -25,45 +25,6 @@
 class OnePica_AvaTax_Model_Observer extends OnePica_AvaTax_Model_Observer_Abstract
 {
     /**
-     * Set post type for checkout session when 'controller_action_predispatch_checkout_cart_estimatePost' event
-     *
-     * @param Varien_Event_Observer $observer
-     * @return $this
-     */
-    public function controllerActionPredispatchCheckoutCartEstimatePost(Varien_Event_Observer $observer)
-    {
-        $session = Mage::getSingleton('checkout/session');
-        $session->setPostType('estimate');
-        return $this;
-    }
-
-    /**
-     * Set post type for checkout session when 'controller_action_predispatch_checkout_onepage_index' event
-     *
-     * @param Varien_Event_Observer $observer
-     * @return $this
-     */
-    public function controllerActionPredispatchCheckoutOnepageIndex(Varien_Event_Observer $observer)
-    {
-        $session = Mage::getSingleton('checkout/session');
-        $session->setPostType('onepage');
-        return $this;
-    }
-
-    /**
-     * Set post type for checkout session when 'controller_action_predispatch_checkout_multishipping_index' event
-     *
-     * @param Varien_Event_Observer $observer
-     * @return $this
-     */
-    public function controllerActionPredispatchCheckoutMultishippingIndex(Varien_Event_Observer $observer)
-    {
-        $session = Mage::getSingleton('checkout/session');
-        $session->setPostType('multishipping');
-        return $this;
-    }
-
-    /**
      * Add error message if tax estimation has problems when user estimates post
      *
      * @param Varien_Event_Observer $observer
