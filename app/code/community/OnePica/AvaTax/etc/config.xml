@@ -224,8 +224,8 @@
                 <observers>
                     <avatax>
                         <type>singleton</type>
-                        <class>avatax/observer</class>
-                        <method>controllerActionPostdispatchCheckoutCartEstimateUpdatePost</method>
+                        <class>avatax/observer_controllerActionPostdispatchCheckoutCartEstimateUpdatePost</class>
+                        <method>execute</method>
                     </avatax>
                 </observers>
             </controller_action_postdispatch_checkout_cart_estimateUpdatePost>

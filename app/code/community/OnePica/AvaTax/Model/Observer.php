@@ -25,18 +25,6 @@
 class OnePica_AvaTax_Model_Observer extends OnePica_AvaTax_Model_Observer_Abstract
 {
     /**
-     * Add error message if tax estimation has problems when user updates estimate post
-     *
-     * @param Varien_Event_Observer $observer
-     * @return $this
-     */
-    public function controllerActionPostdispatchCheckoutCartEstimateUpdatePost(Varien_Event_Observer $observer)
-    {
-        $this->_handleTaxEstimation();
-        return $this;
-    }
-
-    /**
      * Add error message if tax estimation has problems when user located at checkout/cart/index
      *
      * @param Varien_Event_Observer $observer
