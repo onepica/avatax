@@ -242,8 +242,8 @@
                 <observers>
                     <avatax>
                         <type>singleton</type>
-                        <class>avatax/observer</class>
-                        <method>controllerActionPostdispatchCheckoutOnepageSaveShippingMethod</method>
+                        <class>avatax/observer_controllerActionPostdispatchCheckoutOnepageSaveShippingMethod</class>
+                        <method>execute</method>
                     </avatax>
                 </observers>
             </controller_action_postdispatch_checkout_onepage_saveShippingMethod>

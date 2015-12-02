@@ -25,36 +25,6 @@
 class OnePica_AvaTax_Model_Observer extends OnePica_AvaTax_Model_Observer_Abstract
 {
     /**
-     * Stop order creation if tax estimation has problems
-     *
-     * @param Varien_Event_Observer $observer
-     * @return $this
-     */
-    public function controllerActionPostdispatchCheckoutOnepageSaveShippingMethod(Varien_Event_Observer $observer) {
-        if ($this->_getErrorsHelper()->fullStopOnError($this->_getQuote())) {
-            Mage::app()
-                ->getResponse()
-                ->setBody($this->_getResponseErrorMessage());
-        }
-        return $this;
-    }
-
-    /**
-     * Get response error message
-     *
-     * @return string
-     */
-    protected function _getResponseErrorMessage()
-    {
-        return Mage::helper('core')->jsonEncode(
-            array(
-                'error'   => - 1,
-                'message' => $this->_getErrorsHelper()->getErrorMessage()
-            )
-        );
-    }
-
-    /**
      * Stop order creation if tax estimation has problems when multishipping
      *
      * @param Varien_Event_Observer $observer
