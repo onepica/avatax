@@ -116,8 +116,8 @@
                 <observers>
                     <avatax>
                         <type>singleton</type>
-                        <class>avatax/observer</class>
-                        <method>salesQuoteCollectTotalsBefore</method>
+                        <class>avatax/observer_salesQuoteCollectTotalsBefore</class>
+                        <method>execute</method>
                     </avatax>
                 </observers>
             </sales_quote_collect_totals_before>

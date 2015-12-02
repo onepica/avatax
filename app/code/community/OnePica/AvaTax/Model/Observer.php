@@ -25,21 +25,6 @@
 class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
 {
     /**
-     * Sets the collectTotals tax node based on the extensions enabled/disabled status
-     *
-     * @param Varien_Event_Observer $observer
-     * @return $this
-     */
-    public function salesQuoteCollectTotalsBefore(Varien_Event_Observer $observer)
-    {
-        $storeId = $observer->getEvent()->getQuote()->getStoreId();
-        if (Mage::getStoreConfig('tax/avatax/action', $storeId) != OnePica_AvaTax_Model_Service_Abstract_Config::ACTION_DISABLE) {
-            Mage::getConfig()->setNode('global/sales/quote/totals/tax/class', 'avatax/sales_quote_address_total_tax');
-        }
-        return $this;
-    }
-
-    /**
      * Create a sales invoice record in Avalara
      *
      * @param Varien_Event_Observer $observer
