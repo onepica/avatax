@@ -260,8 +260,8 @@
                 <observers>
                     <avatax>
                         <type>singleton</type>
-                        <class>avatax/observer</class>
-                        <method>salesModelServiceQuoteSubmitAfter</method>
+                        <class>avatax/observer_salesModelServiceQuoteSubmitAfter</class>
+                        <method>execute</method>
                     </avatax>
                 </observers>
             </sales_model_service_quote_submit_after>
