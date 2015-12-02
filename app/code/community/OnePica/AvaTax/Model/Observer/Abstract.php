@@ -16,12 +16,51 @@
  */
 
 /**
- * Avatax Observer Abstract Model
+ * Abstract Avatax Observer Model
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Observer_Abstract extends Mage_Core_Model_Abstract
+abstract class OnePica_AvaTax_Model_Observer_Abstract extends Mage_Core_Model_Abstract
 {
+    /**
+     * Get adminhtml model session
+     *
+     * @return \Mage_Adminhtml_Model_Session
+     */
+    protected function _getAdminhtmlSession()
+    {
+        return Mage::getSingleton('adminhtml/session');
+    }
+
+    /**
+     * Get data helper
+     *
+     * @return OnePica_AvaTax_Helper_Data
+     */
+    protected function _getDataHelper()
+    {
+        return Mage::helper('avatax');
+    }
+
+    /**
+     * Get error helper
+     *
+     * @return OnePica_AvaTax_Helper_Errors
+     */
+    protected function _getErrorsHelper()
+    {
+        return Mage::helper('avatax/errors');
+    }
+
+    /**
+     * Get quote
+     *
+     * @return Mage_Sales_Model_Quote
+     */
+    protected function _getQuote()
+    {
+        return Mage::getSingleton('checkout/cart')->getQuote();
+    }
 }

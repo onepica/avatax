@@ -143,8 +143,8 @@
                 <observers>
                     <avatax>
                         <type>singleton</type>
-                        <class>avatax/observer</class>
-                        <method>adminSystemConfigChangedSectionTax</method>
+                        <class>avatax/observer_adminSystemConfigChangedSectionTax</class>
+                        <method>execute</method>
                     </avatax>
                 </observers>
             </admin_system_config_changed_section_tax>
