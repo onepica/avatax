@@ -278,8 +278,8 @@
                 <observers>
                     <avatax>
                         <type>singleton</type>
-                        <class>avatax/observer</class>
-                        <method>controllerActionPredispatchAdminhtmlSalesOrderCreateLoadBlock</method>
+                        <class>avatax/observer_controllerActionPredispatchAdminhtmlSalesOrderCreateLoadBlock</class>
+                        <method>execute</method>
                     </avatax>
                 </observers>
             </controller_action_postdispatch_adminhtml_sales_order_create_loadBlock>
