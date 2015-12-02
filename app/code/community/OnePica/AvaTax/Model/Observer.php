@@ -29,21 +29,6 @@ class OnePica_AvaTax_Model_Observer extends OnePica_AvaTax_Model_Observer_Abstra
      *
      * @param Varien_Event_Observer $observer
      * @return $this
-     * @throws OnePica_AvaTax_Exception
-     */
-    public function salesModelServiceQuoteSubmitBefore(Varien_Event_Observer $observer)
-    {
-        /** @var Mage_Sales_Model_Quote $quote */
-        $quote = $observer->getEvent()->getQuote();
-        $this->_handleTaxEstimationOnOrderPlace($quote);
-        return $this;
-    }
-
-    /**
-     * Stop order creation if tax estimation has problems
-     *
-     * @param Varien_Event_Observer $observer
-     * @return $this
      */
     public function controllerActionPostdispatchCheckoutOnepageSaveShippingMethod(Varien_Event_Observer $observer) {
         if ($this->_getErrorsHelper()->fullStopOnError($this->_getQuote())) {
@@ -82,24 +67,6 @@ class OnePica_AvaTax_Model_Observer extends OnePica_AvaTax_Model_Observer_Abstra
         $address = $observer->getEvent()->getAddress();
         $quote = $address->getQuote();
         $this->_handleTaxEstimationOnOrderPlace($quote);
-        return $this;
-    }
-
-    /**
-     * Stop order creation if tax estimation has problems
-     *
-     * @param Mage_Sales_Model_Quote $quote
-     * @return $this
-     * @throws OnePica_AvaTax_Exception
-     */
-    protected function _handleTaxEstimationOnOrderPlace($quote)
-    {
-        /** @var OnePica_AvaTax_Helper_Errors $helper */
-        $helper = $this->_getErrorsHelper();
-        $helper->removeErrorMessage();
-        if ($helper->fullStopOnError($quote)) {
-            throw new OnePica_AvaTax_Exception($helper->getErrorMessage());
-        }
         return $this;
     }
 

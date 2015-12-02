@@ -233,8 +233,8 @@
                 <observers>
                     <avatax>
                         <type>singleton</type>
-                        <class>avatax/observer</class>
-                        <method>salesModelServiceQuoteSubmitBefore</method>
+                        <class>avatax/observer_salesModelServiceQuoteSubmitBefore</class>
+                        <method>execute</method>
                     </avatax>
                 </observers>
             </sales_model_service_quote_submit_before>

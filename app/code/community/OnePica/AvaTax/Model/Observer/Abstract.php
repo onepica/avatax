@@ -92,4 +92,22 @@ abstract class OnePica_AvaTax_Model_Observer_Abstract extends Mage_Core_Model_Ab
 
         return $this;
     }
+
+    /**
+     * Stop order creation if tax estimation has problems
+     *
+     * @param Mage_Sales_Model_Quote $quote
+     * @return $this
+     * @throws OnePica_AvaTax_Exception
+     */
+    protected function _handleTaxEstimationOnOrderPlace($quote)
+    {
+        /** @var OnePica_AvaTax_Helper_Errors $helper */
+        $helper = $this->_getErrorsHelper();
+        $helper->removeErrorMessage();
+        if ($helper->fullStopOnError($quote)) {
+            throw new OnePica_AvaTax_Exception($helper->getErrorMessage());
+        }
+        return $this;
+    }
 }
