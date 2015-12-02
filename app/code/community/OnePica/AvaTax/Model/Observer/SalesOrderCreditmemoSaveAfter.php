@@ -16,7 +16,7 @@
  */
 
 /**
- * Avatax Observer SalesOrderInvoiceSaveAfter
+ * Avatax Observer SalesOrderCreditmemoSaveAfter
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
