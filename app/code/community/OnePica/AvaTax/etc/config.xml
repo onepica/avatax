@@ -426,7 +426,7 @@
             <avatax_processqueue>
                 <schedule><cron_expr>0 * * * *</cron_expr></schedule>
                 <run>
-                    <model>avatax/observer::processQueue</model>
+                    <model>avatax/observer_processQueue::execute</model>
                 </run>
             </avatax_processqueue>
             <avatax_cleanlog>

@@ -25,17 +25,6 @@
 class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
 {
     /**
-     * Observer push data to Avalara
-     *
-     * @return $this;
-     */
-    public function processQueue()
-    {
-        Mage::getModel('avatax_records/queue_process')->run();
-        return $this;
-    }
-
-    /**
      * Test for required values when admin config setting related to the this extension are changed
      *
      * @param Varien_Event_Observer $observer
