@@ -25,28 +25,6 @@
 class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
 {
     /**
-     * Create a return invoice record in Avalara
-     *
-     * @param Varien_Event_Observer $observer
-     * @return $this
-     */
-    public function salesOrderCreditmemoSaveAfter(Varien_Event_Observer $observer)
-    {
-        /* @var $creditmemo Mage_Sales_Model_Order_Creditmemo */
-        $creditmemo = $observer->getEvent()->getCreditmemo();
-        if (!$creditmemo->getOrigData($creditmemo->getIdFieldName())
-            && Mage::helper('avatax/address')->isObjectActionable($creditmemo)
-        ) {
-            Mage::getModel('avatax_records/queue')
-                ->setEntity($creditmemo)
-                ->setType(OnePica_AvaTax_Model_Records_Queue::QUEUE_TYPE_CREDITMEMEO)
-                ->setStatus(OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_PENDING)
-                ->save();
-        }
-        return $this;
-    }
-
-    /**
      * Validate addresses when multishipping checkout on set shipping items
      *
      * @param Varien_Event_Observer $observer

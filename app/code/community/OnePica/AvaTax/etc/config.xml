@@ -134,8 +134,8 @@
                 <observers>
                     <avatax>
                         <type>singleton</type>
-                        <class>avatax/observer</class>
-                        <method>salesOrderCreditmemoSaveAfter</method>
+                        <class>avatax/observer_salesOrderCreditmemoSaveAfter</class>
+                        <method>execute</method>
                     </avatax>
                 </observers>
             </sales_order_creditmemo_save_after>
