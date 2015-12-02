@@ -63,4 +63,33 @@ abstract class OnePica_AvaTax_Model_Observer_Abstract extends Mage_Core_Model_Ab
     {
         return Mage::getSingleton('checkout/cart')->getQuote();
     }
+
+    /**
+     * Add error message if tax estimation has problems
+     *
+     * @return $this
+     */
+    protected function _handleTaxEstimation()
+    {
+        $quote = $this->_getQuote();
+        $quote->collectTotals();
+        $this->_addErrorMessage($quote);
+
+        return $this;
+    }
+
+    /**
+     * Add error message if estimation has error
+     *
+     * @param Mage_Sales_Model_Quote $quote
+     * @return $this
+     */
+    protected function _addErrorMessage($quote)
+    {
+        if ($quote->getData('estimate_tax_error')) {
+            $this->_getErrorsHelper()->addErrorMessage($quote->getStoreId());
+        }
+
+        return $this;
+    }
 }
