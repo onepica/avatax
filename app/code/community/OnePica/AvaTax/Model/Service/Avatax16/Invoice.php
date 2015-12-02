@@ -34,7 +34,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
     /**
      * Save order's invoice in AvaTax system
      *
-     * @see OnePica_AvaTax_Model_Observer::salesOrderPlaceAfter()
+     * @see OnePica_AvaTax_Model_Observer_SalesOrderInvoiceSaveAfter::execute()
      * @param Mage_Sales_Model_Order_Invoice $invoice
      * @param OnePica_AvaTax_Model_Records_Queue $queue
      * @return OnePica_AvaTax_Model_Service_Result_Invoice
@@ -101,7 +101,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
     /**
      * Save order's creditmemo in AvaTax system
      *
-     * @see OnePica_AvaTax_Model_Observer::salesOrderPlaceAfter()
+     * @see OnePica_AvaTax_Model_Observer_SalesOrderCreditmemoSaveAfter::execute()
      * @param Mage_Sales_Model_Order_Creditmemo $creditmemo
      * @param OnePica_AvaTax_Model_Records_Queue $queue
      * @return mixed

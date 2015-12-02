@@ -210,7 +210,7 @@ class OnePica_AvaTax_Model_Calculator extends Mage_Core_Model_Factory
     /**
      * Save order in AvaTax system
      *
-     * @see OnePica_AvaTax_Model_Observer::salesOrderPlaceAfter()
+     * @see OnePica_AvaTax_Model_Observer_SalesOrderInvoiceSaveAfter::execute()
      * @param Mage_Sales_Model_Order_Invoice $invoice
      * @param OnePica_AvaTax_Model_Records_Queue $queue
      * @return bool
@@ -255,7 +255,7 @@ class OnePica_AvaTax_Model_Calculator extends Mage_Core_Model_Factory
     /**
      * Save order in AvaTax system
      *
-     * @see OnePica_AvaTax_Model_Observer::salesOrderPlaceAfter()
+     * @see OnePica_AvaTax_Model_Observer_SalesOrderCreditmemoSaveAfter::execute()
      * @param Mage_Sales_Model_Order_Creditmemo $creditmemo
      * @param OnePica_AvaTax_Model_Records_Queue $queue
      * @return mixed
