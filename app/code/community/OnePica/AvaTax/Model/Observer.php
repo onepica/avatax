@@ -295,7 +295,7 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
         ) {
             $warnings[] = Mage::helper('avatax')->__('Orders will not be sent to the AvaTax system');
         }
-        if (!$this->_getDataHelper()->isAvatax16() && (Mage::helper('avatax/config')->getStatusServiceAction($storeId)
+        if ($this->_getDataHelper()->isAvatax() && (Mage::helper('avatax/config')->getStatusServiceAction($storeId)
             == OnePica_AvaTax_Model_Service_Abstract_Config::ACTION_CALC_SUBMIT)
         ) {
             $warnings[] = Mage::helper('avatax')->__('Orders will be sent but never committed to the AvaTax system');
