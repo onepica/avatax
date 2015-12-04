@@ -23,10 +23,6 @@
             <groups>
                 <avatax translate="label comment">
                     <label>AvaTax</label>
-                    <comment><![CDATA[
-                        <style type="text/css"> #tax_avatax textarea { height:65px; } #tax_avatax .multiselect { height:155px; } </style>
-                        <p class="switcher">For complete and up-to-date documentation, please visit <a href="http://www.onepica.com/magento-extensions/avatax/" target="_blank">http://www.onepica.com/magento-extensions/avatax</a>.</p>
-                    ]]></comment>
                     <sort_order>0</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
