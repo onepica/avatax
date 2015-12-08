@@ -430,8 +430,6 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
         }
 
         $storeId = $this->_retrieveStoreIdFromItem($item);
-        $product = $this->_getProductByProductId($item->getProductId());
-        $taxClass = $this->_getTaxClassCodeByProduct($product);
         $price = $item->getBaseRowTotal() - $item->getBaseDiscountAmount();
         if ($credit) {
             //@startSkipCommitHooks
@@ -446,17 +444,8 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
         $line->setQty($item->getQty());
         $line->setAmount($price);
         $line->setDiscounted($item->getBaseDiscountAmount() ? true : false);
-        if ($taxClass) {
-            $line->setTaxCode($taxClass);
-        }
-        $ref1Value = $this->_getRefValueByProductAndNumber($product, 1, $storeId);
-        if ($ref1Value) {
-            $line->setRef1($ref1Value);
-        }
-        $ref2Value = $this->_getRefValueByProductAndNumber($product, 2, $storeId);
-        if ($ref2Value) {
-            $line->setRef2($ref2Value);
-        }
+
+        $this->_setLineData($item, $line, $storeId);
 
         $this->_lineToItemId[count($this->_lines)] = $item->getOrderItemId();
         $this->_lines[] = $line;
@@ -526,11 +515,49 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
      */
     protected function _getItemCode($product, $item, $storeId)
     {
-        $itemCode = $this->_getUpcCode($product, $storeId);
+        $itemCode = '';
+        if (null !== $product) {
+            $itemCode = $this->_getUpcCode($product, $storeId);
+        }
+
         if (empty($itemCode)) {
             $itemCode = $item->getSku();
         }
 
         return substr($itemCode, 0, 50);
+    }
+
+    /**
+     * Set line data
+     *
+     * @param Mage_Sales_Model_Order_Invoice_Item|Mage_Sales_Model_Order_Creditmemo_Item $item
+     * @param Line                                                                       $line
+     * @param int                                                                        $storeId
+     * @return $this
+     */
+    protected function _setLineData($item, $line, $storeId)
+    {
+        $product = $this->_getProductByProductId($item->getProductId());
+        if (null === $product) {
+            return $this;
+        }
+
+        $taxClass = $this->_getTaxClassCodeByProduct($product);
+
+        if ($taxClass) {
+            $line->setTaxCode($taxClass);
+        }
+
+        $ref1Value = $this->_getRefValueByProductAndNumber($product, 1, $storeId);
+        if ($ref1Value) {
+            $line->setRef1($ref1Value);
+        }
+
+        $ref2Value = $this->_getRefValueByProductAndNumber($product, 2, $storeId);
+        if ($ref2Value) {
+            $line->setRef2($ref2Value);
+        }
+
+        return $this;
     }
 }
