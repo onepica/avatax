@@ -445,7 +445,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
         $line->setAmount($price);
         $line->setDiscounted($item->getBaseDiscountAmount() ? true : false);
 
-        $this->_setLineData($item, $line, $storeId);
+        $this->_setLineProductData($item, $line, $storeId);
 
         $this->_lineToItemId[count($this->_lines)] = $item->getOrderItemId();
         $this->_lines[] = $line;
@@ -535,7 +535,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
      * @param int                                                                        $storeId
      * @return $this
      */
-    protected function _setLineData($item, $line, $storeId)
+    protected function _setLineProductData($item, $line, $storeId)
     {
         $product = $this->_getProductByProductId($item->getProductId());
         if (null === $product) {
