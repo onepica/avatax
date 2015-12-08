@@ -73,9 +73,6 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
      */
     protected function _getGwTaxClassId($object)
     {
-        if (Mage::getEdition() !== Mage::EDITION_ENTERPRISE) {
-            return 0;
-        }
         if (!$object->getGwPrice()
             && !$object->getGwItemsPrice()
             && !$object->getGwPrintedCardPrice()
@@ -100,6 +97,10 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
      */
     protected function _getWrappingTaxClass($storeId)
     {
+        if (Mage::getEdition() !== Mage::EDITION_ENTERPRISE) {
+            return 0;
+        }
+
         return (int)$this->_getGiftWrappingDataHelper()->getWrappingTaxClass($storeId);
     }
 
@@ -572,6 +573,8 @@ abstract class OnePica_AvaTax_Model_Avatax_Abstract extends OnePica_AvaTax_Model
 
     /**
      * Get gift wrapping data helper
+     *
+     * Pay Attention! This helper exists only in Magento Enterprise edition
      *
      * @return \Enterprise_GiftWrapping_Helper_Data
      */
