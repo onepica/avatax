@@ -95,15 +95,14 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
 
         $quote = $address->getQuote();
         $storeId = $quote->getStore()->getId();
-        $transactionDate = $this->_convertGmtDate($address->getCreatedAt(), $storeId);
+        $transactionDate = $this->_convertGmtDate($this->_getDateModel()->date('Y-m-d'), $storeId);
 
         // Set up document for request
         $this->_request = $this->_getNewDocumentRequestObject();
 
         // set up header
         $header = $this->_getRequestHeaderWithMainValues($storeId, $address);
-        /** @todo transactionDate should be removed from documentCode after Avalara fix */
-        $header->setDocumentCode('quote-' . $address->getId() . '-' . $transactionDate);
+        $header->setDocumentCode('quote-' . $address->getId());
         $header->setTransactionDate($transactionDate);
         $header->setDefaultLocations($this->_getHeaderDefaultLocations($address));
 
