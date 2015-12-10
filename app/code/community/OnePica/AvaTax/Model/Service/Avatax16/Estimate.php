@@ -95,7 +95,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
 
         $quote = $address->getQuote();
         $storeId = $quote->getStore()->getId();
-        $transactionDate = $this->_convertGmtDate($this->_getDateModel()->date('Y-m-d'), $storeId);
+        $transactionDate = $this->_convertGmtDate($this->_getDateModel()->date('Y-m-d H:i:s'), $storeId);
 
         // Set up document for request
         $this->_request = $this->_getNewDocumentRequestObject();
