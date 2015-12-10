@@ -280,7 +280,7 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     protected function _prepareWarnings($storeId)
     {
         $warnings = array();
-        if (strpos(Mage::helper('avatax/config')->getServiceUrl($storeId), 'development.avalara.net') !== false) {
+        if ($this->_getDataHelper()->isDevMod($storeId)) {
             $warnings[] = Mage::helper('avatax')->__(
                 'You are using the AvaTax development connection URL. If you are receiving errors about authentication, please ensure that you have a development account.'
             );

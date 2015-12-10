@@ -67,6 +67,22 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Is development mod
+     *
+     * @param int $storeId
+     * @return bool
+     */
+    public function isDevMod($storeId)
+    {
+        $serviceUrl = $this->_getConfigData()->getServiceUrl($storeId);
+
+        return ($this->isAvatax()
+                && ($serviceUrl === OnePica_AvaTax_Model_Source_Avatax_Url::DEVELOPMENT_URL))
+               || ($this->isAvatax16()
+                   && ($serviceUrl === OnePica_AvaTax_Model_Source_Avatax16_Url::DEVELOPMENT_URL));
+    }
+
+    /**
      * Returns the logging level
      *
      * @param null|bool|int|Mage_Core_Model_Store $store
