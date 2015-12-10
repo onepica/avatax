@@ -69,15 +69,15 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
      */
     protected function _construct()
     {
-//        $rates = Mage::getSingleton('avatax/session')->getAvatax16Rates();
-//        if (is_array($rates)) {
-//            foreach ($rates as $key => $rate) {
-//                if ($rate['timestamp'] < $this->_getDateModel()->timestamp('-' . self::CACHE_TTL . ' minutes')) {
-//                    unset($rates[$key]);
-//                }
-//            }
-//            $this->_rates = $rates;
-//        }
+        $rates = Mage::getSingleton('avatax/session')->getAvatax16Rates();
+        if (is_array($rates)) {
+            foreach ($rates as $key => $rate) {
+                if ($rate['timestamp'] < $this->_getDateModel()->timestamp('-' . self::CACHE_TTL . ' minutes')) {
+                    unset($rates[$key]);
+                }
+            }
+            $this->_rates = $rates;
+        }
         return parent::_construct();
     }
 
