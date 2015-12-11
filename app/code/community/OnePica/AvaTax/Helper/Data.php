@@ -320,6 +320,32 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Create Zend_Date object with date converted to store timezone and store Locale
+     *
+     * This method from Mage_Core_Model_Locale.
+     * This need for backward compatibility with older magento versions which not have 4th parameter in this method
+     *
+     * @param   mixed                               $store       Information about store
+     * @param   string|integer|Zend_Date|array|null $date        date in UTC
+     * @param   boolean                             $includeTime flag for including time to date
+     * @param   string|null                         $format
+     * @return  Zend_Date
+     */
+    public function storeDate($store = null, $date = null, $includeTime = false, $format = null)
+    {
+        $timezone = Mage::app()->getStore($store)->getConfig(Mage_Core_Model_Locale::XML_PATH_DEFAULT_TIMEZONE);
+        $date = new Zend_Date($date, $format, Mage::app()->getLocale()->getLocale());
+        $date->setTimezone($timezone);
+        if (!$includeTime) {
+            $date->setHour(0)
+                ->setMinute(0)
+                ->setSecond(0);
+        }
+
+        return $date;
+    }
+
+    /**
      * Remove error message
      *
      * @return $this
