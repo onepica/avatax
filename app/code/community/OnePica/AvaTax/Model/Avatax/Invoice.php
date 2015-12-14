@@ -430,8 +430,6 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
         }
 
         $storeId = $this->_retrieveStoreIdFromItem($item);
-        $product = $this->_getProductByProductId($item->getProductId());
-        $taxClass = $this->_getTaxClassCodeByProduct($product);
         $price = $item->getBaseRowTotal() - $item->getBaseDiscountAmount();
         if ($credit) {
             //@startSkipCommitHooks
@@ -441,22 +439,16 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
 
         $line = new Line();
         $line->setNo(count($this->_lines));
-        $line->setItemCode($this->_getItemCode($this->_getProductForItemCode($item), $item, $storeId));
+        $line->setItemCode($this->_getItemCode($item, $storeId));
         $line->setDescription($item->getName());
         $line->setQty($item->getQty());
         $line->setAmount($price);
         $line->setDiscounted($item->getBaseDiscountAmount() ? true : false);
-        if ($taxClass) {
-            $line->setTaxCode($taxClass);
-        }
-        $ref1Value = $this->_getRefValueByProductAndNumber($product, 1, $storeId);
-        if ($ref1Value) {
-            $line->setRef1($ref1Value);
-        }
-        $ref2Value = $this->_getRefValueByProductAndNumber($product, 2, $storeId);
-        if ($ref2Value) {
-            $line->setRef2($ref2Value);
-        }
+
+        $productData = $this->_getLineProductData($item, $storeId);
+        $line->setTaxCode($productData->getTaxCode());
+        $line->setRef1($productData->getRef1());
+        $line->setRef2($productData->getRef2());
 
         $this->_lineToItemId[count($this->_lines)] = $item->getOrderItemId();
         $this->_lines[] = $line;
@@ -511,7 +503,7 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
      */
     protected function _convertGmtDate($gmt, $storeId)
     {
-        return Mage::app()->getLocale()
+        return $this->_getDataHelper()
             ->storeDate($storeId, $gmt, false, Varien_Date::DATETIME_INTERNAL_FORMAT)
             ->toString(Varien_Date::DATE_INTERNAL_FORMAT);
     }
@@ -519,18 +511,47 @@ class OnePica_AvaTax_Model_Avatax_Invoice extends OnePica_AvaTax_Model_Avatax_Ab
     /**
      * Get item code
      *
-     * @param Mage_Catalog_Model_Product                                                 $product
      * @param Mage_Sales_Model_Order_Invoice_Item|Mage_Sales_Model_Order_Creditmemo_Item $item
      * @param int|Mage_Core_Model_Store                                                  $storeId
      * @return string
      */
-    protected function _getItemCode($product, $item, $storeId)
+    protected function _getItemCode($item, $storeId)
     {
-        $itemCode = $this->_getUpcCode($product, $storeId);
+        $product = $this->_getProductForItemCode($item);
+        $itemCode = '';
+        if (null !== $product) {
+            $itemCode = $this->_getUpcCode($product, $storeId);
+        }
+
         if (empty($itemCode)) {
             $itemCode = $item->getSku();
         }
 
         return substr($itemCode, 0, 50);
+    }
+
+    /**
+     * Get line product data
+     *
+     * Return a Varien_Object with the following possible methods: getTaxCode, getRef1, getRef2
+     *
+     * @param Mage_Sales_Model_Order_Invoice_Item|Mage_Sales_Model_Order_Creditmemo_Item $item
+     * @param int                                                                        $storeId
+     * @return \Varien_Object
+     */
+    protected function _getLineProductData($item, $storeId)
+    {
+        $lineProductData = new Varien_Object();
+        $product = $this->_getProductByProductId($item->getProductId());
+
+        if (null === $product) {
+            return $lineProductData;
+        }
+
+        $lineProductData->setTaxCode($this->_getTaxClassCodeByProduct($product));
+        $lineProductData->setRef1($this->_getRefValueByProductAndNumber($product, 1, $storeId));
+        $lineProductData->setRef2($this->_getRefValueByProductAndNumber($product, 2, $storeId));
+
+        return $lineProductData;
     }
 }
