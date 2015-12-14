@@ -19,7 +19,7 @@
 <config>
     <modules>
         <OnePica_AvaTax>
-            <version>3.0.0.8</version>
+            <version>3.0.0.9</version>
         </OnePica_AvaTax>
     </modules>
     <global>
