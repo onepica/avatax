@@ -53,7 +53,7 @@ class OnePica_AvaTax_Model_Service_Abstract_Tools extends Varien_Object
      */
     protected function _convertGmtDate($gmt, $storeId)
     {
-        return Mage::app()->getLocale()
+        return $this->_getHelper()
             ->storeDate($storeId, $gmt, false, Varien_Date::DATETIME_INTERNAL_FORMAT)
             ->toString(Varien_Date::DATE_INTERNAL_FORMAT);
     }
