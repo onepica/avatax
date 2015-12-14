@@ -231,7 +231,11 @@ class OnePica_AvaTax_Helper_Calculation
      */
     public function getItemCode($product, $storeId, $item = null)
     {
-        $itemCode = $this->_getUpcCode($product, $storeId);
+        $itemCode = '';
+        if (null !== $product) {
+            $itemCode = $this->_getUpcCode($product, $storeId);
+        }
+
         if (empty($itemCode)) {
             $itemCode = (null !== $item) ? $item->getSku() : $product->getSku();
         }

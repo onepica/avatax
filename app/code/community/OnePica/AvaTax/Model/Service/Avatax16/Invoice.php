@@ -391,8 +391,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
 
         $lineNumber = $this->_getNewLineCode();
         $storeId = $this->_retrieveStoreIdFromItem($item);
-        $product = $this->_getProductByProductId($item->getProductId());
-        $taxClass = $this->_getTaxClassCodeByProduct($product);
+
         $price = $item->getBaseRowTotal() - $item->getBaseDiscountAmount();
         //@startSkipCommitHooks
         $price = $credit ? (-1 * $price) : $price;
@@ -407,22 +406,9 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         $line->setlineAmount($price);
         $line->setDiscounted($item->getBaseDiscountAmount() ? 'true' : 'false');
 
-        if ($taxClass) {
-            $line->setAvalaraGoodsAndServicesType($taxClass);
-        }
-
-        $metadata = null;
-        $ref1Value = $this->_getRefValueByProductAndNumber($product, 1, $storeId);
-        if ($ref1Value) {
-            $metadata['ref1'] = $ref1Value;
-        }
-        $ref2Value = $this->_getRefValueByProductAndNumber($product, 2, $storeId);
-        if ($ref2Value) {
-            $metadata['ref2'] = $ref2Value;
-        }
-        if ($metadata) {
-            $line->setMetadata($metadata);
-        }
+        $productData = $this->_getLineProductData($item, $storeId);
+        $line->setAvalaraGoodsAndServicesType($productData->getTaxCode());
+        $line->setMetadata($productData->getMetaData());
 
         $this->_lineToItemId[$lineNumber] = $item->getOrderItemId();
         $this->_lines[$lineNumber] = $line;
@@ -531,5 +517,34 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
     protected function _getCreditmemoDocumentCode($creditmemo)
     {
         return self::DOCUMENT_CODE_CREDITMEMO_PREFIX . $creditmemo->getIncrementId();
+    }
+
+    /**
+     * Get line product data
+     *
+     * Return a Varien_Object with the following possible methods: getTaxCode, getMetaData
+     *
+     * @param Mage_Sales_Model_Order_Invoice_Item|Mage_Sales_Model_Order_Creditmemo_Item $item
+     * @param int                                                                        $storeId
+     * @return \Varien_Object
+     */
+    protected function _getLineProductData($item, $storeId)
+    {
+        $lineProductData = new Varien_Object();
+        $product = $this->_getProductByProductId($item->getProductId());
+
+        if (null === $product) {
+            return $lineProductData;
+        }
+
+        $lineProductData->setTaxCode($this->_getTaxClassCodeByProduct($product));
+        $metaData = array(
+            'ref1' => $this->_getRefValueByProductAndNumber($product, 1, $storeId),
+            'ref2' => $this->_getRefValueByProductAndNumber($product, 2, $storeId)
+        );
+
+        $lineProductData->setMetaData($metaData);
+
+        return $lineProductData;
     }
 }
