@@ -544,17 +544,61 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
 
                 if (isset($rates[$jurisdiction]) && $rates[$jurisdiction] !== 0) {
                     continue;
+                }
+
+                if ($detail->getRate()) {
+                    $rates[$jurisdiction] = $detail->getRate() * 100;
+                }
+            }
+        }
+        $fixedRates = $this->_getFixedTaxRate($response);
+
+        return array_merge($rates, $fixedRates);
+    }
+
+    /**
+     * Get fixed tax rate
+     *
+     * @param OnePica_AvaTax16_Document_Response $response
+     * @return array
+     */
+    protected function _getFixedTaxRate($response)
+    {
+        $data = array();
+
+        /** @var OnePica_AvaTax16_Document_Response_Line $line */
+        foreach ($response->getLines() as $line) {
+            if (!$line->getCalculatedTax()->getTax()) {
+                continue;
+            }
+
+            foreach ($line->getCalculatedTax()->getDetails() as $detail) {
+                if (!$detail->getRate() && $detail->getTax()) {
+                    $jurisdiction = $this->_prepareJurisdictionName(
+                        $detail->getTaxType(),
+                        $detail->getJurisdictionName(),
+                        $detail->getJurisdictionType()
+                    );
+
+                    if (!isset($data[$jurisdiction]['fixedTax'])) {
+                        $data[$jurisdiction]['fixedTax'] = 0;
+                    }
+                    if (!isset($data[$jurisdiction]['lineAmount'])) {
+                        $data[$jurisdiction]['lineAmount'] = 0;
                     }
 
-                $rates[$jurisdiction] = $detail->getRate() * 100;
-
-                if ($rates[$jurisdiction] === 0 && $detail->getTax()) {
-                    $rates[$jurisdiction] = $this->_calculateRate($detail->getTax(), $line->getLineAmount());
+                    $data[$jurisdiction]['fixedTax'] += (float)$detail->getTax();
+                    $data[$jurisdiction]['lineAmount'] += (float)$line->getLineAmount();
                 }
             }
         }
 
-        return $rates;
+        $rate = array();
+        foreach ($data as $jurisdiction => $values) {
+            $rate[$jurisdiction] = $this->_calculateRate($values['fixedTax'], $values['lineAmount']);
+        }
+
+        return $rate;
     }
 
     /**
