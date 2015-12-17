@@ -530,11 +530,14 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
     protected function _getJurisdictionsRate($response)
     {
         $rates = array();
+        $fixedRatesData = array();
+
         /** @var OnePica_AvaTax16_Document_Response_Line $line */
         foreach ($response->getLines() as $line) {
             if (!$line->getCalculatedTax()->getTax()) {
                 continue;
             }
+
             foreach ($line->getCalculatedTax()->getDetails() as $detail) {
                 $jurisdiction = $this->_prepareJurisdictionName(
                     $detail->getTaxType(),
@@ -542,63 +545,29 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
                     $detail->getJurisdictionType()
                 );
 
-                if (isset($rates[$jurisdiction]) && $rates[$jurisdiction] !== 0) {
-                    continue;
-                }
-
-                if ($detail->getRate()) {
+                if (!isset($rates[$jurisdiction]) && $detail->getRate()) {
                     $rates[$jurisdiction] = $detail->getRate() * 100;
                 }
-            }
-        }
-        $fixedRates = $this->_getFixedTaxRate($response);
 
-        return array_merge($rates, $fixedRates);
-    }
-
-    /**
-     * Get fixed tax rate
-     *
-     * @param OnePica_AvaTax16_Document_Response $response
-     * @return array
-     */
-    protected function _getFixedTaxRate($response)
-    {
-        $data = array();
-
-        /** @var OnePica_AvaTax16_Document_Response_Line $line */
-        foreach ($response->getLines() as $line) {
-            if (!$line->getCalculatedTax()->getTax()) {
-                continue;
-            }
-
-            foreach ($line->getCalculatedTax()->getDetails() as $detail) {
                 if (!$detail->getRate() && $detail->getTax()) {
-                    $jurisdiction = $this->_prepareJurisdictionName(
-                        $detail->getTaxType(),
-                        $detail->getJurisdictionName(),
-                        $detail->getJurisdictionType()
-                    );
-
-                    if (!isset($data[$jurisdiction]['fixedTax'])) {
-                        $data[$jurisdiction]['fixedTax'] = 0;
+                    if (!isset($fixedRatesData[$jurisdiction]['fixedTax'])) {
+                        $fixedRatesData[$jurisdiction]['fixedTax'] = 0;
                     }
-                    if (!isset($data[$jurisdiction]['lineAmount'])) {
-                        $data[$jurisdiction]['lineAmount'] = 0;
+                    if (!isset($fixedRatesData[$jurisdiction]['lineAmount'])) {
+                        $fixedRatesData[$jurisdiction]['lineAmount'] = 0;
                     }
-
-                    $data[$jurisdiction]['fixedTax'] += (float)$detail->getTax();
-                    $data[$jurisdiction]['lineAmount'] += (float)$line->getLineAmount();
+                    $fixedRatesData[$jurisdiction]['fixedTax'] += $detail->getTax();
+                    $fixedRatesData[$jurisdiction]['lineAmount'] += $line->getLineAmount();
                 }
             }
         }
 
-        $rate = array();
-        foreach ($data as $jurisdiction => $values) {
-            $rate[$jurisdiction] = $this->_calculateRate($values['fixedTax'], $values['lineAmount']);
+        $fixedRates = array();
+        foreach ($fixedRatesData as $jurisdiction => $values) {
+            $fixedRates[$jurisdiction] = $this->_calculateRate($values['fixedTax'], $values['lineAmount']);
         }
 
-        return $rate;
+        return array_merge($rates, $fixedRates);
     }
 
     /**
