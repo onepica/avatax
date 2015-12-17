@@ -530,11 +530,14 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
     protected function _getJurisdictionsRate($response)
     {
         $rates = array();
+        $fixedRatesData = array();
+
         /** @var OnePica_AvaTax16_Document_Response_Line $line */
         foreach ($response->getLines() as $line) {
             if (!$line->getCalculatedTax()->getTax()) {
                 continue;
             }
+
             foreach ($line->getCalculatedTax()->getDetails() as $detail) {
                 $jurisdiction = $this->_prepareJurisdictionName(
                     $detail->getTaxType(),
@@ -542,19 +545,29 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
                     $detail->getJurisdictionType()
                 );
 
-                if (isset($rates[$jurisdiction]) && $rates[$jurisdiction] !== 0) {
-                    continue;
+                if (!isset($rates[$jurisdiction]) && $detail->getRate()) {
+                    $rates[$jurisdiction] = $detail->getRate() * 100;
+                }
+
+                if (!$detail->getRate() && $detail->getTax()) {
+                    if (!isset($fixedRatesData[$jurisdiction]['fixedTax'])) {
+                        $fixedRatesData[$jurisdiction]['fixedTax'] = 0;
                     }
-
-                $rates[$jurisdiction] = $detail->getRate() * 100;
-
-                if ($rates[$jurisdiction] === 0 && $detail->getTax()) {
-                    $rates[$jurisdiction] = $this->_calculateRate($detail->getTax(), $line->getLineAmount());
+                    if (!isset($fixedRatesData[$jurisdiction]['lineAmount'])) {
+                        $fixedRatesData[$jurisdiction]['lineAmount'] = 0;
+                    }
+                    $fixedRatesData[$jurisdiction]['fixedTax'] += $detail->getTax();
+                    $fixedRatesData[$jurisdiction]['lineAmount'] += $line->getLineAmount();
                 }
             }
         }
 
-        return $rates;
+        $fixedRates = array();
+        foreach ($fixedRatesData as $jurisdiction => $values) {
+            $fixedRates[$jurisdiction] = $this->_calculateRate($values['fixedTax'], $values['lineAmount']);
+        }
+
+        return array_merge($rates, $fixedRates);
     }
 
     /**
