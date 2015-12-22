@@ -33,10 +33,50 @@ class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
      */
     public function discountTax($store = null)
     {
-        if (Mage::helper('avatax')->isAvataxEnabled($store)) {
+        if ($this->_getDataHelper()->isAvataxEnabled($store)) {
             return false;
         }
 
         return parent::discountTax($store);
+    }
+
+    /**
+     * Check if product prices inputed include tax
+     *
+     * @param null|int $store
+     * @return bool
+     */
+    public function priceIncludesTax($store = null)
+    {
+        if ($this->_getDataHelper()->isAvataxEnabled($store)) {
+            return false;
+        }
+
+        return parent::priceIncludesTax($store);
+    }
+
+    /**
+     * Check if shipping prices include tax
+     *
+     * @param null|int $store
+     * @return bool
+     */
+    public function shippingPriceIncludesTax($store = null)
+    {
+        if ($this->_getDataHelper()->isAvataxEnabled($store)) {
+            return false;
+        }
+
+        return parent::shippingPriceIncludesTax($store);
+    }
+
+    /**
+     * Get avatax data helper
+     *
+     * @return OnePica_AvaTax_Helper_Data
+     */
+    protected function _getDataHelper()
+    {
+        return Mage::helper('avatax');
     }
 }
