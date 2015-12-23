@@ -96,7 +96,7 @@ class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
     }
 
     /**
-      Check if display cart prices excluded tax*
+     * Check if display cart prices excluded tax
      *
      * @param null|int $store
      * @return bool
@@ -111,7 +111,7 @@ class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
     }
 
     /**
-    Check if display cart prices included and excluded tax  *
+     * Check if display cart prices included and excluded tax
      *
      * @param null|int $store
      * @return bool
