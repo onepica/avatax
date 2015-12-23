@@ -525,6 +525,15 @@
                         </full_summary>
                     </fields>
                 </sales_display>
+                <cart_display>
+                    <fields>
+                        <price >
+                            <show_in_default>0</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </price>
+                    </fields>
+                </cart_display>
             </groups>
         </tax>
         <shipping>
