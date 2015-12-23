@@ -79,4 +79,49 @@ class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
     {
         return Mage::helper('avatax');
     }
+
+    /**
+     * Check if display cart prices included tax
+     *
+     * @param null|int $store
+     * @return bool
+     */
+    public function displayCartPricesInclTax($store = null)
+    {
+        if ($this->_getDataHelper()->isAvataxEnabled($store)) {
+            return false;
+        }
+
+        return parent::displayCartPricesInclTax($store);
+    }
+
+    /**
+      Check if display cart prices excluded tax*
+     *
+     * @param null|int $store
+     * @return bool
+     */
+    public function displayCartPricesExclTax($store = null)
+    {
+        if ($this->_getDataHelper()->isAvataxEnabled($store)) {
+            return true;
+        }
+
+        return parent::displayCartPricesExclTax($store);
+    }
+
+    /**
+    Check if display cart prices included and excluded tax  *
+     *
+     * @param null|int $store
+     * @return bool
+     */
+    public function displayCartPricesBoth($store = null)
+    {
+        if ($this->_getDataHelper()->isAvataxEnabled($store)) {
+            return false;
+        }
+
+        return parent::displayCartPricesBoth($store);
+    }
 }

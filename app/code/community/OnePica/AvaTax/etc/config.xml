@@ -62,7 +62,6 @@
             <tax>
                 <rewrite>
                     <config>OnePica_AvaTax_Model_Tax_Config</config>
-                    <sales_total_quote_subtotal>OnePica_AvaTax_Model_Sales_Total_Quote_Subtotal</sales_total_quote_subtotal>
                 </rewrite>
             </tax>
             <enterprise_giftwrapping>
