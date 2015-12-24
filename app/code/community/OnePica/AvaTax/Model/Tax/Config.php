@@ -116,6 +116,96 @@ class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
     }
 
     /**
+     * Check if display cart subtotal included tax
+     *
+     * @param mixed $store
+     * @return bool
+     */
+    public function displayCartSubtotalInclTax($store = null)
+    {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
+            return false;
+        }
+
+        return parent::displayCartSubtotalInclTax($store);
+    }
+
+    /**
+     * Check if display cart subtotal excluded tax
+     *
+     * @param mixed $store
+     * @return bool
+     */
+    public function displayCartSubtotalExclTax($store = null)
+    {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
+            return true;
+        }
+
+        return parent::displayCartSubtotalExclTax($store);
+    }
+
+    /**
+     * Check if display cart subtotal included and excluded tax
+     *
+     * @param mixed $store
+     * @return bool
+     */
+    public function displayCartSubtotalBoth($store = null)
+    {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
+            return false;
+        }
+
+        return parent::displayCartSubtotalBoth($store);
+    }
+
+    /**
+     * Check if display cart shipping included tax
+     *
+     * @param mixed $store
+     * @return bool
+     */
+    public function displayCartShippingInclTax($store = null)
+    {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
+            return false;
+        }
+
+        return parent::displayCartShippingInclTax($store);
+    }
+
+    /**
+     * Check if display cart shipping excluded tax
+     *
+     * @param mixed $store
+     * @return bool
+     */
+    public function displayCartShippingExclTax($store = null)
+    {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
+            return true;
+        }
+
+        return parent::displayCartShippingExclTax($store);
+    }
+
+    /**
+     * Check if display cart shipping included and excluded tax
+     *
+     * @param mixed $store
+     * @return bool
+     */
+    public function displayCartShippingBoth($store = null)
+    {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
+            return false;
+        }
+
+        return parent::displayCartShippingBoth($store);
+    }
+
+    /**
      * Get avatax data helper
      *
      * @return OnePica_AvaTax_Helper_Data
