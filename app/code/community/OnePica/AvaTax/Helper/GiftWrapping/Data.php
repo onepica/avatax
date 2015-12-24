@@ -94,6 +94,81 @@ class OnePica_AvaTax_Helper_GiftWrapping_Data extends Enterprise_GiftWrapping_He
     }
 
     /**
+     * Check ability to display prices including tax for gift wrapping in backend sales
+     *
+     * @param Mage_Core_Model_Store|int $store
+     * @return bool
+     */
+    public function displaySalesWrappingIncludeTaxPrice($store = null)
+    {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
+            return false;
+        }
+
+        return parent::displaySalesWrappingIncludeTaxPrice($store);
+    }
+
+    /**
+     * Check ability to display prices excluding tax for gift wrapping in backend sales
+     *
+     * @param Mage_Core_Model_Store|int $store
+     * @return bool
+     */
+    public function displaySalesWrappingExcludeTaxPrice($store = null)
+    {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
+            return true;
+        }
+
+        return parent::displaySalesWrappingExcludeTaxPrice($store);
+    }
+
+    /**
+     * Check ability to display both prices for gift wrapping in backend sales
+     *
+     * @param Mage_Core_Model_Store|int $store
+     * @return bool
+     */
+    public function displaySalesWrappingBothPrices($store = null)
+    {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
+            return false;
+        }
+
+        return parent::displaySalesWrappingBothPrices($store);
+    }
+
+    /**
+     * Check ability to display prices including tax for printed card in backend sales
+     *
+     * @param Mage_Core_Model_Store|int $store
+     * @return bool
+     */
+    public function displaySalesCardIncludeTaxPrice($store = null)
+    {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
+            return false;
+        }
+
+        return parent::displaySalesCardIncludeTaxPrice($store);
+    }
+
+    /**
+     * Check ability to display both prices for printed card in backend sales
+     *
+     * @param Mage_Core_Model_Store|int $store
+     * @return bool
+     */
+    public function displaySalesCardBothPrices($store = null)
+    {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
+            return false;
+        }
+
+        return parent::displaySalesCardBothPrices($store);
+    }
+
+    /**
      * Get avatax data helper
      *
      * @return OnePica_AvaTax_Helper_Data
