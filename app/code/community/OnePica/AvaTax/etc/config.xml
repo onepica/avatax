@@ -19,7 +19,7 @@
 <config>
     <modules>
         <OnePica_AvaTax>
-            <version>2.6.7.1</version>
+            <version>2.6.8.1</version>
         </OnePica_AvaTax>
     </modules>
     <global>
@@ -79,6 +79,11 @@
                     <data>OnePica_AvaTax_Helper_Tax_Data</data>
                 </rewrite>
             </tax>
+            <enterprise_giftwrapping>
+                <rewrite>
+                    <data>OnePica_AvaTax_Helper_GiftWrapping_Data</data>
+                </rewrite>
+            </enterprise_giftwrapping>
         </helpers>
         <blocks>
             <avatax>
