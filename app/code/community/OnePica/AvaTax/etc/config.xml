@@ -79,6 +79,11 @@
                     <data>OnePica_AvaTax_Helper_Tax_Data</data>
                 </rewrite>
             </tax>
+            <enterprise_giftwrapping>
+                <rewrite>
+                    <data>OnePica_AvaTax_Helper_GiftWrapping_Data</data>
+                </rewrite>
+            </enterprise_giftwrapping>
         </helpers>
         <blocks>
             <avatax>
