@@ -33,10 +33,95 @@ class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
      */
     public function discountTax($store = null)
     {
-        if (Mage::helper('avatax')->isServiceEnabled($store)) {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
             return false;
         }
 
         return parent::discountTax($store);
+    }
+
+    /**
+     * Check if product prices inputed include tax
+     *
+     * @param null|int $store
+     * @return bool
+     */
+    public function priceIncludesTax($store = null)
+    {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
+            return false;
+        }
+
+        return parent::priceIncludesTax($store);
+    }
+
+    /**
+     * Check if shipping prices include tax
+     *
+     * @param null|int $store
+     * @return bool
+     */
+    public function shippingPriceIncludesTax($store = null)
+    {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
+            return false;
+        }
+
+        return parent::shippingPriceIncludesTax($store);
+    }
+
+    /**
+     * Check if display cart prices included tax
+     *
+     * @param null|int $store
+     * @return bool
+     */
+    public function displayCartPricesInclTax($store = null)
+    {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
+            return false;
+        }
+
+        return parent::displayCartPricesInclTax($store);
+    }
+
+    /**
+     * Check if display cart prices excluded tax
+     *
+     * @param null|int $store
+     * @return bool
+     */
+    public function displayCartPricesExclTax($store = null)
+    {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
+            return true;
+        }
+
+        return parent::displayCartPricesExclTax($store);
+    }
+
+    /**
+     * Check if display cart prices included and excluded tax
+     *
+     * @param null|int $store
+     * @return bool
+     */
+    public function displayCartPricesBoth($store = null)
+    {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
+            return false;
+        }
+
+        return parent::displayCartPricesBoth($store);
+    }
+
+    /**
+     * Get avatax data helper
+     *
+     * @return OnePica_AvaTax_Helper_Data
+     */
+    protected function _getDataHelper()
+    {
+        return Mage::helper('avatax');
     }
 }

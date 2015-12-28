@@ -101,6 +101,15 @@
                         </full_summary>
                     </fields>
                 </sales_display>
+                <cart_display>
+                    <fields>
+                        <price>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </price>
+                    </fields>
+                </cart_display>
             </groups>
         </tax>
     </sections>
