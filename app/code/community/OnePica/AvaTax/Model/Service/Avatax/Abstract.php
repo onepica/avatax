@@ -171,9 +171,6 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
      */
     protected function _getGwTaxClassId($object)
     {
-        if (Mage::getEdition() !== Mage::EDITION_ENTERPRISE) {
-            return 0;
-        }
         if (!$object->getGwPrice()
             && !$object->getGwItemsPrice()
             && !$object->getGwPrintedCardPrice()
@@ -198,6 +195,10 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
      */
     protected function _getWrappingTaxClass($storeId)
     {
+        if (Mage::getEdition() !== Mage::EDITION_ENTERPRISE) {
+            return 0;
+        }
+
         return (int)$this->_getGiftWrappingDataHelper()->getWrappingTaxClass($storeId);
     }
 
