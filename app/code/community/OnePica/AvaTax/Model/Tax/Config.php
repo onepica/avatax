@@ -33,7 +33,7 @@ class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
      */
     public function discountTax($store = null)
     {
-        if ($this->_getDataHelper()->isAvataxEnabled($store)) {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
             return false;
         }
 
@@ -48,7 +48,7 @@ class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
      */
     public function priceIncludesTax($store = null)
     {
-        if ($this->_getDataHelper()->isAvataxEnabled($store)) {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
             return false;
         }
 
@@ -63,7 +63,7 @@ class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
      */
     public function shippingPriceIncludesTax($store = null)
     {
-        if ($this->_getDataHelper()->isAvataxEnabled($store)) {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
             return false;
         }
 
@@ -78,7 +78,7 @@ class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
      */
     public function displayCartPricesInclTax($store = null)
     {
-        if ($this->_getDataHelper()->isAvataxEnabled($store)) {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
             return false;
         }
 
@@ -93,7 +93,7 @@ class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
      */
     public function displayCartPricesExclTax($store = null)
     {
-        if ($this->_getDataHelper()->isAvataxEnabled($store)) {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
             return true;
         }
 
@@ -108,7 +108,7 @@ class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
      */
     public function displayCartPricesBoth($store = null)
     {
-        if ($this->_getDataHelper()->isAvataxEnabled($store)) {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
             return false;
         }
 
@@ -123,7 +123,7 @@ class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
      */
     public function displayCartSubtotalInclTax($store = null)
     {
-        if ($this->_getDataHelper()->isAvataxEnabled($store)) {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
             return false;
         }
 
@@ -138,7 +138,7 @@ class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
      */
     public function displayCartSubtotalExclTax($store = null)
     {
-        if ($this->_getDataHelper()->isAvataxEnabled($store)) {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
             return true;
         }
 
@@ -153,7 +153,7 @@ class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
      */
     public function displayCartSubtotalBoth($store = null)
     {
-        if ($this->_getDataHelper()->isAvataxEnabled($store)) {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
             return false;
         }
 
@@ -168,7 +168,7 @@ class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
      */
     public function displayCartShippingInclTax($store = null)
     {
-        if ($this->_getDataHelper()->isAvataxEnabled($store)) {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
             return false;
         }
 
@@ -183,7 +183,7 @@ class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
      */
     public function displayCartShippingExclTax($store = null)
     {
-        if ($this->_getDataHelper()->isAvataxEnabled($store)) {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
             return true;
         }
 
@@ -198,7 +198,7 @@ class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
      */
     public function displayCartShippingBoth($store = null)
     {
-        if ($this->_getDataHelper()->isAvataxEnabled($store)) {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
             return false;
         }
 
@@ -213,7 +213,7 @@ class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
      */
     public function displaySalesPricesInclTax($store = null)
     {
-        if ($this->_getDataHelper()->isAvataxEnabled($store)) {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
             return false;
         }
 
@@ -228,7 +228,7 @@ class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
      */
     public function displaySalesPricesExclTax($store = null)
     {
-        if ($this->_getDataHelper()->isAvataxEnabled($store)) {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
             return true;
         }
 
@@ -243,7 +243,7 @@ class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
      */
     public function displaySalesPricesBoth($store = null)
     {
-        if ($this->_getDataHelper()->isAvataxEnabled($store)) {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
             return false;
         }
 
@@ -258,7 +258,7 @@ class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
      */
     public function displaySalesSubtotalInclTax($store = null)
     {
-        if ($this->_getDataHelper()->isAvataxEnabled($store)) {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
             return false;
         }
 
@@ -273,7 +273,7 @@ class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
      */
     public function displaySalesSubtotalExclTax($store = null)
     {
-        if ($this->_getDataHelper()->isAvataxEnabled($store)) {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
             return true;
         }
 
@@ -288,7 +288,7 @@ class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
      */
     public function displaySalesSubtotalBoth($store = null)
     {
-        if ($this->_getDataHelper()->isAvataxEnabled($store)) {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
             return false;
         }
 
@@ -303,7 +303,7 @@ class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
      */
     public function displaySalesShippingInclTax($store = null)
     {
-        if ($this->_getDataHelper()->isAvataxEnabled($store)) {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
             return false;
         }
 
@@ -318,7 +318,7 @@ class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
      */
     public function displaySalesShippingExclTax($store = null)
     {
-        if ($this->_getDataHelper()->isAvataxEnabled($store)) {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
             return true;
         }
 
@@ -333,7 +333,7 @@ class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
      */
     public function displaySalesShippingBoth($store = null)
     {
-        if ($this->_getDataHelper()->isAvataxEnabled($store)) {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
             return false;
         }
 

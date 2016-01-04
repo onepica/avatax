@@ -19,7 +19,7 @@
 <config>
     <modules>
         <OnePica_AvaTax>
-            <version>2.6.8.1</version>
+            <version>3.0.0.13</version>
         </OnePica_AvaTax>
     </modules>
     <global>
@@ -198,6 +198,96 @@
                     </avatax>
                 </observers>
             </controller_action_predispatch_checkout_onepage_index>
+            <controller_action_predispatch_checkout_multishipping_index>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer</class>
+                        <method>controllerActionPredispatchCheckoutMultishippingIndex</method>
+                    </avatax>
+                </observers>
+            </controller_action_predispatch_checkout_multishipping_index>
+            <controller_action_predispatch_checkout_cart_index>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer</class>
+                        <method>controllerActionPredispatchCheckoutCartIndex</method>
+                    </avatax>
+                </observers>
+            </controller_action_predispatch_checkout_cart_index>
+            <controller_action_postdispatch_checkout_cart_estimatePost>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer</class>
+                        <method>controllerActionPostdispatchCheckoutCartEstimatePost</method>
+                    </avatax>
+                </observers>
+            </controller_action_postdispatch_checkout_cart_estimatePost>
+            <controller_action_postdispatch_checkout_cart_estimateUpdatePost>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer</class>
+                        <method>controllerActionPostdispatchCheckoutCartEstimateUpdatePost</method>
+                    </avatax>
+                </observers>
+            </controller_action_postdispatch_checkout_cart_estimateUpdatePost>
+            <sales_model_service_quote_submit_before>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer</class>
+                        <method>salesModelServiceQuoteSubmitBefore</method>
+                    </avatax>
+                </observers>
+            </sales_model_service_quote_submit_before>
+            <controller_action_postdispatch_checkout_onepage_saveShippingMethod>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer</class>
+                        <method>controllerActionPostdispatchCheckoutOnepageSaveShippingMethod</method>
+                    </avatax>
+                </observers>
+            </controller_action_postdispatch_checkout_onepage_saveShippingMethod>
+            <checkout_type_multishipping_create_orders_single>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer</class>
+                        <method>checkoutTypeMultishippingCreateOrdersSingle</method>
+                    </avatax>
+                </observers>
+            </checkout_type_multishipping_create_orders_single>
+            <sales_model_service_quote_submit_after>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer</class>
+                        <method>salesModelServiceQuoteSubmitAfter</method>
+                    </avatax>
+                </observers>
+            </sales_model_service_quote_submit_after>
+            <checkout_submit_all_after>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer</class>
+                        <method>checkoutSubmitAllAfter</method>
+                    </avatax>
+                </observers>
+            </checkout_submit_all_after>
+            <controller_action_postdispatch_adminhtml_sales_order_create_loadBlock>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer</class>
+                        <method>controllerActionPredispatchAdminhtmlSalesOrderCreateLoadBlock</method>
+                    </avatax>
+                </observers>
+            </controller_action_postdispatch_adminhtml_sales_order_create_loadBlock>
         </events>
     </global>
     <frontend>
@@ -265,10 +355,12 @@
                             <avatax_queue translate="title" module="avatax">
                                 <title>AvaTax Order Sync Queue</title>
                                 <action>adminhtml/avaTax_grid/queue</action>
+                                <resource>avatax</resource>
                             </avatax_queue>
                             <avatax_log translate="title" module="avatax">
                                 <title>AvaTax Log</title>
                                 <action>adminhtml/avaTax_grid/log</action>
+                                <resource>avatax</resource>
                             </avatax_log>
                         </children>
                     </tax>
@@ -291,6 +383,8 @@
     <default>
         <tax>
             <avatax>
+                <validate_address>1</validate_address>
+                <active_service>avatax16</active_service>
                 <action>0</action>
                 <url>https://avatax.avalara.net/</url>
                 <region_filter_mode>0</region_filter_mode>
@@ -317,6 +411,7 @@
                 <onepage_normalize_message>Your shipping address has been modified during our validation process. Please confirm the address to the right is accurate.</onepage_normalize_message>
                 <multiaddress_normalize_message>Your shipping addresses have been modified during our validation process. Please confirm they are still correct.</multiaddress_normalize_message>
                 <validate_address_message>The address '%s' appears invalid. Please correct it or select another address.</validate_address_message>
+                <avatax16_onepage_validate_address_message>Unable to validate address.</avatax16_onepage_validate_address_message>
             </avatax>
             <calculation>
                 <based_on>shipping</based_on>

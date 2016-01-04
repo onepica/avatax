@@ -73,6 +73,6 @@ class OnePica_AvaTax_Block_Adminhtml_Notification_Toolbar extends Mage_Adminhtml
      */
     public function getQueueAttemptMaxValue()
     {
-        return OnePica_AvaTax_Model_Config::QUEUE_ATTEMPT_MAX;
+        return OnePica_AvaTax_Model_Service_Abstract_Config::QUEUE_ATTEMPT_MAX;
     }
 }

@@ -39,7 +39,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
      * this could be a problem, but Avatax doesn't support those locations yet.
      *
      * @param   Mage_Sales_Model_Quote_Address $address
-     * @return  Mage_Tax_Model_Sales_Total_Quote
+     * @return  $this
      */
     public function collect(Mage_Sales_Model_Quote_Address $address)
     {
@@ -48,8 +48,8 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
 
         if ($address->getPostcode() && $address->getPostcode() != '-') {
             $store = $address->getQuote()->getStore();
-            /** @var OnePica_AvaTax_Model_Avatax_Estimate $calculator */
-            $calculator = Mage::getModel('avatax/avatax_estimate');
+            /** @var OnePica_AvaTax_Model_Calculator $calculator */
+            $calculator = Mage::getModel('avatax/calculator');
 
             $address->setTotalAmount($this->getCode(), 0);
             $address->setBaseTotalAmount($this->getCode(), 0);
@@ -61,12 +61,14 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
 
             //Added check for calculating tax for regions filtered in the admin
             if ($this->_isAddressActionable($address)) {
+                $itemTaxGroups = array();
                 /** @var Mage_Sales_Model_Quote_Item $item */
                 foreach ($address->getAllItems() as $item) {
                     $item->setAddress($address);
                     $baseAmount = $calculator->getItemTax($item);
 
                     $giftBaseTaxTotalAmount = $calculator->getItemGiftTax($item);
+                    $itemTaxGroups[$item->getId()] = $calculator->getItemTaxGroup($item);
                     $giftTaxTotalAmount = $store->convertPrice($giftBaseTaxTotalAmount);
                     $giftBaseTaxAmount = $this->_getDataHelper()
                         ->roundUp($giftBaseTaxTotalAmount / $item->getQty(), 2);
@@ -99,8 +101,8 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
                     || $address->getUseForShipping()
                 ) {
                     $shippingItem = new Varien_Object();
-                    $shippingItem->setSku(Mage::helper('avatax')->getShippingSku($store->getId()));
-                    $shippingItem->setProductId(Mage::helper('avatax')->getShippingSku($store->getId()));
+                    $shippingItem->setSku(Mage::helper('avatax/config')->getShippingSku($store->getId()));
+                    $shippingItem->setProductId(Mage::helper('avatax/config')->getShippingSku($store->getId()));
                     $shippingItem->setAddress($address);
                     $baseShippingTax = $calculator->getItemTax($shippingItem);
                     $shippingTax = $store->convertPrice($baseShippingTax);
@@ -122,8 +124,8 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
 
                 if ($address->getGwPrice() > 0) {
                     $gwOrderItem = new Varien_Object();
-                    $gwOrderItem->setSku(Mage::helper('avatax')->getGwOrderSku($store->getId()));
-                    $gwOrderItem->setProductId(Mage::helper('avatax')->getGwOrderSku($store->getId()));
+                    $gwOrderItem->setSku(Mage::helper('avatax/config')->getGwOrderSku($store->getId()));
+                    $gwOrderItem->setProductId(Mage::helper('avatax/config')->getGwOrderSku($store->getId()));
                     $gwOrderItem->setAddress($address);
                     $baseGwOrderTax = $calculator->getItemTax($gwOrderItem);
                     $gwOrderTax = $store->convertPrice($baseGwOrderTax);
@@ -137,8 +139,8 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
 
                 if ($address->getGwAddPrintedCard()) {
                     $gwPrintedCardItem = new Varien_Object();
-                    $gwPrintedCardItem->setSku(Mage::helper('avatax')->getGwPrintedCardSku($store->getId()));
-                    $gwPrintedCardItem->setProductId(Mage::helper('avatax')->getGwPrintedCardSku($store->getId()));
+                    $gwPrintedCardItem->setSku(Mage::helper('avatax/config')->getGwPrintedCardSku($store->getId()));
+                    $gwPrintedCardItem->setProductId(Mage::helper('avatax/config')->getGwPrintedCardSku($store->getId()));
                     $gwPrintedCardItem->setAddress($address);
                     $baseGwPrintedCardTax = $calculator->getItemTax($gwPrintedCardItem);
                     $gwPrintedCardTax = $store->convertPrice($baseGwPrintedCardTax);
@@ -149,10 +151,47 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
                     $this->_addAmount($gwPrintedCardTax);
                     $this->_addBaseAmount($baseGwPrintedCardTax);
                 }
+
+                $this->_setTaxForItems($address, $itemTaxGroups);
+                $this->_saveAppliedTax($address);
             }
         }
 
         return $this;
+    }
+
+    /**
+     * Save applied tax
+     *
+     * @param Mage_Sales_Model_Quote_Address $address
+     */
+    protected function _saveAppliedTax($address)
+    {
+        $fullInfo = array();
+        $summary = $this->_getCalculator()->getSummary($address->getId());
+
+        foreach ($summary as $key => $row) {
+            $id = $row['name'];
+            $fullInfo[$id] = array(
+                'rates'       => array(
+                    array(
+                        'code'     => $row['name'],
+                        'title'    => $row['name'],
+                        'percent'  => $row['rate'],
+                        'position' => $key,
+                        'priority' => $key,
+                        'rule_id'  => 0
+                    )
+                ),
+                'percent'     => $row['rate'],
+                'id'          => $id,
+                'process'     => 0,
+                'amount'      => $row['amt'],
+                'base_amount' => $row['amt']
+            );
+        }
+
+        $address->setAppliedTaxes($fullInfo);
     }
 
     /**
@@ -164,9 +203,31 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
     protected function _isAddressActionable($address)
     {
         /** @var OnePica_AvaTax_Helper_Data $helper */
-        $helper = Mage::helper('avatax');
+        $helper = Mage::helper('avatax/address');
         $storeId = $address->getQuote()->getStoreId();
-        return $helper->isAddressActionable($address, $storeId, OnePica_AvaTax_Model_Config::REGIONFILTER_TAX);
+
+        return $helper->isAddressActionable(
+            $address,
+            $storeId,
+            OnePica_AvaTax_Model_Service_Abstract_Config::REGIONFILTER_TAX
+        );
+    }
+
+    /**
+     * Set tax for items
+     *
+     * @param \Mage_Sales_Model_Quote_Address $address
+     * @param array                           $itemTaxGroups
+     * @return $this
+     */
+    protected function _setTaxForItems(Mage_Sales_Model_Quote_Address $address, $itemTaxGroups)
+    {
+        if ($address->getQuote()->getTaxesForItems()) {
+            $itemTaxGroups += $address->getQuote()->getTaxesForItems();
+        }
+        $address->getQuote()->setTaxesForItems($itemTaxGroups);
+
+        return $this;
     }
 
     /**
@@ -183,7 +244,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
         $amount = $address->getTaxAmount();
 
         $fullInfo = array();
-        $summary = Mage::getModel('avatax/avatax_estimate')->getSummary($address->getId());
+        $summary = Mage::getModel('avatax/calculator')->getSummary($address->getId());
 
         foreach ($summary as $key => $row) {
             $id = 'avatax-' . $key;
@@ -237,6 +298,16 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
         }
 
         return $this;
+    }
+
+    /**
+     * Get calculator model
+     *
+     * @return OnePica_AvaTax_Model_Calculator
+     */
+    protected function _getCalculator()
+    {
+        return Mage::getModel('avatax/calculator');
     }
 
     /* BELOW ARE MAGE CORE PROPERTIES AND METHODS ADDED FOR OLDER VERSION COMPATABILITY */

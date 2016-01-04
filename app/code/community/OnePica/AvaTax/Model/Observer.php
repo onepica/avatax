@@ -75,7 +75,7 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     public function salesQuoteCollectTotalsBefore(Varien_Event_Observer $observer)
     {
         $storeId = $observer->getEvent()->getQuote()->getStoreId();
-        if (Mage::getStoreConfig('tax/avatax/action', $storeId) != OnePica_AvaTax_Model_Config::ACTION_DISABLE) {
+        if (Mage::getStoreConfig('tax/avatax/action', $storeId) != OnePica_AvaTax_Model_Service_Abstract_Config::ACTION_DISABLE) {
             Mage::getConfig()->setNode('global/sales/quote/totals/tax/class', 'avatax/sales_quote_address_total_tax');
         }
         return $this;
@@ -94,7 +94,7 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
 
         if ((int)$invoice->getOrigData('state') !== Mage_Sales_Model_Order_Invoice::STATE_PAID
             && (int)$invoice->getState() === Mage_Sales_Model_Order_Invoice::STATE_PAID
-            && Mage::helper('avatax')->isObjectActionable($invoice)
+            && Mage::helper('avatax/address')->isObjectActionable($invoice)
         ) {
             Mage::getModel('avatax_records/queue')
                 ->setEntity($invoice)
@@ -117,7 +117,7 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
         /* @var $creditmemo Mage_Sales_Model_Order_Creditmemo */
         $creditmemo = $observer->getEvent()->getCreditmemo();
         if (!$creditmemo->getOrigData($creditmemo->getIdFieldName())
-            && Mage::helper('avatax')->isObjectActionable($creditmemo)
+            && Mage::helper('avatax/address')->isObjectActionable($creditmemo)
         ) {
             Mage::getModel('avatax_records/queue')
                 ->setEntity($creditmemo)
@@ -226,7 +226,7 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     {
         if (in_array($class, self::$_classes)) {
             /** @var OnePica_AvaTax_Helper_Data $helper */
-            $helper = Mage::helper('avatax');
+            $helper = Mage::helper('avatax/lib');
             $helper->loadFunctions();
             $helper->loadClass($class);
         }
@@ -259,6 +259,19 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     }
 
     /**
+     * Set post type for checkout session when 'controller_action_predispatch_checkout_multishipping_index' event
+     *
+     * @param Varien_Event_Observer $observer
+     * @return $this
+     */
+    public function controllerActionPredispatchCheckoutMultishippingIndex(Varien_Event_Observer $observer)
+    {
+        $session = Mage::getSingleton('checkout/session');
+        $session->setPostType('multishipping');
+        return $this;
+    }
+
+    /**
      * Prepare warnings array
      *
      * @param int $storeId
@@ -267,18 +280,24 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     protected function _prepareWarnings($storeId)
     {
         $warnings = array();
-        if (strpos(Mage::getStoreConfig('tax/avatax/url', $storeId), 'development.avalara.net') !== false) {
+        if ($this->_getDataHelper()->isDevMod($storeId)) {
             $warnings[] = Mage::helper('avatax')->__(
                 'You are using the AvaTax development connection URL. If you are receiving errors about authentication, please ensure that you have a development account.'
             );
         }
-        if (Mage::getStoreConfig('tax/avatax/action', $storeId) == OnePica_AvaTax_Model_Config::ACTION_DISABLE) {
+        if (Mage::helper('avatax/config')->getStatusServiceAction($storeId)
+            == OnePica_AvaTax_Model_Service_Abstract_Config::ACTION_DISABLE
+        ) {
             $warnings[] = Mage::helper('avatax')->__('All AvaTax services are disabled');
         }
-        if (Mage::getStoreConfig('tax/avatax/action', $storeId) == OnePica_AvaTax_Model_Config::ACTION_CALC) {
+        if (Mage::helper('avatax/config')->getStatusServiceAction($storeId)
+            == OnePica_AvaTax_Model_Service_Abstract_Config::ACTION_CALC
+        ) {
             $warnings[] = Mage::helper('avatax')->__('Orders will not be sent to the AvaTax system');
         }
-        if (Mage::getStoreConfig('tax/avatax/action', $storeId) == OnePica_AvaTax_Model_Config::ACTION_CALC_SUBMIT) {
+        if ($this->_getDataHelper()->isAvatax() && (Mage::helper('avatax/config')->getStatusServiceAction($storeId)
+            == OnePica_AvaTax_Model_Service_Abstract_Config::ACTION_CALC_SUBMIT)
+        ) {
             $warnings[] = Mage::helper('avatax')->__('Orders will be sent but never committed to the AvaTax system');
         }
         if (!Mage::getResourceModel('cron/schedule_collection')->count()) {
@@ -288,7 +307,8 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
             );
         }
         if ($this->_isRegionFilterAll() && $this->_canNotBeAddressValidated()) {
-            $warnings[] = Mage::helper('avatax')->__('Please be aware that address validation will not work for addresses outside United States and Canada');
+            $warnings[] = Mage::helper('avatax')
+                ->__('Please be aware that address validation will not work for addresses outside United States and Canada');
         }
 
         return $warnings;
@@ -379,7 +399,7 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     protected function _sendPing($storeId)
     {
         $errors = array();
-        $ping = Mage::getSingleton('avatax/avatax_ping')->ping($storeId);
+        $ping = Mage::getSingleton('avatax/calculator')->ping($storeId);
         if ($ping !== true) {
             $errors[] = $ping;
         }
@@ -424,13 +444,13 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     protected function _checkSkuFields($storeId)
     {
         $errors = array();
-        if (!Mage::getStoreConfig('tax/avatax/shipping_sku', $storeId)) {
+        if (!Mage::helper('avatax/config')->getShippingSku($storeId)) {
             $errors[] = Mage::helper('avatax')->__('You must enter a shipping sku');
         }
-        if (!Mage::getStoreConfig('tax/avatax/adjustment_positive_sku', $storeId)) {
+        if (!Mage::helper('avatax/config')->getPositiveAdjustmentSku($storeId)) {
             $errors[] = Mage::helper('avatax')->__('You must enter an adjustment refund sku');
         }
-        if (!Mage::getStoreConfig('tax/avatax/adjustment_negative_sku', $storeId)) {
+        if (!Mage::helper('avatax/config')->getNegativeAdjustmentSku($storeId)) {
             $errors[] = Mage::helper('avatax')->__('You must enter an adjustment fee sku');
 
             return $errors;
@@ -486,8 +506,8 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
      */
     protected function _isRegionFilterAll()
     {
-        return (int)$this->_getDataHelper()->getRegionFilterModByCurrentScope()
-               === OnePica_AvaTax_Model_Config::REGIONFILTER_ALL;
+        return (int)Mage::helper('avatax/address')->getRegionFilterModByCurrentScope()
+               === OnePica_AvaTax_Model_Service_Abstract_Config::REGIONFILTER_ALL;
     }
 
     /**
@@ -498,8 +518,8 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     protected function _canNotBeAddressValidated()
     {
         return (bool)array_diff(
-            $this->_getDataHelper()->getTaxableCountryByCurrentScope(),
-            $this->_getDataHelper()->getAddressValidationCountries()
+            Mage::helper('avatax/address')->getTaxableCountryByCurrentScope(),
+            Mage::helper('avatax/address')->getAddressValidationCountries()
         );
     }
 
@@ -511,5 +531,222 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     protected function _getDataHelper()
     {
         return Mage::helper('avatax');
+    }
+
+    /**
+     * Get error helper
+     *
+     * @return OnePica_AvaTax_Helper_Errors
+     */
+    protected function _getErrorsHelper()
+    {
+        return Mage::helper('avatax/errors');
+    }
+
+    /**
+     * Get quote
+     *
+     * @return Mage_Sales_Model_Quote
+     */
+    protected function _getQuote()
+    {
+        return Mage::getSingleton('checkout/cart')->getQuote();
+    }
+
+    /**
+     * Add error message if tax estimation has problems when user estimates post
+     *
+     * @param Varien_Event_Observer $observer
+     * @return $this
+     */
+    public function controllerActionPostdispatchCheckoutCartEstimatePost(Varien_Event_Observer $observer)
+    {
+        $this->_handleTaxEstimation();
+        return $this;
+    }
+
+    /**
+     * Add error message if tax estimation has problems when user updates estimate post
+     *
+     * @param Varien_Event_Observer $observer
+     * @return $this
+     */
+    public function controllerActionPostdispatchCheckoutCartEstimateUpdatePost(Varien_Event_Observer $observer)
+    {
+        $this->_handleTaxEstimation();
+        return $this;
+    }
+
+    /**
+     * Add error message if tax estimation has problems when user located at checkout/cart/index
+     *
+     * @param Varien_Event_Observer $observer
+     * @return $this
+     */
+    public function controllerActionPredispatchCheckoutCartIndex(Varien_Event_Observer $observer)
+    {
+        $this->_addErrorMessage($this->_getQuote());
+
+        return $this;
+    }
+
+    /**
+     * Add error message if tax estimation has problems when creating order in admin
+     *
+     * @param Varien_Event_Observer $observer
+     * @return $this
+     */
+    public function controllerActionPredispatchAdminhtmlSalesOrderCreateLoadBlock(Varien_Event_Observer $observer)
+    {
+        $adminQuote = Mage::getSingleton('adminhtml/session_quote')->getQuote();
+        $this->_addErrorMessage($adminQuote);
+
+        return $this;
+    }
+
+    /**
+     * Add error message if tax estimation has problems
+     *
+     * @return $this
+     */
+    protected function _handleTaxEstimation()
+    {
+        $quote = $this->_getQuote();
+        $quote->collectTotals();
+        $this->_addErrorMessage($quote);
+
+        return $this;
+    }
+
+    /**
+     * Add error message if estimation has error
+     *
+     * @param Mage_Sales_Model_Quote $quote
+     * @return $this
+     */
+    protected function _addErrorMessage($quote)
+    {
+        if ($this->_getErrorsHelper()->canShowEstimationError($quote)) {
+            $this->_getErrorsHelper()->addErrorMessage($quote->getStoreId());
+        }
+
+        return $this;
+    }
+
+    /**
+     * Stop order creation if tax estimation has problems
+     *
+     * @param Varien_Event_Observer $observer
+     * @return $this
+     * @throws OnePica_AvaTax_Exception
+     */
+    public function salesModelServiceQuoteSubmitBefore(Varien_Event_Observer $observer)
+    {
+        /** @var Mage_Sales_Model_Quote $quote */
+        $quote = $observer->getEvent()->getQuote();
+        $this->_handleTaxEstimationOnOrderPlace($quote);
+        return $this;
+    }
+
+    /**
+     * Stop order creation if tax estimation has problems
+     *
+     * @param Varien_Event_Observer $observer
+     * @return $this
+     */
+    public function controllerActionPostdispatchCheckoutOnepageSaveShippingMethod(Varien_Event_Observer $observer) {
+        if ($this->_getErrorsHelper()->fullStopOnError($this->_getQuote())) {
+            Mage::app()
+                ->getResponse()
+                ->setBody($this->_getResponseErrorMessage());
+        }
+        return $this;
+    }
+
+    /**
+     * Get response error message
+     *
+     * @return string
+     */
+    protected function _getResponseErrorMessage()
+    {
+        return Mage::helper('core')->jsonEncode(
+            array(
+                'error'   => - 1,
+                'message' => $this->_getErrorsHelper()->getErrorMessage()
+            )
+        );
+    }
+
+    /**
+     * Stop order creation if tax estimation has problems when multishipping
+     *
+     * @param Varien_Event_Observer $observer
+     * @return $this
+     * @throws OnePica_AvaTax_Exception
+     */
+    public function checkoutTypeMultishippingCreateOrdersSingle(Varien_Event_Observer $observer)
+    {
+        /** @var Mage_Sales_Model_Quote_Address $address */
+        $address = $observer->getEvent()->getAddress();
+        $quote = $address->getQuote();
+        $this->_handleTaxEstimationOnOrderPlace($quote);
+        return $this;
+    }
+
+    /**
+     * Stop order creation if tax estimation has problems
+     *
+     * @param Mage_Sales_Model_Quote $quote
+     * @return $this
+     * @throws OnePica_AvaTax_Exception
+     */
+    protected function _handleTaxEstimationOnOrderPlace($quote)
+    {
+        /** @var OnePica_AvaTax_Helper_Errors $helper */
+        $helper = $this->_getErrorsHelper();
+        $helper->removeErrorMessage();
+        if ($helper->fullStopOnError($quote)) {
+            throw new OnePica_AvaTax_Exception($helper->getErrorMessage());
+        }
+        return $this;
+    }
+
+    /**
+     * Delete validation notices on successful order place on multiple checkout
+     *
+     * @param Varien_Event_Observer $observer
+     * @return $this
+     */
+    public function checkoutSubmitAllAfter(Varien_Event_Observer $observer)
+    {
+        $this->_deleteValidateNotices();
+        return $this;
+    }
+
+    /**
+     * Delete validation notices on successful order place
+     *
+     * @param Varien_Event_Observer $observer
+     * @return $this
+     */
+    public function salesModelServiceQuoteSubmitAfter(Varien_Event_Observer $observer)
+    {
+        $this->_deleteValidateNotices();
+        return $this;
+    }
+
+    /**
+     * Delete validation notices
+     *
+     * @return $this
+     */
+    protected function _deleteValidateNotices()
+    {
+        /** @var Mage_Checkout_Model_Session $session */
+        $session = Mage::getSingleton('core/session');
+        $messages = $session->getMessages();
+        $messages->deleteMessageByIdentifier(OnePica_AvaTax_Helper_Errors::VALIDATION_NOTICE_IDENTIFIER);
+        return $this;
     }
 }

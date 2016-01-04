@@ -26,7 +26,7 @@ class OnePica_AvaTax_Helper_GiftWrapping_Data extends Enterprise_GiftWrapping_He
      */
     public function displayCartWrappingIncludeTaxPrice($store = null)
     {
-        if ($this->_getDataHelper()->isAvataxEnabled($store)) {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
             return false;
         }
 
@@ -41,7 +41,7 @@ class OnePica_AvaTax_Helper_GiftWrapping_Data extends Enterprise_GiftWrapping_He
      */
     public function displayCartWrappingExcludeTaxPrice($store = null)
     {
-        if ($this->_getDataHelper()->isAvataxEnabled($store)) {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
             return true;
         }
 
@@ -56,7 +56,7 @@ class OnePica_AvaTax_Helper_GiftWrapping_Data extends Enterprise_GiftWrapping_He
      */
     public function displayCartWrappingBothPrices($store = null)
     {
-        if ($this->_getDataHelper()->isAvataxEnabled($store)) {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
             return false;
         }
 
@@ -71,7 +71,7 @@ class OnePica_AvaTax_Helper_GiftWrapping_Data extends Enterprise_GiftWrapping_He
      */
     public function displayCartCardIncludeTaxPrice($store = null)
     {
-        if ($this->_getDataHelper()->isAvataxEnabled($store)) {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
             return false;
         }
 
@@ -86,7 +86,7 @@ class OnePica_AvaTax_Helper_GiftWrapping_Data extends Enterprise_GiftWrapping_He
      */
     public function displayCartCardBothPrices($store = null)
     {
-        if ($this->_getDataHelper()->isAvataxEnabled($store)) {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
             return false;
         }
 
@@ -101,7 +101,7 @@ class OnePica_AvaTax_Helper_GiftWrapping_Data extends Enterprise_GiftWrapping_He
      */
     public function displaySalesWrappingIncludeTaxPrice($store = null)
     {
-        if ($this->_getDataHelper()->isAvataxEnabled($store)) {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
             return false;
         }
 
@@ -116,7 +116,7 @@ class OnePica_AvaTax_Helper_GiftWrapping_Data extends Enterprise_GiftWrapping_He
      */
     public function displaySalesWrappingExcludeTaxPrice($store = null)
     {
-        if ($this->_getDataHelper()->isAvataxEnabled($store)) {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
             return true;
         }
 
@@ -131,7 +131,7 @@ class OnePica_AvaTax_Helper_GiftWrapping_Data extends Enterprise_GiftWrapping_He
      */
     public function displaySalesWrappingBothPrices($store = null)
     {
-        if ($this->_getDataHelper()->isAvataxEnabled($store)) {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
             return false;
         }
 
@@ -146,7 +146,7 @@ class OnePica_AvaTax_Helper_GiftWrapping_Data extends Enterprise_GiftWrapping_He
      */
     public function displaySalesCardIncludeTaxPrice($store = null)
     {
-        if ($this->_getDataHelper()->isAvataxEnabled($store)) {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
             return false;
         }
 
@@ -161,7 +161,7 @@ class OnePica_AvaTax_Helper_GiftWrapping_Data extends Enterprise_GiftWrapping_He
      */
     public function displaySalesCardBothPrices($store = null)
     {
-        if ($this->_getDataHelper()->isAvataxEnabled($store)) {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
             return false;
         }
 

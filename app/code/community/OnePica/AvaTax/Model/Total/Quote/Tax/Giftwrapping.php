@@ -30,7 +30,7 @@ class OnePica_AvaTax_Model_Total_Quote_Tax_Giftwrapping
     public function collect(Mage_Sales_Model_Quote_Address $address)
     {
         $storeId = $address->getQuote()->getStore()->getId();
-        if ($this->_getAvaTaxDataHelper()->isAvataxEnabled($storeId)) {
+        if ($this->_getAvaTaxDataHelper()->isServiceEnabled($storeId)) {
             return $this;
         }
 
