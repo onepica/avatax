@@ -437,6 +437,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
      * Get tax detail summary
      *
      * @param Mage_Sales_Model_Quote_Address|null $address
+     *
      * @return array
      */
     public function getSummary($address = null)
@@ -444,20 +445,22 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         $summary = null;
 
         if ($address instanceof Mage_Sales_Model_Quote_Address) {
-                $addressCacheKey = $this
-                                        ->_getAddressHelper()
-                                        ->getAddressOneLineKey($address);
-                foreach ($this->_rates as $row) {
-                    if ($row['address_cache_key']==$addressCacheKey) {
-                        $summary = $row['summary'];
-                        break;
-                    }
+            $addressCacheKey = $this
+                ->_getAddressHelper()
+                ->getAddressOneLineKey($address);
+            foreach ($this->_rates as $row) {
+                if ($row['address_cache_key'] == $addressCacheKey) {
+                    $summary = $row['summary'];
+                    break;
                 }
+            }
         }
 
         if ($summary === null) {
-            $requestKey = Mage::getSingleton('avatax/session')->getLastRequestKey();
-            $summary = isset($this->_rates[$requestKey]['summary']) ? $this->_rates[$requestKey]['summary'] : array();
+            $requestKey = Mage::getSingleton('avatax/session')
+                ->getLastRequestKey();
+            $summary = isset($this->_rates[$requestKey]['summary'])
+                ? $this->_rates[$requestKey]['summary'] : array();
         }
 
         return $summary;

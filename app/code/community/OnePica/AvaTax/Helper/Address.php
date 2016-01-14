@@ -289,6 +289,7 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
      * algorithm used only those fields that avalara address has
      *
      * @param Mage_Sales_Model_Quote_Address $address
+     *
      * @return string
      */
     public function getAddressOneLineKey($address)
@@ -298,7 +299,7 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
         // copy only those address fields,
         // that avalara \lib\AvaTax\classes\Address.class.php has,
         // because avalara request cache key depends on them
-        $street = [$address->getStreet1(), $address->getStreet2()];
+        $street = array($address->getStreet1(), $address->getStreet2());
         $keyAddress->setStreetFull($street);
         $keyAddress->setCity($address->getCity());
         $keyAddress->setRegion($address->getRegion());
