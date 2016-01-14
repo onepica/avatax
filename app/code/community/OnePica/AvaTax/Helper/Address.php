@@ -283,4 +283,30 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
     {
         return Mage::helper('avatax/config');
     }
+
+    /**
+     * Method generates cache key based on input addresses,
+     * algorithm used only those fields that avalara address has
+     *
+     * @param Mage_Sales_Model_Quote_Address $address
+     * @return string
+     */
+    public function getAddressOneLineKey($address)
+    {
+        /* @var Mage_Sales_Model_Quote_Address $keyAddress */
+        $keyAddress = Mage::getModel('sales/quote_address');
+        // copy only those address fields,
+        // that avalara \lib\AvaTax\classes\Address.class.php has,
+        // because avalara request cache key depends on them
+        $street = [$address->getStreet1(), $address->getStreet2()];
+        $keyAddress->setStreetFull($street);
+        $keyAddress->setCity($address->getCity());
+        $keyAddress->setRegion($address->getRegion());
+        $keyAddress->setPostcode($address->getPostcode());
+        $keyAddress->setCountryId($address->getCountryId());
+
+        $key = $keyAddress->format('oneline');
+        $key = md5($key);
+        return $key;
+    }
 }

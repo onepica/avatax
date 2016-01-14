@@ -135,6 +135,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
             $this->_rates[$requestKey] = array(
                 'timestamp' => $this->_getDateModel()->timestamp(),
                 'address_id' => $address->getId(),
+                'address_cache_key' => $this->_getAddressHelper()->getAddressOneLineKey($address),
                 'summary' => array(),
                 'items' => array(),
                 'gw_items' => array()
@@ -435,21 +436,23 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
     /**
      * Get tax detail summary
      *
-     * @param int|null $addressId
+     * @param Mage_Sales_Model_Quote_Address|null $address
      * @return array
      */
-    public function getSummary($addressId = null)
+    public function getSummary($address = null)
     {
         $summary = null;
 
-        if ($addressId) {
-            $timestamp = 0;
-            foreach ($this->_rates as $row) {
-                if (isset($row['address_id']) && $row['address_id'] == $addressId && $row['timestamp'] > $timestamp) {
-                    $summary = $row['summary'];
-                    $timestamp = $row['timestamp'];
+        if ($address instanceof Mage_Sales_Model_Quote_Address) {
+                $addressCacheKey = $this
+                                        ->_getAddressHelper()
+                                        ->getAddressOneLineKey($address);
+                foreach ($this->_rates as $row) {
+                    if ($row['address_cache_key']==$addressCacheKey) {
+                        $summary = $row['summary'];
+                        break;
+                    }
                 }
-            }
         }
 
         if ($summary === null) {

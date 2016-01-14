@@ -168,7 +168,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
     protected function _saveAppliedTax($address)
     {
         $fullInfo = array();
-        $summary = $this->_getCalculator()->getSummary($address->getId());
+        $summary = $this->_getCalculator()->getSummary($address);
 
         foreach ($summary as $key => $row) {
             $id = $row['name'];
@@ -244,7 +244,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
         $amount = $address->getTaxAmount();
 
         $fullInfo = array();
-        $summary = Mage::getModel('avatax/calculator')->getSummary($address->getId());
+        $summary = Mage::getModel('avatax/calculator')->getSummary($address);
 
         foreach ($summary as $key => $row) {
             $id = 'avatax-' . $key;
