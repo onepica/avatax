@@ -18,6 +18,11 @@
 /**
  * Log model
  *
+ * @method int getStoreId()
+ * @method $this setStoreId(int $storeId)
+ * @method OnePica_AvaTax_Model_Records_Mysql4_Log getResource()
+ * @method OnePica_AvaTax_Model_Records_Mysql4_Log_Collection getCollection()
+ *
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
@@ -32,7 +37,7 @@ class OnePica_AvaTax_Model_Records_Log extends Mage_Core_Model_Abstract
     /**
      * Error log level
      */
-    const LOG_LEVEL_ERROR    = 'Error';
+    const LOG_LEVEL_ERROR = 'Error';
 
     /**
      * Internal constructor
@@ -53,12 +58,13 @@ class OnePica_AvaTax_Model_Records_Log extends Mage_Core_Model_Abstract
     {
         if ($value) {
             $value = str_replace(
-                Mage::getStoreConfig('tax/avatax/license'),
+                $this->_getConfigHelper()->getServiceKey($this->getStoreId()),
                 '[MASKED::LICENSE_KEY]',
                 print_r($value, true)
             );
         }
         $this->setData('additional', $value);
+
         return $this;
     }
 
@@ -75,6 +81,7 @@ class OnePica_AvaTax_Model_Records_Log extends Mage_Core_Model_Abstract
         foreach ($types as $value) {
             $result[$value] = $value;
         }
+
         return $result;
     }
 
@@ -87,7 +94,7 @@ class OnePica_AvaTax_Model_Records_Log extends Mage_Core_Model_Abstract
     {
         return array(
             self::LOG_LEVEL_SUCCESS => self::LOG_LEVEL_SUCCESS,
-            self::LOG_LEVEL_ERROR => self::LOG_LEVEL_ERROR
+            self::LOG_LEVEL_ERROR   => self::LOG_LEVEL_ERROR
         );
     }
 
@@ -100,5 +107,15 @@ class OnePica_AvaTax_Model_Records_Log extends Mage_Core_Model_Abstract
     public function deleteLogsByInterval($days)
     {
         return $this->getResource()->deleteLogsByInterval($days);
+    }
+
+    /**
+     * Get config helper
+     *
+     * @return OnePica_AvaTax_Helper_Config
+     */
+    protected function _getConfigHelper()
+    {
+        return Mage::helper('avatax/config');
     }
 }
