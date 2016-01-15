@@ -188,12 +188,12 @@ class OnePica_AvaTax_Model_Calculator extends Mage_Core_Model_Factory
     /**
      * Get tax detail summary
      *
-     * @param int|null $addressId
+     * @param Mage_Sales_Model_Quote_Address|null $address
      * @return array
      */
-    public function getSummary($addressId = null)
+    public function getSummary($address = null)
     {
-        return $this->_getService()->getSummary($addressId);
+        return $this->_getService()->getSummary($address);
     }
 
     /**

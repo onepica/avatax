@@ -168,7 +168,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
     protected function _saveAppliedTax($address)
     {
         $fullInfo = array();
-        $summary = $this->_getCalculator()->getSummary($address->getId());
+        $summary = $this->_getCalculator()->getSummary($address);
         $store = $address->getQuote()->getStore();
 
         foreach ($summary as $key => $row) {

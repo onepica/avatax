@@ -36,10 +36,10 @@ abstract class OnePica_AvaTax_Model_Service_Abstract extends Varien_Object
     /**
      * Get tax detail summary
      *
-     * @param int|null $addressId
+     * @param Mage_Sales_Model_Quote_Address|null $address
      * @return array
      */
-    abstract public function getSummary($addressId);
+    abstract public function getSummary($address);
 
     /**
      * Test to see if the product carries its own numbers or is calculated based on parent or children
