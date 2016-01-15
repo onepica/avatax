@@ -299,7 +299,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
         $address = new Address();
         $address->setLine1($line1);
         $address->setLine2($line2);
-        $address->setCity($city);
+        $address->setCity((string)$city);
         $address->setRegion($state);
         $address->setPostalCode($zip);
         $address->setCountry($country);
