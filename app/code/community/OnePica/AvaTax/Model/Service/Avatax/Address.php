@@ -205,6 +205,16 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
             /** Set is success */
             $addressValidationResult->setResolution($result->getResultCode() == SeverityLevel::$Success);
             $addressValidationResult->setIsTaxable($result->isTaxable());
+        } else {
+            unset($this->_cache[$key]);
+            $addressValidationResult->setHasError(true);
+            $addressValidationResult->setResolution(false);
+            $addressValidationResult->setIsTaxable(false);
+            $addressValidationResult->setErrors(
+                array(
+                    $this->_getConfigHelper()->getErrorFrontendMessage($this->_storeId)
+                )
+            );
         }
 
         return $addressValidationResult;
@@ -221,7 +231,11 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
         $client = $this->getServiceConfig()->getAddressConnection();
         $request = $this->_getAddressValidationRequest();
         $request->setTaxability(true);
-        $result = $client->Validate($request);
+        try {
+            $result = $client->Validate($request);
+        } catch (Exception $e) {
+            $result = $this->_convertExceptionToResult($e);
+        }
         $this->_log(
             OnePica_AvaTax_Model_Source_Avatax_Logtype::VALIDATE,
             $request,
@@ -265,5 +279,19 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
         }
 
         return $this;
+    }
+
+    /**
+     * Convert exception to result
+     *
+     * @param Exception $e
+     * @return Varien_Object
+     */
+    protected function _convertExceptionToResult($e)
+    {
+        $result = new Varien_Object();
+        $result->setResultCode(SeverityLevel::$Exception)->setError($e->getMessage());
+
+        return $result;
     }
 }

@@ -169,6 +169,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
     {
         $fullInfo = array();
         $summary = $this->_getCalculator()->getSummary($address);
+        $store = $address->getQuote()->getStore();
 
         foreach ($summary as $key => $row) {
             $id = $row['name'];
@@ -186,7 +187,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
                 'percent'     => $row['rate'],
                 'id'          => $id,
                 'process'     => 0,
-                'amount'      => $row['amt'],
+                'amount'      => $store->convertPrice($row['amt']),
                 'base_amount' => $row['amt']
             );
         }
@@ -243,34 +244,12 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
         $store = $quote->getStore();
         $amount = $address->getTaxAmount();
 
-        $fullInfo = array();
-        $summary = Mage::getModel('avatax/calculator')->getSummary($address);
-
-        foreach ($summary as $key => $row) {
-            $id = 'avatax-' . $key;
-            $fullInfo[$id] = array(
-                'rates' => array(array(
-                    'code' => $row['name'],
-                    'title' => $row['name'],
-                    'percent' => $row['rate'],
-                    'position' => $key,
-                    'priority' => $key,
-                    'rule_id' => 0
-                )),
-                'percent' => $row['rate'],
-                'id' => $id,
-                'process' => 0,
-                'amount' => $row['amt'],
-                'base_amount' => $row['amt']
-            );
-        }
-
         if (($amount != 0) || (Mage::helper('tax')->displayZeroTax($store))) {
             $address->addTotal(
                 array(
                     'code'      => $this->getCode(),
                     'title'     => Mage::helper('tax')->__('Tax'),
-                    'full_info' => $fullInfo,
+                    'full_info' => $address->getAppliedTaxes(),
                     'value'     => $amount,
                     'area'      => null
                 )
