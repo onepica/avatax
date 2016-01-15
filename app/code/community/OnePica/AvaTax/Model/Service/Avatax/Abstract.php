@@ -158,7 +158,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
      */
     protected function _setCompanyCode($storeId = null)
     {
-        $config = Mage::getSingleton('avatax/service_avatax16_config');
+        $config = Mage::getSingleton('avatax/service_avatax_config');
         $this->_request->setCompanyCode($config->getCompanyCode($storeId));
         return $this;
     }
