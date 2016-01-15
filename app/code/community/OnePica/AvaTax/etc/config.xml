@@ -117,6 +117,24 @@
             </avatax_records_read>
         </resources>
         <events>
+            <sales_order_invoice_pay>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer</class>
+                        <method>salesOrderInvoicePay</method>
+                    </avatax>
+                </observers>
+            </sales_order_invoice_pay>
+            <sales_order_creditmemo_refund>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer</class>
+                        <method>salesOrderCreditmemoRefund</method>
+                    </avatax>
+                </observers>
+            </sales_order_creditmemo_refund>
             <sales_quote_collect_totals_before>
                 <observers>
                     <avatax>
