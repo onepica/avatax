@@ -270,7 +270,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
     {
         $street1 = $address->getStreet(1);
         $street2 = $address->getStreet(2);
-        $city = $address->getCity();
+        $city = (string)$address->getCity();
         $zip = $address->getPostcode();
         $state = Mage::getModel('directory/region')->load($address->getRegionId())->getCode();
         $country = $address->getCountry();
@@ -299,7 +299,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
         $address = new Address();
         $address->setLine1($line1);
         $address->setLine2($line2);
-        $address->setCity((string)$city);
+        $address->setCity($city);
         $address->setRegion($state);
         $address->setPostalCode($zip);
         $address->setCountry($country);
