@@ -82,6 +82,21 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     }
 
     /**
+     * Sales order invoice pay event
+     *
+     * @param \Varien_Event_Observer $observer
+     * @return $this
+     */
+    public function salesOrderInvoicePay(Varien_Event_Observer $observer)
+    {
+        /** @var Mage_Sales_Model_Order_Invoice $invoice */
+        $invoice = $observer->getEvent()->getInvoice();
+        $invoice->setData('avatax_can_add_to_queue', true);
+
+        return $this;
+    }
+
+    /**
      * Create a sales invoice record in Avalara
      *
      * @param Varien_Event_Observer $observer
@@ -92,7 +107,7 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
         /** @var Mage_Sales_Model_Order_Invoice $invoice */
         $invoice = $observer->getEvent()->getInvoice();
 
-        if ((int)$invoice->getOrigData('state') !== Mage_Sales_Model_Order_Invoice::STATE_PAID
+        if ($invoice->getData('avatax_can_add_to_queue')
             && (int)$invoice->getState() === Mage_Sales_Model_Order_Invoice::STATE_PAID
             && Mage::helper('avatax')->isObjectActionable($invoice)
         ) {
@@ -107,6 +122,21 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     }
 
     /**
+     * Sales order creditmemo refund event
+     *
+     * @param \Varien_Event_Observer $observer
+     * @return $this
+     */
+    public function salesOrderCreditmemoRefund(Varien_Event_Observer $observer)
+    {
+        /* @var $creditmemo Mage_Sales_Model_Order_Creditmemo */
+        $creditmemo = $observer->getEvent()->getCreditmemo();
+        $creditmemo->setData('avatax_can_add_to_queue', true);
+
+        return $this;
+    }
+
+    /**
      * Create a return invoice record in Avalara
      *
      * @param Varien_Event_Observer $observer
@@ -116,7 +146,8 @@ class OnePica_AvaTax_Model_Observer extends Mage_Core_Model_Abstract
     {
         /* @var $creditmemo Mage_Sales_Model_Order_Creditmemo */
         $creditmemo = $observer->getEvent()->getCreditmemo();
-        if (!$creditmemo->getOrigData($creditmemo->getIdFieldName())
+        if ($creditmemo->getData('avatax_can_add_to_queue')
+            && (int)$creditmemo->getState() === Mage_Sales_Model_Order_Creditmemo::STATE_REFUNDED
             && Mage::helper('avatax')->isObjectActionable($creditmemo)
         ) {
             Mage::getModel('avatax_records/queue')
