@@ -137,7 +137,6 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
             $this->_rates[$requestKey] = array(
                 'timestamp' => $this->_getDateModel()->timestamp(),
                 'address_id' => $address->getId(),
-                'address_cache_key' => $this->_getAddressHelper()->getAddressOneLineKey($address),
                 'summary' => array(),
                 'items' => array(),
                 'gw_items' => array()

@@ -135,7 +135,6 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
             $this->_rates[$requestKey] = array(
                 'timestamp' => $this->_getDateModel()->timestamp(),
                 'address_id' => $address->getId(),
-                'address_cache_key' => $this->_getAddressHelper()->getAddressOneLineKey($address),
                 'summary' => array(),
                 'items' => array(),
                 'gw_items' => array()
