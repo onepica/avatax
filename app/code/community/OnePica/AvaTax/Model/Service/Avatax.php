@@ -145,12 +145,12 @@ class OnePica_AvaTax_Model_Service_Avatax
     /**
      * Get rates from Avalara
      *
-     * @param Mage_Sales_Model_Quote_Item $item
+     * @param Mage_Sales_Model_Quote_Address $address
      * @return array
      */
-    public function getRates($item)
+    public function getRates($address)
     {
-        return $this->_getEstimateResource()->getRates($item);
+        return $this->_getEstimateResource()->getRates($address);
     }
 
     /**

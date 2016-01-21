@@ -84,13 +84,12 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
     /**
      * Get rates from Avalara
      *
-     * @param Mage_Sales_Model_Quote_Item $item
+     * @param Mage_Sales_Model_Quote_Address $address
      * @return array
      */
-    public function getRates($item)
+    public function getRates($address)
     {
         /** @var OnePica_AvaTax_Model_Sales_Quote_Address $address */
-        $address = $item->getAddress();
         $this->_lines = array();
 
         $quote = $address->getQuote();
@@ -108,7 +107,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
 
         $this->_request->setHeader($header);
 
-        $this->_addItemsInCart($item);
+        $this->_addItemsInCart($address);
         $this->_addShipping($address);
         //Added code for calculating tax for giftwrap items (order)
         $this->_addGwOrderAmount($address);
@@ -171,22 +170,15 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
     /**
      * Adds all items in the cart to the request
      *
-     * @param Mage_Sales_Model_Quote_Item $item
+     * @param Mage_Sales_Model_Quote_Address $address
      * @return int
      */
-    protected function _addItemsInCart($item)
+    protected function _addItemsInCart(Mage_Sales_Model_Quote_Address $address)
     {
-        if ($item->getAddress() instanceof Mage_Sales_Model_Quote_Address) {
-            $items = $item->getAddress()->getAllItems();
-        } elseif ($item->getQuote() instanceof Mage_Sales_Model_Quote) {
-            $items = $item->getQuote()->getAllItems();
-        } else {
-            $items = array();
-        }
-
+        $items = $address->getAllItems();
         if (count($items) > 0) {
             $this->_initProductCollection($items);
-            $this->_initTaxClassCollection($item->getAddress());
+            $this->_initTaxClassCollection($address);
             foreach ($items as $item) {
                 /** @var Mage_Sales_Model_Quote_Item $item */
                 $this->_newLine($item);
@@ -582,19 +574,10 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
     {
         $summary = null;
 
-        if ($address instanceof Mage_Sales_Model_Quote_Address) {
-            $addressCacheKey = $this
-                ->_getAddressHelper()
-                ->getAddressOneLineKey($address);
-            foreach ($this->_rates as $row) {
-                if ($row['address_cache_key'] == $addressCacheKey) {
-                    $summary = $row['summary'];
-                    break;
-                }
-            }
-        }
-
-        if ($summary === null) {
+        if (isset($address)) {
+            $rates = $this->getRates($address);
+            return (isset($rates)) ? $rates['summary'] : null;
+        } else {
             $requestKey = Mage::getSingleton('avatax/session')
                 ->getLastRequestKey();
             $summary = isset($this->_rates[$requestKey]['summary'])
