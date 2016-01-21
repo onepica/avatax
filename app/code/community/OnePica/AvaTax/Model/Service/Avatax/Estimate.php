@@ -428,24 +428,13 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
     /**
      * Get tax detail summary
      *
-     * @param Mage_Sales_Model_Quote_Address|null $address
+     * @param Mage_Sales_Model_Quote_Address $address
      *
      * @return array
      */
-    public function getSummary($address = null)
+    public function getSummary($address)
     {
-        $summary = null;
-
-        if (isset($address)) {
-            $rates = $this->getRates($address);
-            return (isset($rates)) ? $rates['summary'] : null;
-        } else {
-            $requestKey = Mage::getSingleton('avatax/session')
-                ->getLastRequestKey();
-            $summary = isset($this->_rates[$requestKey]['summary'])
-                ? $this->_rates[$requestKey]['summary'] : array();
-        }
-
-        return $summary;
+        $rates = $this->getRates($address);
+        return (isset($rates)) ? $rates['summary'] : null;
     }
 }

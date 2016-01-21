@@ -156,10 +156,10 @@ class OnePica_AvaTax_Model_Service_Avatax
     /**
      * Get tax detail summary
      *
-     * @param Mage_Sales_Model_Quote_Address|null $address
+     * @param Mage_Sales_Model_Quote_Address $address
      * @return array
      */
-    public function getSummary($address = null)
+    public function getSummary($address)
     {
         return $this->_getEstimateResource()->getSummary($address);
     }
