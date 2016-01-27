@@ -65,6 +65,13 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
     protected $_productGiftPair = array();
 
     /**
+     * Last request key
+     *
+     * @var string
+     */
+    protected $_lastRequestKey;
+
+    /**
      * Loads any saved rates in session
      */
     protected function _construct()
@@ -84,13 +91,12 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
     /**
      * Get rates from Avalara
      *
-     * @param Mage_Sales_Model_Quote_Item $item
+     * @param Mage_Sales_Model_Quote_Address $address
      * @return array
      */
-    public function getRates($item)
+    public function getRates($address)
     {
         /** @var OnePica_AvaTax_Model_Sales_Quote_Address $address */
-        $address = $item->getAddress();
         $this->_lines = array();
 
         $quote = $address->getQuote();
@@ -108,7 +114,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
 
         $this->_request->setHeader($header);
 
-        $this->_addItemsInCart($item);
+        $this->_addItemsInCart($address);
         $this->_addShipping($address);
         //Added code for calculating tax for giftwrap items (order)
         $this->_addGwOrderAmount($address);
@@ -138,7 +144,6 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
             $this->_rates[$requestKey] = array(
                 'timestamp' => $this->_getDateModel()->timestamp(),
                 'address_id' => $address->getId(),
-                'address_cache_key' => $this->_getAddressHelper()->getAddressOneLineKey($address),
                 'summary' => array(),
                 'items' => array(),
                 'gw_items' => array()
@@ -171,22 +176,15 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
     /**
      * Adds all items in the cart to the request
      *
-     * @param Mage_Sales_Model_Quote_Item $item
+     * @param Mage_Sales_Model_Quote_Address $address
      * @return int
      */
-    protected function _addItemsInCart($item)
+    protected function _addItemsInCart(Mage_Sales_Model_Quote_Address $address)
     {
-        if ($item->getAddress() instanceof Mage_Sales_Model_Quote_Address) {
-            $items = $item->getAddress()->getAllItems();
-        } elseif ($item->getQuote() instanceof Mage_Sales_Model_Quote) {
-            $items = $item->getQuote()->getAllItems();
-        } else {
-            $items = array();
-        }
-
+        $items = $address->getAllItems();
         if (count($items) > 0) {
             $this->_initProductCollection($items);
-            $this->_initTaxClassCollection($item->getAddress());
+            $this->_initTaxClassCollection($address);
             foreach ($items as $item) {
                 /** @var Mage_Sales_Model_Quote_Item $item */
                 $this->_newLine($item);
@@ -407,8 +405,28 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
     protected function _genRequestKey()
     {
         $hash = sprintf("%u", crc32(serialize($this->_request)));
-        Mage::getSingleton('avatax/session')->setLastRequestKey($hash);
+        $this->_setLastRequestKey($hash);
         return $hash;
+    }
+
+    /**
+     * Set last request key
+     *
+     * @param string $requestKey
+     */
+    protected function _setLastRequestKey($requestKey)
+    {
+        $this->_lastRequestKey = $requestKey;
+    }
+
+    /**
+     * Get last request key
+     *
+     * @return string|null
+     */
+    public function getLastRequestKey()
+    {
+        return $this->_lastRequestKey;
     }
 
     /**
@@ -573,35 +591,29 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
 
     /**
      * Get tax detail summary
+     * this method is using last request key,
+     * so it returns summary of last made estimation.
+     * if you are using two calculation simultaneously,
+     * be sure to call getRates method for each calculation
+     * before calling getSummary
      *
-     * @param Mage_Sales_Model_Quote_Address|null $address
+     * @param Mage_Sales_Model_Quote_Address $address
      *
      * @return array
      */
-    public function getSummary($address = null)
+    public function getSummary($address)
     {
-        $summary = null;
+        $lastRequestKey = $this->getLastRequestKey();
 
-        if ($address instanceof Mage_Sales_Model_Quote_Address) {
-            $addressCacheKey = $this
-                ->_getAddressHelper()
-                ->getAddressOneLineKey($address);
-            foreach ($this->_rates as $row) {
-                if ($row['address_cache_key'] == $addressCacheKey) {
-                    $summary = $row['summary'];
-                    break;
-                }
-            }
+        if (isset($lastRequestKey)) {
+            $result = isset($this->_rates[$lastRequestKey]['summary'])
+                ? $this->_rates[$lastRequestKey]['summary'] : array();
+        } else {
+            $rates = $this->getRates($address);
+            $result = (isset($rates)) ? $rates['summary'] : null;
         }
 
-        if ($summary === null) {
-            $requestKey = Mage::getSingleton('avatax/session')
-                ->getLastRequestKey();
-            $summary = isset($this->_rates[$requestKey]['summary'])
-                ? $this->_rates[$requestKey]['summary'] : array();
-        }
-
-        return $summary;
+        return $result;
     }
 
     /**
