@@ -73,6 +73,13 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
     protected $_productGiftPair = array();
 
     /**
+     * Last request key
+     *
+     * @var string
+     */
+    protected $_lastRequestKey;
+
+    /**
      * Loads any saved rates in session
      */
     protected function _construct()
@@ -180,9 +187,30 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
     protected function _genRequestKey()
     {
         $hash = sprintf("%u", crc32(serialize($this->_request)));
-        Mage::getSingleton('avatax/session')->setLastRequestKey($hash);
+        $this->_setLastRequestKey($hash);
         return $hash;
     }
+
+    /**
+     * Set last request key
+     *
+     * @param string $requestKey
+     */
+    protected function _setLastRequestKey($requestKey)
+    {
+        $this->_lastRequestKey = $requestKey;
+    }
+
+    /**
+     * Get last request key
+     *
+     * @return string|null
+     */
+    public function getLastRequestKey()
+    {
+        return $this->_lastRequestKey;
+    }
+
     /**
      * Adds shipping cost to request as item
      *
@@ -427,6 +455,11 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
 
     /**
      * Get tax detail summary
+     * this method is using last request key,
+     * so it returns summary of last made estimation.
+     * if you are using two calculation simultaneously,
+     * be sure to call getRates method for each calculation
+     * before calling getSummary
      *
      * @param Mage_Sales_Model_Quote_Address $address
      *
@@ -434,7 +467,16 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
      */
     public function getSummary($address)
     {
-        $rates = $this->getRates($address);
-        return (isset($rates)) ? $rates['summary'] : null;
+        $lastRequestKey = $this->getLastRequestKey();
+
+        if (isset($lastRequestKey)) {
+            $result = isset($this->_rates[$lastRequestKey]['summary'])
+                        ? $this->_rates[$lastRequestKey]['summary'] : array();
+        } else {
+            $rates = $this->getRates($address);
+            $result = (isset($rates)) ? $rates['summary'] : null;
+        }
+
+        return $result;
     }
 }
