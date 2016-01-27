@@ -48,7 +48,6 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
 
         if ($address->getPostcode() && $address->getPostcode() != '-') {
             $store = $address->getQuote()->getStore();
-            /** @var OnePica_AvaTax_Model_Calculator $calculator */
             $calculator = $this->_getCalculator();
 
             $address->setTotalAmount($this->getCode(), 0);
@@ -153,7 +152,8 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
                 }
 
                 $this->_setTaxForItems($address, $itemTaxGroups);
-                $this->_saveAppliedTax($address, $calculator->getSummary($address));
+                $summary = $calculator->getSummary($address);
+                $this->_saveAppliedTax($address, $summary);
             }
         }
 
