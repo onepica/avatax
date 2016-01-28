@@ -17,42 +17,9 @@
 
 /**
  * Class OnePica_AvaTax_Model_Calculator
- *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Calculator extends Mage_Core_Model_Factory
+class OnePica_AvaTax_Model_Calculator extends OnePica_AvaTax_Model_AbstractAction
 {
-    /**
-     * Service
-     *
-     * @var OnePica_AvaTax_Model_Service_Abstract
-     */
-    protected $_service;
-
-    /**
-     * Class constructor
-     *
-     * @param array $params
-     * @throws OnePica_AvaTax_Exception
-     */
-    public function __construct($params = array())
-    {
-        $activeService = $this->_getConfigHelper()->getActiveService();
-        $this->_service = Mage::getSingleton('avatax/service')->factory($activeService, $params);
-    }
-
-    /**
-     * Get Service
-     *
-     * return OnePica_AvaTax_Model_Service_Abstract
-     */
-    protected function _getService()
-    {
-        return $this->_service;
-    }
-
     /**
      * Get rates from Service
      * Example: $_ratesData = array(
@@ -69,6 +36,7 @@ class OnePica_AvaTax_Model_Calculator extends Mage_Core_Model_Factory
      *    // if error on get tax
      *     'failure' => true
      * )
+     *
      * @param Mage_Sales_Model_Quote_Item $item
      * @return array
      */
@@ -83,6 +51,7 @@ class OnePica_AvaTax_Model_Calculator extends Mage_Core_Model_Factory
             // set error flag for processing estimation errors on upper level
             $address->getQuote()->setData('estimate_tax_error', true);
         }
+
         return $rates;
     }
 
@@ -99,6 +68,7 @@ class OnePica_AvaTax_Model_Calculator extends Mage_Core_Model_Factory
         } else {
             $id = $item->getSku();
             $ratesData = $this->_getRates($item);
+
             return isset($ratesData['items'][$id]['rate']) ? $ratesData['items'][$id]['rate'] : 0;
         }
     }
@@ -156,6 +126,7 @@ class OnePica_AvaTax_Model_Calculator extends Mage_Core_Model_Factory
         }
         $ratesData = $this->_getRates($item);
         $id = $item->getSku();
+
         return isset($ratesData['gw_items'][$id]['amt']) ? $ratesData['gw_items'][$id]['amt'] : 0;
     }
 
@@ -175,13 +146,16 @@ class OnePica_AvaTax_Model_Calculator extends Mage_Core_Model_Factory
                     $child->setAddress($item->getAddress());
                     $tax += $this->getItemTax($child);
                 }
+
                 return $tax;
             } else {
                 $ratesData = $this->_getRates($item);;
                 $id = $item->getSku();
+
                 return isset($ratesData['items'][$id]['amt']) ? $ratesData['items'][$id]['amt'] : 0;
             }
         }
+
         return 0;
     }
 
@@ -205,168 +179,5 @@ class OnePica_AvaTax_Model_Calculator extends Mage_Core_Model_Factory
     public function isProductCalculated($item)
     {
         return $this->_getService()->isProductCalculated($item);
-    }
-
-    /**
-     * Save order in AvaTax system
-     *
-     * @see OnePica_AvaTax_Model_Observer_SalesOrderInvoiceSaveAfter::execute()
-     * @param Mage_Sales_Model_Order_Invoice $invoice
-     * @param OnePica_AvaTax_Model_Records_Queue $queue
-     * @return bool
-     * @throws OnePica_AvaTax_Exception
-     * @throws OnePica_AvaTax_Model_Service_Exception_Commitfailure
-     * @throws OnePica_AvaTax_Model_Service_Exception_Unbalanced
-     */
-    public function invoice($invoice, $queue)
-    {
-        $order = $invoice->getOrder();
-        $storeId = $order->getStoreId();
-        $this->setStoreId($storeId);
-        $shippingAddress = ($order->getShippingAddress()) ? $order->getShippingAddress() : $order->getBillingAddress();
-        if (!$shippingAddress) {
-            throw new OnePica_AvaTax_Exception($this->_getHelper()->__('There is no address attached to this order'));
-        }
-
-        /** @var OnePica_AvaTax_Model_Service_Result_Invoice $invoiceResult */
-        $invoiceResult = $this->_getService()->invoice($invoice, $queue);
-
-        //if successful
-        if (!$invoiceResult->getHasError()) {
-            $message = $this->_getHelper()->__('Invoice #%s was saved to AvaTax', $invoiceResult->getDocumentCode());
-            $this->_addStatusHistoryComment($order, $message);
-
-            $totalTax = $invoiceResult->getTotalTax();
-            if ($totalTax != $invoice->getBaseTaxAmount()) {
-                throw new OnePica_AvaTax_Model_Service_Exception_Unbalanced(
-                    'Collected: '. $invoice->getBaseTaxAmount() . ', Actual: ' . $totalTax
-                );
-            }
-
-            //if not successful
-        } else {
-            $messages = $invoiceResult->getErrors();
-            throw new OnePica_AvaTax_Model_Service_Exception_Commitfailure(implode(' // ', $messages));
-        }
-
-        return true;
-    }
-
-    /**
-     * Save order in AvaTax system
-     *
-     * @see OnePica_AvaTax_Model_Observer_SalesOrderCreditmemoSaveAfter::execute()
-     * @param Mage_Sales_Model_Order_Creditmemo $creditmemo
-     * @param OnePica_AvaTax_Model_Records_Queue $queue
-     * @return mixed
-     * @throws OnePica_AvaTax_Exception
-     * @throws OnePica_AvaTax_Model_Service_Exception_Commitfailure
-     * @throws OnePica_AvaTax_Model_Service_Exception_Unbalanced
-     */
-    public function creditmemo($creditmemo, $queue)
-    {
-        $order = $creditmemo->getOrder();
-        $storeId = $order->getStoreId();
-        $this->setStoreId($storeId);
-        $shippingAddress = ($order->getShippingAddress()) ? $order->getShippingAddress() : $order->getBillingAddress();
-        if (!$shippingAddress) {
-            throw new OnePica_AvaTax_Exception($this->_getHelper()->__('There is no address attached to this order'));
-        }
-
-        /** @var OnePica_AvaTax_Model_Service_Result_Creditmemo $creditmemoResult */
-        $creditmemoResult = $this->_getService()->creditmemo($creditmemo, $queue);
-
-        //if successful
-        if (!$creditmemoResult->getHasError()) {
-            $message = $this->_getHelper()
-                     ->__('Credit memo #%s was saved to AvaTax', $creditmemoResult->getDocumentCode());
-            $this->_addStatusHistoryComment($order, $message);
-
-            $totalTax = $creditmemoResult->getTotalTax();
-            if ($totalTax != ($creditmemo->getBaseTaxAmount() * -1)) {
-                throw new OnePica_AvaTax_Model_Service_Exception_Unbalanced(
-                    'Collected: '. $creditmemo->getTaxAmount() . ', Actual: ' . $totalTax
-                );
-            }
-
-            //if not successful
-        } else {
-            $messages = $creditmemoResult->getErrors();
-            throw new OnePica_AvaTax_Model_Service_Exception_Commitfailure(implode(' // ', $messages));
-        }
-
-        return true;
-    }
-
-    /**
-     * Tries to ping AvaTax service with provided credentials
-     *
-     * @param int|null $storeId
-     * @return bool|array
-     */
-    public function ping($storeId)
-    {
-        $storeId = Mage::app()->getStore($storeId)->getStoreId();
-        $this->setStoreId($storeId);
-        return $this->_getService()->ping($storeId);
-    }
-
-    /**
-     * Get config helper
-     *
-     * @return OnePica_AvaTax_Helper_Config
-     */
-    protected function _getConfigHelper()
-    {
-        return Mage::helper('avatax/config');
-    }
-
-    /**
-     * Returns the AvaTax helper.
-     *
-     * @return OnePica_AvaTax_Helper_Config
-     */
-    protected function _getErrorsHelper()
-    {
-        return Mage::helper('avatax/errors');
-    }
-
-    /**
-     * Returns the AvaTax helper.
-     *
-     * @return OnePica_AvaTax_Helper_Data
-     */
-    protected function _getHelper()
-    {
-        return Mage::helper('avatax');
-    }
-
-    /**
-     * Adds a comment to order history. Method choosen based on Magento version.
-     *
-     * @param Mage_Sales_Model_Order $order
-     * @param string $comment
-     * @return $this
-     */
-    protected function _addStatusHistoryComment($order, $comment)
-    {
-        if (method_exists($order, 'addStatusHistoryComment')) {
-            $order->addStatusHistoryComment($comment)->save();
-        } elseif (method_exists($order, 'addStatusToHistory')) {
-            $order->addStatusToHistory($order->getStatus(), $comment, false)->save();
-        }
-        return $this;
-    }
-
-    /**
-     * Set Store Id
-     *
-     * @param int $storeId
-     * @return $this
-     */
-    public function setStoreId($storeId)
-    {
-        $this->_getService()->setStoreId($storeId);
-        return $this;
     }
 }
