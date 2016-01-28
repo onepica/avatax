@@ -20,6 +20,19 @@
 /**
  * Queue model
  *
+ * @method int getAttempt()
+ * @method $this setAttempt(int $attempt)
+ * @method string getStatus()
+ * @method $this setStatus(string $status)
+ * @method string getMessage()
+ * @method $this setMessage(string $message)
+ * @method $this setEntityId(int $entityId)
+ * @method $this setEntityIncrementId(int $entityIncrementId)
+ * @method int getEntityIncrementId()
+ * @method $this setStoreId(int $storeId)
+ * @method int getStoreId()
+ * @method OnePica_AvaTax_Model_Records_Mysql4_Queue _getResource()
+ *
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
@@ -81,6 +94,7 @@ class OnePica_AvaTax_Model_Records_Queue extends Mage_Core_Model_Abstract
         $this->setEntityId($object->getId());
         $this->setEntityIncrementId($object->getIncrementId());
         $this->setStoreId($object->getStoreId());
+
         return $this;
     }
 
@@ -92,7 +106,7 @@ class OnePica_AvaTax_Model_Records_Queue extends Mage_Core_Model_Abstract
     public function getTypeOptions()
     {
         return array(
-            self::QUEUE_TYPE_INVOICE => self::QUEUE_TYPE_INVOICE,
+            self::QUEUE_TYPE_INVOICE     => self::QUEUE_TYPE_INVOICE,
             self::QUEUE_TYPE_CREDITMEMEO => self::QUEUE_TYPE_CREDITMEMEO
         );
     }
@@ -105,10 +119,10 @@ class OnePica_AvaTax_Model_Records_Queue extends Mage_Core_Model_Abstract
     public function getStatusOptions()
     {
         return array(
-            self::QUEUE_STATUS_PENDING => self::QUEUE_STATUS_PENDING,
-            self::QUEUE_STATUS_RETRY => self::QUEUE_STATUS_RETRY,
-            self::QUEUE_STATUS_FAILED => self::QUEUE_STATUS_FAILED,
-            self::QUEUE_STATUS_COMPLETE => self::QUEUE_STATUS_COMPLETE,
+            self::QUEUE_STATUS_PENDING    => self::QUEUE_STATUS_PENDING,
+            self::QUEUE_STATUS_RETRY      => self::QUEUE_STATUS_RETRY,
+            self::QUEUE_STATUS_FAILED     => self::QUEUE_STATUS_FAILED,
+            self::QUEUE_STATUS_COMPLETE   => self::QUEUE_STATUS_COMPLETE,
             self::QUEUE_STATUS_UNBALANCED => self::QUEUE_STATUS_UNBALANCED
         );
     }
