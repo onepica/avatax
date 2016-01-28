@@ -64,6 +64,7 @@ class OnePica_AvaTax_Model_Records_Queue_Process
             ->_cleanUnbalanced()
             ->_parseInvoices()
             ->_parseCreditMemos();
+
         return $this;
     }
 
@@ -154,14 +155,16 @@ class OnePica_AvaTax_Model_Records_Queue_Process
             ->addFieldToFilter('status', array('neq' => OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_COMPLETE))
             ->addFieldToFilter('status', array('neq' => OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_UNBALANCED));
 
-        /** @var OnePica_AvaTax_Model_Calculator $calculator */
-        $calculator = Mage::getModel('avatax/calculator');
+        /** @var OnePica_AvaTax_Model_Invoice $invoiceAction */
+        $invoiceAction = Mage::getModel('avatax/invoice');
+        /** @var OnePica_AvaTax_Model_Records_Queue $item */
         foreach ($queue as $item) {
             $item->setAttempt($item->getAttempt() + 1);
             try {
+                /** @var Mage_Sales_Model_Order_Invoice $invoice */
                 $invoice = Mage::getModel('sales/order_invoice')->load($item->getEntityId());
                 if ($invoice->getId()) {
-                    $calculator->invoice($invoice, $item);
+                    $invoiceAction->process($invoice, $item);
                 }
                 $item->setStatus(OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_COMPLETE)->setMessage(null)->save();
             } catch (OnePica_AvaTax_Model_Service_Exception_Unbalanced $e) {
@@ -169,9 +172,9 @@ class OnePica_AvaTax_Model_Records_Queue_Process
                     ->setMessage($e->getMessage())
                     ->save();
             } catch (Exception $e) {
-                $status = ($item->getAttempt() >= OnePica_AvaTax_Model_Service_Abstract_Config::QUEUE_ATTEMPT_MAX) ?
-                    OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_FAILED :
-                    OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_RETRY;
+                $status = ($item->getAttempt() >= OnePica_AvaTax_Model_Service_Abstract_Config::QUEUE_ATTEMPT_MAX)
+                    ? OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_FAILED
+                    : OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_RETRY;
                 $item->setStatus($status)
                     ->setMessage($e->getMessage())
                     ->save();
@@ -195,14 +198,16 @@ class OnePica_AvaTax_Model_Records_Queue_Process
             ->addFieldToFilter('status', array('neq' => OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_COMPLETE))
             ->addFieldToFilter('status', array('neq' => OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_UNBALANCED));
 
-        /** @var OnePica_AvaTax_Model_Calculator $calculator */
-        $calculator = Mage::getModel('avatax/calculator');
+        /** @var OnePica_AvaTax_Model_Creditmemo $creditmemoAction */
+        $creditmemoAction = Mage::getModel('avatax/creditmemo');
+        /** @var OnePica_AvaTax_Model_Records_Queue $item */
         foreach ($queue as $item) {
             $item->setAttempt($item->getAttempt() + 1);
             try {
+                /** @var Mage_Sales_Model_Order_Creditmemo $creditmemo */
                 $creditmemo = Mage::getModel('sales/order_creditmemo')->load($item->getEntityId());
                 if ($creditmemo->getId()) {
-                    $calculator->creditmemo($creditmemo, $item);
+                    $creditmemoAction->process($creditmemo, $item);
                 }
                 $item->setStatus(OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_COMPLETE)
                     ->setMessage(null)
@@ -212,9 +217,9 @@ class OnePica_AvaTax_Model_Records_Queue_Process
                     ->setMessage($e->getMessage())
                     ->save();
             } catch (Exception $e) {
-                $status = ($item->getAttempt() >= OnePica_AvaTax_Model_Service_Abstract_Config::QUEUE_ATTEMPT_MAX) ?
-                    OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_FAILED :
-                    OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_RETRY;
+                $status = ($item->getAttempt() >= OnePica_AvaTax_Model_Service_Abstract_Config::QUEUE_ATTEMPT_MAX)
+                    ? OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_FAILED
+                    : OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_RETRY;
                 $item->setStatus($status)
                     ->setMessage($e->getMessage())
                     ->save();
