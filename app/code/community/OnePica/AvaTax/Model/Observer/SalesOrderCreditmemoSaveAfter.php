@@ -34,7 +34,8 @@ class OnePica_AvaTax_Model_Observer_SalesOrderCreditmemoSaveAfter extends OnePic
     {
         /* @var $creditmemo Mage_Sales_Model_Order_Creditmemo */
         $creditmemo = $observer->getEvent()->getCreditmemo();
-        if (!$creditmemo->getOrigData($creditmemo->getIdFieldName())
+        if ($creditmemo->getData('avatax_can_add_to_queue')
+            && (int)$creditmemo->getState() === Mage_Sales_Model_Order_Creditmemo::STATE_REFUNDED
             && Mage::helper('avatax/address')->isObjectActionable($creditmemo)
         ) {
             Mage::getModel('avatax_records/queue')

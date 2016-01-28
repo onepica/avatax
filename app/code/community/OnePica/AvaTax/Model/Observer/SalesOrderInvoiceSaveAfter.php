@@ -35,7 +35,7 @@ class OnePica_AvaTax_Model_Observer_SalesOrderInvoiceSaveAfter extends OnePica_A
         /** @var Mage_Sales_Model_Order_Invoice $invoice */
         $invoice = $observer->getEvent()->getInvoice();
 
-        if ((int)$invoice->getOrigData('state') !== Mage_Sales_Model_Order_Invoice::STATE_PAID
+        if ($invoice->getData('avatax_can_add_to_queue')
             && (int)$invoice->getState() === Mage_Sales_Model_Order_Invoice::STATE_PAID
             && Mage::helper('avatax/address')->isObjectActionable($invoice)
         ) {
