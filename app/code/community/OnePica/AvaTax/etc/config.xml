@@ -139,8 +139,8 @@
                 <observers>
                     <avatax>
                         <type>singleton</type>
-                        <class>avatax/observer</class>
-                        <method>salesQuoteCollectTotalsBefore</method>
+                        <class>avatax/observer_salesQuoteCollectTotalsBefore</class>
+                        <method>execute</method>
                     </avatax>
                 </observers>
             </sales_quote_collect_totals_before>
@@ -148,8 +148,8 @@
                 <observers>
                     <avatax>
                         <type>singleton</type>
-                        <class>avatax/observer</class>
-                        <method>salesOrderInvoiceSaveAfter</method>
+                        <class>avatax/observer_salesOrderInvoiceSaveAfter</class>
+                        <method>execute</method>
                     </avatax>
                 </observers>
             </sales_order_invoice_save_after>
@@ -157,8 +157,8 @@
                 <observers>
                     <avatax>
                         <type>singleton</type>
-                        <class>avatax/observer</class>
-                        <method>salesOrderCreditmemoSaveAfter</method>
+                        <class>avatax/observer_salesOrderCreditmemoSaveAfter</class>
+                        <method>execute</method>
                     </avatax>
                 </observers>
             </sales_order_creditmemo_save_after>
@@ -166,8 +166,8 @@
                 <observers>
                     <avatax>
                         <type>singleton</type>
-                        <class>avatax/observer</class>
-                        <method>adminSystemConfigChangedSectionTax</method>
+                        <class>avatax/observer_adminSystemConfigChangedSectionTax</class>
+                        <method>execute</method>
                     </avatax>
                 </observers>
             </admin_system_config_changed_section_tax>
@@ -175,8 +175,8 @@
                 <observers>
                     <avatax>
                         <type>singleton</type>
-                        <class>avatax/observer</class>
-                        <method>multishippingSetShippingItems</method>
+                        <class>avatax/observer_multishippingSetShippingItems</class>
+                        <method>execute</method>
                     </avatax>
                 </observers>
             </checkout_type_multishipping_set_shipping_items>
@@ -184,8 +184,8 @@
                 <observers>
                     <avatax>
                         <type>singleton</type>
-                        <class>avatax/observer</class>
-                        <method>loadAvaTaxExternalLib</method>
+                        <class>avatax/observer_loadAvaTaxExternalLib</class>
+                        <method>execute</method>
                     </avatax>
                 </observers>
             </controller_front_init_before>
@@ -193,8 +193,8 @@
                 <observers>
                     <avatax>
                         <type>singleton</type>
-                        <class>avatax/observer</class>
-                        <method>loadAvaTaxExternalLib</method>
+                        <class>avatax/observer_loadAvaTaxExternalLib</class>
+                        <method>execute</method>
                     </avatax>
                 </observers>
             </default>
@@ -202,8 +202,8 @@
                 <observers>
                     <avatax>
                         <type>singleton</type>
-                        <class>avatax/observer</class>
-                        <method>controllerActionPredispatchCheckoutCartEstimatePost</method>
+                        <class>avatax/observer_controllerActionPredispatchCheckoutCartEstimatePost</class>
+                        <method>execute</method>
                     </avatax>
                 </observers>
             </controller_action_predispatch_checkout_cart_estimatePost>
@@ -211,8 +211,8 @@
                 <observers>
                     <avatax>
                         <type>singleton</type>
-                        <class>avatax/observer</class>
-                        <method>controllerActionPredispatchCheckoutOnepageIndex</method>
+                        <class>avatax/observer_controllerActionPredispatchCheckoutOnepageIndex</class>
+                        <method>execute</method>
                     </avatax>
                 </observers>
             </controller_action_predispatch_checkout_onepage_index>
@@ -220,8 +220,8 @@
                 <observers>
                     <avatax>
                         <type>singleton</type>
-                        <class>avatax/observer</class>
-                        <method>controllerActionPredispatchCheckoutMultishippingIndex</method>
+                        <class>avatax/observer_controllerActionPredispatchCheckoutMultishippingIndex</class>
+                        <method>execute</method>
                     </avatax>
                 </observers>
             </controller_action_predispatch_checkout_multishipping_index>
@@ -229,8 +229,8 @@
                 <observers>
                     <avatax>
                         <type>singleton</type>
-                        <class>avatax/observer</class>
-                        <method>controllerActionPredispatchCheckoutCartIndex</method>
+                        <class>avatax/observer_controllerActionPredispatchCheckoutCartIndex</class>
+                        <method>execute</method>
                     </avatax>
                 </observers>
             </controller_action_predispatch_checkout_cart_index>
@@ -238,8 +238,8 @@
                 <observers>
                     <avatax>
                         <type>singleton</type>
-                        <class>avatax/observer</class>
-                        <method>controllerActionPostdispatchCheckoutCartEstimatePost</method>
+                        <class>avatax/observer_controllerActionPostdispatchCheckoutCartEstimatePost</class>
+                        <method>execute</method>
                     </avatax>
                 </observers>
             </controller_action_postdispatch_checkout_cart_estimatePost>
@@ -247,8 +247,8 @@
                 <observers>
                     <avatax>
                         <type>singleton</type>
-                        <class>avatax/observer</class>
-                        <method>controllerActionPostdispatchCheckoutCartEstimateUpdatePost</method>
+                        <class>avatax/observer_controllerActionPostdispatchCheckoutCartEstimateUpdatePost</class>
+                        <method>execute</method>
                     </avatax>
                 </observers>
             </controller_action_postdispatch_checkout_cart_estimateUpdatePost>
@@ -256,8 +256,8 @@
                 <observers>
                     <avatax>
                         <type>singleton</type>
-                        <class>avatax/observer</class>
-                        <method>salesModelServiceQuoteSubmitBefore</method>
+                        <class>avatax/observer_salesModelServiceQuoteSubmitBefore</class>
+                        <method>execute</method>
                     </avatax>
                 </observers>
             </sales_model_service_quote_submit_before>
@@ -265,8 +265,8 @@
                 <observers>
                     <avatax>
                         <type>singleton</type>
-                        <class>avatax/observer</class>
-                        <method>controllerActionPostdispatchCheckoutOnepageSaveShippingMethod</method>
+                        <class>avatax/observer_controllerActionPostdispatchCheckoutOnepageSaveShippingMethod</class>
+                        <method>execute</method>
                     </avatax>
                 </observers>
             </controller_action_postdispatch_checkout_onepage_saveShippingMethod>
@@ -274,8 +274,8 @@
                 <observers>
                     <avatax>
                         <type>singleton</type>
-                        <class>avatax/observer</class>
-                        <method>checkoutTypeMultishippingCreateOrdersSingle</method>
+                        <class>avatax/observer_checkoutTypeMultishippingCreateOrdersSingle</class>
+                        <method>execute</method>
                     </avatax>
                 </observers>
             </checkout_type_multishipping_create_orders_single>
@@ -283,8 +283,8 @@
                 <observers>
                     <avatax>
                         <type>singleton</type>
-                        <class>avatax/observer</class>
-                        <method>salesModelServiceQuoteSubmitAfter</method>
+                        <class>avatax/observer_salesModelServiceQuoteSubmitAfter</class>
+                        <method>execute</method>
                     </avatax>
                 </observers>
             </sales_model_service_quote_submit_after>
@@ -292,8 +292,8 @@
                 <observers>
                     <avatax>
                         <type>singleton</type>
-                        <class>avatax/observer</class>
-                        <method>checkoutSubmitAllAfter</method>
+                        <class>avatax/observer_checkoutSubmitAllAfter</class>
+                        <method>execute</method>
                     </avatax>
                 </observers>
             </checkout_submit_all_after>
@@ -301,8 +301,8 @@
                 <observers>
                     <avatax>
                         <type>singleton</type>
-                        <class>avatax/observer</class>
-                        <method>controllerActionPredispatchAdminhtmlSalesOrderCreateLoadBlock</method>
+                        <class>avatax/observer_controllerActionPredispatchAdminhtmlSalesOrderCreateLoadBlock</class>
+                        <method>execute</method>
                     </avatax>
                 </observers>
             </controller_action_postdispatch_adminhtml_sales_order_create_loadBlock>
@@ -450,13 +450,13 @@
             <avatax_processqueue>
                 <schedule><cron_expr>0 * * * *</cron_expr></schedule>
                 <run>
-                    <model>avatax/observer::processQueue</model>
+                    <model>avatax/observer_processQueue::execute</model>
                 </run>
             </avatax_processqueue>
             <avatax_cleanlog>
                 <schedule><cron_expr>0 0 * * *</cron_expr></schedule>
                 <run>
-                    <model>avatax/observer::cleanLog</model>
+                    <model>avatax/observer_cleanLog::execute</model>
                 </run>
             </avatax_cleanlog>
         </jobs>
