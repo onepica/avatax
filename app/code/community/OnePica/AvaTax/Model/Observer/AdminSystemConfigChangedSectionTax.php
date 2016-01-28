@@ -156,7 +156,7 @@ class OnePica_AvaTax_Model_Observer_AdminSystemConfigChangedSectionTax extends O
     protected function _sendPing($storeId)
     {
         $errors = array();
-        $ping = Mage::getSingleton('avatax/calculator')->ping($storeId);
+        $ping = Mage::getSingleton('avatax/ping')->ping($storeId);
         if ($ping !== true) {
             $errors[] = $ping;
         }
