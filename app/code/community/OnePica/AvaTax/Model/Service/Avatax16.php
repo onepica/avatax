@@ -16,7 +16,12 @@
  */
 
 /**
- * @class OnePica_AvaTax_Model_Service_Avatax16
+ * Class OnePica_AvaTax_Model_Service_Avatax16
+ *
+ * @property OnePica_AvaTax_Model_Service_Avatax16_Invoice  _invoiceResource
+ * @property OnePica_AvaTax_Model_Service_Avatax16_Estimate _estimateResource
+ * @property OnePica_AvaTax_Model_Service_Avatax16_Ping     _pingResource
+ *
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
@@ -25,25 +30,9 @@ class OnePica_AvaTax_Model_Service_Avatax16
     extends OnePica_AvaTax_Model_Service_Abstract
 {
     /**
-     * Estimate Resource
-     *
-     * @var mixed
+     * Service config class name
      */
-    protected $_estimateResource;
-
-    /**
-     * Invoice Resource
-     *
-     * @var mixed
-     */
-    protected $_invoiceResource;
-
-    /**
-     * Ping Resource
-     *
-     * @var mixed
-     */
-    protected $_pingResource;
+    const AVATAX16_SERVICE_CONFIG_CLASS = 'avatax/service_avatax16_config';
 
     /**
      * OnePica_AvaTax_Model_Service_Avatax16 constructor.
@@ -57,38 +46,9 @@ class OnePica_AvaTax_Model_Service_Avatax16
     }
 
     /**
-     * Set Store Id
-     *
-     * @param int $storeId
-     * @return $this
-     */
-    public function setStoreId($storeId)
-    {
-        $this->setCurrentStoreId($storeId);
-        if (!$this->getServiceConfig()) {
-            $this->setServiceConfig(Mage::getModel('avatax/service_avatax16_config')->init($this->getCurrentStoreId()));
-        }
-
-        // update service config for each resource
-        if (null !== $this->_estimateResource) {
-            $this->_estimateResource->setServiceConfig($this->getServiceConfig());
-        }
-
-        if (null !== $this->_invoiceResource) {
-            $this->_invoiceResource->setServiceConfig($this->getServiceConfig());
-        }
-
-        if (null !== $this->_pingResource) {
-            $this->_pingResource->setServiceConfig($this->getServiceConfig());
-        }
-
-        return $this;
-    }
-
-    /**
      * Get estimate resource
      *
-     * return OnePica_AvaTax_Model_Service_Avatax16_Estimate
+     * @return OnePica_AvaTax_Model_Service_Avatax16_Estimate
      */
     protected function _getEstimateResource()
     {
@@ -103,7 +63,7 @@ class OnePica_AvaTax_Model_Service_Avatax16
     /**
      * Get invoice resource
      *
-     * return OnePica_AvaTax_Model_Service_Avatax16_Invoice
+     * @return OnePica_AvaTax_Model_Service_Avatax16_Invoice
      */
     protected function _getInvoiceResource()
     {
@@ -118,7 +78,7 @@ class OnePica_AvaTax_Model_Service_Avatax16
     /**
      * Get ping resource
      *
-     * return OnePica_AvaTax_Model_Service_Avatax16_Ping
+     * @return OnePica_AvaTax_Model_Service_Avatax16_Ping
      */
     protected function _getPingResource()
     {
@@ -223,5 +183,15 @@ class OnePica_AvaTax_Model_Service_Avatax16
     public function getAddressValidator($address)
     {
         return $this->_getAddressValidatorResource($address);
+    }
+
+    /**
+     * Get service config class name
+     *
+     * @return string
+     */
+    protected function _getServiceConfigClassName()
+    {
+        return self::AVATAX16_SERVICE_CONFIG_CLASS;
     }
 }
