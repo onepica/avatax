@@ -61,7 +61,7 @@ class OnePica_AvaTax_Model_Action_Calculator extends OnePica_AvaTax_Model_Action
     public function initRates($address)
     {
         $this->_address = $address;
-        $this->setStoreId($this->_address->getQuote()->getStoreId());
+        $this->setStoreId($address->getQuote()->getStoreId());
         $this->_rates = $this->_getService()->getRates($address);
 
         return $this;
