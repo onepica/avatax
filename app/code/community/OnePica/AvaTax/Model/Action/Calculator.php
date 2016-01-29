@@ -49,8 +49,7 @@ class OnePica_AvaTax_Model_Action_Calculator extends OnePica_AvaTax_Model_Action
     {
         parent::__construct($params);
         $this->_checkAddress($params);
-        $this->_address = $params[self::ADDRESS_PARAMETER];
-        $this->initRates($this->_address);
+        $this->initRates($params[self::ADDRESS_PARAMETER]);
     }
 
     /**
@@ -61,6 +60,7 @@ class OnePica_AvaTax_Model_Action_Calculator extends OnePica_AvaTax_Model_Action
      */
     public function initRates($address)
     {
+        $this->_address = $address;
         $this->setStoreId($this->_address->getQuote()->getStoreId());
         $this->_rates = $this->_getService()->getRates($address);
 
