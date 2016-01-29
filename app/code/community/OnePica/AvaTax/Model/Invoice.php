@@ -45,7 +45,7 @@ class OnePica_AvaTax_Model_Invoice extends OnePica_AvaTax_Model_AbstractAction
         //if successful
         if (!$invoiceResult->getHasError()) {
             $message = $this->_getHelper()->__('Invoice #%s was saved to AvaTax', $invoiceResult->getDocumentCode());
-            $this->_addStatusHistoryComment($order, $message);
+            $this->_getHelper()->addStatusHistoryComment($order, $message);
 
             $totalTax = $invoiceResult->getTotalTax();
             if ($totalTax != $invoice->getBaseTaxAmount()) {

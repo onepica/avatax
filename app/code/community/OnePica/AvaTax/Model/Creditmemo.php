@@ -46,7 +46,7 @@ class OnePica_AvaTax_Model_Creditmemo extends OnePica_AvaTax_Model_AbstractActio
         if (!$creditmemoResult->getHasError()) {
             $message = $this->_getHelper()
                 ->__('Credit memo #%s was saved to AvaTax', $creditmemoResult->getDocumentCode());
-            $this->_addStatusHistoryComment($order, $message);
+            $this->_getHelper()->addStatusHistoryComment($order, $message);
 
             $totalTax = $creditmemoResult->getTotalTax();
             if ($totalTax != ($creditmemo->getBaseTaxAmount() * -1)) {
