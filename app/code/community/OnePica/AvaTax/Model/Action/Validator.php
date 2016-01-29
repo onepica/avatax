@@ -16,13 +16,13 @@
  */
 
 /**
- * Class OnePica_AvaTax_Model_Validator
+ * Class OnePica_AvaTax_Model_Action_Validator
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Validator extends OnePica_AvaTax_Model_AbstractAction
+class OnePica_AvaTax_Model_Action_Validator extends OnePica_AvaTax_Model_AbstractAction
 {
     /**
      * The AvaTax Response (Normalized) Address object.

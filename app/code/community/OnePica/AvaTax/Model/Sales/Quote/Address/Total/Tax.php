@@ -284,13 +284,13 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
      * Get calculator model
      *
      * @param Mage_Sales_Model_Quote_Address $address
-     * @return \OnePica_AvaTax_Model_Calculator
+     * @return \OnePica_AvaTax_Model_Action_Calculator
      */
     protected function _getCalculator(Mage_Sales_Model_Quote_Address $address)
     {
         return Mage::getModel(
-            'avatax/calculator',
-            array(OnePica_AvaTax_Model_Calculator::ADDRESS_PARAMETER => $address)
+            'avatax/action_calculator',
+            array(OnePica_AvaTax_Model_Action_Calculator::ADDRESS_PARAMETER => $address)
         );
     }
 

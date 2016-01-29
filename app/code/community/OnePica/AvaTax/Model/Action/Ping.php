@@ -14,9 +14,9 @@
  */
 
 /**
- * Class OnePica_AvaTax_Model_Ping
+ * Class OnePica_AvaTax_Model_Action_Ping
  */
-class OnePica_AvaTax_Model_Ping extends OnePica_AvaTax_Model_AbstractAction
+class OnePica_AvaTax_Model_Action_Ping extends OnePica_AvaTax_Model_AbstractAction
 {
     /**
      * Tries to ping AvaTax service with provided credentials

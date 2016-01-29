@@ -14,24 +14,24 @@
  */
 
 /**
- * Class OnePica_AvaTax_Model_Creditmemo
+ * Class OnePica_AvaTax_Model_Action_Invoice
  */
-class OnePica_AvaTax_Model_Creditmemo extends OnePica_AvaTax_Model_AbstractAction
+class OnePica_AvaTax_Model_Action_Invoice extends OnePica_AvaTax_Model_AbstractAction
 {
     /**
      * Save order in AvaTax system
      *
-     * @see OnePica_AvaTax_Model_Observer_SalesOrderCreditmemoSaveAfter::execute()
-     * @param Mage_Sales_Model_Order_Creditmemo  $creditmemo
+     * @see OnePica_AvaTax_Model_Observer_SalesOrderInvoiceSaveAfter::execute()
+     * @param Mage_Sales_Model_Order_Invoice     $invoice
      * @param OnePica_AvaTax_Model_Records_Queue $queue
-     * @return mixed
+     * @return bool
      * @throws OnePica_AvaTax_Exception
      * @throws OnePica_AvaTax_Model_Service_Exception_Commitfailure
      * @throws OnePica_AvaTax_Model_Service_Exception_Unbalanced
      */
-    public function process($creditmemo, $queue)
+    public function process($invoice, $queue)
     {
-        $order = $creditmemo->getOrder();
+        $order = $invoice->getOrder();
         $storeId = $order->getStoreId();
         $this->setStoreId($storeId);
         $shippingAddress = ($order->getShippingAddress()) ? $order->getShippingAddress() : $order->getBillingAddress();
@@ -39,24 +39,23 @@ class OnePica_AvaTax_Model_Creditmemo extends OnePica_AvaTax_Model_AbstractActio
             throw new OnePica_AvaTax_Exception($this->_getHelper()->__('There is no address attached to this order'));
         }
 
-        /** @var OnePica_AvaTax_Model_Service_Result_Creditmemo $creditmemoResult */
-        $creditmemoResult = $this->_getService()->creditmemo($creditmemo, $queue);
+        /** @var OnePica_AvaTax_Model_Service_Result_Invoice $invoiceResult */
+        $invoiceResult = $this->_getService()->invoice($invoice, $queue);
 
         //if successful
-        if (!$creditmemoResult->getHasError()) {
-            $message = $this->_getHelper()
-                ->__('Credit memo #%s was saved to AvaTax', $creditmemoResult->getDocumentCode());
+        if (!$invoiceResult->getHasError()) {
+            $message = $this->_getHelper()->__('Invoice #%s was saved to AvaTax', $invoiceResult->getDocumentCode());
             $this->_getHelper()->addStatusHistoryComment($order, $message);
 
-            $totalTax = $creditmemoResult->getTotalTax();
-            if ($totalTax != ($creditmemo->getBaseTaxAmount() * -1)) {
+            $totalTax = $invoiceResult->getTotalTax();
+            if ($totalTax != $invoice->getBaseTaxAmount()) {
                 throw new OnePica_AvaTax_Model_Service_Exception_Unbalanced(
-                    'Collected: ' . $creditmemo->getTaxAmount() . ', Actual: ' . $totalTax
+                    'Collected: ' . $invoice->getBaseTaxAmount() . ', Actual: ' . $totalTax
                 );
             }
             //if not successful
         } else {
-            $messages = $creditmemoResult->getErrors();
+            $messages = $invoiceResult->getErrors();
             throw new OnePica_AvaTax_Model_Service_Exception_Commitfailure(implode(' // ', $messages));
         }
 

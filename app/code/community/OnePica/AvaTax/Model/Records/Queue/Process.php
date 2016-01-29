@@ -155,8 +155,8 @@ class OnePica_AvaTax_Model_Records_Queue_Process
             ->addFieldToFilter('status', array('neq' => OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_COMPLETE))
             ->addFieldToFilter('status', array('neq' => OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_UNBALANCED));
 
-        /** @var OnePica_AvaTax_Model_Invoice $invoiceAction */
-        $invoiceAction = Mage::getModel('avatax/invoice');
+        /** @var OnePica_AvaTax_Model_Action_Invoice $invoiceAction */
+        $invoiceAction = Mage::getModel('avatax/action_invoice');
         /** @var OnePica_AvaTax_Model_Records_Queue $item */
         foreach ($queue as $item) {
             $item->setAttempt($item->getAttempt() + 1);
@@ -198,8 +198,8 @@ class OnePica_AvaTax_Model_Records_Queue_Process
             ->addFieldToFilter('status', array('neq' => OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_COMPLETE))
             ->addFieldToFilter('status', array('neq' => OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_UNBALANCED));
 
-        /** @var OnePica_AvaTax_Model_Creditmemo $creditmemoAction */
-        $creditmemoAction = Mage::getModel('avatax/creditmemo');
+        /** @var OnePica_AvaTax_Model_Action_Creditmemo $creditmemoAction */
+        $creditmemoAction = Mage::getModel('avatax/action_creditmemo');
         /** @var OnePica_AvaTax_Model_Records_Queue $item */
         foreach ($queue as $item) {
             $item->setAttempt($item->getAttempt() + 1);

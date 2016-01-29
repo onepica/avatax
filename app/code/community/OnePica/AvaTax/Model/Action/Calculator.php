@@ -16,9 +16,9 @@
  */
 
 /**
- * Class OnePica_AvaTax_Model_Calculator
+ * Class OnePica_AvaTax_Model_Action_Calculator
  */
-class OnePica_AvaTax_Model_Calculator extends OnePica_AvaTax_Model_AbstractAction
+class OnePica_AvaTax_Model_Action_Calculator extends OnePica_AvaTax_Model_AbstractAction
 {
     /**
      * Address parameter
