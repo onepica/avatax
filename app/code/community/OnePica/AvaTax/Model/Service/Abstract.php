@@ -47,6 +47,13 @@ abstract class OnePica_AvaTax_Model_Service_Abstract extends Varien_Object
     protected $_pingResource;
 
     /**
+     * Address validator resource
+     *
+     * @var mixed
+     */
+    protected $_addressValidatorResource;
+
+    /**
      * Set Store Id
      *
      * @param int $storeId
@@ -72,6 +79,10 @@ abstract class OnePica_AvaTax_Model_Service_Abstract extends Varien_Object
 
         if (null !== $this->_pingResource) {
             $this->_pingResource->setServiceConfig($this->getServiceConfig());
+        }
+
+        if (null !== $this->_addressValidatorResource) {
+            $this->_addressValidatorResource->setServiceConfig($this->getServiceConfig());
         }
 
         return $this;

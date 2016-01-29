@@ -21,6 +21,7 @@
  * @property OnePica_AvaTax_Model_Service_Avatax_Invoice  _invoiceResource
  * @property OnePica_AvaTax_Model_Service_Avatax_Estimate _estimateResource
  * @property OnePica_AvaTax_Model_Service_Avatax_Ping     _pingResource
+ * @property OnePica_AvaTax_Model_Service_Avatax_Address
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
@@ -97,10 +98,15 @@ class OnePica_AvaTax_Model_Service_Avatax
      */
     protected function _getAddressValidatorResource()
     {
-        return Mage::getModel('avatax/service_avatax_address',
-            array('service_config' => $this->getServiceConfig())
-        );
+        if (null === $this->_addressValidatorResource) {
+            return Mage::getModel('avatax/service_avatax_address',
+                array('service_config' => $this->getServiceConfig())
+            );
+        }
+
+        return $this->_addressValidatorResource;
     }
+
     /**
      * Get rates from Avalara
      *
@@ -166,7 +172,7 @@ class OnePica_AvaTax_Model_Service_Avatax
      * Save order in AvaTax system
      *
      * @see OnePica_AvaTax_Model_Observer_SalesOrderCreditmemoSaveAfter::execute()
-     * @param Mage_Sales_Model_Order_Creditmemo $creditmemo
+     * @param Mage_Sales_Model_Order_Creditmemo  $creditmemo
      * @param OnePica_AvaTax_Model_Records_Queue $queue
      * @return mixed
      * @throws OnePica_AvaTax_Exception
