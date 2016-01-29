@@ -21,6 +21,52 @@
 class OnePica_AvaTax_Model_Calculator extends OnePica_AvaTax_Model_AbstractAction
 {
     /**
+     * Address parameter
+     */
+    const ADDRESS_PARAMETER = 'address';
+
+    /**
+     * Address
+     *
+     * @var Mage_Sales_Model_Quote_Address
+     */
+    protected $_address;
+
+    /**
+     * Rates
+     *
+     * @var array
+     */
+    protected $_rates = array();
+
+    /**
+     * OnePica_AvaTax_Model_Calculator constructor.
+     *
+     * @param array $params
+     * @throws \OnePica_AvaTax_Exception
+     */
+    public function __construct($params = array())
+    {
+        parent::__construct($params);
+        $this->_checkAddress($params);
+        $this->_address = $params[self::ADDRESS_PARAMETER];
+        $this->initRates($this->_address);
+    }
+
+    /**
+     * Init rates
+     *
+     * @param Mage_Sales_Model_Quote_Address $address
+     * @return $this
+     */
+    public function initRates($address)
+    {
+        $this->_rates = $this->_getService()->getRates($address);
+
+        return $this;
+    }
+
+    /**
      * Get rates from Service
      * Example: $_ratesData = array(
      *     'timestamp' => 1325015952
@@ -37,22 +83,17 @@ class OnePica_AvaTax_Model_Calculator extends OnePica_AvaTax_Model_AbstractActio
      *     'failure' => true
      * )
      *
-     * @param Mage_Sales_Model_Quote_Item $item
      * @return array
      */
-    protected function _getRates($item)
+    protected function _getRates()
     {
-        $storeId = $item->getAddress()->getQuote()->getStoreId();
-        $this->setStoreId($storeId);
-        $rates = $this->_getService()->getRates($item->getAddress());
-        if (isset($rates['failure']) && ($rates['failure'] === true)) {
-            /** @var OnePica_AvaTax_Model_Sales_Quote_Address $address */
-            $address = $item->getAddress();
+        $this->setStoreId($this->_address->getQuote()->getStoreId());
+        if (isset($this->_rates['failure']) && ($this->_rates['failure'] === true)) {
             // set error flag for processing estimation errors on upper level
-            $address->getQuote()->setData('estimate_tax_error', true);
+            $this->_address->getQuote()->setData('estimate_tax_error', true);
         }
 
-        return $rates;
+        return $this->_rates;
     }
 
     /**
@@ -67,7 +108,7 @@ class OnePica_AvaTax_Model_Calculator extends OnePica_AvaTax_Model_AbstractActio
             return 0;
         } else {
             $id = $item->getSku();
-            $ratesData = $this->_getRates($item);
+            $ratesData = $this->_getRates();
 
             return isset($ratesData['items'][$id]['rate']) ? $ratesData['items'][$id]['rate'] : 0;
         }
@@ -86,7 +127,7 @@ class OnePica_AvaTax_Model_Calculator extends OnePica_AvaTax_Model_AbstractActio
         }
 
         $id = $item->getSku();
-        $ratesData = $this->_getRates($item);
+        $ratesData = $this->_getRates();
 
         $jurisdictionRates = isset($ratesData['items'][$id]['jurisdiction_rates'])
             ? $ratesData['items'][$id]['jurisdiction_rates']
@@ -124,7 +165,7 @@ class OnePica_AvaTax_Model_Calculator extends OnePica_AvaTax_Model_AbstractActio
         if ($item->getParentItemId()) {
             return 0;
         }
-        $ratesData = $this->_getRates($item);
+        $ratesData = $this->_getRates();
         $id = $item->getSku();
 
         return isset($ratesData['gw_items'][$id]['amt']) ? $ratesData['gw_items'][$id]['amt'] : 0;
@@ -149,7 +190,7 @@ class OnePica_AvaTax_Model_Calculator extends OnePica_AvaTax_Model_AbstractActio
 
                 return $tax;
             } else {
-                $ratesData = $this->_getRates($item);;
+                $ratesData = $this->_getRates();;
                 $id = $item->getSku();
 
                 return isset($ratesData['items'][$id]['amt']) ? $ratesData['items'][$id]['amt'] : 0;
@@ -179,5 +220,23 @@ class OnePica_AvaTax_Model_Calculator extends OnePica_AvaTax_Model_AbstractActio
     public function isProductCalculated($item)
     {
         return $this->_getService()->isProductCalculated($item);
+    }
+
+    /**
+     * Check address
+     *
+     * @param array $params
+     * @return $this
+     * @throws \OnePica_AvaTax_Exception
+     */
+    protected function _checkAddress(array $params)
+    {
+        if (!isset($params[self::ADDRESS_PARAMETER])
+            || !$params[self::ADDRESS_PARAMETER] instanceof Mage_Sales_Model_Quote_Address
+        ) {
+            throw new OnePica_AvaTax_Exception($this->_getHelper()->__('Address object is wrong.'));
+        }
+
+        return $this;
     }
 }
