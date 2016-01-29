@@ -21,7 +21,7 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-abstract class OnePica_AvaTax_Model_Action_AbstractAction
+abstract class OnePica_AvaTax_Model_Action_Abstract
 {
     /**
      * Service

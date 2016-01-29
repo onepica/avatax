@@ -22,7 +22,7 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Action_Validator extends OnePica_AvaTax_Model_Action_AbstractAction
+class OnePica_AvaTax_Model_Action_Validator extends OnePica_AvaTax_Model_Action_Abstract
 {
     /**
      * The AvaTax Response (Normalized) Address object.
