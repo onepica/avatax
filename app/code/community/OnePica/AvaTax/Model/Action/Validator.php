@@ -81,8 +81,9 @@ class OnePica_AvaTax_Model_Action_Validator extends OnePica_AvaTax_Model_Action_
             if ($checkFieldsResult) {
                 return $checkFieldsResult;
             }
+            $this->setStoreId($quote->getStoreId());
             /** @var OnePica_AvaTax_Model_Service_Result_AddressValidate $result */
-            $result = $this->_getService()->setStoreId($quote->getStoreId())->validate($address);
+            $result = $this->_getService()->validate($address);
         } else {
             $errors = array();
             $errors[] = $this->__('Invalid ZIP/Postal Code.');
