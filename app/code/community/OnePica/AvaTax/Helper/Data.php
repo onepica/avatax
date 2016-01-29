@@ -149,6 +149,24 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Adds a comment to order history. Method chosen based on Magento version.
+     *
+     * @param Mage_Sales_Model_Order $order
+     * @param string                 $comment
+     * @return $this
+     */
+    public function addStatusHistoryComment($order, $comment)
+    {
+        if (method_exists($order, 'addStatusHistoryComment')) {
+            $order->addStatusHistoryComment($comment)->save();
+        } elseif (method_exists($order, 'addStatusToHistory')) {
+            $order->addStatusToHistory($order->getStatus(), $comment, false)->save();
+        }
+
+        return $this;
+    }
+
+    /**
      * Round up
      *
      * @param float $value

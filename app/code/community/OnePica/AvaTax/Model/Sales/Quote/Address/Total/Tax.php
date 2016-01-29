@@ -48,7 +48,6 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
 
         if ($address->getPostcode() && $address->getPostcode() != '-') {
             $store = $address->getQuote()->getStore();
-            $calculator = $this->_getCalculator();
 
             $address->setTotalAmount($this->getCode(), 0);
             $address->setBaseTotalAmount($this->getCode(), 0);
@@ -62,6 +61,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
             if (!$this->_isAddressActionable($address) || !$address->hasItems()) {
                 return $this;
             }
+            $calculator = $this->_getCalculator($address);
 
             $itemTaxGroups = array();
             /** @var Mage_Sales_Model_Quote_Item $item */
@@ -236,7 +236,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
      * Add tax totals information to address object
      *
      * @param   Mage_Sales_Model_Quote_Address $address
-     * @return  Mage_Tax_Model_Sales_Total_Quote
+     * @return  $this
      */
     public function fetch(Mage_Sales_Model_Quote_Address $address)
     {
@@ -283,11 +283,15 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
     /**
      * Get calculator model
      *
-     * @return OnePica_AvaTax_Model_Calculator
+     * @param Mage_Sales_Model_Quote_Address $address
+     * @return \OnePica_AvaTax_Model_Action_Calculator
      */
-    protected function _getCalculator()
+    protected function _getCalculator(Mage_Sales_Model_Quote_Address $address)
     {
-        return Mage::getModel('avatax/calculator');
+        return Mage::getModel(
+            'avatax/action_calculator',
+            array(OnePica_AvaTax_Model_Action_Calculator::ADDRESS_PARAMETER => $address)
+        );
     }
 
     /* BELOW ARE MAGE CORE PROPERTIES AND METHODS ADDED FOR OLDER VERSION COMPATABILITY */
