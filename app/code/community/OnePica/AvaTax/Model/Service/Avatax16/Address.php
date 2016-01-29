@@ -19,6 +19,8 @@
  * Class OnePica_AvaTax_Model_Service_Avatax16_Address
  *
  * @method getService() OnePica_AvaTax_Model_Service_Avatax16
+ * @method OnePica_AvaTax_Model_Service_Avatax16_Config getServiceConfig()
+ * @method setServiceConfig(OnePica_AvaTax_Model_Service_Avatax16_Config $serviceConfig)
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
@@ -77,9 +79,6 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
     {
         if (isset($data['service_config'])) {
             $this->setServiceConfig($data['service_config']);
-        }
-        if (isset($data['address'])) {
-            $this->setAddress($data['address']);
         }
         self::_construct();
     }
@@ -141,6 +140,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
         $this->_storeId = Mage::app()->getStore()->getId();
         $this->_address = $address;
         $this->_initAddressResolution();
+
         return $this;
     }
 
@@ -164,6 +164,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
         if (null === $this->_localeObject) {
             $this->_localeObject = $this->_getNewDocumentPartLocationAddressObject();
         }
+
         return $this->_localeObject;
     }
 
@@ -187,6 +188,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
         $this->getLocationAddress()->setCountry($this->getAddress()->getCountryId());
         $this->getLocationAddress()->setState($this->getAddress()->getRegionCode());
         $this->getLocationAddress()->setZipcode($this->getAddress()->getPostcode());
+
         return $this;
     }
 
@@ -194,11 +196,13 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
      * Validates the address with the AvaTax validation API.
      * Returns true on success and an array with an error on failure.
      *
+     * @param Mage_Sales_Model_Quote_Address $address
      * @return OnePica_AvaTax_Model_Service_Result_AddressValidate $addressValidationResult
      * @throws OnePica_AvaTax_Model_Service_Exception_Address
      */
-    public function validate()
+    public function validate($address)
     {
+        $this->setAddress($address);
         if (!$this->getAddress()->getId()) {
             throw new OnePica_AvaTax_Model_Service_Exception_Address(
                 $this->__('An address must be set before validation.')
@@ -253,7 +257,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
     {
         /** @var OnePica_AvaTax16_AddressResolution_ResolveSingleAddressResponse $resolvedAddress */
         $resolvedAddress = $this->getServiceConfig()->getTaxConnection()
-                         ->resolveSingleAddress($this->getLocationAddress());
+            ->resolveSingleAddress($this->getLocationAddress());
 
         $this->_log(
             OnePica_AvaTax_Model_Source_Avatax_Logtype::VALIDATE,

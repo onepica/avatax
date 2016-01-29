@@ -18,6 +18,9 @@
 /**
  * Class OnePica_AvaTax_Model_Service_Avatax_Address
  *
+ * @method OnePica_AvaTax_Model_Service_Avatax_Config getServiceConfig()
+ * @method setServiceConfig(OnePica_AvaTax_Model_Service_Avatax_Config $serviceConfig)
+ *
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
@@ -76,9 +79,6 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
         if (isset($data['service_config'])) {
             $this->setServiceConfig($data['service_config']);
         }
-        if (isset($data['address'])) {
-            $this->setAddress($data['address']);
-        }
         parent::_construct();
     }
 
@@ -105,6 +105,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
         $this->_storeId = Mage::app()->getStore()->getId();
         $this->_mageAddress = $address;
         $this->_convertRequestAddress();
+
         return $this;
     }
 
@@ -128,6 +129,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
         if (null === $this->_requestAddress) {
             $this->_requestAddress = new Address();
         }
+
         return $this->_requestAddress;
     }
 
@@ -152,11 +154,13 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
      * Validates the address with the AvaTax validation API.
      * Returns true on success and an array with an error on failure.
      *
+     * @param Mage_Sales_Model_Quote_Address $address
      * @return OnePica_AvaTax_Model_Service_Result_AddressValidate $addressValidationResult
      * @throws OnePica_AvaTax_Model_Service_Exception_Address
      */
-    public function validate()
+    public function validate($address)
     {
+        $this->setAddress($address);
         if (!$this->getMageAddress()) {
             throw new OnePica_AvaTax_Model_Service_Exception_Address(
                 $this->__('An address must be set before validation.')
@@ -191,7 +195,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
             if (is_array($address) && isset($address[0]) && $address[0]) {
                 /** @var ValidAddress $address */
                 $address = $address[0];
-                 /** @var OnePica_AvaTax_Model_Service_Result_Address $resultAddress */
+                /** @var OnePica_AvaTax_Model_Service_Result_Address $resultAddress */
                 $resultAddress = Mage::getModel('avatax/service_result_address');
                 $resultAddress->setLine1($address->getLine1());
                 $resultAddress->setLine2($address->getLine2());
@@ -260,7 +264,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
     /**
      * Address normalization
      *
-     * @param bool $isAddressNormalizationOn
+     * @param bool           $isAddressNormalizationOn
      * @param ValidateResult $result
      * @return $this
      * @throws OnePica_AvaTax_Model_Service_Exception_Address
