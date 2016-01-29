@@ -16,7 +16,7 @@
 /**
  * Class OnePica_AvaTax_Model_Action_Creditmemo
  */
-class OnePica_AvaTax_Model_Action_Creditmemo extends OnePica_AvaTax_Model_AbstractAction
+class OnePica_AvaTax_Model_Action_Creditmemo extends OnePica_AvaTax_Model_Action_AbstractAction
 {
     /**
      * Save order in AvaTax system

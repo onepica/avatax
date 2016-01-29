@@ -15,13 +15,13 @@
  */
 
 /**
- * Class OnePica_AvaTax_Model_AbstractAction
+ * Class OnePica_AvaTax_Model_Action_AbstractAction
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-abstract class OnePica_AvaTax_Model_AbstractAction extends Mage_Core_Model_Factory
+abstract class OnePica_AvaTax_Model_Action_AbstractAction extends Mage_Core_Model_Factory
 {
     /**
      * Service
