@@ -166,17 +166,6 @@ abstract class OnePica_AvaTax_Model_Service_Abstract extends Varien_Object
     protected $_currentStoreId;
 
     /**
-     * Class constructor
-     */
-    public function __construct($args)
-    {
-        if (isset($args['address'])) {
-            $this->setAddress($args['address']);
-        }
-        parent::_construct();
-    }
-
-    /**
      * Get Address
      *
      * @return null|OnePica_AvaTax_Model_Service_Abstract_Config
