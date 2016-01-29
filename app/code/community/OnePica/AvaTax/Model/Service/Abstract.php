@@ -152,38 +152,11 @@ abstract class OnePica_AvaTax_Model_Service_Abstract extends Varien_Object
     protected $_configs = array();
 
     /**
-     * Address.
-     *
-     * @var null|OnePica_AvaTax_Model_Service_Abstract_Config
-     */
-    protected $_address = null;
-
-    /**
      * Current store Id
      *
      * @var null|int
      */
     protected $_currentStoreId;
-
-    /**
-     * Get Address
-     *
-     * @return null|OnePica_AvaTax_Model_Service_Abstract_Config
-     */
-    public function getAddress()
-    {
-        return $this->_address;
-    }
-
-    /**
-     * Set Address
-     *
-     * @param null|OnePica_AvaTax_Model_Service_Abstract_Config $address
-     */
-    public function setAddress($address)
-    {
-        $this->_address = $address;
-    }
 
     /**
      * Get Current Store Id
