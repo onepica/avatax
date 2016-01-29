@@ -84,7 +84,7 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
     /**
      * Get service address validator
      *
-     * @param Mage_Customer_Model_Address_Abstract $address
+     * @param Mage_Sales_Model_Quote_Address $address
      * @return mixed|OnePica_AvaTax_Model_Service_Avatax_Abstract
      */
     public function validate($address)
@@ -111,7 +111,7 @@ class OnePica_AvaTax_Model_Validator extends Mage_Core_Model_Factory
                 return $checkFieldsResult;
             }
             /** @var OnePica_AvaTax_Model_Service_Result_AddressValidate $result */
-            $result = $this->_getService()->getAddressValidator($address)->validate();
+            $result = $this->_getService()->validate($address);
         } else {
             $errors = array();
             $errors[] = $this->__('Invalid ZIP/Postal Code.');

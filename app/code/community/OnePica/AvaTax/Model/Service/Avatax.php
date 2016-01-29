@@ -93,7 +93,8 @@ class OnePica_AvaTax_Model_Service_Avatax
     /**
      * Get Address Validator resource
      *
-     * @return OnePica_AvaTax_Model_Service_Avatax_Address
+     * @param Mage_Sales_Model_Quote_Address $address
+     * @return \OnePica_AvaTax_Model_Service_Avatax_Address
      */
     protected function _getAddressValidatorResource($address)
     {
@@ -137,11 +138,13 @@ class OnePica_AvaTax_Model_Service_Avatax
     /**
      * Get avatax address validator
      *
-     * @return OnePica_AvaTax_Model_Service_Avatax_Address
+     * @param Mage_Sales_Model_Quote_Address $address
+     * @return \OnePica_AvaTax_Model_Service_Avatax_Address
+     * @throws \OnePica_AvaTax_Model_Service_Exception_Address
      */
-    public function getAddressValidator($address)
+    public function validate($address)
     {
-        return $this->_getAddressValidatorResource($address);
+        return $this->_getAddressValidatorResource($address)->validate();
     }
 
     /**

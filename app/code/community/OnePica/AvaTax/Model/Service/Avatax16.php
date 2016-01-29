@@ -180,9 +180,9 @@ class OnePica_AvaTax_Model_Service_Avatax16
      * @param OnePica_AvaTax_Model_Sales_Quote_Address $address
      * @return \OnePica_AvaTax_Model_Service_Avatax16_Address
      */
-    public function getAddressValidator($address)
+    public function validate($address)
     {
-        return $this->_getAddressValidatorResource($address);
+        return $this->_getAddressValidatorResource($address)->validate();
     }
 
     /**

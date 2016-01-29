@@ -135,7 +135,7 @@ abstract class OnePica_AvaTax_Model_Service_Abstract extends Varien_Object
      * @param mixed $address
      * @return mixed
      */
-    abstract public function getAddressValidator($address);
+    abstract public function validate($address);
 
     /**
      * Get service config class name
