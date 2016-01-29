@@ -135,7 +135,7 @@ abstract class OnePica_AvaTax_Model_Service_Abstract extends Varien_Object
      * @param mixed $address
      * @return mixed
      */
-    abstract public function getAddressValidator($address);
+    abstract public function validate($address);
 
     /**
      * Get service config class name
@@ -164,17 +164,6 @@ abstract class OnePica_AvaTax_Model_Service_Abstract extends Varien_Object
      * @var null|int
      */
     protected $_currentStoreId;
-
-    /**
-     * Class constructor
-     */
-    public function __construct($args)
-    {
-        if (isset($args['address'])) {
-            $this->setAddress($args['address']);
-        }
-        parent::_construct();
-    }
 
     /**
      * Get Address
