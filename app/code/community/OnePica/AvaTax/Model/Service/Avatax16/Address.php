@@ -132,12 +132,12 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
     /**
      * Sets the Mage address.
      *
-     * @param Mage_Customer_Model_Address_Abstract $address
+     * @param Mage_Sales_Model_Quote_Address $address
      * @return $this
      */
-    public function setAddress(Mage_Customer_Model_Address_Abstract $address)
+    public function setAddress(Mage_Sales_Model_Quote_Address $address)
     {
-        $this->_storeId = Mage::app()->getStore()->getId();
+        $this->_storeId = $address->getQuote()->getStoreId();
         $this->_address = $address;
         $this->_initAddressResolution();
 
@@ -147,7 +147,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
     /**
      * Address getter
      *
-     * @return OnePica_AvaTax_Model_Sales_Quote_Address
+     * @return Mage_Sales_Model_Quote_Address
      */
     public function getAddress()
     {

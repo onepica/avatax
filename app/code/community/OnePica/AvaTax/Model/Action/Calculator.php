@@ -61,6 +61,7 @@ class OnePica_AvaTax_Model_Action_Calculator extends OnePica_AvaTax_Model_Action
      */
     public function initRates($address)
     {
+        $this->setStoreId($this->_address->getQuote()->getStoreId());
         $this->_rates = $this->_getService()->getRates($address);
 
         return $this;
@@ -87,7 +88,6 @@ class OnePica_AvaTax_Model_Action_Calculator extends OnePica_AvaTax_Model_Action
      */
     protected function _getRates()
     {
-        $this->setStoreId($this->_address->getQuote()->getStoreId());
         if (isset($this->_rates['failure']) && ($this->_rates['failure'] === true)) {
             // set error flag for processing estimation errors on upper level
             $this->_address->getQuote()->setData('estimate_tax_error', true);
