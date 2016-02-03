@@ -19,7 +19,7 @@
 <config>
     <modules>
         <OnePica_AvaTax>
-            <version>3.0.0.15</version>
+            <version>3.0.0.17</version>
         </OnePica_AvaTax>
     </modules>
     <global>
@@ -402,7 +402,7 @@
         <tax>
             <avatax>
                 <validate_address>1</validate_address>
-                <active_service>avatax</active_service>
+                <active_service>avatax16</active_service>
                 <action>0</action>
                 <url>https://avatax.avalara.net/</url>
                 <region_filter_mode>0</region_filter_mode>
