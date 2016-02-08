@@ -113,32 +113,39 @@ class OnePica_AvaTax_Model_Observer_AdminSystemConfigChangedSectionTax extends O
     protected function _prepareWarnings($storeId)
     {
         $warnings = array();
-        if (strpos(Mage::helper('avatax/config')->getServiceUrl($storeId), 'development.avalara.net') !== false) {
+
+        if (strpos($this->_getConfigHelper()->getServiceUrl($storeId), 'development.avalara.net') !== false) {
             $warnings[] = Mage::helper('avatax')->__(
                 'You are using the AvaTax development connection URL. If you are receiving errors about authentication, please ensure that you have a development account.'
             );
         }
-        if (Mage::helper('avatax/config')->getStatusServiceAction($storeId)
+
+        if ($this->_getConfigHelper()->getStatusServiceAction($storeId)
             == OnePica_AvaTax_Model_Service_Abstract_Config::ACTION_DISABLE
         ) {
             $warnings[] = Mage::helper('avatax')->__('All AvaTax services are disabled');
         }
-        if (Mage::helper('avatax/config')->getStatusServiceAction($storeId)
+
+        if ($this->_getConfigHelper()->getStatusServiceAction($storeId)
             == OnePica_AvaTax_Model_Service_Abstract_Config::ACTION_CALC
         ) {
             $warnings[] = Mage::helper('avatax')->__('Orders will not be sent to the AvaTax system');
         }
-        if (Mage::helper('avatax/config')->getStatusServiceAction($storeId)
-            == OnePica_AvaTax_Model_Service_Abstract_Config::ACTION_CALC_SUBMIT
+
+        if ($this->_getDataHelper()->isAvatax() &&
+            ($this->_getConfigHelper()->getStatusServiceAction($storeId)
+                == OnePica_AvaTax_Model_Service_Abstract_Config::ACTION_CALC_SUBMIT)
         ) {
             $warnings[] = Mage::helper('avatax')->__('Orders will be sent but never committed to the AvaTax system');
         }
+
         if (!Mage::getResourceModel('cron/schedule_collection')->count()) {
             $warnings[] = Mage::helper('avatax')->__(
                 'It appears that Magento\'s cron scheduler is not running. For more information, see %s.',
                 '<a href="http://www.magentocommerce.com/wiki/how_to_setup_a_cron_job" target="_black">How to Set Up a Cron Job</a>'
             );
         }
+
         if ($this->_isRegionFilterAll() && $this->_canNotBeAddressValidated()) {
             $warnings[] = Mage::helper('avatax')
                 ->__('Please be aware that address validation will not work for addresses outside United States and Canada');
@@ -201,13 +208,13 @@ class OnePica_AvaTax_Model_Observer_AdminSystemConfigChangedSectionTax extends O
     protected function _checkSkuFields($storeId)
     {
         $errors = array();
-        if (!Mage::helper('avatax/config')->getShippingSku($storeId)) {
+        if (!$this->_getConfigHelper()->getShippingSku($storeId)) {
             $errors[] = Mage::helper('avatax')->__('You must enter a shipping sku');
         }
-        if (!Mage::helper('avatax/config')->getPositiveAdjustmentSku($storeId)) {
+        if (!$this->_getConfigHelper()->getPositiveAdjustmentSku($storeId)) {
             $errors[] = Mage::helper('avatax')->__('You must enter an adjustment refund sku');
         }
-        if (!Mage::helper('avatax/config')->getNegativeAdjustmentSku($storeId)) {
+        if (!$this->_getConfigHelper()->getNegativeAdjustmentSku($storeId)) {
             $errors[] = Mage::helper('avatax')->__('You must enter an adjustment fee sku');
 
             return $errors;
@@ -264,7 +271,7 @@ class OnePica_AvaTax_Model_Observer_AdminSystemConfigChangedSectionTax extends O
     protected function _isRegionFilterAll()
     {
         return (int)Mage::helper('avatax/address')->getRegionFilterModByCurrentScope()
-        === OnePica_AvaTax_Model_Service_Abstract_Config::REGIONFILTER_ALL;
+               === OnePica_AvaTax_Model_Service_Abstract_Config::REGIONFILTER_ALL;
     }
 
     /**
@@ -278,5 +285,15 @@ class OnePica_AvaTax_Model_Observer_AdminSystemConfigChangedSectionTax extends O
             Mage::helper('avatax/address')->getTaxableCountryByCurrentScope(),
             Mage::helper('avatax/address')->getAddressValidationCountries()
         );
+    }
+
+    /**
+     * Get config helper
+     *
+     * @return OnePica_AvaTax_Helper_Config
+     */
+    protected function _getConfigHelper()
+    {
+        return Mage::helper('avatax/config');
     }
 }
