@@ -402,7 +402,7 @@
         <tax>
             <avatax>
                 <validate_address>1</validate_address>
-                <active_service>avatax16</active_service>
+                <active_service>avatax</active_service>
                 <action>0</action>
                 <url>https://avatax.avalara.net/</url>
                 <region_filter_mode>0</region_filter_mode>
