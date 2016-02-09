@@ -88,6 +88,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <can_be_empty>1</can_be_empty>
                         </taxable_country>
                         <region_filter_mode translate="label comment">
                             <label>Filter Requests by Region</label>
@@ -107,6 +108,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <can_be_empty>1</can_be_empty>
                             <depends>
                                 <region_filter_mode separator="|">
                                     <value>1|2</value>
@@ -166,6 +168,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
+                            <can_be_empty>1</can_be_empty>
                         </log_type_list>
 
                         <log_export>
@@ -424,6 +427,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <can_be_empty>1</can_be_empty>
                            </field_required_list>
                         <field_rule>
                             <label>Field Rule</label>
