@@ -95,8 +95,6 @@ class OnePica_AvaTax_Model_Observer_AdminSystemConfigChangedSectionTax extends O
         $errors = array_merge(
             $errors,
             $this->_sendPing($storeId),
-            $this->_checkConnectionFields($storeId),
-            $this->_checkSkuFields($storeId),
             $this->_checkSoapSupport(),
             $this->_checkSslSupport()
         );
@@ -166,58 +164,6 @@ class OnePica_AvaTax_Model_Observer_AdminSystemConfigChangedSectionTax extends O
         $ping = Mage::getSingleton('avatax/action_ping')->ping($storeId);
         if ($ping !== true) {
             $errors[] = $ping;
-        }
-
-        return $errors;
-    }
-
-    /**
-     * Check connection fields
-     *
-     * @param int $storeId
-     * @return array
-     */
-    protected function _checkConnectionFields($storeId)
-    {
-        $errors = array();
-        if (!Mage::getStoreConfig('tax/avatax/url', $storeId)) {
-            $errors[] = Mage::helper('avatax')->__('You must enter a connection URL');
-        }
-        if (!Mage::getStoreConfig('tax/avatax/account', $storeId)) {
-            $errors[] = Mage::helper('avatax')->__('You must enter an account number');
-        }
-        if (!Mage::getStoreConfig('tax/avatax/license', $storeId)) {
-            $errors[] = Mage::helper('avatax')->__('You must enter a license key');
-        }
-        if (!is_numeric(Mage::getStoreConfig('tax/avatax/log_lifetime'))) {
-            $errors[] = Mage::helper('avatax')->__('You must enter the number of days to keep log entries');
-        }
-        if (!Mage::getStoreConfig('tax/avatax/company_code', $storeId)) {
-            $errors[] = Mage::helper('avatax')->__('You must enter a company code');
-        }
-
-        return $errors;
-    }
-
-    /**
-     * Check Sku fields
-     *
-     * @param int $storeId
-     * @return array
-     */
-    protected function _checkSkuFields($storeId)
-    {
-        $errors = array();
-        if (!$this->_getConfigHelper()->getShippingSku($storeId)) {
-            $errors[] = Mage::helper('avatax')->__('You must enter a shipping sku');
-        }
-        if (!$this->_getConfigHelper()->getPositiveAdjustmentSku($storeId)) {
-            $errors[] = Mage::helper('avatax')->__('You must enter an adjustment refund sku');
-        }
-        if (!$this->_getConfigHelper()->getNegativeAdjustmentSku($storeId)) {
-            $errors[] = Mage::helper('avatax')->__('You must enter an adjustment fee sku');
-
-            return $errors;
         }
 
         return $errors;
