@@ -50,7 +50,7 @@ class OnePica_AvaTax_Block_Adminhtml_Export_Log_Grid extends OnePica_AvaTax_Bloc
                 'log_id'     => 'number',
                 'store_id'   => 'number',
                 'level'      => Mage::getModel('avatax_records/log')->getLevelOptions(),
-                'type'       => $this->_getDataHelper()->getExistingTypesLog(),
+                'type'       => $this->_getDataHelper()->getServiceLogTypes(),
                 'created_at' => 'datetime',
             )
         );
@@ -59,12 +59,13 @@ class OnePica_AvaTax_Block_Adminhtml_Export_Log_Grid extends OnePica_AvaTax_Bloc
     /**
      * Adds collection
      *
-     * @return unknown
+     * @return Mage_Adminhtml_Block_Widget_Grid
      */
     protected function _prepareCollection()
     {
         $collection = Mage::getModel('avatax_records/log')->getCollection();
         $this->setCollection($collection);
+
         return parent::_prepareCollection();
     }
 

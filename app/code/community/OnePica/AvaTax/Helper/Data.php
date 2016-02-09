@@ -1,9 +1,7 @@
 <?php
 /**
  * OnePica_AvaTax
- *
  * NOTICE OF LICENSE
- *
  * This source file is subject to the Open Software License (OSL 3.0), a
  * copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
@@ -33,7 +31,7 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
     public function isServiceEnabled($store = null)
     {
         return ($this->_getConfigData()->getStatusServiceAction($store)
-            != OnePica_AvaTax_Model_Service_Abstract_Config::ACTION_DISABLE);
+                != OnePica_AvaTax_Model_Service_Abstract_Config::ACTION_DISABLE);
     }
 
     /**
@@ -111,12 +109,12 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function isAnyStoreDisabled()
     {
-        $disabled        = false;
+        $disabled = false;
         $storeCollection = Mage::app()->getStores();
 
         foreach ($storeCollection as $store) {
             $disabled |= $this->_getConfigData()->getStatusServiceAction($store->getId())
-                == OnePica_AvaTax_Model_Service_Abstract_Config::ACTION_DISABLE;
+                         == OnePica_AvaTax_Model_Service_Abstract_Config::ACTION_DISABLE;
         }
 
         return $disabled;
@@ -124,7 +122,6 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Create Zend_Date object with date converted to store timezone and store Locale
-     *
      * This method from Mage_Core_Model_Locale.
      * This need for backward compatibility with older magento versions which not have 4th parameter in this method
      *
@@ -170,7 +167,7 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
      * Round up
      *
      * @param float $value
-     * @param int $precision
+     * @param int   $precision
      * @return float
      */
     public function roundUp($value, $precision)
@@ -192,7 +189,6 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Generates client name for requests
-     *
      * Parts:
      * - MyERP: the ERP that this connector is for (not always applicable)
      * - Majver: version info for the ERP (not always applicable)
@@ -219,6 +215,7 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
         $part[] = OnePica_AvaTax_Model_Service_Abstract_Config::APP_NAME;
         $part[] = $opVerParts[0];
         $part[] = $opVerParts[1];
+
         return implode(',', $part);
     }
 
@@ -226,15 +223,54 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
      * Get existing types log
      *
      * @return array
+     * @throws \OnePica_AvaTax_Exception
      */
-    public function getExistingTypesLog()
+    public function getServiceLogTypes()
+    {
+        if ($this->isAvatax()) {
+            return $this->_getAvataxLogTypes();
+        } elseif ($this->isAvatax16()) {
+            return $this->_getAvatax16LogTypes();
+        }
+
+        throw new OnePica_AvaTax_Exception('Unknown service type.');
+    }
+
+    /**
+     * Get avatax log types
+     *
+     * @return array
+     */
+    protected function _getAvataxLogTypes()
     {
         return array(
-            OnePica_AvaTax_Model_Source_Logtype::FILTER   => OnePica_AvaTax_Model_Source_Logtype::FILTER,
-            OnePica_AvaTax_Model_Source_Logtype::GET_TAX  => OnePica_AvaTax_Model_Source_Logtype::GET_TAX,
-            OnePica_AvaTax_Model_Source_Logtype::PING     => OnePica_AvaTax_Model_Source_Logtype::PING,
-            OnePica_AvaTax_Model_Source_Logtype::QUEUE    => OnePica_AvaTax_Model_Source_Logtype::QUEUE,
-            OnePica_AvaTax_Model_Source_Logtype::VALIDATE => OnePica_AvaTax_Model_Source_Logtype::VALIDATE,
+            OnePica_AvaTax_Model_Source_Avatax_Logtype::FILTER   => OnePica_AvaTax_Model_Source_Avatax_Logtype::FILTER,
+            OnePica_AvaTax_Model_Source_Avatax_Logtype::GET_TAX  => OnePica_AvaTax_Model_Source_Avatax_Logtype::GET_TAX,
+            OnePica_AvaTax_Model_Source_Avatax_Logtype::PING     => OnePica_AvaTax_Model_Source_Avatax_Logtype::PING,
+            OnePica_AvaTax_Model_Source_Avatax_Logtype::QUEUE    => OnePica_AvaTax_Model_Source_Avatax_Logtype::QUEUE,
+            OnePica_AvaTax_Model_Source_Avatax_Logtype::VALIDATE =>
+                OnePica_AvaTax_Model_Source_Avatax_Logtype::VALIDATE,
+        );
+    }
+
+    /**
+     * Get avatax16 log types
+     *
+     * @return array
+     */
+    protected function _getAvatax16LogTypes()
+    {
+        return array(
+            OnePica_AvaTax_Model_Source_Avatax16_Logtype::PING => OnePica_AvaTax_Model_Source_Avatax16_Logtype::PING,
+            OnePica_AvaTax_Model_Source_Avatax16_Logtype::QUEUE => OnePica_AvaTax_Model_Source_Avatax16_Logtype::QUEUE,
+            OnePica_AvaTax_Model_Source_Avatax16_Logtype::FILTER =>
+                OnePica_AvaTax_Model_Source_Avatax16_Logtype::FILTER,
+            OnePica_AvaTax_Model_Source_Avatax16_Logtype::VALIDATE =>
+                OnePica_AvaTax_Model_Source_Avatax16_Logtype::VALIDATE,
+            OnePica_AvaTax_Model_Source_Avatax16_Logtype::CALCULATION =>
+                OnePica_AvaTax_Model_Source_Avatax16_Logtype::CALCULATION,
+            OnePica_AvaTax_Model_Source_Avatax16_Logtype::TRANSACTION =>
+                OnePica_AvaTax_Model_Source_Avatax16_Logtype::TRANSACTION
         );
     }
 }
