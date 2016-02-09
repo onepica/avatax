@@ -25,58 +25,20 @@
 class OnePica_AvaTax_Model_Source_Logtype
 {
     /**
-     * Ping type
-     */
-    const PING        = 'Ping';
-
-    /**
-     * Get tax type
-     */
-    const GET_TAX    = 'GetTax';
-
-    /**
-     * Filter type
-     */
-    const FILTER    = 'Filter';
-
-    /**
-     * Validate type
-     */
-    const VALIDATE    = 'Validate';
-
-    /**
-     * Queue type
-     */
-    const QUEUE        = 'Queue';
-
-    /**
      * Gets the list of type for the admin config dropdown
-     *
      * @return array
+     * @throws OnePica_AvaTax_Exception
      */
     public function toOptionArray()
     {
-        return array(
-            array(
-                'value' => self::PING,
-                'label' => Mage::helper('avatax')->__('Ping')
-            ),
-            array(
-                'value' => self::GET_TAX,
-                'label' => Mage::helper('avatax')->__('Get Tax')
-            ),
-            array(
-                'value' => self::FILTER,
-                'label' => Mage::helper('avatax')->__('Filter')
-            ),
-            array(
-                'value' => self::VALIDATE,
-                'label' => Mage::helper('avatax')->__('Validate')
-            ),
-            array(
-                'value' => self::QUEUE,
-                'label' => Mage::helper('avatax')->__('Queue')
-            )
-        );
+        $activeService = Mage::helper('avatax/config')->getActiveService(Mage::app()->getStore());
+        if (!$activeService) {
+            throw new OnePica_AvaTax_Exception('Service source model is not defined.');
+        }
+        $model = Mage::getModel('avatax/source_' . $activeService . '_logtype');
+        if (!$model) {
+            throw new OnePica_AvaTax_Exception('Could not found source model ' . $activeService);
+        }
+        return $model->toArray();
     }
 }

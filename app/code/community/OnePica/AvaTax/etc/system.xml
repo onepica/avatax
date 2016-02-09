@@ -23,10 +23,6 @@
             <groups>
                 <avatax translate="label comment">
                     <label>AvaTax</label>
-                    <comment><![CDATA[
-                        <style type="text/css"> #tax_avatax textarea { height:65px; } #tax_avatax .multiselect { height:155px; } </style>
-                        <p class="switcher">For complete and up-to-date documentation, please visit <a href="http://www.onepica.com/magento-extensions/avatax/" target="_blank">http://www.onepica.com/magento-extensions/avatax</a>.</p>
-                    ]]></comment>
                     <sort_order>0</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
@@ -51,7 +47,8 @@
                         </action>
                         <url translate="label">
                             <label>URL</label>
-                            <frontend_type>text</frontend_type>
+                            <frontend_type>select</frontend_type>
+                            <source_model>avatax/source_url</source_model>
                             <sort_order>20</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -66,7 +63,7 @@
                             <show_in_store>1</show_in_store>
                         </account>
                         <license translate="label">
-                            <label>License Key</label>
+                            <label>Key</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>40</sort_order>
                             <show_in_default>1</show_in_default>
@@ -306,6 +303,54 @@
                             <show_in_store>1</show_in_store>
                             <depends><upc_check_status>1</upc_check_status></depends>
                         </upc_attribute_code>
+                   <!-- TODO: Remove this code if we will not use those properties
+                        <default_avalara_goods_and_services_type translate="label comment">
+                            <label>Default Avalara Goods And Services Type</label>
+                            <comment>Optional.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>271</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </default_avalara_goods_and_services_type>
+                        <default_avalara_goods_and_services_modifier_type translate="label comment">
+                            <label>Default Avalara Goods And Services Modifier Type</label>
+                            <comment>Optional.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>272</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </default_avalara_goods_and_services_modifier_type>
+                        <default_tax_payer_code translate="label comment">
+                            <label>Default Tax Payer Code</label>
+                            <comment>Optional.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>273</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </default_tax_payer_code>
+                        <default_use_type translate="label comment">
+                            <label>Default Use Type</label>
+                            <comment>Optional.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>avatax/source_avatax16_usetype</source_model>
+                            <sort_order>274</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </default_use_type>
+                        <default_buyer_type translate="label comment">
+                            <label>Default Buyer Type</label>
+                            <comment>Optional.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>avatax/source_avatax16_buyertype</source_model>
+                            <sort_order>275</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </default_buyer_type> -->
 
                         <title_address_validation translate="label">
                             <label><![CDATA[<strong>Shipping Address Options</strong>]]></label>
@@ -518,7 +563,6 @@
                 <sales_display>
                     <fields>
                         <full_summary>
-                            <!-- Jurisdiction data is not kept in Magento at this time after the quote -->
                             <show_in_default>0</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>

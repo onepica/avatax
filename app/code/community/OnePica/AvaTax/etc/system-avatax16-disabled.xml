@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * OnePica_AvaTax
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0), a
+ * copy of which is available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
+ * @copyright  Copyright (c) 2015 One Pica, Inc.
+ * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ */
+-->
+<config>
+    <sections>
+        <tax>
+            <groups>
+                <avatax>
+                    <fields>
+                        <avatax16_onepage_validate_address_message translate="label comment">
+                            <label>Address Validation Error</label>
+                            <comment>Only applies if address validation is enabled</comment>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>325</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </avatax16_onepage_validate_address_message>
+                    </fields>
+                </avatax>
+            </groups>
+        </tax>
+    </sections>
+</config>

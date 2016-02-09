@@ -120,7 +120,7 @@ class OnePica_AvaTax_Model_Source_Regionfilter_List
      */
     protected function _getCountryList()
     {
-        return $this->_getDataHelper()->getTaxableCountryByCurrentScope();
+        return Mage::helper('avatax/address')->getTaxableCountryByCurrentScope();
     }
 
     /**

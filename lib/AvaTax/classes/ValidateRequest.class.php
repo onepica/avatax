@@ -73,6 +73,7 @@ class ValidateRequest
      * </pre>
      *
      * @var Address
+     * @return $this
      */
 
     public function setAddress(&$value) { $this->Address = $value; return $this; }
@@ -97,6 +98,7 @@ class ValidateRequest
      *
      * @var string
      * @see TextCase
+     * @return $this
      */
 
     public function setTextCase($value)
@@ -120,6 +122,7 @@ class ValidateRequest
      *  Default value is <b>false</b>
      *  </p>
      * @var boolean
+     * @return $this
      */
     public function setCoordinates($value) { $this->Coordinates = ($value ? true : false); return $this; }
 
