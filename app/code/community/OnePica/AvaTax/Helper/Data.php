@@ -218,47 +218,4 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
 
         return implode(',', $part);
     }
-
-    /**
-     * Get existing types log
-     *
-     * @return array
-     * @throws \OnePica_AvaTax_Exception
-     */
-    public function getServiceLogTypes()
-    {
-        if ($this->isAvatax()) {
-            return $this->_getAvataxLogTypes();
-        } elseif ($this->isAvatax16()) {
-            return $this->_getAvatax16LogTypes();
-        }
-
-        throw new OnePica_AvaTax_Exception('Unknown service type.');
-    }
-
-    /**
-     * Get avatax log types
-     *
-     * @return array
-     */
-    protected function _getAvataxLogTypes()
-    {
-        /** @var OnePica_AvaTax_Model_Source_Avatax_Logtype $source */
-        $source = Mage::getModel('avatax/source_avatax_logtype');
-
-        return $source->getLogTypes();
-    }
-
-    /**
-     * Get avatax16 log types
-     *
-     * @return array
-     */
-    protected function _getAvatax16LogTypes()
-    {
-        /** @var OnePica_AvaTax_Model_Source_Avatax16_Logtype $source */
-        $source = Mage::getModel('avatax/source_avatax16_logtype');
-
-        return $source->getLogTypes();
-    }
 }
