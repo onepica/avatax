@@ -58,7 +58,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
             $address->setBaseShippingTaxAmount(0);
 
             //Added check for calculating tax for regions filtered in the admin
-            if (!$this->_isAddressActionable($address) || !$address->hasItems()) {
+            if (!$this->_isAddressActionable($address) || !$address->hasItems() || $this->_isFilteredRequest($store)) {
                 return $this;
             }
             $calculator = $this->_getCalculator($address);
@@ -365,6 +365,21 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
     }
 
     /**
+     * Checks if is filtered request
+     *
+     * @param Mage_Core_Model_Store|int $store
+     * @return bool
+     */
+    protected function _isFilteredRequest($store)
+    {
+        if ($this->_getRequestFilterHelper()->isRequestFiltered($store)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Get data helper
      *
      * @return \OnePica_AvaTax_Helper_Data
@@ -372,5 +387,15 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
     protected function _getDataHelper()
     {
         return Mage::helper('avatax');
+    }
+
+    /**
+     * Get request filter helper
+     *
+     * @return OnePica_AvaTax_Helper_RequestFilter
+     */
+    protected function _getRequestFilterHelper()
+    {
+        return Mage::helper('avatax/requestFilter');
     }
 }
