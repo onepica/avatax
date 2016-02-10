@@ -53,6 +53,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
                         </url>
                         <account translate="label">
                             <label>Account Number</label>
@@ -61,6 +62,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
                         </account>
                         <license translate="label">
                             <label>Key</label>
@@ -69,6 +71,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
                         </license>
                         <company_code translate="label comment">
                             <label>Company Code</label>
@@ -78,6 +81,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
                         </company_code>
                         <taxable_country translate="label">
                             <label>Taxable Country</label>
@@ -140,6 +144,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
+                            <validate>required-entry</validate>
                         </log_lifetime>
                         <queue_success_lifetime translate="label comment">
                             <label>Successful Queue Lifetime</label>
@@ -149,6 +154,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
+                            <validate>required-entry</validate>
                         </queue_success_lifetime>
                         <queue_failed_lifetime translate="label comment">
                             <label>Failed Queue Lifetime</label>
@@ -158,6 +164,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
+                            <validate>required-entry</validate>
                         </queue_failed_lifetime>
 
                         <log_type_list>
@@ -206,6 +213,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
                         </shipping_sku>
                         <gw_order_sku translate="label comment">
                             <label>Gift Wrap Order Sku</label>
@@ -215,6 +223,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
                         </gw_order_sku>
                         <gw_items_sku translate="label comment">
                             <label>Gift Wrap Items Sku</label>
@@ -224,6 +233,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
                         </gw_items_sku>
                         <gw_printed_card_sku translate="label comment">
                             <label>Gift Wrap Printed Card Sku</label>
@@ -233,6 +243,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
                         </gw_printed_card_sku>
                         <adjustment_positive_sku translate="label comment">
                             <label>Adjustment Refund Sku</label>
@@ -242,6 +253,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
                         </adjustment_positive_sku>
                         <adjustment_negative_sku translate="label comment">
                             <label>Adjustment Fee Sku</label>
@@ -251,6 +263,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
                         </adjustment_negative_sku>
                         <sales_person_code translate="label comment">
                             <label>Sales Person Code</label>
