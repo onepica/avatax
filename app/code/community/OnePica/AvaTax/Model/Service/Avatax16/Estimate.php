@@ -327,7 +327,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         $line->setAvalaraGoodsAndServicesType($taxClass);
         $line->setNumberOfItems(1);
         $line->setlineAmount($shippingAmount);
-        $line->setDiscounted('false');
+        $line->setDiscounted((bool)(float)$address->getBaseShippingDiscountAmount());
 
         $this->_lines[$lineNumber] = $line;
         $this->_setLinesToRequest();
