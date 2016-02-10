@@ -243,14 +243,10 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
      */
     protected function _getAvataxLogTypes()
     {
-        return array(
-            OnePica_AvaTax_Model_Source_Avatax_Logtype::FILTER   => OnePica_AvaTax_Model_Source_Avatax_Logtype::FILTER,
-            OnePica_AvaTax_Model_Source_Avatax_Logtype::GET_TAX  => OnePica_AvaTax_Model_Source_Avatax_Logtype::GET_TAX,
-            OnePica_AvaTax_Model_Source_Avatax_Logtype::PING     => OnePica_AvaTax_Model_Source_Avatax_Logtype::PING,
-            OnePica_AvaTax_Model_Source_Avatax_Logtype::QUEUE    => OnePica_AvaTax_Model_Source_Avatax_Logtype::QUEUE,
-            OnePica_AvaTax_Model_Source_Avatax_Logtype::VALIDATE =>
-                OnePica_AvaTax_Model_Source_Avatax_Logtype::VALIDATE,
-        );
+        /** @var OnePica_AvaTax_Model_Source_Avatax_Logtype $source */
+        $source = Mage::getModel('avatax/source_avatax_logtype');
+
+        return $source->getLogTypes();
     }
 
     /**
@@ -260,17 +256,9 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
      */
     protected function _getAvatax16LogTypes()
     {
-        return array(
-            OnePica_AvaTax_Model_Source_Avatax16_Logtype::PING => OnePica_AvaTax_Model_Source_Avatax16_Logtype::PING,
-            OnePica_AvaTax_Model_Source_Avatax16_Logtype::QUEUE => OnePica_AvaTax_Model_Source_Avatax16_Logtype::QUEUE,
-            OnePica_AvaTax_Model_Source_Avatax16_Logtype::FILTER =>
-                OnePica_AvaTax_Model_Source_Avatax16_Logtype::FILTER,
-            OnePica_AvaTax_Model_Source_Avatax16_Logtype::VALIDATE =>
-                OnePica_AvaTax_Model_Source_Avatax16_Logtype::VALIDATE,
-            OnePica_AvaTax_Model_Source_Avatax16_Logtype::CALCULATION =>
-                OnePica_AvaTax_Model_Source_Avatax16_Logtype::CALCULATION,
-            OnePica_AvaTax_Model_Source_Avatax16_Logtype::TRANSACTION =>
-                OnePica_AvaTax_Model_Source_Avatax16_Logtype::TRANSACTION
-        );
+        /** @var OnePica_AvaTax_Model_Source_Avatax16_Logtype $source */
+        $source = Mage::getModel('avatax/source_avatax16_logtype');
+
+        return $source->getLogTypes();
     }
 }

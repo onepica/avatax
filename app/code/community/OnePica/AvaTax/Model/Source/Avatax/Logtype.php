@@ -79,4 +79,20 @@ class OnePica_AvaTax_Model_Source_Avatax_Logtype
             )
         );
     }
+
+    /**
+     * Get log types array
+     *
+     * @return array
+     */
+    public function getLogTypes()
+    {
+        return array(
+            self::FILTER   => self::FILTER,
+            self::GET_TAX  => self::GET_TAX,
+            self::PING     => self::PING,
+            self::QUEUE    => self::QUEUE,
+            self::VALIDATE => self::VALIDATE,
+        );
+    }
 }
