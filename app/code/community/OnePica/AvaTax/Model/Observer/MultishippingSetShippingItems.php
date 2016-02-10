@@ -22,7 +22,8 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Observer_MultishippingSetShippingItems extends OnePica_AvaTax_Model_Observer_Abstract
+class OnePica_AvaTax_Model_Observer_MultishippingSetShippingItems
+    extends OnePica_AvaTax_Model_Observer_Abstract
 {
     /**
      * Validate addresses when multishipping checkout on set shipping items
@@ -33,6 +34,11 @@ class OnePica_AvaTax_Model_Observer_MultishippingSetShippingItems extends OnePic
      */
     public function execute(Varien_Event_Observer $observer)
     {
+        // skip validation if customer wants to add new address
+        if (Mage::app()->getRequest()->getParam('new_address')) {
+            return $this;
+        }
+
         /* @var $quote Mage_Sales_Model_Quote */
         $quote = $observer->getEvent()->getQuote();
         $storeId = $quote->getStoreId();
