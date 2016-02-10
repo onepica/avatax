@@ -239,6 +239,8 @@ class OnePica_AvaTax_Model_Action_Validator extends OnePica_AvaTax_Model_Action_
      */
     protected function _convertResponseAddress()
     {
+        $strOriginAddress = $this->getAddress()->format('oneline');
+
         $street = array($this->getResponseAddress()->getLine1(), $this->getResponseAddress()->getLine2());
         $region = Mage::getModel('directory/region')
             ->loadByCode($this->getResponseAddress()->getState(), $this->getAddress()->getCountryId());
@@ -248,8 +250,14 @@ class OnePica_AvaTax_Model_Action_Validator extends OnePica_AvaTax_Model_Action_
             ->setRegionId($region->getId())
             ->setPostcode($this->getResponseAddress()->getPostalCode())
             ->setCountryId($this->getResponseAddress()->getCountry())
-            ->save()
-            ->setAddressNormalized(true);
+            ->save();
+
+        $strResultAddress = $this->getAddress()->format('oneline');
+
+        $isAddressNormalized = $strOriginAddress != $strResultAddress;
+        if ($isAddressNormalized) {
+            $this->getAddress()->setAddressNormalized(true);
+        }
 
         return $this;
     }
