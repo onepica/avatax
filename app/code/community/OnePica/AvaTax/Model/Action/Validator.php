@@ -253,9 +253,7 @@ class OnePica_AvaTax_Model_Action_Validator extends OnePica_AvaTax_Model_Action_
             ->save();
 
         $strResultAddress = $this->getAddress()->format('oneline');
-
-        $isAddressNormalized = $strOriginAddress != $strResultAddress;
-        if ($isAddressNormalized) {
+        if ($strOriginAddress != $strResultAddress) {
             $this->getAddress()->setAddressNormalized(true);
         }
 
