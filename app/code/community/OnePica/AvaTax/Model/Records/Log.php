@@ -69,23 +69,6 @@ class OnePica_AvaTax_Model_Records_Log extends Mage_Core_Model_Abstract
     }
 
     /**
-     * Get type options
-     *
-     * @return array
-     */
-    public function getTypeOptions()
-    {
-        $result = array();
-        $storeId = Mage::app()->getStore()->getId();
-        $types = Mage::helper('avatax')->getLogType($storeId);
-        foreach ($types as $value) {
-            $result[$value] = $value;
-        }
-
-        return $result;
-    }
-
-    /**
      * Get level options
      *
      * @return array
