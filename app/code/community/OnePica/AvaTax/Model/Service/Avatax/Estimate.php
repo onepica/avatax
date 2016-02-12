@@ -237,7 +237,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         $line->setAmount($shippingAmount);
         $line->setDiscounted(false);
 
-        if ($this->_getTaxDataHelper()->priceIncludesTax($storeId)) {
+        if ($this->_getTaxDataHelper()->shippingPriceIncludesTax($storeId)) {
             $line->setTaxIncluded(true);
         }
 
