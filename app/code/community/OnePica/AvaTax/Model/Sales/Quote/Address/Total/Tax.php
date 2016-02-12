@@ -69,42 +69,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
         $calculator = $this->_getCalculator($address);
 
         $this->_itemTaxGroups = array();
-
-        /** @var Mage_Sales_Model_Quote_Item $item */
-        foreach ($address->getAllItems() as $item) {
-            $item->setAddress($address);
-            $baseAmount = $calculator->getItemTax($item);
-
-            $giftBaseTaxTotalAmount = $calculator->getItemGiftTax($item);
-            $this->_itemTaxGroups[$item->getId()] = $calculator->getItemTaxGroup($item);
-            $giftTaxTotalAmount = $store->convertPrice($giftBaseTaxTotalAmount);
-            $giftBaseTaxAmount = $this->_getDataHelper()
-                ->roundUp($giftBaseTaxTotalAmount / $item->getQty(), 2);
-            $giftTaxAmount = $store->convertPrice($giftBaseTaxAmount);
-
-            $amount = $store->convertPrice($baseAmount);
-            $percent = $calculator->getItemRate($item);
-
-            $item->setTaxAmount($amount);
-            $item->setBaseTaxAmount($baseAmount);
-            $item->setTaxPercent($percent);
-
-            $item->setGwBaseTaxAmount($giftBaseTaxAmount);
-            $item->setGwTaxAmount($giftTaxAmount);
-
-            $item->setPriceInclTax($item->getPrice() + ($amount / $item->getQty()));
-            $item->setBasePriceInclTax($item->getBasePrice() + ($baseAmount / $item->getQty()));
-            $item->setRowTotalInclTax($item->getRowTotal() + $amount);
-            $item->setBaseRowTotalInclTax($item->getBaseRowTotal() + $baseAmount);
-
-            if (!$calculator->isProductCalculated($item)) {
-                $this->_addAmount($amount);
-                $this->_addBaseAmount($baseAmount);
-            }
-            $this->_addAmount($giftTaxTotalAmount);
-            $this->_addBaseAmount($giftBaseTaxTotalAmount);
-        }
-
+        $this->_applyItemTax($address, $calculator, $store);
         $this->_applyShippingTax($address, $store, $calculator);
         $this->_applyGwTax($address, $store, $calculator);
         $this->_setTaxForItems($address, $this->_itemTaxGroups);
@@ -342,6 +307,55 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
         $address->setBaseTaxAmount(0);
         $address->setShippingTaxAmount(0);
         $address->setBaseShippingTaxAmount(0);
+
+        return $this;
+    }
+
+    /**
+     * Apply item tax
+     *
+     * @param Mage_Sales_Model_Quote_Address         $address
+     * @param Mage_Core_Model_Store|int              $store
+     * @param OnePica_AvaTax_Model_Action_Calculator $calculator
+     * @return $this
+     */
+    protected function _applyItemTax(Mage_Sales_Model_Quote_Address $address, $calculator, $store)
+    {
+        /** @var Mage_Sales_Model_Quote_Item $item */
+        foreach ($address->getAllItems() as $item) {
+            $item->setAddress($address);
+            $baseAmount = $calculator->getItemTax($item);
+
+            $giftBaseTaxTotalAmount = $calculator->getItemGiftTax($item);
+            $this->_itemTaxGroups[$item->getId()] = $calculator->getItemTaxGroup($item);
+            $giftTaxTotalAmount = $store->convertPrice($giftBaseTaxTotalAmount);
+            $giftBaseTaxAmount = $this->_getDataHelper()
+                ->roundUp($giftBaseTaxTotalAmount / $item->getQty(), 2);
+            $giftTaxAmount = $store->convertPrice($giftBaseTaxAmount);
+
+            $amount = $store->convertPrice($baseAmount);
+            $percent = $calculator->getItemRate($item);
+
+            $item->setTaxAmount($amount);
+            $item->setBaseTaxAmount($baseAmount);
+            $item->setTaxPercent($percent);
+
+            $item->setGwBaseTaxAmount($giftBaseTaxAmount);
+            $item->setGwTaxAmount($giftTaxAmount);
+
+            $item->setPriceInclTax($item->getPrice() + ($amount / $item->getQty()));
+            $item->setBasePriceInclTax($item->getBasePrice() + ($baseAmount / $item->getQty()));
+            $item->setRowTotalInclTax($item->getRowTotal() + $amount);
+            $item->setBaseRowTotalInclTax($item->getBaseRowTotal() + $baseAmount);
+
+            if (!$calculator->isProductCalculated($item)) {
+                $this->_addAmount($amount);
+                $this->_addBaseAmount($baseAmount);
+            }
+
+            $this->_addAmount($giftTaxTotalAmount);
+            $this->_addBaseAmount($giftBaseTaxTotalAmount);
+        }
 
         return $this;
     }
