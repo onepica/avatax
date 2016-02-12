@@ -25,6 +25,13 @@
 class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Model_Quote_Address_Total_Abstract
 {
     /**
+     * Item tax groups
+     *
+     * @var array
+     */
+    protected $_itemTaxGroups = array();
+
+    /**
      * Class constructor
      */
     public function __construct()
@@ -61,14 +68,15 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
 
         $calculator = $this->_getCalculator($address);
 
-        $itemTaxGroups = array();
+        $this->_itemTaxGroups = array();
+
         /** @var Mage_Sales_Model_Quote_Item $item */
         foreach ($address->getAllItems() as $item) {
             $item->setAddress($address);
             $baseAmount = $calculator->getItemTax($item);
 
             $giftBaseTaxTotalAmount = $calculator->getItemGiftTax($item);
-            $itemTaxGroups[$item->getId()] = $calculator->getItemTaxGroup($item);
+            $this->_itemTaxGroups[$item->getId()] = $calculator->getItemTaxGroup($item);
             $giftTaxTotalAmount = $store->convertPrice($giftBaseTaxTotalAmount);
             $giftBaseTaxAmount = $this->_getDataHelper()
                 ->roundUp($giftBaseTaxTotalAmount / $item->getQty(), 2);
@@ -99,7 +107,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
 
         $this->_applyShippingTax($address, $store, $calculator);
         $this->_applyGwTax($address, $store, $calculator);
-        $this->_setTaxForItems($address, $itemTaxGroups);
+        $this->_setTaxForItems($address, $this->_itemTaxGroups);
         $summary = $calculator->getSummary($address);
         $this->_saveAppliedTax($address, $summary);
 
