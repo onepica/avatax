@@ -59,12 +59,12 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
 
         $store = $address->getQuote()->getStore();
 
-        $this->_resetAddressValues($address);
-
         //Added check for calculating tax for regions filtered in the admin
         if (!$this->_isAddressActionable($address) || !$address->hasItems()) {
             return $this;
         }
+
+        $this->_resetAddressValues($address);
 
         $calculator = $this->_getCalculator($address);
 
@@ -232,12 +232,16 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
             $shippingTax = $store->convertPrice($baseShippingTax);
 
             $shippingAmt = $calculator->getItemTaxable($shippingItem);
+            $baseShippingAmt = $store->convertPrice($shippingAmt);
+
             $address->setTotalAmount('shipping', $shippingAmt);
+            $address->setBaseTotalAmount('shipping', $baseShippingAmt);
             $baseShippingAmt = $address->getBaseTotalAmount('shipping');
 
             $address->setShippingTaxAmount($shippingTax);
             $address->setBaseShippingTaxAmount($baseShippingTax);
             $address->setShippingInclTax($shippingAmt + $shippingTax);
+
             $address->setBaseShippingInclTax($baseShippingAmt + $baseShippingTax);
             $address->setShippingTaxable($shippingTax ? $shippingAmt : 0);
             $address->setBaseShippingTaxable($baseShippingTax ? $baseShippingAmt : 0);
