@@ -46,65 +46,62 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
         $this->_setAddress($address);
         parent::collect($address);
 
-        if ($address->getPostcode() && $address->getPostcode() != '-') {
-            $store = $address->getQuote()->getStore();
-
-            $address->setTotalAmount($this->getCode(), 0);
-            $address->setBaseTotalAmount($this->getCode(), 0);
-
-            $address->setTaxAmount(0);
-            $address->setBaseTaxAmount(0);
-            $address->setShippingTaxAmount(0);
-            $address->setBaseShippingTaxAmount(0);
-
-            //Added check for calculating tax for regions filtered in the admin
-            if (!$this->_isAddressActionable($address) || !$address->hasItems()) {
-                return $this;
-            }
-            $calculator = $this->_getCalculator($address);
-
-            $itemTaxGroups = array();
-            /** @var Mage_Sales_Model_Quote_Item $item */
-            foreach ($address->getAllItems() as $item) {
-                $item->setAddress($address);
-                $baseAmount = $calculator->getItemTax($item);
-
-                $giftBaseTaxTotalAmount = $calculator->getItemGiftTax($item);
-                $itemTaxGroups[$item->getId()] = $calculator->getItemTaxGroup($item);
-                $giftTaxTotalAmount = $store->convertPrice($giftBaseTaxTotalAmount);
-                $giftBaseTaxAmount = $this->_getDataHelper()
-                    ->roundUp($giftBaseTaxTotalAmount / $item->getQty(), 2);
-                $giftTaxAmount = $store->convertPrice($giftBaseTaxAmount);
-
-                $amount = $store->convertPrice($baseAmount);
-                $percent = $calculator->getItemRate($item);
-
-                $item->setTaxAmount($amount);
-                $item->setBaseTaxAmount($baseAmount);
-                $item->setTaxPercent($percent);
-
-                $item->setGwBaseTaxAmount($giftBaseTaxAmount);
-                $item->setGwTaxAmount($giftTaxAmount);
-
-                $item->setPriceInclTax($item->getPrice() + ($amount / $item->getQty()));
-                $item->setBasePriceInclTax($item->getBasePrice() + ($baseAmount / $item->getQty()));
-                $item->setRowTotalInclTax($item->getRowTotal() + $amount);
-                $item->setBaseRowTotalInclTax($item->getBaseRowTotal() + $baseAmount);
-
-                if (!$calculator->isProductCalculated($item)) {
-                    $this->_addAmount($amount);
-                    $this->_addBaseAmount($baseAmount);
-                }
-                $this->_addAmount($giftTaxTotalAmount);
-                $this->_addBaseAmount($giftBaseTaxTotalAmount);
-            }
-
-            $this->_applyShippingTax($address, $store, $calculator);
-            $this->_applyGwTax($address, $store, $calculator);
-            $this->_setTaxForItems($address, $itemTaxGroups);
-            $summary = $calculator->getSummary($address);
-            $this->_saveAppliedTax($address, $summary);
+        if ($address->getPostcode() && $address->getPostcode() == '-') {
+            return $this;
         }
+
+        $store = $address->getQuote()->getStore();
+
+        $this->_resetAddressValues($address);
+
+        //Added check for calculating tax for regions filtered in the admin
+        if (!$this->_isAddressActionable($address) || !$address->hasItems()) {
+            return $this;
+        }
+
+        $calculator = $this->_getCalculator($address);
+
+        $itemTaxGroups = array();
+        /** @var Mage_Sales_Model_Quote_Item $item */
+        foreach ($address->getAllItems() as $item) {
+            $item->setAddress($address);
+            $baseAmount = $calculator->getItemTax($item);
+
+            $giftBaseTaxTotalAmount = $calculator->getItemGiftTax($item);
+            $itemTaxGroups[$item->getId()] = $calculator->getItemTaxGroup($item);
+            $giftTaxTotalAmount = $store->convertPrice($giftBaseTaxTotalAmount);
+            $giftBaseTaxAmount = $this->_getDataHelper()
+                ->roundUp($giftBaseTaxTotalAmount / $item->getQty(), 2);
+            $giftTaxAmount = $store->convertPrice($giftBaseTaxAmount);
+
+            $amount = $store->convertPrice($baseAmount);
+            $percent = $calculator->getItemRate($item);
+
+            $item->setTaxAmount($amount);
+            $item->setBaseTaxAmount($baseAmount);
+            $item->setTaxPercent($percent);
+
+            $item->setGwBaseTaxAmount($giftBaseTaxAmount);
+            $item->setGwTaxAmount($giftTaxAmount);
+
+            $item->setPriceInclTax($item->getPrice() + ($amount / $item->getQty()));
+            $item->setBasePriceInclTax($item->getBasePrice() + ($baseAmount / $item->getQty()));
+            $item->setRowTotalInclTax($item->getRowTotal() + $amount);
+            $item->setBaseRowTotalInclTax($item->getBaseRowTotal() + $baseAmount);
+
+            if (!$calculator->isProductCalculated($item)) {
+                $this->_addAmount($amount);
+                $this->_addBaseAmount($baseAmount);
+            }
+            $this->_addAmount($giftTaxTotalAmount);
+            $this->_addBaseAmount($giftBaseTaxTotalAmount);
+        }
+
+        $this->_applyShippingTax($address, $store, $calculator);
+        $this->_applyGwTax($address, $store, $calculator);
+        $this->_setTaxForItems($address, $itemTaxGroups);
+        $summary = $calculator->getSummary($address);
+        $this->_saveAppliedTax($address, $summary);
 
         return $this;
     }
@@ -318,6 +315,25 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
             $this->_addAmount($gwPrintedCardTax);
             $this->_addBaseAmount($baseGwPrintedCardTax);
         }
+
+        return $this;
+    }
+
+    /**
+     * Reset address values
+     *
+     * @param \Mage_Sales_Model_Quote_Address $address
+     * @return $this
+     */
+    protected function _resetAddressValues(Mage_Sales_Model_Quote_Address $address)
+    {
+        $address->setTotalAmount($this->getCode(), 0);
+        $address->setBaseTotalAmount($this->getCode(), 0);
+
+        $address->setTaxAmount(0);
+        $address->setBaseTaxAmount(0);
+        $address->setShippingTaxAmount(0);
+        $address->setBaseShippingTaxAmount(0);
 
         return $this;
     }
