@@ -99,30 +99,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
                 $this->_addBaseAmount($giftBaseTaxTotalAmount);
             }
 
-            if ($address->getAddressType() == Mage_Sales_Model_Quote_Address::TYPE_SHIPPING
-                || $address->getUseForShipping()
-            ) {
-                $shippingItem = new Varien_Object();
-                $shippingItem->setSku(Mage::helper('avatax/config')->getShippingSku($store->getId()));
-                $shippingItem->setProductId(Mage::helper('avatax/config')->getShippingSku($store->getId()));
-                $shippingItem->setAddress($address);
-                $baseShippingTax = $calculator->getItemTax($shippingItem);
-                $shippingTax = $store->convertPrice($baseShippingTax);
-
-                $shippingAmt = $address->getTotalAmount('shipping');
-                $baseShippingAmt = $address->getBaseTotalAmount('shipping');
-
-                $address->setShippingTaxAmount($shippingTax);
-                $address->setBaseShippingTaxAmount($baseShippingTax);
-                $address->setShippingInclTax($shippingAmt + $shippingTax);
-                $address->setBaseShippingInclTax($baseShippingAmt + $baseShippingTax);
-                $address->setShippingTaxable($shippingTax ? $shippingAmt : 0);
-                $address->setBaseShippingTaxable($baseShippingTax ? $baseShippingAmt : 0);
-                $address->setIsShippingInclTax(false);
-
-                $this->_addAmount($shippingTax);
-                $this->_addBaseAmount($baseShippingTax);
-            }
+            $this->_applyShippingTax($address, $store, $calculator);
 
             if ($address->getGwPrice() > 0) {
                 $gwOrderItem = new Varien_Object();
@@ -294,6 +271,54 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
         );
     }
 
+    /**
+     * Apply shipping tax
+     *
+     * @param \Mage_Sales_Model_Quote_Address        $address
+     * @param Mage_Core_Model_Store|int              $store
+     * @param OnePica_AvaTax_Model_Action_Calculator $calculator
+     * @return $this
+     */
+    protected function _applyShippingTax(Mage_Sales_Model_Quote_Address $address, $store, $calculator)
+    {
+        if ($address->getAddressType() == Mage_Sales_Model_Quote_Address::TYPE_SHIPPING
+            || $address->getUseForShipping()
+        ) {
+            $shippingItem = new Varien_Object();
+            $shippingItem->setSku(Mage::helper('avatax/config')->getShippingSku($store->getId()));
+            $shippingItem->setProductId(Mage::helper('avatax/config')->getShippingSku($store->getId()));
+            $shippingItem->setAddress($address);
+            $baseShippingTax = $calculator->getItemTax($shippingItem);
+            $shippingTax = $store->convertPrice($baseShippingTax);
+
+            $shippingAmt = $address->getTotalAmount('shipping');
+            $baseShippingAmt = $address->getBaseTotalAmount('shipping');
+
+            $address->setShippingTaxAmount($shippingTax);
+            $address->setBaseShippingTaxAmount($baseShippingTax);
+            $address->setShippingInclTax($shippingAmt + $shippingTax);
+            $address->setBaseShippingInclTax($baseShippingAmt + $baseShippingTax);
+            $address->setShippingTaxable($shippingTax ? $shippingAmt : 0);
+            $address->setBaseShippingTaxable($baseShippingTax ? $baseShippingAmt : 0);
+            $address->setIsShippingInclTax(false);
+
+            $this->_addAmount($shippingTax);
+            $this->_addBaseAmount($baseShippingTax);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get data helper
+     *
+     * @return \OnePica_AvaTax_Helper_Data
+     */
+    protected function _getDataHelper()
+    {
+        return Mage::helper('avatax');
+    }
+
     /* BELOW ARE MAGE CORE PROPERTIES AND METHODS ADDED FOR OLDER VERSION COMPATABILITY */
 
     /**
@@ -362,15 +387,5 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
         }
 
         return $this->_address;
-    }
-
-    /**
-     * Get data helper
-     *
-     * @return \OnePica_AvaTax_Helper_Data
-     */
-    protected function _getDataHelper()
-    {
-        return Mage::helper('avatax');
     }
 }
