@@ -100,37 +100,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
             }
 
             $this->_applyShippingTax($address, $store, $calculator);
-
-            if ($address->getGwPrice() > 0) {
-                $gwOrderItem = new Varien_Object();
-                $gwOrderItem->setSku(Mage::helper('avatax/config')->getGwOrderSku($store->getId()));
-                $gwOrderItem->setProductId(Mage::helper('avatax/config')->getGwOrderSku($store->getId()));
-                $gwOrderItem->setAddress($address);
-                $baseGwOrderTax = $calculator->getItemTax($gwOrderItem);
-                $gwOrderTax = $store->convertPrice($baseGwOrderTax);
-
-                $address->setGwBaseTaxAmount($baseGwOrderTax);
-                $address->setGwTaxAmount($gwOrderTax);
-
-                $this->_addAmount($gwOrderTax);
-                $this->_addBaseAmount($baseGwOrderTax);
-            }
-
-            if ($address->getGwAddPrintedCard()) {
-                $gwPrintedCardItem = new Varien_Object();
-                $gwPrintedCardItem->setSku(Mage::helper('avatax/config')->getGwPrintedCardSku($store->getId()));
-                $gwPrintedCardItem->setProductId(Mage::helper('avatax/config')->getGwPrintedCardSku($store->getId()));
-                $gwPrintedCardItem->setAddress($address);
-                $baseGwPrintedCardTax = $calculator->getItemTax($gwPrintedCardItem);
-                $gwPrintedCardTax = $store->convertPrice($baseGwPrintedCardTax);
-
-                $address->setGwPrintedCardBaseTaxAmount($baseGwPrintedCardTax);
-                $address->setGwPrintedCardTaxAmount($gwPrintedCardTax);
-
-                $this->_addAmount($gwPrintedCardTax);
-                $this->_addBaseAmount($baseGwPrintedCardTax);
-            }
-
+            $this->_applyGwTax($address, $store, $calculator);
             $this->_setTaxForItems($address, $itemTaxGroups);
             $summary = $calculator->getSummary($address);
             $this->_saveAppliedTax($address, $summary);
@@ -304,6 +274,49 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
 
             $this->_addAmount($shippingTax);
             $this->_addBaseAmount($baseShippingTax);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Apply gift wrapping tax
+     *
+     * @param Mage_Sales_Model_Quote_Address        $address
+     * @param Mage_Core_Model_Store|int              $store
+     * @param OnePica_AvaTax_Model_Action_Calculator $calculator
+     * @return $this
+     */
+    protected function _applyGwTax(Mage_Sales_Model_Quote_Address $address, $store, $calculator)
+    {
+        if ($address->getGwPrice() > 0) {
+            $gwOrderItem = new Varien_Object();
+            $gwOrderItem->setSku(Mage::helper('avatax/config')->getGwOrderSku($store->getId()));
+            $gwOrderItem->setProductId(Mage::helper('avatax/config')->getGwOrderSku($store->getId()));
+            $gwOrderItem->setAddress($address);
+            $baseGwOrderTax = $calculator->getItemTax($gwOrderItem);
+            $gwOrderTax = $store->convertPrice($baseGwOrderTax);
+
+            $address->setGwBaseTaxAmount($baseGwOrderTax);
+            $address->setGwTaxAmount($gwOrderTax);
+
+            $this->_addAmount($gwOrderTax);
+            $this->_addBaseAmount($baseGwOrderTax);
+        }
+
+        if ($address->getGwAddPrintedCard()) {
+            $gwPrintedCardItem = new Varien_Object();
+            $gwPrintedCardItem->setSku(Mage::helper('avatax/config')->getGwPrintedCardSku($store->getId()));
+            $gwPrintedCardItem->setProductId(Mage::helper('avatax/config')->getGwPrintedCardSku($store->getId()));
+            $gwPrintedCardItem->setAddress($address);
+            $baseGwPrintedCardTax = $calculator->getItemTax($gwPrintedCardItem);
+            $gwPrintedCardTax = $store->convertPrice($baseGwPrintedCardTax);
+
+            $address->setGwPrintedCardBaseTaxAmount($baseGwPrintedCardTax);
+            $address->setGwPrintedCardTaxAmount($gwPrintedCardTax);
+
+            $this->_addAmount($gwPrintedCardTax);
+            $this->_addBaseAmount($baseGwPrintedCardTax);
         }
 
         return $this;
