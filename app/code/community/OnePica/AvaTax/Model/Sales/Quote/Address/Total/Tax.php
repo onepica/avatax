@@ -231,7 +231,8 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
             $baseShippingTax = $calculator->getItemTax($shippingItem);
             $shippingTax = $store->convertPrice($baseShippingTax);
 
-            $shippingAmt = $address->getTotalAmount('shipping');
+            $shippingAmt = $calculator->getItemTaxable($shippingItem);
+            $address->setTotalAmount('shipping', $shippingAmt);
             $baseShippingAmt = $address->getBaseTotalAmount('shipping');
 
             $address->setShippingTaxAmount($shippingTax);
