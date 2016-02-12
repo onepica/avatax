@@ -140,11 +140,11 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         if ($makeRequest) {
             $result = $this->_send($quote->getStoreId());
             $this->_rates[$requestKey] = array(
-                'timestamp' => $this->_getDateModel()->timestamp(),
+                'timestamp'  => $this->_getDateModel()->timestamp(),
                 'address_id' => $address->getId(),
-                'summary' => array(),
-                'items' => array(),
-                'gw_items' => array()
+                'summary'    => array(),
+                'items'      => array(),
+                'gw_items'   => array()
             );
 
             //success
@@ -155,8 +155,10 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
                     $id = $this->_getItemIdByLine($ctl);
                     $code = $this->_getTaxArrayCodeByLine($ctl);
                     $this->_rates[$requestKey][$code][$id] = array(
-                        'rate' => ($ctl->getTax() ? $ctl->getRate() : 0) * 100,
-                        'amt' => $ctl->getTax(),
+                        'rate'         => ($ctl->getTax() ? $ctl->getRate() : 0) * 100,
+                        'amt'          => $ctl->getTax(),
+                        'taxable'      => $ctl->getTaxable(),
+                        'tax_included' => $ctl->getTaxIncluded(),
                     );
                 }
 
@@ -164,7 +166,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
                     $this->_rates[$requestKey]['summary'][] = array(
                         'name' => $row->getTaxName(),
                         'rate' => $row->getRate() * 100,
-                        'amt' => $row->getTax()
+                        'amt'  => $row->getTax()
                     );
                 }
                 //failure
@@ -176,6 +178,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         }
 
         $rates = isset($this->_rates[$requestKey]) ? $this->_rates[$requestKey] : array();
+
         return $rates;
     }
 
@@ -389,6 +392,10 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         $line->setAmount($price);
         $line->setDiscounted((float)$item->getDiscountAmount() ? true : false);
 
+        if ($this->_getTaxDataHelper()->priceIncludesTax($item->getStoreId())) {
+            $line->setTaxIncluded(true);
+        }
+
         if ($taxClass) {
             $line->setTaxCode($taxClass);
         }
@@ -478,5 +485,15 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         }
 
         return $result;
+    }
+
+    /**
+     * Get tax data helper
+     *
+     * @return Mage_Tax_Helper_Data
+     */
+    protected function _getTaxDataHelper()
+    {
+        return Mage::helper('tax');
     }
 }

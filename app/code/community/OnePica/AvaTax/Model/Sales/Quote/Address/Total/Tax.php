@@ -308,6 +308,11 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
         $address->setShippingTaxAmount(0);
         $address->setBaseShippingTaxAmount(0);
 
+        $address->setSubtotal(0);
+        $address->setSubtotalInclTax(0);
+        $address->setTotalAmount('subtotal', 0);
+        $address->setBaseTotalAmount('subtotal', 0);
+
         return $this;
     }
 
@@ -343,10 +348,23 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
             $item->setGwBaseTaxAmount($giftBaseTaxAmount);
             $item->setGwTaxAmount($giftTaxAmount);
 
-            $item->setPriceInclTax($item->getPrice() + ($amount / $item->getQty()));
-            $item->setBasePriceInclTax($item->getBasePrice() + ($baseAmount / $item->getQty()));
-            $item->setRowTotalInclTax($item->getRowTotal() + $amount);
-            $item->setBaseRowTotalInclTax($item->getBaseRowTotal() + $baseAmount);
+            if ($this->_getTaxDataHelper()->priceIncludesTax($store)) {
+                $item->setPrice($item->getPrice() - ($amount / $item->getQty()));
+                $item->setBasePrice($item->getBasePrice() - ($baseAmount / $item->getQty()));
+                $item->setRowTax($amount);
+                $item->setBaseRowTax($baseAmount);
+                $item->calcRowTotal();
+
+                $item->setPriceInclTax($item->getPrice() + ($amount / $item->getQty()));
+                $item->setBasePriceInclTax($item->getBasePrice() + ($baseAmount / $item->getQty()));
+                $item->setRowTotalInclTax($item->getRowTotal() + $amount);
+                $item->setBaseRowTotalInclTax($item->getBaseRowTotal() + $baseAmount);
+            } else {
+                $item->setPriceInclTax($item->getPrice() + ($amount / $item->getQty()));
+                $item->setBasePriceInclTax($item->getBasePrice() + ($baseAmount / $item->getQty()));
+                $item->setRowTotalInclTax($item->getRowTotal() + $amount);
+                $item->setBaseRowTotalInclTax($item->getBaseRowTotal() + $baseAmount);
+            }
 
             if (!$calculator->isProductCalculated($item)) {
                 $this->_addAmount($amount);
@@ -355,9 +373,47 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
 
             $this->_addAmount($giftTaxTotalAmount);
             $this->_addBaseAmount($giftBaseTaxTotalAmount);
+            $this->_addSubtotalAmount($address, $item);
         }
 
         return $this;
+    }
+
+    /**
+     * Add row total item amount to subtotal
+     *
+     * @param   Mage_Sales_Model_Quote_Address $address
+     * @param   Mage_Sales_Model_Quote_Item    $item
+     * @return  $this
+     */
+    protected function _addSubtotalAmount(Mage_Sales_Model_Quote_Address $address, $item)
+    {
+        if ($this->_getTaxDataHelper()->priceIncludesTax($item->getStoreId())) {
+            $subTotal = $item->getRowTotalInclTax() - $item->getRowTax();
+            $baseSubTotal = $item->getBaseRowTotalInclTax() - $item->getBaseRowTax();
+            $address->setTotalAmount('subtotal', $address->getTotalAmount('subtotal') + $subTotal);
+            $address->setBaseTotalAmount('subtotal', $address->getBaseTotalAmount('subtotal') + $baseSubTotal);
+        } else {
+            $address->setTotalAmount('subtotal', $address->getTotalAmount('subtotal') + $item->getRowTotal());
+            $address->setBaseTotalAmount('subtotal',
+                $address->getBaseTotalAmount('subtotal') + $item->getBaseRowTotal()
+            );
+        }
+
+        $address->setSubtotalInclTax($address->getSubtotalInclTax() + $item->getRowTotalInclTax());
+        $address->setBaseSubtotalInclTax($address->getBaseSubtotalInclTax() + $item->getBaseRowTotalInclTax());
+
+        return $this;
+    }
+
+    /**
+     * Get tax data helper
+     *
+     * @return Mage_Tax_Helper_Data
+     */
+    protected function _getTaxDataHelper()
+    {
+        return Mage::helper('tax');
     }
 
     /**
