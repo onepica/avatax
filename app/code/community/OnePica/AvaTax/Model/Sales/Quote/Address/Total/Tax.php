@@ -257,7 +257,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
     /**
      * Apply gift wrapping tax
      *
-     * @param Mage_Sales_Model_Quote_Address        $address
+     * @param Mage_Sales_Model_Quote_Address         $address
      * @param Mage_Core_Model_Store|int              $store
      * @param OnePica_AvaTax_Model_Action_Calculator $calculator
      * @return $this
@@ -272,8 +272,17 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
             $baseGwOrderTax = $calculator->getItemTax($gwOrderItem);
             $gwOrderTax = $store->convertPrice($baseGwOrderTax);
 
+            $gwBasePriceAmount = $calculator->getItemTaxable($gwOrderItem);
+            $gwPriceAmount = $store->convertPrice($gwBasePriceAmount);
+            $address->setGwBasePrice($gwBasePriceAmount);
+            $address->setGwPrice($gwPriceAmount);
             $address->setGwBaseTaxAmount($baseGwOrderTax);
             $address->setGwTaxAmount($gwOrderTax);
+
+            if ($this->_getTaxDataHelper()->priceIncludesTax($store)) {
+                $address->setGrandTotal($address->getGrandTotal() - $gwOrderTax);
+                $address->setBaseGrandTotal($address->getBaseGrandTotal() - $baseGwOrderTax);
+            }
 
             $this->_addAmount($gwOrderTax);
             $this->_addBaseAmount($baseGwOrderTax);
@@ -284,11 +293,21 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
             $gwPrintedCardItem->setSku(Mage::helper('avatax/config')->getGwPrintedCardSku($store->getId()));
             $gwPrintedCardItem->setProductId(Mage::helper('avatax/config')->getGwPrintedCardSku($store->getId()));
             $gwPrintedCardItem->setAddress($address);
+
             $baseGwPrintedCardTax = $calculator->getItemTax($gwPrintedCardItem);
             $gwPrintedCardTax = $store->convertPrice($baseGwPrintedCardTax);
-
             $address->setGwPrintedCardBaseTaxAmount($baseGwPrintedCardTax);
             $address->setGwPrintedCardTaxAmount($gwPrintedCardTax);
+
+            $baseGwPrintedCardAmount = $calculator->getItemTaxable($gwPrintedCardItem);
+            $gwPrintedCardAmount = $baseGwPrintedCardAmount;
+            $address->setGwCardPrice($gwPrintedCardAmount);
+            $address->setGwCardBasePrice($baseGwPrintedCardAmount);
+
+            if ($this->_getTaxDataHelper()->priceIncludesTax($store)) {
+                $address->setGrandTotal($address->getGrandTotal() - $gwPrintedCardTax);
+                $address->setBaseGrandTotal($address->getBaseGrandTotal() - $baseGwPrintedCardTax);
+            }
 
             $this->_addAmount($gwPrintedCardTax);
             $this->_addBaseAmount($baseGwPrintedCardTax);
@@ -317,6 +336,9 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
         $address->setSubtotalInclTax(0);
         $address->setTotalAmount('subtotal', 0);
         $address->setBaseTotalAmount('subtotal', 0);
+
+        $address->setGwItemsTaxAmount(0);
+        $address->setGwItemsBaseTaxAmount(0);
 
         return $this;
     }
@@ -353,12 +375,23 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
             $item->setGwBaseTaxAmount($giftBaseTaxAmount);
             $item->setGwTaxAmount($giftTaxAmount);
 
+            $address->setGwItemsTaxAmount($address->getGwItemsTaxAmount() + $giftTaxTotalAmount);
+            $address->setGwItemsBaseTaxAmount($address->getGwItemsBaseTaxAmount() + $giftBaseTaxTotalAmount);
+
             if ($this->_getTaxDataHelper()->priceIncludesTax($store)) {
                 $item->setPrice($item->getPrice() - ($amount / $item->getQty()));
-                $item->setBasePrice($item->getBasePrice() - ($baseAmount / $item->getQty()));
+                $item->setBasePrice($store->convertPrice($item->getPrice()));
                 $item->setRowTax($amount);
                 $item->setBaseRowTax($baseAmount);
                 $item->calcRowTotal();
+
+                $address->setGwItemsBasePrice($address->getGwItemsBasePrice() - $giftBaseTaxTotalAmount);
+                $address->setGwItemsPrice($address->getGwItemsPrice() - $giftTaxTotalAmount);
+                $item->setGwBasePrice($address->getGwItemsBasePrice() / $item->getQty());
+                $item->setGwPrice($address->getGwItemsPrice() / $item->getQty());
+
+                $address->setGrandTotal($address->getGrandTotal() - $giftTaxAmount);
+                $address->setBaseGrandTotal($address->getBaseGrandTotal() - $giftBaseTaxAmount);
             }
 
             $item->setPriceInclTax($item->getPrice() + ($amount / $item->getQty()));
@@ -370,9 +403,9 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
                 $this->_addAmount($amount);
                 $this->_addBaseAmount($baseAmount);
             }
-
             $this->_addAmount($giftTaxTotalAmount);
             $this->_addBaseAmount($giftBaseTaxTotalAmount);
+
             $this->_addSubtotalAmount($address, $item);
         }
 

@@ -273,6 +273,10 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         $line->setAmount($gwOrderAmount);
         $line->setDiscounted(false);
 
+        if ($this->_getTaxDataHelper()->priceIncludesTax($storeId)) {
+            $line->setTaxIncluded(true);
+        }
+
         $this->_lines[$lineNumber] = $line;
         $this->_request->setLines($this->_lines);
         $this->_lineToLineId[$lineNumber] = $this->_getConfigHelper()->getGwOrderSku($storeId);
@@ -304,6 +308,10 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         $line->setQty($item->getQty());
         $line->setAmount($gwItemsAmount);
         $line->setDiscounted(false);
+
+        if ($this->_getTaxDataHelper()->priceIncludesTax($storeId)) {
+            $line->setTaxIncluded(true);
+        }
 
         $this->_lines[$lineNumber] = $line;
         $this->_request->setLines($this->_lines);
@@ -338,6 +346,10 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         $line->setQty(1);
         $line->setAmount($gwPrintedCardAmount);
         $line->setDiscounted(false);
+
+        if ($this->_getTaxDataHelper()->priceIncludesTax($storeId)) {
+            $line->setTaxIncluded(true);
+        }
 
         $this->_lines[$lineNumber] = $line;
         $this->_request->setLines($this->_lines);
