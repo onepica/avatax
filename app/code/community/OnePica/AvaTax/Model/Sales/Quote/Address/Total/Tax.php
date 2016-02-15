@@ -359,17 +359,12 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
                 $item->setRowTax($amount);
                 $item->setBaseRowTax($baseAmount);
                 $item->calcRowTotal();
-
-                $item->setPriceInclTax($item->getPrice() + ($amount / $item->getQty()));
-                $item->setBasePriceInclTax($item->getBasePrice() + ($baseAmount / $item->getQty()));
-                $item->setRowTotalInclTax($item->getRowTotal() + $amount);
-                $item->setBaseRowTotalInclTax($item->getBaseRowTotal() + $baseAmount);
-            } else {
-                $item->setPriceInclTax($item->getPrice() + ($amount / $item->getQty()));
-                $item->setBasePriceInclTax($item->getBasePrice() + ($baseAmount / $item->getQty()));
-                $item->setRowTotalInclTax($item->getRowTotal() + $amount);
-                $item->setBaseRowTotalInclTax($item->getBaseRowTotal() + $baseAmount);
             }
+
+            $item->setPriceInclTax($item->getPrice() + ($amount / $item->getQty()));
+            $item->setBasePriceInclTax($item->getBasePrice() + ($baseAmount / $item->getQty()));
+            $item->setRowTotalInclTax($item->getRowTotal() + $amount);
+            $item->setBaseRowTotalInclTax($item->getBaseRowTotal() + $baseAmount);
 
             if (!$calculator->isProductCalculated($item)) {
                 $this->_addAmount($amount);
