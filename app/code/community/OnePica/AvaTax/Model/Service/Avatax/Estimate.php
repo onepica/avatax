@@ -217,7 +217,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
     /**
      * Adds shipping cost to request as item
      *
-     * @param Mage_Sales_Model_Quote_Address
+     * @param Mage_Sales_Model_Quote_Address $address
      * @return int
      */
     protected function _addShipping($address)
@@ -381,7 +381,12 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         }
         $product = $this->_getProductByProductId($item->getProductId());
         $taxClass = $this->_getTaxClassCodeByProduct($product);
-        $price = $item->getBaseRowTotal() - $item->getBaseDiscountAmount();
+        $price = $item->getBaseRowTotal();
+
+        if ($this->_getTaxDataHelper()->applyTaxAfterDiscount()) {
+            $price = $item->getBaseRowTotal() - $item->getBaseDiscountAmount();
+        }
+
         $lineNumber = count($this->_lines);
         $line = new Line();
         $line->setNo($lineNumber);
@@ -394,7 +399,9 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         $line->setDescription($item->getName());
         $line->setQty($item->getQty());
         $line->setAmount($price);
-        $line->setDiscounted((float)$item->getDiscountAmount() ? true : false);
+        $line->setDiscounted(
+            (float)$item->getDiscountAmount() && $this->_getTaxDataHelper()->applyTaxAfterDiscount()
+        );
 
         if ($this->_getTaxDataHelper()->priceIncludesTax($item->getStoreId())) {
             $line->setTaxIncluded(true);
