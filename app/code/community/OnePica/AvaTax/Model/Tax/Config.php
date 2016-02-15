@@ -34,6 +34,10 @@ class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
     public function discountTax($store = null)
     {
         if ($this->_getDataHelper()->isServiceEnabled($store)) {
+            if ($this->_getTaxDataHelper()->priceIncludesTax($store)) {
+                return true;
+            }
+
             return false;
         }
 
@@ -42,7 +46,6 @@ class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
 
     /**
      * Get product price display type
-     *
      *  1 - Excluding tax
      *  2 - Including tax
      *  3 - Both
@@ -52,11 +55,15 @@ class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
      */
     public function getPriceDisplayType($store = null)
     {
-        if ($this->_getDataHelper()->isServiceEnabled($store) && $this->_getTaxDataHelper()->priceIncludesTax($store)) {
-            return Mage_Tax_Model_Config::DISPLAY_TYPE_INCLUDING_TAX;
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
+            if ($this->_getTaxDataHelper()->priceIncludesTax($store)) {
+                return Mage_Tax_Model_Config::DISPLAY_TYPE_INCLUDING_TAX;
+            }
+
+            return Mage_Tax_Model_Config::DISPLAY_TYPE_EXCLUDING_TAX;
         }
 
-        return (int)$this->_getStoreConfig(self::CONFIG_XML_PATH_PRICE_DISPLAY_TYPE, $store);
+        return parent::getPriceDisplayType($store);
     }
 
     /**
@@ -67,13 +74,15 @@ class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
      */
     public function getShippingPriceDisplayType($store = null)
     {
-        if ($this->_getDataHelper()->isServiceEnabled($store)
-            && $this->_getTaxDataHelper()->shippingPriceIncludesTax($store)
-        ) {
-            return Mage_Tax_Model_Config::DISPLAY_TYPE_INCLUDING_TAX;
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
+            if ($this->_getTaxDataHelper()->shippingPriceIncludesTax($store)) {
+                return Mage_Tax_Model_Config::DISPLAY_TYPE_INCLUDING_TAX;
+            }
+
+            return Mage_Tax_Model_Config::DISPLAY_TYPE_EXCLUDING_TAX;
         }
 
-        return (int)$this->_getStoreConfig(self::CONFIG_XML_PATH_DISPLAY_SHIPPING, $store);
+        return parent::getShippingPriceDisplayType($store);
     }
 
     /**
@@ -84,11 +93,34 @@ class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
      */
     public function crossBorderTradeEnabled($store = null)
     {
-        if ($this->_getDataHelper()->isServiceEnabled($store) && $this->_getTaxDataHelper()->priceIncludesTax($store)) {
-            return true;
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
+            if ($this->_getTaxDataHelper()->priceIncludesTax($store)) {
+                return true;
+            }
+
+            return false;
         }
 
-        return $this->_getStoreConfig(self::CONFIG_XML_PATH_CROSS_BORDER_TRADE_ENABLED, $store);
+        return parent::crossBorderTradeEnabled($store);
+    }
+
+    /**
+     * Check if shipping prices include tax
+     *
+     * @param Mage_Core_Model_Store|int $store
+     * @return bool
+     */
+    public function shippingPriceIncludesTax($store = null)
+    {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
+            if ($this->_getTaxDataHelper()->priceIncludesTax($store)) {
+                return true;
+            }
+
+            return false;
+        }
+
+        return parent::shippingPriceIncludesTax($store);
     }
 
     /**
