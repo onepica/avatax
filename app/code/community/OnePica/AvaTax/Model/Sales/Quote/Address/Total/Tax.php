@@ -390,8 +390,8 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
                 $item->setGwBasePrice($address->getGwItemsBasePrice() / $item->getQty());
                 $item->setGwPrice($address->getGwItemsPrice() / $item->getQty());
 
-                $address->setGrandTotal($address->getGrandTotal() - $giftTaxAmount);
-                $address->setBaseGrandTotal($address->getBaseGrandTotal() - $giftBaseTaxAmount);
+                $address->setGrandTotal($address->getGrandTotal() - $giftTaxTotalAmount);
+                $address->setBaseGrandTotal($address->getBaseGrandTotal() - $giftBaseTaxTotalAmount);
             }
 
             $item->setPriceInclTax($item->getPrice() + ($amount / $item->getQty()));
