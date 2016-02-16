@@ -383,7 +383,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
                 $item->setBasePrice($store->convertPrice($item->getPrice()));
                 $item->setRowTax($amount);
                 $item->setBaseRowTax($baseAmount);
-                $item->calcRowTotal();
+                $this->_calcItemRowTotal($item);
 
                 $address->setGwItemsBasePrice($address->getGwItemsBasePrice() - $giftBaseTaxTotalAmount);
                 $address->setGwItemsPrice($address->getGwItemsPrice() - $giftTaxTotalAmount);
@@ -435,6 +435,24 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
 
         $address->setSubtotalInclTax($address->getSubtotalInclTax() + $item->getRowTotalInclTax());
         $address->setBaseSubtotalInclTax($address->getBaseSubtotalInclTax() + $item->getBaseRowTotalInclTax());
+
+        return $this;
+    }
+
+    /**
+     * Calculate item row total
+     *
+     * @param Mage_Sales_Model_Quote_Item $item
+     * @return $this
+     * @see Mage_Sales_Model_Quote_Item::calcRowTotal()
+     */
+    protected function _calcItemRowTotal($item)
+    {
+        $qty = $item->getTotalQty();
+        $total = $this->_getDataHelper()->roundUp($item->getCalculationPriceOriginal(), 4) * $qty;
+        $baseTotal = $this->_getDataHelper()->roundUp($item->getBaseCalculationPriceOriginal(), 4) * $qty;
+        $item->setRowTotal($this->_getDataHelper()->roundUp($total, 4));
+        $item->setBaseRowTotal($this->_getDataHelper()->roundUp($baseTotal, 4));
 
         return $this;
     }
