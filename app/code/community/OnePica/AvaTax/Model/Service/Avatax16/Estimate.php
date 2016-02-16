@@ -199,7 +199,8 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
      * Makes a Line object from a product item object
      *
      * @param Varien_Object|Mage_Sales_Model_Quote_Item $item
-     * @return int|bool
+     * @return bool|int
+     * @throws \OnePica_AvaTax_Exception
      */
     protected function _newLine($item)
     {
@@ -224,6 +225,10 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         $line->setlineAmount($price);
         $line->setItemDescription($item->getName());
         $line->setDiscounted((float)$item->getDiscountAmount() ? 'true' : 'false');
+
+        if ($this->_getTaxDataHelper()->priceIncludesTax($item->getStoreId())) {
+            throw new OnePica_AvaTax_Exception('Prices include tax for this API not implemented.');
+        }
 
         if ($taxClass) {
             $line->setAvalaraGoodsAndServicesType($taxClass);
@@ -672,5 +677,15 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
     protected function _calculateRate($tax, $amount)
     {
         return $this->_getHelper()->roundUp(($tax / $amount) * 100, 2);
+    }
+
+    /**
+     * Get tax data helper
+     *
+     * @return Mage_Tax_Helper_Data
+     */
+    protected function _getTaxDataHelper()
+    {
+        return Mage::helper('tax');
     }
 }
