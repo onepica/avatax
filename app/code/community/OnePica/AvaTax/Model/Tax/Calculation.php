@@ -26,7 +26,7 @@ class OnePica_AvaTax_Model_Tax_Calculation extends Mage_Tax_Model_Calculation
      */
     public function getRate($request)
     {
-        if ($this->_getDataHelper()->isServiceEnabled($request->getStore()->getStoreId())) {
+        if ($this->_getDataHelper()->isServiceEnabled($this->_getStore($request))) {
             return 0;
         }
 
@@ -41,5 +41,21 @@ class OnePica_AvaTax_Model_Tax_Calculation extends Mage_Tax_Model_Calculation
     protected function _getDataHelper()
     {
         return Mage::helper('avatax');
+    }
+
+    /**
+     * Get store
+     *
+     * @param Varien_Object $request
+     * @return \Mage_Core_Model_Store
+     */
+    protected function _getStore($request)
+    {
+        $store = Mage::app()->getStore();
+        if ($request->getStore() !== null) {
+            $store = $request->getStore();
+        }
+
+        return $store;
     }
 }
