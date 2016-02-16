@@ -25,6 +25,13 @@
 class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Model_Quote_Address_Total_Abstract
 {
     /**
+     * Item tax groups
+     *
+     * @var array
+     */
+    protected $_itemTaxGroups = array();
+
+    /**
      * Class constructor
      */
     public function __construct()
@@ -46,118 +53,28 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
         $this->_setAddress($address);
         parent::collect($address);
 
-        if ($address->getPostcode() && $address->getPostcode() != '-') {
-            $store = $address->getQuote()->getStore();
-
-            $address->setTotalAmount($this->getCode(), 0);
-            $address->setBaseTotalAmount($this->getCode(), 0);
-
-            $address->setTaxAmount(0);
-            $address->setBaseTaxAmount(0);
-            $address->setShippingTaxAmount(0);
-            $address->setBaseShippingTaxAmount(0);
-
-            //Added check for calculating tax for regions filtered in the admin
-            if (!$this->_isAddressActionable($address) || !$address->hasItems()) {
-                return $this;
-            }
-            $calculator = $this->_getCalculator($address);
-
-            $itemTaxGroups = array();
-            /** @var Mage_Sales_Model_Quote_Item $item */
-            foreach ($address->getAllItems() as $item) {
-                $item->setAddress($address);
-                $baseAmount = $calculator->getItemTax($item);
-
-                $giftBaseTaxTotalAmount = $calculator->getItemGiftTax($item);
-                $itemTaxGroups[$item->getId()] = $calculator->getItemTaxGroup($item);
-                $giftTaxTotalAmount = $store->convertPrice($giftBaseTaxTotalAmount);
-                $giftBaseTaxAmount = $this->_getDataHelper()
-                    ->roundUp($giftBaseTaxTotalAmount / $item->getQty(), 2);
-                $giftTaxAmount = $store->convertPrice($giftBaseTaxAmount);
-
-                $amount = $store->convertPrice($baseAmount);
-                $percent = $calculator->getItemRate($item);
-
-                $item->setTaxAmount($amount);
-                $item->setBaseTaxAmount($baseAmount);
-                $item->setTaxPercent($percent);
-
-                $item->setGwBaseTaxAmount($giftBaseTaxAmount);
-                $item->setGwTaxAmount($giftTaxAmount);
-
-                $item->setPriceInclTax($item->getPrice() + ($amount / $item->getQty()));
-                $item->setBasePriceInclTax($item->getBasePrice() + ($baseAmount / $item->getQty()));
-                $item->setRowTotalInclTax($item->getRowTotal() + $amount);
-                $item->setBaseRowTotalInclTax($item->getBaseRowTotal() + $baseAmount);
-
-                if (!$calculator->isProductCalculated($item)) {
-                    $this->_addAmount($amount);
-                    $this->_addBaseAmount($baseAmount);
-                }
-                $this->_addAmount($giftTaxTotalAmount);
-                $this->_addBaseAmount($giftBaseTaxTotalAmount);
-            }
-
-            if ($address->getAddressType() == Mage_Sales_Model_Quote_Address::TYPE_SHIPPING
-                || $address->getUseForShipping()
-            ) {
-                $shippingItem = new Varien_Object();
-                $shippingItem->setSku(Mage::helper('avatax/config')->getShippingSku($store->getId()));
-                $shippingItem->setProductId(Mage::helper('avatax/config')->getShippingSku($store->getId()));
-                $shippingItem->setAddress($address);
-                $baseShippingTax = $calculator->getItemTax($shippingItem);
-                $shippingTax = $store->convertPrice($baseShippingTax);
-
-                $shippingAmt = $address->getTotalAmount('shipping');
-                $baseShippingAmt = $address->getBaseTotalAmount('shipping');
-
-                $address->setShippingTaxAmount($shippingTax);
-                $address->setBaseShippingTaxAmount($baseShippingTax);
-                $address->setShippingInclTax($shippingAmt + $shippingTax);
-                $address->setBaseShippingInclTax($baseShippingAmt + $baseShippingTax);
-                $address->setShippingTaxable($shippingTax ? $shippingAmt : 0);
-                $address->setBaseShippingTaxable($baseShippingTax ? $baseShippingAmt : 0);
-                $address->setIsShippingInclTax(false);
-
-                $this->_addAmount($shippingTax);
-                $this->_addBaseAmount($baseShippingTax);
-            }
-
-            if ($address->getGwPrice() > 0) {
-                $gwOrderItem = new Varien_Object();
-                $gwOrderItem->setSku(Mage::helper('avatax/config')->getGwOrderSku($store->getId()));
-                $gwOrderItem->setProductId(Mage::helper('avatax/config')->getGwOrderSku($store->getId()));
-                $gwOrderItem->setAddress($address);
-                $baseGwOrderTax = $calculator->getItemTax($gwOrderItem);
-                $gwOrderTax = $store->convertPrice($baseGwOrderTax);
-
-                $address->setGwBaseTaxAmount($baseGwOrderTax);
-                $address->setGwTaxAmount($gwOrderTax);
-
-                $this->_addAmount($gwOrderTax);
-                $this->_addBaseAmount($baseGwOrderTax);
-            }
-
-            if ($address->getGwAddPrintedCard()) {
-                $gwPrintedCardItem = new Varien_Object();
-                $gwPrintedCardItem->setSku(Mage::helper('avatax/config')->getGwPrintedCardSku($store->getId()));
-                $gwPrintedCardItem->setProductId(Mage::helper('avatax/config')->getGwPrintedCardSku($store->getId()));
-                $gwPrintedCardItem->setAddress($address);
-                $baseGwPrintedCardTax = $calculator->getItemTax($gwPrintedCardItem);
-                $gwPrintedCardTax = $store->convertPrice($baseGwPrintedCardTax);
-
-                $address->setGwPrintedCardBaseTaxAmount($baseGwPrintedCardTax);
-                $address->setGwPrintedCardTaxAmount($gwPrintedCardTax);
-
-                $this->_addAmount($gwPrintedCardTax);
-                $this->_addBaseAmount($baseGwPrintedCardTax);
-            }
-
-            $this->_setTaxForItems($address, $itemTaxGroups);
-            $summary = $calculator->getSummary($address);
-            $this->_saveAppliedTax($address, $summary);
+        if ($address->getPostcode() && $address->getPostcode() == '-') {
+            return $this;
         }
+
+        $store = $address->getQuote()->getStore();
+
+        //Added check for calculating tax for regions filtered in the admin
+        if (!$this->_isAddressActionable($address) || !$address->hasItems()) {
+            return $this;
+        }
+
+        $this->_resetAddressValues($address);
+
+        $calculator = $this->_getCalculator($address);
+
+        $this->_itemTaxGroups = array();
+        $this->_applyItemTax($address, $calculator, $store);
+        $this->_applyShippingTax($address, $store, $calculator);
+        $this->_applyGwTax($address, $store, $calculator);
+        $this->_setTaxForItems($address, $this->_itemTaxGroups);
+        $summary = $calculator->getSummary($address);
+        $this->_saveAppliedTax($address, $summary);
 
         return $this;
     }
@@ -294,6 +211,272 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
         );
     }
 
+    /**
+     * Apply shipping tax
+     *
+     * @param \Mage_Sales_Model_Quote_Address        $address
+     * @param Mage_Core_Model_Store|int              $store
+     * @param OnePica_AvaTax_Model_Action_Calculator $calculator
+     * @return $this
+     */
+    protected function _applyShippingTax(Mage_Sales_Model_Quote_Address $address, $store, $calculator)
+    {
+        if ($address->getAddressType() == Mage_Sales_Model_Quote_Address::TYPE_SHIPPING
+            || $address->getUseForShipping()
+        ) {
+            $shippingItem = new Varien_Object();
+            $shippingItem->setSku(Mage::helper('avatax/config')->getShippingSku($store->getId()));
+            $shippingItem->setProductId(Mage::helper('avatax/config')->getShippingSku($store->getId()));
+            $shippingItem->setAddress($address);
+            $baseShippingTax = $calculator->getItemTax($shippingItem);
+            $shippingTax = $store->convertPrice($baseShippingTax);
+
+            $shippingAmt = $calculator->getItemTaxable($shippingItem);
+            $baseShippingAmt = $store->convertPrice($shippingAmt);
+
+            $address->setTotalAmount('shipping', $shippingAmt);
+            $address->setBaseTotalAmount('shipping', $baseShippingAmt);
+            $baseShippingAmt = $address->getBaseTotalAmount('shipping');
+
+            $address->setShippingTaxAmount($shippingTax);
+            $address->setBaseShippingTaxAmount($baseShippingTax);
+            $address->setShippingInclTax($shippingAmt + $shippingTax);
+
+            $address->setBaseShippingInclTax($baseShippingAmt + $baseShippingTax);
+            $address->setShippingTaxable($shippingTax ? $shippingAmt : 0);
+            $address->setBaseShippingTaxable($baseShippingTax ? $baseShippingAmt : 0);
+            $address->setIsShippingInclTax(false);
+
+            $this->_addAmount($shippingTax);
+            $this->_addBaseAmount($baseShippingTax);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Apply gift wrapping tax
+     *
+     * @param Mage_Sales_Model_Quote_Address         $address
+     * @param Mage_Core_Model_Store|int              $store
+     * @param OnePica_AvaTax_Model_Action_Calculator $calculator
+     * @return $this
+     */
+    protected function _applyGwTax(Mage_Sales_Model_Quote_Address $address, $store, $calculator)
+    {
+        if ($address->getGwPrice() > 0) {
+            $gwOrderItem = new Varien_Object();
+            $gwOrderItem->setSku(Mage::helper('avatax/config')->getGwOrderSku($store->getId()));
+            $gwOrderItem->setProductId(Mage::helper('avatax/config')->getGwOrderSku($store->getId()));
+            $gwOrderItem->setAddress($address);
+            $baseGwOrderTax = $calculator->getItemTax($gwOrderItem);
+            $gwOrderTax = $store->convertPrice($baseGwOrderTax);
+
+            $gwBasePriceAmount = $calculator->getItemTaxable($gwOrderItem);
+            $gwPriceAmount = $store->convertPrice($gwBasePriceAmount);
+            $address->setGwBasePrice($gwBasePriceAmount);
+            $address->setGwPrice($gwPriceAmount);
+            $address->setGwBaseTaxAmount($baseGwOrderTax);
+            $address->setGwTaxAmount($gwOrderTax);
+
+            if ($this->_getTaxDataHelper()->priceIncludesTax($store)) {
+                $address->setGrandTotal($address->getGrandTotal() - $gwOrderTax);
+                $address->setBaseGrandTotal($address->getBaseGrandTotal() - $baseGwOrderTax);
+            }
+
+            $this->_addAmount($gwOrderTax);
+            $this->_addBaseAmount($baseGwOrderTax);
+        }
+
+        if ($address->getGwAddPrintedCard()) {
+            $gwPrintedCardItem = new Varien_Object();
+            $gwPrintedCardItem->setSku(Mage::helper('avatax/config')->getGwPrintedCardSku($store->getId()));
+            $gwPrintedCardItem->setProductId(Mage::helper('avatax/config')->getGwPrintedCardSku($store->getId()));
+            $gwPrintedCardItem->setAddress($address);
+
+            $baseGwPrintedCardTax = $calculator->getItemTax($gwPrintedCardItem);
+            $gwPrintedCardTax = $store->convertPrice($baseGwPrintedCardTax);
+            $address->setGwPrintedCardBaseTaxAmount($baseGwPrintedCardTax);
+            $address->setGwPrintedCardTaxAmount($gwPrintedCardTax);
+
+            $baseGwPrintedCardAmount = $calculator->getItemTaxable($gwPrintedCardItem);
+            $gwPrintedCardAmount = $baseGwPrintedCardAmount;
+            $address->setGwCardPrice($gwPrintedCardAmount);
+            $address->setGwCardBasePrice($baseGwPrintedCardAmount);
+
+            if ($this->_getTaxDataHelper()->priceIncludesTax($store)) {
+                $address->setGrandTotal($address->getGrandTotal() - $gwPrintedCardTax);
+                $address->setBaseGrandTotal($address->getBaseGrandTotal() - $baseGwPrintedCardTax);
+            }
+
+            $this->_addAmount($gwPrintedCardTax);
+            $this->_addBaseAmount($baseGwPrintedCardTax);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Reset address values
+     *
+     * @param \Mage_Sales_Model_Quote_Address $address
+     * @return $this
+     */
+    protected function _resetAddressValues(Mage_Sales_Model_Quote_Address $address)
+    {
+        $address->setTotalAmount($this->getCode(), 0);
+        $address->setBaseTotalAmount($this->getCode(), 0);
+
+        $address->setTaxAmount(0);
+        $address->setBaseTaxAmount(0);
+        $address->setShippingTaxAmount(0);
+        $address->setBaseShippingTaxAmount(0);
+
+        $address->setSubtotal(0);
+        $address->setSubtotalInclTax(0);
+        $address->setTotalAmount('subtotal', 0);
+        $address->setBaseTotalAmount('subtotal', 0);
+
+        $address->setGwItemsTaxAmount(0);
+        $address->setGwItemsBaseTaxAmount(0);
+
+        return $this;
+    }
+
+    /**
+     * Apply item tax
+     *
+     * @param Mage_Sales_Model_Quote_Address         $address
+     * @param Mage_Core_Model_Store|int              $store
+     * @param OnePica_AvaTax_Model_Action_Calculator $calculator
+     * @return $this
+     */
+    protected function _applyItemTax(Mage_Sales_Model_Quote_Address $address, $calculator, $store)
+    {
+        /** @var Mage_Sales_Model_Quote_Item $item */
+        foreach ($address->getAllItems() as $item) {
+            $item->setAddress($address);
+            $baseAmount = $calculator->getItemTax($item);
+
+            $giftBaseTaxTotalAmount = $calculator->getItemGiftTax($item);
+            $this->_itemTaxGroups[$item->getId()] = $calculator->getItemTaxGroup($item);
+            $giftTaxTotalAmount = $store->convertPrice($giftBaseTaxTotalAmount);
+            $giftBaseTaxAmount = $this->_getDataHelper()
+                ->roundUp($giftBaseTaxTotalAmount / $item->getQty(), 4);
+            $giftTaxAmount = $store->convertPrice($giftBaseTaxAmount);
+
+            $amount = $store->convertPrice($baseAmount);
+            $percent = $calculator->getItemRate($item);
+
+            $item->setTaxAmount($amount);
+            $item->setBaseTaxAmount($baseAmount);
+            $item->setTaxPercent($percent);
+
+            $item->setGwBaseTaxAmount($giftBaseTaxAmount);
+            $item->setGwTaxAmount($giftTaxAmount);
+
+            $address->setGwItemsTaxAmount($address->getGwItemsTaxAmount() + $giftTaxTotalAmount);
+            $address->setGwItemsBaseTaxAmount($address->getGwItemsBaseTaxAmount() + $giftBaseTaxTotalAmount);
+
+            if ($this->_getTaxDataHelper()->priceIncludesTax($store)) {
+                $item->setPrice($item->getPrice() - ($amount / $item->getQty()));
+                $item->setBasePrice($store->convertPrice($item->getPrice()));
+                $item->setRowTax($amount);
+                $item->setBaseRowTax($baseAmount);
+                $this->_calcItemRowTotal($item);
+
+                $address->setGwItemsBasePrice($address->getGwItemsBasePrice() - $giftBaseTaxTotalAmount);
+                $address->setGwItemsPrice($address->getGwItemsPrice() - $giftTaxTotalAmount);
+                $item->setGwBasePrice($address->getGwItemsBasePrice() / $item->getQty());
+                $item->setGwPrice($address->getGwItemsPrice() / $item->getQty());
+
+                $address->setGrandTotal($address->getGrandTotal() - $giftTaxTotalAmount);
+                $address->setBaseGrandTotal($address->getBaseGrandTotal() - $giftBaseTaxTotalAmount);
+            }
+
+            $item->setPriceInclTax($item->getPrice() + ($amount / $item->getQty()));
+            $item->setBasePriceInclTax($item->getBasePrice() + ($baseAmount / $item->getQty()));
+            $item->setRowTotalInclTax($item->getRowTotal() + $amount);
+            $item->setBaseRowTotalInclTax($item->getBaseRowTotal() + $baseAmount);
+
+            if (!$calculator->isProductCalculated($item)) {
+                $this->_addAmount($amount);
+                $this->_addBaseAmount($baseAmount);
+            }
+            $this->_addAmount($giftTaxTotalAmount);
+            $this->_addBaseAmount($giftBaseTaxTotalAmount);
+
+            $this->_addSubtotalAmount($address, $item);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Add row total item amount to subtotal
+     *
+     * @param   Mage_Sales_Model_Quote_Address $address
+     * @param   Mage_Sales_Model_Quote_Item    $item
+     * @return  $this
+     */
+    protected function _addSubtotalAmount(Mage_Sales_Model_Quote_Address $address, $item)
+    {
+        if ($this->_getTaxDataHelper()->priceIncludesTax($item->getStoreId())) {
+            $subTotal = $item->getRowTotalInclTax() - $item->getRowTax();
+            $baseSubTotal = $item->getBaseRowTotalInclTax() - $item->getBaseRowTax();
+            $address->setTotalAmount('subtotal', $address->getTotalAmount('subtotal') + $subTotal);
+            $address->setBaseTotalAmount('subtotal', $address->getBaseTotalAmount('subtotal') + $baseSubTotal);
+        } else {
+            $address->setTotalAmount('subtotal', $address->getTotalAmount('subtotal') + $item->getRowTotal());
+            $address->setBaseTotalAmount('subtotal',
+                $address->getBaseTotalAmount('subtotal') + $item->getBaseRowTotal()
+            );
+        }
+
+        $address->setSubtotalInclTax($address->getSubtotalInclTax() + $item->getRowTotalInclTax());
+        $address->setBaseSubtotalInclTax($address->getBaseSubtotalInclTax() + $item->getBaseRowTotalInclTax());
+
+        return $this;
+    }
+
+    /**
+     * Calculate item row total
+     *
+     * @param Mage_Sales_Model_Quote_Item $item
+     * @return $this
+     * @see Mage_Sales_Model_Quote_Item::calcRowTotal()
+     */
+    protected function _calcItemRowTotal($item)
+    {
+        $qty = $item->getTotalQty();
+        $total = $this->_getDataHelper()->roundUp($item->getCalculationPriceOriginal(), 4) * $qty;
+        $baseTotal = $this->_getDataHelper()->roundUp($item->getBaseCalculationPriceOriginal(), 4) * $qty;
+        $item->setRowTotal($this->_getDataHelper()->roundUp($total, 4));
+        $item->setBaseRowTotal($this->_getDataHelper()->roundUp($baseTotal, 4));
+
+        return $this;
+    }
+
+    /**
+     * Get tax data helper
+     *
+     * @return Mage_Tax_Helper_Data
+     */
+    protected function _getTaxDataHelper()
+    {
+        return Mage::helper('tax');
+    }
+
+    /**
+     * Get data helper
+     *
+     * @return \OnePica_AvaTax_Helper_Data
+     */
+    protected function _getDataHelper()
+    {
+        return Mage::helper('avatax');
+    }
+
     /* BELOW ARE MAGE CORE PROPERTIES AND METHODS ADDED FOR OLDER VERSION COMPATABILITY */
 
     /**
@@ -362,15 +545,5 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
         }
 
         return $this->_address;
-    }
-
-    /**
-     * Get data helper
-     *
-     * @return \OnePica_AvaTax_Helper_Data
-     */
-    protected function _getDataHelper()
-    {
-        return Mage::helper('avatax');
     }
 }

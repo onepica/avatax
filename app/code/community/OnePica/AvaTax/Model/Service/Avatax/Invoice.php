@@ -423,7 +423,11 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
         }
 
         $storeId = $this->_retrieveStoreIdFromItem($item);
-        $price = $item->getBaseRowTotal() - $item->getBaseDiscountAmount();
+        $price = $item->getBaseRowTotal();
+        if ($this->_getTaxDataHelper()->applyTaxAfterDiscount()) {
+            $price = $item->getBaseRowTotal() - $item->getBaseDiscountAmount();
+        }
+
         if ($credit) {
             //@startSkipCommitHooks
             $price *= -1;
@@ -442,7 +446,9 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
         $line->setDescription($item->getName());
         $line->setQty($item->getQty());
         $line->setAmount($price);
-        $line->setDiscounted($item->getBaseDiscountAmount() ? true : false);
+        $line->setDiscounted(
+            (float)$item->getBaseDiscountAmount() && $this->_getTaxDataHelper()->applyTaxAfterDiscount()
+        );
 
         $productData = $this->_getLineProductData($item, $storeId);
         $line->setTaxCode($productData->getTaxCode());
@@ -517,5 +523,15 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
         }
 
         return $storeId;
+    }
+
+    /**
+     * Get tax data helper
+     *
+     * @return Mage_Tax_Helper_Data
+     */
+    protected function _getTaxDataHelper()
+    {
+        return Mage::helper('tax');
     }
 }

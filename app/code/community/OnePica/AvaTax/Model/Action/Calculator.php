@@ -115,6 +115,24 @@ class OnePica_AvaTax_Model_Action_Calculator extends OnePica_AvaTax_Model_Action
     }
 
     /**
+     * Get item taxable
+     *
+     * @param Mage_Sales_Model_Quote_Item $item
+     * @return int
+     */
+    public function getItemTaxable($item)
+    {
+        if ($this->isProductCalculated($item)) {
+            return 0;
+        }
+
+        $id = $item->getSku();
+        $ratesData = $this->_getRates();
+
+        return isset($ratesData['items'][$id]['taxable']) ? $ratesData['items'][$id]['taxable'] : 0;
+    }
+
+    /**
      * Get item tax group
      *
      * @param Mage_Sales_Model_Quote_Item $item
