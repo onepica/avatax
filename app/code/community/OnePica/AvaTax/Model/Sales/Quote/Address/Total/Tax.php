@@ -228,15 +228,19 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
             $shippingItem->setSku(Mage::helper('avatax/config')->getShippingSku($store->getId()));
             $shippingItem->setProductId(Mage::helper('avatax/config')->getShippingSku($store->getId()));
             $shippingItem->setAddress($address);
-            $baseShippingTax = $calculator->getItemTax($shippingItem);
+            $baseShippingTax = (float)$calculator->getItemTax($shippingItem);
             $shippingTax = $store->convertPrice($baseShippingTax);
 
-            $shippingAmt = $calculator->getItemTaxable($shippingItem);
-            $baseShippingAmt = $store->convertPrice($shippingAmt);
-
-            $address->setTotalAmount('shipping', $shippingAmt);
-            $address->setBaseTotalAmount('shipping', $baseShippingAmt);
             $baseShippingAmt = $address->getBaseTotalAmount('shipping');
+            $shippingAmt = $address->getTotalAmount('shipping');
+
+            if ($this->_getTaxDataHelper()->priceIncludesTax($store)) {
+                $baseShippingAmt -= $baseShippingTax;
+                $shippingAmt = $store->convertPrice($baseShippingAmt);
+
+                $address->setTotalAmount('shipping', $shippingAmt);
+                $address->setBaseTotalAmount('shipping', $baseShippingAmt);
+            }
 
             $address->setShippingTaxAmount($shippingTax);
             $address->setBaseShippingTaxAmount($baseShippingTax);
@@ -269,17 +273,18 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
             $gwOrderItem->setSku(Mage::helper('avatax/config')->getGwOrderSku($store->getId()));
             $gwOrderItem->setProductId(Mage::helper('avatax/config')->getGwOrderSku($store->getId()));
             $gwOrderItem->setAddress($address);
-            $baseGwOrderTax = $calculator->getItemTax($gwOrderItem);
+            $baseGwOrderTax = (float)$calculator->getItemTax($gwOrderItem);
             $gwOrderTax = $store->convertPrice($baseGwOrderTax);
 
-            $gwBasePriceAmount = $calculator->getItemTaxable($gwOrderItem);
-            $gwPriceAmount = $store->convertPrice($gwBasePriceAmount);
-            $address->setGwBasePrice($gwBasePriceAmount);
-            $address->setGwPrice($gwPriceAmount);
             $address->setGwBaseTaxAmount($baseGwOrderTax);
             $address->setGwTaxAmount($gwOrderTax);
 
             if ($this->_getTaxDataHelper()->priceIncludesTax($store)) {
+                $gwBasePriceAmount = $address->getGwBasePrice() - $baseGwOrderTax;
+                $gwPriceAmount = $store->convertPrice($gwBasePriceAmount);
+                $address->setGwBasePrice($gwBasePriceAmount);
+                $address->setGwPrice($gwPriceAmount);
+
                 $address->setGrandTotal($address->getGrandTotal() - $gwOrderTax);
                 $address->setBaseGrandTotal($address->getBaseGrandTotal() - $baseGwOrderTax);
             }
@@ -294,17 +299,17 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
             $gwPrintedCardItem->setProductId(Mage::helper('avatax/config')->getGwPrintedCardSku($store->getId()));
             $gwPrintedCardItem->setAddress($address);
 
-            $baseGwPrintedCardTax = $calculator->getItemTax($gwPrintedCardItem);
+            $baseGwPrintedCardTax = (float)$calculator->getItemTax($gwPrintedCardItem);
             $gwPrintedCardTax = $store->convertPrice($baseGwPrintedCardTax);
             $address->setGwPrintedCardBaseTaxAmount($baseGwPrintedCardTax);
             $address->setGwPrintedCardTaxAmount($gwPrintedCardTax);
 
-            $baseGwPrintedCardAmount = $calculator->getItemTaxable($gwPrintedCardItem);
-            $gwPrintedCardAmount = $baseGwPrintedCardAmount;
-            $address->setGwCardPrice($gwPrintedCardAmount);
-            $address->setGwCardBasePrice($baseGwPrintedCardAmount);
-
             if ($this->_getTaxDataHelper()->priceIncludesTax($store)) {
+                $baseGwPrintedCardAmount = $address->getGwCardBasePrice() - $baseGwPrintedCardTax;
+                $gwPrintedCardAmount = $store->convertPrice($baseGwPrintedCardAmount);
+                $address->setGwCardPrice($gwPrintedCardAmount);
+                $address->setGwCardBasePrice($baseGwPrintedCardAmount);
+
                 $address->setGrandTotal($address->getGrandTotal() - $gwPrintedCardTax);
                 $address->setBaseGrandTotal($address->getBaseGrandTotal() - $baseGwPrintedCardTax);
             }
