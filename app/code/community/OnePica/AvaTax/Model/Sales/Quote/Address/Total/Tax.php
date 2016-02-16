@@ -362,7 +362,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
             $this->_itemTaxGroups[$item->getId()] = $calculator->getItemTaxGroup($item);
             $giftTaxTotalAmount = $store->convertPrice($giftBaseTaxTotalAmount);
             $giftBaseTaxAmount = $this->_getDataHelper()
-                ->roundUp($giftBaseTaxTotalAmount / $item->getQty(), 2);
+                ->roundUp($giftBaseTaxTotalAmount / $item->getQty(), 4);
             $giftTaxAmount = $store->convertPrice($giftBaseTaxAmount);
 
             $amount = $store->convertPrice($baseAmount);
