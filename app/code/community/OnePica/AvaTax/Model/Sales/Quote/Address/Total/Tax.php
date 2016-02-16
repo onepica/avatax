@@ -180,8 +180,13 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
         if (method_exists($config, "displayCartSubtotalBoth") && method_exists($config, "displayCartSubtotalInclTax")
             && ($config->displayCartSubtotalBoth($store) || $config->displayCartSubtotalInclTax($store))
         ) {
-            $subtotalInclTax = $address->getSubtotal() + $address->getTaxAmount() - $address->getShippingTaxAmount();
-            $address->setSubtotalInclTax($subtotalInclTax);
+            if ($address->getSubtotalInclTax() > 0) {
+                $subtotalInclTax = $address->getSubtotalInclTax();
+            } else {
+                $subtotalInclTax = $address->getSubtotal()
+                                   + $address->getTaxAmount()
+                                   - $address->getShippingTaxAmount();
+            }
 
             $address->addTotal(
                 array(
