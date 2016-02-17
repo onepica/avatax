@@ -206,12 +206,13 @@ class OnePica_AvaTax_Model_Action_Calculator extends OnePica_AvaTax_Model_Action
                     $tax += $this->getItemTax($child);
                 }
 
-                return $tax;
+                return (float)$tax;
             } else {
                 $ratesData = $this->_getRates();;
                 $id = $item->getSku();
+                $tax = isset($ratesData['items'][$id]['amt']) ? $ratesData['items'][$id]['amt'] : 0;
 
-                return isset($ratesData['items'][$id]['amt']) ? $ratesData['items'][$id]['amt'] : 0;
+                return (float)$tax;
             }
         }
 

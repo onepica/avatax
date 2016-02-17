@@ -228,7 +228,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
             $shippingItem->setSku(Mage::helper('avatax/config')->getShippingSku($store->getId()));
             $shippingItem->setProductId(Mage::helper('avatax/config')->getShippingSku($store->getId()));
             $shippingItem->setAddress($address);
-            $baseShippingTax = (float)$calculator->getItemTax($shippingItem);
+            $baseShippingTax = $calculator->getItemTax($shippingItem);
             $shippingTax = $store->convertPrice($baseShippingTax);
 
             $baseShippingAmt = $address->getBaseTotalAmount('shipping');
@@ -273,7 +273,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
             $gwOrderItem->setSku(Mage::helper('avatax/config')->getGwOrderSku($store->getId()));
             $gwOrderItem->setProductId(Mage::helper('avatax/config')->getGwOrderSku($store->getId()));
             $gwOrderItem->setAddress($address);
-            $baseGwOrderTax = (float)$calculator->getItemTax($gwOrderItem);
+            $baseGwOrderTax = $calculator->getItemTax($gwOrderItem);
             $gwOrderTax = $store->convertPrice($baseGwOrderTax);
 
             $address->setGwBaseTaxAmount($baseGwOrderTax);
@@ -299,7 +299,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
             $gwPrintedCardItem->setProductId(Mage::helper('avatax/config')->getGwPrintedCardSku($store->getId()));
             $gwPrintedCardItem->setAddress($address);
 
-            $baseGwPrintedCardTax = (float)$calculator->getItemTax($gwPrintedCardItem);
+            $baseGwPrintedCardTax = $calculator->getItemTax($gwPrintedCardItem);
             $gwPrintedCardTax = $store->convertPrice($baseGwPrintedCardTax);
             $address->setGwPrintedCardBaseTaxAmount($baseGwPrintedCardTax);
             $address->setGwPrintedCardTaxAmount($gwPrintedCardTax);
