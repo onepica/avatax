@@ -262,8 +262,6 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
             $address->setShippingTaxable($shippingTax ? $shippingAmt : 0);
             $address->setBaseShippingTaxable($baseShippingTax ? $baseShippingAmt : 0);
 
-            $address->setIsShippingInclTax(false);
-
             $this->_addAmount($shippingTax);
             $this->_addBaseAmount($baseShippingTax);
         }
