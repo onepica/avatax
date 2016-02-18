@@ -355,6 +355,10 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
 
         $address->setGwItemsTaxAmount(0);
         $address->setGwItemsBaseTaxAmount(0);
+        $address->setGwBaseTaxAmount(0);
+        $address->setGwTaxAmount(0);
+        $address->setGwCardBaseTaxAmount(0);
+        $address->setGwCardTaxAmount(0);
 
         return $this;
     }
@@ -438,7 +442,9 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
             $this->_addAmount($giftTaxTotalAmount);
             $this->_addBaseAmount($giftBaseTaxTotalAmount);
 
-            $this->_addSubtotalAmount($address, $item);
+            if (!$item->getParentItem()) {
+                $this->_addSubtotalAmount($address, $item);
+            }
         }
 
         return $this;
