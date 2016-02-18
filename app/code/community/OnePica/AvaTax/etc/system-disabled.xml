@@ -56,6 +56,11 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </shipping_includes_tax>
+                        <cross_border_trade_enabled>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </cross_border_trade_enabled>
                     </fields>
                 </calculation>
                 <defaults>
