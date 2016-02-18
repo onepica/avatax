@@ -225,6 +225,24 @@
                     </avatax>
                 </observers>
             </controller_action_predispatch_checkout_multishipping_index>
+            <controller_action_postdispatch_checkout_multishipping_address_editShipping>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer_multishippingEditShippingAddress</class>
+                        <method>postDispatchEditShipping</method>
+                    </avatax>
+                </observers>
+            </controller_action_postdispatch_checkout_multishipping_address_editShipping>
+            <controller_action_predispatch_checkout_multishipping_address_editShippingPost>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer_multishippingEditShippingAddress</class>
+                        <method>preDispatchEditShippingPost</method>
+                    </avatax>
+                </observers>
+            </controller_action_predispatch_checkout_multishipping_address_editShippingPost>
             <controller_action_predispatch_checkout_cart_index>
                 <observers>
                     <avatax>
