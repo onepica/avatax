@@ -45,6 +45,23 @@ class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
     }
 
     /**
+     * Check what taxes should be applied after discount
+     *
+     * @param Mage_Core_Model_Store|int $store
+     * @return  bool
+     */
+    public function applyTaxAfterDiscount($store = null)
+    {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
+            if (!$this->_getTaxDataHelper()->priceIncludesTax($store)) {
+                return true;
+            }
+        }
+
+        return parent::applyTaxAfterDiscount($store);
+    }
+
+    /**
      * Get product price display type
      *  1 - Excluding tax
      *  2 - Including tax
