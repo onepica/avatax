@@ -56,7 +56,6 @@
             <sales>
                 <rewrite>
                     <quote_address>OnePica_AvaTax_Model_Sales_Quote_Address</quote_address>
-                    <quote_address_total_grand>OnePica_AvaTax_Model_Sales_Quote_Address_Total_Grand</quote_address_total_grand>
                 </rewrite>
             </sales>
             <tax>

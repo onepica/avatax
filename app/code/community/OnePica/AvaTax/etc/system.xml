@@ -526,7 +526,13 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </shipping_includes_tax>
-
+                        <apply_after_discount>
+                            <depends>
+                                <price_includes_tax>
+                                    <value>1</value>
+                                </price_includes_tax>
+                            </depends>
+                        </apply_after_discount>
                     </fields>
                 </calculation>
                 <defaults>

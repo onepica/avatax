@@ -220,16 +220,22 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
             return false;
         }
 
+        $order = $object->getOrder();
+
         $lineNumber = count($this->_lines);
         $storeId = $object->getStore()->getId();
         $taxClass = Mage::helper('tax')->getShippingTaxClass($storeId);
 
         $line = new Line();
-        $amount = $object->getBaseShippingAmount();
+        $amount = (float)$object->getBaseShippingAmount();
 
         if ($this->_getTaxDataHelper()->priceIncludesTax($storeId)) {
-            $amount = $object->getBaseShippingInclTax();
+            $amount = (float)$object->getBaseShippingInclTax();
             $line->setTaxIncluded(true);
+        }
+
+        if ($this->_getTaxDataHelper()->applyTaxAfterDiscount()) {
+            $amount -= (float)$order->getBaseShippingDiscountAmount();
         }
 
         if ($credit) {
@@ -244,7 +250,9 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
         $line->setTaxCode($taxClass);
         $line->setQty(1);
         $line->setAmount($amount);
-        $line->setDiscounted(false);
+        $line->setDiscounted(
+            (float)$order->getBaseShippingDiscountAmount() && $this->_getTaxDataHelper()->applyTaxAfterDiscount()
+        );
 
         $this->_lineToItemId[$lineNumber] = 'shipping';
         $this->_lines[$lineNumber] = $line;
