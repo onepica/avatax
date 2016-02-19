@@ -189,6 +189,15 @@
                     </avatax>
                 </observers>
             </controller_front_init_before>
+            <controller_action_postdispatch_checkout>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer_controllerActionPostdispatchCheckout</class>
+                        <method>execute</method>
+                    </avatax>
+                </observers>
+            </controller_action_postdispatch_checkout>
             <default>
                 <observers>
                     <avatax>
