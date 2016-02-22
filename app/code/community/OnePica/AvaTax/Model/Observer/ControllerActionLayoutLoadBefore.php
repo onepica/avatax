@@ -38,21 +38,7 @@ class OnePica_AvaTax_Model_Observer_ControllerActionLayoutLoadBefore
             && $action->getFullActionName() == 'checkout_cart_index') {
             /* @var Mage_Sales_Model_Quote $quote */
             $quote = Mage::getSingleton('checkout/session')->getQuote();
-            if (count($quote->getAllItems())>0) {
-                foreach ($quote->getAllAddresses() as $address) {
-                    if ($address->getAddressType() == 'shipping') {
-                        /* @var OnePica_AvaTax_Model_Action_Calculator $calculator */
-                        $calculator = Mage::getModel(
-                            'avatax/action_calculator',
-                            array(OnePica_AvaTax_Model_Action_Calculator::ADDRESS_PARAMETER => $address)
-                        );
-
-                        if (!$calculator->isAbleToCalculateTax()) {
-                            $this->_getErrorsHelper()->addErrorMessage($quote->getStoreId());
-                        }
-                    }
-                }
-            }
+            $this->_addErrorMessage($quote);
         }
 
         return $this;

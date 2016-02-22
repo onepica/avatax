@@ -97,16 +97,6 @@ class OnePica_AvaTax_Model_Action_Calculator extends OnePica_AvaTax_Model_Action
     }
 
     /**
-     * Is calculator able to calculate tax from a set address
-     *
-     * @return bool
-     */
-    public function isAbleToCalculateTax()
-    {
-        return !$this->_address->getQuote()->hasData('estimate_tax_error');
-    }
-
-    /**
      * Estimates tax rate for one item.
      *
      * @param Mage_Sales_Model_Quote_Item $item
