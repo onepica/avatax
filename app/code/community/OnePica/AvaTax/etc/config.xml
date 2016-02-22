@@ -229,8 +229,8 @@
                 <observers>
                     <avatax>
                         <type>singleton</type>
-                        <class>avatax/observer_multishippingEditShippingAddress</class>
-                        <method>postDispatchEditShipping</method>
+                        <class>avatax/observer_controllerActionPostdispatchCheckoutMultishippingAddressEditShipping</class>
+                        <method>execute</method>
                     </avatax>
                 </observers>
             </controller_action_postdispatch_checkout_multishipping_address_editShipping>
@@ -238,8 +238,8 @@
                 <observers>
                     <avatax>
                         <type>singleton</type>
-                        <class>avatax/observer_multishippingEditShippingAddress</class>
-                        <method>preDispatchEditShippingPost</method>
+                        <class>avatax/observer_controllerActionPredispatchCheckoutMultishippingAddressEditShippingPost</class>
+                        <method>execute</method>
                     </avatax>
                 </observers>
             </controller_action_predispatch_checkout_multishipping_address_editShippingPost>

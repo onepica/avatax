@@ -22,7 +22,7 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Observer_MultishippingEditShippingAddress
+class OnePica_AvaTax_Model_Observer_ControllerActionPredispatchCheckoutMultishippingAddressEditShippingPost
     extends OnePica_AvaTax_Model_Observer_Abstract
 {
     /**
@@ -34,7 +34,7 @@ class OnePica_AvaTax_Model_Observer_MultishippingEditShippingAddress
      * @return $this
      * @throws Mage_Core_Controller_Varien_Exception
      */
-    public function preDispatchEditShippingPost(Varien_Event_Observer $observer)
+    public function execute(Varien_Event_Observer $observer)
     {
         try
         {
@@ -93,31 +93,5 @@ class OnePica_AvaTax_Model_Observer_MultishippingEditShippingAddress
             throw $exception;
         }
         return $this;
-    }
-
-    /**
-     * Restore customer address from quote shipping address
-     *
-     * @param Varien_Event_Observer $observer
-     * @return $this
-     */
-    public function postDispatchEditShipping(Varien_Event_Observer $observer)
-    {
-        $restoreCustomerAddress = $observer->getControllerAction()->getRequest()->getParam('restore_customer_address');
-        $customerAddressId = $observer->getControllerAction()->getRequest()->getParam('id');
-        if ($restoreCustomerAddress && $customerAddressId) {
-            $customerAddress = Mage::getModel('checkout/type_multishipping')
-                ->getCustomer()
-                ->getAddressById($customerAddressId);
-            $shippingAddress = Mage::getSingleton('checkout/session')
-                ->getQuote()
-                ->getShippingAddressByCustomerAddressId($customerAddressId);
-
-            Mage::helper('core')->copyFieldset(
-                'sales_convert_quote_address', 'to_customer_address',
-                $shippingAddress, $customerAddress
-            );
-            $customerAddress->save();
-        }
     }
 }
