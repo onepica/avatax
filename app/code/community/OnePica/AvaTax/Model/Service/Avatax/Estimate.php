@@ -228,7 +228,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         $taxClass = Mage::helper('tax')->getShippingTaxClass($storeId);
         $shippingAmount = (float)$address->getBaseShippingAmount();
 
-        if ($this->_getTaxDataHelper()->applyTaxAfterDiscount()) {
+        if ($this->_getTaxDataHelper()->applyTaxAfterDiscount($storeId)) {
             $shippingAmount -= (float)$address->getBaseShippingDiscountAmount();
         }
 
@@ -241,7 +241,8 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         $line->setQty(1);
         $line->setAmount($shippingAmount);
         $line->setDiscounted(
-            (float)$address->getBaseShippingDiscountAmount() && $this->_getTaxDataHelper()->applyTaxAfterDiscount()
+            (float)$address->getBaseShippingDiscountAmount()
+            && $this->_getTaxDataHelper()->applyTaxAfterDiscount($storeId)
         );
 
         if ($this->_getTaxDataHelper()->shippingPriceIncludesTax($storeId)) {
@@ -409,7 +410,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         $taxClass = $this->_getTaxClassCodeByProduct($product);
         $price = $item->getBaseRowTotal();
 
-        if ($this->_getTaxDataHelper()->applyTaxAfterDiscount()) {
+        if ($this->_getTaxDataHelper()->applyTaxAfterDiscount($item->getStoreId())) {
             $price = $item->getBaseRowTotal() - $item->getBaseDiscountAmount();
         }
 
@@ -426,7 +427,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         $line->setQty($item->getTotalQty());
         $line->setAmount($price);
         $line->setDiscounted(
-            (float)$item->getDiscountAmount() && $this->_getTaxDataHelper()->applyTaxAfterDiscount()
+            (float)$item->getDiscountAmount() && $this->_getTaxDataHelper()->applyTaxAfterDiscount($item->getStoreId())
         );
 
         if ($this->_getTaxDataHelper()->priceIncludesTax($item->getStoreId())) {
