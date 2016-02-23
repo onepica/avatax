@@ -134,6 +134,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         $makeRequest &= $this->_request->getDestinationAddress() == '' ? false : true;
         $makeRequest &= $address->getId() ? true : false;
         $makeRequest &= !isset($this->_rates[$requestKey]['failure']);
+        $makeRequest &= $this->isCanSendRequest();
         //@finishSkipCommitHooks
 
         //make request if needed and save results in cache
@@ -323,7 +324,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         $this->_lines[$lineNumber] = $line;
         $this->_request->setLines($this->_lines);
         $this->_lineToLineId[$lineNumber] = $this->_getConfigHelper()->getGwItemsSku($storeId);
-        $this->_productGiftPair[$lineNumber] = $item->getSku();
+        $this->_productGiftPair[$lineNumber] = $item->getId();
 
         return $lineNumber;
     }
@@ -394,6 +395,12 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
      */
     protected function _newLine($item)
     {
+        if (!$item->getId()) {
+            $this->setCanSendRequest(false);
+
+            return $this;
+        }
+
         $this->_addGwItemsAmount($item);
         if ($this->isProductCalculated($item)) {
             return false;
@@ -439,7 +446,8 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         }
 
         $this->_lines[$lineNumber] = $line;
-        $this->_lineToLineId[$lineNumber] = $item->getSku();
+        $this->_lineToLineId[$lineNumber] = $item->getId();
+
         return $lineNumber;
     }
 

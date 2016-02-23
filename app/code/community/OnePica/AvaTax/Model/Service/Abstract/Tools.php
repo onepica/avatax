@@ -31,18 +31,24 @@ class OnePica_AvaTax_Model_Service_Abstract_Tools extends Varien_Object
      */
     const CACHE_TTL = 120;
 
-   //@startSkipCommitHooks
+    /**
+     * Can send request
+     *
+     * @var bool
+     */
+    protected $_canSendRequest = true;
+
     /**
      * Alias to the helper translate method.
      *
      * @return string
+     * @skipPublicMethodNaming __
      */
     public function __()
     {
         $args = func_get_args();
         return call_user_func_array(array($this->_getHelper(), '__'), $args);
     }
-    //@finishSkipCommitHooks
 
     /**
      * Retrieve converted date taking into account the current time zone and store.
@@ -169,5 +175,28 @@ class OnePica_AvaTax_Model_Service_Abstract_Tools extends Varien_Object
             return $shippingAddress->getVatId();
         }
         return $order->getBillingAddress()->getVatId();
+    }
+
+    /**
+     * Is can send request
+     *
+     * @return bool
+     */
+    public function isCanSendRequest()
+    {
+        return $this->_canSendRequest;
+    }
+
+    /**
+     * Set can send request
+     *
+     * @param bool $canSendRequest
+     * @return $this
+     */
+    public function setCanSendRequest($canSendRequest)
+    {
+        $this->_canSendRequest = $canSendRequest;
+
+        return $this;
     }
 }
