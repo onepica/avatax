@@ -416,7 +416,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
             )
         );
         $line->setDescription($item->getName());
-        $line->setQty($item->getQty());
+        $line->setQty($item->getTotalQty());
         $line->setAmount($price);
         $line->setDiscounted(
             (float)$item->getDiscountAmount() && $this->_getTaxDataHelper()->applyTaxAfterDiscount()
