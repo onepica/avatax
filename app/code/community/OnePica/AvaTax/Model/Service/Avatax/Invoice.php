@@ -251,7 +251,8 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
         $line->setQty(1);
         $line->setAmount($amount);
         $line->setDiscounted(
-            (float)$order->getBaseShippingDiscountAmount() && $this->_getTaxDataHelper()->applyTaxAfterDiscount()
+            (float)$order->getBaseShippingDiscountAmount()
+            && $this->_getTaxDataHelper()->applyTaxAfterDiscount($storeId)
         );
 
         $this->_lineToItemId[$lineNumber] = 'shipping';
@@ -464,7 +465,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
             $price = $item->getBaseRowTotalInclTax();
         }
 
-        if ($this->_getTaxDataHelper()->applyTaxAfterDiscount()) {
+        if ($this->_getTaxDataHelper()->applyTaxAfterDiscount($storeId)) {
             $price -= $item->getBaseDiscountAmount();
         }
 
@@ -487,7 +488,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
         $line->setAmount($price);
 
         $line->setDiscounted(
-            (float)$item->getBaseDiscountAmount() && $this->_getTaxDataHelper()->applyTaxAfterDiscount()
+            (float)$item->getBaseDiscountAmount() && $this->_getTaxDataHelper()->applyTaxAfterDiscount($storeId)
         );
 
         $productData = $this->_getLineProductData($item, $storeId);
