@@ -350,6 +350,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
 
         $address->setSubtotal(0);
         $address->setSubtotalInclTax(0);
+        $address->setBaseSubtotalInclTax(0);
         $address->setTotalAmount('subtotal', 0);
         $address->setBaseTotalAmount('subtotal', 0);
 
@@ -398,14 +399,14 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
             $address->setGwItemsBaseTaxAmount($address->getGwItemsBaseTaxAmount() + $giftBaseTaxTotalAmount);
 
             if ($this->_getTaxDataHelper()->priceIncludesTax($store)) {
-                $priceIncTax = $item->getPrice();
                 $basePriceIncTax = $item->getBasePrice();
+                $priceIncTax = $item->getCalculationPrice();
 
                 $baseRowTotalIncTax = $item->getBaseRowTotal();
                 $rowTotalIncTax = $item->getRowTotal();
 
-                $item->setBasePrice($item->getBaseCalculationPriceOriginal() - ($baseAmount / $item->getTotalQty()));
-                $item->setPrice($store->convertPrice($item->getBasePrice()));
+                $item->setPrice($item->getPrice() - ($baseAmount / $item->getTotalQty()));
+                $item->setBasePrice($item->getBasePrice() - ($baseAmount / $item->getTotalQty()));
 
                 $item->setBaseRowTax($baseAmount);
                 $item->setRowTax($amount);
@@ -428,7 +429,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
                 $item->setRowTotalInclTax($rowTotalIncTax);
             } else {
                 $item->setBasePriceInclTax($item->getBasePrice() + ($baseAmount / $item->getTotalQty()));
-                $item->setPriceInclTax($item->getPrice() + ($amount / $item->getTotalQty()));
+                $item->setPriceInclTax($item->getCalculationPrice() + ($amount / $item->getTotalQty()));
 
                 $item->setBaseRowTotalInclTax($item->getBaseRowTotal() + $baseAmount);
                 $item->setRowTotalInclTax($item->getRowTotal() + $amount);
