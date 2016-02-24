@@ -44,6 +44,21 @@ class OnePica_AvaTax_Model_Tax_Calculation extends Mage_Tax_Model_Calculation
     }
 
     /**
+     * Get information about tax rates applied to request
+     *
+     * @param   Varien_Object $request
+     * @return  array
+     */
+    public function getAppliedRates($request)
+    {
+        if ($this->_getDataHelper()->isServiceEnabled($this->_getStore($request))) {
+            return array();
+        }
+
+        return parent::getAppliedRates($request);
+    }
+
+    /**
      * Get store
      *
      * @param Varien_Object $request
