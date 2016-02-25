@@ -19,7 +19,7 @@
 <config>
     <modules>
         <OnePica_AvaTax>
-            <version>3.0.1.1</version>
+            <version>3.0.1.4</version>
         </OnePica_AvaTax>
     </modules>
     <global>
@@ -62,7 +62,6 @@
                 <rewrite>
                     <config>OnePica_AvaTax_Model_Tax_Config</config>
                     <calculation>OnePica_AvaTax_Model_Tax_Calculation</calculation>
-                    <sales_total_quote_subtotal>OnePica_AvaTax_Model_Sales_Total_Quote_Subtotal</sales_total_quote_subtotal>
                 </rewrite>
             </tax>
             <enterprise_giftwrapping>

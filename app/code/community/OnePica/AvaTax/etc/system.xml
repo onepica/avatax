@@ -528,7 +528,7 @@
                         </shipping_includes_tax>
                         <apply_after_discount>
                             <depends>
-                                <price_includes_tax>
+                                <price_includes_tax separator="|">
                                     <value>1</value>
                                 </price_includes_tax>
                             </depends>

@@ -204,6 +204,12 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
      */
     protected function _newLine($item)
     {
+        if (!$item->getId()) {
+            $this->setCanSendRequest(false);
+
+            return false;
+        }
+
         $this->_addGwItemsAmount($item);
         if ($this->isProductCalculated($item)) {
             return false;
@@ -258,7 +264,8 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         }
 
         $this->_lines[$lineNumber] = $line;
-        $this->_lineToLineId[$lineNumber] = $item->getSku();
+        $this->_lineToLineId[$lineNumber] = $item->getId();
+
         return $lineNumber;
     }
 
@@ -318,7 +325,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         $this->_lines[$lineNumber] = $line;
         $this->_setLinesToRequest();
         $this->_lineToLineId[$lineNumber] = $this->_getConfigHelper()->getGwItemsSku($storeId);
-        $this->_productGiftPair[$lineNumber] = $item->getSku();
+        $this->_productGiftPair[$lineNumber] = $item->getId();
 
         return $lineNumber;
     }

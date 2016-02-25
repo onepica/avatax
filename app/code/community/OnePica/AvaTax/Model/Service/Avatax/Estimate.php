@@ -134,6 +134,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         $makeRequest &= $this->_request->getDestinationAddress() == '' ? false : true;
         $makeRequest &= $address->getId() ? true : false;
         $makeRequest &= !isset($this->_rates[$requestKey]['failure']);
+        $makeRequest &= $this->isCanSendRequest();
         //@finishSkipCommitHooks
 
         //make request if needed and save results in cache
@@ -227,7 +228,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         $taxClass = Mage::helper('tax')->getShippingTaxClass($storeId);
         $shippingAmount = (float)$address->getBaseShippingAmount();
 
-        if ($this->_getTaxDataHelper()->applyTaxAfterDiscount()) {
+        if ($this->_getTaxDataHelper()->applyTaxAfterDiscount($storeId)) {
             $shippingAmount -= (float)$address->getBaseShippingDiscountAmount();
         }
 
@@ -240,7 +241,8 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         $line->setQty(1);
         $line->setAmount($shippingAmount);
         $line->setDiscounted(
-            (float)$address->getBaseShippingDiscountAmount() && $this->_getTaxDataHelper()->applyTaxAfterDiscount()
+            (float)$address->getBaseShippingDiscountAmount()
+            && $this->_getTaxDataHelper()->applyTaxAfterDiscount($storeId)
         );
 
         if ($this->_getTaxDataHelper()->shippingPriceIncludesTax($storeId)) {
@@ -323,7 +325,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         $this->_lines[$lineNumber] = $line;
         $this->_request->setLines($this->_lines);
         $this->_lineToLineId[$lineNumber] = $this->_getConfigHelper()->getGwItemsSku($storeId);
-        $this->_productGiftPair[$lineNumber] = $item->getSku();
+        $this->_productGiftPair[$lineNumber] = $item->getId();
 
         return $lineNumber;
     }
@@ -394,6 +396,12 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
      */
     protected function _newLine($item)
     {
+        if (!$item->getId()) {
+            $this->setCanSendRequest(false);
+
+            return $this;
+        }
+
         $this->_addGwItemsAmount($item);
         if ($this->isProductCalculated($item)) {
             return false;
@@ -402,7 +410,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         $taxClass = $this->_getTaxClassCodeByProduct($product);
         $price = $item->getBaseRowTotal();
 
-        if ($this->_getTaxDataHelper()->applyTaxAfterDiscount()) {
+        if ($this->_getTaxDataHelper()->applyTaxAfterDiscount($item->getStoreId())) {
             $price = $item->getBaseRowTotal() - $item->getBaseDiscountAmount();
         }
 
@@ -416,10 +424,10 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
             )
         );
         $line->setDescription($item->getName());
-        $line->setQty($item->getQty());
+        $line->setQty($item->getTotalQty());
         $line->setAmount($price);
         $line->setDiscounted(
-            (float)$item->getDiscountAmount() && $this->_getTaxDataHelper()->applyTaxAfterDiscount()
+            (float)$item->getDiscountAmount() && $this->_getTaxDataHelper()->applyTaxAfterDiscount($item->getStoreId())
         );
 
         if ($this->_getTaxDataHelper()->priceIncludesTax($item->getStoreId())) {
@@ -439,7 +447,8 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         }
 
         $this->_lines[$lineNumber] = $line;
-        $this->_lineToLineId[$lineNumber] = $item->getSku();
+        $this->_lineToLineId[$lineNumber] = $item->getId();
+
         return $lineNumber;
     }
 

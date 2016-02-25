@@ -62,7 +62,11 @@
                             <show_in_store>0</show_in_store>
                         </cross_border_trade_enabled>
                         <apply_after_discount>
-                            <depends />
+                            <depends>
+                                <price_includes_tax>
+                                    <value>0|1</value>
+                                </price_includes_tax>
+                            </depends>
                         </apply_after_discount>
                     </fields>
                 </calculation>
