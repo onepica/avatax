@@ -216,7 +216,11 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         }
         $product = $this->_getProductByProductId($item->getProductId());
         $taxClass = $this->_getTaxClassCodeByProduct($product);
-        $price = $item->getBaseRowTotal() - $item->getBaseDiscountAmount();
+        $price = $item->getBaseRowTotal();
+        if ($this->_getTaxDataHelper()->applyTaxAfterDiscount($item->getStoreId())) {
+            $price -= $item->getBaseDiscountAmount();
+        }
+
         $lineNumber = $this->_getNewLineCode();
 
         $line = $this->_getNewDocumentRequestLineObject();
@@ -230,10 +234,16 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         $line->setNumberOfItems($item->getQty());
         $line->setlineAmount($price);
         $line->setItemDescription($item->getName());
-        $line->setDiscounted((float)$item->getDiscountAmount() ? 'true' : 'false');
+        $discounted = (float)$item->getDiscountAmount()
+                      && $this->_getTaxDataHelper()
+                          ->applyTaxAfterDiscount($item->getStoreId())
+            ? 'true'
+            : 'false';
+
+        $line->setDiscounted($discounted);
 
         if ($this->_getTaxDataHelper()->priceIncludesTax($item->getStoreId())) {
-            throw new OnePica_AvaTax_Exception('Prices include tax for this API not implemented.');
+            $line->setTaxIncluded('true');
         }
 
         if ($taxClass) {
@@ -308,6 +318,10 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         $line->setlineAmount($gwItemsAmount);
         $line->setDiscounted('false');
 
+        if ($this->_getTaxDataHelper()->priceIncludesTax($storeId)) {
+            $line->setTaxIncluded('true');
+        }
+
         $this->_lines[$lineNumber] = $line;
         $this->_setLinesToRequest();
         $this->_lineToLineId[$lineNumber] = $this->_getConfigHelper()->getGwItemsSku($storeId);
@@ -329,6 +343,10 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         $taxClass = Mage::helper('tax')->getShippingTaxClass($storeId);
         $shippingAmount = (float) $address->getBaseShippingAmount();
 
+        if ($this->_getTaxDataHelper()->applyTaxAfterDiscount($storeId)) {
+            $shippingAmount -= (float)$address->getBaseShippingDiscountAmount();
+        }
+
         $line = $this->_getNewDocumentRequestLineObject();
         $line->setLineCode($lineNumber);
         $shippingSku = $this->_getConfigHelper()->getShippingSku($storeId);
@@ -337,7 +355,13 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         $line->setAvalaraGoodsAndServicesType($taxClass);
         $line->setNumberOfItems(1);
         $line->setlineAmount($shippingAmount);
-        $line->setDiscounted('false');
+        $discounted = (float)$address->getBaseShippingDiscountAmount()
+                      && $this->_getTaxDataHelper()->applyTaxAfterDiscount($storeId) ? 'true' : 'false';
+        $line->setDiscounted($discounted);
+
+        if ($this->_getTaxDataHelper()->shippingPriceIncludesTax($storeId)) {
+            $line->setTaxIncluded('true');
+        }
 
         $this->_lines[$lineNumber] = $line;
         $this->_setLinesToRequest();
@@ -371,6 +395,10 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         $line->setlineAmount($gwOrderAmount);
         $line->setDiscounted('false');
 
+        if ($this->_getTaxDataHelper()->priceIncludesTax($storeId)) {
+            $line->setTaxIncluded('true');
+        }
+
         $this->_lines[$lineNumber] = $line;
         $this->_setLinesToRequest();
         $this->_lineToLineId[$lineNumber] = $gwOrderSku;
@@ -402,6 +430,10 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         $line->setNumberOfItems(1);
         $line->setlineAmount($gwPrintedCardAmount);
         $line->setDiscounted('false');
+
+        if ($this->_getTaxDataHelper()->priceIncludesTax($storeId)) {
+            $line->setTaxIncluded('true');
+        }
 
         $this->_lines[$lineNumber] = $line;
         $this->_setLinesToRequest();
