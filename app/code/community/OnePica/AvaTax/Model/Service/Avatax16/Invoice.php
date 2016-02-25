@@ -252,7 +252,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
             $line->setTaxIncluded('true');
         }
 
-        if ($this->_getTaxDataHelper()->applyTaxAfterDiscount()) {
+        if ($this->_getTaxDataHelper()->applyTaxAfterDiscount($storeId)) {
             $amount -= (float)$order->getBaseShippingDiscountAmount();
         }
 
