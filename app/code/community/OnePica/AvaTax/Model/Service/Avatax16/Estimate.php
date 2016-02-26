@@ -231,7 +231,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
                 $item->getStoreId()
             )
         );
-        $line->setNumberOfItems($item->getQty());
+        $line->setNumberOfItems($item->getTotalQty());
         $line->setlineAmount($price);
         $line->setItemDescription($item->getName());
         $discounted = (float)$item->getDiscountAmount()
