@@ -32,7 +32,7 @@ class OnePica_AvaTax_Model_Source_Avatax16_Url
     /**
      * Url for development
      */
-    const DEVELOPMENT_URL = 'https://tax-qa.avlr.sh/';
+    const DEVELOPMENT_URL = 'https://tax-qa.avlr.sh/v2';
 
     /**
      * Gets the list of urls for the admin config dropdown
