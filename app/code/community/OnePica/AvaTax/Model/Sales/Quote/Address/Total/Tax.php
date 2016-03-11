@@ -230,6 +230,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
     {
         if ($address->getAddressType() == Mage_Sales_Model_Quote_Address::TYPE_SHIPPING
             || $address->getUseForShipping()
+            || $this->_isBillingUseForShipping()
         ) {
             $shippingItem = new Varien_Object();
             $shippingItem->setId(Mage::helper('avatax/config')->getShippingSku($store->getId()));
@@ -269,18 +270,6 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
         }
 
         return $this;
-    }
-
-    /**
-     * Is billing address use for shipping
-     *
-     * @return bool
-     */
-    protected function _isBillingUseForShipping()
-    {
-        $data = Mage::app()->getRequest()->getPost('billing', array());
-
-        return isset($data['use_for_shipping']) ? (bool)$data['use_for_shipping'] : false;
     }
 
     /**
@@ -645,16 +634,6 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
         }
 
         return false;
-    }
-
-    /**
-     * Get data helper
-     *
-     * @return \OnePica_AvaTax_Helper_Data
-     */
-    protected function _getDataHelper()
-    {
-        return Mage::helper('avatax');
     }
 
     /**
