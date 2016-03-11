@@ -551,24 +551,6 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </based_on>
-                        <price_includes_tax>
-                            <!-- Items should not include tax so that AvaTax can calculate it. -->
-                            <show_in_default>0</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </price_includes_tax>
-                        <shipping_includes_tax>
-                            <!-- Shipping should not include tax so that AvaTax can calculate it. -->
-                            <show_in_default>0</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </shipping_includes_tax>
-                        <apply_after_discount>
-                            <!-- Always apply discount first since AvaTax doesn't support line-level item discount amounts -->
-                            <show_in_default>0</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </apply_after_discount>
                         <discount_tax>
                             <!-- Always apply discount first since AvaTax doesn't support line-level item discount amounts -->
                             <show_in_default>0</show_in_default>
@@ -587,6 +569,23 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </algorithm>
+                        <cross_border_trade_enabled>
+                            <show_in_default>0</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </cross_border_trade_enabled>
+                        <shipping_includes_tax>
+                            <show_in_default>0</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </shipping_includes_tax>
+                        <apply_after_discount>
+                            <depends>
+                                <price_includes_tax separator="|">
+                                    <value>1</value>
+                                </price_includes_tax>
+                            </depends>
+                        </apply_after_discount>
                     </fields>
                 </calculation>
                 <defaults>
@@ -620,62 +619,8 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </full_summary>
-                        <price>
-                            <show_in_default>0</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </price>
-                        <subtotal>
-                            <show_in_default>0</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </subtotal>
-                        <shipping>
-                            <show_in_default>0</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </shipping>
-                        <gift_wrapping>
-                            <show_in_default>0</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </gift_wrapping>
-                        <printed_card>
-                            <show_in_default>0</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </printed_card>
                     </fields>
                 </sales_display>
-                <cart_display>
-                    <fields>
-                        <price>
-                            <show_in_default>0</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </price>
-                        <subtotal>
-                            <show_in_default>0</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </subtotal>
-                        <shipping>
-                            <show_in_default>0</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </shipping>
-                        <gift_wrapping>
-                            <show_in_default>0</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </gift_wrapping>
-                        <printed_card>
-                            <show_in_default>0</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </printed_card>
-                    </fields>
-                </cart_display>
             </groups>
         </tax>
         <shipping>

@@ -238,16 +238,28 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
             return false;
         }
 
+        $order = $object->getOrder();
+
         $lineNumber = $this->_getNewLineCode();
         $storeId = $object->getStore()->getId();
         $taxClass = Mage::helper('tax')->getShippingTaxClass($storeId);
 
+        $line = $this->_getNewDocumentRequestLineObject();
         $amount = $object->getBaseShippingAmount();
+
+        if ($this->_getTaxDataHelper()->priceIncludesTax($storeId)) {
+            $amount = (float)$object->getBaseShippingInclTax();
+            $line->setTaxIncluded('true');
+        }
+
+        if ($this->_getTaxDataHelper()->applyTaxAfterDiscount($storeId)) {
+            $amount -= (float)$order->getBaseShippingDiscountAmount();
+        }
+
         //@startSkipCommitHooks
         $amount = $credit ? (-1 * $amount) : $amount;
         //@finishSkipCommitHooks
 
-        $line = $this->_getNewDocumentRequestLineObject();
         $line->setLineCode($lineNumber);
         $shippingSku = $this->_getConfigHelper()->getShippingSku($storeId);
         $line->setItemCode($shippingSku ? $shippingSku : self::DEFAULT_SHIPPING_ITEMS_SKU);
@@ -255,7 +267,9 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         $line->setAvalaraGoodsAndServicesType($taxClass);
         $line->setNumberOfItems(1);
         $line->setlineAmount($amount);
-        $line->setDiscounted('false');
+        $discounted = (float)$order->getBaseShippingDiscountAmount()
+                      && $this->_getTaxDataHelper()->applyTaxAfterDiscount($storeId) ? 'true' : 'false';
+        $line->setDiscounted($discounted);
 
         $this->_lineToItemId[$lineNumber] = $shippingSku;
         $this->_lines[$lineNumber] = $line;
@@ -279,11 +293,17 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         $lineNumber = $this->_getNewLineCode();
         $storeId = $object->getStore()->getId();
         $amount = $object->getGwBasePrice();
+        $line = $this->_getNewDocumentRequestLineObject();
+
+        if ($this->_getTaxDataHelper()->priceIncludesTax($storeId)) {
+            $amount += $object->getGwBaseTaxAmount();
+            $line->setTaxIncluded('true');
+        }
+
         //@startSkipCommitHooks
         $amount = $credit ? (-1 * $amount) : $amount;
         //@finishSkipCommitHooks
 
-        $line = $this->_getNewDocumentRequestLineObject();
         $line->setLineCode($lineNumber);
         $gwOrderSku = $this->_getConfigHelper()->getGwOrderSku($storeId);
         $line->setItemCode($gwOrderSku ? $gwOrderSku : self::DEFAULT_GW_ORDER_SKU);
@@ -316,11 +336,16 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         $storeId = $object->getStore()->getId();
 
         $amount = $object->getGwItemsBasePrice();
+        $line = $this->_getNewDocumentRequestLineObject();
+
+        if ($this->_getTaxDataHelper()->priceIncludesTax($storeId)) {
+            $amount += $object->getGwItemsBaseTaxAmount();
+            $line->setTaxIncluded('true');
+        }
         //@startSkipCommitHooks
         $amount = $credit ? (-1 * $amount) : $amount;
         //@finishSkipCommitHooks
 
-        $line = $this->_getNewDocumentRequestLineObject();
         $line->setLineCode($lineNumber);
         $gwItemsSku = $this->_getConfigHelper()->getGwItemsSku($storeId);
         $line->setItemCode($gwItemsSku ? $gwItemsSku : self::DEFAULT_GW_ITEMS_SKU);
@@ -353,11 +378,17 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         $storeId = $object->getStore()->getId();
 
         $amount = $object->getGwPrintedCardBasePrice();
+        $line = $this->_getNewDocumentRequestLineObject();
+
+        if ($this->_getTaxDataHelper()->priceIncludesTax($storeId)) {
+            $amount += $object->getGwCardBaseTaxAmount();
+            $line->setTaxIncluded('true');
+        }
+
         //@startSkipCommitHooks
         $amount = $credit ? (-1 * $amount) : $amount;
         //@finishSkipCommitHooks
 
-        $line = $this->_getNewDocumentRequestLineObject();
         $line->setLineCode($lineNumber);
         $gwPrintedCardSku = $this->_getConfigHelper()->getGwPrintedCardSku($storeId);
         $line->setItemCode($gwPrintedCardSku ? $gwPrintedCardSku : self::DEFAULT_GW_PRINTED_CARD_SKU);
@@ -391,20 +422,33 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
 
         $lineNumber = $this->_getNewLineCode();
         $storeId = $this->_retrieveStoreIdFromItem($item);
+        $line = $this->_getNewDocumentRequestLineObject();
 
-        $price = $item->getBaseRowTotal() - $item->getBaseDiscountAmount();
+        $price = $item->getBaseRowTotal();
+
+        if ($this->_getTaxDataHelper()->priceIncludesTax($storeId)) {
+            $line->setTaxIncluded('true');
+            $price = $item->getBaseRowTotalInclTax();
+        }
+
+        if ($this->_getTaxDataHelper()->applyTaxAfterDiscount($storeId)) {
+            $price -= $item->getBaseDiscountAmount();
+        }
+
         //@startSkipCommitHooks
         $price = $credit ? (-1 * $price) : $price;
         //@finishSkipCommitHooks
 
-        $line = $this->_getNewDocumentRequestLineObject();
         $line->setLineCode($lineNumber);
         $line->setItemCode($this->_getCalculationHelper()
              ->getItemCode($this->_getProductForItemCode($item), $storeId, $item));
         $line->setItemDescription($item->getName());
         $line->setNumberOfItems($item->getQty());
         $line->setlineAmount($price);
-        $line->setDiscounted($item->getBaseDiscountAmount() ? 'true' : 'false');
+        $line->setDiscounted(
+            $item->getBaseDiscountAmount() && $this->_getTaxDataHelper()->applyTaxAfterDiscount($storeId)
+                ? 'true' : 'false'
+        );
 
         $productData = $this->_getLineProductData($item, $storeId);
         $line->setAvalaraGoodsAndServicesType($productData->getTaxCode());
@@ -546,5 +590,15 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         $lineProductData->setMetaData($metaData);
 
         return $lineProductData;
+    }
+
+    /**
+     * Get tax data helper
+     *
+     * @return Mage_Tax_Helper_Data
+     */
+    protected function _getTaxDataHelper()
+    {
+        return Mage::helper('tax');
     }
 }
