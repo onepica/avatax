@@ -59,6 +59,8 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
 
         $store = $address->getQuote()->getStore();
 
+        $this->_resetItemsValues($address);
+
         //Added check for calculating tax for regions filtered in the admin
         if (!$this->_isAddressActionable($address) || !$address->hasItems()) {
             return $this;
@@ -332,6 +334,26 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
         return $this;
     }
 
+    /**
+     * Reset items values
+     *
+     * @param \Mage_Sales_Model_Quote_Address $address
+     * @return $this
+     */
+    protected function _resetItemsValues(Mage_Sales_Model_Quote_Address $address)
+    {
+        /* @var $item Mage_Sales_Model_Quote_Item */
+        foreach ($address->getAllItems() as $item) {
+            $item->setTaxAmount(0);
+            $item->setBaseTaxAmount(0);
+            $item->setTaxPercent(0);
+
+            $item->setGwBaseTaxAmount(0);
+            $item->setGwTaxAmount(0);
+        }
+
+        return $this;
+    }
     /**
      * Reset address values
      *
