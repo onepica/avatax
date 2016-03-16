@@ -130,6 +130,15 @@
                     </avatax>
                 </observers>
             </sales_order_creditmemo_refund>
+            <controller_action_layout_generate_xml_before>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer_controllerActionLayoutGenerateXmlBefore</class>
+                        <method>execute</method>
+                    </avatax>
+                </observers>
+            </controller_action_layout_generate_xml_before>
             <sales_quote_collect_totals_before>
                 <observers>
                     <avatax>

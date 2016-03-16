@@ -98,6 +98,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
     {
         /** @var OnePica_AvaTax_Model_Sales_Quote_Address $address */
         $this->_lines = array();
+        $this->setCanSendRequest(true); //reset flag
 
         $quote = $address->getQuote();
         $storeId = $quote->getStore()->getId();
