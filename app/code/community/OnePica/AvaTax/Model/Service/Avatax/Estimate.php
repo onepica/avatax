@@ -111,6 +111,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
 
         /** @var OnePica_AvaTax_Model_Sales_Quote_Address $address */
         $this->_lines = array();
+        $this->setCanSendRequest(true); //reset flag
 
         //set up request
         $quote = $address->getQuote();
