@@ -127,13 +127,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         //@startSkipCommitHooks
         $makeRequest &= count($this->_lineToLineId) ? true : false;
 
-        $hasDestinationAddress = false;
-        if ($this->_request->getHeader() && $this->_request->getHeader()->getDefaultLocations()) {
-            $locations = $this->_request->getHeader()->getDefaultLocations();
-            $hasDestinationAddress = isset($locations[self::TAX_LOCATION_PURPOSE_SHIP_TO]) ? true : false;
-        }
-
-        $makeRequest &= $hasDestinationAddress;
+        $makeRequest &= $this->_hasDestinationAddress();
         $makeRequest &= $address->getId() ? true : false;
         $makeRequest &= !isset($this->_rates[$requestKey]['failure']);
         //@finishSkipCommitHooks
@@ -172,6 +166,32 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
 
         $rates = isset($this->_rates[$requestKey]) ? $this->_rates[$requestKey] : array();
         return $rates;
+    }
+
+    /**
+     * Check if destination address have any sense
+     *
+     * @return bool
+     */
+    protected function _hasDestinationAddress()
+    {
+        $hasDestinationAddress = false;
+        if ($this->_request->getHeader() && $this->_request->getHeader()->getDefaultLocations()) {
+            $locations = $this->_request->getHeader()->getDefaultLocations();
+
+            if (isset($locations[self::TAX_LOCATION_PURPOSE_SHIP_TO])) {
+                $shipToLocation = $locations[self::TAX_LOCATION_PURPOSE_SHIP_TO];
+                $address = $shipToLocation->getAddress();
+                $city = (string)$address->getCity();
+                $zip = $address->getZipcode();
+                $state = Mage::getModel('directory/region')
+                    ->loadByCode($address->getState(), $address->getCountry())
+                    ->getCode();
+                $hasDestinationAddress = (($city && $state) || $zip) ? true : false;
+            }
+        }
+
+        return $hasDestinationAddress;
     }
 
     /**
