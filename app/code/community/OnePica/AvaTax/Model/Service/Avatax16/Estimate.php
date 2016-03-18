@@ -184,9 +184,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
                 $address = $shipToLocation->getAddress();
                 $city = (string)$address->getCity();
                 $zip = $address->getZipcode();
-                $state = Mage::getModel('directory/region')
-                    ->loadByCode($address->getState(), $address->getCountry())
-                    ->getCode();
+                $state = $address->getState();
                 $hasDestinationAddress = (($city && $state) || $zip) ? true : false;
             }
         }
