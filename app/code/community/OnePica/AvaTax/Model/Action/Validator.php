@@ -326,7 +326,7 @@ class OnePica_AvaTax_Model_Action_Validator extends OnePica_AvaTax_Model_Action_
     {
         $notice = Mage::getSingleton('core/message')->notice($message);
         $notice->setIdentifier(OnePica_AvaTax_Helper_Errors::VALIDATION_NOTICE_IDENTIFIER);
-        Mage::getSingleton('checkout/session')->addMessage($notice);
+        Mage::getSingleton('core/session')->addMessage($notice);
 
         return $this;
     }
