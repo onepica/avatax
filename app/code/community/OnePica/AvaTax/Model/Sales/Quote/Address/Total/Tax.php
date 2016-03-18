@@ -53,8 +53,8 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
         $this->_setAddress($address);
         parent::collect($address);
 
-        if (empty($address->getPostcode())
-            || (!empty($address->getPostcode()) && $address->getPostcode() == '-')
+        if (!$address->getPostcode()
+            || ($address->getPostcode() && $address->getPostcode() == '-')
         ) {
             return $this;
         }
