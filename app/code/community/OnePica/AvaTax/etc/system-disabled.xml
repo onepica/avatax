@@ -31,11 +31,6 @@
                 </classes>
                 <calculation>
                     <fields>
-                        <price_includes_tax>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </price_includes_tax>
                         <based_on>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -67,9 +62,11 @@
                             <show_in_store>0</show_in_store>
                         </cross_border_trade_enabled>
                         <apply_after_discount>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <price_includes_tax>
+                                    <value>0|1</value>
+                                </price_includes_tax>
+                            </depends>
                         </apply_after_discount>
                     </fields>
                 </calculation>
@@ -97,35 +94,6 @@
                         </shipping>
                     </fields>
                 </display>
-                <cart_display>
-                    <fields>
-                        <price>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </price>
-                        <subtotal>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </subtotal>
-                        <shipping>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </shipping>
-                        <gift_wrapping>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </gift_wrapping>
-                        <printed_card>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </printed_card>
-                    </fields>
-                </cart_display>
                 <sales_display>
                     <fields>
                         <full_summary>
