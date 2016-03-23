@@ -25,6 +25,21 @@
 class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
 {
     /**
+     * Check if product prices inputed include tax
+     *
+     * @param Mage_Core_Model_Store|int $store
+     * @return  bool
+     */
+    public function priceIncludesTax($store = null)
+    {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
+            return false;
+        }
+
+        return parent::priceIncludesTax($store);
+    }
+
+    /**
      * Get configuration setting "Apply Discount On Prices Including Tax" value
      * Always apply discount first since AvaTax does not support line-level item discount amounts
      *
@@ -41,24 +56,72 @@ class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
     }
 
     /**
-     * Check if product prices inputed include tax
+     * Check what taxes should be applied after discount
      *
-     * @param null|int $store
-     * @return bool
+     * @param Mage_Core_Model_Store|int $store
+     * @return  bool
      */
-    public function priceIncludesTax($store = null)
+    public function applyTaxAfterDiscount($store = null)
+    {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
+            return true;
+        }
+
+        return parent::applyTaxAfterDiscount($store);
+    }
+
+    /**
+     * Get product price display type
+     *  1 - Excluding tax
+     *  2 - Including tax
+     *  3 - Both
+     *
+     * @param Mage_Core_Model_Store|int $store
+     * @return  int
+     */
+    public function getPriceDisplayType($store = null)
+    {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
+            return Mage_Tax_Model_Config::DISPLAY_TYPE_EXCLUDING_TAX;
+        }
+
+        return parent::getPriceDisplayType($store);
+    }
+
+    /**
+     * Get shipping methods prices display type
+     *
+     * @param Mage_Core_Model_Store|int $store
+     * @return  int
+     */
+    public function getShippingPriceDisplayType($store = null)
+    {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
+            return Mage_Tax_Model_Config::DISPLAY_TYPE_EXCLUDING_TAX;
+        }
+
+        return parent::getShippingPriceDisplayType($store);
+    }
+
+    /**
+     * Return the config value for self::CONFIG_XML_PATH_CROSS_BORDER_TRADE_ENABLED
+     *
+     * @param Mage_Core_Model_Store|int $store
+     * @return int
+     */
+    public function crossBorderTradeEnabled($store = null)
     {
         if ($this->_getDataHelper()->isServiceEnabled($store)) {
             return false;
         }
 
-        return parent::priceIncludesTax($store);
+        return parent::crossBorderTradeEnabled($store);
     }
 
     /**
      * Check if shipping prices include tax
      *
-     * @param null|int $store
+     * @param Mage_Core_Model_Store|int $store
      * @return bool
      */
     public function shippingPriceIncludesTax($store = null)
@@ -73,7 +136,7 @@ class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
     /**
      * Check if display cart prices included tax
      *
-     * @param null|int $store
+     * @param mixed $store
      * @return bool
      */
     public function displayCartPricesInclTax($store = null)
@@ -88,7 +151,7 @@ class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
     /**
      * Check if display cart prices excluded tax
      *
-     * @param null|int $store
+     * @param mixed $store
      * @return bool
      */
     public function displayCartPricesExclTax($store = null)
@@ -103,7 +166,7 @@ class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
     /**
      * Check if display cart prices included and excluded tax
      *
-     * @param null|int $store
+     * @param mixed $store
      * @return bool
      */
     public function displayCartPricesBoth($store = null)
@@ -338,6 +401,16 @@ class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
         }
 
         return parent::displaySalesShippingBoth($store);
+    }
+
+    /**
+     * Get tax data helper
+     *
+     * @return Mage_Tax_Helper_Data
+     */
+    protected function _getTaxDataHelper()
+    {
+        return Mage::helper('tax');
     }
 
     /**

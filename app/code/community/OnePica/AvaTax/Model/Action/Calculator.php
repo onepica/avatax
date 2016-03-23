@@ -107,11 +107,29 @@ class OnePica_AvaTax_Model_Action_Calculator extends OnePica_AvaTax_Model_Action
         if ($this->isProductCalculated($item)) {
             return 0;
         } else {
-            $id = $item->getSku();
+            $id = $item->getId();
             $ratesData = $this->_getRates();
 
             return isset($ratesData['items'][$id]['rate']) ? $ratesData['items'][$id]['rate'] : 0;
         }
+    }
+
+    /**
+     * Get item taxable
+     *
+     * @param Mage_Sales_Model_Quote_Item $item
+     * @return int
+     */
+    public function getItemTaxable($item)
+    {
+        if ($this->isProductCalculated($item)) {
+            return 0;
+        }
+
+        $id = $item->getId();
+        $ratesData = $this->_getRates();
+
+        return isset($ratesData['items'][$id]['taxable']) ? $ratesData['items'][$id]['taxable'] : 0;
     }
 
     /**
@@ -126,7 +144,7 @@ class OnePica_AvaTax_Model_Action_Calculator extends OnePica_AvaTax_Model_Action
             return array();
         }
 
-        $id = $item->getSku();
+        $id = $item->getId();
         $ratesData = $this->_getRates();
 
         $jurisdictionRates = isset($ratesData['items'][$id]['jurisdiction_rates'])
@@ -166,7 +184,7 @@ class OnePica_AvaTax_Model_Action_Calculator extends OnePica_AvaTax_Model_Action
             return 0;
         }
         $ratesData = $this->_getRates();
-        $id = $item->getSku();
+        $id = $item->getId();
 
         return isset($ratesData['gw_items'][$id]['amt']) ? $ratesData['gw_items'][$id]['amt'] : 0;
     }
@@ -188,12 +206,13 @@ class OnePica_AvaTax_Model_Action_Calculator extends OnePica_AvaTax_Model_Action
                     $tax += $this->getItemTax($child);
                 }
 
-                return $tax;
+                return (float)$tax;
             } else {
                 $ratesData = $this->_getRates();;
-                $id = $item->getSku();
+                $id = $item->getId();
+                $tax = isset($ratesData['items'][$id]['amt']) ? $ratesData['items'][$id]['amt'] : 0;
 
-                return isset($ratesData['items'][$id]['amt']) ? $ratesData['items'][$id]['amt'] : 0;
+                return (float)$tax;
             }
         }
 
