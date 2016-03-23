@@ -64,7 +64,10 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
         $this->_resetItemsValues($address);
 
         //Added check for calculating tax for regions filtered in the admin
-        if (!$this->_isAddressActionable($address) || !$address->hasItems()) {
+        if (!$this->_isAddressActionable($address)
+            || !$address->hasItems()
+            || $this->_isFilteredRequest($store)
+        ) {
             return $this;
         }
 
