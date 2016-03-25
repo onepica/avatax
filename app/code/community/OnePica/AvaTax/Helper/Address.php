@@ -108,26 +108,30 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
         }
 
         if ($filter && Mage::helper('avatax')->getLogMode($storeId)) {
-            $filterLog = Mage::getSingleton('avatax/session')->getFilterLog();
-            if (!is_array($filterLog)) {
-                $filterLog = array();
-            }
-            $key = $address->getCacheHashKey();
+            $logType = OnePica_AvaTax_Model_Source_Avatax_Logtype::FILTER;
+            if (in_array($logType, $this->_getHelper()->getLogType($storeId))) {
 
-            //did we already log this filtered address?
-            if (!in_array($key, $filterLog)) {
-                $filterLog[] = $key;
-                Mage::getSingleton('avatax/session')->setFilterLog($filterLog);
+                $filterLog = Mage::getSingleton('avatax/session')->getFilterLog();
+                if (!is_array($filterLog)) {
+                    $filterLog = array();
+                }
+                $key = $address->getCacheHashKey();
 
-                $type = ($filterMode == OnePica_AvaTax_Model_Service_Abstract_Config::REGIONFILTER_TAX) ?
-                    'tax_calc' : 'tax_calc|address_opts';
-                Mage::getModel('avatax_records/log')
-                    ->setStoreId($storeId)
-                    ->setLevel('Success')
-                    ->setType('Filter')
-                    ->setRequest(print_r($address->debug(), true))
-                    ->setResult('filter: ' . $filter . ', type: ' . $type)
-                    ->save();
+                //did we already log this filtered address?
+                if (!in_array($key, $filterLog)) {
+                    $filterLog[] = $key;
+                    Mage::getSingleton('avatax/session')->setFilterLog($filterLog);
+
+                    $type = ($filterMode == OnePica_AvaTax_Model_Service_Abstract_Config::REGIONFILTER_TAX)
+                        ? 'tax_calc' : 'tax_calc|address_opts';
+                    Mage::getModel('avatax_records/log')
+                        ->setStoreId($storeId)
+                        ->setLevel('Success')
+                        ->setType($logType)
+                        ->setRequest(print_r($address->debug(), true))
+                        ->setResult('filter: ' . $filter . ', type: ' . $type)
+                        ->save();
+                }
             }
         }
 
@@ -282,5 +286,15 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
     private function _getConfigData()
     {
         return Mage::helper('avatax/config');
+    }
+
+    private function _getLogHelper()
+    {
+        return Mage::getModel('avatax_records/log');
+    }
+
+    protected function _getHelper()
+    {
+        return Mage::helper('avatax');
     }
 }
