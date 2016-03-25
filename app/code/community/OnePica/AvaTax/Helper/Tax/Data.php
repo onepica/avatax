@@ -30,34 +30,6 @@ class OnePica_AvaTax_Helper_Tax_Data extends Mage_Tax_Helper_Data
     const AVATAX_SHIPPING_TAX_CLASS = 'FR020100';
 
     /**
-     * Items should not include tax so that AvaTax can calculate it
-     *
-     * @param null|bool|int|Mage_Core_Model_Store $store
-     * @return bool
-     */
-    public function priceIncludesTax($store = null)
-    {
-        if (Mage::helper('avatax')->isServiceEnabled($store)) {
-            return false;
-        }
-        return parent::priceIncludesTax($store);
-    }
-
-    /**
-     * Shipping should not include tax so that AvaTax can calculate it
-     *
-     * @param null|bool|int|Mage_Core_Model_Store $store
-     * @return bool
-     */
-    public function shippingPriceIncludesTax($store = null)
-    {
-        if (Mage::helper('avatax')->isServiceEnabled($store)) {
-            return false;
-        }
-        return parent::shippingPriceIncludesTax($store);
-    }
-
-    /**
      * Returns AvaTax's hard-coded shipping tax class
      *
      * @param null|bool|int|Mage_Core_Model_Store $store
@@ -111,19 +83,5 @@ class OnePica_AvaTax_Helper_Tax_Data extends Mage_Tax_Helper_Data
             return false;
         }
         return parent::applyTaxOnOriginalPrice($store);
-    }
-
-    /**
-     * Always apply discount first since AvaTax doesn't support line-level item discount amounts
-     *
-     * @param null|bool|int|Mage_Core_Model_Store $store
-     * @return bool
-     */
-    public function applyTaxAfterDiscount($store = null)
-    {
-        if (Mage::helper('avatax')->isServiceEnabled($store)) {
-            return true;
-        }
-        return parent::applyTaxAfterDiscount($store);
     }
 }

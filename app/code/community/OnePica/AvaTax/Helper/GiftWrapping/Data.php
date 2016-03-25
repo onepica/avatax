@@ -1,7 +1,9 @@
 <?php
 /**
  * OnePica_AvaTax
+ *
  * NOTICE OF LICENSE
+ *
  * This source file is subject to the Open Software License (OSL 3.0), a
  * copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
@@ -9,12 +11,12 @@
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
- * @copyright  Copyright (c) 2015 One Pica, Inc.
+ * @copyright  Copyright (c) 2009 One Pica, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
 /**
- * Class OnePica_AvaTax_Helper_GiftWrapping_Data
+ * Class OnePica_AvaTax_Helper_Data
  */
 class OnePica_AvaTax_Helper_GiftWrapping_Data extends Enterprise_GiftWrapping_Helper_Data
 {
@@ -26,7 +28,7 @@ class OnePica_AvaTax_Helper_GiftWrapping_Data extends Enterprise_GiftWrapping_He
      */
     public function displayCartWrappingIncludeTaxPrice($store = null)
     {
-        if ($this->_getDataHelper()->isServiceEnabled($store)) {
+        if ($this->_isServiceEnable($store)) {
             return false;
         }
 
@@ -41,7 +43,7 @@ class OnePica_AvaTax_Helper_GiftWrapping_Data extends Enterprise_GiftWrapping_He
      */
     public function displayCartWrappingExcludeTaxPrice($store = null)
     {
-        if ($this->_getDataHelper()->isServiceEnabled($store)) {
+        if ($this->_isServiceEnable($store)) {
             return true;
         }
 
@@ -56,11 +58,11 @@ class OnePica_AvaTax_Helper_GiftWrapping_Data extends Enterprise_GiftWrapping_He
      */
     public function displayCartWrappingBothPrices($store = null)
     {
-        if ($this->_getDataHelper()->isServiceEnabled($store)) {
+        if ($this->_isServiceEnable($store)) {
             return false;
         }
 
-        return parent::displayCartWrappingBothPrices($store);
+        return parent::displayCartCardBothPrices($store);
     }
 
     /**
@@ -71,7 +73,7 @@ class OnePica_AvaTax_Helper_GiftWrapping_Data extends Enterprise_GiftWrapping_He
      */
     public function displayCartCardIncludeTaxPrice($store = null)
     {
-        if ($this->_getDataHelper()->isServiceEnabled($store)) {
+        if ($this->_isServiceEnable($store)) {
             return false;
         }
 
@@ -86,7 +88,7 @@ class OnePica_AvaTax_Helper_GiftWrapping_Data extends Enterprise_GiftWrapping_He
      */
     public function displayCartCardBothPrices($store = null)
     {
-        if ($this->_getDataHelper()->isServiceEnabled($store)) {
+        if ($this->_isServiceEnable($store)) {
             return false;
         }
 
@@ -101,7 +103,7 @@ class OnePica_AvaTax_Helper_GiftWrapping_Data extends Enterprise_GiftWrapping_He
      */
     public function displaySalesWrappingIncludeTaxPrice($store = null)
     {
-        if ($this->_getDataHelper()->isServiceEnabled($store)) {
+        if ($this->_isServiceEnable($store)) {
             return false;
         }
 
@@ -116,7 +118,7 @@ class OnePica_AvaTax_Helper_GiftWrapping_Data extends Enterprise_GiftWrapping_He
      */
     public function displaySalesWrappingExcludeTaxPrice($store = null)
     {
-        if ($this->_getDataHelper()->isServiceEnabled($store)) {
+        if ($this->_isServiceEnable($store)) {
             return true;
         }
 
@@ -131,7 +133,7 @@ class OnePica_AvaTax_Helper_GiftWrapping_Data extends Enterprise_GiftWrapping_He
      */
     public function displaySalesWrappingBothPrices($store = null)
     {
-        if ($this->_getDataHelper()->isServiceEnabled($store)) {
+        if ($this->_isServiceEnable($store)) {
             return false;
         }
 
@@ -139,42 +141,15 @@ class OnePica_AvaTax_Helper_GiftWrapping_Data extends Enterprise_GiftWrapping_He
     }
 
     /**
-     * Check ability to display prices including tax for printed card in backend sales
+     * Is avatax service enabled
      *
      * @param Mage_Core_Model_Store|int $store
      * @return bool
      */
-    public function displaySalesCardIncludeTaxPrice($store = null)
+    protected function _isServiceEnable($store)
     {
-        if ($this->_getDataHelper()->isServiceEnabled($store)) {
-            return false;
-        }
-
-        return parent::displaySalesCardIncludeTaxPrice($store);
-    }
-
-    /**
-     * Check ability to display both prices for printed card in backend sales
-     *
-     * @param Mage_Core_Model_Store|int $store
-     * @return bool
-     */
-    public function displaySalesCardBothPrices($store = null)
-    {
-        if ($this->_getDataHelper()->isServiceEnabled($store)) {
-            return false;
-        }
-
-        return parent::displaySalesCardBothPrices($store);
-    }
-
-    /**
-     * Get avatax data helper
-     *
-     * @return OnePica_AvaTax_Helper_Data
-     */
-    protected function _getDataHelper()
-    {
-        return Mage::helper('avatax');
+        /** @var OnePica_AvaTax_Helper_Data $dataHelper */
+        $dataHelper = Mage::helper('avatax');
+        return $dataHelper->isServiceEnabled($store);
     }
 }

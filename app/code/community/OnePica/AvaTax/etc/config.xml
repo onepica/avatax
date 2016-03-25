@@ -19,7 +19,7 @@
 <config>
     <modules>
         <OnePica_AvaTax>
-            <version>3.0.0.18</version>
+            <version>3.0.1.10</version>
         </OnePica_AvaTax>
     </modules>
     <global>
@@ -56,12 +56,12 @@
             <sales>
                 <rewrite>
                     <quote_address>OnePica_AvaTax_Model_Sales_Quote_Address</quote_address>
-                    <quote_address_total_grand>OnePica_AvaTax_Model_Sales_Quote_Address_Total_Grand</quote_address_total_grand>
                 </rewrite>
             </sales>
             <tax>
                 <rewrite>
                     <config>OnePica_AvaTax_Model_Tax_Config</config>
+                    <calculation>OnePica_AvaTax_Model_Tax_Calculation</calculation>
                 </rewrite>
             </tax>
             <enterprise_giftwrapping>
@@ -135,6 +135,15 @@
                     </avatax>
                 </observers>
             </sales_order_creditmemo_refund>
+            <controller_action_layout_generate_xml_before>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer_controllerActionLayoutGenerateXmlBefore</class>
+                        <method>execute</method>
+                    </avatax>
+                </observers>
+            </controller_action_layout_generate_xml_before>
             <sales_quote_collect_totals_before>
                 <observers>
                     <avatax>
@@ -402,7 +411,7 @@
         <tax>
             <avatax>
                 <validate_address>1</validate_address>
-                <active_service>avatax16</active_service>
+                <active_service>avatax</active_service>
                 <action>0</action>
                 <url>https://avatax.avalara.net/</url>
                 <region_filter_mode>0</region_filter_mode>

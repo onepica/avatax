@@ -25,9 +25,14 @@
 class OnePica_AvaTax_Model_Source_Avatax16_Url
 {
     /**
+     * Url for production
+     */
+    const PRODUCTION_URL = 'https://tax.api.avalara.com/v2';
+
+    /**
      * Url for development
      */
-    const DEVELOPMENT_URL = 'https://tax-qa.avlr.sh/';
+    const DEVELOPMENT_URL = 'https://tax-qa.avlr.sh/v2';
 
     /**
      * Gets the list of urls for the admin config dropdown
@@ -37,6 +42,10 @@ class OnePica_AvaTax_Model_Source_Avatax16_Url
     public function toArray()
     {
         return array(
+            array(
+                'value' => self::PRODUCTION_URL,
+                'label' => Mage::helper('avatax')->__('Production' . ' (' . self::PRODUCTION_URL . ')')
+            ),
             array(
                 'value' => self::DEVELOPMENT_URL,
                 'label' => Mage::helper('avatax')->__('Development' . ' (' . self::DEVELOPMENT_URL . ')')
