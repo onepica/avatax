@@ -16,24 +16,31 @@
  */
 
 /**
- * Avatax Observer ControllerActionPostdispatchCheckoutCartEstimateUpdatePost
+ * Avatax Observer ControllerActionLayoutLoadBefore
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Observer_ControllerActionPostdispatchCheckoutCartEstimateUpdatePost
+class OnePica_AvaTax_Model_Observer_ControllerActionLayoutLoadBefore
     extends OnePica_AvaTax_Model_Observer_Abstract
 {
     /**
-     * Add error message if tax estimation has problems when user updates estimate post
+     * Add error message if tax estimation has problems when user estimates post
      *
      * @param Varien_Event_Observer $observer
      * @return $this
      */
     public function execute(Varien_Event_Observer $observer)
     {
-        $this->_handleTaxEstimation();
+        $action = $observer->getAction();
+        if ($action instanceOf Mage_Checkout_CartController
+            && $action->getFullActionName() == 'checkout_cart_index') {
+            /* @var Mage_Sales_Model_Quote $quote */
+            $quote = Mage::getSingleton('checkout/session')->getQuote();
+            $this->_addErrorMessage($quote);
+        }
+
         return $this;
     }
 }

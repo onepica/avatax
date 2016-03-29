@@ -61,8 +61,13 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
 
         $store = $address->getQuote()->getStore();
 
+        $this->_resetItemsValues($address);
+
         //Added check for calculating tax for regions filtered in the admin
-        if (!$this->_isAddressActionable($address) || !$address->hasItems()) {
+        if (!$this->_isAddressActionable($address)
+            || !$address->hasItems()
+            || $this->_isFilteredRequest($store)
+        ) {
             return $this;
         }
 
@@ -230,6 +235,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
     {
         if ($address->getAddressType() == Mage_Sales_Model_Quote_Address::TYPE_SHIPPING
             || $address->getUseForShipping()
+            || $this->_isBillingUseForShipping()
         ) {
             $shippingItem = new Varien_Object();
             $shippingItem->setId(Mage::helper('avatax/config')->getShippingSku($store->getId()));
@@ -334,6 +340,26 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
         return $this;
     }
 
+    /**
+     * Reset items values
+     *
+     * @param \Mage_Sales_Model_Quote_Address $address
+     * @return $this
+     */
+    protected function _resetItemsValues(Mage_Sales_Model_Quote_Address $address)
+    {
+        /* @var $item Mage_Sales_Model_Quote_Item */
+        foreach ($address->getAllItems() as $item) {
+            $item->setTaxAmount(0);
+            $item->setBaseTaxAmount(0);
+            $item->setTaxPercent(0);
+
+            $item->setGwBaseTaxAmount(0);
+            $item->setGwTaxAmount(0);
+        }
+
+        return $this;
+    }
     /**
      * Reset address values
      *
@@ -518,6 +544,18 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
         return Mage::helper('avatax');
     }
 
+    /**
+     * Is billing address use for shipping
+     *
+     * @return bool
+     */
+    protected function _isBillingUseForShipping()
+    {
+        $data = Mage::app()->getRequest()->getPost('billing', array());
+
+        return isset($data['use_for_shipping']) ? (bool)$data['use_for_shipping'] : false;
+    }
+
     /* BELOW ARE MAGE CORE PROPERTIES AND METHODS ADDED FOR OLDER VERSION COMPATABILITY */
 
     /**
@@ -586,5 +624,30 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
         }
 
         return $this->_address;
+    }
+
+    /**
+     * Checks if is filtered request
+     *
+     * @param Mage_Core_Model_Store|int $store
+     * @return bool
+     */
+    protected function _isFilteredRequest($store)
+    {
+        if ($this->_getRequestFilterHelper()->isRequestFiltered($store)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Get request filter helper
+     *
+     * @return OnePica_AvaTax_Helper_RequestFilter
+     */
+    protected function _getRequestFilterHelper()
+    {
+        return Mage::helper('avatax/requestFilter');
     }
 }

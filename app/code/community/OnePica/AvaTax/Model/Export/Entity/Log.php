@@ -36,6 +36,9 @@ class OnePica_AvaTax_Model_Export_Entity_Log extends OnePica_AvaTax_Model_Export
             'store_id',
             'level',
             'type',
+            'request',
+            'result',
+            'additional',
             'created_at'
         );
     }

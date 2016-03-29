@@ -227,7 +227,9 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         $lineNumber = count($this->_lines);
         $storeId = $address->getQuote()->getStore()->getId();
         $taxClass = Mage::helper('tax')->getShippingTaxClass($storeId);
-        $shippingAmount = (float)$address->getBaseShippingAmount();
+        $shippingAmount = max(
+            0.0, (float)$address->getBaseShippingAmount()
+        );
 
         if ($this->_getTaxDataHelper()->applyTaxAfterDiscount($storeId)) {
             $shippingAmount -= (float)$address->getBaseShippingDiscountAmount();
@@ -236,7 +238,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         $line = new Line();
         $line->setNo($lineNumber);
         $shippingSku = $this->_getConfigHelper()->getShippingSku($storeId);
-        $line->setItemCode($shippingSku ? $shippingSku : 'Shipping');
+        $line->setItemCode($shippingSku ?: 'Shipping');
         $line->setDescription('Shipping costs');
         $line->setTaxCode($taxClass);
         $line->setQty(1);
