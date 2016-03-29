@@ -26,19 +26,54 @@ class OnePica_AvaTax_Model_Source_Logtype
 {
     /**
      * Gets the list of type for the admin config dropdown
+     *
      * @return array
      * @throws OnePica_AvaTax_Exception
      */
     public function toOptionArray()
     {
-        $activeService = Mage::helper('avatax/config')->getActiveService(Mage::app()->getStore());
+        return $this->_getLogTypeModel()->toArray();
+    }
+
+    /**
+     * Get log types array
+     *
+     * @return array
+     */
+    public function getLogTypes()
+    {
+        return $this->_getLogTypeModel()->getLogTypes();
+    }
+
+    /**
+     * Get LogType source model
+     *
+     * @return false|OnePica_AvaTax_Model_Source_Avatax16_Logtype|OnePica_AvaTax_Model_Source_Avatax_Logtype
+     * @throws \OnePica_AvaTax_Exception
+     */
+    protected function _getLogTypeModel()
+    {
+        $activeService = $this->_getConfigHelper()->getActiveService(Mage::app()->getStore());
         if (!$activeService) {
             throw new OnePica_AvaTax_Exception('Service source model is not defined.');
         }
+
         $model = Mage::getModel('avatax/source_' . $activeService . '_logtype');
+
         if (!$model) {
             throw new OnePica_AvaTax_Exception('Could not found source model ' . $activeService);
         }
-        return $model->toArray();
+
+        return $model;
+    }
+
+    /**
+     * Get config helper
+     *
+     * @return OnePica_AvaTax_Helper_Config
+     */
+    protected function _getConfigHelper()
+    {
+        return Mage::helper('avatax/config');
     }
 }
