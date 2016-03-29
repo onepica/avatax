@@ -16,7 +16,7 @@
  */
 
 /**
- * Avatax Observer ControllerActionPredispatchCheckoutMultishippingAddressEditShippingPost
+ * Avatax Observer ControllerActionPredispatchCustomerAddressFormPost
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
@@ -37,7 +37,7 @@ class OnePica_AvaTax_Model_Observer_ControllerActionPredispatchCustomerAddressFo
 
     /**
      * Validates customer address during modifying address from
-     * multishipping
+     * multi shipping
      *
      * @param Varien_Event_Observer $observer
      *
@@ -45,102 +45,112 @@ class OnePica_AvaTax_Model_Observer_ControllerActionPredispatchCustomerAddressFo
      */
     public function execute(Varien_Event_Observer $observer)
     {
-        $controller = $observer->getControllerAction();
-        $request = $controller->getRequest();
+        if ($this->_haveToProcess($observer)) {
 
-        try
-        {
-            $urlSuccess = $request->getParam(Mage_Core_Controller_Varien_Action::PARAM_NAME_SUCCESS_URL);
-            $urlError = $request->getParam(Mage_Core_Controller_Varien_Action::PARAM_NAME_ERROR_URL);
-            if (strstr($urlSuccess, self::SUCCESS_URL)
-                && strstr($urlError, self::ERROR_URL)
-            ) {
+            /* @var Mage_Core_Controller_Request_Http $request */
+            $request = $observer->getControllerAction()->getRequest();
 
-                $newCustomerAddressId = $request->getParam('id');
-                if ($newCustomerAddressId) {
+            try
+            {
+                $requestObjects = $this->_getRequestObjects($request);
+                if ($requestObjects) {
 
-                    /* @var $quote Mage_Sales_Model_Quote */
-                    $quote = Mage::getSingleton('checkout/session')->getQuote();
-                    $storeId = $quote->getStoreId();
-
-                    $shippingAddress = $quote->getShippingAddressByCustomerAddressId($newCustomerAddressId);
-
-                    $newCustomerAddress = $this->_getFormNewCustomerAddress($request);
-                    $errors = $newCustomerAddress->validate();
+                    //validate customer address
+                    $errors = $requestObjects->newCustomerAddress->validate();
                     if ($errors !== true && !empty($errors)) {
                         throw new OnePica_AvaTax_Exception(implode('<br />', $errors));
                     }
 
-                    $orgCustomerAddress = $shippingAddress->exportCustomerAddress();
-                    $orgCustomerAddress->setData(
-                        array_merge(
-                            $newCustomerAddress->getData(),
-                            $orgCustomerAddress->getData()
-                        )
-                    );
-                    $shippingAddress->importCustomerAddress($newCustomerAddress);
-
-                    //perform quote shipping address validation
-                    $errors = array();
-                    $normalized = false;
-
-                    $message = Mage::getStoreConfig('tax/avatax/validate_address_message', $storeId);
-
-                    if ($shippingAddress->validate() !== true) {
-                        $errors[] = sprintf($message, $shippingAddress->format('oneline'));
-                    }
-
-                    if ($shippingAddress->getAddressNormalized()) {
-                        $normalized = true;
-                    }
-
-                    $session = Mage::getSingleton('checkout/session');
-                    if ($normalized) {
-                        $session->addNotice(
-                            Mage::getStoreConfig('tax/avatax/multiaddress_normalize_message', $storeId)
+                    //validate shipping address
+                    $validationResults = $this->_validateShippingAddress($requestObjects);
+                    if ($validationResults->normalized) {
+                        Mage::getSingleton('checkout/session')->addNotice(
+                            Mage::getStoreConfig('tax/avatax/multiaddress_normalize_message', $requestObjects->storeId)
                         );
 
-                        $controller->setRedirectWithCookieCheck('checkout/multishipping/shipping', array());
-                        $controller->setFlag(
-                            '', Mage_Core_Controller_Varien_Action::FLAG_NO_DISPATCH, true
-                        );
+                        $this->_setRedirect($observer, 'checkout/multishipping/shipping', array());
                     }
 
-                    if (!empty($errors)) {
-                        //restore shipping address
-                        $shippingAddress->importCustomerAddress($orgCustomerAddress);
-                        $shippingAddress->save();
-                        throw new OnePica_AvaTax_Exception(implode('<br />', $errors));
+                    if ($validationResults->hasErrors) {
+                        throw new OnePica_AvaTax_Exception(implode('<br />', $validationResults->errors));
                     }
 
                     //save new customer address
-                    $newCustomerAddress->save();
-                    $this->_getCustomerSession()->addSuccess($this->_getHelper()->__('The address has been saved.'));
+                    $this->_saveCustomerAddress($requestObjects->newCustomerAddress);
                 }
             }
-        }
-        catch (Exception $e)
-        {
-            //clear all messages
-            $this->_getCustomerSession()->getMessages(true);
-            //add validation error message
-            $this->_getCustomerSession()->addError($e->getMessage());
+            catch (Exception $e)
+            {
+                //clear all messages
+                $this->_getCustomerSession()->getMessages(true);
+                //add validation error message
+                $this->_getCustomerSession()->addError($e->getMessage());
 
-            //restore entered form data
-            $this->_getCustomerSession()->setAddressFormData($request->getPost());
-            //redirect to multishipping address editing
-            $controller = $observer->getEvent()->getControllerAction();
-            $controller->setRedirectWithCookieCheck(
-                self::ERROR_URL,
-                array('id' => $request->getParam('id'))
-            );
-            $controller->setFlag(
-                '', Mage_Core_Controller_Varien_Action::FLAG_NO_DISPATCH, true
-            );
+                //restore entered form data
+                $this->_getCustomerSession()->setAddressFormData($request->getPost());
+                //redirect to multishipping address editing
+                $this->_setRedirect($observer, self::ERROR_URL, array('id' => $request->getParam('id')));
+            }
         }
 
         return $this;
+    }
 
+    /**
+     * Return true
+     * - If customer edit address on multishipping second step
+     *
+     * @param Varien_Event_Observer $observer
+     *
+     * @return bool
+     */
+    protected function _haveToProcess(Varien_Event_Observer $observer)
+    {
+        $request = $observer->getControllerAction()->getRequest();
+
+        $urlSuccess = $request->getParam(Mage_Core_Controller_Varien_Action::PARAM_NAME_SUCCESS_URL);
+        $urlError = $request->getParam(Mage_Core_Controller_Varien_Action::PARAM_NAME_ERROR_URL);
+
+        return strstr($urlSuccess, self::SUCCESS_URL) && strstr($urlError, self::ERROR_URL);
+    }
+
+    /**
+     * Get Current Request Objects
+     *
+     * @param Mage_Core_Controller_Request_Http $request
+     *
+     * @return null|object
+     */
+    protected function _getRequestObjects(Mage_Core_Controller_Request_Http $request)
+    {
+        $quote = Mage::getSingleton('checkout/session')->getQuote();
+
+        $newCustomerAddressId =  $request->getParam('id');
+        if (!$newCustomerAddressId) {
+            return null;
+        }
+
+        $shippingAddress = $quote->getShippingAddressByCustomerAddressId($newCustomerAddressId);
+        if (!$shippingAddress) {
+            return null;
+        }
+
+        $newCustomerAddress = $this->_getFormNewCustomerAddress($request);
+
+        $orgCustomerAddress = $shippingAddress->exportCustomerAddress();
+        $orgCustomerAddress->setData(
+            array_merge(
+                $newCustomerAddress->getData(),
+                $orgCustomerAddress->getData()
+            )
+        );
+
+        return (object)
+        array('quote'              => $quote,
+              'storeId'            => $quote->getStoreId(),
+              'shippingAddress'    => $shippingAddress,
+              'orgCustomerAddress' => $orgCustomerAddress,
+              'newCustomerAddress' => $newCustomerAddress);
     }
 
     /**
@@ -148,9 +158,9 @@ class OnePica_AvaTax_Model_Observer_ControllerActionPredispatchCustomerAddressFo
      *
      * @param Mage_Core_Controller_Request_Http $request
      *
-     * @return mixed
+     * @return Mage_Customer_Model_Address
      */
-    protected function _getFormNewCustomerAddress($request)
+    protected function _getFormNewCustomerAddress(Mage_Core_Controller_Request_Http $request)
     {
         $customerAddressId = $request->getParam('id');
         $customerAddress = Mage::getModel('checkout/type_multishipping')
@@ -159,12 +169,87 @@ class OnePica_AvaTax_Model_Observer_ControllerActionPredispatchCustomerAddressFo
 
         /* @var $addressForm Mage_Customer_Model_Form */
         $addressForm = Mage::getModel('customer/form');
-        $addressForm->setFormCode('customer_address_edit')
-            ->setEntity($customerAddress);
+        $addressForm->setFormCode('customer_address_edit')->setEntity($customerAddress);
         $addressData    = $addressForm->extractData($request);
         $customerAddress->setData(array_merge($customerAddress->getData(), $addressData));
+        $customerAddress
+            ->setIsDefaultBilling($request->getParam('default_billing', false))
+            ->setIsDefaultShipping($request->getParam('default_shipping', false));
 
         return $customerAddress;
+    }
+
+    /**
+     * Validate shipping address
+     *
+     * @param object $requestObjects
+     *
+     * @return object
+     */
+    protected function _validateShippingAddress($requestObjects)
+    {
+        $storeId = $requestObjects->storeId;
+        $shippingAddress = $requestObjects->shippingAddress;
+        $newCustomerAddress = $requestObjects->newCustomerAddress;
+        $orgCustomerAddress = $requestObjects->orgCustomerAddress;
+
+        //perform quote shipping address validation
+        $errors = array();
+        $normalized = false;
+
+        $shippingAddress->importCustomerAddress($newCustomerAddress);
+
+        if ($shippingAddress->validate() !== true) {
+            $message = Mage::getStoreConfig('tax/avatax/validate_address_message', $storeId);
+            $errors[] = sprintf($message, $shippingAddress->format('oneline'));
+        }
+
+        if ($shippingAddress->getAddressNormalized()) {
+            $normalized = true;
+        }
+
+        if (!empty($errors)) {
+            //restore shipping address on error, address saved, if normilization turned on
+            $shippingAddress->importCustomerAddress($orgCustomerAddress);
+            $shippingAddress->save();
+        }
+
+        return (object)
+        array(
+            'hasErrors'  => !empty($errors),
+            'errors'     => $errors,
+            'normalized' => $normalized);
+    }
+
+    /**
+     * Save customer address
+     *
+     * @param Mage_Customer_Model_Address $customerAddress
+     *
+     * @return $this
+     */
+    protected function _saveCustomerAddress(Mage_Customer_Model_Address $customerAddress)
+    {
+        $customerAddress->save();
+        $this->_getCustomerSession()->addSuccess($this->_getHelper()->__('The address has been saved.'));
+
+        return $this;
+    }
+
+    /**
+     * @param Varien_Event_Observer $observer
+     * @param                       $path
+     * @param                       $params
+     *
+     * @return $this
+     */
+    protected function _setRedirect(Varien_Event_Observer $observer, $path, $params)
+    {
+        $controller = $observer->getControllerAction();
+        $controller->setRedirectWithCookieCheck($path, $params);
+        $controller->setFlag('', Mage_Core_Controller_Varien_Action::FLAG_NO_DISPATCH, true);
+
+        return $this;
     }
 
     /**
