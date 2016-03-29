@@ -19,7 +19,7 @@
 <config>
     <modules>
         <OnePica_AvaTax>
-            <version>3.0.1.10</version>
+            <version>3.1.0.2</version>
         </OnePica_AvaTax>
     </modules>
     <global>
@@ -79,6 +79,11 @@
                     <data>OnePica_AvaTax_Helper_Tax_Data</data>
                 </rewrite>
             </tax>
+            <enterprise_giftwrapping>
+                <rewrite>
+                    <data>OnePica_AvaTax_Helper_GiftWrapping_Data</data>
+                </rewrite>
+            </enterprise_giftwrapping>
         </helpers>
         <blocks>
             <avatax>
@@ -388,10 +393,7 @@
         <tax>
             <avatax>
                 <validate_address>1</validate_address>
-                <limit_gettax_request_on_checkout_onepage_actions>1</limit_gettax_request_on_checkout_onepage_actions>
-                <limit_gettax_request_on_multishipping_checkout_actions>1</limit_gettax_request_on_multishipping_checkout_actions>
-                <limit_gettax_request_on_noncheckout_actions>1</limit_gettax_request_on_noncheckout_actions>
-                <active_service>avatax16</active_service>
+                <active_service>avatax</active_service>
                 <action>0</action>
                 <url>https://avatax.avalara.net/</url>
                 <region_filter_mode>0</region_filter_mode>
