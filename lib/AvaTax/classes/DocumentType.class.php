@@ -8,7 +8,7 @@
  * is treated after a tax calculation. Specified when constructing a {@link GetTaxRequest}.
  *
  * @author    Avalara
- * @copyright � 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright © 2004 - 2016 Avalara, Inc.  All rights reserved.
  * @package   Tax
  */
 
@@ -72,6 +72,15 @@ class DocumentType extends Enum
 	 */
     public static $InventoryTransferInvoice	= 'InventoryTransferInvoice';
 
+	public static $ReverseChargeOrder	= 'ReverseChargeOrder';
+
+     /**
+	 * Inventory Transfer Invoice
+	 *
+	 * @var DocumentType
+	 */
+    public static $ReverseChargeInvoice	= 'ReverseChargeInvoice';
+
     /**
 	 * This will return all types of documents.
 	 *
@@ -90,10 +99,11 @@ class DocumentType extends Enum
 			DocumentType::$ReturnInvoice,
 			DocumentType::$InventoryTransferOrder,
 			DocumentType::$InventoryTransferInvoice,
-			DocumentType::$Any
+			DocumentType::$Any,
+			DocumentType::$ReverseChargeOrder,
+			DocumentType::$ReverseChargeInvoice
 		);
 	}
 	// Unfortunate boiler plate due to polymorphism issues on static functions
     public static function Validate($value) { self::__Validate($value,self::Values(),__CLASS__); }
-
 }
