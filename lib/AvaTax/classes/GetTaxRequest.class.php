@@ -52,10 +52,13 @@ class GetTaxRequest
 	private $PosLaneCode;		//string
 
 	private $StatusDate;
-    private $TaxDate;
+	private $TaxDate;
+
+
 
 	public function __construct()
 	{
+
 		$this->DocDate = date("Y-m-d");
 		$this->Commit=false;
 		$this->HashCode=0;
@@ -82,7 +85,12 @@ class GetTaxRequest
 		$this->Addresses = array();
 		$this->OriginCode = $this->registerAddress($this->OriginAddress);
 		$this->DestinationCode = $this->registerAddress($this->DestinationAddress);
-		foreach($this->Lines as &$line)
+		if(isset($this->Lines->Line))
+			$allLines = $this->Lines->Line;
+		else
+			$allLines = $this->Lines;
+
+		foreach($allLines as &$line)
 		{
             $line->registerAddressesIn($this);
 		}
@@ -125,49 +133,50 @@ class GetTaxRequest
 		return $this;
 	}
 
-    /**
-     * Get status date
-     *
-     * @return string
-     */
-    public function getStatusDate()
-    {
-        return $this->StatusDate;
-    }
+	/**
+	 * Get status date
+	 *
+	 * @return string
+	 */
+	public function getStatusDate()
+	{
+		return $this->StatusDate;
+	}
 
-    /**
-     * Set status date
-     *
-     * @param string $StatusDate
-     * @return $this
-     */
-    public function setStatusDate($StatusDate)
-    {
-        $this->StatusDate = $StatusDate;
-        return $this;
-    }
+	/**
+	 * Set status date
+	 *
+	 * @param string $StatusDate
+	 * @return $this
+	 */
+	public function setStatusDate($StatusDate)
+	{
+		$this->StatusDate = $StatusDate;
+		return $this;
+	}
 
-    /**
-     * Get tax date
-     *
-     * @return string
-     */
-    public function getTaxDate()
-    {
-        return $this->TaxDate;
-    }
+	/**
+	 * Get tax date
+	 *
+	 * @return string
+	 */
+	public function getTaxDate()
+	{
+		return $this->TaxDate;
+	}
 
-    /**
-     * Set tax date
-     *
-     * @param string $TaxDate
-     * @return $this
-     */
-    public function setTaxDate($TaxDate)
-    {
-        $this->TaxDate = $TaxDate;
-        return $this;
-    }
+	/**
+	 * Set tax date
+	 *
+	 * @param string $TaxDate
+	 * @return $this
+	 */
+	public function setTaxDate($TaxDate)
+	{
+		$this->TaxDate = $TaxDate;
+		return $this;
+	}
+
 
 	/**
 	 * Enter description here...

@@ -545,11 +545,6 @@
                 </classes>
                 <calculation>
                     <fields>
-                        <price_includes_tax>
-                            <show_in_default>0</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </price_includes_tax>
                         <based_on>
                             <!-- AvaTax always computes tax based on ship from and ship to addresses. -->
                             <show_in_default>0</show_in_default>
@@ -585,51 +580,14 @@
                             <show_in_store>0</show_in_store>
                         </shipping_includes_tax>
                         <apply_after_discount>
-                            <show_in_default>0</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <price_includes_tax separator="|">
+                                    <value>1</value>
+                                </price_includes_tax>
+                            </depends>
                         </apply_after_discount>
                     </fields>
                 </calculation>
-                <cart_display>
-                    <fields>
-                        <price>
-                            <show_in_default>0</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </price>
-                        <subtotal>
-                            <show_in_default>0</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </subtotal>
-                        <shipping>
-                            <show_in_default>0</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </shipping>
-                    </fields>
-                </cart_display>
-                <sales_display>
-                    <fields>
-                        <price>
-                            <show_in_default>0</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </price>
-                        <subtotal>
-                            <show_in_default>0</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </subtotal>
-                        <shipping>
-                            <show_in_default>0</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </shipping>
-                    </fields>
-                </sales_display>
-
                 <defaults>
                     <fields>
                         <region translate="comment">
