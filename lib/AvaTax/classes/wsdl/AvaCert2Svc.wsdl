@@ -314,6 +314,7 @@
       </s:complexType>
       <s:simpleType name="FormatType">
         <s:restriction base="s:string">
+          <s:enumeration value="NULL" />
           <s:enumeration value="PNG" />
           <s:enumeration value="PDF" />
         </s:restriction>
@@ -928,10 +929,10 @@
   
 	<wsdl:service name="AvaCert2Svc">
 		<wsdl:port name="AvaCert2SvcSoap" binding="tns:AvaCert2SvcSoap">
-			<soap:address location="http://localhost/avatax.branches.11.2/AvaCert2/AvaCert2Svc.wsdl" />
+			<soap:address location="https://avatax.avalara.net/AvaCert2/AvaCert2Svc.asmx" />
 		</wsdl:port>
 		<wsdl:port name="AvaCert2SvcSoap12" binding="tns:AvaCert2SvcSoap12">
-			<soap12:address location="http://localhost/avatax.branches.11.2/AvaCert2/AvaCert2Svc.wsdl" />
+			<soap12:address location="https://avatax.avalara.net/AvaCert2/AvaCert2Svc.asmx" />
 		</wsdl:port>
 	</wsdl:service>
 </wsdl:definitions>

@@ -7,7 +7,7 @@
  * The base class for result objects that return a ResultCode and Messages collection -- There is no reason for clients to create these.
  *
  * @author    Avalara
- * @copyright � 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Base
  */
 
@@ -35,5 +35,9 @@ class BaseResult
  * @return array
  */
     public function getMessages() { return EnsureIsArray($this->Messages->Message); }
-
+/**
+ * Accessor
+ * @return array
+ */
+	public function getValidCompanies() { return EnsureIsArray($this->Companies->Company); }
 }
