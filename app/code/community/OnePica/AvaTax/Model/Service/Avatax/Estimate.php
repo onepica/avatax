@@ -194,7 +194,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         $result = array();
         foreach ($response->getTaxSummary() as $row) {
             $name = $row->getTaxName();
-            $name = ($unique[$name] > 1) ? $name." ".$row->getJurisCode() : $name;
+            $name = ($unique[$name] > 1) ? $name . " " . $row->getJurisCode() : $name;
             $result[] = array(
                 'name' => $name,
                 'rate' => $row->getRate() * 100,
