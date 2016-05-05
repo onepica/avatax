@@ -97,7 +97,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
         $store = $address->getQuote()->getStore();
 
         foreach ($summary as $key => $row) {
-            $id = $row['name'].'-'.$key; //$row['id'] is used in client code to unset items in $summary
+            $id = $row['name'];
             $fullInfo[$id] = array(
                 'rates'       => array(
                     array(
