@@ -163,14 +163,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
                         'tax_included' => $ctl->getTaxIncluded(),
                     );
                 }
-
-                foreach ($result->getTaxSummary() as $row) {
-                    $this->_rates[$requestKey]['summary'][] = array(
-                        'name' => $row->getTaxName(),
-                        'rate' => $row->getRate() * 100,
-                        'amt'  => $row->getTax()
-                    );
-                }
+                $this->_rates[$requestKey]['summary'] = $this->_getSummaryFromResponse($result);
                 //failure
             } else {
                 $this->_rates[$requestKey]['failure'] = true;
@@ -182,6 +175,34 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         $rates = isset($this->_rates[$requestKey]) ? $this->_rates[$requestKey] : array();
 
         return $rates;
+    }
+
+    /**
+     * Get line rate
+     *
+     * @param OnePica_AvaTax_Document_Response $response
+     * @return array
+     */
+    protected function _getSummaryFromResponse($response)
+    {
+        $unique = array();
+        foreach ($response->getTaxSummary() as $row) {
+            $name = $row->getTaxName();
+            $unique[$name] = (isset($unique[$name])) ? $unique[$name] + 1 : 1;
+        }
+
+        $result = array();
+        foreach ($response->getTaxSummary() as $row) {
+            $name = $row->getTaxName();
+            $name = ($unique[$name] > 1) ? $name . " " . $row->getJurisCode() : $name;
+            $result[] = array(
+                'name' => $name,
+                'rate' => $row->getRate() * 100,
+                'amt'  => $row->getTax()
+            );
+        }
+
+        return $result;
     }
 
     /**
