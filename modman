@@ -10,6 +10,4 @@ app/locale/fr_FR/OnePica_AvaTax.csv                                app/locale/fr
 app/locale/nl_NL/OnePica_AvaTax.csv                                app/locale/nl_NL/OnePica_AvaTax.csv
 app/locale/pt_BR/OnePica_AvaTax.csv                                app/locale/pt_BR/OnePica_AvaTax.csv
 app/locale/zh_CN/OnePica_AvaTax.csv                                app/locale/zh_CN/OnePica_AvaTax.csv
-lib/AvaTax                                                         lib/AvaTax
-lib/OnePica                                                        lib/OnePica
-../avatax16/src/OnePica                                                        lib/OnePica16
+../avatax16/src/OnePica                                            lib/OnePica
