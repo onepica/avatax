@@ -134,7 +134,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
 
         //make request if needed and save results in cache
         if ($makeRequest) {
-            /** @var OnePica_AvaTax16_Document_Response $result */
+            /** @var OnePica\AvaTax16\Document\Response $result */
             $result = $this->_send($quote->getStoreId());
             $this->_rates[$requestKey] = array(
                 'timestamp' => $this->_getDateModel()->timestamp(),
@@ -147,7 +147,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
             //success
             if (!$result->getHasError()) {
                 foreach ($result->getLines() as $ctl) {
-                    /** @var OnePica_AvaTax16_Document_Response_Line $ctl */
+                    /** @var OnePica\AvaTax16\Document\Response\Line $ctl */
                     $id = $this->_getItemIdByLine($ctl);
                     $code = $this->_getTaxArrayCodeByLine($ctl);
                     $this->_rates[$requestKey][$code][$id] = array(
@@ -540,7 +540,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
     /**
      * Get item id/code for given line
      *
-     * @param OnePica_AvaTax16_Document_Response_Line $line
+     * @param OnePica\AvaTax16\Document\Response\Line $line
      * @return string|int
      */
     protected function _getItemIdByLine($line)
@@ -553,7 +553,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
     /**
      * Get tax array code for given line
      *
-     * @param OnePica_AvaTax16_Document_Response_Line $line
+     * @param OnePica\AvaTax16\Document\Response\Line $line
      * @return string
      */
     protected function _getTaxArrayCodeByLine($line)
@@ -564,7 +564,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
     /**
      * Get line rate
      *
-     * @param OnePica_AvaTax16_Document_Response_Line $line
+     * @param OnePica\AvaTax16\Document\Response\Line $line
      * @return float
      */
     protected function _getLineRate($line)
@@ -581,7 +581,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
     /**
      * Get line rate
      *
-     * @param OnePica_AvaTax16_Document_Response $response
+     * @param OnePica\AvaTax16\Document\Response $response
      * @return array
      */
     protected function _getSummaryFromResponse($response)
@@ -609,7 +609,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
     /**
      * Get Jurisdictions rate array
      *
-     * @param OnePica_AvaTax16_Document_Response $response
+     * @param OnePica\AvaTax16\Document\Response $response
      * @return array
      */
     protected function _getJurisdictionsRate($response)
@@ -617,7 +617,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         $rates = array();
         $fixedRatesData = array();
 
-        /** @var OnePica_AvaTax16_Document_Response_Line $line */
+        /** @var OnePica\AvaTax16\Document\Response\Line $line */
         foreach ($response->getLines() as $line) {
             if (!$line->getCalculatedTax()->getTax()) {
                 continue;
@@ -685,7 +685,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
     /**
      * Get item jurisdiction rate
      *
-     * @param OnePica_AvaTax16_Document_Response_Line $line
+     * @param OnePica\AvaTax16\Document\Response\Line $line
      * @return array
      */
     protected function _getItemJurisdictionRate($line)
