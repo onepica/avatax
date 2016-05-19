@@ -13,5 +13,19 @@
             "name":"One Pica",
             "homepage": "http://www.onepica.com/"
         }
-    ]
+    ],
+    "extra": {
+        "magento-root-dir": "."
+    },
+    "scripts": {
+        "copy-avatax16-lib":[
+            "php -r \"require './composer/onepica/install-functions.php';  copy_recursive('./vendor/onepica/avatax16/src','./lib');\""
+        ],
+        "post-update-cmd": [
+            "@copy-avatax16-lib"
+        ],
+        "post-install-cmd": [
+            "@copy-avatax16-lib"
+        ]
+    }
 }
