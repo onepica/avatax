@@ -45,3 +45,4 @@ lib/**
 !lib/OnePica/autoload.php
 !lib/OnePica/AvaTax16/
 !lib/OnePica/AvaTax16/**
+!composer/onepica/*
