@@ -46,6 +46,17 @@ class OnePica_AvaTax_Model_Source_Logtype
     }
 
     /**
+     * Get filter type
+     *
+     * @return string
+     */
+    public function getFilterType()
+    {
+        $logType = $this->_getLogTypeModel();
+        return $logType::FILTER;
+    }
+
+    /**
      * Get LogType source model
      *
      * @return false|OnePica_AvaTax_Model_Source_Avatax16_Logtype|OnePica_AvaTax_Model_Source_Avatax_Logtype
