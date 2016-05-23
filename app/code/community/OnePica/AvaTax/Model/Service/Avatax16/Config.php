@@ -28,7 +28,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Config extends OnePica_AvaTax_Model_
     /**
      * Set AvaTax16 lib Config
      *
-     * @param OnePica_AvaTax16_Config $config
+     * @param OnePica\AvaTax16\Config $config
      */
     public function setLibConfig($config)
     {
@@ -38,7 +38,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Config extends OnePica_AvaTax_Model_
     /**
      * Get Avatax16 lib config
      *
-     * @return OnePica_AvaTax16_Config
+     * @return OnePica\AvaTax16\Config
      */
     public function getLibConfig()
     {
@@ -68,17 +68,17 @@ class OnePica_AvaTax_Model_Service_Avatax16_Config extends OnePica_AvaTax_Model_
     /**
      * Get New Service Config Object
      *
-     * @return OnePica_AvaTax16_Config
+     * @return OnePica\AvaTax16\Config
      */
     protected function _getNewServiceConfigObject()
     {
-        return new OnePica_AvaTax16_Config();
+        return new OnePica\AvaTax16\Config();
     }
 
     /**
      * Get resource connection
      *
-     * @return null|OnePica_AvaTax16_TaxService
+     * @return null|OnePica\AvaTax16\TaxService
      */
     public function getTaxConnection()
     {
@@ -100,12 +100,12 @@ class OnePica_AvaTax_Model_Service_Avatax16_Config extends OnePica_AvaTax_Model_
     }
 
     /**
-     * Get object OnePica_AvaTax16_TaxService
-     * @return OnePica_AvaTax16_TaxService
+     * Get object OnePica\AvaTax16\TaxService
+     * @return OnePica\AvaTax16\TaxService
      */
     protected function _getAvatax16Service()
     {
-        return new OnePica_AvaTax16_TaxService($this->getLibConfig());
+        return new OnePica\AvaTax16\TaxService($this->getLibConfig());
     }
 
     /**

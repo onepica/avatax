@@ -40,7 +40,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Ping extends OnePica_AvaTax_Model_Se
         $message = '';
 
         try {
-            /** @var OnePica_AvaTax16_AddressResolution_PingResponse $result */
+            /** @var OnePica\AvaTax16\AddressResolution\PingResponse $result */
             $result = $connection->ping();
         } catch (Exception $exception) {
             $message = $exception->getMessage();

@@ -199,8 +199,8 @@ abstract class OnePica_AvaTax_Model_Service_Avatax16_Abstract extends OnePica_Av
         $level = $result->getHasError() ? OnePica_AvaTax_Model_Records_Log::LOG_LEVEL_ERROR
                                         : OnePica_AvaTax_Model_Records_Log::LOG_LEVEL_SUCCESS;
 
-        $requestLog = ($request instanceof OnePica_AvaTax16_Document_Part) ? $request->toArray() : $request;
-        $resultLog = ($result instanceof OnePica_AvaTax16_Document_Part) ? $result->toArray() : $result;
+        $requestLog = ($request instanceof OnePica\AvaTax16\Document\Part) ? $request->toArray() : $request;
+        $resultLog = ($result instanceof OnePica\AvaTax16\Document\Part) ? $result->toArray() : $result;
 
         if (in_array($type, $this->_getHelper()->getLogType($storeId))) {
             Mage::getModel('avatax_records/log')
@@ -228,51 +228,51 @@ abstract class OnePica_AvaTax_Model_Service_Avatax16_Abstract extends OnePica_Av
     /**
      * Get New Document Part Location Address Object
      *
-     * @return OnePica_AvaTax16_Document_Part_Location_Address
+     * @return OnePica\AvaTax16\Document\Part\Location\Address
      */
     protected function _getNewDocumentPartLocationAddressObject()
     {
-        return new OnePica_AvaTax16_Document_Part_Location_Address();
+        return new OnePica\AvaTax16\Document\Part\Location\Address();
     }
 
     /**
      * Get New Document Part Location Object
      *
-     * @return OnePica_AvaTax16_Document_Part_Location
+     * @return OnePica\AvaTax16\Document\Part\Location
      */
     protected function _getNewDocumentPartLocationObject()
     {
-        return new OnePica_AvaTax16_Document_Part_Location();
+        return new OnePica\AvaTax16\Document\Part\Location();
     }
 
     /**
      * Get New Document Request Header Object
      *
-     * @return OnePica_AvaTax16_Document_Request_Header
+     * @return OnePica\AvaTax16\Document\Request\Header
      */
     protected function _getNewDocumentRequestHeaderObject()
     {
-        return new OnePica_AvaTax16_Document_Request_Header();
+        return new OnePica\AvaTax16\Document\Request\Header();
     }
 
     /**
      * Get New Document Request Object
      *
-     * @return OnePica_AvaTax16_Document_Request
+     * @return OnePica\AvaTax16\Document\Request
      */
     protected function _getNewDocumentRequestObject()
     {
-        return new OnePica_AvaTax16_Document_Request();
+        return new OnePica\AvaTax16\Document\Request();
     }
 
     /**
      * Get New Document Request Line Object
      *
-     * @return OnePica_AvaTax16_Document_Request_Line
+     * @return OnePica\AvaTax16\Document\Request\Line
      */
     protected function _getNewDocumentRequestLineObject()
     {
-        return new OnePica_AvaTax16_Document_Request_Line();
+        return new OnePica\AvaTax16\Document\Request\Line();
     }
 
     /**
