@@ -26,6 +26,11 @@
 class OnePica_AvaTax_Model_Service_Avatax16_Config extends OnePica_AvaTax_Model_Service_Abstract_Config
 {
     /**
+     * Authorization header prefix
+     */
+    const AUTHORIZATION_HEADER_PREFIX = 'AvalaraAuth ';
+
+    /**
      * Set AvaTax16 lib Config
      *
      * @param OnePica\AvaTax16\Config $config
@@ -58,7 +63,9 @@ class OnePica_AvaTax_Model_Service_Avatax16_Config extends OnePica_AvaTax_Model_
             $this->getLibConfig()->setBaseUrl($this->_getConfigHelper()->getServiceUrl($storeId));
             $this->getLibConfig()->setAccountId($this->_getConfigHelper()->getServiceAccountId($storeId));
             $this->getLibConfig()->setCompanyCode($this->_getConfigHelper()->getCompanyCode($storeId));
-            $this->getLibConfig()->setAuthorizationHeader($this->_getConfigHelper()->getServiceKey($storeId));
+            $authorizationHeader = self::AUTHORIZATION_HEADER_PREFIX
+                                 . $this->_getConfigHelper()->getServiceKey($storeId);
+            $this->getLibConfig()->setAuthorizationHeader($authorizationHeader);
             $this->getLibConfig()->setUserAgent($this->getClientName());
         }
 
