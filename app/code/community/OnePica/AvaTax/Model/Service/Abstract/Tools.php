@@ -199,4 +199,41 @@ class OnePica_AvaTax_Model_Service_Abstract_Tools extends Varien_Object
 
         return $this;
     }
+
+    /**
+     * Retrieve simple product id from quote item
+     *
+     * @param Mage_Sales_Model_Quote_Item|Mage_Sales_Model_Quote_Address_Item $item
+     *
+     * @return int
+     */
+    protected function _retrieveProductIdFromQuoteItem($item)
+    {
+        $productId = $item->getProductId();
+
+        if ($item->getOptionByCode('simple_product')) {
+            $productId = $item->getOptionByCode('simple_product')->getProduct()->getId();
+        }
+
+        return $productId;
+    }
+
+    /**
+     * Retrieve simple product id from order item
+     *
+     * @param Mage_Sales_Model_Order_Invoice_Item|Mage_Sales_Model_Order_Creditmemo_Item $item
+     *
+     * @return int
+     */
+    protected function _retrieveProductIdFromOrderItem($item)
+    {
+        $productId = $item->getProductId();
+
+        if ($item->getOrderItem()->getChildrenItems()) {
+            $items = $item->getOrderItem()->getChildrenItems();
+            $productId = $items[0]->getProductId();
+        }
+
+        return $productId;
+    }
 }
