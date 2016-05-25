@@ -46,15 +46,12 @@ class OnePica_AvaTax_Model_Observer_ControllerActionPredispatchCustomerAddressFo
     public function execute(Varien_Event_Observer $observer)
     {
         if ($this->_haveToProcess($observer)) {
-
             /* @var Mage_Core_Controller_Request_Http $request */
             $request = $observer->getControllerAction()->getRequest();
 
-            try
-            {
+            try {
                 $requestObjects = $this->_getRequestObjects($request);
                 if ($requestObjects) {
-
                     //validate customer address
                     $errors = $requestObjects->newCustomerAddress->validate();
                     if ($errors !== true && !empty($errors)) {
@@ -78,9 +75,7 @@ class OnePica_AvaTax_Model_Observer_ControllerActionPredispatchCustomerAddressFo
                     //save new customer address
                     $this->_saveCustomerAddress($requestObjects->newCustomerAddress);
                 }
-            }
-            catch (Exception $e)
-            {
+            } catch (Exception $e) {
                 //clear all messages
                 $this->_getCustomerSession()->getMessages(true);
                 //add validation error message
@@ -125,7 +120,7 @@ class OnePica_AvaTax_Model_Observer_ControllerActionPredispatchCustomerAddressFo
     {
         $quote = Mage::getSingleton('checkout/session')->getQuote();
 
-        $newCustomerAddressId =  $request->getParam('id');
+        $newCustomerAddressId = $request->getParam('id');
         if (!$newCustomerAddressId) {
             return null;
         }
@@ -167,10 +162,10 @@ class OnePica_AvaTax_Model_Observer_ControllerActionPredispatchCustomerAddressFo
             ->getCustomer()
             ->getAddressById($customerAddressId);
 
-        /* @var $addressForm Mage_Customer_Model_Form */
+        /* @var Mage_Customer_Model_Form $addressForm*/
         $addressForm = Mage::getModel('customer/form');
         $addressForm->setFormCode('customer_address_edit')->setEntity($customerAddress);
-        $addressData    = $addressForm->extractData($request);
+        $addressData = $addressForm->extractData($request);
         $customerAddress->setData(array_merge($customerAddress->getData(), $addressData));
         $customerAddress
             ->setIsDefaultBilling($request->getParam('default_billing', false))
@@ -237,9 +232,11 @@ class OnePica_AvaTax_Model_Observer_ControllerActionPredispatchCustomerAddressFo
     }
 
     /**
+     * Set Redirect
+     *
      * @param Varien_Event_Observer $observer
-     * @param                       $path
-     * @param                       $params
+     * @param string $path
+     * @param array $params
      *
      * @return $this
      */
