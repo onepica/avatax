@@ -73,7 +73,7 @@ class OnePica_AvaTax_Model_Observer_ControllerActionPredispatchCustomerAddressFo
                     }
 
                     //save new customer address
-                    $this->_saveCustomerAddress($requestObjects->newCustomerAddress);
+                    $requestObjects->newCustomerAddress->save();
                 }
             } catch (Exception $e) {
                 //clear all messages
@@ -214,21 +214,6 @@ class OnePica_AvaTax_Model_Observer_ControllerActionPredispatchCustomerAddressFo
             'hasErrors'  => !empty($errors),
             'errors'     => $errors,
             'normalized' => $normalized);
-    }
-
-    /**
-     * Save customer address
-     *
-     * @param Mage_Customer_Model_Address $customerAddress
-     *
-     * @return $this
-     */
-    protected function _saveCustomerAddress(Mage_Customer_Model_Address $customerAddress)
-    {
-        $customerAddress->save();
-        $this->_getCustomerSession()->addSuccess($this->_getHelper()->__('The address has been saved.'));
-
-        return $this;
     }
 
     /**
