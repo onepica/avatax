@@ -233,7 +233,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         if ($this->isProductCalculated($item)) {
             return false;
         }
-        $product = $this->_getProductByProductId($item->getProductId());
+        $product = $this->_getProductByProductId($this->_retrieveProductIdFromQuoteItem($item));
         $taxClass = $this->_getTaxClassCodeByProduct($product);
         $price = $item->getBaseRowTotal();
         if ($this->_getTaxDataHelper()->applyTaxAfterDiscount($item->getStoreId())) {
