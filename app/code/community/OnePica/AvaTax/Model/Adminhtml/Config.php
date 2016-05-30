@@ -36,6 +36,8 @@ class OnePica_AvaTax_Model_Adminhtml_Config extends Mage_Adminhtml_Model_Config
             $this->_getDataHelper()->isAvatax16()
                 ? $this->_addCustomConfig(array('system-disabled.xml', 'system-avatax16-disabled.xml'))
                 : $this->_addCustomConfig(array('system-disabled.xml'));
+
+            $this->_initPluginVersion();
         } else {
             $this->_getDataHelper()->isAvatax16()
                 ? $this->_addCustomConfig(array('system-avatax16.xml'))
@@ -92,5 +94,29 @@ class OnePica_AvaTax_Model_Adminhtml_Config extends Mage_Adminhtml_Model_Config
     protected function _getConfigHelper()
     {
         return Mage::helper('avatax/config');
+    }
+
+    /**
+     * Init Plugin Version in AvaTax section comment
+     *
+     * @return \OnePica_AvaTax_Helper_Config
+     */
+    protected function _initPluginVersion()
+    {
+        $taxSection = $this->getSection('tax');
+        if ($taxSection) {
+            $pathComment = 'groups/avatax/comment';
+            $comment = $taxSection->descend($pathComment);
+            if ($comment) {
+                $comment = $comment[0];
+                $version = Mage::getConfig()->getNode('modules/OnePica_AvaTax/version');
+                $processor = new Varien_Filter_Template();
+                $processor->setVariables(array('avatax_ver' => $version));
+                $precessedComment = $processor->filter($comment);
+                $taxSection->setNode($pathComment, $precessedComment);
+            }
+        }
+
+        return $this;
     }
 }
