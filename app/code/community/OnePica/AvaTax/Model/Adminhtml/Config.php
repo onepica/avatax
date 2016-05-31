@@ -113,7 +113,7 @@ class OnePica_AvaTax_Model_Adminhtml_Config extends Mage_Adminhtml_Model_Config
                 $version = Mage::getConfig()->getNode('modules/OnePica_AvaTax/version');
                 if ($this->_getDataHelper()->isAvatax16()) {
                     $version16 = Mage::getConfig()->getNode('default/tax/avatax/avatax16_extension_version');
-                    $version = "$version16 ($version)";
+                    $version = $version16.' ('.$version.')';
                 }
 
                 $processor = new Varien_Filter_Template();
