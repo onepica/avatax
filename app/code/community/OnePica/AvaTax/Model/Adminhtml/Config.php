@@ -109,7 +109,13 @@ class OnePica_AvaTax_Model_Adminhtml_Config extends Mage_Adminhtml_Model_Config
             $comment = $taxSection->descend($pathComment);
             if ($comment) {
                 $comment = $comment[0];
+
                 $version = Mage::getConfig()->getNode('modules/OnePica_AvaTax/version');
+                if ($this->_getDataHelper()->isAvatax16()) {
+                    $version16 = Mage::getConfig()->getNode('default/tax/avatax/avatax16_extension_version');
+                    $version = "$version16 ($version)";
+                }
+
                 $processor = new Varien_Filter_Template();
                 $processor->setVariables(array('avatax_ver' => $version));
                 $precessedComment = $processor->filter($comment);

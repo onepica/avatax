@@ -24,7 +24,7 @@
                 <avatax translate="label comment">
                     <label>AvaTax</label>
                     <comment><![CDATA[
-                       <p class="switcher">Version : {{var avatax_ver}}</p>
+                       <p class="switcher"><i>AvaTax Extension Version:</i> <strong>{{var avatax_ver}}</strong></p>
                     ]]></comment>
                     <sort_order>0</sort_order>
                     <show_in_default>1</show_in_default>
