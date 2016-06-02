@@ -42,6 +42,8 @@ class OnePica_AvaTax_Model_Adminhtml_Config extends Mage_Adminhtml_Model_Config
                 : parent::_initSectionsAndTabs();
         }
 
+        $this->_initPluginVersion();
+
         return $this;
     }
 
@@ -92,5 +94,35 @@ class OnePica_AvaTax_Model_Adminhtml_Config extends Mage_Adminhtml_Model_Config
     protected function _getConfigHelper()
     {
         return Mage::helper('avatax/config');
+    }
+
+    /**
+     * Init Plugin Version in AvaTax section comment
+     *
+     * @return \OnePica_AvaTax_Helper_Config
+     */
+    protected function _initPluginVersion()
+    {
+        $taxSection = $this->getSection('tax');
+        if ($taxSection) {
+            $pathComment = 'groups/avatax/comment';
+            $comment = $taxSection->descend($pathComment);
+            if ($comment) {
+                $comment = $comment[0];
+
+                $version = Mage::getConfig()->getNode('modules/OnePica_AvaTax/version');
+                if ($this->_getDataHelper()->isAvatax16()) {
+                    $version16 = Mage::getConfig()->getNode('default/tax/avatax/avatax16_extension_version');
+                    $version = $version16.' ('.$version.')';
+                }
+
+                $processor = new Varien_Filter_Template();
+                $processor->setVariables(array('avatax_ver' => $version));
+                $precessedComment = $processor->filter($comment);
+                $taxSection->setNode($pathComment, $precessedComment);
+            }
+        }
+
+        return $this;
     }
 }

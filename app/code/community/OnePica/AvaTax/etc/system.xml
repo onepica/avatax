@@ -23,6 +23,9 @@
             <groups>
                 <avatax translate="label comment">
                     <label>AvaTax</label>
+                    <comment><![CDATA[
+                       <p class="switcher"><i>AvaTax Extension Version:</i> <strong>{{var avatax_ver}}</strong></p>
+                    ]]></comment>
                     <sort_order>0</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
@@ -504,7 +507,7 @@
                             <show_in_store>1</show_in_store>
                         </title_limit_gettax_request>
                         <limit_gettax_request_on_checkout_onepage_actions translate="label comment">
-                            <label>Limit tax calculation requests on OneStep checkout</label>
+                            <label>Limit tax calculation requests on OnePage checkout</label>
                             <comment>Pay Attention. If any custom checkout (like OneStep Checkout) or some modification is used, this may not work properly and is recommended to be disabled.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_enabledisable</source_model>

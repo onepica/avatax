@@ -19,7 +19,7 @@
 <config>
     <modules>
         <OnePica_AvaTax>
-            <version>3.2.1.0</version>
+            <version>3.2.2.0</version>
         </OnePica_AvaTax>
     </modules>
     <global>
@@ -238,6 +238,15 @@
                     </avatax>
                 </observers>
             </controller_action_predispatch_checkout_multishipping_index>
+            <controller_action_predispatch_customer_address_formPost>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer_controllerActionPredispatchCustomerAddressFormPost</class>
+                        <method>execute</method>
+                    </avatax>
+                </observers>
+            </controller_action_predispatch_customer_address_formPost>
             <sales_model_service_quote_submit_before>
                 <observers>
                     <avatax>
@@ -389,6 +398,7 @@
             <avatax>
                 <validate_address>1</validate_address>
                 <active_service>avatax</active_service>
+                <avatax16_extension_version>2.0.2</avatax16_extension_version>
                 <action>0</action>
                 <url>https://avatax.avalara.net/</url>
                 <region_filter_mode>0</region_filter_mode>
