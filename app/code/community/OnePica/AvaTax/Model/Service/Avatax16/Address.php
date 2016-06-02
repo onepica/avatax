@@ -43,14 +43,14 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
     /**
      * The AvaTax16 Request Address object.
      *
-     * @var OnePica_AvaTax16_Document_Part_Location_Address
+     * @var OnePica\AvaTax16\Document\Part\Location\Address
      */
     protected $_locationAddress = null;
 
     /**
      * The AvaTax16 Request Address object.
      *
-     * @var OnePica_AvaTax16_Document_Part_Location_Address
+     * @var OnePica\AvaTax16\Document\Part\Location\Address
      */
     protected $_localeObject = null;
 
@@ -112,7 +112,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
     /**
      * Getter for address resolution
      *
-     * @return OnePica_AvaTax16_Document_Part_Location_Address
+     * @return OnePica\AvaTax16\Document\Part\Location\Address
      */
     public function getLocationAddress()
     {
@@ -122,7 +122,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
     /**
      * Setter for address resolution
      *
-     * @param OnePica_AvaTax16_Document_Part_Location_Address $addressResolution
+     * @param OnePica\AvaTax16\Document\Part\Location\Address $addressResolution
      */
     public function setLocationAddress($addressResolution)
     {
@@ -157,7 +157,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
     /**
      * Get Location Address Object
      *
-     * @return OnePica_AvaTax16_Document_Part_Location_Address
+     * @return OnePica\AvaTax16\Document\Part\Location\Address
      */
     public function getLocationAddressObject()
     {
@@ -251,11 +251,11 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
     /**
      * Validate address
      *
-     * @return OnePica_AvaTax16_AddressResolution_ResolveSingleAddressResponse
+     * @return OnePica\AvaTax16\AddressResolution\ResolveSingleAddressResponse
      */
     protected function _sendAddressValidationRequest()
     {
-        /** @var OnePica_AvaTax16_AddressResolution_ResolveSingleAddressResponse $resolvedAddress */
+        /** @var OnePica\AvaTax16\AddressResolution\ResolveSingleAddressResponse $resolvedAddress */
         $resolvedAddress = $this->getServiceConfig()->getTaxConnection()
             ->resolveSingleAddress($this->getLocationAddress());
 

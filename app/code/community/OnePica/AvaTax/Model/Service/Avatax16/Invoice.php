@@ -575,7 +575,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
     protected function _getLineProductData($item, $storeId)
     {
         $lineProductData = new Varien_Object();
-        $product = $this->_getProductByProductId($item->getProductId());
+        $product = $this->_getProductByProductId($this->_retrieveProductIdFromOrderItem($item));
 
         if (null === $product) {
             return $lineProductData;
