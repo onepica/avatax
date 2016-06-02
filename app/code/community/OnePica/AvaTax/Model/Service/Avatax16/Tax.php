@@ -27,7 +27,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Tax extends OnePica_AvaTax_Model_Ser
     /**
      * The document request data object
      *
-     * @var OnePica_AvaTax16_Document_Request
+     * @var OnePica\AvaTax16\Document\Request
      */
     protected $_request = null;
 
@@ -56,7 +56,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Tax extends OnePica_AvaTax_Model_Ser
      * Get the orgin address for the request
      *
      * @param null|bool|int|Mage_Core_Model_Store $store
-     * @return OnePica_AvaTax16_Document_Part_Location_Address
+     * @return OnePica\AvaTax16\Document\Part\Location\Address
      */
     protected function _getOriginAddress($store = null)
     {
@@ -74,7 +74,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Tax extends OnePica_AvaTax_Model_Ser
      * Get the shipping address for the request
      *
      * @param OnePica_AvaTax_Model_Sales_Quote_Address $address
-     * @return OnePica_AvaTax16_Document_Part_Location_Address
+     * @return OnePica\AvaTax16\Document\Part\Location\Address
      */
     protected function _getDestinationAddress($address)
     {
@@ -98,7 +98,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Tax extends OnePica_AvaTax_Model_Ser
      * @param string $state
      * @param string $zip
      * @param string $country
-     * @return OnePica_AvaTax16_Document_Part_Location_Address
+     * @return OnePica\AvaTax16\Document\Part\Location\Address
      */
     protected function _newAddress($line1, $line2, $city, $state, $zip, $country = 'USA')
     {
@@ -341,7 +341,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Tax extends OnePica_AvaTax_Model_Ser
      *
      * @param int                                                             $storeId
      * @param OnePica_AvaTax_Model_Sales_Quote_Address|Mage_Sales_Model_Order $object
-     * @return \OnePica_AvaTax16_Document_Request_Header
+     * @return OnePica\AvaTax16\Document\Request\Header
      */
     protected function _getRequestHeaderWithMainValues($storeId, $object)
     {

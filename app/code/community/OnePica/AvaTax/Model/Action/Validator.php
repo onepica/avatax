@@ -28,7 +28,7 @@ class OnePica_AvaTax_Model_Action_Validator extends OnePica_AvaTax_Model_Action_
      * The AvaTax Response (Normalized) Address object.
      * This is the normalized Ava address returned by the validation request.
      *
-     * @var OnePica_AvaTax16_Document_Part_Location_Address
+     * @var OnePica\AvaTax16\Document\Part\Location\Address
      */
     protected $_responseAddress = null;
 
@@ -283,7 +283,7 @@ class OnePica_AvaTax_Model_Action_Validator extends OnePica_AvaTax_Model_Action_
     /**
      * Get Response Address
      *
-     * @return OnePica_AvaTax16_Document_Part_Location_Address
+     * @return OnePica\AvaTax16\Document\Part\Location\Address
      */
     public function getResponseAddress()
     {
@@ -293,7 +293,7 @@ class OnePica_AvaTax_Model_Action_Validator extends OnePica_AvaTax_Model_Action_
     /**
      * Set Response Address
      *
-     * @param OnePica_AvaTax16_Document_Part_Location_Address $responseAddress
+     * @param OnePica\AvaTax16\Document\Part\Location\Address $responseAddress
      * @return $this
      */
     public function setResponseAddress($responseAddress)

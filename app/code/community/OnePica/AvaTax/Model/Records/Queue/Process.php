@@ -25,6 +25,13 @@
 class OnePica_AvaTax_Model_Records_Queue_Process
 {
     /**
+     * Stores with enabled Queue Submit
+     *
+     * @var array|null
+     */
+    protected $_storesWithEnabledQueueSubmit;
+
+    /**
      * Remove the Failed process
      *
      * @return $this
@@ -66,6 +73,38 @@ class OnePica_AvaTax_Model_Records_Queue_Process
             ->_parseCreditMemos();
 
         return $this;
+    }
+
+    /**
+     * Get stores with enabled queue submit
+     *
+     * @return array
+     */
+    protected function _getStoresWithEnabledQueueSubmit()
+    {
+        if (null === $this->_storesWithEnabledQueueSubmit) {
+            $stores = array();
+            foreach (Mage::app()->getStores() as $store) {
+                if ($this->_getConfigHelper()->getStatusServiceAction($store->getStoreId())
+                    >= OnePica_AvaTax_Model_Service_Abstract_Config::ACTION_CALC_SUBMIT
+                ) {
+                    $stores[] = $store->getStoreId();
+                }
+            }
+            $this->_storesWithEnabledQueueSubmit = $stores;
+        }
+
+        return $this->_storesWithEnabledQueueSubmit;
+    }
+
+    /**
+     * Get config helper
+     *
+     * @return OnePica_AvaTax_Helper_Config
+     */
+    protected function _getConfigHelper()
+    {
+        return Mage::helper('avatax/config');
     }
 
     /**
@@ -153,7 +192,8 @@ class OnePica_AvaTax_Model_Records_Queue_Process
             ->addFieldToFilter('type', OnePica_AvaTax_Model_Records_Queue::QUEUE_TYPE_INVOICE)
             ->addFieldToFilter('status', array('neq' => OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_FAILED))
             ->addFieldToFilter('status', array('neq' => OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_COMPLETE))
-            ->addFieldToFilter('status', array('neq' => OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_UNBALANCED));
+            ->addFieldToFilter('status', array('neq' => OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_UNBALANCED))
+            ->addFieldToFilter('store_id', array('in' => $this->_getStoresWithEnabledQueueSubmit()));
 
         /** @var OnePica_AvaTax_Model_Action_Invoice $invoiceAction */
         $invoiceAction = Mage::getModel('avatax/action_invoice');
@@ -196,7 +236,8 @@ class OnePica_AvaTax_Model_Records_Queue_Process
             ->addFieldToFilter('type', OnePica_AvaTax_Model_Records_Queue::QUEUE_TYPE_CREDITMEMEO)
             ->addFieldToFilter('status', array('neq' => OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_FAILED))
             ->addFieldToFilter('status', array('neq' => OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_COMPLETE))
-            ->addFieldToFilter('status', array('neq' => OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_UNBALANCED));
+            ->addFieldToFilter('status', array('neq' => OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_UNBALANCED))
+            ->addFieldToFilter('store_id', array('in' => $this->_getStoresWithEnabledQueueSubmit()));
 
         /** @var OnePica_AvaTax_Model_Action_Creditmemo $creditmemoAction */
         $creditmemoAction = Mage::getModel('avatax/action_creditmemo');
