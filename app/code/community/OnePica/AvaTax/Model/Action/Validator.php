@@ -139,9 +139,10 @@ class OnePica_AvaTax_Model_Action_Validator extends OnePica_AvaTax_Model_Action_
             }
 
             //a valid address isn't required, but Avalara has to say there is
-            //enough info to drill down to a tax jurisdiction to calc on
+            //enough info to drill down to a tax jurisdiction to calc on;
+            //in case when isTaxable == false and no errors it should be valid (tax cal result will be 0, no errors)
         } elseif (!$isAddressValidationOn && $isAddressActionable) {
-            if ($result->isTaxable()) {
+            if ($result->isTaxable() || !$result->getHasError()) {
                 $this->getAddress()->setAddressValidated(true);
 
                 return true;
