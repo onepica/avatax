@@ -48,6 +48,11 @@ class OnePica_AvaTax_Helper_Calculation
                 $customerCode = $this->_getCustomerEmail($object, $customer)
                     ?: $this->_getCustomerId($object);
                 break;
+            case OnePica_AvaTax_Model_Source_Customercodeformat::CUST_ATTRIBUTE:
+                $attributeCode = $this->_getConfigHelper()->getCustomerCodeFormatAttribute($storeId);
+                $customerCode = $this->_getCustomerAttributeValue($customer, $attributeCode)
+                    ?: $this->_getCustomerId($object);
+                break;
             case OnePica_AvaTax_Model_Source_Customercodeformat::CUST_ID:
             default:
                 $customerCode = $this->_getCustomerId($object);
@@ -102,6 +107,23 @@ class OnePica_AvaTax_Helper_Calculation
         }
 
         return $email;
+    }
+
+    /**
+     * Get Customer Attribute Value
+     *
+     * @param Mage_Customer_Model_Customer $customer
+     * @param string                       $attributeCode
+     * @return string|null
+     */
+    protected function _getCustomerAttributeValue($customer, $attributeCode)
+    {
+        $attributeValue = null;
+        if ($attributeCode) {
+            $attributeValue = $customer->getData($attributeCode);
+        }
+
+        return $attributeValue;
     }
 
     /**
