@@ -208,9 +208,9 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </cust_code_format>
-                        <cust_code_attribute translate="label comment">
-                            <label>Customer Code Attribute</label>
-                            <comment><![CDATA[Required: attribute value sent to Avalara.</br>Attribute samples: <code>firstname</code>, <code>lastname</code>, <code>email</code>]]></comment>
+                        <cust_code_format_attribute translate="label comment">
+                            <label>Customer Code Format Attribute</label>
+                            <comment><![CDATA[Required: Code of customer attribute. Value of attribute will be sent to Avalara. Attribute samples: <code>firstname</code>, <code>lastname</code>, <code>email</code>]]></comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>208</sort_order>
                             <validate>required-entry</validate>
@@ -222,7 +222,7 @@
                                     <value>3</value>
                                 </cust_code_format>
                             </depends>
-                        </cust_code_attribute>
+                        </cust_code_format_attribute>
                         <shipping_sku translate="label comment">
                             <label>Shipping Sku</label>
                             <comment>Required. The sku sent to denote shipping costs.</comment>

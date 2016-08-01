@@ -66,7 +66,7 @@ class OnePica_AvaTax_Model_Source_Customercodeformat
             ),
             array(
                 'value' => self::CUST_ATTRIBUTE,
-                'label' => 'customer_attribute_name'
+                'label' => 'customer attribute'
             )
         );
     }
