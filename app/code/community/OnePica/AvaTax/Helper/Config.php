@@ -30,6 +30,11 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
     const PATH_TAX_AVATAX_CUST_CODE_FORMAT = 'tax/avatax/cust_code_format';
 
     /**
+     * Path to customer code format
+     */
+    const PATH_TAX_AVATAX_CUST_CODE_ATTRIBUTE = 'tax/avatax/cust_code_attribute';
+
+    /**
      * Path to full stop on error
      */
     const XML_PATH_TO_TAX_AVATAX_ERROR_STOP = 'tax/avatax/error_full_stop';
@@ -723,6 +728,17 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
     public function getCustomerCodeFormat($store)
     {
         return (string)Mage::getStoreConfig(self::PATH_TAX_AVATAX_CUST_CODE_FORMAT, $store);
+    }
+
+    /**
+     * Get customer code attribute
+     *
+     * @param int|Mage_Core_Model_Store $store
+     * @return string
+     */
+    public function getCustomerCodeAttribute($store)
+    {
+        return (string)Mage::getStoreConfig(self::PATH_TAX_AVATAX_CUST_CODE_ATTRIBUTE, $store);
     }
 
     /**

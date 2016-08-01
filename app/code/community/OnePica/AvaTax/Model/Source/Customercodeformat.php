@@ -40,6 +40,11 @@ class OnePica_AvaTax_Model_Source_Customercodeformat
     const CUST_EMAIL = 2;
 
     /**
+     * Customer attribute
+     */
+    const CUST_ATTRIBUTE = 3;
+
+    /**
      * Gets the list of cache methods for the admin config dropdown
      *
      * @return array
@@ -58,6 +63,10 @@ class OnePica_AvaTax_Model_Source_Customercodeformat
             array(
                 'value' => self::LEGACY,
                 'label' => 'customer_name (customer_id)'
+            ),
+            array(
+                'value' => self::CUST_ATTRIBUTE,
+                'label' => 'customer_attribute_name'
             )
         );
     }
