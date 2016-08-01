@@ -210,7 +210,7 @@
                         </cust_code_format>
                         <cust_code_format_attribute translate="label comment">
                             <label>Customer Code Format Attribute</label>
-                            <comment><![CDATA[Required: Code of customer attribute. Value of attribute will be sent to Avalara. Attribute samples: <code>firstname</code>, <code>lastname</code>, <code>email</code>]]></comment>
+                            <comment><![CDATA[Required: Code of customer attribute. Value of attribute will be sent to Avalara. Recommended: attributes of type Text Field. Attribute samples: <code>firstname</code>, <code>lastname</code>, <code>email</code>]]></comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>208</sort_order>
                             <validate>required-entry</validate>
