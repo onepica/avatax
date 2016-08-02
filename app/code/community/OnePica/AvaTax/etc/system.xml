@@ -218,7 +218,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <depends>
-                                <cust_code_format separator="|">
+                                <cust_code_format>
                                     <value>3</value>
                                 </cust_code_format>
                             </depends>
