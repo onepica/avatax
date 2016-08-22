@@ -50,7 +50,7 @@ class OnePica_AvaTax_Helper_Calculation
                 break;
             case OnePica_AvaTax_Model_Source_Customercodeformat::CUST_ATTRIBUTE:
                 $attributeCode = $this->_getConfigHelper()->getCustomerCodeFormatAttribute($storeId);
-                $customerCode = $this->_getCustomerAttributeValue($customer, $attributeCode)
+                $customerCode = $this->_getCustomerAttributeValue($object, $customer, $attributeCode)
                     ?: $this->_getCustomerId($object);
                 break;
             case OnePica_AvaTax_Model_Source_Customercodeformat::CUST_ID:
@@ -112,12 +112,25 @@ class OnePica_AvaTax_Helper_Calculation
     /**
      * Get Customer Attribute Value
      *
+     * @param Mage_Sales_Model_Quote_Address|Mage_Sales_Model_Order $object
      * @param Mage_Customer_Model_Customer $customer
      * @param string                       $attributeCode
      * @return string|null
      */
-    protected function _getCustomerAttributeValue($customer, $attributeCode)
+    protected function _getCustomerAttributeValue($object, $customer, $attributeCode)
     {
+        if ($object instanceof Mage_Sales_Model_Quote_Address) {
+            $request = Mage::app()->getRequest();
+            $ctrlName = $request->getControllerName();
+            if (!in_array($ctrlName, array('cart'))) {
+                $quote = $object->getQuote();
+                $customer = $quote->getCustomer();
+                Mage::helper('core')->copyFieldset(
+                    'checkout_onepage_quote', 'to_customer', $quote, $customer
+                );
+            }
+        }
+
         $attributeValue = null;
         if ($attributeCode) {
             $attributeValue = $customer->getData($attributeCode);
