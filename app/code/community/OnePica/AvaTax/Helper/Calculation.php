@@ -128,6 +128,18 @@ class OnePica_AvaTax_Helper_Calculation
                 Mage::helper('core')->copyFieldset(
                     'checkout_onepage_quote', 'to_customer', $quote, $customer
                 );
+
+                // in case if order is creating via admin with new customer
+                if (Mage::app()->getStore()->isAdmin()) {
+                    if (!$customer->getId()) {
+                        $billingAddress = $quote->getBillingAddress();
+                        Mage::helper('core')->copyFieldset(
+                            'checkout_onepage_billing', 'to_customer',
+                            $billingAddress,
+                            $customer
+                        );
+                    }
+                }
             }
         }
 
