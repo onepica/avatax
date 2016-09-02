@@ -48,6 +48,11 @@ class OnePica_AvaTax_Helper_Calculation
                 $customerCode = $this->_getCustomerEmail($object, $customer)
                     ?: $this->_getCustomerId($object);
                 break;
+            case OnePica_AvaTax_Model_Source_Customercodeformat::CUST_ATTRIBUTE:
+                $attributeCode = $this->_getConfigHelper()->getCustomerCodeFormatAttribute($storeId);
+                $customerCode = $this->_getCustomerAttributeValue($object, $customer, $attributeCode)
+                    ?: $this->_getCustomerId($object);
+                break;
             case OnePica_AvaTax_Model_Source_Customercodeformat::CUST_ID:
             default:
                 $customerCode = $this->_getCustomerId($object);
@@ -102,6 +107,48 @@ class OnePica_AvaTax_Helper_Calculation
         }
 
         return $email;
+    }
+
+    /**
+     * Get Customer Attribute Value
+     *
+     * @param Mage_Sales_Model_Quote_Address|Mage_Sales_Model_Order $object
+     * @param Mage_Customer_Model_Customer $customer
+     * @param string                       $attributeCode
+     * @return string|null
+     */
+    protected function _getCustomerAttributeValue($object, $customer, $attributeCode)
+    {
+        if ($object instanceof Mage_Sales_Model_Quote_Address) {
+            $request = Mage::app()->getRequest();
+            $ctrlName = $request->getControllerName();
+            if (!in_array($ctrlName, array('cart'))) {
+                $quote = $object->getQuote();
+                $customer = $quote->getCustomer();
+                Mage::helper('core')->copyFieldset(
+                    'checkout_onepage_quote', 'to_customer', $quote, $customer
+                );
+
+                // in case if order is creating via admin with new customer
+                if (Mage::app()->getStore()->isAdmin()) {
+                    if (!$customer->getId()) {
+                        $billingAddress = $quote->getBillingAddress();
+                        Mage::helper('core')->copyFieldset(
+                            'checkout_onepage_billing', 'to_customer',
+                            $billingAddress,
+                            $customer
+                        );
+                    }
+                }
+            }
+        }
+
+        $attributeValue = null;
+        if ($attributeCode) {
+            $attributeValue = $customer->getData($attributeCode);
+        }
+
+        return $attributeValue;
     }
 
     /**
