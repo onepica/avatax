@@ -65,7 +65,7 @@ class OnePica_AvaTax_Block_Adminhtml_Export_Queue_Grid extends OnePica_AvaTax_Bl
      */
     protected function _prepareColumns()
     {
-        return $this->_addColumns(
+        $this->_addColumns(
             array(
                 'queue_id'            => 'number',
                 'store_id'            => 'number',
@@ -79,6 +79,25 @@ class OnePica_AvaTax_Block_Adminhtml_Export_Queue_Grid extends OnePica_AvaTax_Bl
                 'updated_at'          => 'datetime'
             )
         );
+
+        $this->addColumn('actions', array(
+            'header'  => $this->__('Actions'),
+            'type'    => 'action',
+            'getter'  => 'getId',
+            'actions' => array(array(
+                'caption' => $this->__('Set pending status'),
+                'url'     => array(
+                    'base'   => '*/*/setPendingStatusForQueueItem',
+                ),
+                'field'   => 'queue_id',
+                'confirm' => $this->__('Do you really want to update queue item status to Pending?'),
+            )),
+            'filter'    => false,
+            'sortable'  => false,
+            'renderer'  => 'avatax/widget_grid_column_renderer_queueAction'
+        ));
+
+        return $this;
     }
 
     /**

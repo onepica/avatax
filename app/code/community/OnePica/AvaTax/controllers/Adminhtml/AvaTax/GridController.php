@@ -134,4 +134,44 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
         }
         return $this;
     }
+
+    /**
+     * Set Pending Status For Queue item with failed status
+     *
+     * @return $this
+     */
+    public function setPendingStatusForQueueItemAction()
+    {
+        $itemId = $this->getRequest()->getParam('queue_id');
+        if ($itemId) {
+            try {
+                // init model and update status
+                /** @var $model OnePica_AvaTax_Model_Records_Queue */
+                $model = Mage::getModel('avatax/records_queue');
+                $model->load($itemId);
+                if (!$model->getId()
+                    || $model->getStatus() != OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_FAILED
+                ) {
+                    Mage::throwException($this->__('Unable to find a queue item #%s. with Failed status', $itemId));
+                }
+
+                $model->setStatus(OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_PENDING);
+                $model->setAttempt(0);
+                $model->save();
+
+                // display success message
+                $this->_getSession()->addSuccess($this->__('Queue item #%s status has been updated.', $model->getId()));
+            } catch (Mage_Core_Exception $e) {
+                $this->_getSession()->addError($e->getMessage());
+            } catch (Exception $e) {
+                $this->_getSession()->addException($e,
+                    $this->__('An error occurred while updating queue item status.')
+                );
+            }
+        }
+
+        $this->_redirectReferer();
+
+        return $this;
+    }
 }
