@@ -89,7 +89,8 @@ class OnePica_AvaTax_Block_Adminhtml_Export_Queue_Grid extends OnePica_AvaTax_Bl
                 'url'     => array(
                     'base'   => '*/*/setPendingStatusForQueueItem',
                 ),
-                'field'   => 'queue_id'
+                'field'   => 'queue_id',
+                'confirm' => $this->__('Do you really want to update queue item status to Pending?'),
             )),
             'filter'    => false,
             'sortable'  => false,
