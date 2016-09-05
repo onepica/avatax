@@ -50,16 +50,27 @@ class OnePica_AvaTax_Model_Config_Backend_CustomerCodeFormatAttribute extends Ma
     }
 
     /**
-     * Check if a attribute exists
+     * Get attribute
      *
-     * @return bool
+     * @return Mage_Eav_Model_Entity_Attribute_Abstract
      */
-    public function _attributeExists()
+    protected function _getAttribute()
     {
         $entity = 'customer';
         $code = $this->getValue();
         $attr = Mage::getModel('customer/attribute')->loadByCode($entity, $code);
 
+        return $attr;
+    }
+
+    /**
+     * Check if a attribute exists
+     *
+     * @return bool
+     */
+    protected function _attributeExists()
+    {
+        $attr = $this->_getAttribute();
         $attrExists = $attr->getId() ? true : false;
 
         return $attrExists;
@@ -70,12 +81,9 @@ class OnePica_AvaTax_Model_Config_Backend_CustomerCodeFormatAttribute extends Ma
      *
      * @return bool
      */
-    public function _attributeTypeIsCorrect()
+    protected function _attributeTypeIsCorrect()
     {
-        $entity = 'customer';
-        $code = $this->getValue();
-        $attr = Mage::getModel('customer/attribute')->loadByCode($entity, $code);
-
+        $attr = $this->_getAttribute();
         $attrTypeIsCorrect = ($attr->getFrontendInput() == 'text') ? true : false;
 
         return $attrTypeIsCorrect;
@@ -86,12 +94,9 @@ class OnePica_AvaTax_Model_Config_Backend_CustomerCodeFormatAttribute extends Ma
      *
      * @return bool
      */
-    public function _attributeIsVisibleOnFrontend()
+    protected function _attributeIsVisibleOnFrontend()
     {
-        $entity = 'customer';
-        $code = $this->getValue();
-        $attr = Mage::getModel('customer/attribute')->loadByCode($entity, $code);
-
+        $attr = $this->_getAttribute();
         $attrIsVisibleOnFrontend = $attr->getIsVisible() ? true : false;
 
         return $attrIsVisibleOnFrontend;
