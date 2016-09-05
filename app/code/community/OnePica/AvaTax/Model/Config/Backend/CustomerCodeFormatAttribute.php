@@ -39,19 +39,19 @@ class OnePica_AvaTax_Model_Config_Backend_CustomerCodeFormatAttribute extends Ma
         if(!$this->_attributeTypeIsCorrect())
         {
             Mage::throwException("Incorrect Customer Code Format Attribute type."
-                . "Please set 'Input Type' as 'Text Field' for attribute.");
+                . "Please, set 'Input Type' as 'Text Field' for attribute.");
         }
 
         if($this->_attributeIsVisibleOnFrontend())
         {
             Mage::throwException("Customer Code Format Attribute field shouldn't be shown on frontend."
-                . "Please set 'Show on Frontend' as 'No' for attribute.");
+                . "Please, set 'Show on Frontend' as 'No' for attribute.");
         }
 
         if(!$this->_attributeIsUsedInCorrectForms())
         {
             Mage::throwException("Incorrect Customer Code Format Attribute form usage."
-                . "Please set 'Forms to Use In' as 'Customer Account Edit' or empty for attribute.");
+                . "Please, set 'Forms to Use In' as 'Customer Account Edit' or empty for attribute.");
         }
 
         return parent::save();
