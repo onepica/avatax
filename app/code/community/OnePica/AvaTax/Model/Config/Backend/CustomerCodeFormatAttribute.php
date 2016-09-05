@@ -43,7 +43,7 @@ class OnePica_AvaTax_Model_Config_Backend_CustomerCodeFormatAttribute extends Ma
 
         if($this->_attributeIsVisibleOnFrontend())
         {
-            Mage::throwException("Customer Code Format Attribute field 'Show on Frontend' should have only 'No' value");
+            Mage::throwException("Customer Code Format Attribute field 'Show on Frontend' should have 'No' value");
         }
 
         if(!$this->_attributeIsUsedInCorrectForms())
