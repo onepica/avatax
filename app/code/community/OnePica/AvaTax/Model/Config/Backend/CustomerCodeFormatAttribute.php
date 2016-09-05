@@ -31,9 +31,14 @@ class OnePica_AvaTax_Model_Config_Backend_CustomerCodeFormatAttribute extends Ma
      */
     public function save()
     {
-        if(!$this->_checkAttributeExists())
+        if(!$this->_attributeExists())
         {
             Mage::throwException("Customer Code Format Attribute doesn't exists");
+        }
+
+        if(!$this->_attributeTypeIsCorrect())
+        {
+            Mage::throwException("Incorect Customer Code Format Attribute type. Should be Text Field");
         }
 
         return parent::save();
@@ -44,17 +49,30 @@ class OnePica_AvaTax_Model_Config_Backend_CustomerCodeFormatAttribute extends Ma
      *
      * @return bool
      */
-    public function _checkAttributeExists()
+    public function _attributeExists()
     {
-
         $entity = 'customer';
-        $code = $this->getValue(); //get the value from our config
-        $attr = Mage::getModel('customer/attribute')
-            ->loadByCode($entity,$code);
+        $code = $this->getValue();
+        $attr = Mage::getModel('customer/attribute')->loadByCode($entity, $code);
 
         $attrExists = $attr->getId() ? true : false;
 
         return $attrExists;
     }
-}
 
+    /**
+     * Check if a attribute exists
+     *
+     * @return bool
+     */
+    public function _attributeTypeIsCorrect()
+    {
+        $entity = 'customer';
+        $code = $this->getValue();
+        $attr = Mage::getModel('customer/attribute')->loadByCode($entity, $code);
+
+        $attrTypeIsCorrect = ($attr->getFrontendInput() == 'text') ? true : false;
+
+        return $attrTypeIsCorrect;
+    }
+}
