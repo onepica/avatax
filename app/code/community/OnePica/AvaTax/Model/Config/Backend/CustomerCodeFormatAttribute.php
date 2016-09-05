@@ -43,7 +43,13 @@ class OnePica_AvaTax_Model_Config_Backend_CustomerCodeFormatAttribute extends Ma
 
         if($this->_attributeIsVisibleOnFrontend())
         {
-            Mage::throwException("Customer Code Format Attribute shouldn't be showed on frontend'");
+            Mage::throwException("Customer Code Format Attribute field 'Show on Frontend' should have only 'No' value");
+        }
+
+        if(!$this->_attributeIsUsedInCorrectForms())
+        {
+            Mage::throwException("Customer Code Format Attribute field 'Forms to Use In' should have only "
+                . "'Customer Account Edit' value");
         }
 
         return parent::save();
@@ -100,5 +106,25 @@ class OnePica_AvaTax_Model_Config_Backend_CustomerCodeFormatAttribute extends Ma
         $attrIsVisibleOnFrontend = $attr->getIsVisible() ? true : false;
 
         return $attrIsVisibleOnFrontend;
+    }
+
+    /**
+     * Check if a attribute is used in correct forms
+     *
+     * @return bool
+     */
+    protected function _attributeIsUsedInCorrectForms()
+    {
+        $attr = $this->_getAttribute();
+        $forms = $attr->getUsedInForms();
+        $attrUsedFormsIsCorrect = true;
+        if (in_array('checkout_register', $forms)
+            || in_array('customer_account_create', $forms)
+            || in_array('adminhtml_checkout', $forms)
+        ) {
+            $attrUsedFormsIsCorrect = false;
+        }
+
+        return $attrUsedFormsIsCorrect;
     }
 }
