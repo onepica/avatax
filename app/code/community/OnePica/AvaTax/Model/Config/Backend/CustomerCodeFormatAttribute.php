@@ -33,25 +33,34 @@ class OnePica_AvaTax_Model_Config_Backend_CustomerCodeFormatAttribute extends Ma
     {
         if(!$this->_attributeExists())
         {
-            Mage::throwException("Customer Code Format Attribute doesn't exists");
+            Mage::throwException($this->_getHelper()->__("Customer Code Format Attribute doesn't exists"));
         }
 
         if(!$this->_attributeTypeIsCorrect())
         {
-            Mage::throwException("Incorrect Customer Code Format Attribute type."
-                . "Please, set 'Input Type' as 'Text Field' for attribute.");
+            $message = $this->_getHelper()->__("Incorrect Customer Code Format Attribute type.")
+                     . PHP_EOL
+                     . $this->_getHelper()->__("Please, set 'Input Type' as 'Text Field' for attribute.");
+
+            Mage::throwException($message);
         }
 
         if($this->_attributeIsVisibleOnFrontend())
         {
-            Mage::throwException("Customer Code Format Attribute field shouldn't be shown on frontend."
-                . "Please, set 'Show on Frontend' as 'No' for attribute.");
+            $message = $this->_getHelper()->__("Customer Code Format Attribute field shouldn't be shown on frontend.")
+                     . PHP_EOL
+                     . $this->_getHelper()->__("Please, set 'Show on Frontend' as 'No' for attribute.");
+
+            Mage::throwException($message);
         }
 
         if(!$this->_attributeIsUsedInCorrectForms())
         {
-            Mage::throwException("Incorrect Customer Code Format Attribute form usage."
-                . "Please, set 'Forms to Use In' as 'Customer Account Edit' or empty for attribute.");
+            $message = $this->_getHelper()->__("Incorrect Customer Code Format Attribute form usage.")
+                     . PHP_EOL
+                     . $this->_getHelper()->__("Please, set 'Forms to Use In' as 'Customer Account Edit' or empty for attribute.");
+
+            Mage::throwException($message);
         }
 
         return parent::save();
@@ -70,6 +79,16 @@ class OnePica_AvaTax_Model_Config_Backend_CustomerCodeFormatAttribute extends Ma
 
         return $attr;
     }
+    /**
+     * Get helper
+     *
+     * @return OnePica_AvaTax_Helper_Data
+     */
+    protected function _getHelper()
+    {
+        return Mage::helper('avatax');
+    }
+
 
     /**
      * Check if a attribute exists
