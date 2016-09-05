@@ -210,8 +210,9 @@
                         </cust_code_format>
                         <cust_code_format_attribute translate="label comment">
                             <label>Customer Code Format Attribute</label>
-                            <comment><![CDATA[Required: Code of customer attribute. Value of attribute will be sent to Avalara. Recommended: new customer attribute of type Text Field. Attribute sample: <code>customer_erp_id</code>.]]></comment>
+                            <comment><![CDATA[Required: Code of customer attribute. Value of attribute will be sent to Avalara. Recommended: new customer attribute of type Text Field, Show on Frontend: no, Forms to Use In: Customer Account Edit or none. Attribute sample: <code>customer_erp_id</code>.]]></comment>
                             <frontend_type>text</frontend_type>
+                            <backend_model>avatax/config_backend_customerCodeFormatAttribute</backend_model>
                             <sort_order>208</sort_order>
                             <validate>required-entry</validate>
                             <show_in_default>1</show_in_default>
