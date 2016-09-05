@@ -38,7 +38,12 @@ class OnePica_AvaTax_Model_Config_Backend_CustomerCodeFormatAttribute extends Ma
 
         if(!$this->_attributeTypeIsCorrect())
         {
-            Mage::throwException("Incorect Customer Code Format Attribute type. Should be Text Field");
+            Mage::throwException("Incorrect Customer Code Format Attribute type. Should be Text Field");
+        }
+
+        if($this->_attributeIsVisibleOnFrontend())
+        {
+            Mage::throwException("Customer Code Format Attribute shouldn't be showed on frontend'");
         }
 
         return parent::save();
@@ -61,7 +66,7 @@ class OnePica_AvaTax_Model_Config_Backend_CustomerCodeFormatAttribute extends Ma
     }
 
     /**
-     * Check if a attribute exists
+     * Check if a attribute type is correct
      *
      * @return bool
      */
@@ -74,5 +79,21 @@ class OnePica_AvaTax_Model_Config_Backend_CustomerCodeFormatAttribute extends Ma
         $attrTypeIsCorrect = ($attr->getFrontendInput() == 'text') ? true : false;
 
         return $attrTypeIsCorrect;
+    }
+
+    /**
+     * Check if a attribute is visible on storefront
+     *
+     * @return bool
+     */
+    public function _attributeIsVisibleOnFrontend()
+    {
+        $entity = 'customer';
+        $code = $this->getValue();
+        $attr = Mage::getModel('customer/attribute')->loadByCode($entity, $code);
+
+        $attrIsVisibleOnFrontend = $attr->getIsVisible() ? true : false;
+
+        return $attrIsVisibleOnFrontend;
     }
 }
