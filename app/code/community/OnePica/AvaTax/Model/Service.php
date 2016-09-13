@@ -24,7 +24,7 @@
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
 
-class OnePica_AvaTax_Model_Service extends Mage_Core_Model_Factory
+class OnePica_AvaTax_Model_Service extends OnePica_AvaTax_Model_Factory
 {
     /**
      * Path to service model
