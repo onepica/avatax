@@ -41,6 +41,7 @@ $attribute = Mage::getModel('eav/config')->getAttribute('customer', $attributeCo
 $attribute->setData('is_system', 0);
 $attribute->setData('is_visible', 0);
 $attribute->setData('used_in_forms', array('adminhtml_customer'));
+$attribute->setData('validate_rules', array('max_text_length'   => 50));
 $attribute->save();
 
 $installer->endSetup();
