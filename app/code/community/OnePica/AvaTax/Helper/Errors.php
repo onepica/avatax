@@ -48,7 +48,7 @@ class OnePica_AvaTax_Helper_Errors extends Mage_Core_Helper_Abstract
         $message = $this->getErrorMessage($store);
         $errorDetails = $quote->getData('estimate_tax_error_details');
         if ($errorDetails) {
-            $message = $message . PHP_EOL . $errorDetails;
+            $message = $message . ' ' . $errorDetails;
         }
 
         if (Mage::app()->getStore()->isAdmin()) {
