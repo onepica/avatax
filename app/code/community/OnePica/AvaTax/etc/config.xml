@@ -19,7 +19,7 @@
 <config>
     <modules>
         <OnePica_AvaTax>
-            <version>3.3.0.0</version>
+            <version>3.3.0.1</version>
         </OnePica_AvaTax>
     </modules>
     <global>
@@ -410,6 +410,7 @@
                 <queue_failed_lifetime>60</queue_failed_lifetime>
                 <log_type_list>Ping,Get Tax,Filter,Validate,Queue</log_type_list>
                 <cust_code_format>0</cust_code_format>
+                <cust_code_format_attribute>avatax_customer_code</cust_code_format_attribute>
                 <shipping_sku>Shipping</shipping_sku>
                 <gw_order_sku>GwOrder</gw_order_sku>
                 <gw_items_sku>GwItems</gw_items_sku>
