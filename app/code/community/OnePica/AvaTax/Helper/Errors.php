@@ -37,13 +37,20 @@ class OnePica_AvaTax_Helper_Errors extends Mage_Core_Helper_Abstract
     /**
      * Adds error message if there is an error
      *
-     * @param null|bool|int|Mage_Core_Model_Store $store
+     * @param Mage_Sales_Model_Quote $quote
      *
      * @return string
      */
-    public function addErrorMessage($store = null)
+    public function addErrorMessage($quote)
     {
+        $store = $quote->getStoreId();
+
         $message = $this->getErrorMessage($store);
+        $errorDetails = $quote->getData('estimate_tax_error_details');
+        if ($errorDetails) {
+            $message = $message . PHP_EOL . $errorDetails;
+        }
+
         if (Mage::app()->getStore()->isAdmin()) {
             /** @var Mage_Adminhtml_Model_Session_Quote $session */
             $session = Mage::getSingleton('adminhtml/session_quote');

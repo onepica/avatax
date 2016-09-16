@@ -67,6 +67,7 @@ class OnePica_AvaTax_Model_Action_Calculator extends OnePica_AvaTax_Model_Action
         if (isset($this->_rates['failure']) && ($this->_rates['failure'] === true)) {
             // set error flag for processing estimation errors on upper level
             $this->_address->getQuote()->setData('estimate_tax_error', true);
+            $this->_address->getQuote()->setData('estimate_tax_error_details', $this->_rates['failure_details']);
         }
 
         return $this;
