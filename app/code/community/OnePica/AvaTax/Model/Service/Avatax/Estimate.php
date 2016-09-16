@@ -227,7 +227,8 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         $goodSource = in_array(
             $message->getSource(),
             array('Avalara.AvaTax.Services.Address',
-                  'Avalara.AvaTax.Services.Tax')
+                  'Avalara.AvaTax.Services.Tax',
+                  'Avalara.AvaTax.Services.Tax.Steps')
         );
 
         return !$goodSeverity || !$goodSource;
