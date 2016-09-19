@@ -167,6 +167,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
                 //failure
             } else {
                 $this->_rates[$requestKey]['failure'] = true;
+                $this->_rates[$requestKey]['failure_details'] = $this->_getFailureDetails($result);
             }
 
             Mage::getSingleton('avatax/session')->setRates($this->_rates);
@@ -175,6 +176,62 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         $rates = isset($this->_rates[$requestKey]) ? $this->_rates[$requestKey] : array();
 
         return $rates;
+    }
+
+    /**
+     * Get response failure details
+     *
+     * @param GetTaxResult $response
+     *
+     * @return null|string
+     */
+    protected function _getFailureDetails($response)
+    {
+        $details = null;
+
+        $messages = $response->getMessages();
+        if ($messages) {
+            /* @var Message $message */
+            foreach ($messages as $message) {
+                if ($this->_ignoreResponseMessage($message)) {
+                    continue;
+                }
+
+                $details = (isset($details)) ? $details . ' ' : $details;
+
+                $messageSummary = $message->getSummary();
+                if ($messageSummary) {
+                    $messageSummary = $this->_getHelper()->__($messageSummary);
+                    $details = $details . $messageSummary;
+                }
+            }
+
+            if ($details) {
+                $details = $this->_getHelper()->__('More details: ') . $details;
+            }
+        }
+
+        return $details;
+    }
+
+    /**
+     * Checks whether error response message should be ignored during showing failure details to customer.
+     *
+     * @param Message $message
+     *
+     * @return bool
+     */
+    protected function _ignoreResponseMessage($message)
+    {
+        $goodSeverity = in_array($message->getSeverity(), array('Warning', 'Error'));
+        $goodSource = in_array(
+            $message->getSource(),
+            array('Avalara.AvaTax.Services.Address',
+                  'Avalara.AvaTax.Services.Tax',
+                  'Avalara.AvaTax.Services.Tax.Steps')
+        );
+
+        return !$goodSeverity || !$goodSource;
     }
 
     /**
