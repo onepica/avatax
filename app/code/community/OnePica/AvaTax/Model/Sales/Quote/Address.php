@@ -184,4 +184,18 @@ class OnePica_AvaTax_Model_Sales_Quote_Address extends Mage_Sales_Model_Quote_Ad
     {
         return Mage::helper('avatax/config');
     }
+
+    /**
+     * Collect address totals
+     *
+     * @return Mage_Sales_Model_Quote_Address
+     */
+    public function collectTotals()
+    {
+        // Enable AvaTax tax collector
+        // added for OneStepCheckout compatibility
+        Mage::getSingleton('avatax/tax_avaTaxEnabler')->initTaxCollector($this->getQuote()->getStoreId());
+        return parent::collectTotals();
+    }
+
 }
