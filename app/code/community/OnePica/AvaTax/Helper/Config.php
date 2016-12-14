@@ -110,6 +110,11 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
     const XML_PATH_TO_TAX_AVATAX_COMPANY_CODE = 'tax/avatax/company_code';
 
     /**
+     * Path to tax detail level
+     */
+    const XML_PATH_TO_TAX_AVATAX_DETAIL_LEVEL = 'tax/avatax/detail_level';
+
+    /**
      * Path to attribute code for the reference code 1 to send to Avalara
      */
     const XML_PATH_TO_TAX_AVATAX_LINE_REF1_CODE = 'tax/avatax/line_ref1_code';
@@ -307,6 +312,18 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
     public function getCompanyCode($store = null)
     {
         return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_COMPANY_CODE, $store);
+    }
+
+    /**
+     * Returns service account id
+     *
+     * @param null|bool|int|Mage_Core_Model_Store $store
+     *
+     * @return string
+     */
+    public function getDetailLevel($store = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_DETAIL_LEVEL, $store);
     }
 
     /**

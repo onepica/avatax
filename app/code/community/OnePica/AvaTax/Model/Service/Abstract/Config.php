@@ -16,7 +16,7 @@
  */
 
 /**
- * @class OnePica_AvaTax_Model_Service_Abstract_Tools
+ * @class      OnePica_AvaTax_Model_Service_Abstract_Tools
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
@@ -50,6 +50,31 @@ abstract class OnePica_AvaTax_Model_Service_Abstract_Config extends Varien_Objec
     const ACTION_CALC_SUBMIT_COMMIT = 3;
 
     /**
+     * Calculate, submit, commit action
+     */
+    const ACTION_DETAIL_LEVEL_SUMMARY = 0;
+
+    /**
+     * Calculate, submit, commit action
+     */
+    const ACTION_DETAIL_LEVEL_DOCUMENT = 1;
+
+    /**
+     * Calculate, submit, commit action
+     */
+    const ACTION_DETAIL_LEVEL_LINE = 2;
+
+    /**
+     * Calculate, submit, commit action
+     */
+    const ACTION_DETAIL_LEVEL_TAX = 3;
+
+    /**
+     * Calculate, submit, commit action
+     */
+    const ACTION_DETAIL_LEVEL_DIAGNOSTIC = 4;
+
+    /**
      * Region filter disable mode
      */
     const REGIONFILTER_OFF = 0;
@@ -76,6 +101,7 @@ abstract class OnePica_AvaTax_Model_Service_Abstract_Config extends Varien_Objec
 
     /**
      * Resource  connection
+     *
      * @var
      */
     protected $_connection = null;
@@ -89,12 +115,14 @@ abstract class OnePica_AvaTax_Model_Service_Abstract_Config extends Varien_Objec
 
     /**
      * Get resource  connection
+     *
      * @return mixed
      */
     abstract public function getTaxConnection();
 
     /**
      * Init config
+     *
      * @param $storeId
      * @return mixed
      */

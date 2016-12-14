@@ -93,6 +93,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
             }
             $this->_rates = $rates;
         }
+
         return parent::_construct();
     }
 
@@ -121,7 +122,16 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         $this->_addGeneralInfo($address);
         $this->_setOriginAddress($quote->getStoreId());
         $this->_setDestinationAddress($address);
-        $this->_request->setDetailLevel(DetailLevel::$Line);
+        /** @var OnePica_AvaTax_Model_Service_Avatax_Config $config */
+        $config = Mage::getSingleton('avatax/service_avatax_config');
+        switch ($config->getDetailLevel()) {
+            case OnePica_AvaTax_Model_Service_Abstract_Config::ACTION_DETAIL_LEVEL_TAX:
+                $this->_request->setDetailLevel(DetailLevel::$Tax);
+                break;
+            default:
+                $this->_request->setDetailLevel(DetailLevel::$Line);
+                break;
+        }
         $this->_addItemsInCart($address);
         $this->_addShipping($address);
         //Added code for calculating tax for giftwrap items
@@ -226,9 +236,11 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         $goodSeverity = in_array($message->getSeverity(), array('Warning', 'Error'));
         $goodSource = in_array(
             $message->getSource(),
-            array('Avalara.AvaTax.Services.Address',
-                  'Avalara.AvaTax.Services.Tax',
-                  'Avalara.AvaTax.Services.Tax.Steps')
+            array(
+                'Avalara.AvaTax.Services.Address',
+                'Avalara.AvaTax.Services.Tax',
+                'Avalara.AvaTax.Services.Tax.Steps'
+            )
         );
 
         return !$goodSeverity || !$goodSource;
@@ -271,6 +283,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
     {
         $hash = sprintf("%u", crc32(serialize($this->_request)));
         $this->_setLastRequestKey($hash);
+
         return $hash;
     }
 
@@ -370,6 +383,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         $this->_lines[$lineNumber] = $line;
         $this->_request->setLines($this->_lines);
         $this->_lineToLineId[$lineNumber] = $this->_getConfigHelper()->getGwOrderSku($storeId);
+
         return $lineNumber;
     }
 
@@ -444,6 +458,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         $this->_lines[$lineNumber] = $line;
         $this->_request->setLines($this->_lines);
         $this->_lineToLineId[$lineNumber] = $this->_getConfigHelper()->getGwPrintedCardSku($storeId);
+
         return $lineNumber;
     }
 
@@ -598,7 +613,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
 
         if (isset($lastRequestKey)) {
             $result = isset($this->_rates[$lastRequestKey]['summary'])
-                        ? $this->_rates[$lastRequestKey]['summary'] : array();
+                ? $this->_rates[$lastRequestKey]['summary'] : array();
         } else {
             $rates = $this->getRates($address);
             $result = (isset($rates)) ? $rates['summary'] : null;
