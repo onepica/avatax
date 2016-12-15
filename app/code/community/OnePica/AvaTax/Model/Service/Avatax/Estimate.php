@@ -162,18 +162,36 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
             //success
             /** @var GetTaxResult $result */
             if ($result->getResultCode() == SeverityLevel::$Success) {
+                $taxDetails = array();
                 foreach ($result->getTaxLines() as $ctl) {
                     /** @var TaxLine $ctl */
                     $id = $this->_getItemIdByLine($ctl);
                     $code = $this->_getTaxArrayCodeByLine($ctl);
+
+                    switch ($config->getDetailLevel()) {
+                        case OnePica_AvaTax_Model_Service_Abstract_Config::ACTION_DETAIL_LEVEL_TAX:
+                            $lineRate = 0;
+                            foreach ($ctl->getTaxDetails() as $taxDetail) {
+                                if ($taxDetail->getTax() != 0) {
+                                    $lineRate = $lineRate + $taxDetail->getRate();
+                                }
+                                $taxDetails[] = $taxDetail;
+                            }
+                            $lineRate = $lineRate * 100;
+                            break;
+                        default:
+                            $lineRate = ($ctl->getTax() ? $ctl->getRate() : 0) * 100;
+                            break;
+                    }
+
                     $this->_rates[$requestKey][$code][$id] = array(
-                        'rate'         => ($ctl->getTax() ? $ctl->getRate() : 0) * 100,
+                        'rate'         => $lineRate,
                         'amt'          => $ctl->getTax(),
                         'taxable'      => $ctl->getTaxable(),
                         'tax_included' => $ctl->getTaxIncluded(),
                     );
                 }
-                $this->_rates[$requestKey]['summary'] = $this->_getSummaryFromResponse($result);
+                $this->_rates[$requestKey]['summary'] = $this->_getSummaryFromResponse($result, $taxDetails);
                 //failure
             } else {
                 $this->_rates[$requestKey]['failure'] = true;
@@ -252,23 +270,38 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
      * @param OnePica_AvaTax_Document_Response $response
      * @return array
      */
-    protected function _getSummaryFromResponse($response)
+    protected function _getSummaryFromResponse($response, $taxDetails = array())
     {
         $unique = array();
-        foreach ($response->getTaxSummary() as $row) {
-            $name = $row->getTaxName();
-            $unique[$name] = (isset($unique[$name])) ? $unique[$name] + 1 : 1;
-        }
-
         $result = array();
-        foreach ($response->getTaxSummary() as $row) {
-            $name = $row->getTaxName();
-            $name = ($unique[$name] > 1) ? $name . " " . $row->getJurisCode() : $name;
-            $result[] = array(
-                'name' => $name,
-                'rate' => $row->getRate() * 100,
-                'amt'  => $row->getTax()
-            );
+        if (!empty($taxDetails)) {
+            foreach ($taxDetails as $taxDetail) {
+                if (array_key_exists($taxDetail->getJurisCode(), $result)) {
+                    $amt = $result[$taxDetail->getJurisCode()]['amt'] + $taxDetail->getTax();
+                } else {
+                    $amt = $taxDetail->getTax();
+                }
+                $result[$taxDetail->getJurisCode()] = array(
+                    'name' => $taxDetail->getTaxName(),
+                    'rate' => $taxDetail->getRate() * 100,
+                    'amt'  => $amt
+                );
+            }
+        } else {
+            foreach ($response->getTaxSummary() as $row) {
+                $name = $row->getTaxName();
+                $unique[$name] = (isset($unique[$name])) ? $unique[$name] + 1 : 1;
+            }
+
+            foreach ($response->getTaxSummary() as $row) {
+                $name = $row->getTaxName();
+                $name = ($unique[$name] > 1) ? $name . " " . $row->getJurisCode() : $name;
+                $result[] = array(
+                    'name' => $name,
+                    'rate' => $row->getRate() * 100,
+                    'amt'  => $row->getTax()
+                );
+            }
         }
 
         return $result;
