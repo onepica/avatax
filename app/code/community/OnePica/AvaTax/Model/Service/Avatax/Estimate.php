@@ -287,6 +287,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
                     'rate' => $taxDetail->getRate() * 100,
                     'amt'  => $amt
                 );
+                $sdsdfsdfsd= 'adsf';
             }
         } else {
             foreach ($response->getTaxSummary() as $row) {
