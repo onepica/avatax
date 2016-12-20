@@ -185,10 +185,11 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
                     }
 
                     $this->_rates[$requestKey][$code][$id] = array(
-                        'rate'         => $lineRate,
-                        'amt'          => $ctl->getTax(),
-                        'taxable'      => $ctl->getTaxable(),
-                        'tax_included' => $ctl->getTaxIncluded(),
+                        'rate'               => $lineRate,
+                        'amt'                => $ctl->getTax(),
+                        'taxable'            => $ctl->getTaxable(),
+                        'tax_included'       => $ctl->getTaxIncluded(),
+                        'jurisdiction_rates' => $this->_getItemJurisRate($ctl)
                     );
                 }
                 $this->_rates[$requestKey]['summary'] = $this->_getSummaryFromResponse($result, $taxDetails);
@@ -267,7 +268,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
     /**
      * Get line rate
      *
-     * @param OnePica_AvaTax_Document_Response $response
+     * @param GetTaxResult $response
      * @return array
      */
     protected function _getSummaryFromResponse($response, $taxDetails = array())
@@ -663,5 +664,25 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
     protected function _getTaxDataHelper()
     {
         return Mage::helper('tax');
+    }
+
+    /**
+     * Get item jurisdiction rate
+     *
+     * @param TaxLine $line
+     * @return array
+     */
+    protected function _getItemJurisRate($line)
+    {
+        $rates = array();
+        if ($line->getTax()) {
+            foreach ($line->getTaxDetails() as $detail) {
+                if ($detail->getTax()) {
+                    $rates[$detail->getTaxName()] = $detail->getRate() * 100;
+                }
+            }
+        }
+
+        return $rates;
     }
 }
