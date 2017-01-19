@@ -50,31 +50,6 @@ abstract class OnePica_AvaTax_Model_Service_Abstract_Config extends Varien_Objec
     const ACTION_CALC_SUBMIT_COMMIT = 3;
 
     /**
-     * Calculate, submit, commit action
-     */
-    const ACTION_DETAIL_LEVEL_SUMMARY = 0;
-
-    /**
-     * Calculate, submit, commit action
-     */
-    const ACTION_DETAIL_LEVEL_DOCUMENT = 1;
-
-    /**
-     * Calculate, submit, commit action
-     */
-    const ACTION_DETAIL_LEVEL_LINE = 2;
-
-    /**
-     * Calculate, submit, commit action
-     */
-    const ACTION_DETAIL_LEVEL_TAX = 3;
-
-    /**
-     * Calculate, submit, commit action
-     */
-    const ACTION_DETAIL_LEVEL_DIAGNOSTIC = 4;
-
-    /**
      * Region filter disable mode
      */
     const REGIONFILTER_OFF = 0;
