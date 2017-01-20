@@ -158,6 +158,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
                     $id = $this->_getItemIdByLine($ctl);
                     $code = $this->_getTaxArrayCodeByLine($ctl);
 
+                    //jurisdiction_rates need for
                     $this->_rates[$requestKey][$code][$id] = array(
                         'rate'               => $this->_getTaxRateFromTaxLineItem($ctl),
                         'amt'                => $ctl->getTax(),
@@ -251,16 +252,22 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         $result = array();
         $taxDetails = $this->_getTaxDetails($response);
         if ($taxDetails) {
+            // Response Detail Level = Tax
+            /** @var TaxDetail $taxDetail */
             foreach ($taxDetails as $taxDetail) {
-                if (array_key_exists($taxDetail->getJurisCode(), $result)) {
-                    $amt = $result[$taxDetail->getJurisCode()]['amt'] + $taxDetail->getTax();
+                /** @var string $resultKey used to collect tax amount for separate jurisdiction */
+                $resultKey = $taxDetail->getTaxName() . " " . $taxDetail->getJurisCode();
+                if (array_key_exists($resultKey, $result)) {
+                    $amt = $result[$resultKey]['amt'] + $taxDetail->getTax();
                 } else {
                     $amt = $taxDetail->getTax();
                 }
-                $result[$taxDetail->getJurisCode()] = $this->_getTaxResultItem($taxDetail->getTaxName(),
+                $result[$resultKey] = $this->_getTaxResultItem($taxDetail->getTaxName(),
                     $taxDetail->getRate(), $amt);
             }
         } else {
+            // Response Detail Level = Line
+            /** @var TaxDetail $row */
             foreach ($response->getTaxSummary() as $row) {
                 $name = $row->getTaxName();
                 $unique[$name] = (isset($unique[$name])) ? $unique[$name] + 1 : 1;
@@ -636,6 +643,8 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
 
     /**
      * Get item jurisdiction rate
+     *
+     * Used for data in invoice and credit memo
      *
      * @param TaxLine $line
      * @return array
