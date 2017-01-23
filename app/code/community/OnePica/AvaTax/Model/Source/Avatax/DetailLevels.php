@@ -16,8 +16,8 @@
  */
 
 /**
- * @class      OnePica_AvaTax_Model_Source_Avatax_Actions
- * Actions source model
+ * @class      OnePica_AvaTax_Model_Source_Avatax_DetailLevels
+ * DetailLevels source model
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
@@ -26,7 +26,7 @@
 class OnePica_AvaTax_Model_Source_Avatax_DetailLevels
 {
     /**
-     * Gets the list of cache methods for the admin config dropdown
+     * Gets the list of detail levels for the admin config dropdown
      *
      * @return array
      */

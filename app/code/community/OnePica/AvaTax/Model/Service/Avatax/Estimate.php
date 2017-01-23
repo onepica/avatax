@@ -158,13 +158,11 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
                     $id = $this->_getItemIdByLine($ctl);
                     $code = $this->_getTaxArrayCodeByLine($ctl);
 
-                    //jurisdiction_rates need for
                     $this->_rates[$requestKey][$code][$id] = array(
-                        'rate'               => $this->_getTaxRateFromTaxLineItem($ctl),
-                        'amt'                => $ctl->getTax(),
-                        'taxable'            => $ctl->getTaxable(),
-                        'tax_included'       => $ctl->getTaxIncluded(),
-                        'jurisdiction_rates' => $this->_getItemJurisRate($ctl)
+                        'rate'         => $this->_getTaxRateFromTaxLineItem($ctl),
+                        'amt'          => $ctl->getTax(),
+                        'taxable'      => $ctl->getTaxable(),
+                        'tax_included' => $ctl->getTaxIncluded()
                     );
                 }
                 $this->_rates[$requestKey]['summary'] = $this->_getSummaryFromResponse($result);
@@ -242,42 +240,84 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
 
     /**
      * Get line rate
+     * Prepares array of tax lines with unique names for correct displaying in Full Tax Summary
      *
      * @param GetTaxResult $response
      * @return array
      */
     protected function _getSummaryFromResponse($response)
     {
+        /** @var array $row */
         $unique = array();
         $result = array();
-        $taxDetails = $this->_getTaxDetails($response);
-        if ($taxDetails) {
-            // Response Detail Level = Tax
-            /** @var TaxDetail $taxDetail */
-            foreach ($taxDetails as $taxDetail) {
-                /** @var string $resultKey used to collect tax amount for separate jurisdiction */
-                $resultKey = $taxDetail->getTaxName() . " " . $taxDetail->getJurisCode();
-                if (array_key_exists($resultKey, $result)) {
-                    $amt = $result[$resultKey]['amt'] + $taxDetail->getTax();
-                } else {
-                    $amt = $taxDetail->getTax();
-                }
-                $result[$resultKey] = $this->_getTaxResultItem($taxDetail->getTaxName(),
-                    $taxDetail->getRate(), $amt);
-            }
-        } else {
-            // Response Detail Level = Line
-            /** @var TaxDetail $row */
-            foreach ($response->getTaxSummary() as $row) {
-                $name = $row->getTaxName();
-                $unique[$name] = (isset($unique[$name])) ? $unique[$name] + 1 : 1;
-            }
+        foreach ($this->_getTaxSummaryItemsFromResponse($response) as $row) {
+            $name = $row['name'];
+            $unique[$name] = (isset($unique[$name])) ? $unique[$name] + 1 : 1;
+        }
 
-            foreach ($response->getTaxSummary() as $row) {
-                $name = $row->getTaxName();
-                $name = ($unique[$name] > 1) ? $name . " " . $row->getJurisCode() : $name;
-                $result[] = $this->_getTaxResultItem($name, $row->getRate(), $row->getTax());
-            }
+        foreach ($this->_getTaxSummaryItemsFromResponse($response) as $row) {
+            $name = $row['name'];
+            $name = ($unique[$name] > 1) ? $name . " " . $row['juris_code'] : $name;
+
+            $result[] = array(
+                'name' => $name,
+                'rate' => $row['rate'] * 100,
+                'amt'  => $row['amt']
+            );
+        }
+
+        return $result;
+    }
+
+    /**
+     * Prepares array of arrays with data from TaxDetail for different detail levels
+     *
+     * @param GetTaxResult $response
+     * @return array
+     */
+    protected function _getTaxSummaryItemsFromResponse($response)
+    {
+        /**
+         * Variables
+         *
+         * @var TaxDetail $taxDetail
+         * @var TaxLine   $taxLine
+         * @var string    $resultKey used to collect tax amount for separate jurisdiction
+         */
+
+        $result = array();
+        switch ($this->_request->getDetailLevel()) {
+            case DetailLevel::$Tax:
+                // Response Detail Level = Tax
+                foreach ($response->getTaxLines() as $taxLine) {
+                    foreach ($taxLine->getTaxDetails() as $taxDetail) {
+                        $resultKey = $taxDetail->getTaxName() . " " . $taxDetail->getJurisCode();
+                        if (array_key_exists($resultKey, $result)) {
+                            $amt = $result[$resultKey]['amt'] + $taxDetail->getTax();
+                        } else {
+                            $amt = $taxDetail->getTax();
+                        }
+                        $result[$resultKey] = array(
+                            'name'       => $taxDetail->getTaxName(),
+                            'juris_code' => $taxDetail->getJurisCode(),
+                            'rate'       => $taxDetail->getRate() * 100,
+                            'amt'        => $amt
+                        );
+                    }
+                }
+                break;
+            default:
+                // Response Detail Level = Line
+                foreach ($response->getTaxSummary() as $taxDetail) {
+                    $resultKey = $taxDetail->getTaxName() . " " . $taxDetail->getJurisCode();
+                    $result[$resultKey] = array(
+                        'name'       => $taxDetail->getTaxName(),
+                        'juris_code' => $taxDetail->getJurisCode(),
+                        'rate'       => $taxDetail->getRate() * 100,
+                        'amt'        => $taxDetail->getTax()
+                    );
+                }
+                break;
         }
 
         return $result;
@@ -642,28 +682,6 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
     }
 
     /**
-     * Get item jurisdiction rate
-     *
-     * Used for data in invoice and credit memo
-     *
-     * @param TaxLine $line
-     * @return array
-     */
-    protected function _getItemJurisRate(TaxLine $line)
-    {
-        $rates = array();
-        if ($line->getTax() && $this->_request->getDetailLevel() == DetailLevel::$Tax) {
-            foreach ($line->getTaxDetails() as $detail) {
-                if ($detail->getTax()) {
-                    $rates[$detail->getTaxName()] = $detail->getRate() * 100;
-                }
-            }
-        }
-
-        return $rates;
-    }
-
-    /**
      * Sets detail level for request based on config data
      *
      * @return $this
@@ -675,43 +693,6 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         $this->_request->setDetailLevel($config->getDetailLevel());
 
         return $this;
-    }
-
-    /**
-     * Generates tax result item array
-     *
-     * @param $name
-     * @param $rate
-     * @param $amt
-     * @return array
-     */
-    protected function _getTaxResultItem($name, $rate, $amt)
-    {
-        return array(
-            'name' => $name,
-            'rate' => $rate * 100,
-            'amt'  => $amt
-        );
-    }
-
-    /**
-     * Returns array of tax details for effective tax rates
-     *
-     * @param GetTaxResult $response
-     * @return array
-     */
-    protected function _getTaxDetails($response)
-    {
-        $taxDetails = array();
-        if ($this->_request->getDetailLevel() == DetailLevel::$Tax) {
-            foreach ($response->getTaxLines() as $ctl) {
-                foreach ($ctl->getTaxDetails() as $taxDetail) {
-                    $taxDetails[] = $taxDetail;
-                }
-            }
-        }
-
-        return $taxDetails;
     }
 
     /**
