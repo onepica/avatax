@@ -250,12 +250,13 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         /** @var array $row */
         $unique = array();
         $result = array();
-        foreach ($this->_getTaxSummaryItemsFromResponse($response) as $row) {
+        $taxSummaryItems = $this->_getTaxSummaryItemsFromResponse($response);
+        foreach ($taxSummaryItems as $row) {
             $name = $row['name'];
             $unique[$name] = (isset($unique[$name])) ? $unique[$name] + 1 : 1;
         }
 
-        foreach ($this->_getTaxSummaryItemsFromResponse($response) as $key => $row) {
+        foreach ($taxSummaryItems as $key => $row) {
             $name = $row['name'];
             $row['name'] = ($unique[$name] > 1) ? $key : $name;
 
