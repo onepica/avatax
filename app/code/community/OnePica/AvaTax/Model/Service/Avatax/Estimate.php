@@ -284,43 +284,35 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
          */
 
         $result = array();
+        $taxDetailItems = array();
         switch ($this->_request->getDetailLevel()) {
             case DetailLevel::$Tax:
                 // Response Detail Level = Tax
                 /** @var TaxLine $taxLine */
                 foreach ($response->getTaxLines() as $taxLine) {
                     foreach ($taxLine->getTaxDetails() as $taxDetail) {
-                        $resultKey = $taxDetail->getTaxName() . " " . $taxDetail->getJurisCode();
-                        if (array_key_exists($resultKey, $result)) {
-                            $amt = $result[$resultKey]['amt'] + $taxDetail->getTax();
-                        } else {
-                            $amt = $taxDetail->getTax();
-                        }
-                        $result[$resultKey] = array(
-                            'name' => $taxDetail->getTaxName(),
-                            'rate' => $taxDetail->getRate() * 100,
-                            'amt'  => $amt
-                        );
+                        $taxDetailItems[] = $taxDetail;
                     }
                 }
                 break;
             default:
                 // Response Detail Level = Line
-                foreach ($response->getTaxSummary() as $taxDetail) {
-                    $resultKey = $taxDetail->getTaxName() . " " . $taxDetail->getJurisCode();
-                    if (array_key_exists($resultKey, $result)) {
-                        $amt = $result[$resultKey]['amt'] + $taxDetail->getTax();
-                    } else {
-                        $amt = $taxDetail->getTax();
-                    }
-                    $result[$resultKey] = array(
-                        'name' => $taxDetail->getTaxName(),
-                        'rate' => $taxDetail->getRate() * 100,
-                        'amt'  => $amt
-                    );
-                }
-
+                $taxDetailItems = $response->getTaxSummary();
                 break;
+        }
+
+        foreach ($taxDetailItems as $taxDetail) {
+            $resultKey = $taxDetail->getTaxName() . " " . $taxDetail->getJurisCode();
+            if (array_key_exists($resultKey, $result)) {
+                $amt = $result[$resultKey]['amt'] + $taxDetail->getTax();
+            } else {
+                $amt = $taxDetail->getTax();
+            }
+            $result[$resultKey] = array(
+                'name' => $taxDetail->getTaxName(),
+                'rate' => $taxDetail->getRate() * 100,
+                'amt'  => $amt
+            );
         }
 
         return $result;

@@ -35,7 +35,7 @@ class OnePica_AvaTax_Model_Source_DetailLevels
         if (!$activeService) {
             throw new OnePica_AvaTax_Exception('Service source model is not defined.');
         }
-        $model = Mage::getModel('avatax/source_' . $activeService . '_detaillevels');
+        $model = Mage::getModel('avatax/source_' . $activeService . '_detailLevels');
         if (!$model) {
             throw new OnePica_AvaTax_Exception('Could not found source model ' . $activeService);
         }
