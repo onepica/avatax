@@ -247,10 +247,11 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
      */
     protected function _getSummaryFromResponse($response)
     {
-        /** @var array $row */
         $unique = array();
         $result = array();
         $taxSummaryItems = $this->_getTaxSummaryItemsFromResponse($response);
+
+        /** @var array $row */
         foreach ($taxSummaryItems as $row) {
             $name = $row['name'];
             $unique[$name] = (isset($unique[$name])) ? $unique[$name] + 1 : 1;
@@ -270,6 +271,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
      * Prepares array of arrays with data from TaxDetail for different detail levels
      *
      * @param GetTaxResult $response
+     *
      * @return array
      */
     protected function _getTaxSummaryItemsFromResponse($response)
@@ -278,7 +280,6 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
          * Variables
          *
          * @var TaxDetail $taxDetail
-         * @var TaxLine   $taxLine
          * @var string    $resultKey used to collect tax amount for separate jurisdiction
          */
 
@@ -286,6 +287,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         switch ($this->_request->getDetailLevel()) {
             case DetailLevel::$Tax:
                 // Response Detail Level = Tax
+                /** @var TaxLine $taxLine */
                 foreach ($response->getTaxLines() as $taxLine) {
                     foreach ($taxLine->getTaxDetails() as $taxDetail) {
                         $resultKey = $taxDetail->getTaxName() . " " . $taxDetail->getJurisCode();
@@ -295,9 +297,9 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
                             $amt = $taxDetail->getTax();
                         }
                         $result[$resultKey] = array(
-                            'name'       => $taxDetail->getTaxName(),
-                            'rate'       => $taxDetail->getRate() * 100,
-                            'amt'        => $amt
+                            'name' => $taxDetail->getTaxName(),
+                            'rate' => $taxDetail->getRate() * 100,
+                            'amt'  => $amt
                         );
                     }
                 }
@@ -306,12 +308,18 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
                 // Response Detail Level = Line
                 foreach ($response->getTaxSummary() as $taxDetail) {
                     $resultKey = $taxDetail->getTaxName() . " " . $taxDetail->getJurisCode();
+                    if (array_key_exists($resultKey, $result)) {
+                        $amt = $result[$resultKey]['amt'] + $taxDetail->getTax();
+                    } else {
+                        $amt = $taxDetail->getTax();
+                    }
                     $result[$resultKey] = array(
-                        'name'       => $taxDetail->getTaxName(),
-                        'rate'       => $taxDetail->getRate() * 100,
-                        'amt'        => $taxDetail->getTax()
+                        'name' => $taxDetail->getTaxName(),
+                        'rate' => $taxDetail->getRate() * 100,
+                        'amt'  => $amt
                     );
                 }
+
                 break;
         }
 
