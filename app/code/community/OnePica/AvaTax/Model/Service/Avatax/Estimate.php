@@ -93,6 +93,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
             }
             $this->_rates = $rates;
         }
+
         return parent::_construct();
     }
 
@@ -121,7 +122,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         $this->_addGeneralInfo($address);
         $this->_setOriginAddress($quote->getStoreId());
         $this->_setDestinationAddress($address);
-        $this->_request->setDetailLevel(DetailLevel::$Line);
+        $this->_setDetailLevel();
         $this->_addItemsInCart($address);
         $this->_addShipping($address);
         //Added code for calculating tax for giftwrap items
@@ -156,11 +157,12 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
                     /** @var TaxLine $ctl */
                     $id = $this->_getItemIdByLine($ctl);
                     $code = $this->_getTaxArrayCodeByLine($ctl);
+
                     $this->_rates[$requestKey][$code][$id] = array(
-                        'rate'         => ($ctl->getTax() ? $ctl->getRate() : 0) * 100,
+                        'rate'         => $this->_getTaxRateFromTaxLineItem($ctl),
                         'amt'          => $ctl->getTax(),
                         'taxable'      => $ctl->getTaxable(),
-                        'tax_included' => $ctl->getTaxIncluded(),
+                        'tax_included' => $ctl->getTaxIncluded()
                     );
                 }
                 $this->_rates[$requestKey]['summary'] = $this->_getSummaryFromResponse($result);
@@ -226,9 +228,11 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         $goodSeverity = in_array($message->getSeverity(), array('Warning', 'Error'));
         $goodSource = in_array(
             $message->getSource(),
-            array('Avalara.AvaTax.Services.Address',
-                  'Avalara.AvaTax.Services.Tax',
-                  'Avalara.AvaTax.Services.Tax.Steps')
+            array(
+                'Avalara.AvaTax.Services.Address',
+                'Avalara.AvaTax.Services.Tax',
+                'Avalara.AvaTax.Services.Tax.Steps'
+            )
         );
 
         return !$goodSeverity || !$goodSource;
@@ -236,26 +240,78 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
 
     /**
      * Get line rate
+     * Prepares array of tax lines with unique names for correct displaying in Full Tax Summary
      *
-     * @param OnePica_AvaTax_Document_Response $response
+     * @param GetTaxResult $response
      * @return array
      */
     protected function _getSummaryFromResponse($response)
     {
         $unique = array();
-        foreach ($response->getTaxSummary() as $row) {
-            $name = $row->getTaxName();
+        $result = array();
+        $taxSummaryItems = $this->_getTaxSummaryItemsFromResponse($response);
+
+        /** @var array $row */
+        foreach ($taxSummaryItems as $row) {
+            $name = $row['name'];
             $unique[$name] = (isset($unique[$name])) ? $unique[$name] + 1 : 1;
         }
 
+        foreach ($taxSummaryItems as $key => $row) {
+            $name = $row['name'];
+            $row['name'] = ($unique[$name] > 1) ? $key : $name;
+
+            $result[] = $row;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Prepares array of arrays with data from TaxDetail for different detail levels
+     *
+     * @param GetTaxResult $response
+     *
+     * @return array
+     */
+    protected function _getTaxSummaryItemsFromResponse($response)
+    {
+        /**
+         * Variables
+         *
+         * @var TaxDetail $taxDetail
+         * @var string    $resultKey used to collect tax amount for separate jurisdiction
+         */
+
         $result = array();
-        foreach ($response->getTaxSummary() as $row) {
-            $name = $row->getTaxName();
-            $name = ($unique[$name] > 1) ? $name . " " . $row->getJurisCode() : $name;
-            $result[] = array(
-                'name' => $name,
-                'rate' => $row->getRate() * 100,
-                'amt'  => $row->getTax()
+        $taxDetailItems = array();
+        switch ($this->_request->getDetailLevel()) {
+            case DetailLevel::$Tax:
+                // Response Detail Level = Tax
+                /** @var TaxLine $taxLine */
+                foreach ($response->getTaxLines() as $taxLine) {
+                    foreach ($taxLine->getTaxDetails() as $taxDetail) {
+                        $taxDetailItems[] = $taxDetail;
+                    }
+                }
+                break;
+            default:
+                // Response Detail Level = Line
+                $taxDetailItems = $response->getTaxSummary();
+                break;
+        }
+
+        foreach ($taxDetailItems as $taxDetail) {
+            $resultKey = $taxDetail->getTaxName() . " " . $taxDetail->getJurisCode();
+            if (array_key_exists($resultKey, $result)) {
+                $amt = $result[$resultKey]['amt'] + $taxDetail->getTax();
+            } else {
+                $amt = $taxDetail->getTax();
+            }
+            $result[$resultKey] = array(
+                'name' => $taxDetail->getTaxName(),
+                'rate' => $taxDetail->getRate() * 100,
+                'amt'  => $amt
             );
         }
 
@@ -271,6 +327,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
     {
         $hash = sprintf("%u", crc32(serialize($this->_request)));
         $this->_setLastRequestKey($hash);
+
         return $hash;
     }
 
@@ -370,6 +427,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         $this->_lines[$lineNumber] = $line;
         $this->_request->setLines($this->_lines);
         $this->_lineToLineId[$lineNumber] = $this->_getConfigHelper()->getGwOrderSku($storeId);
+
         return $lineNumber;
     }
 
@@ -444,6 +502,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         $this->_lines[$lineNumber] = $line;
         $this->_request->setLines($this->_lines);
         $this->_lineToLineId[$lineNumber] = $this->_getConfigHelper()->getGwPrintedCardSku($storeId);
+
         return $lineNumber;
     }
 
@@ -598,7 +657,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
 
         if (isset($lastRequestKey)) {
             $result = isset($this->_rates[$lastRequestKey]['summary'])
-                        ? $this->_rates[$lastRequestKey]['summary'] : array();
+                ? $this->_rates[$lastRequestKey]['summary'] : array();
         } else {
             $rates = $this->getRates($address);
             $result = (isset($rates)) ? $rates['summary'] : null;
@@ -615,5 +674,45 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
     protected function _getTaxDataHelper()
     {
         return Mage::helper('tax');
+    }
+
+    /**
+     * Sets detail level for request based on config data
+     *
+     * @return $this
+     */
+    protected function _setDetailLevel()
+    {
+        /** @var OnePica_AvaTax_Model_Service_Avatax_Config $config */
+        $config = Mage::getSingleton('avatax/service_avatax_config');
+        $this->_request->setDetailLevel($config->getDetailLevel());
+
+        return $this;
+    }
+
+    /**
+     * Calculates rate of tax line
+     *
+     * @param TaxLine $line
+     * @return int
+     */
+    protected function _getTaxRateFromTaxLineItem(TaxLine $line)
+    {
+        switch ($this->_request->getDetailLevel()) {
+            case DetailLevel::$Tax:
+                $lineRate = 0;
+                foreach ($line->getTaxDetails() as $taxDetail) {
+                    if ($taxDetail->getTax() != 0) {
+                        $lineRate = $lineRate + $taxDetail->getRate();
+                    }
+                }
+                $lineRate = $lineRate * 100;
+                break;
+            default:
+                $lineRate = ($line->getTax() ? $line->getRate() : 0) * 100;
+                break;
+        }
+
+        return $lineRate;
     }
 }

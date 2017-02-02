@@ -356,19 +356,8 @@ class OnePica_AvaTax_Model_Service_Avatax16_Tax extends OnePica_AvaTax_Model_Ser
         $header->setDefaultTaxPayerCode($this->_getVatId($object));
         $metadata = array('salesPersonCode' => $this->_getConfigHelper()->getSalesPersonCode($storeId));
         $header->setMetadata($metadata);
-        /** @todo: Remove this code if this field is not required by extesion and Avalara
-        $header->setVendorCode(self::DEFAULT_VENDOR_CODE); */
         $header->setCurrency(Mage::app()->getStore($storeId)->getBaseCurrencyCode());
         $header->setDefaultBuyerType($this->_getCalculationHelper()->getCustomerOpAvataxCode($object));
-        /** @todo: Remove this code if we will not use those properties
-        $header->setDefaultAvalaraGoodsAndServicesType($this->_getConfigHelper()
-            ->getDefaultAvalaraGoodsAndServicesType($storeId));
-        $header->setDefaultAvalaraGoodsAndServicesModifierType($this->_getConfigHelper()
-            ->getDefaultAvalaraGoodsAndServicesModifierType($storeId));
-        $header->setDefaultTaxPayerCode($this->_getConfigHelper()->getDefaultTaxPayerCode($storeId));
-        $header->setDefaultUseType($this->_getConfigHelper()->getDefaultUseType($storeId));
-        $header->setDefaultBuyerType($this->_getConfigHelper()->getDefaultBuyerType($storeId));
-        */
 
         return $header;
     }

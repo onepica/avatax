@@ -122,6 +122,16 @@
                                 </region_filter_mode>
                             </depends>
                         </region_filter_list>
+                        <detail_level translate="label comment">
+                            <label>Detail level</label>
+                            <comment><![CDATA[<strong>Line</strong>: product rate will be used from Tax Line<br/><strong>Tax</strong>: product rate will be effective rate and is collected by jurisdiction]]></comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>avatax/source_detailLevels</source_model>
+                            <sort_order>90</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </detail_level>
                         <title_debug_settings translate="label">
                             <label><![CDATA[<strong>Log &amp; Queue Settings</strong>]]></label>
                             <frontend_type>label</frontend_type>
@@ -336,57 +346,10 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                            <depends><upc_check_status>1</upc_check_status></depends>
+                            <depends>
+                                <upc_check_status>1</upc_check_status>
+                            </depends>
                         </upc_attribute_code>
-                   <!-- TODO: Remove this code if we will not use those properties
-                        <default_avalara_goods_and_services_type translate="label comment">
-                            <label>Default Avalara Goods And Services Type</label>
-                            <comment>Optional.</comment>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>271</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </default_avalara_goods_and_services_type>
-                        <default_avalara_goods_and_services_modifier_type translate="label comment">
-                            <label>Default Avalara Goods And Services Modifier Type</label>
-                            <comment>Optional.</comment>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>272</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </default_avalara_goods_and_services_modifier_type>
-                        <default_tax_payer_code translate="label comment">
-                            <label>Default Tax Payer Code</label>
-                            <comment>Optional.</comment>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>273</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </default_tax_payer_code>
-                        <default_use_type translate="label comment">
-                            <label>Default Use Type</label>
-                            <comment>Optional.</comment>
-                            <frontend_type>select</frontend_type>
-                            <source_model>avatax/source_avatax16_usetype</source_model>
-                            <sort_order>274</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </default_use_type>
-                        <default_buyer_type translate="label comment">
-                            <label>Default Buyer Type</label>
-                            <comment>Optional.</comment>
-                            <frontend_type>select</frontend_type>
-                            <source_model>avatax/source_avatax16_buyertype</source_model>
-                            <sort_order>275</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </default_buyer_type> -->
-
                         <title_address_validation translate="label">
                             <label><![CDATA[<strong>Shipping Address Options</strong>]]></label>
                             <frontend_type>label</frontend_type>
@@ -460,7 +423,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <can_be_empty>1</can_be_empty>
-                           </field_required_list>
+                        </field_required_list>
                         <field_rule>
                             <label>Field Rule</label>
                             <comment>Example: ' ,-,_'</comment>

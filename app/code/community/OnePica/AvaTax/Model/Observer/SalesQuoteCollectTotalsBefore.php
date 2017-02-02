@@ -33,9 +33,7 @@ class OnePica_AvaTax_Model_Observer_SalesQuoteCollectTotalsBefore extends OnePic
     public function execute(Varien_Event_Observer $observer)
     {
         $storeId = $observer->getEvent()->getQuote()->getStoreId();
-        if (Mage::getStoreConfig('tax/avatax/action', $storeId) != OnePica_AvaTax_Model_Service_Abstract_Config::ACTION_DISABLE) {
-            Mage::getConfig()->setNode('global/sales/quote/totals/tax/class', 'avatax/sales_quote_address_total_tax');
-        }
+        Mage::getSingleton('avatax/tax_avaTaxEnabler')->initTaxCollector($storeId);
         return $this;
     }
 }

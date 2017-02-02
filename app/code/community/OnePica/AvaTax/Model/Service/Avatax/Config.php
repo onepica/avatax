@@ -54,7 +54,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Config extends OnePica_AvaTax_Model_Se
                     'account' => Mage::helper('avatax/config')->getServiceAccountId($storeId),
                     'license' => Mage::helper('avatax/config')->getServiceKey($storeId),
                     'trace'   => (Mage::helper('avatax')
-                        ->getLogMode($storeId) == OnePica_AvaTax_Model_Source_Logmode::DEBUG) ? true : false,
+                            ->getLogMode($storeId) == OnePica_AvaTax_Model_Source_Logmode::DEBUG) ? true : false,
                     'client'  => $this->getClientName()
                 )
             );
@@ -84,6 +84,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Config extends OnePica_AvaTax_Model_Se
         if (null === $this->_addressConnection) {
             $this->_addressConnection = new AddressServiceSoap(self::CONFIG_KEY);
         }
+
         return $this->_addressConnection;
     }
 
@@ -97,6 +98,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Config extends OnePica_AvaTax_Model_Se
         if (null === $this->_taxConnection) {
             $this->_taxConnection = new TaxServiceSoap(self::CONFIG_KEY);
         }
+
         return $this->_taxConnection;
     }
 
@@ -119,5 +121,16 @@ class OnePica_AvaTax_Model_Service_Avatax_Config extends OnePica_AvaTax_Model_Se
     public function getCompanyCode($store = null)
     {
         return Mage::helper('avatax/config')->getCompanyCode($store);
+    }
+
+    /**
+     * Returns the detail level config
+     *
+     * @param null|bool|int|Mage_Core_Model_Store $store
+     * @return string
+     */
+    public function getDetailLevel($store = null)
+    {
+        return Mage::helper('avatax/config')->getDetailLevel($store);
     }
 }

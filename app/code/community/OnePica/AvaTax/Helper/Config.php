@@ -110,6 +110,11 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
     const XML_PATH_TO_TAX_AVATAX_COMPANY_CODE = 'tax/avatax/company_code';
 
     /**
+     * Path to tax detail level
+     */
+    const XML_PATH_TO_TAX_AVATAX_DETAIL_LEVEL = 'tax/avatax/detail_level';
+
+    /**
      * Path to attribute code for the reference code 1 to send to Avalara
      */
     const XML_PATH_TO_TAX_AVATAX_LINE_REF1_CODE = 'tax/avatax/line_ref1_code';
@@ -188,32 +193,6 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
      * Path to active avatax service
      */
     const XML_PATH_TO_SHIPPING_ORIGIN_COUNTRY_ID = 'shipping/origin/country_id';
-
-    /**
-     * Path to default avalara goods and services type
-     */
-    const XML_PATH_TO_DEFAULT_AVALARA_GOODS_AND_SERVICES_TYPE = 'tax/avatax/default_avalara_goods_and_services_type';
-
-    /**
-     * Path to default avalara goods and services modifier type
-     */
-    const XML_PATH_TO_DEFAULT_AVALARA_GOODS_AND_SERVICES_MODIFIER_TYPE =
-        'tax/avatax/default_avalara_goods_and_services_modifier_type';
-
-    /**
-     * Path to default tax payer code
-     */
-    const XML_PATH_TO_DEFAULT_TAX_PAYER_CODE = 'tax/avatax/default_tax_payer_code';
-
-    /**
-     * Path to default use type
-     */
-    const XML_PATH_TO_DEFAULT_USE_TYPE = 'tax/avatax/default_use_type';
-
-    /**
-     * Path to default buyer type
-     */
-    const XML_PATH_TO_DEFAULT_BUYER_TYPE = 'tax/avatax/default_buyer_type';
 
     /**
      * Path to upc status
@@ -307,6 +286,18 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
     public function getCompanyCode($store = null)
     {
         return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_COMPANY_CODE, $store);
+    }
+
+    /**
+     * Returns service account id
+     *
+     * @param null|bool|int|Mage_Core_Model_Store $store
+     *
+     * @return string
+     */
+    public function getDetailLevel($store = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_DETAIL_LEVEL, $store);
     }
 
     /**
@@ -630,66 +621,6 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
     public function getShippingOriginCountryId($store = null)
     {
         return Mage::getStoreConfig(self::XML_PATH_TO_SHIPPING_ORIGIN_COUNTRY_ID, $store);
-    }
-
-    /**
-     * Get Default Avalara Goods And Services Type
-     *
-     * @param null|bool|int|Mage_Core_Model_Store $store
-     *
-     * @return int
-     */
-    public function getDefaultAvalaraGoodsAndServicesType ($store = null)
-    {
-        return Mage::getStoreConfig(self::XML_PATH_TO_DEFAULT_AVALARA_GOODS_AND_SERVICES_TYPE, $store);
-    }
-
-    /**
-     * Get dDfault Avalara Goods And Services Modifier Type
-     *
-     * @param null|bool|int|Mage_Core_Model_Store $store
-     *
-     * @return string
-     */
-    public function getDefaultAvalaraGoodsAndServicesModifierType($store = null)
-    {
-        return Mage::getStoreConfig(self::XML_PATH_TO_DEFAULT_AVALARA_GOODS_AND_SERVICES_MODIFIER_TYPE, $store);
-    }
-
-    /**
-     * Get Default Tax Payer Code
-     *
-     * @param null|bool|int|Mage_Core_Model_Store $store
-     *
-     * @return string
-     */
-    public function getDefaultTaxPayerCode($store = null)
-    {
-        return Mage::getStoreConfig(self::XML_PATH_TO_DEFAULT_TAX_PAYER_CODE, $store);
-    }
-
-    /**
-     * Get Default Use Type
-     *
-     * @param null|bool|int|Mage_Core_Model_Store $store
-     *
-     * @return string
-     */
-    public function getDefaultUseType($store = null)
-    {
-        return Mage::getStoreConfig(self::XML_PATH_TO_DEFAULT_USE_TYPE, $store);
-    }
-
-    /**
-     * Get Default Buyer Type
-     *
-     * @param null|bool|int|Mage_Core_Model_Store $store
-     *
-     * @return string
-     */
-    public function getDefaultBuyerType($store = null)
-    {
-        return Mage::getStoreConfig(self::XML_PATH_TO_DEFAULT_BUYER_TYPE, $store);
     }
 
     /**

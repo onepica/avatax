@@ -16,7 +16,7 @@
  */
 
 /**
- * @class OnePica_AvaTax_Model_Service_Abstract_Tools
+ * @class      OnePica_AvaTax_Model_Service_Abstract_Tools
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
@@ -76,6 +76,7 @@ abstract class OnePica_AvaTax_Model_Service_Abstract_Config extends Varien_Objec
 
     /**
      * Resource  connection
+     *
      * @var
      */
     protected $_connection = null;
@@ -89,12 +90,14 @@ abstract class OnePica_AvaTax_Model_Service_Abstract_Config extends Varien_Objec
 
     /**
      * Get resource  connection
+     *
      * @return mixed
      */
     abstract public function getTaxConnection();
 
     /**
      * Init config
+     *
      * @param $storeId
      * @return mixed
      */
