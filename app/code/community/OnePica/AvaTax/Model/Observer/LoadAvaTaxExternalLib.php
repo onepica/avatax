@@ -63,7 +63,15 @@ class OnePica_AvaTax_Model_Observer_LoadAvaTaxExternalLib extends OnePica_AvaTax
         'TaxDetail',
         'PingResult',
         'TaxOverride',
-        'TaxOverrideType'
+        'TaxOverrideType',
+        'AddressLocationType',
+        'BRBuyerTypeEnum',
+        'GetAllParameterBagItemsResult',
+        'GetParameterBagItemsRequest',
+        'GetParameterBagItemsResult',
+        'LocationType',
+        'ParameterBag',
+        'ParameterBagItem',
     );
 
     /**
