@@ -4,17 +4,17 @@
  */
 
 /**
- * Contains the get certificate request operation result returned by {@link CertificateRequestGet}.
- *
+ * Contains the get certificate request operation result returned by {@link CertificateRequestGet}. 
+ * 
  * @author    Avalara
- * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   AvaCert2
  */
 class CertificateRequestGetResult extends BaseResult {
   private $CertificateRequests; // ArrayOfCertificateRequest
 
 /**
- * CertificateRequests contains collection of certificate requests.
+ * CertificateRequests contains collection of certificate requests. 
  */
   public function getCertificateRequests()
   {
@@ -24,8 +24,10 @@ class CertificateRequestGetResult extends BaseResult {
      }
      else
      {
-     	return null;
-     }
+     	return null; 
+     }  	
   } // ArrayOfCertificateRequest
 
 }
+
+?>

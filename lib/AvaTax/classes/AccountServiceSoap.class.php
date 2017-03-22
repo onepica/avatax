@@ -2,9 +2,9 @@
 /**
  * AccountServiceSoap.class.php
  */
-
+ 
 /**
- * Proxy interface for the Avalara Accounts Web Service.
+ * Proxy interface for the Avalara Accounts Web Service. 
  *
  * AccountServiceSoap reads its configuration values from static variables defined
  * in ATConfig.class.php. This file must be properly configured with your security credentials.
@@ -26,21 +26,21 @@ class AccountServiceSoap extends AvalaraSoapClient
                                     'BaseRequest' => 'BaseRequest',
                                     'ValidateRequest' => 'ValidateRequest',
                                     'BaseAddress' => 'BaseAddress',
-                                    'URL' => 'URL',
-                                    'UserName' => 'UserName',
-                                    'Password' => 'Password',
+                                    'URL' => 'URL',                                    
+                                    'UserName' => 'UserName',                                    
+                                    'Password' => 'Password',                                    
                                     'BaseResult' => 'BaseResult',
                                     'SeverityLevel' => 'SeverityLevel',
                                     'Message' => 'Message',
                                     'Profile' => 'Profile',
-                                    'Ping' => 'Ping',
+                                    'Ping' => 'Ping',                                    
                                     'PingResult' => 'PingResult',
-                                    'IsAuthorized' => 'IsAuthorized',
+                                    'IsAuthorized' => 'IsAuthorized',                                
                                     'IsAuthorizedResult' => 'IsAuthorizedResult');
-
+        
     /**
      * Construct a proxy for Avalara's Address Web Service using the default URL as coded in the class or programatically set.
-     *
+     * 
      * <b>Example:</b>
      * <pre>
      *  $port = new AccountServiceSoap();
@@ -58,10 +58,10 @@ class AccountServiceSoap extends AvalaraSoapClient
             $config->accountWSDL,
             array
             (
-                'location' => $config->url.$config->accountService,
+                'location' => $config->url.$config->accountService, 
                 'trace' => $config->trace,
                 'classmap' => AccountServiceSoap::$classmap
-            ),
+            ), 
             $config
         );
     }
@@ -70,7 +70,7 @@ class AccountServiceSoap extends AvalaraSoapClient
     {
         return $this->client->Ping(array('Message' => $message))->PingResult;
     }
-
+    
     public function isAuthorized($operations)
     {
         return $this->client->IsAuthorized(array('Operations' => $operations))->IsAuthorizedResult;
@@ -79,5 +79,6 @@ class AccountServiceSoap extends AvalaraSoapClient
 	public function CompanyFetch($validateRequest)
     {
         return $this->client->CompanyFetch(array('FetchRequest' => $validateRequest))->CompanyFetchResult;
-    }
+    }     
 }
+?>

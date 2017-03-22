@@ -7,9 +7,9 @@
  * The type of the address(es) returned in the validation result.
  *
  * @author    Avalara
- * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Address
- *
+ * 
  */
 
 class AddressType extends Enum
@@ -20,7 +20,7 @@ class AddressType extends Enum
     public static $POBox            = 'P';
     public static $RuralRoute       = 'R';
     public static $StreetOrResidential = 'S';
-
+    
 	public static function Values()
 	{
 		return array(
@@ -36,3 +36,5 @@ class AddressType extends Enum
     // Unfortunate boiler plate due to polymorphism issues on static functions
     public static function Validate($value) { self::__Validate($value,self::Values(),__CLASS__); }
 }
+
+?>

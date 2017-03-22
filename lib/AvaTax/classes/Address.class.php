@@ -2,7 +2,7 @@
 /**
  * Address.class.php
  */
-
+ 
  /**
  * Contains address data; Can be passed to {@link AddressServiceSoap#validate};
  * Also part of the {@link GetTaxRequest}
@@ -27,10 +27,10 @@
  *
  * </pre>
  * @author    Avalara
- * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright © 2004 - 2016 Avalara, Inc.  All rights reserved.
  * @package   Address
  */
-
+ 
 class Address
 {
 
@@ -45,11 +45,11 @@ class Address
     private $TaxRegionId = 0;
     private $Latitude;
     private $Longitude;
-
+     
     /**
      * Construct a new Address.
      *
-     * Constructs a new instance of Address.
+     * Constructs a new instance of Address. 
      * <pre>
      * $address = new Address();
      * </pre>
@@ -77,59 +77,59 @@ class Address
         $this->Country = $country;
         $this->TaxRegionId = $taxRegionId;
         $this->Latitude = $latitude;
-        $this->Longitude = $longitude;
+        $this->Longitude = $longitude; 
     }
 
 	/**
 	 * Programmatically determined value used internally by the adapter.
 	 *
 	 * @param string $value
-	 *
+	 * 
 	 */
     public function setAddressCode($value) { $this->AddressCode = $value; }
-
+    
     /**
-     * Address line 1
+     * Address line 1 
      *
      * @param string $value
      */
     public function setLine1($value) { $this->Line1 = $value; }
-
+    
     /**
      * Address line 2
      *
      * @param string $value
      */
     public function setLine2($value) { $this->Line2 = $value; }
-
+    
     /**
-     * Address line 3
+     * Address line 3 
      *
      * @param string $value
      */
     public function setLine3($value) { $this->Line3 = $value;  }
-
+    
     /**
      * City name
      *
      * @param string $value
      */
     public function setCity($value) { $this->City = $value; }
-
+    
     /**
      * State or province name or abbreviation
      *
      * @param string $value
      */
     public function setRegion($value) { $this->Region = $value; }
-
+    
     /**
      * Postal or ZIP code
      *
      * @param string $value
      */
     public function setPostalCode($value) { $this->PostalCode = $value;  }
-
+    
     /**
      * Country name
      *
@@ -139,101 +139,101 @@ class Address
 
 
 	/**
-	 * TaxRegionId provides the ability to override the tax region assignment for an address.
+	 * TaxRegionId provides the ability to override the tax region assignment for an address. 
 	 *
 	 * @param string $value
 	 */
     public function setTaxRegionId($value) { $this->TaxRegionId = $value;  }
 
-
+ 	
  	/**
      * Set Latitude Value
      *
      * @param string $value
      */
     public function setLatitude($value) { $this->Latitude = $value; }
-
-
+    
+    
  	/**
      * Set Longitude Value
      *
      * @param string $value
      */
     public function setLongitude($value) { $this->Longitude = $value; }
-
-
+    
+    
  	/**
  	 * Programmatically determined value used internally by the adapter.
  	 *
  	 * @return string $value
  	 */
     public function getAddressCode() { return $this->AddressCode; }
-
+    
     /**
-     * Address line 1
+     * Address line 1 
      *
      * @return string $value
      */
     public function getLine1() { return $this->Line1; }
-
+    
    /**
-     * Address line 2
+     * Address line 2 
      *
      * @return string $value
      */
     public function getLine2() { return $this->Line2; }
-
+    
     /**
-     * Address line 3
+     * Address line 3 
      *
      * @return string $value
      */
     public function getLine3() { return $this->Line3; }
-
+    
     /**
-     * City name
+     * City name 
      *
      * @return string $value
      */
     public function getCity() { return $this->City; }
-
+    
     /**
      * State or province name or abbreviation
      *
      * @return string $value
      */
     public function getRegion() { return $this->Region; }
-
+    
     /**
-     * Postal or ZIP code
+     * Postal or ZIP code 
      *
      * @return string $value
      */
     public function getPostalCode() { return $this->PostalCode; }
-
+    
     /**
      * Country name
      *
      * @return string $value
      */
     public function getCountry() { return $this->AddressCode; }
-
+    
     /**
-     * TaxRegionId provides the ability to override the tax region assignment for an address.
+     * TaxRegionId provides the ability to override the tax region assignment for an address. 
      *
      * @return string $value
      */
     public function getTaxRegionId() { return $this->TaxRegionId; }
-
-
+    
+    
     /**
      * Latitude Value
      *
      * @return string $value
      */
     public function getLatitude() { return $this->Latitude; }
-
-
+    
+    
     /**
      * Longitude Value
      *
@@ -265,3 +265,5 @@ class Address
 		);
 	}
 }
+
+?>

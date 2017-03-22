@@ -2,18 +2,18 @@
 /**
  * ServiceMode.class.php
  */
-
+ 
 /**
  * Specifies the ServiceMode.
  *
  * @see GetTaxRequest, GetTaxHistoryRequest
- *
+ * 
  * This is only supported by AvaLocal servers. It provides the ability to controls whether tax is calculated locally or remotely when using an AvaLocal server.
  * The default is Automatic which calculates locally unless remote is necessary for non-local addresses
- *
+ * 
  * @author    Avalara
- * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
- * @package   Tax
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @package   Tax 
  */
 
 class ServiceMode extends Enum
@@ -33,16 +33,17 @@ class ServiceMode extends Enum
      * All lines are calculated by AvaTax remote server.
      */
     public static $Remote = "Remote";
-
+    
     public static function Values()
 	{
 		return array(
 			ServiceMode::$Automatic,
 			ServiceMode::$Local,
-			ServiceMode::$Remote
+			ServiceMode::$Remote			
 		);
 	}
-
+	
     // Unfortunate boiler plate due to polymorphism issues on static functions
     public static function Validate($value) { self::__Validate($value,self::Values(),__CLASS__); }
 }
+?>
