@@ -23,7 +23,15 @@ $installer->startSetup();
 $installer->getConnection()
     ->addColumn($installer->getTable('avatax_records/log'), 'soap_request', array(
         'type'     => Varien_Db_Ddl_Table::TYPE_TEXT,
-        'nullable' => false,
+        'nullable' => true,
+        'after'    => null,
+        'comment'  => 'SOAP request'
+    ));
+
+$installer->getConnection()
+    ->addColumn($installer->getTable('avatax_records/log'), 'soap_request_headers', array(
+        'type'     => Varien_Db_Ddl_Table::TYPE_TEXT,
+        'nullable' => true,
         'after'    => null,
         'comment'  => 'SOAP request'
     ));
@@ -31,7 +39,15 @@ $installer->getConnection()
 $installer->getConnection()
     ->addColumn($installer->getTable('avatax_records/log'), 'soap_result', array(
         'type'     => Varien_Db_Ddl_Table::TYPE_TEXT,
-        'nullable' => false,
+        'nullable' => true,
+        'after'    => null,
+        'comment'  => 'SOAP result'
+    ));
+
+$installer->getConnection()
+    ->addColumn($installer->getTable('avatax_records/log'), 'soap_result_headers', array(
+        'type'     => Varien_Db_Ddl_Table::TYPE_TEXT,
+        'nullable' => true,
         'after'    => null,
         'comment'  => 'SOAP result'
     ));
