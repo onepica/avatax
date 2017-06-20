@@ -39,7 +39,9 @@ class OnePica_AvaTax_Model_Export_Entity_Log extends OnePica_AvaTax_Model_Export
             'request',
             'result',
             'additional',
-            'created_at'
+            'created_at',
+            'soap_request',
+            'soap_result'
         );
     }
 

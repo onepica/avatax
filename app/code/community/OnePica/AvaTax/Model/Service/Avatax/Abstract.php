@@ -114,7 +114,9 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
      * @param mixed $additional any other info
      * @return $this
      */
-    protected function _log($type, $request, $result, $storeId = null, $additional = null)
+    protected function _log(
+        $type, $request, $result, $storeId = null,
+        $additional = null, $connection)
     {
         if ($result->getResultCode() == SeverityLevel::$Success) {
             switch ($this->_getHelper()->getLogMode($storeId)) {
@@ -126,6 +128,8 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
                     break;
             }
         }
+        $soapRequest = $connection->__getLastRequest();
+        $soapResponse = $connection->__getLastResponse();
 
         if (in_array($type, $this->_getHelper()->getLogType($storeId))) {
             Mage::getModel('avatax_records/log')
@@ -135,6 +139,8 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
                 ->setRequest(print_r($request, true))
                 ->setResult(print_r($result, true))
                 ->setAdditional($additional)
+                ->setSoapRequest($soapRequest)
+                ->setSoapResult($soapResponse)
                 ->save();
         }
         return $this;
