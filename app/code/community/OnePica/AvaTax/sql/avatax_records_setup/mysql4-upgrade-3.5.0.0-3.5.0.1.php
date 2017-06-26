@@ -33,7 +33,7 @@ $installer->getConnection()
         'type'     => Varien_Db_Ddl_Table::TYPE_TEXT,
         'nullable' => true,
         'after'    => null,
-        'comment'  => 'SOAP request'
+        'comment'  => 'SOAP request headers'
     ));
 
 $installer->getConnection()
@@ -49,7 +49,11 @@ $installer->getConnection()
         'type'     => Varien_Db_Ddl_Table::TYPE_TEXT,
         'nullable' => true,
         'after'    => null,
-        'comment'  => 'SOAP result'
+        'comment'  => 'SOAP result headers'
     ));
+
+$installer->getConnection()->modifyColumn($installer->getTable('avatax_records/log'), 'request', 'MEDIUMTEXT');
+$installer->getConnection()->modifyColumn($installer->getTable('avatax_records/log'), 'soap_request', 'MEDIUMTEXT');
+$installer->getConnection()->modifyColumn($installer->getTable('avatax_records/log'), 'soap_result', 'MEDIUMTEXT');
 
 $installer->endSetup();
