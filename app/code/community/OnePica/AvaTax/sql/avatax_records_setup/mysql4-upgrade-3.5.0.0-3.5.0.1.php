@@ -20,40 +20,13 @@
 $installer = $this;
 $installer->startSetup();
 
-$installer->getConnection()
-    ->addColumn($installer->getTable('avatax_records/log'), 'soap_request', array(
-        'type'     => Varien_Db_Ddl_Table::TYPE_TEXT,
-        'nullable' => true,
-        'after'    => null,
-        'comment'  => 'SOAP request'
-    ));
-
-$installer->getConnection()
-    ->addColumn($installer->getTable('avatax_records/log'), 'soap_request_headers', array(
-        'type'     => Varien_Db_Ddl_Table::TYPE_TEXT,
-        'nullable' => true,
-        'after'    => null,
-        'comment'  => 'SOAP request headers'
-    ));
-
-$installer->getConnection()
-    ->addColumn($installer->getTable('avatax_records/log'), 'soap_result', array(
-        'type'     => Varien_Db_Ddl_Table::TYPE_TEXT,
-        'nullable' => true,
-        'after'    => null,
-        'comment'  => 'SOAP result'
-    ));
-
-$installer->getConnection()
-    ->addColumn($installer->getTable('avatax_records/log'), 'soap_result_headers', array(
-        'type'     => Varien_Db_Ddl_Table::TYPE_TEXT,
-        'nullable' => true,
-        'after'    => null,
-        'comment'  => 'SOAP result headers'
-    ));
-
-$installer->getConnection()->modifyColumn($installer->getTable('avatax_records/log'), 'request', 'MEDIUMTEXT');
-$installer->getConnection()->modifyColumn($installer->getTable('avatax_records/log'), 'soap_request', 'MEDIUMTEXT');
-$installer->getConnection()->modifyColumn($installer->getTable('avatax_records/log'), 'soap_result', 'MEDIUMTEXT');
+$installer->run("
+    ALTER TABLE `" . $this->getTable('avatax_records/log') . "`
+    ADD `soap_request` MEDIUMTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'SOAP request' ,  
+    ADD `soap_request_headers` MEDIUMTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'SOAP request headers' , 
+    ADD `soap_result` MEDIUMTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'SOAP result' , 
+    ADD `soap_result_headers` MEDIUMTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'SOAP result headers' , 
+    CHANGE COLUMN `request` `request` MEDIUMTEXT NULL COMMENT 'Request';"
+);
 
 $installer->endSetup();
