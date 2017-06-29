@@ -42,7 +42,22 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
             return false;
         }
 
-        return $this->_getConfigData()->getNormalizeAddress($storeId);
+        $result = $this->_getConfigData()->getNormalizeAddress($storeId);
+        $quote = $address->getQuote();
+        if ($quote) {
+            $flag = $quote->getAvataxNormalizationFlag();
+            $flag = ($flag) ? $flag : 1; //if no flag than normalization enabled
+            switch($flag)
+            {
+                case 0: // disabled
+                    $result = false;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return $result;
     }
 
     /**
