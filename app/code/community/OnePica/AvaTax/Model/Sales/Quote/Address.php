@@ -36,6 +36,17 @@ class OnePica_AvaTax_Model_Sales_Quote_Address extends Mage_Sales_Model_Quote_Ad
         }
         return $this->getData('cache_hash_key');
     }
+    /**
+     * Magento SOAP API Because of missing quote in address that
+     * came from Mage_Checkout_Model_Cart_Customer_Api,
+     * we decided to register store id in SalesQuoteLoadAfter observer
+     *
+     * @return int|null
+     */
+    protected function _getStoreId()
+    {
+        return $this->getQuote() ? $this->getQuote()->getStoreId() : Mage::registry('avatax_store_id');
+    }
 
     /**
      * Validates the address.  AvaTax validation is invoked if the this is a ship-to address.
@@ -45,7 +56,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address extends Mage_Sales_Model_Quote_Ad
      */
     public function validate()
     {
-        if (!$this->_getConfigHelper()->fullStopOnError($this->getQuote()->getStoreId())) {
+        if (!$this->_getConfigHelper()->fullStopOnError($this->_getStoreId())) {
             return true;
         }
 
