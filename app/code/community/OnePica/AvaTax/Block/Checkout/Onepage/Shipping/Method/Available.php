@@ -85,6 +85,16 @@ class OnePica_AvaTax_Block_Checkout_Onepage_Shipping_Method_Available extends Ma
     }
 
     /**
+     * Get config helper
+     *
+     * @return OnePica_AvaTax_Helper_Config
+     */
+    private function _getConfigData()
+    {
+        return Mage::helper('avatax/config');
+    }
+
+    /**
      * Overriding parent to insert session message block if an address has been validated.
      *
      * @return string
@@ -92,8 +102,14 @@ class OnePica_AvaTax_Block_Checkout_Onepage_Shipping_Method_Available extends Ma
     protected function _toHtml ()
     {
         $additional = parent::_toHtml();
+
+        /** @var OnePica_AvaTax_Helper_Address $addressHelper */
+        $addressHelper = Mage::helper('avatax/address');
+        $quote = $this->getQuote();
+
         if ($this->getAddress()->getAddressNormalized()) {
             $notice = Mage::helper('avatax/config')->getOnepageNormalizeMessage(Mage::app()->getStore());
+            $notice .= $addressHelper->getOnepageDisableNormalizationCheckbox($quote->getAvataxNormalizationFlag());
             if ($notice) {
                 Mage::getSingleton('core/session')->addNotice($notice);
                 $additional .= $this->getMessagesBlock()->getGroupedHtml();
@@ -102,50 +118,13 @@ class OnePica_AvaTax_Block_Checkout_Onepage_Shipping_Method_Available extends Ma
             $additional .= $this->getMessagesBlock()->getGroupedHtml();
         }
 
-        $useNormalization = ($this->getAddress()->getAddressNormalized()) ? 1: 0;
-        $checked = ($useNormalization) ? "checked='checked'" : '';
-        $additional .= "<p>
-            <input type='checkbox' name='allow_normalize_shipping_address' id='allow_normalize_shipping_address' value='$useNormalization' class='checkbox' $checked onclick='checkout.avataxReloadShippingMethods();'>
-            <label for='allow_normalize_shipping_address'>Use normalized shipping address</label>
-            <script type='application/javascript'>
-                checkout.avataxReloadShippingMethods = function() {
-                    debugger;
+        if ($this->_getConfigData()->getNormalizeAddress(Mage::app()->getStore())
+            || !$this->getAddress()->getAddressNormalized()
+        ) {
+            $additional .= $addressHelper->getOnepageDisableNormalizationCheckbox($quote->getAvataxNormalizationFlag());
+        }
 
-                    var request = new Ajax.Request(
-                        '/avatax/normalization/update',
-                        {
-                            method:'post',
-                            parameters:{flag:$useNormalization},
-                            onSuccess: function(response){
-                                debugger;
-                                billing.avataxParentOnSave = billing.onSave;
-                                billing.onSave = function(response){
-                                    debugger;
-                                    checkout.reloadStep('billing');
-                                    checkout.loadWaiting = false;
 
-                                    shipping.avataxParentOnSave = shipping.onSave;
-                                    shipping.onSave = function(response) {
-                                        checkout.reloadStep('shipping');
-                                        checkout.loadWaiting = false;
-
-                                        this.onSave = this.avataxParentOnSave;
-                                        if(this.avataxParentOnSave) return this.avataxParentOnSave(response);
-                                    }.bind(shipping);
-                                    shipping.save();
-
-                                    this.onSave = this.avataxParentOnSave;
-                                    if(this.avataxParentOnSave) return this.avataxParentOnSave(response);
-                                }.bind(billing);
-                                billing.save();
-                                debugger;
-                            }
-                        }
-                    );
-                };
-
-            </script>
-        </p>";
 
         return $additional;
     }
