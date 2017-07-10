@@ -29,11 +29,17 @@ class OnePica_AvaTax_NormalizationController extends Mage_Core_Controller_Front_
      */
     public function updateAction()
     {
-        $session = Mage::getModel('checkout/session');
         $flag = (bool)$this->getRequest()->getPost('flag') ? 1 : 0;
+        $isMultishipping = (bool)$this->getRequest()->getPost('multishipping') ? 1 : 0;
+
+        $session = Mage::getModel('checkout/session');
         $quote = $session->getQuote();
         $quote->setAvataxNormalizationFlag($flag);
         $quote->save();
+
+        if ($isMultishipping) {
+            Mage::dispatchEvent('checkout_type_multishipping_set_shipping_items', array('quote'=>$quote));
+        }
 
         return $this;
     }

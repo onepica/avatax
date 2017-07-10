@@ -360,11 +360,12 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
                     id='allow_normalize_shipping_address'
                     value='1'
                     class='checkbox'
-                    onclick='avataxReloadShippingMethods();'
+                    onclick='window.avataxReloadShippingMethods();'
                     " . $checked . ">
             <label for='allow_normalize_shipping_address'>Disable normalization of shipping address</label>
             <script type='application/javascript'>
-                function avataxReloadShippingMethods() {
+                window.avataxReloadShippingMethods = function() {
+                    debugger;
                     var isChecked = 0;
                     if ($('allow_normalize_shipping_address').checked){
                         isChecked = 1;
@@ -373,30 +374,10 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
                         '/avatax/normalization/update',
                         {
                             method:'post',
-                            parameters:{flag:isChecked},
+                            parameters:{flag:isChecked,multishipping:1},
                             onSuccess: function(response){
                                 debugger;
-                                billing.avataxParentOnSave = billing.onSave;
-                                billing.onSave = function(response){
-                                    debugger;
-                                    checkout.reloadStep('billing');
-                                    checkout.loadWaiting = false;
-
-                                    shipping.avataxParentOnSave = shipping.onSave;
-                                    shipping.onSave = function(response) {
-                                        checkout.reloadStep('shipping');
-                                        checkout.loadWaiting = false;
-
-                                        this.onSave = this.avataxParentOnSave;
-                                        if(this.avataxParentOnSave) return this.avataxParentOnSave(response);
-                                    }.bind(shipping);
-                                    shipping.save();
-
-                                    this.onSave = this.avataxParentOnSave;
-                                    if(this.avataxParentOnSave) return this.avataxParentOnSave(response);
-                                }.bind(billing);
-                                billing.save();
-                                debugger;
+                                window.location.href = window.location.href;
                             }
                         }
                     );
