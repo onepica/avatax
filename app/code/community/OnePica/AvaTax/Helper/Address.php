@@ -46,10 +46,9 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
         $quote = $address->getQuote();
         if ($quote) {
             $flag = $quote->getAvataxNormalizationFlag();
-            $flag = ($flag) ? $flag : 1; //if no flag than normalization enabled
-            switch($flag)
-            {
-                case 0: // disabled
+            $flag = is_null($flag) ? 0 : $flag; //if no flag than normalization enabled
+            switch ($flag) {
+                case 1: // disabled
                     $result = false;
                     break;
                 default:

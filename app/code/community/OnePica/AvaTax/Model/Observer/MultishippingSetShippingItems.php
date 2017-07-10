@@ -59,8 +59,11 @@ class OnePica_AvaTax_Model_Observer_MultishippingSetShippingItems
         }
 
         $session = Mage::getSingleton('checkout/session');
-        if ($normalized) {
-            $session->addNotice(Mage::getStoreConfig('tax/avatax/multiaddress_normalize_message', $storeId));
+        if ($normalized || $quote->getAvataxNormalizationFlag() == 1) {
+            /** @var OnePica_AvaTax_Helper_Address $addressHelper */
+            $addressHelper = Mage::helper('avatax/address');
+            $session->addNotice(Mage::getStoreConfig('tax/avatax/multiaddress_normalize_message', $storeId)
+                . $addressHelper->getDisableNormalizationCheckbox($quote->getAvataxNormalizationFlag()));
         }
 
         if (!empty($errors)) {

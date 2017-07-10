@@ -30,9 +30,11 @@ class OnePica_AvaTax_NormalizationController extends Mage_Core_Controller_Front_
     public function updateAction()
     {
         $session = Mage::getModel('checkout/session');
+        $flag = (bool)$this->getRequest()->getPost('flag') ? 1 : 0;
         $quote = $session->getQuote();
-        $quote->setAvataxNormalizationFlag(0);
+        $quote->setAvataxNormalizationFlag($flag);
         $quote->save();
+
         return $this;
     }
 }
