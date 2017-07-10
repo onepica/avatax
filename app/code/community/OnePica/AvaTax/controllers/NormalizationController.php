@@ -38,7 +38,12 @@ class OnePica_AvaTax_NormalizationController extends Mage_Core_Controller_Front_
         $quote->save();
 
         if ($isMultishipping) {
-            Mage::dispatchEvent('checkout_type_multishipping_set_shipping_items', array('quote'=>$quote));
+            /** @var OnePica_AvaTax_Helper_Address $addressHelper */
+            $addressHelper = Mage::helper('avatax/address');
+            $addressHelper->setOriginalCustomerAddresses($quote, true);
+
+            Mage::dispatchEvent('checkout_type_multishipping_set_shipping_items', array('quote' => $quote));
+
         }
 
         return $this;

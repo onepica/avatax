@@ -44,9 +44,9 @@ class OnePica_AvaTax_Model_Observer_MultishippingSetShippingItems
         $storeId = $quote->getStoreId();
 
         $errors = array();
-        $normalized = false;
+        $showNotice = false;
 
-        $addresses  = $quote->getAllShippingAddresses();
+        $addresses = $quote->getAllShippingAddresses();
         $message = Mage::getStoreConfig('tax/avatax/validate_address_message', $storeId);
         foreach ($addresses as $address) {
             /* @var $address OnePica_AvaTax_Model_Sales_Quote_Address */
@@ -54,12 +54,16 @@ class OnePica_AvaTax_Model_Observer_MultishippingSetShippingItems
                 $errors[] = sprintf($message, $address->format('oneline'));
             }
             if ($address->getAddressNormalized()) {
-                $normalized = true;
+                $showNotice = true;
             }
         }
 
+        if (!is_null($quote->getAvataxNormalizationFlag())) {
+            $showNotice = true;
+        }
+
         $session = Mage::getSingleton('checkout/session');
-        if ($normalized || $quote->getAvataxNormalizationFlag() == 1) {
+        if ($showNotice) {
             /** @var OnePica_AvaTax_Helper_Address $addressHelper */
             $addressHelper = Mage::helper('avatax/address');
             $session->addNotice(Mage::getStoreConfig('tax/avatax/multiaddress_normalize_message', $storeId)
@@ -69,6 +73,7 @@ class OnePica_AvaTax_Model_Observer_MultishippingSetShippingItems
         if (!empty($errors)) {
             throw new OnePica_AvaTax_Exception(implode('<br />', $errors));
         }
+
         return $this;
     }
 }

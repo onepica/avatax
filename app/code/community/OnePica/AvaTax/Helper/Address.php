@@ -59,6 +59,32 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
         return $result;
     }
 
+    public function setOriginalCustomerAddresses($quote = null, $isMultishipping = false)
+    {
+        if ($quote && $isMultishipping) {
+            switch ($quote->getAvataxNormalizationFlag()) {
+                case 1:
+                    $addresses = $quote->getAllShippingAddresses();
+                    foreach ($addresses as $address) {
+                        $customerAddressOriginal = Mage::getModel('customer/address')
+                            ->load($address->getCustomerAddressId());
+
+                        $quote->getAddressById($address->getId())
+                            ->setStreet($customerAddressOriginal->getStreet())
+                            ->setCity($customerAddressOriginal->getCity())
+                            ->setRegionId($customerAddressOriginal->getRegionId())
+                            ->setPostcode($customerAddressOriginal->getPostcode())
+                            ->setCountryId($customerAddressOriginal->getCountryId())
+                            ->save();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+        return $quote;
+    }
+
     /**
      * Determines if address validation is enabled
      *
