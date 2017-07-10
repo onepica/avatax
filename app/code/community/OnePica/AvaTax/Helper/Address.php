@@ -401,8 +401,19 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
                     onclick='checkout.avataxReloadShippingMethods();'
                     " . $checked . ">
             <label for='allow_normalize_shipping_address'>Disable normalization of shipping address</label>
+            <span class='please-wait allow-normalize' id='allow-normalize-please-wait' style='display: none;'>
+                <img src='/skin/frontend/rwd/default/images/opc-ajax-loader.gif' alt='Updating addresses...' title='Updating addresses...' class='v-middle'>
+                Updating addresses...
+            </span>
+            <style type='text/css'>
+                .allow-normalize {
+                    margin-top: -1px;
+                    height: 22px;
+                }
+            </style>
             <script type='application/javascript'>
                 checkout.avataxReloadShippingMethods = function() {
+                    debugger;
                     var isChecked = 0;
                     if ($('allow_normalize_shipping_address').checked){
                         isChecked = 1;

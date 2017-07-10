@@ -38,6 +38,7 @@ class OnePica_AvaTax_NormalizationController extends Mage_Core_Controller_Front_
         $quote->save();
 
         if ($isMultishipping) {
+            //$addresses  = $quote->getAllShippingAddresses();
             Mage::dispatchEvent('checkout_type_multishipping_set_shipping_items', array('quote'=>$quote));
         }
 
