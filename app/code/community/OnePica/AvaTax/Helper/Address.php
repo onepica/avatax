@@ -392,6 +392,7 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
     public function getDisableNormalizationCheckbox($flag = null)
     {
         $checked = $flag ? "checked='checked'" : '';
+        $loaderImgUrl = $this->getSkinUrl('images/opc-ajax-loader.gif');
 
         $html = "<p>
             <input type='checkbox'
@@ -402,13 +403,29 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
                     onclick='window.avataxReloadShippingMethods();'
                     " . $checked . ">
             <label for='allow_normalize_shipping_address'>Disable normalization of shipping address</label>
+             <span class='please-wait allow-normalize' id='allow-normalize-please-wait' style='display: none;'>
+                <img src='$loaderImgUrl' alt='Updating addresses...' title='Updating addresses...' class='v-middle'>
+                Updating addresses...
+            </span>
             <script type='application/javascript'>
                 window.avataxReloadShippingMethods = function() {
-                    //debugger;
+                    debugger;
                     var isChecked = 0;
                     if ($('allow_normalize_shipping_address').checked){
                         isChecked = 1;
                     }
+                    
+                    $$('form button').each(function (elem) {
+                        elem.addClassName('disabled');
+                    });
+                    
+                    $('allow_normalize_shipping_address').setAttribute('disabled', 'disabled');
+                    $('allow-normalize-please-wait').setStyle({
+                         'display': 'block'
+                    });
+                    debugger;
+
+                    
                     var request = new Ajax.Request(
                         '/avatax/normalization/update',
                         {
@@ -504,6 +521,8 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
                 };
 
                 Checkout.prototype.avataxSetNormalizationPleaseWait = function() {
+                  $('allow_normalize_shipping_address').setAttribute('disabled', 'disabled');
+
                     if ($('allow-normalize-please-wait')) {
                         $('allow-normalize-please-wait').show();
                     }
