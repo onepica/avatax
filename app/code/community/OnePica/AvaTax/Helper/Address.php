@@ -59,6 +59,15 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
         return $result;
     }
 
+    /**
+     * Method used to restore origin customer address during normalization flag update
+     * for multishipping checkout
+     *
+     * @param null $quote
+     * @param bool $isMultishipping
+     *
+     * @return null
+     */
     public function setOriginalCustomerAddresses($quote = null, $isMultishipping = false)
     {
         if ($quote && $isMultishipping) {
@@ -373,11 +382,15 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Get HTML content of checkbox that can be used to disable normalization on store front
+     * for multishipping checkout
      *
+     * @param null $flag
+     *
+     * @return string
      */
     public function getDisableNormalizationCheckbox($flag = null)
     {
-//        $useNormalization = ($this->getAddress()->getAddressNormalized()) ? 1: 0;
         $checked = $flag ? "checked='checked'" : '';
 
         $html = "<p>
@@ -391,7 +404,7 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
             <label for='allow_normalize_shipping_address'>Disable normalization of shipping address</label>
             <script type='application/javascript'>
                 window.avataxReloadShippingMethods = function() {
-                    debugger;
+                    //debugger;
                     var isChecked = 0;
                     if ($('allow_normalize_shipping_address').checked){
                         isChecked = 1;
@@ -415,17 +428,13 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Retrieve url of skins file
+     * Get HTML content of checkbox that can be used to disable normalization on store front
+     * for onepage checkout
      *
-     * @param   string $file path to file in skin
-     * @param   array $params
-     * @return  string
+     * @param null $flag
+     *
+     * @return string
      */
-    public function getSkinUrl($file = null, array $params = array())
-    {
-        return Mage::getDesign()->getSkinUrl($file, $params);
-    }
-
     public function getOnepageDisableNormalizationCheckbox($flag = null)
     {
         $checked = $flag ? "checked='checked'" : '';
@@ -437,7 +446,7 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
                     id='allow_normalize_shipping_address'
                     value='1'
                     class='checkbox'
-                    onclick='checkout.reloadShippingMethodsAccordingNormalization();'
+                    onclick='checkout.avataxReloadShippingMethodsAccordingNormalization();'
                     " . $checked . ">
             <label for='allow_normalize_shipping_address'>Disable normalization of shipping address</label>
             <span class='please-wait allow-normalize' id='allow-normalize-please-wait' style='display: none;'>
@@ -451,8 +460,8 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
                 }
             </style>
             <script type='application/javascript'>
-                debugger;
-                Checkout.prototype.enableContinue = function(step, isEnabled){
+                //debugger;
+                Checkout.prototype.avataxEnableContinue = function(step, isEnabled){
                     var container = $(step+'-buttons-container');
                     if(isEnabled){
                         container.removeClassName('disabled');
@@ -465,7 +474,7 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
                     this._disableEnableAll(container, !isEnabled);
                 };
 
-                Checkout.prototype.isNormalizationAllowed = function() {
+                Checkout.prototype.avataxIsNormalizationAllowed = function() {
                     var isChecked = 0;
                     var allowNormilize = $('allow_normalize_shipping_address');
                     if (allowNormilize && allowNormilize.checked){
@@ -475,8 +484,8 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
                     return isChecked;
                 };
 
-                Checkout.prototype.resetBillingAndShippingProgress = function() {
-                    debugger;
+                Checkout.prototype.avataxResetBillingAndShippingProgress = function() {
+                    //debugger;
                     if (this.resetPreviousSteps != undefined && this.resetPreviousSteps != null) {
                         var step = this.currentStep;
                         this.currentStep = 'billing';
@@ -485,7 +494,7 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
                     }
                 };
 
-                Checkout.prototype.updateProgress = function() {
+                Checkout.prototype.avataxUpdateProgress = function() {
                     if (this.reloadStep != undefined && this.reloadStep != null) {
                         this.reloadStep('billing');
                         this.reloadStep('shipping');
@@ -494,18 +503,18 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
                     }
                 };
 
-                Checkout.prototype.setNormalizationPleaseWait = function() {
+                Checkout.prototype.avataxSetNormalizationPleaseWait = function() {
                     if ($('allow-normalize-please-wait')) {
                         $('allow-normalize-please-wait').show();
                     }
                 };
 
-                Checkout.prototype.reloadShippingMethodsAccordingNormalization = function() {
-                    debugger;
-                    this.setNormalizationPleaseWait();
-                    this.enableContinue('shipping-method', false);
+                Checkout.prototype.avataxReloadShippingMethodsAccordingNormalization = function() {
+                    //debugger;
+                    this.avataxSetNormalizationPleaseWait();
+                    this.avataxEnableContinue('shipping-method', false);
 
-                    var isChecked = this.isNormalizationAllowed();
+                    var isChecked = this.avataxIsNormalizationAllowed();
 
                     var request = new Ajax.Request(
                         '/avatax/normalization/update',
@@ -513,29 +522,30 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
                             method:'post',
                             parameters:{flag:isChecked},
                             onSuccess: function(response){
-                                debugger;
-                                checkout.resetBillingAndShippingProgress();
+                                //debugger;
+                                checkout.avataxResetBillingAndShippingProgress();
 
                                 //wrap method
                                 Checkout.prototype.setStepResponse = Checkout.prototype.setStepResponse.wrap(function(parentMethod, response){
-                                    debugger;
+                                    //debugger;
 
                                     var section = response.goto_section;
                                     switch(section) {
                                         case 'shipping': {
                                                 response.goto_section = 'shipping_method';
                                                 parentMethod(response);
-                                                this.enableContinue('shipping-method', false);
+                                                this.avataxEnableContinue('shipping-method', false);
                                                 shipping.save();
                                             }
                                             break;
                                         case 'shipping_method': {
                                                 parentMethod(response);
+
                                                 //unwrap method
                                                 Checkout.prototype.setStepResponse = parentMethod;
 
-                                                this.updateProgress();
-                                                this.enableContinue('shipping-method', true);
+                                                this.avataxUpdateProgress();
+                                                this.avataxEnableContinue('shipping-method', true);
                                             }
                                             break;
                                     }
@@ -549,5 +559,17 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
         </p>";
 
         return $html;
+    }
+
+    /**
+     * Retrieve url of skins file
+     *
+     * @param   string $file path to file in skin
+     * @param   array $params
+     * @return  string
+     */
+    public function getSkinUrl($file = null, array $params = array())
+    {
+        return Mage::getDesign()->getSkinUrl($file, $params);
     }
 }
