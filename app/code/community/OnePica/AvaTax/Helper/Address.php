@@ -414,25 +414,99 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
         return $html;
     }
 
+    /**
+     * Retrieve url of skins file
+     *
+     * @param   string $file path to file in skin
+     * @param   array $params
+     * @return  string
+     */
+    public function getSkinUrl($file = null, array $params = array())
+    {
+        return Mage::getDesign()->getSkinUrl($file, $params);
+    }
+
     public function getOnepageDisableNormalizationCheckbox($flag = null)
     {
         $checked = $flag ? "checked='checked'" : '';
 
+        $loaderImgUrl = $this->getSkinUrl('images/opc-ajax-loader.gif');
         $html = "<p>
             <input type='checkbox'
                     name='allow_normalize_shipping_address'
                     id='allow_normalize_shipping_address'
                     value='1'
                     class='checkbox'
-                    onclick='checkout.avataxReloadShippingMethods();'
+                    onclick='checkout.reloadShippingMethodsAccordingNormalization();'
                     " . $checked . ">
             <label for='allow_normalize_shipping_address'>Disable normalization of shipping address</label>
+            <span class='please-wait allow-normalize' id='allow-normalize-please-wait' style='display: none;'>
+                <img src='$loaderImgUrl' alt='Updating addresses...' title='Updating addresses...' class='v-middle'>
+                Updating addresses...
+            </span>
+            <style type='text/css'>
+                .allow-normalize {
+                    margin-top: -1px;
+                    height: 22px;
+                }
+            </style>
             <script type='application/javascript'>
-                checkout.avataxReloadShippingMethods = function() {
+                debugger;
+                Checkout.prototype.enableContinue = function(step, isEnabled){
+                    var container = $(step+'-buttons-container');
+                    if(isEnabled){
+                        container.removeClassName('disabled');
+                        container.setStyle({opacity:1});
+                    }
+                    else {
+                        container.addClassName('disabled');
+                        container.setStyle({opacity:.5});
+                    }
+                    this._disableEnableAll(container, !isEnabled);
+                };
+
+                Checkout.prototype.isNormalizationAllowed = function() {
                     var isChecked = 0;
-                    if ($('allow_normalize_shipping_address').checked){
+                    var allowNormilize = $('allow_normalize_shipping_address');
+                    if (allowNormilize && allowNormilize.checked){
                         isChecked = 1;
                     }
+
+                    return isChecked;
+                };
+
+                Checkout.prototype.resetBillingAndShippingProgress = function() {
+                    debugger;
+                    if (this.resetPreviousSteps != undefined && this.resetPreviousSteps != null) {
+                        var step = this.currentStep;
+                        this.currentStep = 'billing';
+                        this.resetPreviousSteps();
+                        this.currentStep = step;
+                    }
+                };
+
+                Checkout.prototype.updateProgress = function() {
+                    if (this.reloadStep != undefined && this.reloadStep != null) {
+                        this.reloadStep('billing');
+                        this.reloadStep('shipping');
+                    } else if(this.reloadProgressBlock != undefined && this.reloadProgressBlock != null) {
+                        this.reloadProgressBlock();
+                    }
+                };
+
+                Checkout.prototype.setNormalizationPleaseWait = function() {
+                    if ($('allow-normalize-please-wait')) {
+                        $('allow-normalize-please-wait').show();
+                    }
+                };
+
+                Checkout.prototype.reloadShippingMethodsAccordingNormalization = function() {
+                    debugger;
+                    this.setNormalizationPleaseWait();
+                    this.enableContinue('shipping-method', false);
+
+                    var isChecked = this.isNormalizationAllowed();
+
                     var request = new Ajax.Request(
                         '/avatax/normalization/update',
                         {
@@ -440,27 +514,33 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
                             parameters:{flag:isChecked},
                             onSuccess: function(response){
                                 debugger;
-                                billing.avataxParentOnSave = billing.onSave;
-                                billing.onSave = function(response){
+                                checkout.resetBillingAndShippingProgress();
+
+                                //wrap method
+                                Checkout.prototype.setStepResponse = Checkout.prototype.setStepResponse.wrap(function(parentMethod, response){
                                     debugger;
-                                    checkout.reloadStep('billing');
-                                    checkout.loadWaiting = false;
 
-                                    shipping.avataxParentOnSave = shipping.onSave;
-                                    shipping.onSave = function(response) {
-                                        checkout.reloadStep('shipping');
-                                        checkout.loadWaiting = false;
+                                    var section = response.goto_section;
+                                    switch(section) {
+                                        case 'shipping': {
+                                                response.goto_section = 'shipping_method';
+                                                parentMethod(response);
+                                                this.enableContinue('shipping-method', false);
+                                                shipping.save();
+                                            }
+                                            break;
+                                        case 'shipping_method': {
+                                                parentMethod(response);
+                                                //unwrap method
+                                                Checkout.prototype.setStepResponse = parentMethod;
 
-                                        this.onSave = this.avataxParentOnSave;
-                                        if(this.avataxParentOnSave) return this.avataxParentOnSave(response);
-                                    }.bind(shipping);
-                                    shipping.save();
-
-                                    this.onSave = this.avataxParentOnSave;
-                                    if(this.avataxParentOnSave) return this.avataxParentOnSave(response);
-                                }.bind(billing);
+                                                this.updateProgress();
+                                                this.enableContinue('shipping-method', true);
+                                            }
+                                            break;
+                                    }
+                                });
                                 billing.save();
-                                debugger;
                             }
                         }
                     );

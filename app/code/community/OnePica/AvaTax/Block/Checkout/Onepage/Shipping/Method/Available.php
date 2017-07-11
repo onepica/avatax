@@ -119,7 +119,7 @@ class OnePica_AvaTax_Block_Checkout_Onepage_Shipping_Method_Available extends Ma
         }
 
         if ($this->_getConfigData()->getNormalizeAddress(Mage::app()->getStore())
-            || !$this->getAddress()->getAddressNormalized()
+            && !$this->getAddress()->getAddressNormalized()
         ) {
             $additional .= $addressHelper->getOnepageDisableNormalizationCheckbox($quote->getAvataxNormalizationFlag());
         }
