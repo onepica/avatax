@@ -504,6 +504,7 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
                 Checkout.prototype.avataxResetBillingAndShippingProgress = function() {
                     //debugger;
                     if (this.resetPreviousSteps != undefined && this.resetPreviousSteps != null) {
+                        //for magento version >= 1.8.0.0
                         var step = this.currentStep;
                         this.currentStep = 'billing';
                         this.resetPreviousSteps();
@@ -513,9 +514,11 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
 
                 Checkout.prototype.avataxUpdateProgress = function() {
                     if (this.reloadStep != undefined && this.reloadStep != null) {
+                        //for magento version >= 1.8.0.0
                         this.reloadStep('billing');
                         this.reloadStep('shipping');
                     } else if(this.reloadProgressBlock != undefined && this.reloadProgressBlock != null) {
+                        //for magento version lower 1.8.0.0
                         this.reloadProgressBlock();
                     }
                 };
