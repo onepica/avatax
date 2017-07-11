@@ -398,7 +398,7 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
                     id='allow_normalize_shipping_address'
                     value='1'
                     class='checkbox'
-                    onclick='checkout.avataxReloadShippingMethods();'
+                    onclick='checkout.reloadShippingMethodsAccordingNormalization();'
                     " . $checked . ">
             <label for='allow_normalize_shipping_address'>Disable normalization of shipping address</label>
             <span class='please-wait allow-normalize' id='allow-normalize-please-wait' style='display: none;'>
@@ -412,32 +412,48 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
                 }
             </style>
             <script type='application/javascript'>
-                checkout.avataxReloadShippingMethods = function() {
-                    //debugger;
+                Checkout.prototype.enableContinue = function(step, isEnabled){
+                    var container = $(step+'-buttons-container');
+                    if(isEnabled){
+                        container.removeClassName('disabled');
+                        container.setStyle({opacity:1});
+                    }
+                    else {
+                        container.addClassName('disabled');
+                        container.setStyle({opacity:.5});
+                    }
+                    this._disableEnableAll(container, !isEnabled);
+                };
+
+                Checkout.prototype.isNormalizationAllowed = function() {
+                    var isChecked = 0;
+                    var allowNormilize = $('allow_normalize_shipping_address');
+                    if (allowNormilize && allowNormilize.checked){
+                        isChecked = 1;
+                    }
+
+                    return isChecked;
+                };
+
+                Checkout.prototype.resetBillingAndShippingProgress = function() {
+                    var step = this.currentStep;
+                    this.currentStep = 'billing';
+                    this.resetPreviousSteps();
+                    this.currentStep = step;
+                };
+
+                Checkout.prototype.setNormalizationPleaseWait = function() {
                     if ($('allow-normalize-please-wait')) {
                         $('allow-normalize-please-wait').show();
                     }
+                };
 
-                    Checkout.prototype.enableContinue = function(step, isEnabled){
-                        var container = $(step+'-buttons-container');
-                        if(isEnabled){
-                            container.removeClassName('disabled');
-                            container.setStyle({opacity:1});
-                        }
-                        else {
-                            container.addClassName('disabled');
-                            container.setStyle({opacity:.5});
-                        }
-                        this._disableEnableAll(container, !isEnabled);
-                    };
+                Checkout.prototype.reloadShippingMethodsAccordingNormalization = function() {
+                    //debugger;
+                    this.setNormalizationPleaseWait();
+                    this.enableContinue('shipping-method', false);
 
-                    checkout.enableContinue('shipping-method', false);
-
-                    var isChecked = 0;
-                    if ($('allow_normalize_shipping_address').checked){
-                        isChecked = 1;
-                    }
-                    debugger;
+                    var isChecked = this.isNormalizationAllowed();
 
                     var request = new Ajax.Request(
                         '/avatax/normalization/update',
@@ -446,14 +462,9 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
                             parameters:{flag:isChecked},
                             onSuccess: function(response){
                                 //debugger;
+                                checkout.resetBillingAndShippingProgress();
 
-                          if(true){
-                                debugger;
-                                var step = checkout.currentStep;
-                                checkout.currentStep = 'billing';
-                                checkout.resetPreviousSteps();
-                                checkout.currentStep = step;
-
+                                //wrap method
                                 Checkout.prototype.setStepResponse = Checkout.prototype.setStepResponse.wrap(function(parentMethod, response){
                                     debugger;
 
@@ -462,7 +473,7 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
                                         case 'shipping': {
                                                 response.goto_section = 'shipping_method';
                                                 parentMethod(response);
-                                                checkout.enableContinue('shipping-method', false);
+                                                this.enableContinue('shipping-method', false);
                                                 shipping.save();
                                             }
                                             break;
@@ -471,97 +482,16 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
                                                 //unwrap method
                                                 Checkout.prototype.setStepResponse = parentMethod;
 
-                                                checkout.reloadStep('billing');
-                                                checkout.reloadStep('shipping');
+                                                this.reloadStep('billing');
+                                                this.reloadStep('shipping');
 
-                                                checkout.enableContinue('shipping-method', true);
+                                                this.enableContinue('shipping-method', true);
                                             }
                                             break;
                                     }
-
-                                    /*
-                                    if(response.goto_section == 'shipping') {
-                                        response.goto_section = 'shipping_method';
-                                        parentMethod(response);
-
-                                        checkout.enableContinue('shipping-method', false);
-
-                                        shipping.save();
-                                    }
-
-                                    if(section == 'shipping_method') {
-                                        parentMethod(response);
-                                        Checkout.prototype.setStepResponse = parentMethod;
-                                        checkout.reloadStep('billing');
-                                        checkout.reloadStep('shipping');
-
-                                        checkout.enableContinue('shipping-method', true);
-                                    }
-                                    */
-                                    // call the parent so normale behavior is executed
-
                                 });
-                                debugger;
                                 billing.save();
-                          }
-                          else if(true){
-                                debugger;
-                                checkout.gotoSection('billing');
-                                //Checkout.prototype.originSetStepResponse = Checkout.prototype.setStepResponse;
-                                Checkout.prototype.setStepResponse = Checkout.prototype.setStepResponse.wrap(function(parentMethod, response){
-                                    debugger;
-                                    // call the parent so normale behavior is executed
-                                    parentMethod(response);
-
-                                    if(response.goto_section == 'shipping'){
-                                        //Checkout.prototype.setStepResponse = Checkout.prototype.originSetStepResponse;
-                                        Checkout.prototype.setStepResponse = parentMethod;
-                                        shipping.save();
-                                    }
-
-                                });
-                                debugger;
-                                billing.save();
-
-
-
-                          }
-                          else {
-                                var step = checkout.currentStep;
-                                checkout.currentStep = 'billing';
-                                checkout.resetPreviousSteps();
-                                checkout.currentStep = step;
-
-                                billing.avataxParentOnSave = billing.onSave;
-                                billing.onSave = function(response){
-                                    //debugger;
-                                    console.log('billing saved.');
-                                    checkout.reloadStep('billing');
-                                    checkout.setLoadWaiting(false);
-
-                                    shipping.avataxParentOnSave = shipping.onSave;
-                                    shipping.onSave = function(response) {
-                                        debugger;
-                                        if ($('allow-normalize-please-wait')) {
-                                            $('allow-normalize-please-wait').show();
-                                        }
-
-                                        console.log('shipping saved.');
-                                        checkout.reloadStep('shipping');
-                                        checkout.setLoadWaiting(false);
-
-                                        this.onSave = this.avataxParentOnSave;
-                                        if(this.avataxParentOnSave) return this.avataxParentOnSave(response);
-                                    }.bind(shipping);
-                                    shipping.save();
-
-                                    this.onSave = this.avataxParentOnSave;
-                                    if(this.avataxParentOnSave) return this.avataxParentOnSave(response);
-                                }.bind(billing);
-                                billing.save();
-                                //debugger;
                             }
-                          }
                         }
                     );
                 };
