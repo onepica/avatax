@@ -388,10 +388,23 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
         return $html;
     }
 
+    /**
+     * Retrieve url of skins file
+     *
+     * @param   string $file path to file in skin
+     * @param   array $params
+     * @return  string
+     */
+    public function getSkinUrl($file = null, array $params = array())
+    {
+        return Mage::getDesign()->getSkinUrl($file, $params);
+    }
+
     public function getOnepageDisableNormalizationCheckbox($flag = null)
     {
         $checked = $flag ? "checked='checked'" : '';
 
+        $loaderImgUrl = $this->getSkinUrl('images/opc-ajax-loader.gif');
         $html = "<p>
             <input type='checkbox'
                     name='allow_normalize_shipping_address'
@@ -402,7 +415,7 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
                     " . $checked . ">
             <label for='allow_normalize_shipping_address'>Disable normalization of shipping address</label>
             <span class='please-wait allow-normalize' id='allow-normalize-please-wait' style='display: none;'>
-                <img src='/skin/frontend/rwd/default/images/opc-ajax-loader.gif' alt='Updating addresses...' title='Updating addresses...' class='v-middle'>
+                <img src='$loaderImgUrl' alt='Updating addresses...' title='Updating addresses...' class='v-middle'>
                 Updating addresses...
             </span>
             <style type='text/css'>
@@ -412,6 +425,7 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
                 }
             </style>
             <script type='application/javascript'>
+                debugger;
                 Checkout.prototype.enableContinue = function(step, isEnabled){
                     var container = $(step+'-buttons-container');
                     if(isEnabled){
@@ -436,10 +450,22 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
                 };
 
                 Checkout.prototype.resetBillingAndShippingProgress = function() {
-                    var step = this.currentStep;
-                    this.currentStep = 'billing';
-                    this.resetPreviousSteps();
-                    this.currentStep = step;
+                    debugger;
+                    if (this.resetPreviousSteps != undefined && this.resetPreviousSteps != null) {
+                        var step = this.currentStep;
+                        this.currentStep = 'billing';
+                        this.resetPreviousSteps();
+                        this.currentStep = step;
+                    }
+                };
+
+                Checkout.prototype.updateProgress = function() {
+                    if (this.reloadStep != undefined && this.reloadStep != null) {
+                        this.reloadStep('billing');
+                        this.reloadStep('shipping');
+                    } else if(this.reloadProgressBlock != undefined && this.reloadProgressBlock != null) {
+                        this.reloadProgressBlock();
+                    }
                 };
 
                 Checkout.prototype.setNormalizationPleaseWait = function() {
@@ -449,7 +475,7 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
                 };
 
                 Checkout.prototype.reloadShippingMethodsAccordingNormalization = function() {
-                    //debugger;
+                    debugger;
                     this.setNormalizationPleaseWait();
                     this.enableContinue('shipping-method', false);
 
@@ -461,7 +487,7 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
                             method:'post',
                             parameters:{flag:isChecked},
                             onSuccess: function(response){
-                                //debugger;
+                                debugger;
                                 checkout.resetBillingAndShippingProgress();
 
                                 //wrap method
@@ -482,9 +508,7 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
                                                 //unwrap method
                                                 Checkout.prototype.setStepResponse = parentMethod;
 
-                                                this.reloadStep('billing');
-                                                this.reloadStep('shipping');
-
+                                                this.updateProgress();
                                                 this.enableContinue('shipping-method', true);
                                             }
                                             break;
