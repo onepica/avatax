@@ -106,10 +106,14 @@ class OnePica_AvaTax_Block_Checkout_Onepage_Shipping_Method_Available extends Ma
         /** @var OnePica_AvaTax_Helper_Address $addressHelper */
         $addressHelper = Mage::helper('avatax/address');
         $quote = $this->getQuote();
-
+        $normalizeAddressDisabler = $this->_getConfigData()->getNormalizeAddressDisabler();
+        $checkboxDisabler = '';
+        if ($normalizeAddressDisabler) {
+            $checkboxDisabler = $addressHelper->getOnepageDisableNormalizationCheckbox($quote->getAvataxNormalizationFlag());
+        }
         if ($this->getAddress()->getAddressNormalized()) {
             $notice = Mage::helper('avatax/config')->getOnepageNormalizeMessage(Mage::app()->getStore());
-            $notice .= $addressHelper->getOnepageDisableNormalizationCheckbox($quote->getAvataxNormalizationFlag());
+            $notice .= $checkboxDisabler;
             if ($notice) {
                 Mage::getSingleton('core/session')->addNotice($notice);
                 $additional .= $this->getMessagesBlock()->getGroupedHtml();
@@ -121,7 +125,7 @@ class OnePica_AvaTax_Block_Checkout_Onepage_Shipping_Method_Available extends Ma
         if ($this->_getConfigData()->getNormalizeAddress(Mage::app()->getStore())
             && !$this->getAddress()->getAddressNormalized()
         ) {
-            $additional .= $addressHelper->getOnepageDisableNormalizationCheckbox($quote->getAvataxNormalizationFlag());
+            $additional .= $checkboxDisabler;
         }
 
 
