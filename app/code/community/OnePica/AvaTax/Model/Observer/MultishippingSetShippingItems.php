@@ -44,7 +44,7 @@ class OnePica_AvaTax_Model_Observer_MultishippingSetShippingItems
         $storeId = $quote->getStoreId();
 
         $errors = array();
-        $showNotice = false;
+        $notice = false;
 
         $addresses = $quote->getAllShippingAddresses();
         $message = Mage::getStoreConfig('tax/avatax/validate_address_message', $storeId);
@@ -54,20 +54,34 @@ class OnePica_AvaTax_Model_Observer_MultishippingSetShippingItems
                 $errors[] = sprintf($message, $address->format('oneline'));
             }
             if ($address->getAddressNormalized()) {
-                $showNotice = true;
+                $notice = Mage::getStoreConfig('tax/avatax/multiaddress_normalize_message', $storeId);
             }
         }
 
-        if (!is_null($quote->getAvataxNormalizationFlag())) {
-            $showNotice = true;
+        /** @var OnePica_AvaTax_Helper_Config $helperConfig */
+        $helperConfig = Mage::helper('avatax/config');
+
+        if ($helperConfig->getNormalizeAddressDisabler($storeId)) {
+            /** @var OnePica_AvaTax_Helper_Address $addressHelper */
+            $addressHelper = Mage::helper('avatax/address');
+            switch ($quote->getAvataxNormalizationFlag()) {
+                case 1:
+                    // show checkbox in block
+                    $notice = $addressHelper->getDisableNormalizationCheckbox($quote->getAvataxNormalizationFlag());
+                    break;
+                case 0:
+                    //show checkbox in notice
+                    $notice = Mage::getStoreConfig('tax/avatax/multiaddress_normalize_message', $storeId)
+                        . $addressHelper->getDisableNormalizationCheckbox($quote->getAvataxNormalizationFlag());
+                    break;
+                default:
+                    break;
+            }
         }
 
         $session = Mage::getSingleton('checkout/session');
-        if ($showNotice) {
-            /** @var OnePica_AvaTax_Helper_Address $addressHelper */
-            $addressHelper = Mage::helper('avatax/address');
-            $session->addNotice(Mage::getStoreConfig('tax/avatax/multiaddress_normalize_message', $storeId)
-                . $addressHelper->getDisableNormalizationCheckbox($quote->getAvataxNormalizationFlag()));
+        if ($notice) {
+            $session->addNotice($notice);
         }
 
         if (!empty($errors)) {

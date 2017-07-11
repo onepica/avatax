@@ -145,6 +145,11 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
     const XML_PATH_TO_TAX_AVATAX_NORMALIZE_ADDRESS = 'tax/avatax/normalize_address';
 
     /**
+     * Path to is customer can disable address normalization
+     */
+    const XML_PATH_TO_TAX_AVATAX_NORMALIZE_ADDRESS_DISABLER = 'tax/avatax/normalize_address_disabler';
+
+    /**
      * Path to is address validate
      */
     const XML_PATH_TO_TAX_AVATAX_VALIDATE_ADDRESS = 'tax/avatax/validate_address';
@@ -508,6 +513,16 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
     public function getNormalizeAddress($storeId = null)
     {
         return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_NORMALIZE_ADDRESS, $storeId);
+    }
+
+    /**
+     * Get normalize address disabler
+     *
+     * @return mixed
+     */
+    public function getNormalizeAddressDisabler($storeId = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_NORMALIZE_ADDRESS_DISABLER, $storeId);
     }
 
     /**
