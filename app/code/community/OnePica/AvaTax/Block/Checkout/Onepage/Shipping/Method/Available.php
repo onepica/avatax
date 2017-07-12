@@ -85,6 +85,16 @@ class OnePica_AvaTax_Block_Checkout_Onepage_Shipping_Method_Available extends Ma
     }
 
     /**
+     * Get config helper
+     *
+     * @return OnePica_AvaTax_Helper_Config
+     */
+    private function _getConfigData()
+    {
+        return Mage::helper('avatax/config');
+    }
+
+    /**
      * Overriding parent to insert session message block if an address has been validated.
      *
      * @return string
@@ -92,8 +102,18 @@ class OnePica_AvaTax_Block_Checkout_Onepage_Shipping_Method_Available extends Ma
     protected function _toHtml ()
     {
         $additional = parent::_toHtml();
+
+        /** @var OnePica_AvaTax_Helper_Address $addressHelper */
+        $addressHelper = Mage::helper('avatax/address');
+        $quote = $this->getQuote();
+        $normalizeAddressDisabler = $this->_getConfigData()->getNormalizeAddressDisabler();
+        $checkboxDisabler = '';
+        if ($normalizeAddressDisabler) {
+            $checkboxDisabler = $addressHelper->getOnepageDisableNormalizationCheckbox($quote->getAvataxNormalizationFlag());
+        }
         if ($this->getAddress()->getAddressNormalized()) {
             $notice = Mage::helper('avatax/config')->getOnepageNormalizeMessage(Mage::app()->getStore());
+            $notice .= $checkboxDisabler;
             if ($notice) {
                 Mage::getSingleton('core/session')->addNotice($notice);
                 $additional .= $this->getMessagesBlock()->getGroupedHtml();
@@ -101,6 +121,15 @@ class OnePica_AvaTax_Block_Checkout_Onepage_Shipping_Method_Available extends Ma
         } elseif ($this->getAddress()->getAddressNotified()) {
             $additional .= $this->getMessagesBlock()->getGroupedHtml();
         }
+
+        if ($this->_getConfigData()->getNormalizeAddress(Mage::app()->getStore())
+            && !$this->getAddress()->getAddressNormalized()
+        ) {
+            $additional .= $checkboxDisabler;
+        }
+
+
+
         return $additional;
     }
 }

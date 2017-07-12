@@ -19,7 +19,7 @@
 <config>
     <modules>
         <OnePica_AvaTax>
-            <version>3.5.0.1</version>
+            <version>3.5.0.2</version>
         </OnePica_AvaTax>
     </modules>
     <global>
@@ -320,6 +320,17 @@
                 </OnePica_AvaTax>
             </modules>
         </translate>
+
+        <routers>
+            <avatax>
+                <use>standard</use>
+                <args>
+                    <module>OnePica_AvaTax</module>
+                    <frontName>avatax</frontName>
+                </args>
+            </avatax>
+        </routers>
+
     </frontend>
     <admin>
         <routers>
