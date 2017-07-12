@@ -32,7 +32,7 @@ if ($ver['minor'] < 6) {
     ADD COLUMN `$attributeCode` tinyint(1) UNSIGNED NULL COMMENT '$label';"
     );
 } else {
-    $setup = Mage::getModel('sales/entity_setup', 'core_setup');
+    $setup = Mage::getModel('sales/resource_setup', 'core_setup');
 
     $setup->addAttribute(
         'quote', $attributeCode, array(
