@@ -102,7 +102,7 @@ class OnePica_AvaTax_Block_Checkout_Onepage_Address_Normalization_Payment_Disabl
                 };
 
                 Checkout.prototype.avataxSetNormalizationPleaseWait = function() {
-                  $('allow_normalize_shipping_address').setAttribute('disabled', 'disabled');
+                    $('allow_normalize_shipping_address').setAttribute('disabled', 'disabled');
 
                     if ($('allow-normalize-please-wait')) {
                         $('allow-normalize-please-wait').show();
