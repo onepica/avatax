@@ -39,11 +39,14 @@ class OnePica_AvaTax_Block_Checkout_Abstract extends Mage_Core_Block_Abstract
     protected $_quote;
 
     /**
-     * config data
+     * Get config helper
      *
-     * @var OnePica_AvaTax_Helper_Config
+     * @return OnePica_AvaTax_Helper_Config
      */
-    protected $_configData;
+    protected function _getConfigData()
+    {
+        return Mage::helper('avatax/config');
+    }
 
     /**
      * Retrieve checkout session model

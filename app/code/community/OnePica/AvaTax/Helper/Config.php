@@ -150,6 +150,16 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
     const XML_PATH_TO_TAX_AVATAX_NORMALIZE_ADDRESS_DISABLER = 'tax/avatax/normalize_address_disabler';
 
     /**
+     * Path to normalize disabler label
+     */
+    const XML_PATH_TO_TAX_AVATAX_NORMALIZE_ADDRESS_DISABLER_LABEL = 'tax/avatax/normalize_address_disabler_label';
+
+    /**
+     * Path to normalize disabler please wait label
+     */
+    const XML_PATH_TO_TAX_AVATAX_NORMALIZE_ADDRESS_DISABLER_PLEASE_WAIT_LABEL = 'tax/avatax/normalize_address_disabler_please_wait_label';
+
+    /**
      * Path to is address validate
      */
     const XML_PATH_TO_TAX_AVATAX_VALIDATE_ADDRESS = 'tax/avatax/validate_address';
@@ -523,6 +533,26 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
     public function getNormalizeAddressDisabler($storeId = null)
     {
         return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_NORMALIZE_ADDRESS_DISABLER, $storeId);
+    }
+
+    /**
+     * Get normalize address disabler label
+     *
+     * @return mixed
+     */
+    public function getNormalizeAddressDisablerLabel($storeId = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_NORMALIZE_ADDRESS_DISABLER_LABEL, $storeId);
+    }
+
+    /**
+     * Get normalize address disabler please wait label
+     *
+     * @return mixed
+     */
+    public function getNormalizeAddressDisablerPleaseWaitLabel($storeId = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_NORMALIZE_ADDRESS_DISABLER_PLEASE_WAIT_LABEL, $storeId);
     }
 
     /**

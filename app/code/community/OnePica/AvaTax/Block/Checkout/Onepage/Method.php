@@ -52,16 +52,6 @@ abstract class OnePica_AvaTax_Block_Checkout_Onepage_Method extends OnePica_AvaT
     }
 
     /**
-     * Get config helper
-     *
-     * @return OnePica_AvaTax_Helper_Config
-     */
-    protected function _getConfigData()
-    {
-        return Mage::helper('avatax/config');
-    }
-
-    /**
      * Overriding parent to insert session message block if an address has been validated.
      *
      * @return string

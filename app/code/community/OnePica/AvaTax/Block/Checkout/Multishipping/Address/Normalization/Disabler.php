@@ -33,6 +33,9 @@ class OnePica_AvaTax_Block_Checkout_Multishipping_Address_Normalization_Disabler
     {
         $checked = $this->getQuote()->getAvataxNormalizationFlag() ? "checked='checked'" : '';
 
+        $storeId = $this->getQuote()->getStoreId();
+        $label = $this->_getConfigData()->getNormalizeAddressDisablerLabel($storeId);
+        $loaderLabel = $this->_getConfigData()->getNormalizeAddressDisablerPleaseWaitLabel($storeId);
         $loaderImgUrl = $this->getSkinUrl('images/opc-ajax-loader.gif');
 
         $html = "<p>
@@ -43,10 +46,10 @@ class OnePica_AvaTax_Block_Checkout_Multishipping_Address_Normalization_Disabler
                     class='checkbox'
                     onclick='window.avataxReloadShippingMethods();'
                     " . $checked . ">
-            <label for='allow_normalize_shipping_address'>Disable normalization of shipping address</label>
+            <label for='allow_normalize_shipping_address'>$label</label>
              <span class='please-wait allow-normalize' id='allow-normalize-please-wait' style='display: none;'>
-                <img src='$loaderImgUrl' alt='Updating addresses...' title='Updating addresses...' class='v-middle'>
-                Updating addresses...
+                <img src='$loaderImgUrl' alt='$loaderLabel' title='$loaderLabel' class='v-middle'>
+                $loaderLabel
             </span>
             <script type='application/javascript'>
                 window.avataxReloadShippingMethods = function() {
@@ -54,16 +57,16 @@ class OnePica_AvaTax_Block_Checkout_Multishipping_Address_Normalization_Disabler
                     if ($('allow_normalize_shipping_address').checked){
                         isChecked = 1;
                     }
-                    
+
                     $$('form button').each(function (elem) {
                         elem.addClassName('disabled');
                     });
-                    
+
                     $('allow_normalize_shipping_address').setAttribute('disabled', 'disabled');
                     $('allow-normalize-please-wait').setStyle({
                          'display': 'block'
                     });
-                    
+
                     var request = new Ajax.Request(
                         '/avatax/normalization/update',
                         {
