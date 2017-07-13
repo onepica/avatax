@@ -16,19 +16,19 @@
  */
 
 /**
- * The Onepage Shipping Method Available block
+ * The Onepage Payment Method Available block
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Block_Checkout_Onepage_Shipping_Method_Available extends OnePica_AvaTax_Block_Checkout_Onepage_Method
+class OnePica_AvaTax_Block_Checkout_Onepage_Payment_Method_Available extends OnePica_AvaTax_Block_Checkout_Onepage_Method
 {
     /**
      * Normalization Disabler Block Name
      * @var null
      */
-    protected $_disablerBlockName = 'avatax/checkout_onepage_address_normalization_disabler';
+    protected $_disablerBlockName = 'avatax/checkout_onepage_address_normalization_payment_disabler';
 
     /**
      * Check if Normalization Notification Is Allowed on current checkout step
@@ -37,6 +37,24 @@ class OnePica_AvaTax_Block_Checkout_Onepage_Shipping_Method_Available extends On
      */
     protected function _showNotification()
     {
-        return true;
+        $quote = $this->getQuote();
+        $isVirtualCheckout = $quote->getItemVirtualQty() == $quote->getItemsQty();
+
+        return $isVirtualCheckout;
     }
+
+    /**
+     * Get quote address
+     *
+     * @return Mage_Sales_Model_Quote_Address
+     */
+    public function getAddress()
+    {
+        if (empty($this->_address)) {
+            $this->_address = $this->getQuote()->getBillingAddress();
+        }
+
+        return $this->_address;
+    }
+
 }

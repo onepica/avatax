@@ -25,13 +25,6 @@
 class OnePica_AvaTax_Block_Checkout_Abstract extends Mage_Core_Block_Abstract
 {
     /**
-     * Quote address
-     *
-     * @var Mage_Sales_Model_Quote_Address
-     */
-    protected $_address;
-
-    /**
      * Checkout session
      *
      * @var Mage_Checkout_Model_Session
@@ -51,20 +44,6 @@ class OnePica_AvaTax_Block_Checkout_Abstract extends Mage_Core_Block_Abstract
      * @var OnePica_AvaTax_Helper_Config
      */
     protected $_configData;
-
-    /**
-     * Get quote address
-     *
-     * @return Mage_Sales_Model_Quote_Address
-     */
-    public function getAddress()
-    {
-        if (empty($this->_address)) {
-            $this->_address = $this->getQuote()->getShippingAddress();
-        }
-
-        return $this->_address;
-    }
 
     /**
      * Retrieve checkout session model
