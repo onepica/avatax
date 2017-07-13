@@ -148,6 +148,15 @@
                     </avatax>
                 </observers>
             </sales_quote_collect_totals_before>
+            <sales_quote_load_after>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer_salesQuoteLoadAfter</class>
+                        <method>execute</method>
+                    </avatax>
+                </observers>
+            </sales_quote_load_after>
             <sales_order_invoice_save_after>
                 <observers>
                     <avatax>
