@@ -444,8 +444,10 @@
                 <error_frontend_message>Unfortunately, we could not calculate tax for your order. Please try again with a different address or contact us to complete your order.</error_frontend_message>
                 <error_backend_message>There was an error getting tax rates from Avalara. Please see the error log for details.</error_backend_message>
                 <error_notification_toolbar>1</error_notification_toolbar>
-                <onepage_normalize_message>Your shipping address has been modified during our validation process. Please confirm the address to the right is accurate.</onepage_normalize_message>
-                <multiaddress_normalize_message>Your shipping addresses have been modified during our validation process. Please confirm they are still correct.</multiaddress_normalize_message>
+                <onepage_normalize_message>Your addresses have been modified during our validation process. Please, verify if they are still correct or disable normalization.</onepage_normalize_message>
+                <multiaddress_normalize_message>Your addresses have been modified during our validation process. Please, verify if they are still correct or disable normalization.</multiaddress_normalize_message>
+                <normalize_address_disabler_label>Disable normalization for addresses.</normalize_address_disabler_label>
+                <normalize_address_disabler_please_wait_label>Updating addresses...</normalize_address_disabler_please_wait_label>
                 <validate_address_message>The address '%s' appears invalid. Please correct it or select another address.</validate_address_message>
                 <avatax16_onepage_validate_address_message>Unable to validate address.</avatax16_onepage_validate_address_message>
             </avatax>
