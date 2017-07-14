@@ -402,6 +402,34 @@
                                 </normalize_address>
                             </depends>
                         </normalize_address_disabler>
+                        <normalize_address_disabler_label translate="label comment">
+                            <label>Disabler label</label>
+                            <comment>Disabler checkbox label.</comment>
+                            <sort_order>326</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_type>textarea</frontend_type>
+                            <depends>
+                                <normalize_address_disabler separator="|">
+                                    <value>1</value>
+                                </normalize_address_disabler>
+                            </depends>
+                        </normalize_address_disabler_label>
+                        <normalize_address_disabler_please_wait_label translate="label comment">
+                            <label>Disabler loader label</label>
+                            <comment>Disabler loader label.</comment>
+                            <sort_order>327</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_type>textarea</frontend_type>
+                            <depends>
+                                <normalize_address_disabler separator="|">
+                                    <value>1</value>
+                                </normalize_address_disabler>
+                            </depends>
+                        </normalize_address_disabler_please_wait_label>
                         <onepage_normalize_message translate="label comment">
                             <label>Onepage Checkout Address Normalized Notice</label>
                             <comment>Only applies if address normalization is enabled</comment>
