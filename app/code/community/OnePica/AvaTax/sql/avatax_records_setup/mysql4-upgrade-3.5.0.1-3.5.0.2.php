@@ -25,7 +25,7 @@ $label = 'Avatax Normalization Flag';
 
 $ver = Mage::getVersionInfo();
 
-if ($ver['minor'] < 6) {
+if ($ver['minor'] < 6 || $ver['minor'] == 10) {
     $adapter = $installer->getConnection();
     $installer->run(
         "ALTER TABLE `" . $this->getTable('sales_flat_quote') . "`
