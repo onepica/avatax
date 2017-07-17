@@ -112,6 +112,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
      * @param string $result the result string
      * @param int $storeId id of the store the call is make for
      * @param mixed $additional any other info
+     * @param \TaxServiceSoap $connection for logging soap request/response
      * @return $this
      */
     protected function _log(

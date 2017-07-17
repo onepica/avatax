@@ -39,7 +39,7 @@ class OnePica_AvaTax_Model_Observer_MultishippingSetShippingItems
             return $this;
         }
 
-        /* @var $quote Mage_Sales_Model_Quote */
+        /** @var Mage_Sales_Model_Quote $quote */
         $quote = $observer->getEvent()->getQuote();
         $storeId = $quote->getStoreId();
 
@@ -49,7 +49,7 @@ class OnePica_AvaTax_Model_Observer_MultishippingSetShippingItems
         $addresses = $quote->getAllShippingAddresses();
         $message = Mage::getStoreConfig('tax/avatax/validate_address_message', $storeId);
         foreach ($addresses as $address) {
-            /* @var $address OnePica_AvaTax_Model_Sales_Quote_Address */
+            /** @var OnePica_AvaTax_Model_Sales_Quote_Address $address */
             if ($address->validate() !== true) {
                 $errors[] = sprintf($message, $address->format('oneline'));
             }
@@ -63,7 +63,8 @@ class OnePica_AvaTax_Model_Observer_MultishippingSetShippingItems
         $helperConfig = Mage::helper('avatax/config');
 
         if ($helperConfig->getNormalizeAddressDisabler($storeId)) {
-            $checkboxDisabler = Mage::getBlockSingleton('avatax/checkout_multishipping_address_normalization_disabler')->toHtml();
+            $checkboxDisabler = Mage::getBlockSingleton('avatax/checkout_multishipping_address_normalization_disabler')
+                                    ->toHtml();
             switch ($quote->getAvataxNormalizationFlag()) {
                 case 1:
                     // show checkbox in block
@@ -71,7 +72,8 @@ class OnePica_AvaTax_Model_Observer_MultishippingSetShippingItems
                     break;
                 case 0:
                     //show checkbox in notice
-                    $notice = Mage::getStoreConfig('tax/avatax/multiaddress_normalize_message', $storeId) . $checkboxDisabler;
+                    $notice = Mage::getStoreConfig('tax/avatax/multiaddress_normalize_message', $storeId) .
+                        $checkboxDisabler;
                     break;
                 default:
                     break;

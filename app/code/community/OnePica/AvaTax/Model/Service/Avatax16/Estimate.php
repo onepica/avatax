@@ -126,13 +126,10 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         //check to see if we can/need to make the request to Avalara
         $requestKey = $this->_genRequestKey();
         $makeRequest = empty($this->_rates[$requestKey]['items']);
-        //@startSkipCommitHooks
         $makeRequest &= count($this->_lineToLineId) ? true : false;
-
         $makeRequest &= $this->_hasDestinationAddress();
         $makeRequest &= $address->getId() ? true : false;
         $makeRequest &= !isset($this->_rates[$requestKey]['failure']);
-        //@finishSkipCommitHooks
 
         //make request if needed and save results in cache
         if ($makeRequest) {

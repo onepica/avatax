@@ -114,7 +114,8 @@ class OnePica_AvaTax_Model_Observer_AdminSystemConfigChangedSectionTax extends O
 
         if (strpos($this->_getConfigHelper()->getServiceUrl($storeId), 'development.avalara.net') !== false) {
             $warnings[] = Mage::helper('avatax')->__(
-                'You are using the AvaTax development connection URL. If you are receiving errors about authentication, please ensure that you have a development account.'
+                'You are using the AvaTax development connection URL. If you are receiving errors about authentication, 
+                please ensure that you have a development account.'
             );
         }
 
@@ -140,13 +141,17 @@ class OnePica_AvaTax_Model_Observer_AdminSystemConfigChangedSectionTax extends O
         if (!Mage::getResourceModel('cron/schedule_collection')->count()) {
             $warnings[] = Mage::helper('avatax')->__(
                 'It appears that Magento\'s cron scheduler is not running. For more information, see %s.',
-                '<a href="http://www.magentocommerce.com/wiki/how_to_setup_a_cron_job" target="_black">How to Set Up a Cron Job</a>'
+                '<a href="http://www.magentocommerce.com/wiki/how_to_setup_a_cron_job" 
+                    target="_black">How to Set Up a Cron Job</a>'
             );
         }
 
         if ($this->_isRegionFilterAll() && $this->_canNotBeAddressValidated()) {
             $warnings[] = Mage::helper('avatax')
-                ->__('Please be aware that address validation will not work for addresses outside United States and Canada');
+                ->__(
+                    'Please be aware that address validation will not work for addresses outside United States and 
+                Canada'
+                );
         }
 
         return $warnings;
@@ -180,7 +185,8 @@ class OnePica_AvaTax_Model_Observer_AdminSystemConfigChangedSectionTax extends O
         if (!class_exists('SoapClient')) {
             $errors[] = Mage::helper('avatax')->__(
                 'The PHP class SoapClient is missing. It must be enabled to use this extension. See %s for details.',
-                '<a href="http://www.php.net/manual/en/book.soap.php" target="_blank">http://www.php.net/manual/en/book.soap.php</a>'
+                '<a href="http://www.php.net/manual/en/book.soap.php" 
+                    target="_blank">http://www.php.net/manual/en/book.soap.php</a>'
             );
         }
 
@@ -202,8 +208,11 @@ class OnePica_AvaTax_Model_Observer_AdminSystemConfigChangedSectionTax extends O
             }
 
             $errors[] = Mage::helper('avatax')->__(
-                'SSL must be enabled in PHP to use this extension. Typically, OpenSSL is used but it is not enabled on your server. This may not be a problem if you have some other form of SSL in place. For more information about OpenSSL, see %s.',
-                '<a href="http://www.php.net/manual/en/book.openssl.php" target="_blank">http://www.php.net/manual/en/book.openssl.php</a>'
+                'SSL must be enabled in PHP to use this extension. Typically, OpenSSL is used but it is not enabled on 
+                your server. This may not be a problem if you have some other form of SSL in place. For more 
+                information about OpenSSL, see %s.',
+                '<a href="http://www.php.net/manual/en/book.openssl.php" 
+                    target="_blank">http://www.php.net/manual/en/book.openssl.php</a>'
             );
         }
 

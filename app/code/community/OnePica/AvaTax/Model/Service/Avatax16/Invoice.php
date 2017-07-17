@@ -199,7 +199,6 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
             $line->setNumberOfItems(1);
             $line->setlineAmount($positive * -1);
             $line->setDiscounted('false');
-            //$line->setTaxIncluded('true');
 
             $this->_lineToItemId[$lineNumber] = $identifier;
             $this->_lines[$lineNumber] = $line;
@@ -219,7 +218,6 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
             $line->setNumberOfItems(1);
             $line->setlineAmount($negative);
             $line->setDiscounted('false');
-            //$line->setTaxIncluded('true');
 
             $this->_lineToItemId[$lineNumber] = $identifier;
             $this->_lines[$lineNumber] = $line;
@@ -258,9 +256,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
             $amount -= (float)$order->getBaseShippingDiscountAmount();
         }
 
-        //@startSkipCommitHooks
         $amount = $credit ? (-1 * $amount) : $amount;
-        //@finishSkipCommitHooks
 
         $line->setLineCode($lineNumber);
         $shippingSku = $this->_getConfigHelper()->getShippingSku($storeId);
@@ -302,9 +298,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
             $line->setTaxIncluded('true');
         }
 
-        //@startSkipCommitHooks
         $amount = $credit ? (-1 * $amount) : $amount;
-        //@finishSkipCommitHooks
 
         $line->setLineCode($lineNumber);
         $gwOrderSku = $this->_getConfigHelper()->getGwOrderSku($storeId);
@@ -345,9 +339,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
             $line->setTaxIncluded('true');
         }
 
-        //@startSkipCommitHooks
         $amount = $credit ? (-1 * $amount) : $amount;
-        //@finishSkipCommitHooks
 
         $line->setLineCode($lineNumber);
         $gwItemsSku = $this->_getConfigHelper()->getGwItemsSku($storeId);
@@ -388,9 +380,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
             $line->setTaxIncluded('true');
         }
 
-        //@startSkipCommitHooks
         $amount = $credit ? (-1 * $amount) : $amount;
-        //@finishSkipCommitHooks
 
         $line->setLineCode($lineNumber);
         $gwPrintedCardSku = $this->_getConfigHelper()->getGwPrintedCardSku($storeId);
@@ -439,9 +429,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
             $price -= $item->getBaseDiscountAmount();
         }
 
-        //@startSkipCommitHooks
         $price = $credit ? (-1 * $price) : $price;
-        //@finishSkipCommitHooks
 
         $line->setLineCode($lineNumber);
         $line->setItemCode(

@@ -69,7 +69,10 @@ class OnePica_AvaTax_Model_Adminhtml_Sales_Order_Create extends Mage_Adminhtml_M
             throw new OnePica_AvaTax_Exception(implode('<br />', $result));
         } elseif ($this->getShippingAddress()->getAddressNormalized() && !$this->_messageAdded) {
             Mage::getSingleton('adminhtml/session')->addNotice(
-                $this->_getDataHelper()->__('The shipping address has been modified during the validation process. Please confirm the address below is accurate.')
+                $this->_getDataHelper()->__(
+                    'The shipping address has been modified during the validation process. Please confirm the address 
+                    below is accurate.'
+                )
             );
             $this->_messageAdded = true;
         }

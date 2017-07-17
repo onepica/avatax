@@ -22,7 +22,8 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Block_Checkout_Onepage_Address_Normalization_Disabler extends OnePica_AvaTax_Block_Checkout_Abstract
+class OnePica_AvaTax_Block_Checkout_Onepage_Address_Normalization_Disabler
+    extends OnePica_AvaTax_Block_Checkout_Abstract
 {
     /**
      * Generate checkbox for address normalization disabler
@@ -129,8 +130,8 @@ class OnePica_AvaTax_Block_Checkout_Onepage_Address_Normalization_Disabler exten
                                 checkout.avataxResetBillingAndShippingProgress();
 
                                 //wrap method
-                                Checkout.prototype.setStepResponse = Checkout.prototype.setStepResponse.wrap(function(parentMethod, response){
-                                    //debugger;
+                                Checkout.prototype.setStepResponse = Checkout.prototype.setStepResponse.wrap(
+                                    function(parentMethod, response){
 
                                     var section = response.goto_section;
                                     switch(section) {

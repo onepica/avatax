@@ -132,13 +132,11 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         //check to see if we can/need to make the request to Avalara
         $requestKey = $this->_genRequestKey();
         $makeRequest = empty($this->_rates[$requestKey]['items']);
-        //@startSkipCommitHooks
         $makeRequest &= count($this->_lineToLineId) ? true : false;
         $makeRequest &= $this->_request->getDestinationAddress() == '' ? false : true;
         $makeRequest &= $address->getId() ? true : false;
         $makeRequest &= !isset($this->_rates[$requestKey]['failure']);
         $makeRequest &= $this->isCanSendRequest();
-        //@finishSkipCommitHooks
 
         //make request if needed and save results in cache
         if ($makeRequest) {
@@ -195,7 +193,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
 
         $messages = $response->getMessages();
         if ($messages) {
-            /* @var Message $message */
+            /** @var Message $message */
             foreach ($messages as $message) {
                 if ($this->_ignoreResponseMessage($message)) {
                     continue;

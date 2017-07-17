@@ -23,10 +23,12 @@ $installer->startSetup();
 $installer->run(
     "
     ALTER TABLE `" . $this->getTable('avatax_records/log') . "`
-    ADD `soap_request` MEDIUMTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'SOAP request' ,  
-    ADD `soap_request_headers` MEDIUMTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'SOAP request headers' , 
+    ADD `soap_request` MEDIUMTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'SOAP request',  
+    ADD `soap_request_headers` MEDIUMTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL 
+        COMMENT 'SOAP request headers', 
     ADD `soap_result` MEDIUMTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'SOAP result' , 
-    ADD `soap_result_headers` MEDIUMTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'SOAP result headers' , 
+    ADD `soap_result_headers` MEDIUMTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL 
+        COMMENT 'SOAP result headers' , 
     CHANGE COLUMN `request` `request` MEDIUMTEXT NULL COMMENT 'Request';
     "
 );

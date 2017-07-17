@@ -28,7 +28,8 @@ class OnePica_AvaTax_Helper_RequestFilter extends Mage_Core_Helper_Abstract
     /**
      * XML path to limit get tax request on multi shipping checkout actions
      */
-    const LIMIT_GET_TAX_REQUEST_ON_MULTISHIPPING_CHECKOUT = 'tax/avatax/limit_gettax_request_on_multishipping_checkout_actions';
+    const LIMIT_GET_TAX_REQUEST_ON_MULTISHIPPING_CHECKOUT =
+        'tax/avatax/limit_gettax_request_on_multishipping_checkout_actions';
 
     /**
      * Xml path to disable get tax request on unnecessary actions

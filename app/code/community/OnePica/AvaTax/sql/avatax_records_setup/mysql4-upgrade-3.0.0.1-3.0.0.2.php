@@ -16,7 +16,7 @@
  */
 $installer = $this;
 $this->startSetup();
-/* @var $this Mage_Core_Model_Resource_Setup */
+/** @var Mage_Core_Model_Resource_Setup $this */
 $adapter = $this->getConnection();
 
 $installer->run(

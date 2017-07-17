@@ -16,7 +16,7 @@
  */
 $installer = $this;
 $this->startSetup();
-/* @var $this Mage_Core_Model_Resource_Setup */
+/** @var Mage_Core_Model_Resource_Setup $this */
 $adapter = $this->getConnection();
 
 // check if current process is install from scratch or update from 2.4.3.3-stable

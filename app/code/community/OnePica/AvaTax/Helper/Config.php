@@ -157,7 +157,8 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
     /**
      * Path to normalize disabler please wait label
      */
-    const XML_PATH_TO_TAX_AVATAX_NORMALIZE_ADDRESS_DISABLER_PLEASE_WAIT_LABEL = 'tax/avatax/normalize_address_disabler_please_wait_label';
+    const XML_PATH_TO_TAX_AVATAX_NORMALIZE_ADDRESS_DISABLER_PLEASE_WAIT_LABEL =
+        'tax/avatax/normalize_address_disabler_please_wait_label';
 
     /**
      * Path to is address validate
@@ -518,6 +519,7 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
     /**
      * Get normalize address
      *
+     * @param int|Mage_Core_Model_Store $storeId
      * @return mixed
      */
     public function getNormalizeAddress($storeId = null)
@@ -528,6 +530,7 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
     /**
      * Get normalize address disabler
      *
+     * @param int|Mage_Core_Model_Store $storeId
      * @return mixed
      */
     public function getNormalizeAddressDisabler($storeId = null)
@@ -538,6 +541,7 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
     /**
      * Get normalize address disabler label
      *
+     * @param int|Mage_Core_Model_Store $storeId
      * @return mixed
      */
     public function getNormalizeAddressDisablerLabel($storeId = null)
@@ -548,16 +552,21 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
     /**
      * Get normalize address disabler please wait label
      *
+     * @param int|Mage_Core_Model_Store $storeId
      * @return mixed
      */
     public function getNormalizeAddressDisablerPleaseWaitLabel($storeId = null)
     {
-        return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_NORMALIZE_ADDRESS_DISABLER_PLEASE_WAIT_LABEL, $storeId);
+        return Mage::getStoreConfig(
+            self::XML_PATH_TO_TAX_AVATAX_NORMALIZE_ADDRESS_DISABLER_PLEASE_WAIT_LABEL,
+            $storeId
+        );
     }
 
     /**
      * Get validate address
      *
+     * @param int|Mage_Core_Model_Store $storeId
      * @return mixed
      */
     public function getValidateAddress($storeId = null)

@@ -35,10 +35,8 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
     public function isAddressNormalizationOn($address, $storeId)
     {
         if (!$this->isAddressActionable(
-            $address,
-            $storeId,
-            OnePica_AvaTax_Model_Service_Abstract_Config::REGIONFILTER_ALL, true)
-        ) {
+            $address, $storeId, OnePica_AvaTax_Model_Service_Abstract_Config::REGIONFILTER_ALL, true
+        )) {
             return false;
         }
 
@@ -91,6 +89,7 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
                     break;
             }
         }
+
         return $quote;
     }
 
@@ -105,10 +104,8 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
     public function isAddressValidationOn($address, $storeId)
     {
         if (!$this->isAddressActionable(
-            $address,
-            $storeId,
-            OnePica_AvaTax_Model_Service_Abstract_Config::REGIONFILTER_ALL, true)
-        ) {
+            $address, $storeId, OnePica_AvaTax_Model_Service_Abstract_Config::REGIONFILTER_ALL, true
+        )) {
             return false;
         }
 
@@ -180,6 +177,7 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
                 if (!is_array($filterLog)) {
                     $filterLog = array();
                 }
+
                 $key = $address->getCacheHashKey();
 
                 //did we already log this filtered address?
@@ -288,7 +286,8 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
      */
     public function getTaxableCountryByWebSite($websiteId)
     {
-        return explode(',', Mage::app()
+        return explode(
+            ',', Mage::app()
             ->getWebsite($websiteId)
             ->getConfig(OnePica_AvaTax_Helper_Config::XML_PATH_TO_TAX_AVATAX_TAXABLE_COUNTRY)
         );
@@ -335,6 +334,7 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
         if (!$shippingAddress) {
             $shippingAddress = $object->getShippingAddress();
         }
+
         if (!$shippingAddress) {
             $shippingAddress = $object->getBillingAddress();
         }
@@ -343,8 +343,8 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
         if (!$this->isAddressActionable(
             $shippingAddress,
             $storeId,
-            OnePica_AvaTax_Model_Service_Abstract_Config::REGIONFILTER_TAX)
-        ) {
+            OnePica_AvaTax_Model_Service_Abstract_Config::REGIONFILTER_TAX
+        )) {
             return false;
         }
 

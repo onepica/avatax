@@ -349,7 +349,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
      */
     protected function _resetItemsValues(Mage_Sales_Model_Quote_Address $address)
     {
-        /* @var $item Mage_Sales_Model_Quote_Item */
+        /** @var Mage_Sales_Model_Quote_Item $item */
         foreach ($address->getAllItems() as $item) {
             $item->setTaxAmount(0);
             $item->setBaseTaxAmount(0);
