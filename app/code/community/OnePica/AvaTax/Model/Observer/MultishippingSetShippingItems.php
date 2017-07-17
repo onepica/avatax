@@ -63,8 +63,7 @@ class OnePica_AvaTax_Model_Observer_MultishippingSetShippingItems
         $helperConfig = Mage::helper('avatax/config');
 
         if ($helperConfig->getNormalizeAddressDisabler($storeId)) {
-            $checkboxDisabler = Mage::getBlockSingleton('avatax/checkout_multishipping_address_normalization_disabler')
-                                    ->toHtml();
+            $checkboxDisabler = Mage::getBlockSingleton('avatax/checkout_multishipping_address_normalization_disabler')->toHtml();
             switch ($quote->getAvataxNormalizationFlag()) {
                 case 1:
                     // show checkbox in block
@@ -72,8 +71,7 @@ class OnePica_AvaTax_Model_Observer_MultishippingSetShippingItems
                     break;
                 case 0:
                     //show checkbox in notice
-                    $notice = Mage::getStoreConfig('tax/avatax/multiaddress_normalize_message', $storeId) .
-                        $checkboxDisabler;
+                    $notice = Mage::getStoreConfig('tax/avatax/multiaddress_normalize_message', $storeId) . $checkboxDisabler;
                     break;
                 default:
                     break;

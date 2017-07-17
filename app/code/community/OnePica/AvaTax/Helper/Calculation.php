@@ -215,8 +215,7 @@ class OnePica_AvaTax_Helper_Calculation
     /**
      * Get simple product id from configurable item
      *
-     * @param Mage_Sales_Model_Quote_Item|Mage_Sales_Model_Order_Creditmemo_Item|Mage_Sales_Model_Order_Invoice_Item
-     * $item
+     * @param Mage_Sales_Model_Quote_Item|Mage_Sales_Model_Order_Creditmemo_Item|Mage_Sales_Model_Order_Invoice_Item $item
      * @return int
      */
     public function getSimpleProductIdByConfigurable($item)
@@ -248,8 +247,7 @@ class OnePica_AvaTax_Helper_Calculation
     /**
      * Checks if item is configurable
      *
-     * @param Mage_Sales_Model_Quote_Address_Item|Mage_Sales_Model_Quote_Item|Mage_Sales_Model_Order_Creditmemo_Item
-     * |Mage_Sales_Model_Order_Invoice_Item $item
+     * @param Mage_Sales_Model_Quote_Address_Item|Mage_Sales_Model_Quote_Item|Mage_Sales_Model_Order_Creditmemo_Item|Mage_Sales_Model_Order_Invoice_Item $item
      * @return bool
      */
     public function isConfigurable($item)

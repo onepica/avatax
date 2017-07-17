@@ -157,8 +157,7 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
     /**
      * Path to normalize disabler please wait label
      */
-    const XML_PATH_TO_TAX_AVATAX_NORMALIZE_ADDRESS_DISABLER_PLEASE_WAIT_LABEL =
-        'tax/avatax/normalize_address_disabler_please_wait_label';
+    const XML_PATH_TO_TAX_AVATAX_NORMALIZE_ADDRESS_DISABLER_PLEASE_WAIT_LABEL = 'tax/avatax/normalize_address_disabler_please_wait_label';
 
     /**
      * Path to is address validate
