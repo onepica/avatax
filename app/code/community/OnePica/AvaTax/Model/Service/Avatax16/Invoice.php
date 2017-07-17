@@ -74,6 +74,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
             /** @var Mage_Sales_Model_Order_Invoice_Item $item */
             $this->_newLine($item);
         }
+
         $this->_setLinesToRequest();
 
         //send to AvaTax
@@ -150,6 +151,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
             /** @var Mage_Sales_Model_Order_Creditmemo_Item $item */
             $this->_newLine($item, true);
         }
+
         $this->_setLinesToRequest();
 
         //send to AvaTax
@@ -342,6 +344,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
             $amount += $object->getGwItemsBaseTaxAmount();
             $line->setTaxIncluded('true');
         }
+
         //@startSkipCommitHooks
         $amount = $credit ? (-1 * $amount) : $amount;
         //@finishSkipCommitHooks
@@ -416,6 +419,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         if ($this->isProductCalculated($item->getOrderItem())) {
             return false;
         }
+
         if ($item->getQty() == 0) {
             return false;
         }
@@ -440,8 +444,10 @@ class OnePica_AvaTax_Model_Service_Avatax16_Invoice extends OnePica_AvaTax_Model
         //@finishSkipCommitHooks
 
         $line->setLineCode($lineNumber);
-        $line->setItemCode($this->_getCalculationHelper()
-             ->getItemCode($this->_getProductForItemCode($item), $storeId, $item));
+        $line->setItemCode(
+            $this->_getCalculationHelper()
+            ->getItemCode($this->_getProductForItemCode($item), $storeId, $item)
+        );
         $line->setItemDescription($item->getName());
         $line->setNumberOfItems($item->getQty());
         $line->setlineAmount($price);

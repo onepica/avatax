@@ -127,10 +127,12 @@ class OnePica_AvaTax_Model_Service_Abstract_Tools extends Varien_Object
             if ($item->isChildrenCalculated() && !$item->getParentItem()) {
                 return true;
             }
+
             if (!$item->isChildrenCalculated() && $item->getParentItem()) {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -174,6 +176,7 @@ class OnePica_AvaTax_Model_Service_Abstract_Tools extends Varien_Object
         if ($shippingAddress && $shippingAddress->getVatId()) {
             return $shippingAddress->getVatId();
         }
+
         return $order->getBillingAddress()->getVatId();
     }
 

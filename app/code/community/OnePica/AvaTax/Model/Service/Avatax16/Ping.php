@@ -68,6 +68,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Ping extends OnePica_AvaTax_Model_Se
                 foreach ($result->getErrors() as $messageItem) {
                     $messages[] = $this->__($messageItem);
                 }
+
                 $message .= implode(' ', $messages);
             }
         }

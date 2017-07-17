@@ -44,9 +44,11 @@ class OnePica_AvaTax_Model_Adminhtml_Sales_Order_Create extends Mage_Adminhtml_M
         if ($this->getQuote()->getIsVirtual()) {
             return $this;
         }
+
         if (!$this->_isAjaxRequest()) {
             $this->_validateShippingAddress();
         }
+
         return $this;
     }
 
@@ -61,6 +63,7 @@ class OnePica_AvaTax_Model_Adminhtml_Sales_Order_Create extends Mage_Adminhtml_M
         if (!$this->_getDataHelper()->isServiceEnabled()) {
             return $this;
         }
+
         $result = $this->getShippingAddress()->validate();
         if ($result !== true) {
             throw new OnePica_AvaTax_Exception(implode('<br />', $result));

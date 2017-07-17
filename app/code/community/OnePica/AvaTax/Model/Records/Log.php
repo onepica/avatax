@@ -63,6 +63,7 @@ class OnePica_AvaTax_Model_Records_Log extends Mage_Core_Model_Abstract
                 print_r($value, true)
             );
         }
+
         $this->setData('additional', $value);
 
         return $this;

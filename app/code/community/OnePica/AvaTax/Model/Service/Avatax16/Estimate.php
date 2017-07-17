@@ -83,8 +83,10 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
                     unset($rates[$key]);
                 }
             }
+
             $this->_rates = $rates;
         }
+
         return parent::_construct();
     }
 
@@ -156,11 +158,13 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
                         'jurisdiction_rates' => $this->_getItemJurisdictionRate($ctl)
                     );
                 }
+
                 $this->_rates[$requestKey]['summary'] = $this->_getSummaryFromResponse($result);
                 //failure
             } else {
                 $this->_rates[$requestKey]['failure'] = true;
             }
+
             Mage::getSingleton('avatax/session')->setAvatax16Rates($this->_rates);
         }
 
@@ -208,6 +212,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
                 /** @var Mage_Sales_Model_Quote_Item $item */
                 $this->_newLine($item);
             }
+
             $this->_setLinesToRequest();
         }
 
@@ -233,6 +238,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         if ($this->isProductCalculated($item)) {
             return false;
         }
+
         $product = $this->_getProductByProductId($this->_retrieveProductIdFromQuoteItem($item));
         $taxClass = $this->_getTaxClassCodeByProduct($product);
         $price = $item->getBaseRowTotal();
@@ -274,10 +280,12 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         if ($ref1Value) {
             $metadata['ref1'] = $ref1Value;
         }
+
         $ref2Value = $this->_getRefValueByProductAndNumber($product, 2, $item->getStoreId());
         if ($ref2Value) {
             $metadata['ref2'] = $ref2Value;
         }
+
         if ($metadata) {
             $line->setMetadata($metadata);
         }
@@ -322,6 +330,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         if (!$item->getGwId()) {
             return false;
         }
+
         $lineNumber = $this->_getNewLineCode();
         $storeId = $item->getQuote()->getStoreId();
         //Add gift wrapping price(for individual items)
@@ -402,6 +411,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         if (!$address->getGwPrice()) {
             return false;
         }
+
         $lineNumber = $this->_getNewLineCode();
         $storeId = $address->getQuote()->getStore()->getId();
         //Add gift wrapping price(for entire order)
@@ -438,6 +448,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
         if (!$address->getGwPrintedCardPrice()) {
             return false;
         }
+
         $lineNumber = $this->_getNewLineCode();
         $storeId = $address->getQuote()->getStore()->getId();
         //Add printed card price
@@ -575,6 +586,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
                 $rate += $detail->getRate();
             }
         }
+
         return $rate * 100;
     }
 
@@ -638,9 +650,11 @@ class OnePica_AvaTax_Model_Service_Avatax16_Estimate extends OnePica_AvaTax_Mode
                     if (!isset($fixedRatesData[$jurisdiction]['fixedTax'])) {
                         $fixedRatesData[$jurisdiction]['fixedTax'] = 0;
                     }
+
                     if (!isset($fixedRatesData[$jurisdiction]['lineAmount'])) {
                         $fixedRatesData[$jurisdiction]['lineAmount'] = 0;
                     }
+
                     $fixedRatesData[$jurisdiction]['fixedTax'] += $detail->getTax();
                     $fixedRatesData[$jurisdiction]['lineAmount'] += $line->getLineAmount();
                 }

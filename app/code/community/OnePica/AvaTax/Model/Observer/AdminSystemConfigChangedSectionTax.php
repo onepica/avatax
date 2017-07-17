@@ -200,6 +200,7 @@ class OnePica_AvaTax_Model_Observer_AdminSystemConfigChangedSectionTax extends O
             if (isset($errors[$key])) {
                 unset($errors[$key]);
             }
+
             $errors[] = Mage::helper('avatax')->__(
                 'SSL must be enabled in PHP to use this extension. Typically, OpenSSL is used but it is not enabled on your server. This may not be a problem if you have some other form of SSL in place. For more information about OpenSSL, see %s.',
                 '<a href="http://www.php.net/manual/en/book.openssl.php" target="_blank">http://www.php.net/manual/en/book.openssl.php</a>'

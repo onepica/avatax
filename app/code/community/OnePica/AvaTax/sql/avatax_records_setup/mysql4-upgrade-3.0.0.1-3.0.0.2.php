@@ -19,9 +19,11 @@ $this->startSetup();
 /* @var $this Mage_Core_Model_Resource_Setup */
 $adapter = $this->getConnection();
 
-$installer->run("
-
+$installer->run(
+    "
     ALTER TABLE `" . $this->getTable('avatax_records/log') . "`
-    CHANGE COLUMN `result` `result` MEDIUMTEXT NULL COMMENT 'Result';");
+    CHANGE COLUMN `result` `result` MEDIUMTEXT NULL COMMENT 'Result';
+    "
+);
 
 $this->endSetup();

@@ -44,6 +44,7 @@ class OnePica_AvaTax_Model_Observer_SalesOrderCreditmemoSaveAfter extends OnePic
                 ->setStatus(OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_PENDING)
                 ->save();
         }
+
         return $this;
     }
 }

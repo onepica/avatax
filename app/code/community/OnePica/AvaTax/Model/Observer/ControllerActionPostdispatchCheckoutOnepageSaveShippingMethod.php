@@ -31,12 +31,14 @@ class OnePica_AvaTax_Model_Observer_ControllerActionPostdispatchCheckoutOnepageS
      * @param Varien_Event_Observer $observer
      * @return $this
      */
-    public function execute(Varien_Event_Observer $observer) {
+    public function execute(Varien_Event_Observer $observer)
+    {
         if ($this->_getErrorsHelper()->fullStopOnError($this->_getQuote())) {
             Mage::app()
                 ->getResponse()
                 ->setBody($this->_getResponseErrorMessage());
         }
+
         return $this;
     }
 

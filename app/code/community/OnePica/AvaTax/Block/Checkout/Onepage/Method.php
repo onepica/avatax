@@ -88,6 +88,7 @@ abstract class OnePica_AvaTax_Block_Checkout_Onepage_Method extends OnePica_AvaT
         if ($normalizeAddressDisabler) {
             $checkboxDisabler = Mage::getBlockSingleton($this->_disablerBlockName)->toHtml();
         }
+
         if ($this->getAddress()->getAddressNormalized()) {
             $notice = Mage::helper('avatax/config')->getOnepageNormalizeMessage(Mage::app()->getStore());
             $notice .= $checkboxDisabler;

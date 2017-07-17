@@ -80,6 +80,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
         if (isset($data['service_config'])) {
             $this->setServiceConfig($data['service_config']);
         }
+
         self::_construct();
     }
 
@@ -94,6 +95,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
         if (is_array($addresses)) {
             $this->_cache = $addresses;
         }
+
         parent::_construct();
     }
 
@@ -178,6 +180,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
         if (null === $this->getLocationAddress()) {
             $this->setLocationAddress($this->getLocationAddressObject());
         }
+
         $address = $this->getAddress()->getStreet();
         if (is_array($address) && isset($address[0])) {
             $address = $address[0];
@@ -235,6 +238,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
 
             $addressValidationResult->setAddress($resultAddress);
         }
+
         $addressValidationResult->setResolution(in_array($result->getResolutionQuality(), $this->_successResponse));
 
         // if we have bad resolution we should set error with message

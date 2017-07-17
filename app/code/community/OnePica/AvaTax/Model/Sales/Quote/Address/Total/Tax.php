@@ -151,6 +151,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
         if ($address->getQuote()->getTaxesForItems()) {
             $itemTaxGroups += $address->getQuote()->getTaxesForItems();
         }
+
         $address->getQuote()->setTaxesForItems($itemTaxGroups);
 
         return $this;
@@ -495,7 +496,8 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mode
             $address->setBaseTotalAmount('subtotal', $address->getBaseTotalAmount('subtotal') + $baseSubTotal);
         } else {
             $address->setTotalAmount('subtotal', $address->getTotalAmount('subtotal') + $item->getRowTotal());
-            $address->setBaseTotalAmount('subtotal',
+            $address->setBaseTotalAmount(
+                'subtotal',
                 $address->getBaseTotalAmount('subtotal') + $item->getBaseRowTotal()
             );
         }

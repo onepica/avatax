@@ -53,6 +53,7 @@ class OnePica_AvaTax_Model_Observer_MultishippingSetShippingItems
             if ($address->validate() !== true) {
                 $errors[] = sprintf($message, $address->format('oneline'));
             }
+
             if ($address->getAddressNormalized()) {
                 $notice = Mage::getStoreConfig('tax/avatax/multiaddress_normalize_message', $storeId);
             }

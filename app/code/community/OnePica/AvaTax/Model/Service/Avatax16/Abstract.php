@@ -196,6 +196,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax16_Abstract extends OnePica_Av
                     break;
             }
         }
+
         $level = $result->getHasError() ? OnePica_AvaTax_Model_Records_Log::LOG_LEVEL_ERROR
                                         : OnePica_AvaTax_Model_Records_Log::LOG_LEVEL_SUCCESS;
 
@@ -212,6 +213,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax16_Abstract extends OnePica_Av
                 ->setAdditional(print_r($additional, true))
                 ->save();
         }
+
         return $this;
     }
 
