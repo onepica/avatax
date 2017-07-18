@@ -22,7 +22,8 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Block_Checkout_Onepage_Address_Normalization_Payment_Disabler extends OnePica_AvaTax_Block_Checkout_Abstract
+class OnePica_AvaTax_Block_Checkout_Onepage_Address_Normalization_Payment_Disabler
+    extends OnePica_AvaTax_Block_Checkout_Abstract
 {
     /**
      * Generate checkbox for address normalization disabler
@@ -58,7 +59,6 @@ class OnePica_AvaTax_Block_Checkout_Onepage_Address_Normalization_Payment_Disabl
                 }
             </style>
             <script type='application/javascript'>
-                //debugger;
                 Checkout.prototype.avataxEnableContinue = function(step, isEnabled){
                     var container = $(step+'-buttons-container');
                     if(isEnabled){
@@ -83,7 +83,6 @@ class OnePica_AvaTax_Block_Checkout_Onepage_Address_Normalization_Payment_Disabl
                 };
 
                 Checkout.prototype.avataxResetBillingAndShippingProgress = function() {
-                    //debugger;
                     if (this.resetPreviousSteps != undefined && this.resetPreviousSteps != null) {
                         //for magento version >= 1.8.0.0
                         var step = this.currentStep;
@@ -125,13 +124,11 @@ class OnePica_AvaTax_Block_Checkout_Onepage_Address_Normalization_Payment_Disabl
                             method:'post',
                             parameters:{flag:isChecked},
                             onSuccess: function(response){
-                                //debugger;
                                 checkout.avataxResetBillingAndShippingProgress();
 
                                 //wrap method
                                 Checkout.prototype.setStepResponse = Checkout.prototype.setStepResponse.wrap(function(parentMethod, response){
-                                    debugger;
-
+                                    
                                     var section = response.goto_section;
                                     switch(section) {
                                         case 'payment': {

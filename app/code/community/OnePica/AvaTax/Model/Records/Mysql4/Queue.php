@@ -53,6 +53,7 @@ class OnePica_AvaTax_Model_Records_Mysql4_Queue extends Mage_Core_Model_Mysql4_A
         if (!$object->hasCreatedAt()) {
             $object->setCreatedAt($this->_getDateModel()->gmtDate('Y-m-d H:i:s'));
         }
+
         $object->setUpdatedAt($this->_getDateModel()->gmtDate('Y-m-d H:i:s'));
         return $this;
     }
@@ -104,6 +105,7 @@ class OnePica_AvaTax_Model_Records_Mysql4_Queue extends Mage_Core_Model_Mysql4_A
                     ->save();
             }
         }
+
         return $this;
     }
 

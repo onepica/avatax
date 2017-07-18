@@ -76,11 +76,13 @@ class OnePica_AvaTax_Model_Action_Validator extends OnePica_AvaTax_Model_Action_
         if (!$isAddressValidationOn && !$isAddressNormalizationOn && !$isAddressActionable) {
             return true;
         }
+
         if ($address->getPostcode() && $address->getPostcode() != '-') {
             $checkFieldsResult = $this->_checkFields($quote->getStoreId());
             if ($checkFieldsResult) {
                 return $checkFieldsResult;
             }
+
             $this->setStoreId($quote->getStoreId());
             /** @var OnePica_AvaTax_Model_Service_Result_AddressValidate $result */
             $result = $this->_getService()->validate($address);
@@ -197,6 +199,7 @@ class OnePica_AvaTax_Model_Action_Validator extends OnePica_AvaTax_Model_Action_
                         $requiredFlag = 1;
                     }
                 }
+
                 if ($requiredFlag) {
                     $errors = array();
                     $errors[] = $this->__('Invalid ') . $this->__($field);

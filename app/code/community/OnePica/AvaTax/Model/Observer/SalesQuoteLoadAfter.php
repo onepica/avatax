@@ -36,6 +36,7 @@ class OnePica_AvaTax_Model_Observer_SalesQuoteLoadAfter extends OnePica_AvaTax_M
         if (Mage::registry('avatax_store_id')) {
             Mage::unregister('avatax_store_id');
         }
+
         Mage::register('avatax_store_id', $storeId);
         return $this;
     }

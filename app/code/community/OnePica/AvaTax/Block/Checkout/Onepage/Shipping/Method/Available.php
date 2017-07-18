@@ -22,7 +22,8 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Block_Checkout_Onepage_Shipping_Method_Available extends OnePica_AvaTax_Block_Checkout_Onepage_Method
+class OnePica_AvaTax_Block_Checkout_Onepage_Shipping_Method_Available
+    extends OnePica_AvaTax_Block_Checkout_Onepage_Method
 {
     /**
      * Normalization Disabler Block Name

@@ -184,6 +184,7 @@ class OnePica_AvaTax_Model_Action_Calculator extends OnePica_AvaTax_Model_Action
         if ($item->getParentItemId()) {
             return 0;
         }
+
         $ratesData = $this->_getRates();
         $id = $item->getId();
 

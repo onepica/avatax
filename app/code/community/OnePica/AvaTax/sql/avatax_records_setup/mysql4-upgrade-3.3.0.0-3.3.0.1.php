@@ -24,7 +24,8 @@ $setup = Mage::getModel('customer/entity_setup', 'core_setup');
 
 $attributeCode = 'avatax_customer_code';
 
-$setup->addAttribute('customer', $attributeCode, array(
+$setup->addAttribute(
+    'customer', $attributeCode, array(
     'label'             => 'Avatax Customer Code',
     'type'              => 'varchar',
     'input'             => 'text',
@@ -34,7 +35,8 @@ $setup->addAttribute('customer', $attributeCode, array(
     'visible_on_front'  => 0,
     'position'          => 200,
     'sort_order'        => 200,
-));
+    )
+);
 
 // update options for attribute
 $attribute = Mage::getModel('eav/config')->getAttribute('customer', $attributeCode);

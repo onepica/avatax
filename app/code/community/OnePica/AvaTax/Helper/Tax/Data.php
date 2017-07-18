@@ -40,6 +40,7 @@ class OnePica_AvaTax_Helper_Tax_Data extends Mage_Tax_Helper_Data
         if (Mage::helper('avatax')->isServiceEnabled($store)) {
             return self::AVATAX_SHIPPING_TAX_CLASS;
         }
+
         return parent::getShippingTaxClass($store);
     }
 
@@ -54,6 +55,7 @@ class OnePica_AvaTax_Helper_Tax_Data extends Mage_Tax_Helper_Data
         if (Mage::helper('avatax')->isServiceEnabled($store)) {
             return 'shipping';
         }
+
         return parent::getTaxBasedOn($store);
     }
 
@@ -68,6 +70,7 @@ class OnePica_AvaTax_Helper_Tax_Data extends Mage_Tax_Helper_Data
         if (Mage::helper('avatax')->isServiceEnabled($store)) {
             return true;
         }
+
         return parent::applyTaxOnCustomPrice($store);
     }
 
@@ -82,6 +85,7 @@ class OnePica_AvaTax_Helper_Tax_Data extends Mage_Tax_Helper_Data
         if (Mage::helper('avatax')->isServiceEnabled($store)) {
             return false;
         }
+
         return parent::applyTaxOnOriginalPrice($store);
     }
 }

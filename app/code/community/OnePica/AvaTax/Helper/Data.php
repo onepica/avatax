@@ -95,7 +95,7 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
      * Returns the logging type
      *
      * @param null|bool|int|Mage_Core_Model_Store $store
-     * @return string
+     * @return array
      */
     public function getLogType($store = null)
     {

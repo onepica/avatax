@@ -22,7 +22,8 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Block_Checkout_Multishipping_Address_Normalization_Disabler extends OnePica_AvaTax_Block_Checkout_Abstract
+class OnePica_AvaTax_Block_Checkout_Multishipping_Address_Normalization_Disabler
+    extends OnePica_AvaTax_Block_Checkout_Abstract
 {
     /**
      * Generate checkbox for address normalization disabler

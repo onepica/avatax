@@ -54,6 +54,7 @@ class OnePica_AvaTax_Model_Action_Creditmemo extends OnePica_AvaTax_Model_Action
                     'Collected: ' . $creditmemo->getTaxAmount() . ', Actual: ' . $totalTax
                 );
             }
+
             //if not successful
         } else {
             $messages = $creditmemoResult->getErrors();

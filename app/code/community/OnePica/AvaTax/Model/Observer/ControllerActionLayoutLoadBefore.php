@@ -36,7 +36,7 @@ class OnePica_AvaTax_Model_Observer_ControllerActionLayoutLoadBefore
         $action = $observer->getAction();
         if ($action instanceOf Mage_Checkout_CartController
             && $action->getFullActionName() == 'checkout_cart_index') {
-            /* @var Mage_Sales_Model_Quote $quote */
+            /** @var Mage_Sales_Model_Quote $quote */
             $quote = Mage::getSingleton('checkout/session')->getQuote();
             $this->_addErrorMessage($quote);
         }

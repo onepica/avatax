@@ -44,9 +44,11 @@ class OnePica_AvaTax_Model_Adminhtml_Sales_Order_Create extends Mage_Adminhtml_M
         if ($this->getQuote()->getIsVirtual()) {
             return $this;
         }
+
         if (!$this->_isAjaxRequest()) {
             $this->_validateShippingAddress();
         }
+
         return $this;
     }
 
@@ -61,13 +63,12 @@ class OnePica_AvaTax_Model_Adminhtml_Sales_Order_Create extends Mage_Adminhtml_M
         if (!$this->_getDataHelper()->isServiceEnabled()) {
             return $this;
         }
+
         $result = $this->getShippingAddress()->validate();
         if ($result !== true) {
             throw new OnePica_AvaTax_Exception(implode('<br />', $result));
         } elseif ($this->getShippingAddress()->getAddressNormalized() && !$this->_messageAdded) {
-            Mage::getSingleton('adminhtml/session')->addNotice(
-                $this->_getDataHelper()->__('The shipping address has been modified during the validation process. Please confirm the address below is accurate.')
-            );
+            Mage::getSingleton('adminhtml/session')->addNotice($this->_getConfigData()->getOnepageNormalizeMessage());
             $this->_messageAdded = true;
         }
 
@@ -92,5 +93,15 @@ class OnePica_AvaTax_Model_Adminhtml_Sales_Order_Create extends Mage_Adminhtml_M
     protected function _getDataHelper()
     {
         return Mage::helper('avatax');
+    }
+
+    /**
+     * Get config helper
+     *
+     * @return OnePica_AvaTax_Helper_Config
+     */
+    protected function _getConfigData()
+    {
+        return Mage::helper('avatax/config');
     }
 }
