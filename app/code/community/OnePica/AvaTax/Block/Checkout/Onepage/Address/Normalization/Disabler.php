@@ -103,6 +103,16 @@ class OnePica_AvaTax_Block_Checkout_Onepage_Address_Normalization_Disabler
                     }
                 };
 
+                Checkout.prototype.avataxUpdateUseForShipping = function() {
+                    if ($('billing:use_for_shipping_yes')) {
+                        $('billing:use_for_shipping_yes').checked = $('shipping:same_as_billing').checked;
+                    }
+
+                    if ($('billing:use_for_shipping_no')) {
+                        $('billing:use_for_shipping_no').checked = !$('shipping:same_as_billing').checked;
+                    }
+                };
+
                 Checkout.prototype.avataxSetNormalizationPleaseWait = function() {
                   $('allow_normalize_shipping_address').setAttribute('disabled', 'disabled');
 
@@ -123,11 +133,13 @@ class OnePica_AvaTax_Block_Checkout_Onepage_Address_Normalization_Disabler
                             method:'post',
                             parameters:{flag:isChecked},
                             onSuccess: function(response){
+                                //debugger;
                                 checkout.avataxResetBillingAndShippingProgress();
+                                checkout.avataxUpdateUseForShipping();
 
                                 //wrap method
                                 Checkout.prototype.setStepResponse = Checkout.prototype.setStepResponse.wrap(function(parentMethod, response){
-
+                                    //debugger;
                                     var section = response.goto_section;
                                     switch(section) {
                                         case 'shipping': {
