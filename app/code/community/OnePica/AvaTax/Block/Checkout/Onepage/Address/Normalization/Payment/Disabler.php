@@ -59,6 +59,7 @@ class OnePica_AvaTax_Block_Checkout_Onepage_Address_Normalization_Payment_Disabl
                 }
             </style>
             <script type='application/javascript'>
+                //debugger;
                 Checkout.prototype.avataxEnableContinue = function(step, isEnabled){
                     var container = $(step+'-buttons-container');
                     if(isEnabled){
@@ -111,6 +112,10 @@ class OnePica_AvaTax_Block_Checkout_Onepage_Address_Normalization_Payment_Disabl
                     }
                 };
 
+                Checkout.prototype.avataxSetNormalizationEnabled = function(){
+                    $('allow_normalize_shipping_address').removeAttribute('disabled');
+                };
+
                 Checkout.prototype.avataxReloadShippingMethodsAccordingNormalization = function() {
                     //debugger;
                     this.avataxSetNormalizationPleaseWait();
@@ -128,7 +133,7 @@ class OnePica_AvaTax_Block_Checkout_Onepage_Address_Normalization_Payment_Disabl
 
                                 //wrap method
                                 Checkout.prototype.setStepResponse = Checkout.prototype.setStepResponse.wrap(function(parentMethod, response){
-                                    
+
                                     var section = response.goto_section;
                                     switch(section) {
                                         case 'payment': {
@@ -148,6 +153,8 @@ class OnePica_AvaTax_Block_Checkout_Onepage_Address_Normalization_Payment_Disabl
                         }
                     );
                 };
+
+                checkout.avataxSetNormalizationEnabled();
             </script>
         </p>";
 
