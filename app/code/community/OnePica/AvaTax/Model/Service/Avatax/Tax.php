@@ -58,7 +58,8 @@ class OnePica_AvaTax_Model_Service_Avatax_Tax extends OnePica_AvaTax_Model_Servi
             $this->_request,
             $result,
             $storeId,
-            $config->getParams()
+            $config->getParams(),
+            $connection
         );
 
         return $result;

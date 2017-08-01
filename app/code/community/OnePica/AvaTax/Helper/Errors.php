@@ -66,6 +66,7 @@ class OnePica_AvaTax_Helper_Errors extends Mage_Core_Helper_Abstract
             $error->setIdentifier(self::CALCULATE_ERROR_MESSAGE_IDENTIFIER);
             $session->addMessage($error);
         }
+
         return $message;
     }
 
@@ -83,6 +84,7 @@ class OnePica_AvaTax_Helper_Errors extends Mage_Core_Helper_Abstract
             /** @var Mage_Checkout_Model_Session $session */
             $session = Mage::getSingleton('checkout/session');
         }
+
         /** @var Mage_Core_Model_Message_Collection $messages */
         $messages = $session->getMessages();
         $messages->deleteMessageByIdentifier(self::CALCULATE_ERROR_MESSAGE_IDENTIFIER);

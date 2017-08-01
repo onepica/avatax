@@ -31,13 +31,11 @@ class OnePica_AvaTax_Model_Config_Backend_CustomerCodeFormatAttribute extends Ma
      */
     public function save()
     {
-        if(!$this->_attributeExists())
-        {
+        if (!$this->_attributeExists()) {
             Mage::throwException($this->_getHelper()->__("Customer Code Format Attribute doesn't exists"));
         }
 
-        if(!$this->_attributeTypeIsCorrect())
-        {
+        if (!$this->_attributeTypeIsCorrect()) {
             $message = $this->_getHelper()->__("Incorrect Customer Code Format Attribute type.")
                      . PHP_EOL
                      . $this->_getHelper()->__("Please, set 'Input Type' as 'Text Field' for attribute.");
@@ -45,8 +43,7 @@ class OnePica_AvaTax_Model_Config_Backend_CustomerCodeFormatAttribute extends Ma
             Mage::throwException($message);
         }
 
-        if($this->_attributeIsVisibleOnFrontend())
-        {
+        if ($this->_attributeIsVisibleOnFrontend()) {
             $message = $this->_getHelper()->__("Customer Code Format Attribute field shouldn't be shown on frontend.")
                      . PHP_EOL
                      . $this->_getHelper()->__("Please, set 'Show on Frontend' as 'No' for attribute.");
@@ -54,11 +51,12 @@ class OnePica_AvaTax_Model_Config_Backend_CustomerCodeFormatAttribute extends Ma
             Mage::throwException($message);
         }
 
-        if(!$this->_attributeIsUsedInCorrectForms())
-        {
+        if (!$this->_attributeIsUsedInCorrectForms()) {
             $message = $this->_getHelper()->__("Incorrect Customer Code Format Attribute form usage.")
                      . PHP_EOL
-                     . $this->_getHelper()->__("Please, set 'Forms to Use In' as 'Customer Account Edit' or empty for attribute.");
+                     . $this->_getHelper()->__(
+                         "Please, set 'Forms to Use In' as 'Customer Account Edit' or empty for attribute."
+                     );
 
             Mage::throwException($message);
         }

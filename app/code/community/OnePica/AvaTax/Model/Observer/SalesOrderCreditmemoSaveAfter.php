@@ -32,7 +32,7 @@ class OnePica_AvaTax_Model_Observer_SalesOrderCreditmemoSaveAfter extends OnePic
      */
     public function execute(Varien_Event_Observer $observer)
     {
-        /* @var $creditmemo Mage_Sales_Model_Order_Creditmemo */
+        /** @var Mage_Sales_Model_Order_Creditmemo $creditmemo */
         $creditmemo = $observer->getEvent()->getCreditmemo();
         if ($creditmemo->getData('avatax_can_add_to_queue')
             && (int)$creditmemo->getState() === Mage_Sales_Model_Order_Creditmemo::STATE_REFUNDED
@@ -44,6 +44,7 @@ class OnePica_AvaTax_Model_Observer_SalesOrderCreditmemoSaveAfter extends OnePic
                 ->setStatus(OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_PENDING)
                 ->save();
         }
+
         return $this;
     }
 }

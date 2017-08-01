@@ -53,6 +53,7 @@ class OnePica_AvaTax_Model_Action_Invoice extends OnePica_AvaTax_Model_Action_Ab
                     'Collected: ' . $invoice->getBaseTaxAmount() . ', Actual: ' . $totalTax
                 );
             }
+
             //if not successful
         } else {
             $messages = $invoiceResult->getErrors();

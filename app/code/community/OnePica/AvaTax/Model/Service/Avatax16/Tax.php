@@ -159,6 +159,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Tax extends OnePica_AvaTax_Model_Ser
                 }
             }
         }
+
         $this->_productCollection = Mage::getModel('catalog/product')->getCollection()
             ->addAttributeToSelect('*')
             ->addAttributeToFilter('entity_id', array('in' => $productIds));
@@ -181,11 +182,13 @@ class OnePica_AvaTax_Model_Service_Avatax16_Tax extends OnePica_AvaTax_Model_Ser
                 $taxClassIds[] = $product->getTaxClassId();
             }
         }
+
         $gwTaxClassId = $this->_getGwTaxClassId($object);
 
         if (0 !== $gwTaxClassId) {
             $taxClassIds[] = $gwTaxClassId;
         }
+
         $this->_taxClassCollection = Mage::getModel('tax/class')->getCollection()
             ->addFieldToFilter('class_id', array('in' => $taxClassIds));
 
@@ -233,6 +236,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Tax extends OnePica_AvaTax_Model_Ser
         if (Mage::getEdition() !== Mage::EDITION_ENTERPRISE) {
             return 0;
         }
+
         if (!$object->getGwPrice()
             && !$object->getGwItemsPrice()
             && !$object->getGwPrintedCardPrice()

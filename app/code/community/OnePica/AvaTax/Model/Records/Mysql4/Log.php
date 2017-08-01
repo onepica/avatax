@@ -44,6 +44,7 @@ class OnePica_AvaTax_Model_Records_Mysql4_Log extends Mage_Core_Model_Mysql4_Abs
         if ($object->getLevel() != OnePica_AvaTax_Model_Records_Log::LOG_LEVEL_SUCCESS) {
             $object->setLevel(OnePica_AvaTax_Model_Records_Log::LOG_LEVEL_ERROR);
         }
+
         return $this;
     }
 

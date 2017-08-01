@@ -28,7 +28,7 @@ class OnePica_AvaTax_Model_Observer_SalesOrderCreditmemoRefund extends OnePica_A
      */
     public function execute(Varien_Event_Observer $observer)
     {
-        /* @var $creditmemo Mage_Sales_Model_Order_Creditmemo */
+        /** @var Mage_Sales_Model_Order_Creditmemo $creditmemo */
         $creditmemo = $observer->getEvent()->getCreditmemo();
         $creditmemo->setData('avatax_can_add_to_queue', true);
 

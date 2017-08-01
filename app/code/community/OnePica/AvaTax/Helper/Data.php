@@ -95,7 +95,7 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
      * Returns the logging type
      *
      * @param null|bool|int|Mage_Core_Model_Store $store
-     * @return string
+     * @return array
      */
     public function getLogType($store = null)
     {
@@ -217,5 +217,19 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
         $part[] = $opVerParts[1];
 
         return implode(',', $part);
+    }
+
+    /**
+     * Retrieve current date in internal format
+     * Copy of Varien_Date::now()
+     * Need for old versions of Magento
+     *
+     * @param boolean $withoutTime day only flag
+     * @return string
+     */
+    public function varienDateNow($withoutTime = false)
+    {
+        $format = $withoutTime ? 'Y-m-d' : 'Y-m-d H:i:s';
+        return date($format);
     }
 }

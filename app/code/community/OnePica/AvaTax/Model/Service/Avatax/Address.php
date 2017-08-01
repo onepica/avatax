@@ -76,9 +76,11 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
         if (is_array($addresses)) {
             $this->_cache = $addresses;
         }
+
         if (isset($data['service_config'])) {
             $this->setServiceConfig($data['service_config']);
         }
+
         parent::_construct();
     }
 
@@ -176,6 +178,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
             $result = $this->_sendAddressValidationRequest();
             $this->_cache[$key] = serialize($result);
         }
+
         /** @var OnePica_AvaTax_Model_Service_Result_AddressValidate $addressValidationResult */
         $addressValidationResult = Mage::getModel('avatax/service_result_addressValidate');
         if ($result instanceof ValidateResult) {
@@ -188,9 +191,11 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
                     foreach ($errors as $element) {
                         $convertErrors[] = $element->getSummary();
                     }
+
                     $addressValidationResult->setErrors($convertErrors);
                 }
             }
+
             $address = $result->getValidAddresses();
             if (is_array($address) && isset($address[0]) && $address[0]) {
                 /** @var ValidAddress $address */
@@ -206,6 +211,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
 
                 $addressValidationResult->setAddress($resultAddress);
             }
+
             /** Set is success */
             $addressValidationResult->setResolution($result->getResultCode() == SeverityLevel::$Success);
             $addressValidationResult->setIsTaxable($result->isTaxable());
@@ -240,6 +246,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
         } catch (Exception $e) {
             $result = $this->_convertExceptionToResult($e);
         }
+
         $this->_log(
             OnePica_AvaTax_Model_Source_Avatax_Logtype::VALIDATE,
             $request,

@@ -51,6 +51,7 @@ class OnePica_AvaTax_Model_Source_Regionfilter_List
         if ($this->_options) {
             return $this->_options;
         }
+
         $this->_initOptions();
         return $this->_options;
     }
