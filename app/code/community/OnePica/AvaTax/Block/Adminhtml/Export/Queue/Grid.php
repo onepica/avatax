@@ -80,7 +80,8 @@ class OnePica_AvaTax_Block_Adminhtml_Export_Queue_Grid extends OnePica_AvaTax_Bl
             )
         );
 
-        $this->addColumn('actions', array(
+        $this->addColumn(
+            'actions', array(
             'header'  => $this->__('Actions'),
             'type'    => 'action',
             'getter'  => 'getId',
@@ -95,7 +96,8 @@ class OnePica_AvaTax_Block_Adminhtml_Export_Queue_Grid extends OnePica_AvaTax_Bl
             'filter'    => false,
             'sortable'  => false,
             'renderer'  => 'avatax/widget_grid_column_renderer_queueAction'
-        ));
+            )
+        );
 
         return $this;
     }

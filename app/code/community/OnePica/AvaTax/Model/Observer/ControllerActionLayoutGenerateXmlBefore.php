@@ -38,9 +38,9 @@ class OnePica_AvaTax_Model_Observer_ControllerActionLayoutGenerateXmlBefore
         ) {
             $requestBlocks = $action->getRequest()->getParam('block');
             if (isset($requestBlocks) && strstr($requestBlocks, 'totals')) {
-                /* @var Mage_Adminhtml_Model_Session_Quote $adminQuote */
+                /** @var Mage_Adminhtml_Model_Session_Quote $adminQuote */
                 $adminQuote = Mage::getSingleton('adminhtml/session_quote');
-                /* @var Mage_Sales_Model_Quote $quote */
+                /** @var Mage_Sales_Model_Quote $quote */
                 $quote = (isset($adminQuote)) ? $adminQuote->getQuote() : null;
                 if (isset($quote)) {
                     $quote->setTotalsCollectedFlag(false);

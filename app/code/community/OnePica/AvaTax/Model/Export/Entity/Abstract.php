@@ -83,6 +83,7 @@ abstract class OnePica_AvaTax_Model_Export_Entity_Abstract
         if ($this->_collection === null) {
             $this->_collection = $this->_getCollection();
         }
+
         return $this->_collection;
     }
 

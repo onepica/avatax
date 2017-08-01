@@ -60,6 +60,7 @@ class OnePica_AvaTax_Block_Adminhtml_Export_Log_View extends Mage_Adminhtml_Bloc
                 . $this->__('AvaTax Action Log Entry #%d', $this->getCurrentEvent()->getId())
                 . '</h3>';
         }
+
         return '<h3 class="icon-head" style="background-image:url('
             . $this->getSkinUrl('images/fam_application_view_tile.gif') . ');">'
             . $this->__('AvaTax Action Log Entry Details')
@@ -76,6 +77,7 @@ class OnePica_AvaTax_Block_Adminhtml_Export_Log_View extends Mage_Adminhtml_Bloc
         if (null === $this->_currentEevent) {
             $this->_currentEevent = Mage::registry('current_event');
         }
+
         return $this->_currentEevent;
     }
 }
