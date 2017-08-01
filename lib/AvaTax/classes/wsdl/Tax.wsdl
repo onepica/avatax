@@ -24,6 +24,7 @@
           <s:element minOccurs="0" maxOccurs="1" name="OriginCode" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="DestinationCode" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="Addresses" type="tns:ArrayOfBaseAddress" />
+          <s:element minOccurs="0" maxOccurs="1" name="AddressLocationTypes" type="tns:ArrayOfAddressLocationType" />
           <s:element minOccurs="0" maxOccurs="1" name="Lines" type="tns:ArrayOfLine" />
           <s:element minOccurs="1" maxOccurs="1" name="DetailLevel" type="tns:DetailLevel" />
           <s:element minOccurs="0" maxOccurs="1" name="ReferenceCode" type="s:string" />
@@ -39,8 +40,27 @@
           <s:element minOccurs="1" maxOccurs="1" name="ExchangeRateEffDate" type="s:date" />
           <s:element minOccurs="0" maxOccurs="1" name="PosLaneCode" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="BusinessIdentificationNo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IsSellerImporterOfRecord" type="s:boolean" default="false" />
+          <s:element minOccurs="0" maxOccurs="1" name="BRBuyerType" type="tns:BRBuyerTypeEnum" default="IND" />
+          <s:element minOccurs="0" maxOccurs="1" name="BRBuyer_IsExemptOrCannotWH_IRRF" type="s:boolean" default="false" />
+          <s:element minOccurs="0" maxOccurs="1" name="BRBuyer_IsExemptOrCannotWH_PISRF" type="s:boolean" default="false" />
+          <s:element minOccurs="0" maxOccurs="1" name="BRBuyer_IsExemptOrCannotWH_COFINSRF" type="s:boolean" default="false" />
+          <s:element minOccurs="0" maxOccurs="1" name="BRBuyer_IsExemptOrCannotWH_CSLLRF" type="s:boolean" default="false" />
+          <s:element minOccurs="0" maxOccurs="1" name="BRBuyer_IsExempt_PIS" type="s:boolean" default="false" />
+          <s:element minOccurs="0" maxOccurs="1" name="BRBuyer_IsExempt_COFINS" type="s:boolean" default="false" />
+          <s:element minOccurs="0" maxOccurs="1" name="BRBuyer_IsExempt_CSLL" type="s:boolean" default="false" />
+          <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ParameterBagItems" type="tns:ArrayOfParameterBagItem" />
         </s:sequence>
       </s:complexType>
+      <s:simpleType name="BRBuyerTypeEnum">
+        <s:restriction base="s:string">
+          <s:enumeration value="IND" />
+          <s:enumeration value="BUS" />
+          <s:enumeration value="GOV" />
+        </s:restriction>
+      </s:simpleType>
       <s:simpleType name="DocumentType">
         <s:restriction base="s:string">
           <s:enumeration value="SalesOrder" />
@@ -53,6 +73,25 @@
           <s:enumeration value="InventoryTransferInvoice" />
           <s:enumeration value="ReverseChargeOrder" />
           <s:enumeration value="ReverseChargeInvoice" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="ArrayOfAddressLocationType">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="AddressLocationType" nillable="true" type="tns:AddressLocationType" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="AddressLocationType">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="AddressCode" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="LocationTypeCode" type="tns:LocationType" />
+        </s:sequence>
+      </s:complexType>          
+      <s:simpleType name="LocationType">
+        <s:restriction base="s:string">
+          <s:enumeration value="ShipFrom" />
+          <s:enumeration value="ShipTo" />
+          <s:enumeration value="PointOfOrderOrigin" />
+          <s:enumeration value="PointOfOrderAcceptance" />
         </s:restriction>
       </s:simpleType>
       <s:complexType name="ArrayOfBaseAddress">
@@ -88,6 +127,7 @@
           <s:element minOccurs="0" maxOccurs="1" name="ItemCode" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="TaxCode" type="s:string" />
           <s:element minOccurs="1" maxOccurs="1" name="Qty" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="UnitOfMeasurement" type="s:string" />
           <s:element minOccurs="1" maxOccurs="1" name="Amount" type="s:decimal" />
           <s:element minOccurs="1" maxOccurs="1" name="Discounted" type="s:boolean" />
           <s:element minOccurs="0" maxOccurs="1" name="RevAcct" type="s:string" />
@@ -97,8 +137,10 @@
           <s:element minOccurs="0" maxOccurs="1" name="CustomerUsageType" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="TaxOverride" type="tns:TaxOverride" />
-		  <s:element minOccurs="0" maxOccurs="1" name="TaxIncluded" type="s:boolean" default="false" />
+		      <s:element minOccurs="0" maxOccurs="1" name="TaxIncluded" type="s:boolean" default="false" />
           <s:element minOccurs="0" maxOccurs="1" name="BusinessIdentificationNo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AddressLocationTypes" type="tns:ArrayOfAddressLocationType" />
+          <s:element minOccurs="0" maxOccurs="1" name="ParameterBagItems" type="tns:ArrayOfParameterBagItem" />
         </s:sequence>
       </s:complexType>
       <s:complexType name="TaxOverride">
@@ -107,6 +149,17 @@
           <s:element minOccurs="1" maxOccurs="1" name="TaxAmount" type="s:decimal" />
           <s:element minOccurs="1" maxOccurs="1" name="TaxDate" type="s:date" />
           <s:element minOccurs="0" maxOccurs="1" name="Reason" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfParameterBagItem">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ParameterBagItem" nillable="true" type="tns:ParameterBagItem" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ParameterBagItem">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Value" type="s:string" />
         </s:sequence>
       </s:complexType>
       <s:simpleType name="TaxOverrideType">
@@ -169,6 +222,7 @@
               <s:element minOccurs="1" maxOccurs="1" name="TaxDate" type="s:date" />
               <s:element minOccurs="0" maxOccurs="1" name="TaxSummary" type="tns:ArrayOfTaxDetail" />
 			        <s:element minOccurs="0" maxOccurs="1" name="VolatileTaxRates" type="s:boolean" />
+              <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
             </s:sequence>
           </s:extension>
         </s:complexContent>
@@ -212,6 +266,7 @@
           <s:enumeration value="Committed" />
           <s:enumeration value="Cancelled" />
           <s:enumeration value="Adjusted" />
+          <s:enumeration value="PendingApproval" />
           <s:enumeration value="Any" />
         </s:restriction>
       </s:simpleType>
@@ -232,12 +287,12 @@
           <s:element minOccurs="1" maxOccurs="1" name="Rate" type="s:decimal" />
           <s:element minOccurs="1" maxOccurs="1" name="Tax" type="s:decimal" />
           <s:element minOccurs="1" maxOccurs="1" name="TaxCalculated" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="TaxIncluded" type="s:boolean" default="false" />
           <s:element minOccurs="0" maxOccurs="1" name="TaxDetails" type="tns:ArrayOfTaxDetail" />
           <s:element minOccurs="1" maxOccurs="1" name="ExemptCertId" type="s:int" />
           <s:element minOccurs="1" maxOccurs="1" name="TaxDate" type="s:date" />
           <s:element minOccurs="1" maxOccurs="1" name="ReportingDate" type="s:date" />
           <s:element minOccurs="1" maxOccurs="1" name="AccountingMethod" type="tns:AccountingMethod" />
-          <s:element minOccurs="0" maxOccurs="1" name="TaxIncluded" type="s:boolean" default="false" />
         </s:sequence>
       </s:complexType>
       <s:simpleType name="BoundaryLevel">
@@ -272,6 +327,10 @@
           <s:element minOccurs="0" maxOccurs="1" name="TaxGroup" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="RateType" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="StateAssignedNo" type="s:string" />          
+          <s:element minOccurs="0" maxOccurs="1" name="TaxableUnits" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="NonTaxableUnits" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="ExemptUnits" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="UnitOfBasis" type="s:string" />     
         </s:sequence>
       </s:complexType>
       <s:simpleType name="JurisdictionType">
@@ -295,6 +354,16 @@
           <s:enumeration value="Fee" />
           <s:enumeration value="Rental" />
           <s:enumeration value="Excise" />
+          <s:enumeration value="LodgingTax" />
+          <s:enumeration value="Hospitality" />
+          <s:enumeration value="Preservation" />
+          <s:enumeration value="TransientRoom" />
+          <s:enumeration value="Hotel" />
+          <s:enumeration value="CountyAccommodations" />
+          <s:enumeration value="Accommodations" />
+          <s:enumeration value="StateAccommodations" />
+          <s:enumeration value="Tourism" />
+          <s:enumeration value="ConventionCenter" />
         </s:restriction>
       </s:simpleType>
       <s:simpleType name="AccountingMethod">
@@ -321,8 +390,8 @@
           <s:element minOccurs="0" maxOccurs="1" name="JurisCode" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="Latitude" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="Longitude" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="ValidateStatus" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="GeocodeType" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ValidateStatus" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="DistanceToBoundary" type="s:int" />
         </s:sequence>
       </s:complexType>
@@ -643,7 +712,6 @@
           </s:extension>
         </s:complexContent>
       </s:complexType>
-
       <s:element name="TaxSummaryFetch">
         <s:complexType>
           <s:sequence>
@@ -653,9 +721,9 @@
       </s:element>
       <s:complexType name="TaxSummaryFetchRequest">
         <s:sequence>
-          <s:element minOccurs="0" maxOccurs="1" name="MerchantCode" type="s:string" />
           <s:element minOccurs="1" maxOccurs="1" name="StartDate" type="s:date" />
           <s:element minOccurs="1" maxOccurs="1" name="EndDate" type="s:date" />
+          <s:element minOccurs="0" maxOccurs="1" name="MerchantCode" type="s:string" />
         </s:sequence>
       </s:complexType>
       <s:element name="TaxSummaryFetchResponse">
@@ -679,6 +747,71 @@
             </s:sequence>
           </s:extension>
         </s:complexContent>
+      </s:complexType>
+      <s:element name="GetAllParameterBagItems">
+        <s:complexType/>
+      </s:element>
+      <s:element name="GetAllParameterBagItemsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAllParameterBagItemsResult" type="tns:GetAllParameterBagItemsResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="GetAllParameterBagItemsResult">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:BaseResult">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="ParameterBags" type="tns:ArrayOfParameterBag" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="GetParameterBagItems">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetParameterBagItemsRequest" type="tns:GetParameterBagItemsRequest" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="GetParameterBagItemsRequest">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Category" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Country" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="State" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetParameterBagItemsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetParameterBagItemsResult" type="tns:GetParameterBagItemsResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="GetParameterBagItemsResult">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:BaseResult">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="ParameterBags" type="tns:ArrayOfParameterBag" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfParameterBag">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ParameterBag" nillable="true" type="tns:ParameterBag" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ParameterBag">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ParameterBagId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Category" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DataType" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Country" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="State" type="s:string" />
+        </s:sequence>
       </s:complexType>
     </s:schema>
   </wsdl:types>
@@ -790,7 +923,25 @@
   <wsdl:message name="TaxSummaryFetchProfile">
     <wsdl:part name="Profile" element="tns:Profile" />
   </wsdl:message>
-  <wsdl:portType name="TaxSvcSoap">
+  <wsdl:message name="GetAllParameterBagItemsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAllParameterBagItems" />
+  </wsdl:message>
+  <wsdl:message name="GetAllParameterBagItemsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAllParameterBagItemsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAllParameterBagItemsProfile">
+    <wsdl:part name="Profile" element="tns:Profile" />
+  </wsdl:message>
+  <wsdl:message name="GetParameterBagItemsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetParameterBagItems" />
+  </wsdl:message>
+  <wsdl:message name="GetParameterBagItemsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetParameterBagItemsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetParameterBagItemsProfile">
+    <wsdl:part name="Profile" element="tns:Profile" />
+  </wsdl:message>
+  <wsdl:portType name="TaxSvcv2Soap">
     <wsdl:operation name="GetTax">
       <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Calculates taxes on a document</wsdl:documentation>
       <wsdl:input message="tns:GetTaxSoapIn" />
@@ -846,8 +997,18 @@
       <wsdl:input message="tns:TaxSummaryFetchSoapIn" />
       <wsdl:output message="tns:TaxSummaryFetchSoapOut" />
     </wsdl:operation>
+    <wsdl:operation name="GetAllParameterBagItems">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves all parameter bag items of provided category or entire set</wsdl:documentation>
+      <wsdl:input message="tns:GetAllParameterBagItemsSoapIn" />
+      <wsdl:output message="tns:GetAllParameterBagItemsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetParameterBagItems">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retrieves parameter bag items of provided category or entire set</wsdl:documentation>
+      <wsdl:input message="tns:GetParameterBagItemsSoapIn" />
+      <wsdl:output message="tns:GetParameterBagItemsSoapOut" />
+    </wsdl:operation>
   </wsdl:portType>
-  <wsdl:binding name="TaxSvcSoap" type="tns:TaxSvcSoap">
+  <wsdl:binding name="TaxSvcv2Soap" type="tns:TaxSvcv2Soap">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="GetTax">
       <soap:operation soapAction="http://avatax.avalara.com/services/GetTax" style="document" />
@@ -962,8 +1123,28 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="GetAllParameterBagItems">
+      <soap:operation soapAction="http://avatax.avalara.com/services/GetAllParameterBagItems" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetAllParameterBagItemsProfile" part="Profile" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetParameterBagItems">
+      <soap:operation soapAction="http://avatax.avalara.com/services/GetParameterBagItems" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetParameterBagItemsProfile" part="Profile" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
-  <wsdl:binding name="TaxSvcSoap12" type="tns:TaxSvcSoap">
+  <wsdl:binding name="TaxSvcv2Soap12" type="tns:TaxSvcv2Soap">
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="GetTax">
       <soap12:operation soapAction="http://avatax.avalara.com/services/GetTax" style="document" />
@@ -1078,13 +1259,33 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="GetAllParameterBagItems">
+      <soap12:operation soapAction="http://avatax.avalara.com/services/GetAllParameterBagItems" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetAllParameterBagItemsProfile" part="Profile" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetParameterBagItems">
+      <soap12:operation soapAction="http://avatax.avalara.com/services/GetParameterBagItems" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetParameterBagItemsProfile" part="Profile" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:service name="TaxSvc">
-    <wsdl:port name="TaxSvcSoap" binding="tns:TaxSvcSoap">
-      <soap:address location="https://avatax.avalara.net/Tax/TaxSvc.asmx" />
+    <wsdl:port name="TaxSvcv2Soap" binding="tns:TaxSvcv2Soap">
+      <soap:address location="https://development.avalara.net/Tax/TaxSvc.asmx/v2" />
     </wsdl:port>
-    <wsdl:port name="TaxSvcSoap12" binding="tns:TaxSvcSoap12">
-      <soap12:address location="https://avatax.avalara.net/Tax/TaxSvc.asmx" />
+    <wsdl:port name="TaxSvcv2Soap12" binding="tns:TaxSvcv2Soap12">
+      <soap12:address location="https://development.avalara.net/Tax/TaxSvc.asmx/v2" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

@@ -16,7 +16,7 @@
  * @see CancelTaxResult, DocumentType
  *
  * @author    Avalara
- * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Tax
  */
 
@@ -39,8 +39,8 @@ class CancelTaxRequest extends TaxRequest
      */
 
     public function getCancelCode() { return $this->CancelCode; }
-
-
+	
+	
     /**
      *   A code indicating the reason the document is getting canceled.
      *
@@ -49,5 +49,11 @@ class CancelTaxRequest extends TaxRequest
      */
 
     public function setCancelCode($value) { CancelCode::Validate($value); $this->CancelCode = $value; return $this; }
-
+	
 }
+
+
+ 
+
+
+?>

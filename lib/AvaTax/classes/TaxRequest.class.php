@@ -8,9 +8,9 @@
  * Tax Requests require either a DocId, or CompanyCode, DocType, and DocCode.
  *
  * @see TaxServiceSoap
- *
+ * 
  * @author    Avalara
- * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Tax
  */
 
@@ -21,7 +21,7 @@ class TaxRequest
     * @access public
     * @var string
     */
-    protected $CompanyCode;
+    protected $CompanyCode;         
     /**
     * Must be one of SalesOrder or SalesInvoice or PurchaseOrder or PurchaseInvoice or ReturnOrder or ReturnInvoice
     * Constants defined in DocumentType.
@@ -30,14 +30,14 @@ class TaxRequest
     * @access public
     * @var string
     */
-    protected $DocType;
+    protected $DocType;             
     /**
     * Invoice Number
     *
     * @access public
     * @var string
     */
-    protected $DocCode;
+    protected $DocCode;             
 
     /**
     * A unique document ID.
@@ -48,15 +48,15 @@ class TaxRequest
     * @access public
     * @var string
     */
-    protected $DocId;
-
+    protected $DocId;	
+	
 	/**
     * Sets the client application company reference code.
     * <br>If docId is specified, this is not needed.
     *
     * @param string
     */
-
+	
 	protected $HashCode;
 
     public function setCompanyCode($value) { $this->CompanyCode = $value; return $this; }
@@ -101,7 +101,7 @@ class TaxRequest
     public function setHashCode($value) { $this->HashCode = $value; return $this; }
     // Accessors
     /**
-    * Gets the client application company reference code.
+    * Gets the client application company reference code.    
     *
     * @return string
     */
@@ -150,12 +150,14 @@ class TaxRequest
     */
 
     public function getDocId() { return $this->DocId; }
-
+	
 	public function __construct()
 	{
 		$this->DocType = DocumentType::$SalesOrder;  // this is right Document
 		$this->HashCode= 0;
-
+		
 	}
 
 }
+
+?>

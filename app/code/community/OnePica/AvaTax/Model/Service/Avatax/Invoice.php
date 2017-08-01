@@ -76,8 +76,6 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
 
         $this->_request->setDocDate($invoiceDate);
         $this->_request->setPaymentDate($invoiceDate);
-        $this->_request->setTaxDate($orderDate);
-        $this->_request->setStatusDate($statusDate);
 
         $configAction = Mage::getStoreConfig('tax/avatax/action', $order->getStoreId());
         $commitAction = OnePica_AvaTax_Model_Service_Abstract_Config::ACTION_CALC_SUBMIT_COMMIT;
@@ -169,8 +167,6 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
 
         $this->_request->setDocDate($creditmemoDate);
         $this->_request->setPaymentDate($creditmemoDate);
-        $this->_request->setTaxDate($orderDate);
-        $this->_request->setStatusDate($statusDate);
 
         $configAction = Mage::getStoreConfig('tax/avatax/action', $order->getStoreId());
         $commitAction = OnePica_AvaTax_Model_Service_Abstract_Config::ACTION_CALC_SUBMIT_COMMIT;
