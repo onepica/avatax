@@ -54,8 +54,10 @@ class OnePica_AvaTax_Model_Service_Avatax
     protected function _getEstimateResource()
     {
         if (null === $this->_estimateResource) {
-            $this->_estimateResource = Mage::getModel('avatax/service_avatax_estimate',
-                array('service_config' => $this->getServiceConfig()));
+            $this->_estimateResource = Mage::getModel(
+                'avatax/service_avatax_estimate',
+                array('service_config' => $this->getServiceConfig())
+            );
         }
 
         return $this->_estimateResource;
@@ -69,8 +71,10 @@ class OnePica_AvaTax_Model_Service_Avatax
     protected function _getInvoiceResource()
     {
         if (null === $this->_invoiceResource) {
-            $this->_invoiceResource = Mage::getModel('avatax/service_avatax_invoice',
-                array('service_config' => $this->getServiceConfig()));
+            $this->_invoiceResource = Mage::getModel(
+                'avatax/service_avatax_invoice',
+                array('service_config' => $this->getServiceConfig())
+            );
         }
 
         return $this->_invoiceResource;
@@ -84,8 +88,10 @@ class OnePica_AvaTax_Model_Service_Avatax
     protected function _getPingResource()
     {
         if (null === $this->_pingResource) {
-            $this->_pingResource = Mage::getModel('avatax/service_avatax_ping',
-                array('service_config' => $this->getServiceConfig()));
+            $this->_pingResource = Mage::getModel(
+                'avatax/service_avatax_ping',
+                array('service_config' => $this->getServiceConfig())
+            );
         }
 
         return $this->_pingResource;
@@ -99,7 +105,8 @@ class OnePica_AvaTax_Model_Service_Avatax
     protected function _getAddressValidatorResource()
     {
         if (null === $this->_addressValidatorResource) {
-            return Mage::getModel('avatax/service_avatax_address',
+            return Mage::getModel(
+                'avatax/service_avatax_address',
                 array('service_config' => $this->getServiceConfig())
             );
         }

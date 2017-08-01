@@ -43,6 +43,7 @@ class OnePica_AvaTax_Model_Adminhtml_Config extends Mage_Adminhtml_Model_Config
         }
 
         $this->_initPluginVersion();
+        $this->_expandAllDependencies();
 
         return $this;
     }
@@ -120,6 +121,32 @@ class OnePica_AvaTax_Model_Adminhtml_Config extends Mage_Adminhtml_Model_Config
                 $processor->setVariables(array('avatax_ver' => $version));
                 $precessedComment = $processor->filter($comment);
                 $taxSection->setNode($pathComment, $precessedComment);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Expand all dependencies for older versions of magento
+     *
+     * @return \OnePica_AvaTax_Helper_Config
+     */
+    protected function _expandAllDependencies()
+    {
+        $ver = Mage::getVersionInfo();
+        if ($ver['minor'] <= 6 || $ver['minor'] == 10) {
+            $taxSection = $this->getSection('tax');
+            if ($taxSection) {
+                $allDependencies = $taxSection->xpath('groups/avatax/fields/*/depends');
+                if ($allDependencies) {
+                    foreach ($allDependencies as $dependecy) {
+                        $parent = $dependecy->getParent();
+                        if ($parent) {
+                            $parent->setNode('depends', null);
+                        }
+                    }
+                }
             }
         }
 

@@ -36,10 +36,12 @@ class OnePica_AvaTax_Model_Source_Url
         if (!$activeService) {
             throw new OnePica_AvaTax_Exception('Service source model is not defined.');
         }
+
         $model = Mage::getModel('avatax/source_' . $activeService . '_url');
         if (!$model) {
             throw new OnePica_AvaTax_Exception('Could not found source model ' . $activeService);
         }
+
         return $model->toArray();
     }
 }

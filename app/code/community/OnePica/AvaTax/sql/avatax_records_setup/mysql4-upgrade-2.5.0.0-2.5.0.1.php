@@ -16,14 +16,14 @@
  */
 $installer = $this;
 $this->startSetup();
-/* @var $this Mage_Core_Model_Resource_Setup */
+/** @var Mage_Core_Model_Resource_Setup $this */
 $adapter = $this->getConnection();
 
 // check if current process is install from scratch or update from 2.4.3.3-stable
 $queueColumns = array_keys($adapter->describeTable($this->getTable('avatax_records/queue')));
 if (!in_array('queue_id', $queueColumns)) {
-    $installer->run("
-
+    $installer->run(
+        "
     ALTER TABLE `" . $this->getTable('avatax_records/log') . "`
 	CHANGE COLUMN `log_id` `log_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 	CHANGE COLUMN `store_id` `store_id` smallint(5) unsigned DEFAULT NULL,
@@ -61,8 +61,8 @@ if (!in_array('queue_id', $queueColumns)) {
     ADD KEY `IDX_OP_AVATAX_QUEUE_UPDATED_AT` (`updated_at`),
     ADD CONSTRAINT `FK_OP_AVATAX_QUEUE_STORE_ID_CORE_STORE_STORE_ID` FOREIGN KEY (`store_id`)
         REFERENCES `" . $this->getTable('core/store') . "` (`store_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
-    ");
+    "
+    );
 }
 
 $this->endSetup();

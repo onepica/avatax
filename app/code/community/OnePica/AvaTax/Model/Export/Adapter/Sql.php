@@ -98,6 +98,7 @@ class OnePica_AvaTax_Model_Export_Adapter_Sql extends OnePica_AvaTax_Model_Expor
             $content .= "\n" . implode(",\n", $chunk);
             $content .= ";\n\n";
         }
+
         return $content;
     }
 
@@ -115,8 +116,10 @@ class OnePica_AvaTax_Model_Export_Adapter_Sql extends OnePica_AvaTax_Model_Expor
             foreach ($this->_getColumns() as $column) {
                 $values[] = $this->getCollection()->getResource()->getReadConnection()->quote($item->getData($column));
             }
+
             $rows[] = "(" . implode(", ", $values) . ")";
         }
+
         return $rows;
     }
 

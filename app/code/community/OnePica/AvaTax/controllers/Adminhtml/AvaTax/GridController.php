@@ -132,6 +132,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
         if (method_exists($this, '_title')) {
             $this->_title($title);
         }
+
         return $this;
     }
 
@@ -164,7 +165,8 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
             } catch (Mage_Core_Exception $e) {
                 $this->_getSession()->addError($e->getMessage());
             } catch (Exception $e) {
-                $this->_getSession()->addException($e,
+                $this->_getSession()->addException(
+                    $e,
                     $this->__('An error occurred while updating queue item status.')
                 );
             }

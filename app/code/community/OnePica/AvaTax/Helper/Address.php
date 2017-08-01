@@ -35,14 +35,62 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
     public function isAddressNormalizationOn($address, $storeId)
     {
         if (!$this->isAddressActionable(
-            $address,
-            $storeId,
-            OnePica_AvaTax_Model_Service_Abstract_Config::REGIONFILTER_ALL, true)
-        ) {
+            $address, $storeId, OnePica_AvaTax_Model_Service_Abstract_Config::REGIONFILTER_ALL, true
+        )) {
             return false;
         }
 
-        return $this->_getConfigData()->getNormalizeAddress($storeId);
+        $result = $this->_getConfigData()->getNormalizeAddress($storeId);
+        $quote = $address->getQuote();
+        if ($quote) {
+            $flag = $quote->getAvataxNormalizationFlag();
+            $flag = is_null($flag) ? 0 : $flag; //if no flag than normalization enabled
+            switch ($flag) {
+                case 1: // disabled
+                    $result = false;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Method used to restore origin customer address during normalization flag update
+     * for multishipping checkout
+     *
+     * @param null $quote
+     * @param bool $isMultishipping
+     *
+     * @return null
+     */
+    public function setOriginalCustomerAddresses($quote = null, $isMultishipping = false)
+    {
+        if ($quote && $isMultishipping) {
+            switch ($quote->getAvataxNormalizationFlag()) {
+                case 1:
+                    $addresses = $quote->getAllShippingAddresses();
+                    foreach ($addresses as $address) {
+                        $customerAddressOriginal = Mage::getModel('customer/address')
+                            ->load($address->getCustomerAddressId());
+
+                        $quote->getAddressById($address->getId())
+                            ->setStreet($customerAddressOriginal->getStreet())
+                            ->setCity($customerAddressOriginal->getCity())
+                            ->setRegionId($customerAddressOriginal->getRegionId())
+                            ->setPostcode($customerAddressOriginal->getPostcode())
+                            ->setCountryId($customerAddressOriginal->getCountryId())
+                            ->save();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return $quote;
     }
 
     /**
@@ -56,10 +104,8 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
     public function isAddressValidationOn($address, $storeId)
     {
         if (!$this->isAddressActionable(
-            $address,
-            $storeId,
-            OnePica_AvaTax_Model_Service_Abstract_Config::REGIONFILTER_ALL, true)
-        ) {
+            $address, $storeId, OnePica_AvaTax_Model_Service_Abstract_Config::REGIONFILTER_ALL, true
+        )) {
             return false;
         }
 
@@ -131,6 +177,7 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
                 if (!is_array($filterLog)) {
                     $filterLog = array();
                 }
+
                 $key = $address->getCacheHashKey();
 
                 //did we already log this filtered address?
@@ -239,7 +286,8 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
      */
     public function getTaxableCountryByWebSite($websiteId)
     {
-        return explode(',', Mage::app()
+        return explode(
+            ',', Mage::app()
             ->getWebsite($websiteId)
             ->getConfig(OnePica_AvaTax_Helper_Config::XML_PATH_TO_TAX_AVATAX_TAXABLE_COUNTRY)
         );
@@ -286,6 +334,7 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
         if (!$shippingAddress) {
             $shippingAddress = $object->getShippingAddress();
         }
+
         if (!$shippingAddress) {
             $shippingAddress = $object->getBillingAddress();
         }
@@ -294,8 +343,8 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
         if (!$this->isAddressActionable(
             $shippingAddress,
             $storeId,
-            OnePica_AvaTax_Model_Service_Abstract_Config::REGIONFILTER_TAX)
-        ) {
+            OnePica_AvaTax_Model_Service_Abstract_Config::REGIONFILTER_TAX
+        )) {
             return false;
         }
 
@@ -330,5 +379,32 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
     protected function _getLogTypeModel()
     {
         return Mage::getModel('avatax/source_logtype');
+    }
+
+    /**
+     * Get HTML content of checkbox that can be used to disable normalization on store front
+     * for multishipping checkout
+     *
+     * @param null $flag
+     *
+     * @return string
+     */
+    public function getDisableNormalizationCheckbox($flag = null)
+    {
+        $checked = $flag ? "checked='checked'" : '';
+
+    }
+
+
+    /**
+     * Retrieve url of skins file
+     *
+     * @param   string $file path to file in skin
+     * @param   array $params
+     * @return  string
+     */
+    public function getSkinUrl($file = null, array $params = array())
+    {
+        return Mage::getDesign()->getSkinUrl($file, $params);
     }
 }

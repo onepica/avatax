@@ -46,7 +46,7 @@ class OnePica_AvaTax_Model_Observer_ControllerActionPredispatchCustomerAddressFo
     public function execute(Varien_Event_Observer $observer)
     {
         if ($this->_haveToProcess($observer)) {
-            /* @var Mage_Core_Controller_Request_Http $request */
+            /** @var Mage_Core_Controller_Request_Http $request */
             $request = $observer->getControllerAction()->getRequest();
 
             try {
@@ -162,7 +162,7 @@ class OnePica_AvaTax_Model_Observer_ControllerActionPredispatchCustomerAddressFo
             ->getCustomer()
             ->getAddressById($customerAddressId);
 
-        /* @var Mage_Customer_Model_Form $addressForm*/
+        /** @var Mage_Customer_Model_Form $addressForm*/
         $addressForm = Mage::getModel('customer/form');
         $addressForm->setFormCode('customer_address_edit')->setEntity($customerAddress);
         $addressData = $addressForm->extractData($request);

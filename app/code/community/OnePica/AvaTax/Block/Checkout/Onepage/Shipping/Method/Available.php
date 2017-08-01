@@ -22,85 +22,22 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Block_Checkout_Onepage_Shipping_Method_Available extends Mage_Core_Block_Abstract
+class OnePica_AvaTax_Block_Checkout_Onepage_Shipping_Method_Available
+    extends OnePica_AvaTax_Block_Checkout_Onepage_Method
 {
     /**
-     * Quote address
-     *
-     * @var Mage_Sales_Model_Quote_Address
+     * Normalization Disabler Block Name
+     * @var null
      */
-    protected $_address;
+    protected $_disablerBlockName = 'avatax/checkout_onepage_address_normalization_disabler';
 
     /**
-     * Checkout session
+     * Check if Normalization Notification Is Allowed on current checkout step
      *
-     * @var Mage_Checkout_Model_Session
+     * @return bool
      */
-    protected $_checkout;
-
-    /**
-     * Sales quote
-     *
-     * @var Mage_Sales_Model_Quote
-     */
-    protected $_quote;
-
-    /**
-     * Get quote address
-     *
-     * @return Mage_Sales_Model_Quote_Address
-     */
-    public function getAddress()
+    protected function _showNotification()
     {
-        if (empty($this->_address)) {
-            $this->_address = $this->getQuote()->getShippingAddress();
-        }
-        return $this->_address;
-    }
-
-    /**
-     * Retrieve checkout session model
-     *
-     * @return Mage_Checkout_Model_Session
-     */
-    public function getCheckout()
-    {
-        if (empty($this->_checkout)) {
-            $this->_checkout = Mage::getSingleton('checkout/session');
-        }
-        return $this->_checkout;
-    }
-
-    /**
-     * Retrieve sales quote model
-     *
-     * @return Mage_Sales_Model_Quote
-     */
-    public function getQuote()
-    {
-        if (empty($this->_quote)) {
-            $this->_quote = $this->getCheckout()->getQuote();
-        }
-        return $this->_quote;
-    }
-
-    /**
-     * Overriding parent to insert session message block if an address has been validated.
-     *
-     * @return string
-     */
-    protected function _toHtml ()
-    {
-        $additional = parent::_toHtml();
-        if ($this->getAddress()->getAddressNormalized()) {
-            $notice = Mage::helper('avatax/config')->getOnepageNormalizeMessage(Mage::app()->getStore());
-            if ($notice) {
-                Mage::getSingleton('core/session')->addNotice($notice);
-                $additional .= $this->getMessagesBlock()->getGroupedHtml();
-            }
-        } elseif ($this->getAddress()->getAddressNotified()) {
-            $additional .= $this->getMessagesBlock()->getGroupedHtml();
-        }
-        return $additional;
+        return true;
     }
 }

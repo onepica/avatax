@@ -36,6 +36,7 @@ class OnePica_AvaTax_Block_Widget_Grid_Column_Renderer_QueueAction
         if ($row->getStatus() != OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_FAILED) {
             return '';
         }
+
         return parent::render($row);
     }
 }

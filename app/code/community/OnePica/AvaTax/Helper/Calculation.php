@@ -37,6 +37,7 @@ class OnePica_AvaTax_Helper_Calculation
         if ($object->getCustomerId()) {
             $customer->load($object->getCustomerId());
         }
+
         // get store id from object or from quote
         $storeId = $this->_getStoreIdFromSalesObject($object);
 

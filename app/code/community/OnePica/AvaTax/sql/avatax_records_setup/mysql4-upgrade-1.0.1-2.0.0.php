@@ -17,8 +17,8 @@
 $installer = $this;
 $this->startSetup();
 
-$installer->run("
-
+$installer->run(
+    "
 CREATE TABLE `" . $this->getTable('avatax_records/queue') . "` (
     `queue_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
     `store_id` smallint(5) unsigned DEFAULT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE `" . $this->getTable('avatax_records/queue') . "` (
     CONSTRAINT `FK_OP_AVATAX_QUEUE_STORE_ID_CORE_STORE_STORE_ID` FOREIGN KEY (`store_id`)
         REFERENCES `" . $this->getTable('core/store') . "` (`store_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB COMMENT='Used by One Pica AvaTax extension';
-
-");
+    "
+);
 
 $this->endSetup();
