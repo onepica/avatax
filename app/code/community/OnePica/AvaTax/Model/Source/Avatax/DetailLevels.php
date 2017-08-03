@@ -35,11 +35,11 @@ class OnePica_AvaTax_Model_Source_Avatax_DetailLevels
         return array(
             array(
                 'value' => DetailLevel::$Line,
-                'label' => Mage::helper('avatax')->__('Line')
+                'label' => Mage::helper('avatax')->__('Basic')
             ),
             array(
                 'value' => DetailLevel::$Tax,
-                'label' => Mage::helper('avatax')->__('Tax')
+                'label' => Mage::helper('avatax')->__('Effective')
             )
         );
     }

@@ -160,6 +160,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
                     $this->_rates[$requestKey][$code][$id] = array(
                         'rate'         => $this->_getTaxRateFromTaxLineItem($ctl),
                         'amt'          => $ctl->getTax(),
+                        'amt_fixed'    => $this->_getFixedTaxFromTaxLine($ctl),
                         'taxable'      => $ctl->getTaxable(),
                         'tax_included' => $ctl->getTaxIncluded()
                     );
@@ -691,9 +692,11 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
      */
     protected function _setDetailLevel()
     {
-        /** @var OnePica_AvaTax_Model_Service_Avatax_Config $config */
-        $config = Mage::getSingleton('avatax/service_avatax_config');
-        $this->_request->setDetailLevel($config->getDetailLevel());
+        /**
+         * Always set detail level = tax beacuse need more information about tax
+         * especially for "bottle tax" feature
+         */
+        $this->_request->setDetailLevel(DetailLevel::$Tax);
 
         return $this;
     }
@@ -706,11 +709,17 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
      */
     protected function _getTaxRateFromTaxLineItem(TaxLine $line)
     {
-        switch ($this->_request->getDetailLevel()) {
+        /** @var OnePica_AvaTax_Model_Service_Avatax_Config $config */
+        $config = Mage::getSingleton('avatax/service_avatax_config');
+        switch ($config->getDetailLevel()) {
+            /**
+             * For config -> detail level = line we always summarize rate
+             * For config -> detail level = tax get rate only if line tax is not 0
+             */
             case DetailLevel::$Tax:
                 $lineRate = 0;
                 foreach ($line->getTaxDetails() as $taxDetail) {
-                    if ($taxDetail->getTax() != 0) {
+                    if ($taxDetail->getTax() != 0 && !$this->isTaxFixed($taxDetail)) {
                         $lineRate = $lineRate + $taxDetail->getRate();
                     }
                 }
@@ -723,5 +732,43 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         }
 
         return $lineRate;
+    }
+
+    /**
+     * Returns fixed tax amount
+     *
+     * @param TaxLine $line
+     * @return int|float
+     */
+    protected function _getFixedTaxFromTaxLine(TaxLine $line)
+    {
+        $fixedTax = 0;
+
+        foreach ($line->getTaxDetails() as $taxDetail) {
+            if ($this->isTaxFixed($taxDetail)) {
+                $fixedTax = $fixedTax + $taxDetail->getTax();
+            }
+        }
+
+        return $fixedTax;
+    }
+
+    /**
+     * Check if tax is fixed
+     *
+     * @param TaxDetail $taxDetail
+     * @return bool
+     */
+    public function isTaxFixed(TaxDetail $taxDetail)
+    {
+        $fixedTaxes = array(
+            'Bottle'
+        );
+
+        if (in_array($taxDetail->getTaxType(), $fixedTaxes)) {
+            return true;
+        }
+
+        return false;
     }
 }
