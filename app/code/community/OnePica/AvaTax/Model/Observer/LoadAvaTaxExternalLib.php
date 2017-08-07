@@ -30,6 +30,7 @@ class OnePica_AvaTax_Model_Observer_LoadAvaTaxExternalLib extends OnePica_AvaTax
      * @var array
      */
     protected static $_classes = array(
+        'AccountServiceSoap',
         'Address',
         'AddressLocationType',
         'AddressServiceSoap',

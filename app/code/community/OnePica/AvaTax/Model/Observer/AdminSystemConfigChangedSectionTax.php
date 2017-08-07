@@ -95,6 +95,7 @@ class OnePica_AvaTax_Model_Observer_AdminSystemConfigChangedSectionTax extends O
         $errors = array_merge(
             $errors,
             $this->_sendPing($storeId),
+            $this->_checkIfCompanyExist($storeId),
             $this->_checkSoapSupport(),
             $this->_checkSslSupport()
         );
@@ -243,5 +244,38 @@ class OnePica_AvaTax_Model_Observer_AdminSystemConfigChangedSectionTax extends O
     protected function _getConfigHelper()
     {
         return Mage::helper('avatax/config');
+    }
+
+    /**
+     * Get Service Config
+     *
+     * @return OnePica_AvaTax_Model_Service_Avatax_Config
+     */
+    protected function _getServiceConfig()
+    {
+        return Mage::getSingleton('avatax/service_avatax_config');
+    }
+
+    /**
+     * Check if company code exist for account
+     *
+     * @param null $storeId
+     * @return array
+     */
+    public function _checkIfCompanyExist($storeId = null) {
+        $isCompanyExist = false;
+
+        $companyCode = $this->_getConfigHelper()->getCompanyCode($storeId);
+        $companies = $this->_getServiceConfig()->getAccountConnection()->CompanyFetch('')->getValidCompanies();
+
+        foreach ($companies as $company) {
+            if ($company->CompanyCode == $companyCode) {
+                $isCompanyExist = true;
+            }
+        }
+
+        return !$isCompanyExist ?
+            array(Mage::helper('avatax')->__('Company code <b>%s</b> not found for your account.', $companyCode)) :
+            array();
     }
 }
