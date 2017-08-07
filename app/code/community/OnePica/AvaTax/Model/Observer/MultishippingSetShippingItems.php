@@ -48,6 +48,7 @@ class OnePica_AvaTax_Model_Observer_MultishippingSetShippingItems
 
         $addresses = $quote->getAllShippingAddresses();
         $message = Mage::getStoreConfig('tax/avatax/validate_address_message', $storeId);
+        $multiaddressNormalizeMessage = Mage::getStoreConfig('tax/avatax/multiaddress_normalize_message', $storeId);
         foreach ($addresses as $address) {
             /** @var OnePica_AvaTax_Model_Sales_Quote_Address $address */
             if ($address->validate() !== true) {
@@ -55,23 +56,24 @@ class OnePica_AvaTax_Model_Observer_MultishippingSetShippingItems
             }
 
             if ($address->getAddressNormalized()) {
-                $notice = Mage::getStoreConfig('tax/avatax/multiaddress_normalize_message', $storeId);
+                $notice = $multiaddressNormalizeMessage;
             }
         }
 
         /** @var OnePica_AvaTax_Helper_Config $helperConfig */
         $helperConfig = Mage::helper('avatax/config');
 
-        if ($helperConfig->getNormalizeAddressDisabler($storeId)) {
-            $checkboxDisabler = Mage::getBlockSingleton('avatax/checkout_multishipping_address_normalization_disabler')->toHtml();
+        if ($helperConfig->getNormalizeAddress($storeId) && $helperConfig->getNormalizeAddressDisabler($storeId)) {
+            $checkboxDisabler = Mage::getBlockSingleton('avatax/checkout_multishipping_address_normalization_disabler')
+                                    ->toHtml();
             switch ($quote->getAvataxNormalizationFlag()) {
                 case 1:
-                    // show checkbox in block
+                    // show only checkbox in block
                     $notice = $checkboxDisabler;
                     break;
                 case 0:
                     //show checkbox in notice
-                    $notice = Mage::getStoreConfig('tax/avatax/multiaddress_normalize_message', $storeId) . $checkboxDisabler;
+                    $notice = $multiaddressNormalizeMessage . $checkboxDisabler;
                     break;
                 default:
                     break;
