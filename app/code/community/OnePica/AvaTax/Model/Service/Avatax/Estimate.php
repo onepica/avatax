@@ -236,7 +236,14 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
             )
         );
 
-        return !$goodSeverity || !$goodSource;
+        $badName = in_array(
+            $message->getName(),
+            array(
+                'CompanyNotFoundError',
+            )
+        );
+
+        return !$goodSeverity || !$goodSource || $badName;
     }
 
     /**

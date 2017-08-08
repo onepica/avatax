@@ -39,6 +39,13 @@ class OnePica_AvaTax_Model_Service_Avatax_Config extends OnePica_AvaTax_Model_Se
     protected $_addressConnection = null;
 
     /**
+     * The AvaTax AccountServiceSoap object.
+     *
+     * @var AccountServiceSoap
+     */
+    protected $_accountService = null;
+
+    /**
      * Initializes the AvaTax SDK with connection settings found in the Admin config.
      *
      * @param int $storeId
@@ -91,7 +98,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Config extends OnePica_AvaTax_Model_Se
     /**
      * Returns the AvaTax Address soap connection client.
      *
-     * @return AddressServiceSoap
+     * @return TaxServiceSoap
      */
     public function getTaxConnection()
     {
@@ -100,6 +107,21 @@ class OnePica_AvaTax_Model_Service_Avatax_Config extends OnePica_AvaTax_Model_Se
         }
 
         return $this->_taxConnection;
+    }
+
+
+    /**
+     * Returns the AvaTax Address soap connection client.
+     *
+     * @return AccountServiceSoap
+     */
+    public function getAccountConnection()
+    {
+        if (null === $this->_accountService) {
+            $this->_accountService = new AccountServiceSoap(self::CONFIG_KEY);
+        }
+
+        return $this->_accountService;
     }
 
     /**
