@@ -93,6 +93,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Config extends OnePica_AvaTax_Model_
             $this->init(Mage::app()->getStore());
             $this->_connection = $this->_getAvatax16Service();
         }
+
         return $this->_connection;
     }
 

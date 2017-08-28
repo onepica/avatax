@@ -91,6 +91,7 @@ class OnePica_AvaTax_Model_Records_Queue_Process
                     $stores[] = $store->getStoreId();
                 }
             }
+
             $this->_storesWithEnabledQueueSubmit = $stores;
         }
 
@@ -206,6 +207,7 @@ class OnePica_AvaTax_Model_Records_Queue_Process
                 if ($invoice->getId()) {
                     $invoiceAction->process($invoice, $item);
                 }
+
                 $item->setStatus(OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_COMPLETE)->setMessage(null)->save();
             } catch (OnePica_AvaTax_Model_Service_Exception_Unbalanced $e) {
                 $item->setStatus(OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_UNBALANCED)
@@ -250,6 +252,7 @@ class OnePica_AvaTax_Model_Records_Queue_Process
                 if ($creditmemo->getId()) {
                     $creditmemoAction->process($creditmemo, $item);
                 }
+
                 $item->setStatus(OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_COMPLETE)
                     ->setMessage(null)
                     ->save();

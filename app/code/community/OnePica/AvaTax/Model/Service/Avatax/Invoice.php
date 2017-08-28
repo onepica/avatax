@@ -87,6 +87,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
             /** @var Mage_Sales_Model_Order_Invoice_Item $item */
             $this->_newLine($item);
         }
+
         $this->_request->setLines($this->_lines);
 
         //send to AvaTax
@@ -110,6 +111,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
             foreach ($result->getMessages() as $message) {
                 $messages[] = $message->getSummary();
             }
+
             $invoiceResult->setErrors($messages);
         }
 
@@ -178,6 +180,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
             /** @var Mage_Sales_Model_Order_Creditmemo_Item $item */
             $this->_newLine($item, true);
         }
+
         $this->_request->setLines($this->_lines);
 
         //send to AvaTax
@@ -201,6 +204,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
             foreach ($result->getMessages() as $message) {
                 $messages[] = $message->getSummary();
             }
+
             $creditmemoResult->setErrors($messages);
         }
 
@@ -239,9 +243,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
         }
 
         if ($credit) {
-            //@startSkipCommitHooks
             $amount *= -1;
-            //@finishSkipCommitHooks
         }
 
         $line->setNo($lineNumber);
@@ -286,9 +288,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
         }
 
         if ($credit) {
-            //@startSkipCommitHooks
             $amount *= -1;
-            //@finishSkipCommitHooks
         }
 
         $line->setNo($lineNumber);
@@ -330,9 +330,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
         }
 
         if ($credit) {
-            //@startSkipCommitHooks
             $amount *= -1;
-            //@finishSkipCommitHooks
         }
 
         $line->setNo($lineNumber);
@@ -374,9 +372,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
         }
 
         if ($credit) {
-            //@startSkipCommitHooks
             $amount *= -1;
-            //@finishSkipCommitHooks
         }
 
         $line->setNo($lineNumber);
@@ -452,6 +448,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
         if ($this->isProductCalculated($item->getOrderItem())) {
             return false;
         }
+
         if ($item->getQty() == 0) {
             return false;
         }
@@ -470,9 +467,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
         }
 
         if ($credit) {
-            //@startSkipCommitHooks
             $price *= -1;
-            //@finishSkipCommitHooks
         }
 
         $line->setNo(count($this->_lines));

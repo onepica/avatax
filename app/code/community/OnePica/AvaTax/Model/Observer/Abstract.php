@@ -108,6 +108,7 @@ abstract class OnePica_AvaTax_Model_Observer_Abstract extends Mage_Core_Model_Ab
         if ($helper->fullStopOnError($quote)) {
             throw new OnePica_AvaTax_Exception($helper->getErrorMessage());
         }
+
         return $this;
     }
 

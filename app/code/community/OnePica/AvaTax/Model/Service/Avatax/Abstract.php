@@ -112,10 +112,17 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
      * @param string $result the result string
      * @param int $storeId id of the store the call is make for
      * @param mixed $additional any other info
+     * @param \TaxServiceSoap $connection for logging soap request/response
      * @return $this
      */
-    protected function _log($type, $request, $result, $storeId = null, $additional = null)
-    {
+    protected function _log(
+        $type,
+        $request,
+        $result,
+        $storeId = null,
+        $additional = null,
+        $connection = null
+    ) {
         if ($result->getResultCode() == SeverityLevel::$Success) {
             switch ($this->_getHelper()->getLogMode($storeId)) {
                 case OnePica_AvaTax_Model_Source_Logmode::ERRORS:
@@ -127,6 +134,18 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
             }
         }
 
+        $soapRequest = null;
+        $soapRequestHeaders = null;
+        $soapResponse = null;
+        $soapResponseHeaders = null;
+
+        if ($connection) {
+            $soapRequest = $connection->__getLastRequest();
+            $soapRequestHeaders = $connection->__getLastRequestHeaders();
+            $soapResponse = $connection->__getLastResponse();
+            $soapResponseHeaders = $connection->__getLastResponseHeaders();
+        }
+
         if (in_array($type, $this->_getHelper()->getLogType($storeId))) {
             Mage::getModel('avatax_records/log')
                 ->setStoreId($storeId)
@@ -135,8 +154,13 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
                 ->setRequest(print_r($request, true))
                 ->setResult(print_r($result, true))
                 ->setAdditional($additional)
+                ->setSoapRequest($soapRequest)
+                ->setSoapRequestHeaders($soapRequestHeaders)
+                ->setSoapResult($soapResponse)
+                ->setSoapResultHeaders($soapResponseHeaders)
                 ->save();
         }
+
         return $this;
     }
 
@@ -214,7 +238,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
         $this->_setCompanyCode($storeId);
         $this->_request->setBusinessIdentificationNo($this->_getVatId($object));
         $this->_request->setDetailLevel(DetailLevel::$Document);
-        $this->_request->setDocDate($this->_convertGmtDate(Varien_Date::now(), $storeId));
+        $this->_request->setDocDate($this->_convertGmtDate(Mage::helper('avatax')->varienDateNow(), $storeId));
         $this->_request->setExemptionNo('');
         $this->_request->setDiscount(0.00); //cannot be used in Magento
         $this->_request->setSalespersonCode($this->_getConfigHelper()->getSalesPersonCode($storeId));
@@ -225,6 +249,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
         if ($object instanceof Mage_Sales_Model_Order && $object->getIncrementId()) {
             $this->_request->setReferenceCode('Magento Order #' . $object->getIncrementId());
         }
+
         return $this;
     }
 
@@ -324,6 +349,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
                 }
             }
         }
+
         $this->_productCollection = Mage::getModel('catalog/product')->getCollection()
             ->addAttributeToSelect('*')
             ->addAttributeToFilter('entity_id', array('in' => $productIds));
@@ -345,11 +371,13 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
                 $taxClassIds[] = $product->getTaxClassId();
             }
         }
+
         $gwTaxClassId = $this->_getGwTaxClassId($object);
 
         if (0 !== $gwTaxClassId) {
             $taxClassIds[] = $gwTaxClassId;
         }
+
         $this->_taxClassCollection = Mage::getModel('tax/class')->getCollection()
             ->addFieldToFilter('class_id', array('in' => $taxClassIds));
 

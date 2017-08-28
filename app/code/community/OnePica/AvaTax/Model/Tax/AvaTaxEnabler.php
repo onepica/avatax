@@ -34,9 +34,12 @@ class OnePica_AvaTax_Model_Tax_AvaTaxEnabler
     public function initTaxCollector($storeId)
     {
         if (!$this->_isSwitched) {
-            if (Mage::getStoreConfig('tax/avatax/action', $storeId) != OnePica_AvaTax_Model_Service_Abstract_Config::ACTION_DISABLE) {
-                Mage::getConfig()->setNode('global/sales/quote/totals/tax/class', 'avatax/sales_quote_address_total_tax');
+            $configAction = Mage::getStoreConfig('tax/avatax/action', $storeId);
+            if ($configAction != OnePica_AvaTax_Model_Service_Abstract_Config::ACTION_DISABLE) {
+                Mage::getConfig()
+                    ->setNode('global/sales/quote/totals/tax/class', 'avatax/sales_quote_address_total_tax');
             }
+
             $this->_isSwitched = true;
         }
 

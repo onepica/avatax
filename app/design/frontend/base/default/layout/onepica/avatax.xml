@@ -17,13 +17,11 @@
  */
 -->
 <layout>
-    <checkout_onepage_index>
-        <reference name="checkout.onepage.shipping_method">
-            <block type="avatax/checkout_onepage_shipping_method_available" name="checkout.onepage.shipping_method.availableAvatax" before="-" output="toHtml" />
-        </reference>
-    </checkout_onepage_index>
-
     <checkout_onepage_shippingmethod>
         <block type="avatax/checkout_onepage_shipping_method_available" name="checkout.onepage.shipping_method.availableAvatax" before="-" output="toHtml" />
     </checkout_onepage_shippingmethod>
+
+    <checkout_onepage_paymentmethod>
+        <block type="avatax/checkout_onepage_payment_method_available" name="checkout.onepage.payment_method.availableAvatax" before="-" output="toHtml" />
+    </checkout_onepage_paymentmethod>
 </layout>
