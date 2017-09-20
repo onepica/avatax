@@ -772,6 +772,10 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
             'Bottle'
         );
 
-        return in_array($taxDetail->getTaxType(), $fixedTaxes);
+        if (in_array($taxDetail->getTaxType(), $fixedTaxes)) {
+            return true;
+        }
+
+        return false;
     }
 }
