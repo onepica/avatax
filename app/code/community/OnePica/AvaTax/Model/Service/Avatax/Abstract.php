@@ -148,7 +148,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
             $soapResponseHeaders = $connection->__getLastResponseHeaders();
         }
 
-        $quoteId = $address ? $address->getQuote()->getId() : null;
+        $quoteId = $address ? $address->getQuoteId() : null;
         $quoteAddressId = $address ? $address->getId() : null;
 
         if (in_array($type, $this->_getHelper()->getLogType($storeId))) {
