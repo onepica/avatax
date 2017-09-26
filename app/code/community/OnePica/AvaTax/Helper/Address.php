@@ -194,6 +194,8 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
                         ->setType($logType)
                         ->setRequest(print_r($address->debug(), true))
                         ->setResult('filter: ' . $filter . ', type: ' . $type)
+                        ->setQuoteId($address->getQuote()->getId())
+                        ->setQuoteAddressId($address->getId())
                         ->save();
                 }
             }
