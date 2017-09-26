@@ -165,7 +165,6 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
                 ->setSoapResultHeaders($soapResponseHeaders)
                 ->setQuoteId($quoteId)
                 ->setQuoteAddressId($quoteAddressId)
-                ->setSoapResultHeaders($soapResponseHeaders)
                 ->save();
         }
 
