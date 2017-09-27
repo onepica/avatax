@@ -140,7 +140,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
 
         //make request if needed and save results in cache
         if ($makeRequest) {
-            $result = $this->_send($quote->getStoreId());
+            $result = $this->_send($quote->getStoreId(), $address);
             $this->_rates[$requestKey] = array(
                 'timestamp'  => $this->_getDateModel()->timestamp(),
                 'address_id' => $address->getId(),
