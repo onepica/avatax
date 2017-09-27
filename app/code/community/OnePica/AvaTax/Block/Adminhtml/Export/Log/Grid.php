@@ -63,7 +63,9 @@ class OnePica_AvaTax_Block_Adminhtml_Export_Log_Grid extends OnePica_AvaTax_Bloc
      */
     protected function _prepareCollection()
     {
+        /** @var OnePica_AvaTax_Model_Records_Mysql4_Log_Collection $collection */
         $collection = Mage::getModel('avatax_records/log')->getCollection();
+        $collection->addRelatedInfoToSelect();
         $this->setCollection($collection);
 
         return parent::_prepareCollection();
