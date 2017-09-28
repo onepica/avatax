@@ -31,4 +31,13 @@ if (!array_key_exists('quote_id', $allCols) && !array_key_exists('quote_address_
     );
 }
 
+$allCols = $installer->getConnection()->describeTable($this->getTable('sales/order_address'));
+
+if (!array_key_exists('avatax_quote_address_id', $allCols)) {
+    $installer->run(
+        "ALTER TABLE `" . $this->getTable('sales/order_address'). "` 
+            ADD `avatax_quote_address_id` INT(10) UNSIGNED NULL DEFAULT NULL COMMENT 'Quote address id';"
+    );
+}
+
 $installer->endSetup();

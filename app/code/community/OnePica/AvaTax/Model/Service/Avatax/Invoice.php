@@ -88,8 +88,12 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
 
         $this->_request->setLines($this->_lines);
 
+        $quoteData = new Varien_Object(array(
+            'quote_id'         => $order->getQuoteId(),
+            'quote_address_id' => $shippingAddress->getAvataxQuoteAddressId()
+        ));
         //send to AvaTax
-        $result = $this->_send($order->getStoreId());
+        $result = $this->_send($order->getStoreId(), $quoteData);
 
         /** @var OnePica_AvaTax_Model_Service_Result_Invoice $invoiceResult */
         $invoiceResult = Mage::getModel('avatax/service_result_invoice');
@@ -179,8 +183,12 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
 
         $this->_request->setLines($this->_lines);
 
+        $quoteData = new Varien_Object(array(
+            'quote_id'         => $order->getQuoteId(),
+            'quote_address_id' => $shippingAddress->getAvataxQuoteAddressId()
+        ));
         //send to AvaTax
-        $result = $this->_send($order->getStoreId());
+        $result = $this->_send($order->getStoreId(), $quoteData);
 
         /** @var OnePica_AvaTax_Model_Service_Result_Creditmemo $creditmemoResult */
         $creditmemoResult = Mage::getModel('avatax/service_result_creditmemo');

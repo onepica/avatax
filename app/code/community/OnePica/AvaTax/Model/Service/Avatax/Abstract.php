@@ -113,7 +113,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
      * @param int $storeId id of the store the call is make for
      * @param mixed $additional any other info
      * @param \TaxServiceSoap $connection for logging soap request/response
-     * @param \Mage_Sales_Model_Quote_Address $address
+     * @param Varien_Object $quoteData
      * @return $this
      */
     protected function _log(
@@ -123,7 +123,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
         $storeId = null,
         $additional = null,
         $connection = null,
-        $address = null
+        $quoteData = null
     ) {
         if ($result->getResultCode() == SeverityLevel::$Success) {
             switch ($this->_getHelper()->getLogMode($storeId)) {
@@ -148,8 +148,8 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
             $soapResponseHeaders = $connection->__getLastResponseHeaders();
         }
 
-        $quoteId = $address ? $address->getQuoteId() : null;
-        $quoteAddressId = $address ? $address->getId() : null;
+        $quoteId = $quoteData ? $quoteData->getQuoteId() : null;
+        $quoteAddressId = $quoteData ? $quoteData->getQuoteAddressId() : null;
 
         if (in_array($type, $this->_getHelper()->getLogType($storeId))) {
             Mage::getModel('avatax_records/log')

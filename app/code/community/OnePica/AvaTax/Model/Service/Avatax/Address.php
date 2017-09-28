@@ -248,6 +248,11 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
             $result = $this->_convertExceptionToResult($e);
         }
 
+        $quoteData = new Varien_Object(array(
+            'quote_id'         => $address->getQuoteId(),
+            'quote_address_id' => $address->getId()
+        ));
+
         $this->_log(
             OnePica_AvaTax_Model_Source_Avatax_Logtype::VALIDATE,
             $request,
@@ -255,7 +260,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
             $this->_storeId,
             $this->getServiceConfig()->getParams(),
             $this->getServiceConfig()->getTaxConnection(),
-            $address
+            $quoteData
         );
 
         return $result;

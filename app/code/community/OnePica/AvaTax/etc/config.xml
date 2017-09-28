@@ -310,6 +310,15 @@
                     </avatax>
                 </observers>
             </controller_action_postdispatch_adminhtml_sales_order_create_loadBlock>
+            <sales_convert_quote_address_to_order_address>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer_salesConvertQuoteAddressToOrderAddress</class>
+                        <method>execute</method>
+                    </avatax>
+                </observers>
+            </sales_convert_quote_address_to_order_address>
         </events>
     </global>
     <frontend>

@@ -39,12 +39,19 @@ class OnePica_AvaTax_Model_Records_Mysql4_Log_Collection extends Mage_Core_Model
     {
 
         $this->getSelect()->joinLeft(
-            array('order' => $this->getTable('sales/order')),
-            'main_table.quote_id = order.quote_id',
+            array('order_address' => $this->getTable('sales/order_address')),
+            'main_table.quote_address_id = order_address.avatax_quote_address_id',
             array(
-                'odrer.entity_id'    => 'entity_id',
-                'order.status'       => 'status',
-                'order.increment_id' => 'increment_id'
+                'order_address.entity_id' => 'entity_id',
+                'order_address.parent_id' => 'parent_id',
+            )
+        );
+        $this->getSelect()->joinLeft(
+            array('order' => $this->getTable('sales/order')),
+            'order_address.parent_id = order.entity_id',
+            array(
+                'order.entity_id' => 'entity_id',
+                'order.increment_id' => 'increment_id',
             )
         );
         $this->getSelect()->joinLeft(
