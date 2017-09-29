@@ -108,13 +108,12 @@ class OnePica_AvaTax_Model_Records_Mysql4_Log_Collection extends Mage_Core_Model
         try {
             foreach ($this->getItems() as $item) {
                 if ($item->getType() === 'GetTax') {
-                    $item->setOrderNo($item->getOrderIncrementId());
                     switch ($this->getRequestDocType($item)) {
                         case 'SalesInvoice':
                             $item->setInvoiceNo($item->getInvoiceIncrementId());
                             break;
                         case 'ReturnInvoice':
-                            $item->setCreditMemoNo($item->getCreditmemoIncrementId());
+                            $item->setCreditmemoNo($item->getCreditmemoIncrementId());
                             break;
                         default:
                             break;

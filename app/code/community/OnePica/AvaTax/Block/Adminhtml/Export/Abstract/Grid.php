@@ -42,30 +42,30 @@ abstract class OnePica_AvaTax_Block_Adminhtml_Export_Abstract_Grid extends Mage_
      * Mass adds columns based on passed in array
      *
      * @param array $columns array(columnName => dataType)
+     * @param array $args to replace array(columnName => dataType)
      * @return $this
      * @throws Exception
      */
-    protected function _addColumns($columns)
+    protected function _addColumns($columns, $args = array())
     {
         foreach ($columns as $name => $type) {
+            $column = array(
+                'header' => Mage::helper('avatax')->__(ucwords(str_replace('_', ' ', $name))),
+                'index'  => $name
+            );
+
             if (is_array($type)) {
-                $this->addColumn(
-                    $name, array(
-                        'header'  => Mage::helper('avatax')->__(ucwords(str_replace('_', ' ', $name))),
-                        'index'   => $name,
-                        'type'    => 'options',
-                        'options' => $type
-                    )
-                );
+                $column['type'] = 'options';
+                $column['options'] = $type;
             } else {
-                $this->addColumn(
-                    $name, array(
-                        'header' => Mage::helper('avatax')->__(ucwords(str_replace('_', ' ', $name))),
-                        'index'  => $name,
-                        'type'   => $type
-                    )
-                );
+                $column['type'] = $type;
             }
+
+            if (array_key_exists($name, $args)) {
+                $column = array_merge($column, $args[$name]);
+            }
+
+            $this->addColumn($name, $column);
         }
 
         return $this;
