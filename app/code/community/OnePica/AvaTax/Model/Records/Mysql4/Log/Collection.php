@@ -107,25 +107,19 @@ class OnePica_AvaTax_Model_Records_Mysql4_Log_Collection extends Mage_Core_Model
     {
         try {
             foreach ($this->getItems() as $item) {
-                $relatedData = new Varien_Object();
-                switch ($this->getRequestDocType($item)) {
-                    case 'SalesOrder':
-                        $relatedData->setDocType('SalesOrder');
-                        $relatedData->setIncrementId($item->getOrderIncrementId());
-                        break;
-                    case 'SalesInvoice':
-                        $relatedData->setDocType('SalesInvoice');
-                        $relatedData->setIncrementId($item->getInvoiceIncrementId());
-                        break;
-                    case 'ReturnInvoice':
-                        $relatedData->setDocType('ReturnInvoice');
-                        $relatedData->setIncrementId($item->getCreditmemoIncrementId());
-                        break;
-                    default:
-                        break;
+                if ($item->getType() === 'GetTax') {
+                    $item->setOrderNo($item->getOrderIncrementId());
+                    switch ($this->getRequestDocType($item)) {
+                        case 'SalesInvoice':
+                            $item->setInvoiceNo($item->getInvoiceIncrementId());
+                            break;
+                        case 'ReturnInvoice':
+                            $item->setCreditMemoNo($item->getCreditmemoIncrementId());
+                            break;
+                        default:
+                            break;
+                    }
                 }
-
-                $item->setRelatedData($relatedData);
             }
         } catch (Exception $e) {
             /** expected behaviour */
