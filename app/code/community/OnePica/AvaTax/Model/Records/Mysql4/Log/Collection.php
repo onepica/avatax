@@ -45,9 +45,8 @@ class OnePica_AvaTax_Model_Records_Mysql4_Log_Collection extends Mage_Core_Model
         if ($this->_relatedInformationAdded) {
             $this->interpretRelatedInformation();
         }
-        parent::_afterLoad();
 
-        return $this;
+        return parent::_afterLoad();
     }
 
     /**
@@ -129,6 +128,7 @@ class OnePica_AvaTax_Model_Records_Mysql4_Log_Collection extends Mage_Core_Model
                 $item->setRelatedData($relatedData);
             }
         } catch (Exception $e) {
+            /** expected behaviour */
         }
 
         return $this;
@@ -149,6 +149,7 @@ class OnePica_AvaTax_Model_Records_Mysql4_Log_Collection extends Mage_Core_Model
                     return $output[1];
                 }
             } catch (Exception $e) {
+                /** expected behaviour */
             }
         }
 
