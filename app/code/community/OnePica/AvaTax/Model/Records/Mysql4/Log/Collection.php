@@ -42,10 +42,10 @@ class OnePica_AvaTax_Model_Records_Mysql4_Log_Collection extends Mage_Core_Model
      */
     protected function _afterLoad()
     {
-        parent::_afterLoad();
         if ($this->_relatedInformationAdded) {
             $this->interpretRelatedInformation();
         }
+        parent::_afterLoad();
 
         return $this;
     }
@@ -106,26 +106,29 @@ class OnePica_AvaTax_Model_Records_Mysql4_Log_Collection extends Mage_Core_Model
      */
     public function interpretRelatedInformation()
     {
-        foreach ($this->getItems() as $item) {
-            $relatedData = new Varien_Object();
-            switch ($this->getRequestDocType($item)) {
-                case 'SalesOrder':
-                    $relatedData->setDocType('SalesOrder');
-                    $relatedData->setIncrementId($item->getOrderIncrementId());
-                    break;
-                case 'SalesInvoice':
-                    $relatedData->setDocType('SalesInvoice');
-                    $relatedData->setIncrementId($item->getInvoiceIncrementId());
-                    break;
-                case 'ReturnInvoice':
-                    $relatedData->setDocType('ReturnInvoice');
-                    $relatedData->setIncrementId($item->getCreditmemoIncrementId());
-                    break;
-                default:
-                    break;
-            }
+        try {
+            foreach ($this->getItems() as $item) {
+                $relatedData = new Varien_Object();
+                switch ($this->getRequestDocType($item)) {
+                    case 'SalesOrder':
+                        $relatedData->setDocType('SalesOrder');
+                        $relatedData->setIncrementId($item->getOrderIncrementId());
+                        break;
+                    case 'SalesInvoice':
+                        $relatedData->setDocType('SalesInvoice');
+                        $relatedData->setIncrementId($item->getInvoiceIncrementId());
+                        break;
+                    case 'ReturnInvoice':
+                        $relatedData->setDocType('ReturnInvoice');
+                        $relatedData->setIncrementId($item->getCreditmemoIncrementId());
+                        break;
+                    default:
+                        break;
+                }
 
-            $item->setRelatedData($relatedData);
+                $item->setRelatedData($relatedData);
+            }
+        } catch (Exception $e) {
         }
 
         return $this;
