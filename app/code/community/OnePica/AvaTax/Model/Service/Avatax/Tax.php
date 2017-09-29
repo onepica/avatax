@@ -28,10 +28,10 @@ class OnePica_AvaTax_Model_Service_Avatax_Tax extends OnePica_AvaTax_Model_Servi
      * Sends a request to the Avatax server
      *
      * @param int $storeId
-     * @param \Mage_Sales_Model_Quote_Address $address
+     * @param Varien_Object|null $quoteData
      * @return mixed
      */
-    protected function _send($storeId, $address = null)
+    protected function _send($storeId, $quoteData = null)
     {
         /** @var OnePica_AvaTax_Model_Config $config */
         $config = $this->getServiceConfig();
@@ -61,7 +61,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Tax extends OnePica_AvaTax_Model_Servi
             $storeId,
             $config->getParams(),
             $connection,
-            $address
+            $quoteData
         );
 
         return $result;
