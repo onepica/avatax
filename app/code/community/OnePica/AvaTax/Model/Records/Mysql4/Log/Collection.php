@@ -73,22 +73,6 @@ class OnePica_AvaTax_Model_Records_Mysql4_Log_Collection extends Mage_Core_Model
                 'order_increment_id' => 'increment_id',
             )
         );
-        $this->getSelect()->joinLeft(
-            array('invoice' => $this->getTable('sales/invoice')),
-            'order.entity_id = invoice.order_id',
-            array(
-                'invoice_entity_id'    => 'entity_id',
-                'invoice_increment_id' => 'increment_id'
-            )
-        );
-        $this->getSelect()->joinLeft(
-            array('creditmemo' => $this->getTable('sales/creditmemo')),
-            'order.entity_id = creditmemo.order_id',
-            array(
-                'creditmemo_entity_id'    => 'entity_id',
-                'creditmemo_increment_id' => 'increment_id'
-            )
-        );
 
         $this->_relatedInformationAdded = true;
 
@@ -107,25 +91,18 @@ class OnePica_AvaTax_Model_Records_Mysql4_Log_Collection extends Mage_Core_Model
     {
         try {
             foreach ($this->getItems() as $item) {
-                $relatedData = new Varien_Object();
-                switch ($this->getRequestDocType($item)) {
-                    case 'SalesOrder':
-                        $relatedData->setDocType('SalesOrder');
-                        $relatedData->setIncrementId($item->getOrderIncrementId());
-                        break;
-                    case 'SalesInvoice':
-                        $relatedData->setDocType('SalesInvoice');
-                        $relatedData->setIncrementId($item->getInvoiceIncrementId());
-                        break;
-                    case 'ReturnInvoice':
-                        $relatedData->setDocType('ReturnInvoice');
-                        $relatedData->setIncrementId($item->getCreditmemoIncrementId());
-                        break;
-                    default:
-                        break;
+                if ($item->getType() === 'GetTax') {
+                    switch ($this->getRequestData($item, 'DocType')) {
+                        case'SalesInvoice':
+                            $item->setInvoiceIncrementId($this->getRequestData($item, 'DocCode'));
+                            break;
+                        case 'ReturnInvoice':
+                            $item->setCreditMemoIncrementId($this->getRequestData($item, 'DocCode'));
+                            break;
+                        default:
+                            break;
+                    }
                 }
-
-                $item->setRelatedData($relatedData);
             }
         } catch (Exception $e) {
             /** expected behaviour */
@@ -140,12 +117,14 @@ class OnePica_AvaTax_Model_Records_Mysql4_Log_Collection extends Mage_Core_Model
      * @param OnePica_AvaTax_Model_Records_Log $item
      * @return string
      */
-    public function getRequestDocType($item)
+    public function getRequestData($item, $fieldName)
     {
         if ($item->getType() === 'GetTax') {
             try {
-                preg_match("/\[DocType\:GetTaxRequest\:private\].\=\>.(.*)$/m", $item->getRequest(), $output);
-                if (array_key_exists(1, $output)) {
+                preg_match(
+                    "/\[" . $fieldName . "\:GetTaxRequest\:private\].\=\>.(.*)$/m", $item->getRequest(), $output
+                );
+                if (is_array($output) && array_key_exists(1, $output)) {
                     return $output[1];
                 }
             } catch (Exception $e) {
