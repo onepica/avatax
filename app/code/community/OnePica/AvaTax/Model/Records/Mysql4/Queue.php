@@ -102,6 +102,8 @@ class OnePica_AvaTax_Model_Records_Mysql4_Queue extends Mage_Core_Model_Mysql4_A
                     ->setType(OnePica_AvaTax_Model_Source_Avatax_Logtype::QUEUE)
                     ->setRequest(print_r($object->getData(), true))
                     ->setResult($result)
+                    ->setQuoteId($object->getQuoteId())
+                    ->setQuoteAddressId($object->getQuoteAddressId())
                     ->save();
             }
         }
