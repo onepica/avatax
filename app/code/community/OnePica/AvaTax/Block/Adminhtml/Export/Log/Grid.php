@@ -55,8 +55,8 @@ class OnePica_AvaTax_Block_Adminhtml_Export_Log_Grid extends OnePica_AvaTax_Bloc
                 'quote_id'           => 'varchar',
                 'quote_address_id'   => 'varchar',
                 'order_increment_id' => 'varchar',
-                'invoice_no'         => 'varchar',
-                'creditmemo_no'      => 'varchar',
+                'invoice_id'         => 'varchar',
+                'credit_memo_id'     => 'varchar',
                 'created_at'         => 'datetime',
             ),
             array(
@@ -66,13 +66,13 @@ class OnePica_AvaTax_Block_Adminhtml_Export_Log_Grid extends OnePica_AvaTax_Bloc
                     'header'       => Mage::helper('avatax')->__('Order id'),
                     'filter_index' => 'order.increment_id'
                 ),
-                'invoice_no'         => array(
-                    'header'       => Mage::helper('avatax')->__('Invoice id'),
-                    'filter_index' => 'invoice.increment_id'
+                'invoice_id'         => array(
+                    'filter'    => false,
+                    'sortable'  => false,
                 ),
-                'creditmemo_no'      => array(
-                    'header'       => Mage::helper('avatax')->__('Credit Memo id'),
-                    'filter_index' => 'creditmemo.increment_id'
+                'credit_memo_id'      => array(
+                    'filter'    => false,
+                    'sortable'  => false,
                 ),
             )
         );
