@@ -38,10 +38,16 @@ class OnePica_AvaTax_Model_Observer_SalesOrderCreditmemoSaveAfter extends OnePic
             && (int)$creditmemo->getState() === Mage_Sales_Model_Order_Creditmemo::STATE_REFUNDED
             && Mage::helper('avatax/address')->isObjectActionable($creditmemo)
         ) {
+            $order = $creditmemo->getOrder();
+            $quoteAddressId = $order->getIsVirtual() ? $order->getBillingAddress()->getAvataxQuoteAddressId()
+                : $order->getShippingAddress()->getAvataxQuoteAddressId();
+
             Mage::getModel('avatax_records/queue')
                 ->setEntity($creditmemo)
                 ->setType(OnePica_AvaTax_Model_Records_Queue::QUEUE_TYPE_CREDITMEMEO)
                 ->setStatus(OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_PENDING)
+                ->setQuoteId($order->getQuoteId())
+                ->setQuoteAddressId($quoteAddressId)
                 ->save();
         }
 

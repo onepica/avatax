@@ -39,10 +39,15 @@ class OnePica_AvaTax_Model_Observer_SalesOrderInvoiceSaveAfter extends OnePica_A
             && (int)$invoice->getState() === Mage_Sales_Model_Order_Invoice::STATE_PAID
             && Mage::helper('avatax/address')->isObjectActionable($invoice)
         ) {
+            $order = $invoice->getOrder();
+            $quoteAddressId = $order->getIsVirtual() ? $order->getBillingAddress()->getAvataxQuoteAddressId()
+                : $order->getShippingAddress()->getAvataxQuoteAddressId();
             Mage::getModel('avatax_records/queue')
                 ->setEntity($invoice)
                 ->setType(OnePica_AvaTax_Model_Records_Queue::QUEUE_TYPE_INVOICE)
                 ->setStatus(OnePica_AvaTax_Model_Records_Queue::QUEUE_STATUS_PENDING)
+                ->setQuoteId($order->getQuoteId())
+                ->setQuoteAddressId($quoteAddressId)
                 ->save();
         }
 

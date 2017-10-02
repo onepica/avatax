@@ -93,11 +93,23 @@ class OnePica_AvaTax_Model_Records_Mysql4_Log_Collection extends Mage_Core_Model
             foreach ($this->getItems() as $item) {
                 if ($item->getType() === 'GetTax') {
                     switch ($this->getRequestData($item, 'DocType')) {
-                        case'SalesInvoice':
+                        case 'SalesInvoice':
                             $item->setInvoiceIncrementId($this->getRequestData($item, 'DocCode'));
                             break;
                         case 'ReturnInvoice':
                             $item->setCreditMemoIncrementId($this->getRequestData($item, 'DocCode'));
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                if ($item->getType() === 'Queue') {
+                    switch ($this->getRequestData($item, 'type')) {
+                        case 'Invoice':
+                            $item->setInvoiceIncrementId($this->getRequestData($item, 'entity_increment_id'));
+                            break;
+                        case 'Credit memo':
+                            $item->setCreditMemoIncrementId($this->getRequestData($item, 'entity_increment_id'));
                             break;
                         default:
                             break;
@@ -115,21 +127,29 @@ class OnePica_AvaTax_Model_Records_Mysql4_Log_Collection extends Mage_Core_Model
      * Regex to get DocType from GetTax request
      *
      * @param OnePica_AvaTax_Model_Records_Log $item
+     * @param string                           $fieldName
      * @return string
      */
     public function getRequestData($item, $fieldName)
     {
-        if ($item->getType() === 'GetTax') {
-            try {
-                preg_match(
-                    "/\[" . $fieldName . "\:GetTaxRequest\:private\].\=\>.(.*)$/m", $item->getRequest(), $output
-                );
-                if (is_array($output) && array_key_exists(1, $output)) {
-                    return $output[1];
-                }
-            } catch (Exception $e) {
-                /** expected behaviour */
+        try {
+            switch ($item->getType()) {
+                case 'GetTax':
+                    preg_match(
+                        "/\[" . $fieldName . "\:GetTaxRequest\:private\].\=\>.(.*)$/m", $item->getRequest(), $output
+                    );
+                    break;
+                case 'Queue':
+                    preg_match("/\[" . $fieldName . "\].\=\>.(.*)$/m", $item->getRequest(), $output);
+                    break;
+                default:
+                    break;
             }
+            if ($output && is_array($output) && array_key_exists(1, $output)) {
+                return $output[1];
+            }
+        } catch (Exception $e) {
+            /** expected behaviour */
         }
 
         return false;

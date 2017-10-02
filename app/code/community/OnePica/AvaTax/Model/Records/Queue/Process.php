@@ -201,10 +201,12 @@ class OnePica_AvaTax_Model_Records_Queue_Process
         /** @var OnePica_AvaTax_Model_Records_Queue $item */
         foreach ($queue as $item) {
             $item->setAttempt($item->getAttempt() + 1);
+            /** @var Mage_Sales_Model_Order_Invoice|null $invoice */
+            $invoice = null;
             try {
-                /** @var Mage_Sales_Model_Order_Invoice $invoice */
                 $invoice = Mage::getModel('sales/order_invoice')->load($item->getEntityId());
                 if ($invoice->getId()) {
+                    $this->_setQuoteData($invoice->getOrder(), $item);
                     $invoiceAction->process($invoice, $item);
                 }
 
@@ -246,10 +248,12 @@ class OnePica_AvaTax_Model_Records_Queue_Process
         /** @var OnePica_AvaTax_Model_Records_Queue $item */
         foreach ($queue as $item) {
             $item->setAttempt($item->getAttempt() + 1);
+            /** @var Mage_Sales_Model_Order_Creditmemo|null $creditmemo */
+            $creditmemo = null;
             try {
-                /** @var Mage_Sales_Model_Order_Creditmemo $creditmemo */
                 $creditmemo = Mage::getModel('sales/order_creditmemo')->load($item->getEntityId());
                 if ($creditmemo->getId()) {
+                    $this->_setQuoteData($creditmemo->getOrder(), $item);
                     $creditmemoAction->process($creditmemo, $item);
                 }
 
@@ -281,5 +285,27 @@ class OnePica_AvaTax_Model_Records_Queue_Process
     protected function _getDateModel()
     {
         return Mage::getSingleton('core/date');
+    }
+
+    /**
+     * Sets quote id and quote address id for future logging
+     *
+     * @param OnePica_AvaTax_Model_Records_Queue $item
+     * @param Mage_Sales_Model_Order             $order
+     * @return OnePica_AvaTax_Model_Records_Queue
+     */
+    protected function _setQuoteData($order, $item)
+    {
+        try {
+            $quoteAddressId = $order->getIsVirtual() ? $order->getBillingAddress()->getAvataxQuoteAddressId()
+                : $order->getShippingAddress()->getAvataxQuoteAddressId();
+
+            $item->setQuoteId($order->getQuoteId());
+            $item->setQuoteAddressId($quoteAddressId);
+        } catch (Exception $exception) {
+            /** expected */
+        }
+
+        return $item;
     }
 }
