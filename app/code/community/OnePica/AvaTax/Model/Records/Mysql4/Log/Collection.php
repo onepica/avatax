@@ -73,6 +73,11 @@ class OnePica_AvaTax_Model_Records_Mysql4_Log_Collection extends Mage_Core_Model
                 'order_increment_id' => 'increment_id',
             )
         );
+        $this->getSelect()->where(
+            'order.is_virtual is null 
+                or (order.is_virtual = 0 AND order_address.address_type = "shipping")
+                or (order.is_virtual = 1 AND order_address.address_type = "billing")'
+        );
 
         $this->_relatedInformationAdded = true;
 
