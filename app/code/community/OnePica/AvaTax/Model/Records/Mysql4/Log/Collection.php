@@ -96,6 +96,10 @@ class OnePica_AvaTax_Model_Records_Mysql4_Log_Collection extends Mage_Core_Model
     {
         try {
             foreach ($this->getItems() as $item) {
+                /** when export data need empty invoice or creditmemo column */
+                $item->setInvoiceIncrementId('');
+                $item->setCreditMemoIncrementId('');
+
                 if ($item->getType() === 'GetTax') {
                     switch ($this->getRequestData($item, 'DocType')) {
                         case 'SalesInvoice':

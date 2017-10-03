@@ -56,6 +56,9 @@ class OnePica_AvaTax_Model_Export_Entity_Log extends OnePica_AvaTax_Model_Export
      */
     protected function _getCollection()
     {
-        return Mage::getResourceModel('avatax_records/log_collection');
+        $collection = Mage::getResourceModel('avatax_records/log_collection');
+        $collection->addRelatedInfoToSelect();
+
+        return $collection;
     }
 }
