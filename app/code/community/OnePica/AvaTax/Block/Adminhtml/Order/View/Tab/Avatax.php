@@ -1,0 +1,97 @@
+<?php
+/**
+ * OnePica_AvaTax
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0), a
+ * copy of which is available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
+ * @copyright  Copyright (c) 2009 One Pica, Inc.
+ * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ */
+
+/**
+ * Config tab in order view
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
+ */
+class OnePica_AvaTax_Block_Adminhtml_Order_View_Tab_Avatax extends Mage_Adminhtml_Block_Template
+    implements Mage_Adminhtml_Block_Widget_Tab_Interface
+{
+    /**
+     * Internal constructor, that is called from real constructor
+     *
+     */
+    protected function _construct()
+    {
+        parent::_construct();
+        $this->setTemplate('onepica/avatax/order/view/tab/avatax.phtml');
+    }
+
+    /**
+     * Return Tab label
+     *
+     * @return string
+     */
+    public function getTabLabel()
+    {
+        return $this->__('AvaTax');
+    }
+
+    /**
+     * Return Tab title
+     *
+     * @return string
+     */
+    public function getTabTitle()
+    {
+        return $this->__('AvaTax');
+    }
+
+    /**
+     * Can show tab in tabs
+     *
+     * @return boolean
+     */
+    public function canShowTab()
+    {
+        return true;
+    }
+
+    /**
+     * Tab is hidden
+     *
+     * @return boolean
+     */
+    public function isHidden()
+    {
+        return false;
+    }
+
+    /**
+     * This order
+     *
+     * @return mixed
+     */
+    public function getOrder()
+    {
+        return Mage::registry('current_order');
+    }
+
+    /**
+     * Head text
+     *
+     * @return string
+     */
+    public function getHeadText()
+    {
+        return $this->__('Logs');
+    }
+}
