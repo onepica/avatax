@@ -41,7 +41,9 @@ class OnePica_AvaTax_Model_Export_Entity_Queue extends OnePica_AvaTax_Model_Expo
             'attempt',
             'message',
             'created_at',
-            'updated_at'
+            'updated_at',
+            'quote_id',
+            'quote_address_id',
         );
     }
 
@@ -52,6 +54,18 @@ class OnePica_AvaTax_Model_Export_Entity_Queue extends OnePica_AvaTax_Model_Expo
      */
     protected function _getCollection()
     {
-        return Mage::getResourceModel('avatax_records/queue_collection');
+        /** @var OnePica_AvaTax_Model_Records_Mysql4_Queue_Collection $collection */
+        $collection = Mage::getResourceModel('avatax_records/queue_collection');
+
+        try {
+            /* collection to export only for one quote */
+            if ($quoteId = Mage::app()->getRequest()->getParam('quote_id')) {
+                $collection->selectOnlyForQuote($quoteId);
+            }
+        } catch (Exception $e) {
+            /*  expected */
+        }
+
+        return $collection;
     }
 }

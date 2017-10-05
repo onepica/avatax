@@ -83,8 +83,10 @@ class OnePica_AvaTax_Adminhtml_AvaTax_ExportController extends Mage_Adminhtml_Co
 
         $logContent = Mage::getModel('avatax/export')->setAdapter(Mage::getModel('avatax/export_adapter_sql'))
                           ->setEntity(Mage::getModel('avatax/export_entity_log'))->getContent();
+        $queueContent = Mage::getModel('avatax/export')->setAdapter(Mage::getModel('avatax/export_adapter_sql'))
+                            ->setEntity(Mage::getModel('avatax/export_entity_queue'))->getContent();
 
-        $this->_sendResponse($fileName, $logContent);
+        $this->_sendResponse($fileName, $logContent . $queueContent);
 
         return $this;
     }
