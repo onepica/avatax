@@ -58,7 +58,18 @@ class OnePica_AvaTax_Model_Export_Entity_Log extends OnePica_AvaTax_Model_Export
     {
         /** @var OnePica_AvaTax_Model_Records_Mysql4_Log_Collection $collection */
         $collection = Mage::getResourceModel('avatax_records/log_collection');
-        $collection->addRelatedInfoToSelect();
+
+        try {
+            /* add related info about order, invoice and credit memo */
+            $collection->addRelatedInfoToSelect();
+
+            /* collection to export only for one quote */
+            if ($quoteId = Mage::app()->getRequest()->getParam('quote_id')) {
+                $collection->selectOnlyForQuote($quoteId);
+            }
+        } catch (Exception $e) {
+            /*  expected */
+        }
 
         return $collection;
     }
