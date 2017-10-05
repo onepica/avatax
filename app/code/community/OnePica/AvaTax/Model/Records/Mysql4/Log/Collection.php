@@ -74,11 +74,17 @@ class OnePica_AvaTax_Model_Records_Mysql4_Log_Collection extends Mage_Core_Model
             )
         );
         $this->getSelect()->where(
-            'order.is_virtual is null 
-                or (order.is_virtual = 0 AND order_address.address_type = "shipping")
-                or (order.is_virtual = 1 AND order_address.address_type = "billing")'
+            'order.is_virtual IS NULL 
+                OR (order.is_virtual = 0 AND order_address.address_type = "shipping")
+                OR (order.is_virtual = 1 AND order_address.address_type = "billing")'
         );
 
+        /* collection to export only for one quote */
+        if (Mage::app()->getRequest()->getParam('quote_id')) {
+            $this->getSelect()->where(
+                'main_table.quote_id ="' . Mage::app()->getRequest()->getParam('quote_id') . '"'
+            );
+        }
         $this->_relatedInformationAdded = true;
 
         return $this;

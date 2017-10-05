@@ -67,6 +67,29 @@ class OnePica_AvaTax_Adminhtml_AvaTax_ExportController extends Mage_Adminhtml_Co
     }
 
     /**
+     * Log action
+     *
+     * @return $this
+     */
+    public function orderinfoAction()
+    {
+        $fileNameArray = array(
+            'avatax_sales',
+            'order_' . $this->getRequest()->getParam('order_id'),
+            $this->_getDateModel()->gmtDate('U')
+        );
+
+        $fileName = implode('-', $fileNameArray) . '.sql';
+
+        $logContent = Mage::getModel('avatax/export')->setAdapter(Mage::getModel('avatax/export_adapter_sql'))
+                          ->setEntity(Mage::getModel('avatax/export_entity_log'))->getContent();
+
+        $this->_sendResponse($fileName, $logContent);
+
+        return $this;
+    }
+
+    /**
      * Send response
      *
      * @param string $fileName

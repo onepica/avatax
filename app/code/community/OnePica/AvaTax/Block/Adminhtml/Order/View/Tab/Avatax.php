@@ -94,4 +94,36 @@ class OnePica_AvaTax_Block_Adminhtml_Order_View_Tab_Avatax extends Mage_Adminhtm
     {
         return $this->__('Logs');
     }
+
+    /**
+     * Get element html
+     *
+     * @param Varien_Data_Form_Element_Abstract $element
+     * @return string
+     * @throws Exception
+     */
+    protected function getButtonsHtml()
+    {
+        $buttonBlock = $this->getLayout()->createBlock('adminhtml/widget_button');
+        $orderId = $buttonBlock->getRequest()->getParam('order_id');
+        /** @var \Mage_Sales_Model_Order $order */
+        $order = Mage::getModel('sales/order')->load($orderId);
+
+        $params = array(
+            'website'  => $buttonBlock->getRequest()->getParam('website'),
+            'order_id' => $orderId,
+            'quote_id' => $order->getQuoteId(),
+        );
+
+        $logsData = array(
+            'label'   => Mage::helper('avatax')->__('Export Logs for this order'),
+            'onclick' => 'setLocation(\''
+                . Mage::helper('adminhtml')->getUrl('adminhtml/avaTax_export/orderinfo', $params) . '\')',
+            'class'   => '',
+        );
+
+        $html = $buttonBlock->setData($logsData)->toHtml();
+
+        return $html;
+    }
 }
