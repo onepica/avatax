@@ -81,10 +81,21 @@ class OnePica_AvaTax_Adminhtml_AvaTax_ExportController extends Mage_Adminhtml_Co
 
         $fileName = implode('-', $fileNameArray) . '.sql';
 
-        $logContent = Mage::getModel('avatax/export')->setAdapter(Mage::getModel('avatax/export_adapter_sql'))
-                          ->setEntity(Mage::getModel('avatax/export_entity_log'))->getContent();
-        $queueContent = Mage::getModel('avatax/export')->setAdapter(Mage::getModel('avatax/export_adapter_sql'))
-                            ->setEntity(Mage::getModel('avatax/export_entity_queue'))->getContent();
+        /** @var \OnePica_AvaTax_Model_Export_Entity_Order_Log $logEntity */
+        $logEntity = Mage::getModel('avatax/export_entity_order_log');
+        $logEntity->setQuoteId($this->getRequest()->getParam('quote_id'));
+        $logContent = Mage::getModel('avatax/export')
+                          ->setAdapter(Mage::getModel('avatax/export_adapter_sql'))
+                          ->setEntity($logEntity)
+                          ->getContent();
+
+        /** @var \OnePica_AvaTax_Model_Export_Entity_Order_Queue $queueEntity */
+        $queueEntity = Mage::getModel('avatax/export_entity_order_queue');
+        $queueEntity->setQuoteId($this->getRequest()->getParam('quote_id'));
+        $queueContent = Mage::getModel('avatax/export')
+                            ->setAdapter(Mage::getModel('avatax/export_adapter_sql'))
+                            ->setEntity($queueEntity)
+                            ->getContent();
 
         $this->_sendResponse($fileName, $logContent . $queueContent);
 

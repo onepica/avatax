@@ -22,32 +22,14 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Export_Entity_Log extends OnePica_AvaTax_Model_Export_Entity_Abstract
+class OnePica_AvaTax_Model_Export_Entity_Order_Log extends OnePica_AvaTax_Model_Export_Entity_Log
 {
     /**
-     * Get export columns list
+     * Quote id to get log collection only for this quote
      *
-     * @return array
+     * @var int|null
      */
-    protected function _getExportColumns()
-    {
-        return array(
-            'log_id',
-            'store_id',
-            'level',
-            'type',
-            'request',
-            'result',
-            'additional',
-            'created_at',
-            'soap_request',
-            'soap_request_headers',
-            'soap_result',
-            'soap_result_headers',
-            'quote_id',
-            'quote_address_id'
-        );
-    }
+    protected $_quoteId = null;
 
     /**
      * Get collection
@@ -57,15 +39,40 @@ class OnePica_AvaTax_Model_Export_Entity_Log extends OnePica_AvaTax_Model_Export
     protected function _getCollection()
     {
         /** @var OnePica_AvaTax_Model_Records_Mysql4_Log_Collection $collection */
-        $collection = Mage::getResourceModel('avatax_records/log_collection');
+        $collection = parent::_getCollection();
 
         try {
-            /* add related info about order, invoice and credit memo */
-            $collection->addRelatedInfoToSelect();
+            /* collection to export only for one quote */
+            if ($this->getQuoteId()) {
+                $collection->selectOnlyForQuote($this->getQuoteId());
+            }
         } catch (Exception $e) {
             /*  expected */
         }
 
         return $collection;
+    }
+
+    /**
+     * Set quote id to get collection only for this quote
+     *
+     * @param int $quoteId
+     * @return int
+     */
+    public function setQuoteId($quoteId)
+    {
+        $this->_quoteId = $quoteId;
+
+        return $this->_quoteId;
+    }
+
+    /**
+     * Get quote id to get collection only for this quote
+     *
+     * @return int
+     */
+    public function getQuoteId()
+    {
+        return $this->_quoteId;
     }
 }

@@ -50,22 +50,10 @@ class OnePica_AvaTax_Model_Export_Entity_Queue extends OnePica_AvaTax_Model_Expo
     /**
      * Get collection
      *
-     * @return Mage_Core_Model_Mysql4_Collection_Abstract
+     * @return OnePica_AvaTax_Model_Records_Mysql4_Queue_Collection
      */
     protected function _getCollection()
     {
-        /** @var OnePica_AvaTax_Model_Records_Mysql4_Queue_Collection $collection */
-        $collection = Mage::getResourceModel('avatax_records/queue_collection');
-
-        try {
-            /* collection to export only for one quote */
-            if ($quoteId = Mage::app()->getRequest()->getParam('quote_id')) {
-                $collection->selectOnlyForQuote($quoteId);
-            }
-        } catch (Exception $e) {
-            /*  expected */
-        }
-
-        return $collection;
+        return Mage::getResourceModel('avatax_records/queue_collection');
     }
 }

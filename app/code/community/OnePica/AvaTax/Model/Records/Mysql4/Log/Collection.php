@@ -179,4 +179,3 @@ class OnePica_AvaTax_Model_Records_Mysql4_Log_Collection extends Mage_Core_Model
         return $this;
     }
 }
-
