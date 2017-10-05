@@ -32,4 +32,19 @@ class OnePica_AvaTax_Model_Records_Mysql4_Queue_Collection extends Mage_Core_Mod
         parent::_construct();
         $this->_init('avatax_records/queue');
     }
+
+    /**
+     * Prepares data only for specific quote_id
+     *
+     * @param int $quoteId
+     * @return $this
+     */
+    public function selectOnlyForQuote($quoteId)
+    {
+        $this->getSelect()->where(
+            'main_table.quote_id ="' . $quoteId . '"'
+        );
+
+        return $this;
+    }
 }

@@ -1,0 +1,74 @@
+<?php
+/**
+ * OnePica_AvaTax
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0), a
+ * copy of which is available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
+ * @copyright  Copyright (c) 2009 One Pica, Inc.
+ * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ */
+
+/**
+ * Queue export entity model
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
+ */
+class OnePica_AvaTax_Model_Export_Entity_Order_Queue extends OnePica_AvaTax_Model_Export_Entity_Queue
+{
+    /**
+     * Quote id to get log collection only for this quote
+     *
+     * @var int|null
+     */
+    protected $_quoteId = null;
+
+    /**
+     * Get collection
+     *
+     * @return Mage_Core_Model_Mysql4_Collection_Abstract
+     */
+    protected function _getCollection()
+    {
+        /** @var OnePica_AvaTax_Model_Records_Mysql4_Queue_Collection $collection */
+        $collection = parent::_getCollection();
+
+        /* collection to export only for one quote */
+        if ($this->getQuoteId()) {
+            $collection->selectOnlyForQuote($this->getQuoteId());
+        }
+
+        return $collection;
+    }
+
+    /**
+     * Set quote id to get collection only for this quote
+     *
+     * @param int $quoteId
+     * @return int
+     */
+    public function setQuoteId($quoteId)
+    {
+        $this->_quoteId = $quoteId;
+
+        return $this->_quoteId;
+    }
+
+    /**
+     * Get quote id to get collection only for this quote
+     *
+     * @return int
+     */
+    public function getQuoteId()
+    {
+        return $this->_quoteId;
+    }
+}
