@@ -102,7 +102,7 @@ class OnePica_AvaTax_Block_Adminhtml_Order_View_Tab_Avatax extends Mage_Adminhtm
      * @return string
      * @throws Exception
      */
-    protected function getButtonsHtml()
+    protected function getExportButtonHtml()
     {
         $buttonBlock = $this->getLayout()->createBlock('adminhtml/widget_button');
         $orderId = $buttonBlock->getRequest()->getParam('order_id');
