@@ -41,13 +41,9 @@ class OnePica_AvaTax_Model_Export_Entity_Order_Log extends OnePica_AvaTax_Model_
         /** @var OnePica_AvaTax_Model_Records_Mysql4_Log_Collection $collection */
         $collection = parent::_getCollection();
 
-        try {
-            /* collection to export only for one quote */
-            if ($this->getQuoteId()) {
-                $collection->selectOnlyForQuote($this->getQuoteId());
-            }
-        } catch (Exception $e) {
-            /*  expected */
+        /* collection to export only for one quote */
+        if ($this->getQuoteId()) {
+            $collection->selectOnlyForQuote($this->getQuoteId());
         }
 
         return $collection;
