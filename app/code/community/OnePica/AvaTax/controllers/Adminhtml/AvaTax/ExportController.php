@@ -103,11 +103,26 @@ class OnePica_AvaTax_Adminhtml_AvaTax_ExportController extends Mage_Adminhtml_Co
         $quoteItemEntity = Mage::getModel('avatax/export_entity_order_salesquoteitem');
         $quoteItemContent = $this->_getOrderSqlContent($quoteItemEntity->setQuoteId($quoteId)->setStoreId($storeId));
 
+        /** @var \OnePica_AvaTax_Model_Export_Entity_Order_SalesOrder $orderEntity */
+        $orderEntity = Mage::getModel('avatax/export_entity_order_salesorder');
+        $orderContent = $this->_getOrderSqlContent($orderEntity->setQuoteId($quoteId));
+
+        /** @var \OnePica_AvaTax_Model_Export_Entity_Order_SalesOrderAddress $orderAddressEntity */
+        $orderAddressEntity = Mage::getModel('avatax/export_entity_order_salesorderaddress');
+        $orderAddressContent = $this->_getOrderSqlContent($orderAddressEntity->setQuoteId($quoteId));
+
+        /** @var \OnePica_AvaTax_Model_Export_Entity_Order_SalesOrderItem $orderItemEntity */
+        $orderItemEntity = Mage::getModel('avatax/export_entity_order_salesorderitem');
+        $orderItemContent = $this->_getOrderSqlContent($orderItemEntity->setQuoteId($quoteId));
+
         $content = $logContent .
             $queueContent .
             $quoteContent .
             $quoteAddressContent .
-            $quoteItemContent;
+            $quoteItemContent .
+            $orderContent .
+            $orderAddressContent .
+            $orderItemContent;
 
         $this->_sendResponse($fileName, $content);
 

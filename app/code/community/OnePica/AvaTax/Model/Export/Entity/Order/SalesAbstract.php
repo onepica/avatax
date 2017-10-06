@@ -40,6 +40,9 @@ abstract class OnePica_AvaTax_Model_Export_Entity_Order_SalesAbstract
     /** @var array $_exportColumns */
     protected $_exportColumns = array();
 
+    /** @var array $_exportColumns */
+    protected $_relatedOrderIds = array();
+
     /**
      * Get quote id to get collection only for this quote
      *
@@ -120,5 +123,22 @@ abstract class OnePica_AvaTax_Model_Export_Entity_Order_SalesAbstract
         }
 
         return $this->_exportColumns;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRelatedOrderIds()
+    {
+        if (!$this->_relatedOrderIds) {
+            $items = Mage::getResourceModel('sales/order_collection')
+                         ->addFieldToFilter('quote_id', $this->getQuoteId())
+                         ->addFieldToSelect('entity_id')
+                         ->getItems();
+
+            $this->_relatedOrderIds = array_keys($items);
+        }
+
+        return $this->_relatedOrderIds;
     }
 }
