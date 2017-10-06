@@ -123,6 +123,14 @@ class OnePica_AvaTax_Adminhtml_AvaTax_ExportController extends Mage_Adminhtml_Co
         $invoiceItemEntity = Mage::getModel('avatax/export_entity_order_salesinvoiceitem');
         $invoiceItemContent = $this->_getOrderSqlContent($invoiceItemEntity->setQuoteId($quoteId));
 
+        /** @var \OnePica_AvaTax_Model_Export_Entity_Order_Creditmemo $creditmemoEntity */
+        $creditmemoEntity = Mage::getModel('avatax/export_entity_order_creditmemo');
+        $creditmemoContent = $this->_getOrderSqlContent($creditmemoEntity->setQuoteId($quoteId));
+
+        /** @var \OnePica_AvaTax_Model_Export_Entity_Order_CreditmemoItem $creditmemoItemEntity */
+        $creditmemoItemEntity = Mage::getModel('avatax/export_entity_order_creditmemoitem');
+        $creditmemoItemContent = $this->_getOrderSqlContent($creditmemoItemEntity->setQuoteId($quoteId));
+
         $content = $logContent .
             $queueContent .
             $quoteContent .
@@ -132,7 +140,9 @@ class OnePica_AvaTax_Adminhtml_AvaTax_ExportController extends Mage_Adminhtml_Co
             $orderAddressContent .
             $orderItemContent .
             $invoiceContent .
-            $invoiceItemContent;
+            $invoiceItemContent.
+            $creditmemoContent .
+            $creditmemoItemContent;
 
         $this->_sendResponse($fileName, $content);
 
