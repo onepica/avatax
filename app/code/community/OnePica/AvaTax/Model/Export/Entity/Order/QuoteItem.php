@@ -25,6 +25,16 @@
 class OnePica_AvaTax_Model_Export_Entity_Order_QuoteItem extends OnePica_AvaTax_Model_Export_Entity_Order_Abstract
 {
     /**
+     * OnePica_AvaTax_Model_Export_Entity_Order_QuoteItem constructor.
+     *
+     * @param $storeId
+     */
+    public function __construct($storeId)
+    {
+        $this->_storeId = $storeId;
+    }
+
+    /**
      * Get export columns list
      *
      * @return array

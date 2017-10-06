@@ -82,70 +82,33 @@ class OnePica_AvaTax_Adminhtml_AvaTax_ExportController extends Mage_Adminhtml_Co
         $fileName = implode('-', $fileNameArray) . '.sql';
         $storeId = $this->getRequest()->getParam('store_id');
         $quoteId = $this->getRequest()->getParam('quote_id');
+        $content = '';
 
         /** @var \OnePica_AvaTax_Model_Export_Entity_Order_Log $logEntity */
         $logEntity = Mage::getModel('avatax/export_entity_order_log');
-        $logContent = Mage::getModel('avatax/export')
+        $content .= Mage::getModel('avatax/export')
                           ->setAdapter(Mage::getModel('avatax/export_adapter_sql'))
                           ->setEntity($logEntity->setQuoteId($quoteId))
                           ->getContent();
 
-        /** @var \OnePica_AvaTax_Model_Export_Entity_Order_Queue $queueEntity */
-        $queueEntity = Mage::getModel('avatax/export_entity_order_queue');
-        $queueContent = $this->_getOrderSqlContent($queueEntity->setQuoteId($quoteId));
+        $entities = array(
+            Mage::getModel('avatax/export_entity_order_queue'),
+            Mage::getModel('avatax/export_entity_order_quote'),
+            Mage::getModel('avatax/export_entity_order_quoteaddress'),
+            Mage::getModel('avatax/export_entity_order_quoteitem', $storeId),
+            Mage::getModel('avatax/export_entity_order_order'),
+            Mage::getModel('avatax/export_entity_order_orderaddress'),
+            Mage::getModel('avatax/export_entity_order_orderitem'),
+            Mage::getModel('avatax/export_entity_order_invoice'),
+            Mage::getModel('avatax/export_entity_order_invoiceitem'),
+            Mage::getModel('avatax/export_entity_order_creditmemo'),
+            Mage::getModel('avatax/export_entity_order_creditmemoitem')
+        );
 
-        /** @var \OnePica_AvaTax_Model_Export_Entity_Order_Quote $quoteEntity */
-        $quoteEntity = Mage::getModel('avatax/export_entity_order_quote');
-        $quoteContent = $this->_getOrderSqlContent($quoteEntity->setQuoteId($quoteId));
-
-        /** @var \OnePica_AvaTax_Model_Export_Entity_Order_QuoteAddress $quoteAddressEntity */
-        $quoteAddressEntity = Mage::getModel('avatax/export_entity_order_quoteaddress');
-        $quoteAddressContent = $this->_getOrderSqlContent($quoteAddressEntity->setQuoteId($quoteId));
-
-        /** @var \OnePica_AvaTax_Model_Export_Entity_Order_QuoteAddress $quoteItemEntity */
-        $quoteItemEntity = Mage::getModel('avatax/export_entity_order_quoteitem');
-        $quoteItemContent = $this->_getOrderSqlContent($quoteItemEntity->setQuoteId($quoteId)->setStoreId($storeId));
-
-        /** @var \OnePica_AvaTax_Model_Export_Entity_Order_Order $orderEntity */
-        $orderEntity = Mage::getModel('avatax/export_entity_order_order');
-        $orderContent = $this->_getOrderSqlContent($orderEntity->setQuoteId($quoteId));
-
-        /** @var \OnePica_AvaTax_Model_Export_Entity_Order_OrderAddress $orderAddressEntity */
-        $orderAddressEntity = Mage::getModel('avatax/export_entity_order_orderaddress');
-        $orderAddressContent = $this->_getOrderSqlContent($orderAddressEntity->setQuoteId($quoteId));
-
-        /** @var \OnePica_AvaTax_Model_Export_Entity_Order_OrderItem $orderItemEntity */
-        $orderItemEntity = Mage::getModel('avatax/export_entity_order_orderitem');
-        $orderItemContent = $this->_getOrderSqlContent($orderItemEntity->setQuoteId($quoteId));
-
-        /** @var \OnePica_AvaTax_Model_Export_Entity_Order_Invoice $invoiceEntity */
-        $invoiceEntity = Mage::getModel('avatax/export_entity_order_invoice');
-        $invoiceContent = $this->_getOrderSqlContent($invoiceEntity->setQuoteId($quoteId));
-
-        /** @var \OnePica_AvaTax_Model_Export_Entity_Order_InvoiceItem $invoiceItemEntity */
-        $invoiceItemEntity = Mage::getModel('avatax/export_entity_order_invoiceitem');
-        $invoiceItemContent = $this->_getOrderSqlContent($invoiceItemEntity->setQuoteId($quoteId));
-
-        /** @var \OnePica_AvaTax_Model_Export_Entity_Order_Creditmemo $creditmemoEntity */
-        $creditmemoEntity = Mage::getModel('avatax/export_entity_order_creditmemo');
-        $creditmemoContent = $this->_getOrderSqlContent($creditmemoEntity->setQuoteId($quoteId));
-
-        /** @var \OnePica_AvaTax_Model_Export_Entity_Order_CreditmemoItem $creditmemoItemEntity */
-        $creditmemoItemEntity = Mage::getModel('avatax/export_entity_order_creditmemoitem');
-        $creditmemoItemContent = $this->_getOrderSqlContent($creditmemoItemEntity->setQuoteId($quoteId));
-
-        $content = $logContent .
-            $queueContent .
-            $quoteContent .
-            $quoteAddressContent .
-            $quoteItemContent .
-            $orderContent .
-            $orderAddressContent .
-            $orderItemContent .
-            $invoiceContent .
-            $invoiceItemContent.
-            $creditmemoContent .
-            $creditmemoItemContent;
+        /** @var \OnePica_AvaTax_Model_Export_Entity_Order_Abstract $entity */
+        foreach ($entities as $entity) {
+            $content .= $this->_getOrderSqlContent($entity->setQuoteId($quoteId));
+        }
 
         $this->_sendResponse($fileName, $content);
 
