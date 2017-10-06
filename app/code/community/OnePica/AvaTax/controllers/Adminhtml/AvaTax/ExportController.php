@@ -80,24 +80,36 @@ class OnePica_AvaTax_Adminhtml_AvaTax_ExportController extends Mage_Adminhtml_Co
         );
 
         $fileName = implode('-', $fileNameArray) . '.sql';
+        $storeId = $this->getRequest()->getParam('store_id');
+        $quoteId = $this->getRequest()->getParam('quote_id');
 
         /** @var \OnePica_AvaTax_Model_Export_Entity_Order_Log $logEntity */
         $logEntity = Mage::getModel('avatax/export_entity_order_log');
-        $logEntity->setQuoteId($this->getRequest()->getParam('quote_id'));
-        $logContent = Mage::getModel('avatax/export')
-                          ->setAdapter(Mage::getModel('avatax/export_adapter_sql'))
-                          ->setEntity($logEntity)
-                          ->getContent();
+        $logContent = $this->_getOrderSqlContent($logEntity->setQuoteId($quoteId));
 
         /** @var \OnePica_AvaTax_Model_Export_Entity_Order_Queue $queueEntity */
         $queueEntity = Mage::getModel('avatax/export_entity_order_queue');
-        $queueEntity->setQuoteId($this->getRequest()->getParam('quote_id'));
-        $queueContent = Mage::getModel('avatax/export')
-                            ->setAdapter(Mage::getModel('avatax/export_adapter_sql'))
-                            ->setEntity($queueEntity)
-                            ->getContent();
+        $queueContent = $this->_getOrderSqlContent($queueEntity->setQuoteId($quoteId));
 
-        $this->_sendResponse($fileName, $logContent . $queueContent);
+        /** @var \OnePica_AvaTax_Model_Export_Entity_Order_SalesQuote $quoteEntity */
+        $quoteEntity = Mage::getModel('avatax/export_entity_order_salesquote');
+        $quoteContent = $this->_getOrderSqlContent($quoteEntity->setQuoteId($quoteId));
+
+        /** @var \OnePica_AvaTax_Model_Export_Entity_Order_SalesQuoteAddress $quoteAddressEntity */
+        $quoteAddressEntity = Mage::getModel('avatax/export_entity_order_salesquoteaddress');
+        $quoteAddressContent = $this->_getOrderSqlContent($quoteAddressEntity->setQuoteId($quoteId));
+
+        /** @var \OnePica_AvaTax_Model_Export_Entity_Order_SalesQuoteAddress $quoteItemEntity */
+        $quoteItemEntity = Mage::getModel('avatax/export_entity_order_salesquoteitem');
+        $quoteItemContent = $this->_getOrderSqlContent($quoteItemEntity->setQuoteId($quoteId)->setStoreId($storeId));
+
+        $content = $logContent .
+            $queueContent .
+            $quoteContent .
+            $quoteAddressContent .
+            $quoteItemContent;
+
+        $this->_sendResponse($fileName, $content);
 
         return $this;
     }
@@ -133,5 +145,20 @@ class OnePica_AvaTax_Adminhtml_AvaTax_ExportController extends Mage_Adminhtml_Co
     protected function _getDateModel()
     {
         return Mage::getSingleton('core/date');
+    }
+
+    /**
+     * @param OnePica_AvaTax_Model_Export_Entity_Abstract $entity
+     * @return string
+     */
+    protected function _getOrderSqlContent($entity)
+    {
+        $cols = $entity->getExportColumns();
+        $adapter = Mage::getModel('avatax/export_adapter_order_sql')->setColumnsToExport($cols);
+
+        return Mage::getModel('avatax/export')
+                   ->setAdapter($adapter)
+                   ->setEntity($entity)
+                   ->getContent();
     }
 }

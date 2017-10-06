@@ -31,6 +31,9 @@ class OnePica_AvaTax_Model_Export_Entity_Order_Log extends OnePica_AvaTax_Model_
      */
     protected $_quoteId = null;
 
+    /** @var array $_exportColumns */
+    protected $_exportColumns = array();
+
     /**
      * Get collection
      *
@@ -53,13 +56,13 @@ class OnePica_AvaTax_Model_Export_Entity_Order_Log extends OnePica_AvaTax_Model_
      * Set quote id to get collection only for this quote
      *
      * @param int $quoteId
-     * @return int
+     * @return $this
      */
     public function setQuoteId($quoteId)
     {
         $this->_quoteId = $quoteId;
 
-        return $this->_quoteId;
+        return $this;
     }
 
     /**
@@ -70,5 +73,17 @@ class OnePica_AvaTax_Model_Export_Entity_Order_Log extends OnePica_AvaTax_Model_
     public function getQuoteId()
     {
         return $this->_quoteId;
+    }
+
+    /**
+     * @return null|array
+     */
+    public function getExportColumns()
+    {
+        if (!$this->_exportColumns) {
+            $this->_exportColumns = $this->_getExportColumns();
+        }
+
+        return $this->_exportColumns;
     }
 }

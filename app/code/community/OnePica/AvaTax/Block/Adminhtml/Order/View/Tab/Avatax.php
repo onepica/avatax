@@ -113,6 +113,7 @@ class OnePica_AvaTax_Block_Adminhtml_Order_View_Tab_Avatax extends Mage_Adminhtm
             'website'  => $buttonBlock->getRequest()->getParam('website'),
             'order_id' => $orderId,
             'quote_id' => $order->getQuoteId(),
+            'store_id' => $order->getStoreId(),
         );
 
         $logsData = array(
