@@ -67,7 +67,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_ExportController extends Mage_Adminhtml_Co
     }
 
     /**
-     * Log action
+     * Order Info action
      *
      * @return $this
      */
@@ -115,6 +115,14 @@ class OnePica_AvaTax_Adminhtml_AvaTax_ExportController extends Mage_Adminhtml_Co
         $orderItemEntity = Mage::getModel('avatax/export_entity_order_salesorderitem');
         $orderItemContent = $this->_getOrderSqlContent($orderItemEntity->setQuoteId($quoteId));
 
+        /** @var \OnePica_AvaTax_Model_Export_Entity_Order_SalesInvoice $invoiceEntity */
+        $invoiceEntity = Mage::getModel('avatax/export_entity_order_salesinvoice');
+        $invoiceContent = $this->_getOrderSqlContent($invoiceEntity->setQuoteId($quoteId));
+
+        /** @var \OnePica_AvaTax_Model_Export_Entity_Order_SalesInvoiceItem $invoiceItemEntity */
+        $invoiceItemEntity = Mage::getModel('avatax/export_entity_order_salesinvoiceitem');
+        $invoiceItemContent = $this->_getOrderSqlContent($invoiceItemEntity->setQuoteId($quoteId));
+
         $content = $logContent .
             $queueContent .
             $quoteContent .
@@ -122,7 +130,9 @@ class OnePica_AvaTax_Adminhtml_AvaTax_ExportController extends Mage_Adminhtml_Co
             $quoteItemContent .
             $orderContent .
             $orderAddressContent .
-            $orderItemContent;
+            $orderItemContent .
+            $invoiceContent .
+            $invoiceItemContent;
 
         $this->_sendResponse($fileName, $content);
 
@@ -163,7 +173,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_ExportController extends Mage_Adminhtml_Co
     }
 
     /**
-     * @param OnePica_AvaTax_Model_Export_Entity_Abstract $entity
+     * @param OnePica_AvaTax_Model_Export_Entity_Order_SalesAbstract $entity
      * @return string
      */
     protected function _getOrderSqlContent($entity)
