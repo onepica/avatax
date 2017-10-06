@@ -22,17 +22,19 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Export_Entity_Order_Queue extends OnePica_AvaTax_Model_Export_Entity_Queue
+class OnePica_AvaTax_Model_Export_Entity_Order_Queue extends OnePica_AvaTax_Model_Export_Entity_Order_Abstract
 {
     /**
-     * Quote id to get log collection only for this quote
+     * Get export columns list
      *
-     * @var int|null
+     * @return array
      */
-    protected $_quoteId = null;
+    protected function _getExportColumns()
+    {
+        $tableName = $this->getResource()->getTableName('avatax_records/queue');
 
-    /** @var array $_exportColumns */
-    protected $_exportColumns = array();
+        return array_keys($this->getReadConnection()->describeTable($tableName));
+    }
 
     /**
      * Get collection
@@ -42,7 +44,7 @@ class OnePica_AvaTax_Model_Export_Entity_Order_Queue extends OnePica_AvaTax_Mode
     protected function _getCollection()
     {
         /** @var OnePica_AvaTax_Model_Records_Mysql4_Queue_Collection $collection */
-        $collection = parent::_getCollection();
+        $collection = Mage::getResourceModel('avatax_records/queue_collection');
 
         /* collection to export only for one quote */
         if ($this->getQuoteId()) {
@@ -50,40 +52,5 @@ class OnePica_AvaTax_Model_Export_Entity_Order_Queue extends OnePica_AvaTax_Mode
         }
 
         return $collection;
-    }
-
-    /**
-     * Set quote id to get collection only for this quote
-     *
-     * @param int $quoteId
-     * @return $this
-     */
-    public function setQuoteId($quoteId)
-    {
-        $this->_quoteId = $quoteId;
-
-        return $this;
-    }
-
-    /**
-     * Get quote id to get collection only for this quote
-     *
-     * @return int
-     */
-    public function getQuoteId()
-    {
-        return $this->_quoteId;
-    }
-
-    /**
-     * @return null|array
-     */
-    public function getExportColumns()
-    {
-        if (!$this->_exportColumns) {
-            $this->_exportColumns = $this->_getExportColumns();
-        }
-
-        return $this->_exportColumns;
     }
 }

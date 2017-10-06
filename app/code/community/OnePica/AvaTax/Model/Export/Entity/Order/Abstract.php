@@ -22,8 +22,7 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-abstract class OnePica_AvaTax_Model_Export_Entity_Order_SalesAbstract
-    extends OnePica_AvaTax_Model_Export_Entity_Abstract
+abstract class OnePica_AvaTax_Model_Export_Entity_Order_Abstract extends OnePica_AvaTax_Model_Export_Entity_Abstract
 {
     /** @var int|null $_quoteId Quote id to get log collection only for this quote */
     protected $_quoteId = null;

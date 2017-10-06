@@ -22,8 +22,7 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Export_Entity_Order_SalesOrderItem
-    extends OnePica_AvaTax_Model_Export_Entity_Order_SalesAbstract
+class OnePica_AvaTax_Model_Export_Entity_Order_OrderItem extends OnePica_AvaTax_Model_Export_Entity_Order_Abstract
 {
     /**
      * Get export columns list

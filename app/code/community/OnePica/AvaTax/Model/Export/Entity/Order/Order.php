@@ -22,8 +22,7 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Export_Entity_Order_SalesQuoteItem
-    extends OnePica_AvaTax_Model_Export_Entity_Order_SalesAbstract
+class OnePica_AvaTax_Model_Export_Entity_Order_Order extends OnePica_AvaTax_Model_Export_Entity_Order_Abstract
 {
     /**
      * Get export columns list
@@ -32,7 +31,7 @@ class OnePica_AvaTax_Model_Export_Entity_Order_SalesQuoteItem
      */
     protected function _getExportColumns()
     {
-        $tableName = $this->getResource()->getTableName('sales/quote_item');
+        $tableName = $this->getResource()->getTableName('sales/order');
 
         return array_keys($this->getReadConnection()->describeTable($tableName));
     }
@@ -40,20 +39,16 @@ class OnePica_AvaTax_Model_Export_Entity_Order_SalesQuoteItem
     /**
      * Get collection
      *
-     * @return Mage_Sales_Model_Resource_Quote_Item_Collection
+     * @return Mage_Sales_Model_Resource_Order_Collection
      */
     protected function _getCollection()
     {
-        /** @var \Mage_Sales_Model_Resource_Quote_Item_Collection $collection */
-        $collection = Mage::getResourceModel('sales/quote_item_collection');
+        /** @var \Mage_Sales_Model_Resource_Order_Collection $collection */
+        $collection = Mage::getResourceModel('sales/order_collection');
 
-        if ($this->getQuoteId() && $this->getStoreId()) {
-            /** @var \Mage_Core_Model_Store $store */
-            $store = Mage::getSingleton('core/store')->load($this->getStoreId());
-            /** @var \Mage_Sales_Model_Quote $quote */
-            $quote = Mage::getModel('sales/quote')->setStore($store)->load($this->getQuoteId());
-            $collection->setQuote($quote);
-            $collection->load();
+        /* collection to export only for one quote */
+        if ($this->getQuoteId()) {
+            $collection->addFieldToFilter('quote_id', $this->getQuoteId());
         }
 
         return $collection;

@@ -22,7 +22,7 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Export_Entity_Order_SalesInvoice extends OnePica_AvaTax_Model_Export_Entity_Order_SalesAbstract
+class OnePica_AvaTax_Model_Export_Entity_Order_QuoteAddress extends OnePica_AvaTax_Model_Export_Entity_Order_Abstract
 {
     /**
      * Get export columns list
@@ -31,7 +31,7 @@ class OnePica_AvaTax_Model_Export_Entity_Order_SalesInvoice extends OnePica_AvaT
      */
     protected function _getExportColumns()
     {
-        $tableName = $this->getResource()->getTableName('sales/invoice');
+        $tableName = $this->getResource()->getTableName('sales/quote_address');
 
         return array_keys($this->getReadConnection()->describeTable($tableName));
     }
@@ -39,16 +39,16 @@ class OnePica_AvaTax_Model_Export_Entity_Order_SalesInvoice extends OnePica_AvaT
     /**
      * Get collection
      *
-     * @return Mage_Sales_Model_Resource_Order_Invoice_Collection
+     * @return Mage_Sales_Model_Resource_Quote_Address_Collection
      */
     protected function _getCollection()
     {
-        /** @var \Mage_Sales_Model_Resource_Order_Invoice_Collection $collection */
-        $collection = Mage::getResourceModel('sales/order_invoice_collection');
+        /** @var \Mage_Sales_Model_Resource_Quote_Address_Collection $collection */
+        $collection = Mage::getResourceModel('sales/quote_address_collection');
 
         /* collection to export only for one quote */
         if ($this->getQuoteId()) {
-            $collection->addFieldToFilter('order_id', array('in' => $this->getRelatedOrderIds()));
+            $collection->addFieldToFilter('quote_id', $this->getQuoteId());
         }
 
         return $collection;

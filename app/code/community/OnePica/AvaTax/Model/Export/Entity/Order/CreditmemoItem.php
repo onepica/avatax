@@ -22,8 +22,7 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Export_Entity_Order_CreditmemoItem
-    extends OnePica_AvaTax_Model_Export_Entity_Order_SalesAbstract
+class OnePica_AvaTax_Model_Export_Entity_Order_CreditmemoItem extends OnePica_AvaTax_Model_Export_Entity_Order_Abstract
 {
     /** @var array $_relatedCreditmemoIds */
     protected $_relatedCreditmemoIds = array();
