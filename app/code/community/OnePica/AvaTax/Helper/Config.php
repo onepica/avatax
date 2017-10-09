@@ -195,6 +195,11 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
     const XML_PATH_TO_TAX_AVATAX_LOG_STATUS = 'tax/avatax/log_status';
 
     /**
+     * Path to advanced logging with related info
+     */
+    const XML_PATH_TO_TAX_AVATAX_LOG_ADVANCED = 'tax/avatax/log_advanced';
+
+    /**
      * Path to active avatax service
      */
     const XML_PATH_TO_TAX_AVATAX_ACTIVE_SERVICE = 'tax/avatax/active_service';
@@ -650,6 +655,18 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
     public function getConfigLogMode($store = null)
     {
         return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_LOG_STATUS, $store);
+    }
+
+    /**
+     * Is enabled the advanced logging with related info
+     *
+     * @param null|bool|int|Mage_Core_Model_Store $store
+     *
+     * @return int
+     */
+    public function getConfigAdvancedLog($store = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_LOG_ADVANCED, $store);
     }
 
     /**

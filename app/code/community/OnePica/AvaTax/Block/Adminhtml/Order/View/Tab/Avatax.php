@@ -105,22 +105,32 @@ class OnePica_AvaTax_Block_Adminhtml_Order_View_Tab_Avatax extends Mage_Adminhtm
     protected function getExportButtonHtml()
     {
         $buttonBlock = $this->getLayout()->createBlock('adminhtml/widget_button');
-        $orderId = $buttonBlock->getRequest()->getParam('order_id');
-        /** @var \Mage_Sales_Model_Order $order */
-        $order = Mage::getModel('sales/order')->load($orderId);
+        $btnClass = 'disabled';
+        $btnOnClick = '';
 
-        $params = array(
-            'website'  => $buttonBlock->getRequest()->getParam('website'),
-            'order_id' => $orderId,
-            'quote_id' => $order->getQuoteId(),
-            'store_id' => $order->getStoreId(),
-        );
+        if (Mage::helper('avatax/config')->getConfigAdvancedLog()) {
+            $orderId = $buttonBlock->getRequest()->getParam('order_id');
+            /** @var \Mage_Sales_Model_Order $order */
+            $order = Mage::getModel('sales/order')->load($orderId);
+
+            if ($order->getId()) {
+                $params = array(
+                    'website'  => $buttonBlock->getRequest()->getParam('website'),
+                    'order_id' => $order->getId(),
+                    'quote_id' => $order->getQuoteId(),
+                    'store_id' => $order->getStoreId(),
+                );
+                $exportUrl = Mage::helper('adminhtml')->getUrl('adminhtml/avaTax_export/orderinfo', $params);
+
+                $btnClass = '';
+                $btnOnClick = 'setLocation(\'' . $exportUrl . '\')';
+            }
+        }
 
         $logsData = array(
             'label'   => Mage::helper('avatax')->__('Export Logs for this order'),
-            'onclick' => 'setLocation(\''
-                . Mage::helper('adminhtml')->getUrl('adminhtml/avaTax_export/orderinfo', $params) . '\')',
-            'class'   => '',
+            'onclick' => $btnOnClick,
+            'class'   => $btnClass,
         );
 
         $html = $buttonBlock->setData($logsData)->toHtml();

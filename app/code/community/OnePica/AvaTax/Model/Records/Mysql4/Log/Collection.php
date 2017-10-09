@@ -56,30 +56,29 @@ class OnePica_AvaTax_Model_Records_Mysql4_Log_Collection extends Mage_Core_Model
      */
     public function addRelatedInfoToSelect()
     {
+        if (Mage::helper('avatax/config')->getConfigAdvancedLog()) {
+            $this->getSelect()->joinLeft(
+                array('order_address' => $this->getTable('sales/order_address')),
+                'main_table.quote_address_id = order_address.avatax_quote_address_id',
+                array(
+                    'order_address_entity_id' => 'entity_id',
+                    'order_address_parent_id' => 'parent_id',
+                )
+            )->joinLeft(
+                array('order' => $this->getTable('sales/order')),
+                'order_address.parent_id = order.entity_id',
+                array(
+                    'order_entity_id'    => 'entity_id',
+                    'order_increment_id' => 'increment_id',
+                )
+            )->where(
+                'order.is_virtual IS NULL 
+                    OR (order.is_virtual = 0 AND order_address.address_type = "shipping")
+                    OR (order.is_virtual = 1 AND order_address.address_type = "billing")'
+            );
 
-        $this->getSelect()->joinLeft(
-            array('order_address' => $this->getTable('sales/order_address')),
-            'main_table.quote_address_id = order_address.avatax_quote_address_id',
-            array(
-                'order_address_entity_id' => 'entity_id',
-                'order_address_parent_id' => 'parent_id',
-            )
-        );
-        $this->getSelect()->joinLeft(
-            array('order' => $this->getTable('sales/order')),
-            'order_address.parent_id = order.entity_id',
-            array(
-                'order_entity_id'    => 'entity_id',
-                'order_increment_id' => 'increment_id',
-            )
-        );
-        $this->getSelect()->where(
-            'order.is_virtual IS NULL 
-                OR (order.is_virtual = 0 AND order_address.address_type = "shipping")
-                OR (order.is_virtual = 1 AND order_address.address_type = "billing")'
-        );
-
-        $this->_relatedInformationAdded = true;
+            $this->_relatedInformationAdded = true;
+        }
 
         return $this;
     }
@@ -126,7 +125,6 @@ class OnePica_AvaTax_Model_Records_Mysql4_Log_Collection extends Mage_Core_Model
                             break;
                     }
                 }
-
             }
         } catch (Exception $e) {
             /* expected behaviour */

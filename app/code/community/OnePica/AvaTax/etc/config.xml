@@ -435,6 +435,7 @@
                 <address_validation_countries>CA,US</address_validation_countries>
                 <detail_level>Line</detail_level>
                 <log_status>1</log_status>
+                <log_advanced>1</log_advanced>
                 <log_lifetime>3</log_lifetime>
                 <queue_success_lifetime>7</queue_success_lifetime>
                 <queue_failed_lifetime>60</queue_failed_lifetime>

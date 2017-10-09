@@ -41,9 +41,7 @@ class OnePica_AvaTax_Model_Records_Mysql4_Queue_Collection extends Mage_Core_Mod
      */
     public function selectOnlyForQuote($quoteId)
     {
-        $this->getSelect()->where(
-            'main_table.quote_id ="' . $quoteId . '"'
-        );
+        $this->getSelect()->where('main_table.quote_id = ?', $quoteId);
 
         return $this;
     }
