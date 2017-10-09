@@ -49,12 +49,12 @@ class OnePica_AvaTax_Model_Export_Entity_Order_QuoteItem extends OnePica_AvaTax_
     /**
      * Get collection
      *
-     * @return Mage_Sales_Model_Resource_Quote_Item_Collection
+     * @return Mage_Sales_Model_Resource_Quote_Item_Collection|null
      */
     protected function _getCollection()
     {
-        /** @var \Mage_Sales_Model_Resource_Quote_Item_Collection $collection */
-        $collection = Mage::getResourceModel('sales/quote_item_collection');
+        /** @var \Mage_Sales_Model_Resource_Quote_Item_Collection|null $collection */
+        $collection = null;
 
         if ($this->getQuoteId() && $this->getStoreId()) {
             /** @var \Mage_Core_Model_Store $store */
@@ -62,6 +62,7 @@ class OnePica_AvaTax_Model_Export_Entity_Order_QuoteItem extends OnePica_AvaTax_
             /** @var \Mage_Sales_Model_Quote $quote */
             $quote = Mage::getModel('sales/quote')->setStore($store)->load($this->getQuoteId());
 
+            $collection = Mage::getResourceModel('sales/quote_item_collection');
             $collection->setQuote($quote);
             $collection->load();
         }

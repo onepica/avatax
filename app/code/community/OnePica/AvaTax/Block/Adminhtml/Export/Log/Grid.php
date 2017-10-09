@@ -45,6 +45,17 @@ class OnePica_AvaTax_Block_Adminhtml_Export_Log_Grid extends OnePica_AvaTax_Bloc
      */
     protected function _prepareColumns()
     {
+        if (!Mage::helper('avatax/config')->getConfigAdvancedLog()) {
+            return $this->_addColumns(
+                array(
+                    'log_id'     => 'number',
+                    'store_id'   => 'number',
+                    'level'      => Mage::getModel('avatax_records/log')->getLevelOptions(),
+                    'type'       => $this->_getLogTypeModel()->getLogTypes(),
+                    'created_at' => 'datetime',
+                )
+            );
+        }
 
         return $this->_addColumns(
             array(
