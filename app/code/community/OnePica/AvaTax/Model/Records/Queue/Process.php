@@ -201,9 +201,8 @@ class OnePica_AvaTax_Model_Records_Queue_Process
         /** @var OnePica_AvaTax_Model_Records_Queue $item */
         foreach ($queue as $item) {
             $item->setAttempt($item->getAttempt() + 1);
-            /** @var Mage_Sales_Model_Order_Invoice|null $invoice */
-            $invoice = null;
             try {
+                /** @var Mage_Sales_Model_Order_Invoice $invoice */
                 $invoice = Mage::getModel('sales/order_invoice')->load($item->getEntityId());
                 if ($invoice->getId()) {
                     $this->_setQuoteData($invoice->getOrder(), $item);
@@ -248,9 +247,8 @@ class OnePica_AvaTax_Model_Records_Queue_Process
         /** @var OnePica_AvaTax_Model_Records_Queue $item */
         foreach ($queue as $item) {
             $item->setAttempt($item->getAttempt() + 1);
-            /** @var Mage_Sales_Model_Order_Creditmemo|null $creditmemo */
-            $creditmemo = null;
             try {
+                /** @var Mage_Sales_Model_Order_Creditmemo|null $creditmemo */
                 $creditmemo = Mage::getModel('sales/order_creditmemo')->load($item->getEntityId());
                 if ($creditmemo->getId()) {
                     $this->_setQuoteData($creditmemo->getOrder(), $item);

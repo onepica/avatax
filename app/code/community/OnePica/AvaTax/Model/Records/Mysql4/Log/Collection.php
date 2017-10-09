@@ -95,38 +95,41 @@ class OnePica_AvaTax_Model_Records_Mysql4_Log_Collection extends Mage_Core_Model
     public function interpretRelatedInformation()
     {
         try {
+            /** @var  \OnePica_AvaTax_Model_Records_Log $item */
             foreach ($this->getItems() as $item) {
-                /** when export data need empty invoice or creditmemo column */
+                /* when export data need empty invoice or creditmemo column */
                 $item->setInvoiceIncrementId('');
                 $item->setCreditMemoIncrementId('');
 
                 if ($item->getType() === 'GetTax') {
-                    switch ($this->getRequestData($item, 'DocType')) {
+                    switch ($this->_getRequestData($item, 'DocType')) {
                         case 'SalesInvoice':
-                            $item->setInvoiceIncrementId($this->getRequestData($item, 'DocCode'));
+                            $item->setInvoiceIncrementId($this->_getRequestData($item, 'DocCode'));
                             break;
                         case 'ReturnInvoice':
-                            $item->setCreditMemoIncrementId($this->getRequestData($item, 'DocCode'));
+                            $item->setCreditMemoIncrementId($this->_getRequestData($item, 'DocCode'));
                             break;
                         default:
                             break;
                     }
                 }
+
                 if ($item->getType() === 'Queue') {
-                    switch ($this->getRequestData($item, 'type')) {
+                    switch ($this->_getRequestData($item, 'type')) {
                         case 'Invoice':
-                            $item->setInvoiceIncrementId($this->getRequestData($item, 'entity_increment_id'));
+                            $item->setInvoiceIncrementId($this->_getRequestData($item, 'entity_increment_id'));
                             break;
                         case 'Credit memo':
-                            $item->setCreditMemoIncrementId($this->getRequestData($item, 'entity_increment_id'));
+                            $item->setCreditMemoIncrementId($this->_getRequestData($item, 'entity_increment_id'));
                             break;
                         default:
                             break;
                     }
                 }
+
             }
         } catch (Exception $e) {
-            /** expected behaviour */
+            /* expected behaviour */
         }
 
         return $this;
@@ -139,9 +142,10 @@ class OnePica_AvaTax_Model_Records_Mysql4_Log_Collection extends Mage_Core_Model
      * @param string                           $fieldName
      * @return string
      */
-    public function getRequestData($item, $fieldName)
+    protected function _getRequestData($item, $fieldName)
     {
         try {
+            $output = null;
             switch ($item->getType()) {
                 case 'GetTax':
                     preg_match(
@@ -158,7 +162,7 @@ class OnePica_AvaTax_Model_Records_Mysql4_Log_Collection extends Mage_Core_Model
                 return $output[1];
             }
         } catch (Exception $e) {
-            /** expected behaviour */
+            /* expected behaviour */
         }
 
         return false;
@@ -172,9 +176,7 @@ class OnePica_AvaTax_Model_Records_Mysql4_Log_Collection extends Mage_Core_Model
      */
     public function selectOnlyForQuote($quoteId)
     {
-        $this->getSelect()->where(
-            'main_table.quote_id ="' . $quoteId . '"'
-        );
+        $this->getSelect()->where('main_table.quote_id = ?', $quoteId);
 
         return $this;
     }
