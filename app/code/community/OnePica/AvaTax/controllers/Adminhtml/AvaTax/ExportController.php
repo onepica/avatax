@@ -67,6 +67,55 @@ class OnePica_AvaTax_Adminhtml_AvaTax_ExportController extends Mage_Adminhtml_Co
     }
 
     /**
+     * Order Info action
+     *
+     * @return $this
+     */
+    public function orderinfoAction()
+    {
+        $fileNameArray = array(
+            'avatax_sales',
+            'order_' . $this->getRequest()->getParam('order_id'),
+            $this->_getDateModel()->gmtDate('U')
+        );
+
+        $fileName = implode('-', $fileNameArray) . '.sql';
+        $storeId = $this->getRequest()->getParam('store_id');
+        $quoteId = $this->getRequest()->getParam('quote_id');
+        $content = '';
+
+        /** @var \OnePica_AvaTax_Model_Export_Entity_Order_Log $logEntity */
+        $logEntity = Mage::getModel('avatax/export_entity_order_log');
+        $content .= Mage::getModel('avatax/export')
+                          ->setAdapter(Mage::getModel('avatax/export_adapter_sql'))
+                          ->setEntity($logEntity->setQuoteId($quoteId))
+                          ->getContent();
+
+        $entities = array(
+            Mage::getModel('avatax/export_entity_order_queue'),
+            Mage::getModel('avatax/export_entity_order_quote'),
+            Mage::getModel('avatax/export_entity_order_quoteaddress'),
+            Mage::getModel('avatax/export_entity_order_quoteitem', $storeId),
+            Mage::getModel('avatax/export_entity_order_order'),
+            Mage::getModel('avatax/export_entity_order_orderaddress'),
+            Mage::getModel('avatax/export_entity_order_orderitem'),
+            Mage::getModel('avatax/export_entity_order_invoice'),
+            Mage::getModel('avatax/export_entity_order_invoiceitem'),
+            Mage::getModel('avatax/export_entity_order_creditmemo'),
+            Mage::getModel('avatax/export_entity_order_creditmemoitem')
+        );
+
+        /** @var \OnePica_AvaTax_Model_Export_Entity_Order_Abstract $entity */
+        foreach ($entities as $entity) {
+            $content .= $this->_getOrderSqlContent($entity->setQuoteId($quoteId));
+        }
+
+        $this->_sendResponse($fileName, $content);
+
+        return $this;
+    }
+
+    /**
      * Send response
      *
      * @param string $fileName
@@ -97,5 +146,20 @@ class OnePica_AvaTax_Adminhtml_AvaTax_ExportController extends Mage_Adminhtml_Co
     protected function _getDateModel()
     {
         return Mage::getSingleton('core/date');
+    }
+
+    /**
+     * @param OnePica_AvaTax_Model_Export_Entity_Order_Abstract $entity
+     * @return string
+     */
+    protected function _getOrderSqlContent($entity)
+    {
+        $cols = $entity->getExportColumns();
+        $adapter = Mage::getModel('avatax/export_adapter_order_sql')->setColumnsToExport($cols);
+
+        return Mage::getModel('avatax/export')
+                   ->setAdapter($adapter)
+                   ->setEntity($entity)
+                   ->getContent();
     }
 }

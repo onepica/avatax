@@ -409,4 +409,39 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
     {
         return Mage::getDesign()->getSkinUrl($file, $params);
     }
+
+    /**
+     * Retrieve quote id
+     *
+     * @param \Mage_Sales_Model_Order $order
+     * @return null|int
+     */
+    public function getQuoteIdFromOrder($order)
+    {
+        $quoteId = null;
+
+        if ($order) {
+            $quoteId = $order->getQuoteId();
+        }
+
+        return $quoteId;
+    }
+
+    /**
+     * Retrieve quote address id
+     *
+     * @param \Mage_Sales_Model_Order $order
+     * @return null|int
+     */
+    public function getQuoteAddressIdFromOrder($order)
+    {
+        $quoteAddressId = null;
+
+        if ($order) {
+            $quoteAddressId = $order->getIsVirtual() ? $order->getBillingAddress()->getAvataxQuoteAddressId()
+                : $order->getShippingAddress()->getAvataxQuoteAddressId();
+        }
+
+        return $quoteAddressId;
+    }
 }

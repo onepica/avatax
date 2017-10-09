@@ -56,7 +56,10 @@ class OnePica_AvaTax_Model_Export_Entity_Log extends OnePica_AvaTax_Model_Export
      */
     protected function _getCollection()
     {
+        /** @var OnePica_AvaTax_Model_Records_Mysql4_Log_Collection $collection */
         $collection = Mage::getResourceModel('avatax_records/log_collection');
+
+        /* add related info about order, invoice and credit memo */
         $collection->addRelatedInfoToSelect();
 
         return $collection;

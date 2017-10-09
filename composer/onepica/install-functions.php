@@ -30,10 +30,12 @@ function copy_recursive($source, $dest)
                     if (!is_dir($dest . "/" . $file)) {
                         mkdir($dest . "/" . $file);
                     }
+
                     copy_recursive($source . "/" . $file, $dest . "/" . $file);
                 } else {
                     copy($source . "/" . $file, $dest . "/" . $file);
                 }
+
             }
         }
         closedir($dirHandle);

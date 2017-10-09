@@ -16,34 +16,39 @@
  */
 
 /**
- * Queue collection model
+ * Sql export adapter
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Records_Mysql4_Queue_Collection extends Mage_Core_Model_Mysql4_Collection_Abstract
+class OnePica_AvaTax_Model_Export_Adapter_Order_Sql extends OnePica_AvaTax_Model_Export_Adapter_Sql
 {
+    protected $_columnsToExport = null;
+
     /**
-     * Construct
+     * Get columns to export
+     *
+     * @return array
      */
-    protected function _construct()
+    protected function _getColumns()
     {
-        parent::_construct();
-        $this->_init('avatax_records/queue');
+        if ($this->_columns === null) {
+            $this->_columns = $this->_columnsToExport;
+        }
+
+        return $this->_columns;
     }
 
     /**
-     * Prepares data only for specific quote_id
+     * Set columns from entity
      *
-     * @param int $quoteId
+     * @param array $columns
      * @return $this
      */
-    public function selectOnlyForQuote($quoteId)
+    public function setColumnsToExport($columns)
     {
-        $this->getSelect()->where(
-            'main_table.quote_id ="' . $quoteId . '"'
-        );
+        $this->_columnsToExport = $columns;
 
         return $this;
     }
