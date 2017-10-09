@@ -436,10 +436,10 @@
                 <detail_level>Line</detail_level>
                 <log_status>1</log_status>
                 <log_advanced>1</log_advanced>
-                <log_lifetime>3</log_lifetime>
+                <log_lifetime>7</log_lifetime>
                 <queue_success_lifetime>7</queue_success_lifetime>
                 <queue_failed_lifetime>60</queue_failed_lifetime>
-                <log_type_list>Ping,Get Tax,Filter,Validate,Queue</log_type_list>
+                <log_type_list>Ping,GetTax,Filter,Validate,Queue</log_type_list>
                 <cust_code_format>0</cust_code_format>
                 <cust_code_format_attribute>avatax_customer_code</cust_code_format_attribute>
                 <shipping_sku>Shipping</shipping_sku>
