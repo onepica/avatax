@@ -22,7 +22,7 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Export_Entity_Queue extends OnePica_AvaTax_Model_Export_Entity_Abstract
+class OnePica_AvaTax_Model_Export_Entity_Order_Queue extends OnePica_AvaTax_Model_Export_Entity_Order_Abstract
 {
     /**
      * Get export columns list
@@ -31,29 +31,26 @@ class OnePica_AvaTax_Model_Export_Entity_Queue extends OnePica_AvaTax_Model_Expo
      */
     protected function _getExportColumns()
     {
-        return array(
-            'queue_id',
-            'store_id',
-            'entity_id',
-            'entity_increment_id',
-            'type',
-            'status',
-            'attempt',
-            'message',
-            'created_at',
-            'updated_at',
-            'quote_id',
-            'quote_address_id',
-        );
+        $tableName = $this->getResource()->getTableName('avatax_records/queue');
+
+        return array_keys($this->getReadConnection()->describeTable($tableName));
     }
 
     /**
      * Get collection
      *
-     * @return OnePica_AvaTax_Model_Records_Mysql4_Queue_Collection
+     * @return Mage_Core_Model_Mysql4_Collection_Abstract
      */
     protected function _getCollection()
     {
-        return Mage::getResourceModel('avatax_records/queue_collection');
+        /** @var OnePica_AvaTax_Model_Records_Mysql4_Queue_Collection $collection */
+        $collection = Mage::getResourceModel('avatax_records/queue_collection');
+
+        /* collection to export only for one quote */
+        if ($this->getQuoteId()) {
+            $collection->selectOnlyForQuote($this->getQuoteId());
+        }
+
+        return $collection;
     }
 }

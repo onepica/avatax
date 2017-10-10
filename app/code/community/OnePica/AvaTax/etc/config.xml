@@ -19,7 +19,7 @@
 <config>
     <modules>
         <OnePica_AvaTax>
-            <version>3.5.3.0</version>
+            <version>3.5.4.0</version>
         </OnePica_AvaTax>
     </modules>
     <global>
@@ -310,6 +310,15 @@
                     </avatax>
                 </observers>
             </controller_action_postdispatch_adminhtml_sales_order_create_loadBlock>
+            <sales_convert_quote_address_to_order_address>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer_salesConvertQuoteAddressToOrderAddress</class>
+                        <method>execute</method>
+                    </avatax>
+                </observers>
+            </sales_convert_quote_address_to_order_address>
         </events>
     </global>
     <frontend>
@@ -426,10 +435,11 @@
                 <address_validation_countries>CA,US</address_validation_countries>
                 <detail_level>Line</detail_level>
                 <log_status>1</log_status>
-                <log_lifetime>3</log_lifetime>
+                <log_advanced>1</log_advanced>
+                <log_lifetime>7</log_lifetime>
                 <queue_success_lifetime>7</queue_success_lifetime>
                 <queue_failed_lifetime>60</queue_failed_lifetime>
-                <log_type_list>Ping,Get Tax,Filter,Validate,Queue</log_type_list>
+                <log_type_list>Ping,GetTax,Filter,Validate,Queue</log_type_list>
                 <cust_code_format>0</cust_code_format>
                 <cust_code_format_attribute>avatax_customer_code</cust_code_format_attribute>
                 <shipping_sku>Shipping</shipping_sku>
