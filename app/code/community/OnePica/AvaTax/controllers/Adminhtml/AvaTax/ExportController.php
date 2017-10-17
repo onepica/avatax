@@ -95,15 +95,15 @@ class OnePica_AvaTax_Adminhtml_AvaTax_ExportController extends Mage_Adminhtml_Co
             $entities = array(
                 Mage::getModel('avatax/export_entity_order_queue'),
                 Mage::getModel('avatax/export_entity_order_quote'),
-                Mage::getModel('avatax/export_entity_order_quoteaddress'),
-                Mage::getModel('avatax/export_entity_order_quoteitem', $storeId),
+                Mage::getModel('avatax/export_entity_order_quote_address'),
+                Mage::getModel('avatax/export_entity_order_quote_item', $storeId),
                 Mage::getModel('avatax/export_entity_order_order'),
-                Mage::getModel('avatax/export_entity_order_orderaddress'),
-                Mage::getModel('avatax/export_entity_order_orderitem'),
+                Mage::getModel('avatax/export_entity_order_order_address'),
+                Mage::getModel('avatax/export_entity_order_order_item'),
                 Mage::getModel('avatax/export_entity_order_invoice'),
-                Mage::getModel('avatax/export_entity_order_invoiceitem'),
+                Mage::getModel('avatax/export_entity_order_invoice_item'),
                 Mage::getModel('avatax/export_entity_order_creditmemo'),
-                Mage::getModel('avatax/export_entity_order_creditmemoitem')
+                Mage::getModel('avatax/export_entity_order_creditmemo_item')
             );
 
             /** @var \OnePica_AvaTax_Model_Export_Entity_Order_Abstract $entity */
