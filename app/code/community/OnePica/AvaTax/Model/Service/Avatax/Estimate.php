@@ -337,10 +337,44 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
      */
     protected function _genRequestKey()
     {
-        $hash = sprintf("%u", crc32(serialize($this->_request)));
+        $hashSrc = $this->_genRequestKeySrc();
+        $hash = crc32($hashSrc);
         $this->_setLastRequestKey($hash);
 
         return $hash;
+    }
+
+    /**
+     * Build request key source string
+     *
+     * @return null|string
+     */
+    protected function _genRequestKeySrc()
+    {
+        //init hash src with serialized request
+        $hashSources = new Varien_Object(
+            array('request' => serialize($this->_request))
+        );
+
+        //add quote address item ids to hash source
+        foreach ($this->_lineToLineId as $index => $itemId) {
+            $hashSrcLines = ($hashSources->hasLines()) ? $hashSources->getLines() . ';' . $itemId : $itemId;
+            $hashSources->setLines($hashSrcLines);
+        }
+
+        //add quote address gifts item ids to hash source
+        foreach ($this->_productGiftPair as $index => $itemId) {
+            $hashSrcGifts = ($hashSources->hasGifts()) ? $hashSources->getGifts() . ';' . $itemId : $itemId;
+            $hashSources->setGifts($hashSrcGifts);
+        }
+
+        //build hash source string
+        $hashSrc = null;
+        foreach ($hashSources->getData() as $key => $value) {
+            $hashSrc = (isset($hashSrc)) ? $hashSrc . '|' . "$key:$value" : "$key:$value";
+        }
+
+        return $hashSrc;
     }
 
     /**
