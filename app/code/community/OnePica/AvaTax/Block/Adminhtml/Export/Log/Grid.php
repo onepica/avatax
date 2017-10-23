@@ -75,7 +75,9 @@ class OnePica_AvaTax_Block_Adminhtml_Export_Log_Grid extends OnePica_AvaTax_Bloc
                 'quote_address_id'         => array('filter_index' => 'main_table.quote_address_id'),
                 'order_increment_id'       => array(
                     'header'       => Mage::helper('avatax')->__('Order #'),
-                    'filter_index' => 'order.increment_id'
+                    'filter_index' => 'order.increment_id',
+                    'filter'   => false,
+                    'sortable' => false
                 ),
                 'invoice_increment_id'     => array(
                     'header'   => Mage::helper('avatax')->__('Invoice #'),
