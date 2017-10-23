@@ -24,7 +24,15 @@
  */
 class OnePica_AvaTax_Model_Records_Mysql4_Log_Collection extends Mage_Core_Model_Mysql4_Collection_Abstract
 {
+    /**
+     * @var bool
+     */
     protected $_relatedInformationAdded;
+
+    /**
+     * @var \Mage_Sales_Model_Resource_Order_Address_Collection
+     */
+    protected $_relatedOrderAddresses;
 
     /**
      * Construct
@@ -57,26 +65,6 @@ class OnePica_AvaTax_Model_Records_Mysql4_Log_Collection extends Mage_Core_Model
     public function addRelatedInfoToSelect()
     {
         if (Mage::helper('avatax/config')->getConfigAdvancedLog()) {
-            $this->getSelect()->joinLeft(
-                array('order_address' => $this->getTable('sales/order_address')),
-                'main_table.quote_address_id = order_address.avatax_quote_address_id',
-                array(
-                    'order_address_entity_id' => 'entity_id',
-                    'order_address_parent_id' => 'parent_id',
-                )
-            )->joinLeft(
-                array('order' => $this->getTable('sales/order')),
-                'order_address.parent_id = order.entity_id',
-                array(
-                    'order_entity_id'    => 'entity_id',
-                    'order_increment_id' => 'increment_id',
-                )
-            )->where(
-                'order.is_virtual IS NULL 
-                    OR (order.is_virtual = 0 AND order_address.address_type = "shipping")
-                    OR (order.is_virtual = 1 AND order_address.address_type = "billing")'
-            );
-
             $this->_relatedInformationAdded = true;
         }
 
@@ -91,14 +79,18 @@ class OnePica_AvaTax_Model_Records_Mysql4_Log_Collection extends Mage_Core_Model
      *
      * @return $this
      */
-    public function interpretRelatedInformation()
+    protected function interpretRelatedInformation()
     {
         try {
             /** @var  \OnePica_AvaTax_Model_Records_Log $item */
             foreach ($this->getItems() as $item) {
-                /* when export data need empty invoice or creditmemo column */
+
+                /* when export data need empty order, invoice or creditmemo column */
+                $item->setOrderIncrementId('');
                 $item->setInvoiceIncrementId('');
                 $item->setCreditMemoIncrementId('');
+
+                $this->interpretOrderIncrementId($item);
 
                 if ($item->getType() === 'GetTax') {
                     switch ($this->_getRequestData($item, 'DocType')) {
@@ -131,6 +123,69 @@ class OnePica_AvaTax_Model_Records_Mysql4_Log_Collection extends Mage_Core_Model
         }
 
         return $this;
+    }
+
+    /**
+     * Interpret Order Increment Id for avatax log record
+     *
+     * @param OnePica_AvaTax_Model_Records_Log $item
+     *
+     * @return $this
+     */
+    protected function interpretOrderIncrementId(\OnePica_AvaTax_Model_Records_Log $item)
+    {
+        $orderAddresses = $this->getRelatedOrderAddresses();
+        if (!$orderAddresses->isLoaded()) {
+            $orderAddresses->load();
+        }
+
+        $quoteAddressId = $item->getQuoteAddressId();
+        if ($quoteAddressId) {
+            $address = $orderAddresses->getItemByColumnValue('avatax_quote_address_id', $quoteAddressId);
+            if ($address) {
+                $item->setOrderIncrementId($address->getOrderIncrementId());
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Gets related order addresses information, plus order increment id
+     *
+     * @return \Mage_Sales_Model_Resource_Order_Address_Collection|null
+     */
+    protected function getRelatedOrderAddresses()
+    {
+        if (!$this->_relatedOrderAddresses) {
+
+            $ids = array();
+            foreach ($this->getItems() as $item) {
+                $id = $item->getQuoteAddressId();
+                if ($id) {
+                    $ids[$id] = true;
+                }
+            }
+            $ids = array_keys($ids);
+
+            $this->_relatedOrderAddresses = Mage::getModel('sales/order_address')
+                ->getCollection()
+                ->join(
+                    array('order' => 'sales/order'),
+                    'main_table.parent_id = order.entity_id',
+                    array(
+                        'order_increment_id' => 'increment_id'
+                    )
+                )
+                ->addFieldToFilter('avatax_quote_address_id', array('in' => $ids));
+
+            $this->_relatedOrderAddresses->getSelect()->where(
+                '   (order.is_virtual = 0 AND main_table.address_type = "shipping")
+                 OR (order.is_virtual = 1 AND main_table.address_type = "billing")'
+            );
+        }
+
+        return $this->_relatedOrderAddresses;
     }
 
     /**
