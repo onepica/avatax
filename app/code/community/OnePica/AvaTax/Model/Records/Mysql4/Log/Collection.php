@@ -178,6 +178,11 @@ class OnePica_AvaTax_Model_Records_Mysql4_Log_Collection extends Mage_Core_Model
                     )
                 )
                 ->addFieldToFilter('avatax_quote_address_id', array('in' => $ids));
+
+            $this->_relatedOrderAddresses->getSelect()->where(
+                '   (order.is_virtual = 0 AND main_table.address_type = "shipping")
+                 OR (order.is_virtual = 1 AND main_table.address_type = "billing")'
+            );
         }
 
         return $this->_relatedOrderAddresses;
