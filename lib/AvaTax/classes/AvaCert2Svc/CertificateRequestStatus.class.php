@@ -4,38 +4,40 @@
  */
 
 /**
- * CertificateStatus indicates the current status of the Request associated with a Request record to include in the response.
- *
+ * CertificateStatus indicates the current status of the Request associated with a Request record to include in the response. 
+ * 
  * @author    Avalara
- * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   AvaCert2
  */
 class CertificateRequestStatus extends Enum {
 
 /**
- * Request of any status.
+ * Request of any status. 
  */
   public static $ALL = 'ALL';
 
 /**
- * Request has been initiated and is currently open.
+ * Request has been initiated and is currently open. 
  */
   public static $OPEN = 'OPEN';
 
 /**
- * Request has been closed, either manually or automatically.
+ * Request has been closed, either manually or automatically. 
  */
   public static $CLOSED = 'CLOSED';
-
+  
 	public static function Values()
 	{
 		return array(
 			CertificateRequestStatus::$ALL,
-			CertificateRequestStatus::$OPEN,
+			CertificateRequestStatus::$OPEN,	
 			CertificateRequestStatus::$CLOSED
 		);
 	}
-
+	
     // Unfortunate boiler plate due to polymorphism issues on static functions
     public static function Validate($value) { self::__Validate($value,self::Values(),__CLASS__); }
 }
+
+?>

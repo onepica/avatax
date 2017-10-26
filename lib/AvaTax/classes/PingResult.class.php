@@ -2,7 +2,7 @@
 /**
  * PingResult.class.php
  */
-
+ 
  /**
  * Result information returned from the {@link AddressServiceSoap}'s
  * {@link AddressServiceSoap#ping} method and the {@link TaxServiceSoap}'s
@@ -17,7 +17,7 @@
  * </pre>
  *
  * @author    Avalara
- * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Base
  */
 
@@ -29,7 +29,7 @@ class PingResult //extends BaseResult
  * @var string
  */
     private $Version;
-
+    
 /**
  * Method returning version string of the pinged service.
  * @return string
@@ -70,3 +70,5 @@ class PingResult //extends BaseResult
 
 
 }
+
+?>

@@ -4,10 +4,10 @@
  */
 
 /**
- *
+ * 
  *
  * @author    Avalara
- * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Batch
  */
 class BatchFetchResult extends BaseResult {
@@ -21,3 +21,5 @@ class BatchFetchResult extends BaseResult {
   public function getRecordCount(){return $this->RecordCount;} // int
 
 }
+
+?>

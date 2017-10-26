@@ -43,7 +43,9 @@ class OnePica_AvaTax_Model_Export_Entity_Log extends OnePica_AvaTax_Model_Export
             'soap_request',
             'soap_request_headers',
             'soap_result',
-            'soap_result_headers'
+            'soap_result_headers',
+            'quote_id',
+            'quote_address_id'
         );
     }
 
@@ -54,6 +56,12 @@ class OnePica_AvaTax_Model_Export_Entity_Log extends OnePica_AvaTax_Model_Export
      */
     protected function _getCollection()
     {
-        return Mage::getResourceModel('avatax_records/log_collection');
+        /** @var OnePica_AvaTax_Model_Records_Mysql4_Log_Collection $collection */
+        $collection = Mage::getResourceModel('avatax_records/log_collection');
+
+        /* add related info about order, invoice and credit memo */
+        $collection->addRelatedInfoToSelect();
+
+        return $collection;
     }
 }
