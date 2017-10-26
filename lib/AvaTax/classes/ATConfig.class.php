@@ -2,7 +2,7 @@
 /**
  * ATConfig.class.php
  */
-
+ 
 /**
  * Contains various service configuration parameters as class static variables.
  *
@@ -17,7 +17,7 @@ class ATConfig
 {
     private static $Configurations = array();
     private $_ivars;
-
+    
     public function __construct($name, $values = null)
     {
         if($values)
@@ -26,17 +26,17 @@ class ATConfig
         }
         $this->_ivars = ATConfig::$Configurations[$name];
     }
-
-    public function __get($n)
+    
+    public function __get($n) 
     {
         if($n == '_ivars') { return parent::__get($n); }
-        if(isset($this->_ivars[$n]))
+        if(isset($this->_ivars[$n])) 
         {
-            return $this->_ivars[$n];
+            return $this->_ivars[$n]; 
         }
         else if(isset(ATConfig::$Configurations['Default'][$n])) // read missing values from default
         {
-            return ATConfig::$Configurations['Default'][$n];
+            return ATConfig::$Configurations['Default'][$n]; 
         }
         else
         {
@@ -64,8 +64,9 @@ new ATConfig('Default', array(
 	'avacert2WSDL'  => 'file://'.$__wsdldir.'/AvaCert2Svc.wsdl',
     'account'   => '<Your Production Account Here>',
     'license'   => '<Your Production License Key Here>',
-    'adapter'   => 'avatax4php,15.5.1.0',
+    'adapter'   => 'avatax4php,15.6.0.0',
     'client'    => 'AvalaraPHPInterface,1.0',
-	'name'    => '15.5.1.0',
+	'name'    => '15.6.0.0',
     'trace'     => true) // change to false for production
 );
+?>

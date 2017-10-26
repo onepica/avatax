@@ -175,7 +175,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
         if (array_key_exists($key, $this->_cache)) {
             $result = unserialize($this->_cache[$key]);
         } else {
-            $result = $this->_sendAddressValidationRequest();
+            $result = $this->_sendAddressValidationRequest($address);
             $this->_cache[$key] = serialize($result);
         }
 
@@ -233,9 +233,10 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
     /**
      * Validate address
      *
+     * @param \Mage_Sales_Model_Quote_Address|null $address
      * @return ValidateResult
      */
-    protected function _sendAddressValidationRequest()
+    protected function _sendAddressValidationRequest($address = null)
     {
         /** @var AddressServiceSoap $client */
         $client = $this->getServiceConfig()->getAddressConnection();
@@ -247,12 +248,22 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
             $result = $this->_convertExceptionToResult($e);
         }
 
+        $quoteData = null;
+        if ($address) {
+            $quoteData = new Varien_Object(array(
+                'quote_id'         => $address->getQuoteId(),
+                'quote_address_id' => $address->getId()
+            ));
+        }
+
         $this->_log(
             OnePica_AvaTax_Model_Source_Avatax_Logtype::VALIDATE,
             $request,
             $result,
             $this->_storeId,
-            $this->getServiceConfig()->getParams()
+            $this->getServiceConfig()->getParams(),
+            $this->getServiceConfig()->getTaxConnection(),
+            $quoteData
         );
 
         return $result;

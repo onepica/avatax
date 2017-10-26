@@ -5,16 +5,16 @@
 
 /**
  * Contains the get exemption certificates operation result returned by {@link CertificateGet}.
- *
+ * 
  * @author    Avalara
- * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   AvaCert2
  */
 class CertificateGetResult extends BaseResult {
   private $Certificates; // ArrayOfCertificate
 
 /**
- * Certificates contains collection of exemption certificate records.
+ * Certificates contains collection of exemption certificate records. 
  */
   public function getCertificates()
   {
@@ -24,8 +24,10 @@ class CertificateGetResult extends BaseResult {
      }
      else
      {
-     	return null;
-     }
+     	return null; 
+     }  	  	
   } // ArrayOfCertificate
 
 }
+
+?>

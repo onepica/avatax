@@ -41,14 +41,16 @@ class OnePica_AvaTax_Model_Export_Entity_Queue extends OnePica_AvaTax_Model_Expo
             'attempt',
             'message',
             'created_at',
-            'updated_at'
+            'updated_at',
+            'quote_id',
+            'quote_address_id',
         );
     }
 
     /**
      * Get collection
      *
-     * @return Mage_Core_Model_Mysql4_Collection_Abstract
+     * @return OnePica_AvaTax_Model_Records_Mysql4_Queue_Collection
      */
     protected function _getCollection()
     {

@@ -2,41 +2,41 @@
 /**
  * ATObject.class.php
  */
-
+ 
 /**
  * Generic Dynamic Object
  *
  * @author    Avalara
- * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Base
  */
 class ATObject
 {
 	private $_ivars = array();
-	public function __get($n)
-    {
-        if(isset($this->_ivars[$n]))
+	public function __get($n) 
+    { 
+        if(isset($this->_ivars[$n])) 
         {
-            return $this->_ivars[$n];
+            return $this->_ivars[$n]; 
         }
-        else
+        else 
         {
-            return null;
+            return null; 
         }
     }
-	public function __set($n,$v)
-    {
+	public function __set($n,$v) 
+    { 
         if($v == null)
         {
-            unset($this->_ivars[$n]);
+            unset($this->_ivars[$n]); 
         }
-        else
+        else 
         {
-            $this->_ivars[$n] = $v;
+            $this->_ivars[$n] = $v; 
         }
     }
 	public function __isset($n) { return isset($ivars[$n]); }
-	public function __unset($n) { unset($this->_ivars[$n]); }
+	public function __unset($n) { unset($this->_ivars[$n]); }	
 	public function __call($n,$args)
 	{
 		if(sizeof($args) == 1)
@@ -51,3 +51,5 @@ class ATObject
 	}
     public function ivars() { return $this->_ivars; }
 }
+
+?>
