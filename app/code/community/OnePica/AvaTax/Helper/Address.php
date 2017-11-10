@@ -178,7 +178,7 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
                     $filterLog = array();
                 }
 
-                $key = $address->getCacheHashKey();
+                $key = $this->getAddressCacheHashKey($address);
 
                 //did we already log this filtered address?
                 if (!in_array($key, $filterLog)) {
@@ -340,6 +340,8 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
         if (!$shippingAddress) {
             $shippingAddress = $object->getBillingAddress();
         }
+        /* need for correct logging of filter log types */
+        $shippingAddress->setAvataxObjectType(get_class($object));
 
         //is the region filtered?
         if (!$this->isAddressActionable(
@@ -443,5 +445,24 @@ class OnePica_AvaTax_Helper_Address extends Mage_Core_Helper_Abstract
         }
 
         return $quoteAddressId;
+    }
+
+    /**
+     * Creates a hash key based on only address data for caching
+     *
+     * @param Mage_Sales_Model_Quote_Address|Mage_Sales_Model_Order_Address $address
+     * @return string
+     */
+    public function getAddressCacheHashKey($address)
+    {
+        if (!$address->getData('cache_hash_key')) {
+            /* get $id from parent element because filter log is doubling for billing and shipping addresses */
+            $id = $address->getQuoteId() ? $address->getQuoteId() : $address->getParentId();
+
+            $data = $address->getAvataxObjectType() . $id . $address->format('text');
+            $address->setData('cache_hash_key', hash('md4', $data));
+        }
+
+        return $address->getData('cache_hash_key');
     }
 }
