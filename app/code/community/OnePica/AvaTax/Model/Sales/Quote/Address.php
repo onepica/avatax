@@ -31,11 +31,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address extends Mage_Sales_Model_Quote_Ad
      */
     public function getCacheHashKey()
     {
-        if (!$this->getData('cache_hash_key')) {
-            $this->setData('cache_hash_key', hash('md4', $this->format('text')));
-        }
-
-        return $this->getData('cache_hash_key');
+        return $this->_getAddressHelper()->getAddressCacheHashKey($this);
     }
     /**
      * Magento SOAP API Because of missing quote in address that
@@ -199,6 +195,16 @@ class OnePica_AvaTax_Model_Sales_Quote_Address extends Mage_Sales_Model_Quote_Ad
     protected function _getConfigHelper()
     {
         return Mage::helper('avatax/config');
+    }
+
+    /**
+     * Get avatax config helper
+     *
+     * @return OnePica_AvaTax_Helper_Address
+     */
+    protected function _getAddressHelper()
+    {
+        return Mage::helper('avatax/address');
     }
 
     /**
