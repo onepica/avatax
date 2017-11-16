@@ -11,13 +11,13 @@
  * @abstract
  * @see AddressServiceSoap
  * @see TaxServiceSoap
- *
+ * 
  * @author    Avalara
- * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Base
  */
 
-class AvalaraSoapClient
+class AvalaraSoapClient 
 {
     protected $client;
 
@@ -27,3 +27,7 @@ class AvalaraSoapClient
     public function __getLastResponseHeaders() { return $this->client->__getLastResponseHeaders(); }
 
 }
+
+
+
+?>

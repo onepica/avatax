@@ -4,10 +4,10 @@
  */
 
 /**
- *
+ * 
  *
  * @author    Avalara
- * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Batch
  */
 class PingResult extends BaseResult
@@ -28,5 +28,7 @@ class PingResult extends BaseResult
  * @return array
  */
     //public function getMessages() { return EnsureIsArray($this->Messages->Message);}
-
+  
 }
+
+?>

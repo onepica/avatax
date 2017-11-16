@@ -2,20 +2,20 @@
 /**
  * JurisdictionType.class.php
  */
-
+ 
 /**
  * A Jurisdiction Type describes the jurisdiction for which a particular tax is applied to a document.
- * Jurisdiction is determined by the GetTaxRequest#getDestinationAddress or GetTaxRequest#getOriginAddress of a GetTaxRequest.
+ * Jurisdiction is determined by the GetTaxRequest#getDestinationAddress or GetTaxRequest#getOriginAddress of a GetTaxRequest. 
  * Multiple jurisdictions might be applied to a single Line during a tax calcuation.
- * Details are available in the TaxDetail of the GetTaxResult.
+ * Details are available in the TaxDetail of the GetTaxResult. 
  *
  * @see TaxDetail
- *
+ * 
  * @author    Avalara
- * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Tax
 */
-class JurisdictionType
+class JurisdictionType 
 {
 	/**
 	 *  Unspecified Jurisdiction
@@ -23,28 +23,28 @@ class JurisdictionType
 	 * @var JurisdictionType
 	 */
 	public static $Composite	= 'Composite';
-
+	
 	/**
 	 * State
 	 *
 	 * @var JurisdictionType
 	 */
     public static $State	= 'State';
-
+    
     /**
 	 * County
 	 *
 	 * @var JurisdictionType
 	 */
     public static $County	= 'County';
-
+    
     /**
 	 * City
 	 *
 	 * @var JurisdictionType
 	 */
     public static $City		= 'City';
-
+    
     /**
 	 * Special Tax Jurisdiction
 	 *
@@ -52,7 +52,7 @@ class JurisdictionType
 	 */
     public static $Special	= 'Special';
 /*
-
+    
 	public static function Values()
 	{
 		return array(
@@ -63,10 +63,12 @@ class JurisdictionType
 			JurisdictionType::$Special
 		);
 	}
-
+	
     // Unfortunate boiler plate due to polymorphism issues on static functions
     public static function Validate($value) { self::__Validate($value,self::Values(),__CLASS__); }
-
+	
 	*/
-
+	
 }
+
+?>
