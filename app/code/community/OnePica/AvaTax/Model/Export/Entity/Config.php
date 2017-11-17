@@ -39,6 +39,13 @@ class OnePica_AvaTax_Model_Export_Entity_Config
     protected $_collection = null;
 
     /**
+     * Error handling
+     *
+     * @var array
+     */
+    protected $_errors = array();
+
+    /**
      * Get adapter
      *
      * @return OnePica_AvaTax_Model_Export_Adapter_Abstract
@@ -105,6 +112,15 @@ class OnePica_AvaTax_Model_Export_Entity_Config
                         'data' => $this->_getRewrites()
                     )
                 )
+            );;
+
+            $this->_collection->addItem(
+                new Varien_Object(
+                    array(
+                        'name' => 'Errors',
+                        'data' => $this->getErrors()
+                    )
+                )
             );
         }
 
@@ -137,15 +153,22 @@ class OnePica_AvaTax_Model_Export_Entity_Config
      */
     protected function _getExportHeader()
     {
-        return array(
-            'version'         => Mage::getResourceModel('core/resource')->getDbVersion('avatax_records_setup'),
-            'stores'          => count(Mage::app()->getStores()),
-            'created_at'      => $this->_getDateModel()->gmtDate(DATE_W3C),
-            'created_by'      => Mage::getUrl('/'),
-            'magento_version' => Mage::getVersion(),
-            'avatax_version'  => Mage::getResourceModel('core/resource')->getDbVersion('avatax_records_setup'),
-            'Stores'          => count(Mage::app()->getStores()),
-        );
+        $exportHeader = array();
+        try {
+            $exportHeader = array(
+                'version'                      => Mage::getResourceModel('core/resource')->getDbVersion('avatax_records_setup'),
+                'stores'                       => count(Mage::app()->getStores()),
+                'created_at'                   => $this->_getDateModel()->gmtDate(DATE_W3C),
+                'created_by'                   => Mage::getUrl('/'),
+                'magento_version'              => Mage::getVersion(),
+                'avatax_version'               => Mage::getResourceModel('core/resource')->getDbVersion('avatax_records_setup'),
+                'skip_process_modules_updates' => (string)Mage::getConfig()->getNode('global/skip_process_modules_updates'),
+            );
+        } catch (Exception $exception) {
+            $this->_errors[] = $exception->getMessage();
+        }
+
+        return $exportHeader;
     }
 
     /**
@@ -165,15 +188,18 @@ class OnePica_AvaTax_Model_Export_Entity_Config
     protected function _getExtensions()
     {
         $extensions = array();
-        foreach (Mage::getConfig()->getNode('modules')->asArray() as $name => $child) {
-            try {
+        try {
+            foreach (Mage::getConfig()->getNode('modules')->asArray() as $name => $child) {
                 if (array_key_exists('depends', $child)) {
-                    $child['depends'] = implode(', ', array_keys($child['depends']));
+                    $child['depends'] = is_array($child['depends'])
+                        ? implode(', ', array_keys($child['depends']))
+                        : $child['depends'];
                 }
+
                 $extensions[(string)$child['codePool']][$name] = (array)$child;
-            } catch (Exception $exception) {
-                Mage::log($exception->getMessage(), null, 'avatax.log');
             }
+        } catch (Exception $exception) {
+            $this->_errors[] = $exception->getMessage();
         }
 
         return $extensions;
@@ -184,15 +210,20 @@ class OnePica_AvaTax_Model_Export_Entity_Config
      */
     protected function _getRewrites()
     {
+        try {
+            $rewrites = array();
+            foreach (Mage::getConfig()->getNode()->xpath('//config//rewrite') as $key => $rewrite) {
+                $group = $rewrite->getParent()->getParent()->getName();
+                $node = $rewrite->getParent()->getName();
 
-        $rewrites = array();
-        foreach (Mage::getConfig()->getNode()->xpath('//config//rewrite') as $key => $rewrite) {
-            try {
-                $rewrites[$rewrite->getParent()->getParent()->getName()][$rewrite->getParent()->getName()][]
-                    = $rewrite->asArray();
-            } catch (Exception $exception) {
-                Mage::log($exception->getMessage(), null, 'avatax.log');
+                $rewrites[$group][$node] = array_map(
+                    function ($val) {
+                        return array('class' => $val, 'parents' => class_parents($val));
+                    }, $rewrite->asArray()
+                );
             }
+        } catch (Exception $exception) {
+            $this->_errors[] = $exception->getMessage();
         }
 
         return $rewrites;
@@ -206,5 +237,15 @@ class OnePica_AvaTax_Model_Export_Entity_Config
     protected function _getDateModel()
     {
         return Mage::getSingleton('core/date');
+    }
+
+    /**
+     * Error handling
+     *
+     * @return array
+     */
+    public function getErrors()
+    {
+        return $this->_errors;
     }
 }
