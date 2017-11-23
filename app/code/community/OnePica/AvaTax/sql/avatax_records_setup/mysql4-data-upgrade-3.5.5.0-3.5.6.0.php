@@ -23,7 +23,7 @@ $taxClassTableName = $this->getTable('tax/tax_class');
 
 $adapter->insert(
     $taxClassTableName, array(
-        'class_name'     => 'AvaTax. Non Taxable',
+        'class_name'     => 'AvaTax. Non Taxable Product',
         'op_avatax_code' => 'NT',
         'class_type'     => 'PRODUCT',
     )
