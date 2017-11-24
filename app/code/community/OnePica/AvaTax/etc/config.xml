@@ -461,6 +461,9 @@
                 <validate_address_message>The address '%s' appears invalid. Please correct it or select another address.</validate_address_message>
                 <avatax16_onepage_validate_address_message>Unable to validate address.</avatax16_onepage_validate_address_message>
             </avatax>
+            <avatax_classes>
+                <shipping_tax_class>FR020100</shipping_tax_class>
+            </avatax_classes>
             <calculation>
                 <based_on>shipping</based_on>
                 <price_includes_tax>0</price_includes_tax>

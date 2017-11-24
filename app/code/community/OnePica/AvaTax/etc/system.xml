@@ -575,10 +575,32 @@
                         </limit_gettax_request_on_noncheckout_actions>
                     </fields>
                 </avatax>
+                <avatax_classes>
+                    <label>AvaTax: Tax Classes</label>
+                    <comment><![CDATA[
+                       <p class="switcher"><i>More information about tax codes you can find at <a href="https://taxcode.avatax.avalara.com/">Avalara website</a></i></p>
+                    ]]></comment>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <shipping_tax_class translate="label">
+                            <label>Tax Class for Shipping</label>
+                            <comment>Required. Default is FR020100</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                        </shipping_tax_class>
+                    </fields>
+                </avatax_classes>
                 <classes>
                     <fields>
                         <shipping_tax_class>
-                            <!-- Will always be FR020100. It is hardcoded in OnePica_AvaTax_Helper_Tax_Data.  -->
+                            <!-- Will get class from avatax_classes/shipping_tax_class  -->
                             <show_in_default>0</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>

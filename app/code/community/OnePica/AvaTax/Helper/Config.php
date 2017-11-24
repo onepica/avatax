@@ -220,6 +220,11 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
     const XML_PATH_TO_AVATAX_UPC_CHECK_STATUS = 'tax/avatax/upc_check_status';
 
     /**
+     * Path to avatax_classes shipping_tax_class
+     */
+    const XML_PATH_TO_TAX_AVATAX_CLASSES_SHIPPING_TAX_CLASS = 'tax/avatax_classes/shipping_tax_class';
+
+    /**
      * Path to upc attribute code
      */
     const PATH_TO_AVATAX_UPC_ATTRIBUTE_CODE = 'tax/avatax/upc_attribute_code';
@@ -751,5 +756,16 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
     public function getAvatax16AddressValidationMessage($store)
     {
         return (string)Mage::getStoreConfig(self::PATH_TO_AVATAX16_ADDRESS_VALIDATION_MESSAGE, $store);
+    }
+
+    /**
+     * Get shipping tax class
+     *
+     * @param int|Mage_Core_Model_Store $store
+     * @return string
+     */
+    public function getTaxClassShipping($store)
+    {
+        return (string)Mage::getStoreConfig(self::XML_PATH_TO_TAX_AVATAX_CLASSES_SHIPPING_TAX_CLASS, $store);
     }
 }
