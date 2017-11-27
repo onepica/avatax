@@ -257,6 +257,18 @@
                             <show_in_store>1</show_in_store>
                             <validate>required-entry</validate>
                         </shipping_sku>
+                        <shipping_tax_code translate="label">
+                            <label>Shipping Tax Code</label>
+                            <comment><![CDATA[
+                                <p class="note">Required. Default is FR020100. <i>More information about tax codes you can find at <a href="https://taxcode.avatax.avalara.com/">Avalara website</a></i></p>
+                            ]]></comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>212</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                        </shipping_tax_code>
                         <gw_order_sku translate="label comment">
                             <label>Gift Wrap Order Sku</label>
                             <comment>Required. The sku sent to denote gift wrap order costs.</comment>
@@ -578,7 +590,7 @@
                 <classes>
                     <fields>
                         <shipping_tax_class>
-                            <!-- Will always be FR020100. It is hardcoded in OnePica_AvaTax_Helper_Tax_Data.  -->
+                            <!-- Will get code from config node tax/avatax/shipping_tax_code  -->
                             <show_in_default>0</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
