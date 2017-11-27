@@ -258,7 +258,7 @@
                             <validate>required-entry</validate>
                         </shipping_sku>
                         <shipping_tax_code translate="label">
-                            <label>Tax Code for Shipping</label>
+                            <label>Shipping Tax Code</label>
                             <comment><![CDATA[
                                 <p class="note">Required. Default is FR020100. <i>More information about tax codes you can find at <a href="https://taxcode.avatax.avalara.com/">Avalara website</a></i></p>
                             ]]></comment>
