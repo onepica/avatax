@@ -257,8 +257,8 @@
                             <show_in_store>1</show_in_store>
                             <validate>required-entry</validate>
                         </shipping_sku>
-                        <shipping_tax_class translate="label">
-                            <label>Tax Class for Shipping</label>
+                        <shipping_tax_code translate="label">
+                            <label>Tax Code for Shipping</label>
                             <comment><![CDATA[
                                 <p class="note">Required. Default is FR020100. <i>More information about tax codes you can find at <a href="https://taxcode.avatax.avalara.com/">Avalara website</a></i></p>
                             ]]></comment>
@@ -268,7 +268,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <validate>required-entry</validate>
-                        </shipping_tax_class>
+                        </shipping_tax_code>
                         <gw_order_sku translate="label comment">
                             <label>Gift Wrap Order Sku</label>
                             <comment>Required. The sku sent to denote gift wrap order costs.</comment>

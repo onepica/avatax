@@ -63,7 +63,7 @@ class OnePica_AvaTax_Helper_Tax_Data extends Mage_Tax_Helper_Data
     public function getShippingTaxClass($store)
     {
         if ($this->_getHelperAvaTax()->isServiceEnabled($store)) {
-            return $this->_getHelperAvaTaxConfig()->getTaxClassShipping($store);
+            return $this->_getHelperAvaTaxConfig()->getShippingTaxCode($store);
         }
 
         return parent::getShippingTaxClass($store);
