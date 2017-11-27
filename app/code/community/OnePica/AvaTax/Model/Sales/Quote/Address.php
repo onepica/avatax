@@ -22,7 +22,7 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Sales_Quote_Address extends Mage_Sales_Model_Quote_Address
+class OnePica_AvaTax_Model_Sales_Quote_Address extends OnePica_AvaTax_Model_Sales_Quote_Address_Abstract
 {
     /**
      * Creates a hash key based on only address data for caching

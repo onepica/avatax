@@ -19,7 +19,7 @@
  * Class OnePica_AvaTax_Model_Total_Quote_Tax_Giftwrapping
  */
 class OnePica_AvaTax_Model_Total_Quote_Tax_Giftwrapping
-    extends Enterprise_GiftWrapping_Model_Total_Quote_Tax_Giftwrapping
+    extends OnePica_AvaTax_Model_Total_Quote_Tax_Giftwrapping_Abstract
 {
     /**
      * Collect gift wrapping tax totals

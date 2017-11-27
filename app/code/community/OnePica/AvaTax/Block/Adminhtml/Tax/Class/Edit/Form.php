@@ -20,7 +20,8 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Block_Adminhtml_Tax_Class_Edit_Form extends Mage_Adminhtml_Block_Tax_Class_Edit_Form
+class OnePica_AvaTax_Block_Adminhtml_Tax_Class_Edit_Form
+    extends OnePica_AvaTax_Block_Adminhtml_Tax_Class_Edit_Form_Abstract
 {
     /**
      * Prepare form

@@ -22,7 +22,8 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Block_Adminhtml_Tax_Class_Grid extends Mage_Adminhtml_Block_Tax_Class_Grid
+class OnePica_AvaTax_Block_Adminhtml_Tax_Class_Grid
+    extends OnePica_AvaTax_Block_Adminhtml_Tax_Class_Grid_Abstract
 {
     /**
      * Construct: Set the help url
