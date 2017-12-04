@@ -71,7 +71,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
         $this->_addGwItemsAmount($invoice);
         $this->_addGwPrintedCardAmount($invoice);
 
-        $this->_setOriginAddress($order->getStoreId());
+        $this->_applyOriginAddressForRequest($order);
         $this->_setDestinationAddress($shippingAddress);
 
         $this->_request->setDocDate($invoiceDate);
@@ -159,7 +159,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
             $creditmemo->getBaseAdjustmentNegative(),
             $order->getStoreId()
         );
-        $this->_setOriginAddress($order->getStoreId());
+        $this->_applyOriginAddressForRequest($order);
         $this->_setDestinationAddress($shippingAddress);
 
         // Set the tax date for calculation.
@@ -494,7 +494,9 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
         $line->setTaxCode($productData->getTaxCode());
         $line->setRef1($productData->getRef1());
         $line->setRef2($productData->getRef2());
-
+        $this->_newLineMakeAdditionalProcessingForLine(
+            new \Varien_Object(array('productData' => $productData, 'item' => $item, 'line' => $line))
+        );
         $this->_lineToItemId[count($this->_lines)] = $item->getOrderItemId();
         $this->_lines[] = $line;
     }
@@ -516,6 +518,8 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
         if (null === $product) {
             return $lineProductData;
         }
+
+        $this->_newLinePrepareProduct(new \Varien_Object(array('product' => $product, 'item' => $item)));
 
         $lineProductData->setTaxCode($this->_getTaxClassCodeByProduct($product));
         $lineProductData->setRef1($this->_getRefValueByProductAndNumber($product, 1, $storeId));

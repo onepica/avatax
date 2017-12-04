@@ -121,7 +121,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         $this->_request->setDocType(DocumentType::$SalesOrder);
         $this->_request->setDocCode('quote-' . $address->getId());
         $this->_addGeneralInfo($address);
-        $this->_setOriginAddress($quote->getStoreId());
+        $this->_applyOriginAddressForRequest($quote);
         $this->_setDestinationAddress($address);
         $this->_setDetailLevel();
         $this->_addItemsInCart($address);
@@ -598,6 +598,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         }
 
         $product = $this->_getProductByProductId($this->_retrieveProductIdFromQuoteItem($item));
+        $this->_newLinePrepareProduct(new \Varien_Object(array('product' => $product, 'item' => $item)));
         $taxClass = $this->_getTaxClassCodeByProduct($product);
         $price = $item->getBaseRowTotal();
 
@@ -638,7 +639,9 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         if ($ref2Value) {
             $line->setRef2($ref2Value);
         }
-
+        $this->_newLineMakeAdditionalProcessingForLine(
+            new \Varien_Object(array('product' => $product, 'item' => $item, 'line' => $line))
+        );
         $this->_lines[$lineNumber] = $line;
         $this->_lineToLineId[$lineNumber] = $item->getId();
 
