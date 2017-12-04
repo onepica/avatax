@@ -22,7 +22,7 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
+class OnePica_AvaTax_Model_Tax_Config extends OnePica_AvaTax_Model_Tax_Config_Abstract
 {
     /**
      * Get configuration setting "Apply Discount On Prices Including Tax" value

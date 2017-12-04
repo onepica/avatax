@@ -22,7 +22,7 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Helper_Tax_Data extends Mage_Tax_Helper_Data
+class OnePica_AvaTax_Helper_Tax_Data extends OnePica_AvaTax_Helper_Tax_Data_Abstract
 {
     /** @var null|OnePica_AvaTax_Helper_Data $_helperAvaTax */
     protected $_helperAvaTax = null;
