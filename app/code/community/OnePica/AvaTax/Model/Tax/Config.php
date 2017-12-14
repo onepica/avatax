@@ -159,4 +159,19 @@ class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
     {
         return Mage::helper('avatax');
     }
+
+    /**
+     * Set display sales full summary to false
+     *
+     * @param mixed $store
+     * @return bool
+     */
+    public function displaySalesFullSummary($store = null)
+    {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
+            return false;
+        }
+
+        return parent::displaySalesFullSummary($store);
+    }
 }
