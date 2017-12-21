@@ -56,9 +56,15 @@ class OnePica_AvaTax_Model_Records_Mysql4_Log extends Mage_Core_Model_Mysql4_Abs
      */
     public function deleteLogsByInterval($days)
     {
+        $logTable = $this->getTable('avatax_records/log');
+        $queueTable = $this->getTable('avatax_records/queue');
         return $this->_getWriteAdapter()->delete(
-            $this->getTable('avatax_records/log'),
-            $this->_getWriteAdapter()->quoteInto('created_at < DATE_SUB(UTC_DATE(), INTERVAL ? DAY)', $days)
+            $logTable,
+            $this->_getWriteAdapter()->quoteInto(
+                'created_at < DATE_SUB(UTC_DATE(), INTERVAL ? DAY)'
+                . " and not exists (select queue_id from $queueTable as q where q.quote_id = $logTable.quote_id)",
+                $days
+            )
         );
     }
 
