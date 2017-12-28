@@ -218,7 +218,7 @@ class OnePica_AvaTax_Model_Export_Entity_Config
 
                 $rewrites[$group][$node] = array_map(
                     function ($val) {
-                        return array('class' => $val, 'parents' => class_parents($val));
+                        return array('class' => $val);
                     }, $rewrite->asArray()
                 );
             }
