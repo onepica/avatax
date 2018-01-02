@@ -232,4 +232,14 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
         $format = $withoutTime ? 'Y-m-d' : 'Y-m-d H:i:s';
         return date($format);
     }
+
+    /**
+     * Check if current Magento version is community version
+     * @return bool
+     */
+    public function isCommunityVersion()
+    {
+        $ver = Mage::getVersionInfo();
+        return $ver['minor'] < 10;
+    }
 }
