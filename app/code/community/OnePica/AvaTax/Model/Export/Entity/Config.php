@@ -211,14 +211,22 @@ class OnePica_AvaTax_Model_Export_Entity_Config
     protected function _getRewrites()
     {
         try {
+
+            $ignoreAutoloadFor = array();
+            if ($this->getHelper()->isCommunityVersion()) {
+                $ignoreAutoloadFor[] = 'enterprise_giftwrapping';
+            }
+
             $rewrites = array();
             foreach (Mage::getConfig()->getNode()->xpath('//config//rewrite') as $key => $rewrite) {
                 $group = $rewrite->getParent()->getParent()->getName();
                 $node = $rewrite->getParent()->getName();
 
+                $loadParents = !in_array($node, $ignoreAutoloadFor);
+
                 $rewrites[$group][$node] = array_map(
-                    function ($val) {
-                        return array('class' => $val);
+                    function ($val) use($loadParents) {
+                        return array('class' => $val, 'parents' => class_parents($val, $loadParents));
                     }, $rewrite->asArray()
                 );
             }
@@ -247,5 +255,15 @@ class OnePica_AvaTax_Model_Export_Entity_Config
     public function getErrors()
     {
         return $this->_errors;
+    }
+
+    /**
+     * Get avatax helper
+     *
+     * @return OnePica_AvaTax_Helper_Data
+     */
+    protected function getHelper()
+    {
+        return Mage::helper('avatax');
     }
 }
