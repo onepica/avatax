@@ -71,7 +71,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
         $this->_addGwItemsAmount($invoice);
         $this->_addGwPrintedCardAmount($invoice);
 
-        $this->_setOriginAddress($order->getStoreId());
+        $this->_setOriginAddressFromModel($order);
         $this->_setDestinationAddress($shippingAddress);
 
         $this->_request->setDocDate($invoiceDate);
@@ -159,7 +159,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
             $creditmemo->getBaseAdjustmentNegative(),
             $order->getStoreId()
         );
-        $this->_setOriginAddress($order->getStoreId());
+        $this->_setOriginAddressFromModel($order);
         $this->_setDestinationAddress($shippingAddress);
 
         // Set the tax date for calculation.
