@@ -121,7 +121,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         $this->_request->setDocType(DocumentType::$SalesOrder);
         $this->_request->setDocCode('quote-' . $address->getId());
         $this->_addGeneralInfo($address);
-        $this->_setOriginAddress($quote->getStoreId());
+        $this->_setOriginAddressFromModel($quote);
         $this->_setDestinationAddress($address);
         $this->_setDetailLevel();
         $this->_addItemsInCart($address);
