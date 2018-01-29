@@ -170,7 +170,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Address extends OnePica_AvaTax_Model_S
         }
 
         //lookup in AvaTax (with caching)
-        $key = $this->getMageAddress()->getCacheHashKey();
+        $key = $this->_getAddressHelper()->getAddressCacheHashKey($this->getMageAddress());
 
         if (array_key_exists($key, $this->_cache)) {
             $result = unserialize($this->_cache[$key]);

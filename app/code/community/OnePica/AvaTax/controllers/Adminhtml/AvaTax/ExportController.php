@@ -67,6 +67,25 @@ class OnePica_AvaTax_Adminhtml_AvaTax_ExportController extends Mage_Adminhtml_Co
     }
 
     /**
+     * Config action
+     *
+     * @return $this
+     */
+    public function configAction()
+    {
+        $fileName = 'avatax-config-' . $this->_getDateModel()->gmtDate('U') . '.json';
+
+        $content = Mage::getModel('avatax/export')
+                       ->setAdapter(Mage::getModel('avatax/export_adapter_json'))
+                       ->setEntity(Mage::getModel('avatax/export_entity_config'))
+                       ->getContent();
+
+        $this->_sendResponse($fileName, $content);
+
+        return $this;
+    }
+
+    /**
      * Order Info action
      *
      * @return $this

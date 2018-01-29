@@ -22,7 +22,7 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Adminhtml_Config extends Mage_Adminhtml_Model_Config
+class OnePica_AvaTax_Model_Adminhtml_Config extends OnePica_AvaTax_Model_Adminhtml_Config_Abstract
 {
     /**
      * Init modules configuration

@@ -39,22 +39,32 @@ class OnePica_AvaTax_Block_Adminhtml_System_Config_Form_Field_Export
             'website' => $buttonBlock->getRequest()->getParam('website')
         );
 
-        $data1 = array(
+        $buttonExportLogs = array(
             'label'   => Mage::helper('avatax')->__('Export Logs'),
-            'onclick' => 'setLocation(\'' . Mage::helper('adminhtml')->getUrl('adminhtml/avaTax_export/log', $params)
-                         . '\')',
+            'onclick' => 'setLocation(\'' .
+                Mage::helper('adminhtml')->getUrl('adminhtml/avaTax_export/log', $params) . '\')',
             'class'   => '',
         );
-        $data2 = array(
+        $buttonExportQueue = array(
             'label'   => Mage::helper('avatax')->__('Export Queue'),
+            'onclick' => 'setLocation(\'' .
+                Mage::helper('adminhtml')->getUrl('adminhtml/avaTax_export/queue', $params) . '\')',
+            'class'   => '',
+        );
+        $buttonExportConfig = array(
+            'label'   => Mage::helper('avatax')->__('Export Config'),
             'onclick' => 'setLocation(\''
-                         . Mage::helper('adminhtml')->getUrl('adminhtml/avaTax_export/queue', $params)
-                         . '\')',
+                . Mage::helper('adminhtml')->getUrl('adminhtml/avaTax_export/config', $params) . '\')',
             'class'   => '',
         );
 
-        $html = $buttonBlock->setData($data1)->toHtml() . ' &nbsp; ';
-        $html .= $buttonBlock->setData($data2)->toHtml();
+        $buttons = array(
+            $buttonBlock->setData($buttonExportLogs)->toHtml(),
+            $buttonBlock->setData($buttonExportQueue)->toHtml(),
+            $buttonBlock->setData($buttonExportConfig)->toHtml()
+        );
+
+        $html = implode(' &nbsp; ', $buttons);
 
         return $html;
     }

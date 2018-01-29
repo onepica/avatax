@@ -19,7 +19,7 @@
 <config>
     <modules>
         <OnePica_AvaTax>
-            <version>3.5.5.0</version>
+            <version>3.5.7.0</version>
         </OnePica_AvaTax>
     </modules>
     <global>
@@ -443,6 +443,7 @@
                 <cust_code_format>0</cust_code_format>
                 <cust_code_format_attribute>avatax_customer_code</cust_code_format_attribute>
                 <shipping_sku>Shipping</shipping_sku>
+                <shipping_tax_code>FR020100</shipping_tax_code>
                 <gw_order_sku>GwOrder</gw_order_sku>
                 <gw_items_sku>GwItems</gw_items_sku>
                 <gw_printed_card_sku>GwPrintedCard</gw_printed_card_sku>

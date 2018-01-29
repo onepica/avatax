@@ -16,25 +16,13 @@
  */
 
 /**
- * Avatax Observer SalesQuoteLoadAfter
+ * Configuration paths storage abstract
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Observer_SalesQuoteLoadAfter extends OnePica_AvaTax_Model_Observer_Abstract
+abstract class OnePica_AvaTax_Model_Tax_Config_Abstract extends Mage_Tax_Model_Config
 {
-    /**
-     * Register avatax_store_id for SOAP API set addresses
-     *
-     * @param Varien_Event_Observer $observer
-     * @return $this
-     */
-    public function execute(Varien_Event_Observer $observer)
-    {
-        $storeId = $observer->getEvent()->getQuote()->getStoreId();
-        Mage::unregister('avatax_store_id');
-        Mage::register('avatax_store_id', $storeId);
-        return $this;
-    }
+
 }
