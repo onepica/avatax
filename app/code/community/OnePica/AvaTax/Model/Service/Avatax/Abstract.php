@@ -278,7 +278,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
      * Adds the orgin address to the request
      *
      * @param null|bool|int|Mage_Core_Model_Store $store
-     * @return Address
+     * @return \GetTaxRequest
      */
     protected function _setOriginAddress($store = null)
     {
@@ -293,9 +293,18 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
     }
 
     /**
+     * @param Mage_Sales_Model_Quote|Mage_Sales_Model_Order $model
+     * @return \GetTaxRequest
+     */
+    protected function _setOriginAddressFromModel($model)
+    {
+        return $this->_setOriginAddress($model->getStoreId());
+    }
+
+    /**
      * Adds the shipping address to the request
      *
-     * @param Address
+     * @param \Mage_Sales_Model_Quote_Address|Mage_Sales_Model_Order_Address|Address $address
      * @return bool
      */
     protected function _setDestinationAddress($address)

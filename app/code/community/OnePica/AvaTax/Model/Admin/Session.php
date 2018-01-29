@@ -22,7 +22,7 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Admin_Session extends Mage_Admin_Model_Session
+class OnePica_AvaTax_Model_Admin_Session extends OnePica_AvaTax_Model_Admin_Session_Abstract
 {
     /**
      * Check current user permission on resource and privilege
