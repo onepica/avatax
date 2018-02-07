@@ -66,6 +66,9 @@ class OnePica_AvaTax_Model_Action_Validator extends OnePica_AvaTax_Model_Action_
         $isAddressValidationOn = $this->_getAddressHelper()->isAddressValidationOn($address, $quote->getStoreId());
         $isAddressNormalizationOn = $this->_getAddressHelper()
             ->isAddressNormalizationOn($address, $quote->getStoreId());
+        /* need for correct logging of filter log types */
+        $address->setAvataxObjectType(get_class($quote));
+
         $isAddressActionable = $this->_getAddressHelper()->isAddressActionable(
             $address,
             $quote->getStoreId(),

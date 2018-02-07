@@ -212,7 +212,7 @@ class OnePica_AvaTax_Model_Service_Avatax16_Address extends OnePica_AvaTax_Model
             );
         }
 
-        $key = $this->getAddress()->getCacheHashKey();
+        $key = $this->_getAddressHelper()->getAddressCacheHashKey($this->getAddress());
         if (array_key_exists($key, $this->_cache)) {
             $result = unserialize($this->_cache[$key]);
         } else {

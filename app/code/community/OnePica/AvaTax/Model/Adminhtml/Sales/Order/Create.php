@@ -22,7 +22,8 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Adminhtml_Sales_Order_Create extends Mage_Adminhtml_Model_Sales_Order_Create
+class OnePica_AvaTax_Model_Adminhtml_Sales_Order_Create
+    extends OnePica_AvaTax_Model_Adminhtml_Sales_Order_Create_Abstract
 {
     /**
      * If a session message has been added.

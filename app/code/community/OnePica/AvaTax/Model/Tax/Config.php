@@ -22,7 +22,7 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
+class OnePica_AvaTax_Model_Tax_Config extends OnePica_AvaTax_Model_Tax_Config_Abstract
 {
     /**
      * Get configuration setting "Apply Discount On Prices Including Tax" value
@@ -158,5 +158,20 @@ class OnePica_AvaTax_Model_Tax_Config extends Mage_Tax_Model_Config
     protected function _getDataHelper()
     {
         return Mage::helper('avatax');
+    }
+
+    /**
+     * Set display sales full summary to false
+     *
+     * @param mixed $store
+     * @return bool
+     */
+    public function displaySalesFullSummary($store = null)
+    {
+        if ($this->_getDataHelper()->isServiceEnabled($store)) {
+            return false;
+        }
+
+        return parent::displaySalesFullSummary($store);
     }
 }

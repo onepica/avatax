@@ -34,6 +34,7 @@
                         <title_connection_settings translate="label">
                             <label><![CDATA[<strong>Connection Settings</strong>]]></label>
                             <frontend_type>label</frontend_type>
+                            <frontend_model>avatax/adminhtml_system_config_form_field_title</frontend_model>
                             <sort_order>0</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -135,6 +136,7 @@
                         <title_debug_settings translate="label">
                             <label><![CDATA[<strong>Log &amp; Queue Settings</strong>]]></label>
                             <frontend_type>label</frontend_type>
+                            <frontend_model>avatax/adminhtml_system_config_form_field_title</frontend_model>
                             <sort_order>100</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -213,6 +215,7 @@
                         <title_data_mapping translate="label">
                             <label><![CDATA[<strong>Data Mapping</strong>]]></label>
                             <frontend_type>label</frontend_type>
+                            <frontend_model>avatax/adminhtml_system_config_form_field_title</frontend_model>
                             <sort_order>200</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -254,6 +257,18 @@
                             <show_in_store>1</show_in_store>
                             <validate>required-entry</validate>
                         </shipping_sku>
+                        <shipping_tax_code translate="label">
+                            <label>Shipping Tax Code</label>
+                            <comment><![CDATA[
+                                <p class="note">Required. Default is FR020100. <i>More information about tax codes you can find at <a href="https://taxcode.avatax.avalara.com/">Avalara website</a></i></p>
+                            ]]></comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>212</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                        </shipping_tax_code>
                         <gw_order_sku translate="label comment">
                             <label>Gift Wrap Order Sku</label>
                             <comment>Required. The sku sent to denote gift wrap order costs.</comment>
@@ -363,6 +378,7 @@
                         <title_address_validation translate="label">
                             <label><![CDATA[<strong>Shipping Address Options</strong>]]></label>
                             <frontend_type>label</frontend_type>
+                            <frontend_model>avatax/adminhtml_system_config_form_field_title</frontend_model>
                             <sort_order>300</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -462,6 +478,7 @@
                         <title_request_settings translate="label">
                             <label><![CDATA[<strong>Request Settings</strong>]]></label>
                             <frontend_type>label</frontend_type>
+                            <frontend_model>avatax/adminhtml_system_config_form_field_title</frontend_model>
                             <sort_order>340</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -490,6 +507,7 @@
                         <title_error_handling translate="label">
                             <label><![CDATA[<strong>Error Handling</strong>]]></label>
                             <frontend_type>label</frontend_type>
+                            <frontend_model>avatax/adminhtml_system_config_form_field_title</frontend_model>
                             <sort_order>400</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -533,6 +551,7 @@
                         <title_limit_gettax_request translate="label">
                             <label><![CDATA[<strong>Limit tax calculation requests</strong>]]></label>
                             <frontend_type>label</frontend_type>
+                            <frontend_model>avatax/adminhtml_system_config_form_field_title</frontend_model>
                             <sort_order>450</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -571,7 +590,7 @@
                 <classes>
                     <fields>
                         <shipping_tax_class>
-                            <!-- Will always be FR020100. It is hardcoded in OnePica_AvaTax_Helper_Tax_Data.  -->
+                            <!-- Will get code from config node tax/avatax/shipping_tax_code  -->
                             <show_in_default>0</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
