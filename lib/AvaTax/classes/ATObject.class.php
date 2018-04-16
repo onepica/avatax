@@ -7,7 +7,7 @@
  * Generic Dynamic Object
  *
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright Â© 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Base
  */
 class ATObject
@@ -51,5 +51,3 @@ class ATObject
 	}
     public function ivars() { return $this->_ivars; }
 }
-
-?>

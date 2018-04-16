@@ -7,7 +7,7 @@
  * 
  *
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright Â© 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Batch
  */
 class BatchFetchResponse {
@@ -17,5 +17,3 @@ class BatchFetchResponse {
   public function getBatchFetchResult(){return $this->BatchFetchResult;} // BatchFetchResult
 
 }
-
-?>

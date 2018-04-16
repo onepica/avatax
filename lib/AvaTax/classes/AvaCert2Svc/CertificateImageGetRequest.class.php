@@ -7,7 +7,7 @@
  * Input for {@link CertificateImageGet}.
  * 
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright Â© 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   AvaCert2
  */
 class CertificateImageGetRequest {
@@ -51,5 +51,3 @@ class CertificateImageGetRequest {
   public function getPageNumber(){return $this->PageNumber;} // int
 
 }
-
-?>

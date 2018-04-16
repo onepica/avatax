@@ -7,7 +7,7 @@
  * Input for {@link CertificateRequestInitiate}.
  * 
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright Â© 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   AvaCert2
  */
 class CertificateRequestInitiateRequest {
@@ -99,5 +99,3 @@ class CertificateRequestInitiateRequest {
   public function getRequestId(){return $this->RequestId;} // string
 
 }
-
-?>

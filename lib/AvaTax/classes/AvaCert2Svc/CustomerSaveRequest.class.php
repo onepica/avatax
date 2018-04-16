@@ -7,7 +7,7 @@
  * Input for {@link CustomerSave}.
  * 
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright Â© 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   AvaCert2
  */
 class CustomerSaveRequest {
@@ -29,5 +29,3 @@ class CustomerSaveRequest {
   public function getCustomer(){return $this->Customer;} // Customer
 
 }
-
-?>

@@ -8,7 +8,7 @@
  * and indicates the state of the document in tax history.
  *
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright Â© 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Tax
  */
 
@@ -82,5 +82,3 @@ class DocStatus extends Enum
     public static function Validate($value) { self::__Validate($value,self::Values(),__CLASS__); }
 
 }
-
-?>

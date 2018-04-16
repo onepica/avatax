@@ -7,7 +7,7 @@
  * Contains the certificate request initiate operation result returned by {@link CertificateRequestInitiate}.
  * 
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright Â© 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   AvaCert2
  */
 class CertificateRequestInitiateResult extends BaseResult {
@@ -37,5 +37,3 @@ class CertificateRequestInitiateResult extends BaseResult {
   public function getCustomerCode(){return $this->CustomerCode;} // string
 
 }
-
-?>

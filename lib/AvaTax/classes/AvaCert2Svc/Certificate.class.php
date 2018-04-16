@@ -7,7 +7,7 @@
  * Contains exemption certificate data. Is part of the {@link CertificateGetResult} result came from the {@link CertificateGet}.
  * 
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright Â© 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   AvaCert2
  */
 class Certificate {
@@ -223,5 +223,3 @@ class Certificate {
   public function getPageCount(){return $this->PageCount;} // int
 
 }
-
-?>

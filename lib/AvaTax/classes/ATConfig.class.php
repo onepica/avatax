@@ -69,4 +69,3 @@ new ATConfig('Default', array(
 	'name'    => '15.6.0.0',
     'trace'     => true) // change to false for production
 );
-?>

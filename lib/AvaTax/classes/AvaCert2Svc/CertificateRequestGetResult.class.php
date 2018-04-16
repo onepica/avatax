@@ -7,7 +7,7 @@
  * Contains the get certificate request operation result returned by {@link CertificateRequestGet}. 
  * 
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright Â© 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   AvaCert2
  */
 class CertificateRequestGetResult extends BaseResult {
@@ -29,5 +29,3 @@ class CertificateRequestGetResult extends BaseResult {
   } // ArrayOfCertificateRequest
 
 }
-
-?>

@@ -9,7 +9,7 @@
  * @see GetTaxRequest
  * 
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright Â© 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Tax
  */
  
@@ -125,17 +125,17 @@ class Line
      * </p>
      * <p>
      * The standard values for the CustomerUsageType (A-L).<br/>
-        A – Federal Government<br/>
-        B – State/Local Govt.<br/>
-        C – Tribal Government<br/>
-        D – Foreign Diplomat<br/>
-        E – Charitable Organization<br/>
-        F – Religious/Education<br/>
-        G – Resale<br/>
-        H – Agricultural Production<br/>
-        I – Industrial Prod/Mfg.<br/>
-        J – Direct Pay Permit<br/>
-        K – Direct Mail<br/>
+        A ï¿½ Federal Government<br/>
+        B ï¿½ State/Local Govt.<br/>
+        C ï¿½ Tribal Government<br/>
+        D ï¿½ Foreign Diplomat<br/>
+        E ï¿½ Charitable Organization<br/>
+        F ï¿½ Religious/Education<br/>
+        G ï¿½ Resale<br/>
+        H ï¿½ Agricultural Production<br/>
+        I ï¿½ Industrial Prod/Mfg.<br/>
+        J ï¿½ Direct Pay Permit<br/>
+        K ï¿½ Direct Mail<br/>
         L - Other<br/>
      * </p>
      * @param string $value
@@ -309,6 +309,3 @@ class Line
 /**#@-*/
 
 }
-	
-
-?>

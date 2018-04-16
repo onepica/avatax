@@ -11,7 +11,7 @@
  * @see GetTaxResult
  * 
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright Â© 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Tax
  */
 
@@ -202,9 +202,3 @@ class TaxDetail
 	
 	public function getTaxGroup(){ return $this->TaxGroup;}	    
 }
-
-	
-	
-	
-
-?>

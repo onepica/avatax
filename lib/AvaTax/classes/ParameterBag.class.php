@@ -3,7 +3,7 @@
  * GetParameterBagItemsResult.class.php		-	Changed for 15.6.0.0
  * 
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright Â© 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Tax
  */
 
@@ -33,4 +33,3 @@ class ParameterBag //extends BaseResult
  	public function getDataType() { return $this->DataType;}	
  	public function getDescription() { return $this->Description;}	
 }
-?>
