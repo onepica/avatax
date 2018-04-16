@@ -84,6 +84,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax
         $this->_applyShippingTax($address, $store, $calculator);
         $this->_applyGwTax($address, $store, $calculator);
         $this->_setTaxForItems($address, $this->_itemTaxGroups);
+        $this->_applyLandedCostTax($address, $store, $calculator);
         $summary = $calculator->getSummary($address);
         $this->_saveAppliedTax($address, $summary);
 
@@ -173,6 +174,8 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax
         $quote = $address->getQuote();
         $store = $quote->getStore();
         $amount = $address->getTaxAmount();
+        // Landed Cost DDP amount
+        $landedCostImportDutiesAmount = $address->getAvataxLandedCostImportDutiesAmount();
 
         if (($amount != 0) || (Mage::helper('tax')->displayZeroTax($store))) {
             $address->addTotal(
@@ -181,6 +184,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax
                     'title'     => Mage::helper('tax')->__('Tax'),
                     'full_info' => $address->getAppliedTaxes(),
                     'value'     => $amount,
+                    'landed_cost_import_duties_amount' => $landedCostImportDutiesAmount,
                     'area'      => null
                 )
             );
@@ -655,5 +659,46 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax
     protected function _getRequestFilterHelper()
     {
         return Mage::helper('avatax/requestFilter');
+    }
+
+
+    /**
+     * Apply Landed Cost tax
+     *
+     * @param Mage_Sales_Model_Quote_Address         $address
+     * @param Mage_Core_Model_Store|int              $store
+     * @param OnePica_AvaTax_Model_Action_Calculator $calculator
+     * @return $this
+     */
+    protected function _applyLandedCostTax(Mage_Sales_Model_Quote_Address $address, $store, $calculator)
+    {
+        $baseAmount = 0;
+        $amount = 0;
+        $itemsCount = count($address->getAllItems());
+
+        foreach ($address->getAllItems() as $item) {
+            $item->setAddress($address);
+            // @todo: need to refactor when import duties will be available for each item
+            $baseItemAmount = $calculator->getLandedCostImportDutiesAmount() / $itemsCount;
+            $itemAmount = $store->convertPrice($baseItemAmount);
+
+            $item->setAvataxLandedCostImportDutiesAmount($itemAmount);
+            $item->setBaseAvataxLandedCostImportDutiesAmount($baseItemAmount);
+
+            $amount = $amount + $itemAmount;
+            $baseAmount = $baseAmount + $baseItemAmount;
+
+        }
+
+        if ($amount) {
+            $address->setAvataxLandedCostImportDutiesAmount($amount);
+            $address->setBaseAvataxLandedCostImportDutiesAmount($baseAmount);
+            $address->setGrandTotal($address->getGrandTotal() + $amount);
+            $address->setBaseGrandTotal($address->getBaseGrandTotal() + $baseAmount);
+        } elseif ($calculator->getLandedCostDapMessage()) {
+            $address->setLandedCostDapMessage($calculator->getLandedCostDapMessage());
+        }
+
+        return $this;
     }
 }

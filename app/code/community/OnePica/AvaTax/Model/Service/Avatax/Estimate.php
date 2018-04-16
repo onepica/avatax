@@ -120,6 +120,9 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         $this->_request = new GetTaxRequest();
         $this->_request->setDocType(DocumentType::$SalesOrder);
         $this->_request->setDocCode('quote-' . $address->getId());
+        // Add landed Cost Params
+        $this->_initLandedCostModeParam($address);
+        $this->_addGeneralLandedCostInfo();
         $this->_addGeneralInfo($address);
         $this->_setOriginAddressFromModel($quote);
         $this->_setDestinationAddress($address);
@@ -167,9 +170,13 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
                         'taxable'      => $ctl->getTaxable(),
                         'tax_included' => $ctl->getTaxIncluded()
                     );
+                    if ($ctl->getNo() == 'ImportDuties') {
+                        $this->_rates[$requestKey]['landed_cost_import_duties_amount'] = $ctl->getTax();
+                    }
                 }
 
                 $this->_rates[$requestKey]['summary'] = $this->_getSummaryFromResponse($result);
+                $this->_rates[$requestKey]['landed_cost_dap_message'] = $result->getDescription();
                 //failure
             } else {
                 $this->_rates[$requestKey]['failure'] = true;
@@ -638,6 +645,8 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         if ($ref2Value) {
             $line->setRef2($ref2Value);
         }
+
+        $this->_addLandedCostParamsToLine($line, $item);
 
         $this->_lines[$lineNumber] = $line;
         $this->_lineToLineId[$lineNumber] = $item->getId();

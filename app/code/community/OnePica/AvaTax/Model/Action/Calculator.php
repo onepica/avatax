@@ -260,4 +260,35 @@ class OnePica_AvaTax_Model_Action_Calculator extends OnePica_AvaTax_Model_Action
 
         return $this;
     }
+
+
+    /**
+     * Estimates landed cost tax amount for DDP mode
+     *
+     * @return float|null
+     */
+    public function getLandedCostImportDutiesAmount()
+    {
+        $ratesData = $this->_getRates();
+        $tax = isset($ratesData['landed_cost_import_duties_amount'])
+            ? (float)$ratesData['landed_cost_import_duties_amount']
+            : null;
+
+        return $tax;
+    }
+
+    /**
+     * Get landed cost DAP message
+     *
+     * @return string|null
+     */
+    public function getLandedCostDapMessage()
+    {
+        $ratesData = $this->_getRates();
+        $message = isset($ratesData['landed_cost_dap_message'])
+            ? $ratesData['landed_cost_dap_message']
+            : null;
+
+        return $message;
+    }
 }

@@ -49,4 +49,17 @@
             </action>
         </reference>
     </adminhtml_sales_order_view>
+
+    <!-- Landed Cost feature -->
+    <avatax_landed_cost_import_duties_add_order_total>
+        <reference name="order_totals">
+            <block type="avatax/sales_order_totals_importDuties" name="avatax_landed_cost_import_duties" />
+        </reference>
+    </avatax_landed_cost_import_duties_add_order_total>
+
+    <adminhtml_sales_order_view>
+        <update handle="avatax_landed_cost_import_duties_add_order_total" />
+    </adminhtml_sales_order_view>
+
+    <!-- Landed Cost feature END -->
 </layout>

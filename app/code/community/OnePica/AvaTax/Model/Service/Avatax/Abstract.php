@@ -261,6 +261,72 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
     }
 
     /**
+     * Init Landed Cost Mode Param
+     *
+     * @param Address
+     * @return $this
+     */
+    protected function _initLandedCostModeParam($address)
+    {
+        $storeId = $address->getQuote()->getStoreId();
+        $destinationCountryCode = $address->getCountry();
+        $mode = $this->_getLandedCostHelper()->getLandedCostMode($storeId, $destinationCountryCode);
+        $this->setLandedCostMode($mode);
+
+        return $this;
+    }
+
+    /**
+     * Adds general Landed Cost info data
+     *
+     * @return $this
+     */
+    protected function _addGeneralLandedCostInfo()
+    {
+        if ($this->getLandedCostMode()) {
+
+            $incoterms = new ParameterBagItem();
+            $incoterms->setName('AvaTax.LandedCost.Incoterms');
+            $incoterms->setValue($this->getLandedCostMode());
+
+            $shippingMode = new ParameterBagItem();
+            $shippingMode->setName('AvaTax.LandedCost.ShippingMode');
+            $shippingMode->setValue('air');
+
+            $express = new ParameterBagItem();
+            $express->setName('AvaTax.LandedCost.Express');
+            $express->setValue('true');
+
+            $bagItemsParams = array($incoterms, $shippingMode, $express);
+            $this->_request->setParameterBagItems($bagItemsParams);
+
+        }
+        return $this;
+    }
+
+    /**
+     * Add Landed Cost Params To Line
+     *
+     * @param Line $line
+     * @param Varien_Object|Mage_Sales_Model_Quote_Item $item
+     * @return $this
+     */
+    protected function _addLandedCostParamsToLine($line, $item)
+    {
+        if ($this->getLandedCostMode()) {
+            $htsCodeValue = $this->_getLandedCostHelper()->getProductHTSCode($item->getProductId());
+            $htsCode = new ParameterBagItem();
+            $htsCode->setName('AvaTax.LandedCost.HTSCode');
+            $htsCode->setValue($htsCodeValue);
+
+            $bagItemsParams = array($htsCode);
+            $line->setParameterBagItems($bagItemsParams);
+        }
+
+        return $this;
+    }
+
+    /**
      * Sets the customer info if available
      *
      * @param OnePica_AvaTax_Model_Sales_Quote_Address|Mage_Sales_Model_Order $object
