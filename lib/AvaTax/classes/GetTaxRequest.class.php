@@ -63,9 +63,10 @@ class GetTaxRequest
 	private $PosLaneCode;		//string
 	private $Description;		//string	Changed for 15.6.0.0
 	private $Email;		//string	Changed for 15.6.0.0
-     
+    private $StatusDate;
+    private $TaxDate;
 
-	public function __construct()
+    public function __construct()
 	{
 	
 		$this->DocDate = date("Y-m-d");
@@ -150,9 +151,52 @@ class GetTaxRequest
 		
 		return $this;		
 	}
-	
-	
-	/**
+
+    /**
+     * Get status date
+     *
+     * @return string
+     */
+    public function getStatusDate()
+    {
+        return $this->StatusDate;
+    }
+
+    /**
+     * Set status date
+     *
+     * @param string $StatusDate
+     * @return $this
+     */
+    public function setStatusDate($StatusDate)
+    {
+        $this->StatusDate = $StatusDate;
+        return $this;
+    }
+
+    /**
+     * Get tax date
+     *
+     * @return string
+     */
+    public function getTaxDate()
+    {
+        return $this->TaxDate;
+    }
+
+    /**
+     * Set tax date
+     *
+     * @param string $TaxDate
+     * @return $this
+     */
+    public function setTaxDate($TaxDate)
+    {
+        $this->TaxDate = $TaxDate;
+        return $this;
+    }
+
+    /**
 	 * Enter description here...
 	 *
 	 * @param string $value	 
