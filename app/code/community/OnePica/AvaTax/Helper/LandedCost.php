@@ -23,17 +23,17 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
     /**
      * Xml path to landed cost enabled
      */
-    const XML_PATH_TO_AVATAX_LANDED_COST_ENABLED = 'tax/avatax/landed_cost_enabled';
+    const XML_PATH_TO_AVATAX_LANDED_COST_ENABLED = 'tax/avatax_landed_cost/landed_cost_enabled';
 
     /**
      * Xml path to landed cost DDP countries
      */
-    const XML_PATH_TO_AVATAX_LANDED_COST_DDP_COUNTRIES = 'tax/avatax/landed_cost_ddp_countries';
+    const XML_PATH_TO_AVATAX_LANDED_COST_DDP_COUNTRIES = 'tax/avatax_landed_cost/landed_cost_ddp_countries';
 
     /**
      * Xml path to landed cost DAP countries
      */
-    const XML_PATH_TO_AVATAX_LANDED_COST_DAP_COUNTRIES = 'tax/avatax/landed_cost_dap_countries';
+    const XML_PATH_TO_AVATAX_LANDED_COST_DAP_COUNTRIES = 'tax/avatax_landed_cost/landed_cost_dap_countries';
 
     /**
      * Get if Landed Cost is Enabled

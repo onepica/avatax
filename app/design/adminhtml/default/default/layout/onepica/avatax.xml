@@ -61,5 +61,12 @@
         <update handle="avatax_landed_cost_import_duties_add_order_total" />
     </adminhtml_sales_order_view>
 
+    <adminhtml_system_config_edit>
+        <reference name="head">
+            <action method="addJs"><script>avatax/jquery-3.2.1.min.js</script></action>
+            <action method="addJs"><script>avatax/landedcost.js</script></action>
+        </reference>
+    </adminhtml_system_config_edit>
     <!-- Landed Cost feature END -->
+
 </layout>
