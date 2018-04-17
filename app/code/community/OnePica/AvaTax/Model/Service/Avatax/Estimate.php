@@ -104,6 +104,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
      * @param Mage_Sales_Model_Quote_Address $address
      *
      * @return array
+     * @throws \Varien_Exception
      */
     public function getRates(Mage_Sales_Model_Quote_Address $address)
     {
@@ -122,7 +123,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         $this->_request->setDocCode('quote-' . $address->getId());
         // Add landed Cost Params
         $this->_initLandedCostModeParam($address);
-        $this->_addGeneralLandedCostInfo();
+        $this->_addGeneralLandedCostInfo($address);
         $this->_addGeneralInfo($address);
         $this->_setOriginAddressFromModel($quote);
         $this->_setDestinationAddress($address);

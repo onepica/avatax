@@ -265,6 +265,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
      *
      * @param Address
      * @return $this
+     * @throws \Varien_Exception
      */
     protected function _initLandedCostModeParam($address)
     {
@@ -280,10 +281,13 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
      * Adds general Landed Cost info data
      *
      * @return $this
+     * @throws \Varien_Exception
      */
-    protected function _addGeneralLandedCostInfo()
+    protected function _addGeneralLandedCostInfo($address)
     {
         if ($this->getLandedCostMode()) {
+            /** @var OnePica_AvaTax_Helper_Landedcost_Shipping $shippingHelper */
+            $shippingHelper = Mage::helper('avatax/landedcost_shipping');
 
             $incoterms = new ParameterBagItem();
             $incoterms->setName('AvaTax.LandedCost.Incoterms');
@@ -291,7 +295,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
 
             $shippingMode = new ParameterBagItem();
             $shippingMode->setName('AvaTax.LandedCost.ShippingMode');
-            $shippingMode->setValue('air');
+            $shippingMode->setValue($shippingHelper->getShippingMode($address));
 
             $express = new ParameterBagItem();
             $express->setName('AvaTax.LandedCost.Express');
