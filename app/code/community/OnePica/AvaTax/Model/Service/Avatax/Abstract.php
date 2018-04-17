@@ -321,6 +321,8 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
 
             $bagItemsParams = array($htsCode);
             $line->setParameterBagItems($bagItemsParams);
+
+            $line->setHSCode($htsCodeValue);
         }
 
         return $this;

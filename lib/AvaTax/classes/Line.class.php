@@ -24,6 +24,7 @@ class Line
     private $Qty;                 //decimal
     private $Amount;              //decimal // TotalAmmount 
     private $Discounted;          //boolean  is discount applied to this item
+    private $HSCode;
     private $RevAcct;             //string
     private $Ref1;                //string
     private $Ref2;                //string
@@ -194,7 +195,14 @@ class Line
 	 * @param string $value	 
 	 */
 	public function setDiscounted( $value) { $this->Discounted = ($value ? true : false); return $this; }          //boolean  is discount applied to this item
-    
+
+    /**
+     * Product HSCode for Landed Cost calculation
+     *
+     * @param string $value
+     */
+    public function setHSCode( $value) { $this->HSCode = $value; return $this; }          //boolean  is discount applied to this item
+
 	/**
 	 * Sets the Address used as the "Ship From" location for a specific line item.
 	 *

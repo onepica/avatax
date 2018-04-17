@@ -130,6 +130,7 @@
           <s:element minOccurs="0" maxOccurs="1" name="UnitOfMeasurement" type="s:string" />
           <s:element minOccurs="1" maxOccurs="1" name="Amount" type="s:decimal" />
           <s:element minOccurs="1" maxOccurs="1" name="Discounted" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="HSCode" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="RevAcct" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="Ref1" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="Ref2" type="s:string" />
