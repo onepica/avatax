@@ -57,4 +57,51 @@ jQuery(document).ready(function () {
             jQuery("#" + id + ' option[value="' + select.value + '"]').prop("selected", true);
         });
     });
+
+    // Landed Cost DDP/DAP
+    jQuery("#" + landedCost.idDDP).on("change", "", function (event) {
+        landedCost.changeDdpDap(event);
+    });
+
+    jQuery("#" + landedCost.idDAP).on("change", "", function (event) {
+        landedCost.changeDdpDap(event);
+    });
 });
+
+var landedCost = {
+    idDAP: "tax_avatax_landed_cost_landed_cost_dap_countries",
+    idDDP: "tax_avatax_landed_cost_landed_cost_ddp_countries",
+
+    changeDdpDap: function (event) {
+        var target = event.target;
+        var opposite = '';
+
+        switch (target.id) {
+            case this.idDAP:
+                opposite = jQuery("#" + landedCost.idDDP)[0];
+                break;
+            case this.idDDP:
+                opposite = jQuery("#" + landedCost.idDAP)[0];
+                break;
+            default:
+                break;
+        }
+
+        var selectedTargetValues = this.collectValues(target.selectedOptions);
+
+        jQuery(opposite.selectedOptions).each(function (i, option) {
+            if (jQuery.inArray(option.value, selectedTargetValues) !== -1) {
+                jQuery(option).prop('selected', false);
+            }
+        });
+    },
+
+    collectValues: function (options) {
+        var values = [];
+        jQuery(options).each(function (i, option) {
+            values.push(option.value);
+        });
+
+        return values;
+    }
+};
