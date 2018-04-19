@@ -19,7 +19,7 @@
 <config>
     <modules>
         <OnePica_AvaTax>
-            <version>3.5.7.2</version>
+            <version>3.5.7.3</version>
         </OnePica_AvaTax>
     </modules>
     <global>
@@ -40,6 +40,12 @@
                     <queue>
                         <table>op_avatax_queue</table>
                     </queue>
+                    <hs_code>
+                        <table>op_avatax_hs_code</table>
+                    </hs_code>
+                    <hs_code_country>
+                        <table>op_avatax_hs_code_country</table>
+                    </hs_code_country>
                 </entities>
             </avatax_records_mysql4>
             <adminhtml>
