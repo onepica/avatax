@@ -54,17 +54,23 @@ class OnePica_AvaTax_Model_Service_Avatax_Config extends OnePica_AvaTax_Model_Se
     public function init($storeId)
     {
         if (null === $this->_config) {
-            $this->_config = new ATConfig(
-                self::CONFIG_KEY,
-                array(
-                    'url'     => Mage::helper('avatax/config')->getServiceUrl($storeId),
-                    'account' => Mage::helper('avatax/config')->getServiceAccountId($storeId),
-                    'license' => Mage::helper('avatax/config')->getServiceKey($storeId),
-                    'trace'   => (Mage::helper('avatax')
-                            ->getLogMode($storeId) == OnePica_AvaTax_Model_Source_Logmode::DEBUG) ? true : false,
-                    'client'  => $this->getClientName()
-                )
+            $cfgValues = array(
+                'url'     => Mage::helper('avatax/config')->getServiceUrl($storeId),
+                'account' => Mage::helper('avatax/config')->getServiceAccountId($storeId),
+                'license' => Mage::helper('avatax/config')->getServiceKey($storeId),
+                'trace'   => (Mage::helper('avatax')
+                        ->getLogMode($storeId) == OnePica_AvaTax_Model_Source_Logmode::DEBUG) ? true : false,
+                'client'  => $this->getClientName()
             );
+
+            if ($this->_getLandedCostHelper()->isLandedCostEnabled($storeId)) {
+                $taxServiceKey = 'taxService';
+                $cfgDefault = new ATConfig('Default');
+                $cfgValues[$taxServiceKey] = $cfgDefault->taxService .  '/v2';
+                $cfgValues['isLandedCostEnabled'] = true;
+            }
+
+            $this->_config = new ATConfig(self::CONFIG_KEY, $cfgValues);
         }
 
         return $this;
