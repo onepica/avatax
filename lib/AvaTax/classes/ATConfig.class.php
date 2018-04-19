@@ -54,7 +54,7 @@ new ATConfig('Default', array(
     'url'       => 'no url specified',
     'accountService' => '/Account/AccountSvc.asmx',
     'addressService' => '/Address/AddressSvc.asmx',
-    'taxService' => '/Tax/TaxSvc.asmx/v2',
+    'taxService' => '/Tax/TaxSvc.asmx',
 	'batchService'=> '/Batch/BatchSvc.asmx',
 	'avacert2Service'=> '/AvaCert2/AvaCert2Svc.asmx',
     'accountWSDL' => 'file://'.$__wsdldir.'/Account.wsdl',

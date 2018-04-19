@@ -151,4 +151,14 @@ abstract class OnePica_AvaTax_Model_Service_Abstract_Config extends Varien_Objec
     {
         return Mage::helper('avatax/errors');
     }
+
+    /**
+     * Returns the AvaTax helper.
+     *
+     * @return OnePica_AvaTax_Helper_LandedCost
+     */
+    protected function _getLandedCostHelper()
+    {
+        return Mage::helper('avatax/landedCost');
+    }
 }
