@@ -422,6 +422,16 @@
                                 <action>adminhtml/avaTax_grid/log</action>
                                 <resource>avatax</resource>
                             </avatax_log>
+                            <avatax_hscodes translate="title" module="avatax">
+                                <title>AvaTax HS Codes</title>
+                                <action>adminhtml/avaTax_grid/hscodes</action>
+                                <resource>avatax</resource>
+                            </avatax_hscodes>
+                            <avatax_hscountrycodes translate="title" module="avatax">
+                                <title>AvaTax HS Codes for Countries</title>
+                                <action>adminhtml/avaTax_grid/hscountrycodes</action>
+                                <resource>avatax</resource>
+                            </avatax_hscountrycodes>
                         </children>
                     </tax>
                 </children>

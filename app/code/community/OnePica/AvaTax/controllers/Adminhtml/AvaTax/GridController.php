@@ -41,6 +41,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     {
         Mage::getModel('avatax_records/queue_process')->clear();
         $this->_redirect('*/*/queue');
+
         return $this;
     }
 
@@ -54,8 +55,9 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
         $this->_setTitle($this->__('Sales'))->_setTitle($this->__('Tax'))->_setTitle($this->__('AvaTax Log'));
 
         $this->loadLayout()
-            ->_setActiveMenu('sales/tax/avatax_log')
-            ->renderLayout();
+             ->_setActiveMenu('sales/tax/avatax_log')
+             ->renderLayout();
+
         return $this;
     }
 
@@ -73,14 +75,16 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
 
         if (!$model->getId()) {
             $this->_redirect('*/*/log');
+
             return $this;
         }
 
         Mage::register('current_event', $model);
 
         $this->loadLayout()
-            ->_setActiveMenu('sales/tax/avatax_log')
-            ->renderLayout();
+             ->_setActiveMenu('sales/tax/avatax_log')
+             ->renderLayout();
+
         return $this;
     }
 
@@ -94,8 +98,9 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
         $this->_setTitle($this->__('Sales'))->_setTitle($this->__('Tax'))->_setTitle($this->__('AvaTax Queue'));
 
         $this->loadLayout()
-            ->_setActiveMenu('sales/tax/avatax_queue')
-            ->renderLayout();
+             ->_setActiveMenu('sales/tax/avatax_queue')
+             ->renderLayout();
+
         return $this;
     }
 
@@ -108,6 +113,43 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     {
         Mage::getModel('avatax_records/queue_process')->run();
         $this->_redirect('*/*/queue');
+
+        return $this;
+    }
+
+    /**
+     * HS Codes action
+     *
+     * @return $this
+     */
+    public function hscodesAction()
+    {
+        $this->_setTitle($this->__('Sales'))
+             ->_setTitle($this->__('Tax'))
+             ->_setTitle($this->__('AvaTax HS Codes'));
+
+        $this->loadLayout()
+             ->_setActiveMenu('sales/tax/avatax_hscodes')
+             ->renderLayout();
+
+        return $this;
+    }
+
+    /**
+     * HS Codes action
+     *
+     * @return $this
+     */
+    public function hscountrycodesAction()
+    {
+        $this->_setTitle($this->__('Sales'))
+             ->_setTitle($this->__('Tax'))
+             ->_setTitle($this->__('AvaTax HS Codes for Countries'));
+
+        $this->loadLayout()
+             ->_setActiveMenu('sales/tax/avatax_hscountrycodes')
+             ->renderLayout();
+
         return $this;
     }
 
