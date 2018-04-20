@@ -64,7 +64,7 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_HsCode_Grid
      */
     public function getRowUrl($row)
     {
-        return $this->getUrl('*/*/hscodeView', array('id' => $row->getId()));
+        return $this->getUrl('*/*/hscodeEdit', array('id' => $row->getId()));
     }
 
     /**

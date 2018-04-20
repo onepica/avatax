@@ -18,18 +18,24 @@
 /**
  * Admin grid controller
  *
+ * @property \Mage_Adminhtml_Model_Session _sessionAdminhtml
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
 class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Controller_Action
 {
+    /** @var null|\Mage_Adminhtml_Model_Session $_sessionAdminhtml */
+    protected $_sessionAdminhtml = null;
+
     /**
      * Additional initialization
      */
     protected function _construct()
     {
         $this->setUsedModuleName('OnePica_AvaTax');
+
+        $this->_sessionAdminhtml = Mage::getSingleton('adminhtml/session');
     }
 
     /**
@@ -65,6 +71,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
      * Log view action
      *
      * @return $this
+     * @throws \Mage_Core_Exception
      */
     public function logViewAction()
     {
@@ -136,6 +143,92 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
         return $this;
     }
 
+    public function hscodeEditAction()
+    {
+        $hsCodeId = $this->getRequest()->getParam('id');
+        $hsCodeModel = Mage::getModel('avatax_records/hsCode')->load($hsCodeId);
+
+        if ($hsCodeModel->getId() || $hsCodeId == 0) {
+            try {
+                Mage::register('hsCode_data', $hsCodeModel);
+
+                $this->loadLayout()->_setActiveMenu('sales/tax/avatax_hscode');
+
+                $this->_addContent($this->getLayout()->createBlock('avatax/adminhtml_landedcost_hsCode_edit'));
+
+                $this->renderLayout();
+            } catch (Mage_Core_Exception $e) {
+                $this->_sessionAdminhtml->addError($e->getMessage());
+            }
+        } else {
+            $this->_sessionAdminhtml->addError($this->__('Item does not exist'));
+            $this->_redirect('*/*/hscode');
+        }
+    }
+
+    /**
+     * HS code new action
+     */
+    public function hscodeNewAction()
+    {
+        $this->_forward('hscodeEdit');
+    }
+
+    /**
+     * HS code save action
+     *
+     * @throws \Varien_Exception
+     */
+    public function hscodeSaveAction()
+    {
+        $postData = $this->getRequest()->getPost();
+
+        if ($postData) {
+            try {
+                /** @var \OnePica_AvaTax_Model_Records_HsCode $hsCodeModel */
+                $hsCodeModel = Mage::getModel('avatax_records/hsCode');
+
+                $hsCodeModel->setId($this->getRequest()->getParam('id'))
+                            ->setHsCode($postData['hs_code'])
+                            ->setDescription($postData['description'])
+                            ->save();
+
+                $this->_sessionAdminhtml->addSuccess($this->__('Item was successfully saved'));
+                $this->_sessionAdminhtml->setHsCodeData(false);
+            } catch (Exception $e) {
+                $this->_sessionAdminhtml->addError($e->getMessage());
+                $this->_sessionAdminhtml->setHsCodeData($postData);
+
+                $this->_redirect('*/*/hscodeEdit', array('id' => $this->getRequest()->getParam('id')));
+            }
+        }
+
+        $this->_redirect('*/*/hscode');
+    }
+
+    /**
+     * HS code delete action
+     */
+    public function hscodeDeleteAction()
+    {
+        if (0 < $this->getRequest()->getParam('id')) {
+            try {
+                /** @var \OnePica_AvaTax_Model_Records_HsCode $hsCodeModel */
+                $hsCodeModel = Mage::getModel('avatax_records/hsCode');
+
+                $hsCodeModel->setId($this->getRequest()->getParam('id'))
+                            ->delete();
+
+                $this->_sessionAdminhtml->addSuccess($this->__('Item was successfully deleted'));
+            } catch (Exception $e) {
+                $this->_sessionAdminhtml->addError($e->getMessage());
+                $this->_redirect('*/*/hscodeEdit', array('id' => $this->getRequest()->getParam('id')));
+            }
+        }
+
+        $this->_redirect('*/*/hscode');
+    }
+
     /**
      * HS Codes action
      *
@@ -143,13 +236,10 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
      */
     public function hscodeMassDeleteAction()
     {
-        /** @var \Mage_Adminhtml_Model_Session $session */
-        $session = Mage::getSingleton('adminhtml/session');
-
         $hscodeIds = $this->getRequest()->getParam('hscode');
 
         if (!is_array($hscodeIds)) {
-            $session->addError(Mage::helper('adminhtml')->__('Please select message(s).'));
+            $this->_sessionAdminhtml->addError(Mage::helper('adminhtml')->__('Please select message(s).'));
         } else {
             try {
                 /** @var \Mage_Core_Model_Resource_Transaction $transaction */
@@ -166,11 +256,11 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
 
                 $transaction->delete();
 
-                $session->addSuccess(
+                $this->_sessionAdminhtml->addSuccess(
                     Mage::helper('adminhtml')->__('Total of %d record(s) were deleted.', count($hscodeIds))
                 );
             } catch (Exception $e) {
-                $session->addError($e->getMessage());
+                $this->_sessionAdminhtml->addError($e->getMessage());
             }
         }
 
@@ -201,6 +291,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
      * Check if is allowed
      *
      * @return bool
+     * @throws \Varien_Exception
      */
     protected function _isAllowed()
     {

@@ -34,7 +34,6 @@ abstract class OnePica_AvaTax_Block_Adminhtml_Landedcost_Abstract_Grid extends M
         $this->setDefaultSort('id');
         $this->setDefaultDir('DESC');
         $this->setSaveParametersInSession(true);
-        $this->setUseAjax(true);
 
         $url = Mage::helper('avatax')->getDocumentationUrl();
         Mage::helper('adminhtml')->setPageHelpUrl($url);
