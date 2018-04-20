@@ -30,6 +30,6 @@ class OnePica_AvaTax_Model_Records_Mysql4_HsCodeCountry_Collection extends Mage_
     protected function _construct()
     {
         parent::_construct();
-        $this->_init('avatax_records/hs_code_country');
+        $this->_init('avatax_records/hsCodeCountry');
     }
 }

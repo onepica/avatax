@@ -37,6 +37,6 @@ class OnePica_AvaTax_Model_Records_HsCode extends Mage_Core_Model_Abstract
     protected function _construct()
     {
         parent::_construct();
-        $this->_init('avatax_records/hs_code');
+        $this->_init('avatax_records/hsCode');
     }
 }
