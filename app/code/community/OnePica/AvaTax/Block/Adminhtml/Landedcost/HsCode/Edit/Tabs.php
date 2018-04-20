@@ -25,6 +25,20 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_HsCode_Edit_Tabs extends Mage_Ad
             )
         );
 
+        $hsCodeId = $this->getRequest()->getParam('id');
+
+        if ($hsCodeId) {
+            $this->addTab(
+                'grid_section', array(
+                    'label'   => $this->__('HS codes for countries'),
+                    'title'   => $this->__('HS codes for countries'),
+                    'content' => $this->getLayout()->createBlock(
+                        'avatax/adminhtml_landedcost_hsCode_edit_tab_countries'
+                    )->toHtml(),
+                )
+            );
+        }
+
         return parent::_beforeToHtml();
     }
 }
