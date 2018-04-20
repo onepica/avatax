@@ -15,21 +15,14 @@
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
-/**
- * HS Code collection model
- *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@onepica.com>
- */
-class OnePica_AvaTax_Model_Records_Mysql4_HsCode_Collection extends Mage_Core_Model_Mysql4_Collection_Abstract
-{
-    /**
-     * Construct
-     */
-    protected function _construct()
-    {
-        parent::_construct();
-        $this->_init('avatax_records/hsCode');
-    }
-}
+$installer = $this;
+$this->startSetup();
+
+$installer->run(
+    "
+  ALTER TABLE `" . $this->getTable('avatax_records/hs_code') . "`
+    ADD `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'HS code description';
+    "
+);
+
+$this->endSetup();

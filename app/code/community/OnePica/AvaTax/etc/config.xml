@@ -19,7 +19,7 @@
 <config>
     <modules>
         <OnePica_AvaTax>
-            <version>3.5.7.3</version>
+            <version>3.5.7.4</version>
         </OnePica_AvaTax>
     </modules>
     <global>
@@ -428,11 +428,11 @@
                                 <action>adminhtml/avaTax_grid/log</action>
                                 <resource>avatax</resource>
                             </avatax_log>
-                            <avatax_hscodes translate="title" module="avatax">
+                            <avatax_hscode translate="title" module="avatax">
                                 <title>AvaTax HS Codes</title>
-                                <action>adminhtml/avaTax_grid/hscodes</action>
+                                <action>adminhtml/avaTax_grid/hscode</action>
                                 <resource>avatax</resource>
-                            </avatax_hscodes>
+                            </avatax_hscode>
                             <avatax_hscountrycodes translate="title" module="avatax">
                                 <title>AvaTax HS Codes for Countries</title>
                                 <action>adminhtml/avaTax_grid/hscountrycodes</action>

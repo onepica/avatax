@@ -16,29 +16,30 @@
  */
 
 /**
- * HS code model
- *
- * @method int getId()
- * @method $this setId(int $id)
- * @method string getHsCode()
- * @method $this setHsCode(string $hsCode)
- * @method string getDescription()
- * @method $this setDescription(string $description)
- * @method OnePica_AvaTax_Model_Records_Mysql4_HsCode getResource()
- * @method OnePica_AvaTax_Model_Records_Mysql4_HsCode_Collection getCollection()
+ * Avatax admin HS code grid
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Records_HsCode extends Mage_Core_Model_Abstract
+class OnePica_AvaTax_Block_Adminhtml_Landedcost_HsCode
+    extends Mage_Adminhtml_Block_Widget_Grid_Container
 {
-    /**
-     * Internal constructor
-     */
-    protected function _construct()
+    public function __construct()
     {
-        parent::_construct();
-        $this->_init('avatax_records/hsCode');
+        $this->_blockGroup = 'avatax';
+        $this->_controller = 'adminhtml_landedcost_hsCode';
+        $this->_headerText = $this->__('HS codes');
+
+        parent::__construct();
+        $this->_updateButton('add', 'label', $this->__('Add New HS code'));
+    }
+
+    /**
+     * @return string
+     */
+    public function getCreateUrl()
+    {
+        return $this->getUrl('*/*/hscodeNew');
     }
 }
