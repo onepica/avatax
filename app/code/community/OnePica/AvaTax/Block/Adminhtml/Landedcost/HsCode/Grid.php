@@ -66,4 +66,26 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_HsCode_Grid
     {
         return $this->getUrl('*/*/hscodeView', array('id' => $row->getId()));
     }
+
+    /**
+     * Prepare mass actions
+     *
+     * @return \OnePica_AvaTax_Block_Adminhtml_Landedcost_HsCode_Grid
+     * @throws \Varien_Exception
+     */
+    protected function _prepareMassaction()
+    {
+        $this->setMassactionIdField('id');
+        $this->getMassactionBlock()->setFormFieldName('hscode');
+
+        $this->getMassactionBlock()->addItem(
+            'delete', array(
+                'label'   => $this->__('Delete'),
+                'url'     => $this->getUrl('*/*/hscodeMassDelete'),
+                'confirm' => $this->__('Are you sure you want to delete selected records?')
+            )
+        );
+
+        return $this;
+    }
 }

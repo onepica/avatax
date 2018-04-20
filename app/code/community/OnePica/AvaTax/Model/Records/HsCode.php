@@ -22,6 +22,8 @@
  * @method $this setId(int $id)
  * @method string getHsCode()
  * @method $this setHsCode(string $hsCode)
+ * @method string getDescription()
+ * @method $this setDescription(string $description)
  * @method OnePica_AvaTax_Model_Records_Mysql4_HsCode getResource()
  * @method OnePica_AvaTax_Model_Records_Mysql4_HsCode_Collection getCollection()
  *

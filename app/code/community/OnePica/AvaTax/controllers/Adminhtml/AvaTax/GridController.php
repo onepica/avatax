@@ -108,6 +108,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
      * Process queue action
      *
      * @return $this
+     * @throws \Varien_Exception
      */
     public function processQueueAction()
     {
@@ -122,15 +123,58 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
      *
      * @return $this
      */
-    public function hscodesAction()
+    public function hscodeAction()
     {
         $this->_setTitle($this->__('Sales'))
              ->_setTitle($this->__('Tax'))
              ->_setTitle($this->__('AvaTax HS Codes'));
 
         $this->loadLayout()
-             ->_setActiveMenu('sales/tax/avatax_hscodes')
+             ->_setActiveMenu('sales/tax/avatax_hscode')
              ->renderLayout();
+
+        return $this;
+    }
+
+    /**
+     * HS Codes action
+     *
+     * @return $this
+     */
+    public function hscodeMassDeleteAction()
+    {
+        /** @var \Mage_Adminhtml_Model_Session $session */
+        $session = Mage::getSingleton('adminhtml/session');
+
+        $hscodeIds = $this->getRequest()->getParam('hscode');
+
+        if (!is_array($hscodeIds)) {
+            $session->addError(Mage::helper('adminhtml')->__('Please select message(s).'));
+        } else {
+            try {
+                /** @var \Mage_Core_Model_Resource_Transaction $transaction */
+                $transaction = Mage::getModel('core/resource_transaction');
+
+                /** @var \OnePica_AvaTax_Model_Records_HsCode $hscodeModel */
+                $hscodeModel = Mage::getModel('avatax_records/hsCode');
+
+                foreach ($hscodeIds as $hscodeId) {
+                    $hscode = clone $hscodeModel;
+                    $hscode->load($hscodeId);
+                    $transaction->addObject($hscode);
+                }
+
+                $transaction->delete();
+
+                $session->addSuccess(
+                    Mage::helper('adminhtml')->__('Total of %d record(s) were deleted.', count($hscodeIds))
+                );
+            } catch (Exception $e) {
+                $session->addError($e->getMessage());
+            }
+        }
+
+        $this->_redirect('*/*/hscode');
 
         return $this;
     }

@@ -41,11 +41,11 @@
         </reference>
     </adminhtml_avatax_grid_logview>
 
-    <adminhtml_avatax_grid_hscodes>
+    <adminhtml_avatax_grid_hscode>
         <reference name="content">
             <block type="avatax/adminhtml_landedcost_hsCode_grid" name="avatax.hscode.grid" />
         </reference>
-    </adminhtml_avatax_grid_hscodes>
+    </adminhtml_avatax_grid_hscode>
 
     <adminhtml_sales_order_view>
         <reference name="sales_order_tabs">
