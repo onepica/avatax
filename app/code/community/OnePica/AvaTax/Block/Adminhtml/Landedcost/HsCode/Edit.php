@@ -28,7 +28,7 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_HsCode_Edit extends Mage_Adminht
     public function getHeaderText()
     {
         if (Mage::registry('hsCode_data') && Mage::registry('hsCode_data')->getId()) {
-            return $this->__("Edit Item '%s'", $this->escapeHtml(Mage::registry('hsCode_data')->getTitle()));
+            return $this->__("Edit Item '%s'", $this->escapeHtml(Mage::registry('hsCode_data')->getHsCode()));
         } else {
             return $this->__('Add Item');
         }

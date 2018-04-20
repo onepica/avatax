@@ -49,7 +49,7 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_HsCode_Grid
      */
     protected function _prepareCollection()
     {
-        /** @var OnePica_AvaTax_Model_Records_Mysql4_Log_Collection $collection */
+        /** @var \OnePica_AvaTax_Model_Records_Mysql4_HsCode_Collection $collection */
         $collection = Mage::getModel('avatax_records/hsCode')->getCollection();
         $this->setCollection($collection);
 

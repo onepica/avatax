@@ -154,7 +154,8 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
 
                 $this->loadLayout()->_setActiveMenu('sales/tax/avatax_hscode');
 
-                $this->_addContent($this->getLayout()->createBlock('avatax/adminhtml_landedcost_hsCode_edit'));
+                $this->_addContent($this->getLayout()->createBlock('avatax/adminhtml_landedcost_hsCode_edit'))
+                     ->_addLeft($this->getLayout()->createBlock('avatax/adminhtml_landedcost_hsCode_edit_tabs'));
 
                 $this->renderLayout();
             } catch (Mage_Core_Exception $e) {
