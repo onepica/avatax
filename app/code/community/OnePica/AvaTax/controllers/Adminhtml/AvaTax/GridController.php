@@ -240,7 +240,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
         $hscodeIds = $this->getRequest()->getParam('hscode');
 
         if (!is_array($hscodeIds)) {
-            $this->_sessionAdminhtml->addError(Mage::helper('adminhtml')->__('Please select message(s).'));
+            $this->_sessionAdminhtml->addError(Mage::helper('adminhtml')->__('Please select  HS code(s).'));
         } else {
             try {
                 /** @var \Mage_Core_Model_Resource_Transaction $transaction */
@@ -271,19 +271,42 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     }
 
     /**
-     * HS Codes action
+     * HS Codes for countries mass delete action
      *
      * @return $this
      */
-    public function hscountrycodesAction()
+    public function hscodecountriesMassDeleteAction()
     {
-        $this->_setTitle($this->__('Sales'))
-             ->_setTitle($this->__('Tax'))
-             ->_setTitle($this->__('AvaTax HS Codes for Countries'));
+        $hscodecountriesIds = $this->getRequest()->getParam('hscodecountries');
+        $hscodeId = $this->getRequest()->getParam('hscode_id');
 
-        $this->loadLayout()
-             ->_setActiveMenu('sales/tax/avatax_hscountrycodes')
-             ->renderLayout();
+        if (!is_array($hscodecountriesIds)) {
+            $this->_sessionAdminhtml->addError(Mage::helper('adminhtml')->__('Please select HS code(s).'));
+        } else {
+            try {
+                /** @var \Mage_Core_Model_Resource_Transaction $transaction */
+                $transaction = Mage::getModel('core/resource_transaction');
+
+                /** @var \OnePica_AvaTax_Model_Records_HsCode $hscodeModel */
+                $hscodecountriesModel = Mage::getModel('avatax_records/hsCodeCountry');
+
+                foreach ($hscodecountriesIds as $hscodecountriesId) {
+                    $hscodecountries = clone $hscodecountriesModel;
+                    $hscodecountries->load($hscodecountriesId);
+                    $transaction->addObject( $hscodecountries);
+                }
+
+                $transaction->delete();
+
+                $this->_sessionAdminhtml->addSuccess(
+                    Mage::helper('adminhtml')->__('Total of %d record(s) were deleted.', count($hscodecountriesIds))
+                );
+            } catch (Exception $e) {
+                $this->_sessionAdminhtml->addError($e->getMessage());
+            }
+        }
+
+        $this->_redirect('*/*/hscodeEdit', array('id' => $hscodeId));
 
         return $this;
     }

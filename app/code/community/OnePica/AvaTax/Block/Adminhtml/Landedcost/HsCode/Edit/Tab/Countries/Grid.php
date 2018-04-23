@@ -26,6 +26,16 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_HsCode_Edit_Tab_Countries_Grid
     extends OnePica_AvaTax_Block_Adminhtml_Landedcost_Abstract_Grid
 {
     /**
+     * Constructor: sets grid id and sort order
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->setId('landedcost_countries_grid');
+        $this->setUseAjax(true);
+    }
+
+    /**
      * Adds columns to grid
      *
      * @return $this
@@ -89,7 +99,11 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_HsCode_Edit_Tab_Countries_Grid
         $this->getMassactionBlock()->addItem(
             'delete', array(
                 'label'   => $this->__('Delete'),
-                'url'     => $this->getUrl('*/*/hscodecountriesMassDelete'),
+                'url'     => $this->getUrl(
+                    '*/*/hscodecountriesMassDelete', array(
+                        'hscode_id' => $this->getRequest()->getParam('id'),
+                    )
+                ),
                 'confirm' => $this->__('Are you sure you want to delete selected records?')
             )
         );
