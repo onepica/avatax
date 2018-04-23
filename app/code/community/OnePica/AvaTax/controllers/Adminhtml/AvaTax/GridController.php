@@ -395,6 +395,50 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     }
 
     /**
+     * HS Codes for countries save action
+     *
+     * @throws \Varien_Exception
+     */
+    public function hscodecountriesSaveAction()
+    {
+        $hsCodeId = $this->getRequest()->getParam('hs_code_id');
+        $hsCodeCountryId = $this->getRequest()->getParam('id');
+
+        if ($this->getRequest()->getPost()) {
+            try {
+                /** @var \OnePica_AvaTax_Model_Records_HsCodeCountry $hsCodeCountryModel */
+                $hsCodeCountryModel = Mage::getModel('avatax_records/hsCodeCountry');
+
+                $hsCodeCountryModel->setId($hsCodeCountryId)
+                                   ->setHsId($hsCodeId)
+                                   ->setHsFullCode($this->getRequest()->getPost('hs_full_code'))
+                                   ->setCountryCodes($this->getRequest()->getPost('country_codes'))
+                                   ->save();
+
+                $this->_sessionAdminhtml->addSuccess($this->__('Item was successfully saved'));
+                $this->_sessionAdminhtml->setHsCodeCountriesData(false);
+            } catch (Exception $e) {
+                $this->_sessionAdminhtml->addError($e->getMessage());
+                $this->_sessionAdminhtml->setHsCodeCountriesData($this->getRequest()->getPost());
+
+                $this->_redirect(
+                    '*/*/hscodecountriesEdit', array(
+                        'id'         => $hsCodeCountryId,
+                        'hs_code_id' => $hsCodeId
+                    )
+                );
+            }
+        }
+
+        $this->_redirect(
+            '*/*/hscodeEdit', array(
+                'id'         => $hsCodeId,
+                'active_tab' => 'grid_section'
+            )
+        );
+    }
+
+    /**
      * Check if is allowed
      *
      * @return bool

@@ -19,7 +19,10 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_HsCode_Edit_Tab_Countries_Edit_F
             array(
                 'id'     => 'edit_form',
                 'action' => $this->getUrl(
-                    '*/*/hscodecountriesSave', array('id' => $this->getRequest()->getParam('id'))
+                    '*/*/hscodecountriesSave', array(
+                        'id'         => $this->getRequest()->getParam('id'),
+                        'hs_code_id' => $this->getRequest()->getParam('hs_code_id')
+                    )
                 ),
                 'method' => 'post',
             )
@@ -31,7 +34,7 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_HsCode_Edit_Tab_Countries_Edit_F
 
         $fieldset->addField(
             'hs_full_code', 'text', array(
-                'name'     => 'hs_code',
+                'name'     => 'hs_full_code',
                 'label'    => $this->__('HS Code for countries'),
                 'class'    => 'required-entry',
                 'required' => true,
@@ -41,7 +44,7 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_HsCode_Edit_Tab_Countries_Edit_F
 
         $fieldset->addField(
             'country_codes', 'text', array(
-                'name'     => 'description',
+                'name'     => 'country_codes',
                 'label'    => $this->__('Country Codes'),
                 'required' => true,
             )
