@@ -79,10 +79,16 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_HsCode_Edit_Tab_Countries_Grid
      *
      * @param OnePica_AvaTax_Model_Records_Log $row
      * @return string
+     * @throws \Exception
      */
     public function getRowUrl($row)
     {
-        return $this->getUrl('*/*/hscodecountriesEdit', array('id' => $row->getId()));
+        return $this->getUrl(
+            '*/*/hscodecountriesEdit', array(
+                'id'         => $row->getId(),
+                'hs_code_id' => $this->getRequest()->getParam('id')
+            )
+        );
     }
 
     /**

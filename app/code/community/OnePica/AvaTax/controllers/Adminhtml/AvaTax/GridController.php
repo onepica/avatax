@@ -287,7 +287,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
                 /** @var \Mage_Core_Model_Resource_Transaction $transaction */
                 $transaction = Mage::getModel('core/resource_transaction');
 
-                /** @var \OnePica_AvaTax_Model_Records_HsCode $hscodeModel */
+                /** @var \OnePica_AvaTax_Model_Records_HsCodeCountry $hscodeModel */
                 $hscodecountriesModel = Mage::getModel('avatax_records/hsCodeCountry');
 
                 foreach ($hscodecountriesIds as $hscodecountriesId) {
@@ -314,6 +314,73 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
         );
 
         return $this;
+    }
+
+    public function hscodecountriesEditAction()
+    {
+        $hsCodeId = $this->getRequest()->getParam('hs_code_id');
+        $hsCodeCountryId = $this->getRequest()->getParam('id');
+        /** @var \OnePica_AvaTax_Model_Records_HsCodeCountry $hsCodeCountryModel */
+        $hsCodeCountryModel = Mage::getModel('avatax_records/hsCodeCountry')->load($hsCodeCountryId);
+
+        if ($hsCodeCountryModel->getId() || $hsCodeCountryId == 0) {
+            try {
+                Mage::register('hs_code_countries_data', $hsCodeCountryModel);
+
+                $this->loadLayout()->_setActiveMenu('sales/tax/avatax_hscode');
+
+                $this->_addContent(
+                    $this->getLayout()->createBlock('avatax/adminhtml_landedcost_hsCode_edit_tab_countries_edit')
+                );
+                $this->renderLayout();
+            } catch (Mage_Core_Exception $e) {
+                $this->_sessionAdminhtml->addError($e->getMessage());
+            }
+        } else {
+            $this->_sessionAdminhtml->addError($this->__('Item does not exist'));
+
+            $this->_redirect(
+                '*/*/hscodeEdit', array(
+                    'id'         => $hsCodeId,
+                    'active_tab' => 'grid_section'
+                )
+            );
+        }
+    }
+
+    /**
+     * HS code delete action
+     */
+    public function hscodecountriesDeleteAction()
+    {
+        $hsCodeId = $this->getRequest()->getParam('hs_code_id');
+        $hsCodeCountryId = $this->getRequest()->getParam('id');
+
+        if (0 < $hsCodeCountryId) {
+            try {
+                /** @var \OnePica_AvaTax_Model_Records_HsCodeCountry $hsCodeCountryModel */
+                $hsCodeCountryModel = Mage::getModel('avatax_records/hsCodeCountry')->load($hsCodeCountryId);
+
+                $hsCodeCountryModel->setId($hsCodeCountryId)->delete();
+
+                $this->_sessionAdminhtml->addSuccess($this->__('Item was successfully deleted'));
+            } catch (Exception $e) {
+                $this->_sessionAdminhtml->addError($e->getMessage());
+                $this->_redirect(
+                    '*/*/hscodecountriesEdit', array(
+                        'id'         => $hsCodeCountryId,
+                        'hs_code_id' => $hsCodeId
+                    )
+                );
+            }
+        }
+
+        $this->_redirect(
+            '*/*/hscodeEdit', array(
+                'id'         => $hsCodeId,
+                'active_tab' => 'grid_section'
+            )
+        );
     }
 
     /**
