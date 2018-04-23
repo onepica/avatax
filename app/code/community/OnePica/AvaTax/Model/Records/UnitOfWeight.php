@@ -27,8 +27,8 @@
  * @method $this setZendCode(string $code)
  * @method string getDescription()
  * @method $this setDescription(string $description)
- * @method string getCountryCodes()
- * @method $this setCountryCodes(string $countryCodes)
+ * @method string getCountryList() // ISO 2 Code list comma separated
+ * @method $this setCountryList(string $countryCodes) // ISO 2 Code list comma separated
  * @method OnePica_AvaTax_Model_Records_Mysql4_UnitOfWeight getResource()
  * @method OnePica_AvaTax_Model_Records_Mysql4_Log_Collection getCollection()
  *
