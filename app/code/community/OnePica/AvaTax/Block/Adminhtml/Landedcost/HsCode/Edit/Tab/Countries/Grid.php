@@ -116,4 +116,14 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_HsCode_Edit_Tab_Countries_Grid
 
         return $this;
     }
+
+    public function getGridUrl()
+    {
+        return $this->getUrl(
+            '*/*/hscodecountriesGrid', array(
+                'id'       => $this->getRequest()->getParam('id'),
+                '_current' => true
+            )
+        );
+    }
 }
