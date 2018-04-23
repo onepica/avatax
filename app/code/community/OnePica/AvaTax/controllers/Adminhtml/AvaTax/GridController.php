@@ -316,6 +316,17 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
         return $this;
     }
 
+    /**
+     * HS Codes for countries new action
+     */
+    public function hscodecountriesNewAction()
+    {
+        $this->_forward('hscodecountriesEdit');
+    }
+
+    /**
+     * HS Codes for countries edit action
+     */
     public function hscodecountriesEditAction()
     {
         $hsCodeId = $this->getRequest()->getParam('hs_code_id');
@@ -349,7 +360,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     }
 
     /**
-     * HS code delete action
+     * HS Codes for countries delete action
      */
     public function hscodecountriesDeleteAction()
     {

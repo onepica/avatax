@@ -18,10 +18,11 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_HsCode_Edit_Tab_Countries
 
     /**
      * @return string
+     * @throws \Exception
      */
     public function getCreateUrl()
     {
-        return $this->getUrl('*/*/hscodecountriesNew');
+        return $this->getUrl('*/*/hscodecountriesNew', array('hs_code_id' => $this->getRequest()->getParam('id')));
     }
 
     /**
