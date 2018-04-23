@@ -196,6 +196,14 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
 
                 $this->_sessionAdminhtml->addSuccess($this->__('Item was successfully saved'));
                 $this->_sessionAdminhtml->setHsCodeData(false);
+
+                if ($this->getRequest()->getParam('back')) {
+                    $this->_redirect(
+                        '*/*/' . $this->getRequest()->getParam('back'), array('id' => $hsCodeModel->getId())
+                    );
+                } else {
+                    $this->_redirect('*/*/hscode');
+                }
             } catch (Exception $e) {
                 $this->_sessionAdminhtml->addError($e->getMessage());
                 $this->_sessionAdminhtml->setHsCodeData($postData);
@@ -203,8 +211,6 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
                 $this->_redirect('*/*/hscodeEdit', array('id' => $this->getRequest()->getParam('id')));
             }
         }
-
-        $this->_redirect('*/*/hscode');
     }
 
     /**
