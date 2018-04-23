@@ -42,11 +42,18 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_HsCode_Edit_Tab_Countries_Edit_F
             )
         );
 
+        /** @var \Mage_Directory_Model_Resource_Country_Collection $countryList */
+        $countryCollection = Mage::getModel('directory/country')->getResourceCollection()->loadByStore();
+
+        $countryList = $countryCollection->toOptionArray(' ');
+
         $fieldset->addField(
-            'country_codes', 'text', array(
-                'name'     => 'country_codes',
+            'country_codes', 'multiselect', array(
+                'name'     => 'country_codes[]',
                 'label'    => $this->__('Country Codes'),
+                'title'    => $this->__('Country Codes'),
                 'required' => true,
+                'values'   => $countryList,
             )
         );
 

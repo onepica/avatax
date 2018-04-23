@@ -414,11 +414,14 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
             try {
                 /** @var \OnePica_AvaTax_Model_Records_HsCodeCountry $hsCodeCountryModel */
                 $hsCodeCountryModel = Mage::getModel('avatax_records/hsCodeCountry');
+                $countryCodes = is_array($this->getRequest()->getPost('country_codes')) ? implode(
+                    ',', $this->getRequest()->getPost('country_codes')
+                ) : $this->getRequest()->getPost('country_codes');
 
                 $hsCodeCountryModel->setId($hsCodeCountryId)
                                    ->setHsId($hsCodeId)
                                    ->setHsFullCode($this->getRequest()->getPost('hs_full_code'))
-                                   ->setCountryCodes($this->getRequest()->getPost('country_codes'))
+                                   ->setCountryCodes($countryCodes)
                                    ->save();
 
                 $this->_sessionAdminhtml->addSuccess($this->__('Item was successfully saved'));
