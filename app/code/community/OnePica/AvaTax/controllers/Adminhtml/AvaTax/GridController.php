@@ -293,7 +293,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
                 foreach ($hscodecountriesIds as $hscodecountriesId) {
                     $hscodecountries = clone $hscodecountriesModel;
                     $hscodecountries->load($hscodecountriesId);
-                    $transaction->addObject( $hscodecountries);
+                    $transaction->addObject($hscodecountries);
                 }
 
                 $transaction->delete();
@@ -306,7 +306,12 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
             }
         }
 
-        $this->_redirect('*/*/hscodeEdit', array('id' => $hscodeId));
+        $this->_redirect(
+            '*/*/hscodeEdit', array(
+                'id'         => $hscodeId,
+                'active_tab' => 'grid_section'
+            )
+        );
 
         return $this;
     }
