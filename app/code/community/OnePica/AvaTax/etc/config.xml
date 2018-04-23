@@ -19,7 +19,7 @@
 <config>
     <modules>
         <OnePica_AvaTax>
-            <version>3.5.7.2</version>
+            <version>3.5.7.5</version>
         </OnePica_AvaTax>
     </modules>
     <global>
@@ -40,6 +40,9 @@
                     <queue>
                         <table>op_avatax_queue</table>
                     </queue>
+                    <unit_of_weight>
+                        <table>op_avatax_unit_of_weight</table>
+                    </unit_of_weight>
                 </entities>
             </avatax_records_mysql4>
             <adminhtml>
