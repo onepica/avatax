@@ -626,6 +626,46 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     }
 
     /**
+     * Units Of Weight mass delete action
+     *
+     * @return $this
+     */
+    public function unitsofweightMassDeleteAction()
+    {
+        $unitofweightIds = $this->getRequest()->getParam('unitsofweight');
+
+        if (!is_array($unitofweightIds)) {
+            $this->_sessionAdminhtml->addError(Mage::helper('adminhtml')->__('Please select  Unit(s) of weight.'));
+        } else {
+            try {
+                /** @var \Mage_Core_Model_Resource_Transaction $transaction */
+                $transaction = Mage::getModel('core/resource_transaction');
+
+                /** @var \OnePica_AvaTax_Model_Records_UnitOfWeight $unitofweightModel */
+                $unitofweightModel = Mage::getModel('avatax_records/unitOfWeight');
+
+                foreach ($unitofweightIds as $unitofweightId) {
+                    $unitofweight = clone $unitofweightModel;
+                    $unitofweight->load($unitofweightId);
+                    $transaction->addObject($unitofweight);
+                }
+
+                $transaction->delete();
+
+                $this->_sessionAdminhtml->addSuccess(
+                    Mage::helper('adminhtml')->__('Total of %d record(s) were deleted.', count($unitofweightIds))
+                );
+            } catch (Exception $e) {
+                $this->_sessionAdminhtml->addError($e->getMessage());
+            }
+        }
+
+        $this->_redirect('*/*/unitsofweight');
+
+        return $this;
+    }
+
+    /**
      * Check if is allowed
      *
      * @return bool
