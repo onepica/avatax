@@ -58,10 +58,10 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
      */
     public function logAction()
     {
-        $this->_setTitle($this->__('Sales'))->_setTitle($this->__('Tax'))->_setTitle($this->__('AvaTax Log'));
+        $this->_setTitle($this->__('AvaTax'))->_setTitle($this->__('AvaTax Log'));
 
         $this->loadLayout()
-             ->_setActiveMenu('sales/tax/avatax_log')
+             ->_setActiveMenu('avatax/avatax_log')
              ->renderLayout();
 
         return $this;
@@ -75,7 +75,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
      */
     public function logViewAction()
     {
-        $this->_setTitle($this->__('Sales'))->_setTitle($this->__('Tax'))->_setTitle($this->__('AvaTax Log'));
+        $this->_setTitle($this->__('AvaTax'))->_setTitle($this->__('AvaTax Log'));
 
         $logId = $this->getRequest()->getParam('id');
         $model = Mage::getModel('avatax/records_log')->load($logId);
@@ -89,7 +89,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
         Mage::register('current_event', $model);
 
         $this->loadLayout()
-             ->_setActiveMenu('sales/tax/avatax_log')
+             ->_setActiveMenu('avatax/avatax_log')
              ->renderLayout();
 
         return $this;
@@ -102,10 +102,10 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
      */
     public function queueAction()
     {
-        $this->_setTitle($this->__('Sales'))->_setTitle($this->__('Tax'))->_setTitle($this->__('AvaTax Queue'));
+        $this->_setTitle($this->__('AvaTax'))->_setTitle($this->__('AvaTax Queue'));
 
         $this->loadLayout()
-             ->_setActiveMenu('sales/tax/avatax_queue')
+             ->_setActiveMenu('avatax/avatax_queue')
              ->renderLayout();
 
         return $this;
@@ -132,19 +132,26 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
      */
     public function hscodeAction()
     {
-        $this->_setTitle($this->__('Sales'))
-             ->_setTitle($this->__('Tax'))
+        $this->_setTitle($this->__('AvaTax'))
+             ->_setTitle($this->__('Landed Cost'))
              ->_setTitle($this->__('AvaTax HS Codes'));
 
         $this->loadLayout()
-             ->_setActiveMenu('sales/tax/avatax_hscode')
+             ->_setActiveMenu('avatax/landedcost/avatax_hscode')
              ->renderLayout();
 
         return $this;
     }
 
+    /**
+     * HS Codes edit action
+     */
     public function hscodeEditAction()
     {
+        $this->_setTitle($this->__('AvaTax'))
+             ->_setTitle($this->__('Landed Cost'))
+             ->_setTitle($this->__('AvaTax HS Code'));
+
         $hsCodeId = $this->getRequest()->getParam('id');
         $hsCodeModel = Mage::getModel('avatax_records/hsCode')->load($hsCodeId);
 
@@ -152,7 +159,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
             try {
                 Mage::register('hsCode_data', $hsCodeModel);
 
-                $this->loadLayout()->_setActiveMenu('sales/tax/avatax_hscode');
+                $this->loadLayout()->_setActiveMenu('avatax/landedcost/avatax_hscode');
 
                 $this->_addContent($this->getLayout()->createBlock('avatax/adminhtml_landedcost_hsCode_edit'))
                      ->_addLeft($this->getLayout()->createBlock('avatax/adminhtml_landedcost_hsCode_edit_tabs'));
@@ -276,6 +283,9 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
         return $this;
     }
 
+    /**
+     * HS Codes for countries grid action
+     */
     public function hscodecountriesGridAction()
     {
         $this->loadLayout();
@@ -343,6 +353,10 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
      */
     public function hscodecountriesEditAction()
     {
+        $this->_setTitle($this->__('AvaTax'))
+             ->_setTitle($this->__('Landed Cost'))
+             ->_setTitle($this->__('AvaTax HS Code for countries'));
+
         $hsCodeId = $this->getRequest()->getParam('hs_code_id');
         $hsCodeCountryId = $this->getRequest()->getParam('id');
         /** @var \OnePica_AvaTax_Model_Records_HsCodeCountry $hsCodeCountryModel */
@@ -352,7 +366,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
             try {
                 Mage::register('hs_code_countries_data', $hsCodeCountryModel);
 
-                $this->loadLayout()->_setActiveMenu('sales/tax/avatax_hscode');
+                $this->loadLayout()->_setActiveMenu('avatax/landedcost/avatax_hscode');
 
                 $this->_addContent(
                     $this->getLayout()->createBlock('avatax/adminhtml_landedcost_hsCode_edit_tab_countries_edit')
@@ -453,6 +467,24 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
                 'active_tab' => 'grid_section'
             )
         );
+    }
+
+    /**
+     * HS Codes action
+     *
+     * @return $this
+     */
+    public function unitsofweightAction()
+    {
+        $this->_setTitle($this->__('AvaTax'))
+             ->_setTitle($this->__('Landed Cost'))
+             ->_setTitle($this->__('AvaTax HS Codes'));
+
+        $this->loadLayout()
+             ->_setActiveMenu('avatax/landedcost/avatax_hscode')
+             ->renderLayout();
+
+        return $this;
     }
 
     /**
