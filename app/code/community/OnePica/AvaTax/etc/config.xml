@@ -40,6 +40,12 @@
                     <queue>
                         <table>op_avatax_queue</table>
                     </queue>
+                    <hs_code>
+                        <table>op_avatax_hs_code</table>
+                    </hs_code>
+                    <hs_code_country>
+                        <table>op_avatax_hs_code_country</table>
+                    </hs_code_country>
                     <unit_of_weight>
                         <table>op_avatax_unit_of_weight</table>
                     </unit_of_weight>
@@ -428,6 +434,11 @@
                                 <action>adminhtml/avaTax_grid/log</action>
                                 <resource>avatax</resource>
                             </avatax_log>
+                            <avatax_hscode translate="title" module="avatax">
+                                <title>AvaTax HS Codes</title>
+                                <action>adminhtml/avaTax_grid/hscode</action>
+                                <resource>avatax</resource>
+                            </avatax_hscode>
                         </children>
                     </tax>
                 </children>
