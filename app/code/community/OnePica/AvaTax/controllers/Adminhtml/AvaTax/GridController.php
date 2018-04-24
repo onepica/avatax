@@ -61,7 +61,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
         $this->_setTitle($this->__('Sales'))->_setTitle($this->__('Tax'))->_setTitle($this->__('AvaTax Log'));
 
         $this->loadLayout()
-             ->_setActiveMenu('sales/tax/avatax_log')
+             ->_setActiveMenu('avatax/avatax_log')
              ->renderLayout();
 
         return $this;
@@ -89,7 +89,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
         Mage::register('current_event', $model);
 
         $this->loadLayout()
-             ->_setActiveMenu('sales/tax/avatax_log')
+             ->_setActiveMenu('avatax/avatax_log')
              ->renderLayout();
 
         return $this;
@@ -105,7 +105,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
         $this->_setTitle($this->__('Sales'))->_setTitle($this->__('Tax'))->_setTitle($this->__('AvaTax Queue'));
 
         $this->loadLayout()
-             ->_setActiveMenu('sales/tax/avatax_queue')
+             ->_setActiveMenu('avatax/avatax_queue')
              ->renderLayout();
 
         return $this;
@@ -137,7 +137,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
              ->_setTitle($this->__('AvaTax HS Codes'));
 
         $this->loadLayout()
-             ->_setActiveMenu('sales/tax/avatax_hscode')
+             ->_setActiveMenu('avatax/landedcost/avatax_hscode')
              ->renderLayout();
 
         return $this;
@@ -152,7 +152,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
             try {
                 Mage::register('hsCode_data', $hsCodeModel);
 
-                $this->loadLayout()->_setActiveMenu('sales/tax/avatax_hscode');
+                $this->loadLayout()->_setActiveMenu('avatax/landedcost/avatax_hscode');
 
                 $this->_addContent($this->getLayout()->createBlock('avatax/adminhtml_landedcost_hsCode_edit'))
                      ->_addLeft($this->getLayout()->createBlock('avatax/adminhtml_landedcost_hsCode_edit_tabs'));
@@ -344,7 +344,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
             try {
                 Mage::register('hs_code_countries_data', $hsCodeCountryModel);
 
-                $this->loadLayout()->_setActiveMenu('sales/tax/avatax_hscode');
+                $this->loadLayout()->_setActiveMenu('avatax/landedcost/avatax_hscode');
 
                 $this->_addContent(
                     $this->getLayout()->createBlock('avatax/adminhtml_landedcost_hsCode_edit_tab_countries_edit')
