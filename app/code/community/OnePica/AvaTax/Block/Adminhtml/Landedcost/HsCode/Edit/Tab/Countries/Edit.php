@@ -48,10 +48,27 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_HsCode_Edit_Tab_Countries_Edit
     public function getHeaderText()
     {
         if (Mage::registry('hs_code_countries_data') && Mage::registry('hs_code_countries_data')->getId()) {
-            return $this->__("Edit Item '%s'", $this->escapeHtml(Mage::registry('hs_code_countries_data')->getHsFullCode()));
+            return $this->__(
+                "Edit Item '%s'", $this->escapeHtml(Mage::registry('hs_code_countries_data')->getHsFullCode())
+            );
         } else {
             return $this->__('Add Item');
         }
+    }
+
+    /**
+     * Get URL for back (reset) button
+     *
+     * @return string
+     */
+    public function getBackUrl()
+    {
+        return $this->getUrl(
+            '*/*/hscodeEdit', array(
+                'id'         => $this->getRequest()->getParam('hs_code_id'),
+                'active_tab' => 'grid_section'
+            )
+        );
     }
 
     /**

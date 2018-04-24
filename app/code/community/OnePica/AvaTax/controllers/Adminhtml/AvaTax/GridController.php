@@ -276,6 +276,14 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
         return $this;
     }
 
+    public function hscodecountriesGridAction()
+    {
+        $this->loadLayout();
+        $this->getResponse()->setBody(
+            $this->getLayout()->createBlock('avatax/adminhtml_landedcost_hsCode_edit_tab_countries_grid')->toHtml()
+        );
+    }
+
     /**
      * HS Codes for countries mass delete action
      *
