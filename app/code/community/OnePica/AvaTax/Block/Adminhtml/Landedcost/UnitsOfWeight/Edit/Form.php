@@ -42,20 +42,23 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfWeight_Edit_Form extends 
         $fieldset = $form->addFieldset('unit_of_weight_form', array('legend' => $this->__('Item information')));
 
         $fieldset->addField(
-            'avalara_code', 'text', array(
+            'avalara_code', 'select', array(
                 'name'     => 'avalara_code',
                 'label'    => $this->__('Avalara code'),
                 'class'    => 'required-entry',
                 'required' => true,
+                'values'   => Mage::getModel('avatax/adminhtml_system_config_source_unitOfWeightAvalara')
+                                  ->toOptionArray()
             )
         );
 
         $fieldset->addField(
-            'zend_code', 'text', array(
+            'zend_code', 'select', array(
                 'name'     => 'zend_code',
                 'label'    => $this->__('Zend code'),
                 'class'    => 'required-entry',
                 'required' => true,
+                'values'   => Mage::getModel('avatax/adminhtml_system_config_source_unitOfWeight')->toOptionArray()
             )
         );
 
