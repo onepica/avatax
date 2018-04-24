@@ -40,6 +40,16 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_HsCode_Edit extends Mage_Adminht
     }
 
     /**
+     * Get URL for back (reset) button
+     *
+     * @return string
+     */
+    public function getBackUrl()
+    {
+        return $this->getUrl('*/*/hscode');
+    }
+
+    /**
      * Get header text
      *
      * @return string

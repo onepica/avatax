@@ -33,7 +33,7 @@ $installer->run(
     "
 CREATE TABLE `" . $this->getTable('avatax_records/hs_code_country') . "` (
     `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-    `hs_id` int(10) unsigned DEFAULT NULL,
+    `hs_id` int(10) unsigned NOT NULL,
     `hs_full_code` varchar(10) UNIQUE NOT NULL,
     `country_codes` varchar(255),
     PRIMARY KEY (`id`),
