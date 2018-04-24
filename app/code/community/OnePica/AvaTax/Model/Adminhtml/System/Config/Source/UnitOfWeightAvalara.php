@@ -16,20 +16,28 @@
  */
 
 /**
- * UnitOfWeight collection model
+ * Unit Of Weight source config model
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Records_Mysql4_UnitOfWeight_Collection extends Mage_Core_Model_Mysql4_Collection_Abstract
+class OnePica_AvaTax_Model_Adminhtml_System_Config_Source_UnitOfWeightAvalara
 {
+    /** kilograms */
+    const KG = 'kg';
+
+    /** grams */
+    const G = 'g';
+
     /**
-     * Construct
+     * @return array
      */
-    protected function _construct()
+    public function toOptionArray()
     {
-        parent::_construct();
-        $this->_init('avatax_records/unitOfWeight');
+        return array(
+            array('value' => self::KG, 'label' => Mage::helper('avatax')->__(self::KG)),
+            array('value' => self::G, 'label' => Mage::helper('avatax')->__(self::G))
+        );
     }
 }
