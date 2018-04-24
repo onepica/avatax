@@ -486,7 +486,48 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
 
         return $this;
     }
-    
+
+    /**
+     * Units Of Weight new action
+     */
+    public function unitsofweightNewAction()
+    {
+        $this->_forward('unitsofweightEdit');
+    }
+
+    /**
+     * Units Of Weight edit action
+     */
+    public function unitsofweightEditAction()
+    {
+        $this->_setTitle($this->__('AvaTax'))
+             ->_setTitle($this->__('Landed Cost'))
+             ->_setTitle($this->__('AvaTax Units Of Weight'));
+
+        $unitofweightId = $this->getRequest()->getParam('id');
+        /** @var \OnePica_AvaTax_Model_Records_UnitOfWeight $unitofweightModel */
+        $unitofweightModel = Mage::getModel('avatax_records/unitOfWeight')->load($unitofweightId);
+
+        if ($unitofweightModel->getId() || $unitofweightId == 0) {
+            try {
+                Mage::register('unit_of_weight_data', $unitofweightModel);
+
+                $this->loadLayout()->_setActiveMenu('avatax/landedcost/avatax_unitsofweight');
+
+                $this->_addContent($this->getLayout()->createBlock('avatax/adminhtml_landedcost_unitsOfWeight_edit'));
+
+                $this->renderLayout();
+            } catch (Mage_Core_Exception $e) {
+                $this->_sessionAdminhtml->addError($e->getMessage());
+                $this->_redirect('*/*/unitsofweight');
+            }
+        } else {
+            $this->_sessionAdminhtml->addError($this->__('Item does not exist'));
+
+            $this->_redirect('*/*/unitsofweight');
+        }
+    }
+
     /**
      * Check if is allowed
      *
