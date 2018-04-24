@@ -22,7 +22,7 @@ $installer->run(
     "
 CREATE TABLE `" . $this->getTable('avatax_records/hs_code') . "` (
     `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-    `hs_code` varchar(10) DEFAULT NULL,
+    `hs_code` varchar(10) UNIQUE NOT NULL,
     PRIMARY KEY (`id`),
     KEY `IDX_OP_AVATAX_HS_CODE` (`hs_code`)
 ) ENGINE=InnoDB COMMENT='HS Codes (Used by OnePica AvaTax extension)';
@@ -34,7 +34,7 @@ $installer->run(
 CREATE TABLE `" . $this->getTable('avatax_records/hs_code_country') . "` (
     `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
     `hs_id` int(10) unsigned DEFAULT NULL,
-    `hs_full_code` varchar(10) DEFAULT NULL,
+    `hs_full_code` varchar(10) UNIQUE NOT NULL,
     `country_codes` varchar(255),
     PRIMARY KEY (`id`),
     KEY `FK_OP_AVATAX_HS_CODE_COUNTRY_HS_ID_AVATAX_HS_CODE_ID` (`hs_id`),

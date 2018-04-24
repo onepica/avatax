@@ -18,6 +18,25 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_HsCode_Edit extends Mage_Adminht
 
         $this->_updateButton('save', 'label', $this->__('Save HS code'));
         $this->_updateButton('delete', 'label', $this->__('Delete Item'));
+        $this->_addButton(
+            'save_and_edit_button',
+            array(
+                'label'   => Mage::helper('widget')->__('Save and Continue Edit'),
+                'class'   => 'save',
+                'onclick' => 'editForm.submit(\'' . $this->getSaveAndContinueUrl() . '\');'
+            ),
+            100
+        );
+    }
+
+    /**
+     * Return save and continue url for edit form
+     *
+     * @return string
+     */
+    public function getSaveAndContinueUrl()
+    {
+        return $this->getUrl('*/*/hscodeSave', array('_current' => true, 'back' => 'hscodeEdit'));
     }
 
     /**
@@ -28,7 +47,7 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_HsCode_Edit extends Mage_Adminht
     public function getHeaderText()
     {
         if (Mage::registry('hsCode_data') && Mage::registry('hsCode_data')->getId()) {
-            return $this->__("Edit Item '%s'", $this->escapeHtml(Mage::registry('hsCode_data')->getTitle()));
+            return $this->__("Edit Item '%s'", $this->escapeHtml(Mage::registry('hsCode_data')->getHsCode()));
         } else {
             return $this->__('Add Item');
         }

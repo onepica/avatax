@@ -433,11 +433,6 @@
                                 <action>adminhtml/avaTax_grid/hscode</action>
                                 <resource>avatax</resource>
                             </avatax_hscode>
-                            <avatax_hscountrycodes translate="title" module="avatax">
-                                <title>AvaTax HS Codes for Countries</title>
-                                <action>adminhtml/avaTax_grid/hscountrycodes</action>
-                                <resource>avatax</resource>
-                            </avatax_hscountrycodes>
                         </children>
                     </tax>
                 </children>

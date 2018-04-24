@@ -22,9 +22,19 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Block_Adminhtml_Landedcost_HsCode_Grid
+class OnePica_AvaTax_Block_Adminhtml_Landedcost_HsCode_Edit_Tab_Countries_Grid
     extends OnePica_AvaTax_Block_Adminhtml_Landedcost_Abstract_Grid
 {
+    /**
+     * Constructor: sets grid id and sort order
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->setId('landedcost_countries_grid');
+        $this->setUseAjax(true);
+    }
+
     /**
      * Adds columns to grid
      *
@@ -33,25 +43,33 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_HsCode_Grid
      */
     protected function _prepareColumns()
     {
-        return $this->_addColumns(
+        $this->_addColumns(
             array(
-                'id'          => 'number',
-                'hs_code'     => 'varchar',
-                'description' => 'varchar',
+                'id'            => 'number',
+                'hs_full_code'  => 'varchar',
+                'country_codes' => 'varchar'
             )
         );
+
+        return $this;
     }
 
     /**
      * Adds collection
      *
      * @return Mage_Adminhtml_Block_Widget_Grid
+     * @throws \Exception
      */
     protected function _prepareCollection()
     {
-        /** @var \OnePica_AvaTax_Model_Records_Mysql4_HsCode_Collection $collection */
-        $collection = Mage::getModel('avatax_records/hsCode')->getCollection();
-        $this->setCollection($collection);
+        /** @var \OnePica_AvaTax_Model_Records_Mysql4_HsCodeCountry_Collection $collection */
+        $collection = Mage::getModel('avatax_records/hsCodeCountry')->getCollection();
+        $hsCodeId = $this->getRequest()->getParam('id');
+
+        if ($hsCodeId) {
+            $collection->addFieldToFilter('hs_id', $hsCodeId);
+            $this->setCollection($collection);
+        }
 
         return parent::_prepareCollection();
     }
@@ -61,27 +79,37 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_HsCode_Grid
      *
      * @param OnePica_AvaTax_Model_Records_Log $row
      * @return string
+     * @throws \Exception
      */
     public function getRowUrl($row)
     {
-        return $this->getUrl('*/*/hscodeEdit', array('id' => $row->getId()));
+        return $this->getUrl(
+            '*/*/hscodecountriesEdit', array(
+                'id'         => $row->getId(),
+                'hs_code_id' => $this->getRequest()->getParam('id')
+            )
+        );
     }
 
     /**
      * Prepare mass actions
      *
-     * @return \OnePica_AvaTax_Block_Adminhtml_Landedcost_HsCode_Grid
+     * @return \OnePica_AvaTax_Block_Adminhtml_Landedcost_HsCode_Edit_Tab_Countries_Grid
      * @throws \Varien_Exception
      */
     protected function _prepareMassaction()
     {
         $this->setMassactionIdField('id');
-        $this->getMassactionBlock()->setFormFieldName('hscode');
+        $this->getMassactionBlock()->setFormFieldName('hscodecountries');
 
         $this->getMassactionBlock()->addItem(
             'delete', array(
                 'label'   => $this->__('Delete'),
-                'url'     => $this->getUrl('*/*/hscodeMassDelete'),
+                'url'     => $this->getUrl(
+                    '*/*/hscodecountriesMassDelete', array(
+                        'hscode_id' => $this->getRequest()->getParam('id'),
+                    )
+                ),
                 'confirm' => $this->__('Are you sure you want to delete selected records?')
             )
         );
