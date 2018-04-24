@@ -569,6 +569,37 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     }
 
     /**
+     * Units Of Weight delete action
+     */
+    public function unitsofweightDeleteAction()
+    {
+        $unitofweightId = $this->getRequest()->getParam('id');
+
+        if ($unitofweightId <= 0) {
+            $this->_sessionAdminhtml->addError($this->__('Unit of weight id is invalid'));
+            $this->_redirect('*/*/unitsofweight');
+        }
+
+        try {
+            /** @var \OnePica_AvaTax_Model_Records_UnitOfWeight $unitofweightModel */
+            $unitofweightModel = Mage::getModel('avatax_records/unitOfWeight')->load($unitofweightId);
+
+            $unitofweightModel->setId($unitofweightId)->delete();
+
+            $this->_sessionAdminhtml->addSuccess($this->__('Item was successfully deleted'));
+
+            $this->_redirect('*/*/unitsofweight');
+        } catch (Exception $e) {
+            $this->_sessionAdminhtml->addError($e->getMessage());
+            $this->_redirect(
+                '*/*/hscodecountriesEdit', array(
+                    'id' => $unitofweightId,
+                )
+            );
+        }
+    }
+
+    /**
      * Check if is allowed
      *
      * @return bool
