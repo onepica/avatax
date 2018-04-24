@@ -30,7 +30,7 @@ class OnePica_AvaTax_Model_Records_Mysql4_UnitOfWeight_Collection extends Mage_C
     protected function _construct()
     {
         parent::_construct();
-        $this->_init('avatax_records/unitofweight');
+        $this->_init('avatax_records/unitOfWeight');
     }
 
 }

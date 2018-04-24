@@ -44,7 +44,7 @@ class OnePica_AvaTax_Model_Records_UnitOfWeight extends Mage_Core_Model_Abstract
     protected function _construct()
     {
         parent::_construct();
-        $this->_init('avatax_records/unitofweight');
+        $this->_init('avatax_records/unitOfWeight');
     }
 
     /**
