@@ -197,8 +197,8 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
                 $hsCodeModel = Mage::getModel('avatax_records/hsCode');
 
                 $hsCodeModel->setId($this->getRequest()->getParam('id'))
-                            ->setHsCode($postData['hs_code'])
-                            ->setDescription($postData['description'])
+                            ->setHsCode((string)$this->getRequest()->getPost('hs_code'))
+                            ->setDescription((string)$this->getRequest()->getPost('description'))
                             ->save();
 
                 $this->_sessionAdminhtml->addSuccess($this->__('Item was successfully saved'));
@@ -436,18 +436,23 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
             try {
                 /** @var \OnePica_AvaTax_Model_Records_HsCodeCountry $hsCodeCountryModel */
                 $hsCodeCountryModel = Mage::getModel('avatax_records/hsCodeCountry');
-                $countryCodes = is_array($this->getRequest()->getPost('country_codes')) ? implode(
-                    ',', $this->getRequest()->getPost('country_codes')
-                ) : $this->getRequest()->getPost('country_codes');
+                $countryCodes = $this->_getCountryListAsString($this->getRequest()->getPost('country_codes'));
 
                 $hsCodeCountryModel->setId($hsCodeCountryId)
-                                   ->setHsId($hsCodeId)
-                                   ->setHsFullCode($this->getRequest()->getPost('hs_full_code'))
+                                   ->setHsId((int)$hsCodeId)
+                                   ->setHsFullCode((string)$this->getRequest()->getPost('hs_full_code'))
                                    ->setCountryCodes($countryCodes)
                                    ->save();
 
                 $this->_sessionAdminhtml->addSuccess($this->__('Item was successfully saved'));
                 $this->_sessionAdminhtml->setHsCodeCountriesData(false);
+
+                $this->_redirect(
+                    '*/*/hscodeEdit', array(
+                        'id'         => $hsCodeId,
+                        'active_tab' => 'grid_section'
+                    )
+                );
             } catch (Exception $e) {
                 $this->_sessionAdminhtml->addError($e->getMessage());
                 $this->_sessionAdminhtml->setHsCodeCountriesData($this->getRequest()->getPost());
@@ -460,13 +465,6 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
                 );
             }
         }
-
-        $this->_redirect(
-            '*/*/hscodeEdit', array(
-                'id'         => $hsCodeId,
-                'active_tab' => 'grid_section'
-            )
-        );
     }
 
     /**
@@ -525,6 +523,48 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
             $this->_sessionAdminhtml->addError($this->__('Item does not exist'));
 
             $this->_redirect('*/*/unitsofweight');
+        }
+    }
+
+    /**
+     * Units Of Weight save action
+     *
+     * @throws \Varien_Exception
+     */
+    public function unitsofweightSaveAction()
+    {
+        $unitofweightId = $this->getRequest()->getParam('id');
+
+        if ($this->getRequest()->getPost()) {
+            try {
+                /** @var \OnePica_AvaTax_Model_Records_UnitOfWeight $unitOfWeightModel */
+                $unitOfWeightModel = Mage::getModel('avatax_records/unitOfWeight');
+
+                $countryList = $this->_getCountryListAsString($this->getRequest()->getPost('country_list'));
+
+                $unitOfWeightModel->setId($unitofweightId);
+                $unitOfWeightModel->setAvalaraCode((string)$this->getRequest()->getPost('avalara_code'))
+                                  ->setZendCode((string)$this->getRequest()->getPost('zend_code'))
+                                  ->setDescription((string)$this->getRequest()->getPost('description'))
+                                  ->setCountryList($countryList)
+                                  ->save();
+
+                $this->_sessionAdminhtml->addSuccess($this->__('Item was successfully saved'));
+                $this->_sessionAdminhtml->setUnitOfWeightData(false);
+
+                if ($this->getRequest()->getParam('back')) {
+                    $this->_redirect(
+                        '*/*/' . $this->getRequest()->getParam('back'), array('id' => $unitOfWeightModel->getId())
+                    );
+                } else {
+                    $this->_redirect('*/*/unitsofweight');
+                }
+            } catch (Exception $e) {
+                $this->_sessionAdminhtml->addError($e->getMessage());
+                $this->_sessionAdminhtml->setUnitOfWeightData($this->getRequest()->getPost());
+
+                $this->_redirect('*/*/unitsofweightEdit', array('id' => $unitofweightId));
+            }
         }
     }
 
@@ -593,5 +633,14 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
         $this->_redirectReferer();
 
         return $this;
+    }
+
+    /**
+     * @param array $array
+     * @return string
+     */
+    protected function _getCountryListAsString($array)
+    {
+        return is_array($array) ? implode(',', array_filter($array)) : (string)$array;
     }
 }
