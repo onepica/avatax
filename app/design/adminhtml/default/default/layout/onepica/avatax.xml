@@ -56,14 +56,14 @@
         </reference>
     </adminhtml_sales_order_view>
 
-    <adminhtml_catalog_product_edit>
+    <!--<adminhtml_catalog_product_edit>
         <reference name="product_tabs">
             <action method="addTab">
                 <name>avatax</name>
                 <block>avatax/adminhtml_product_edit_tab_avatax</block>
             </action>
         </reference>
-    </adminhtml_catalog_product_edit>
+    </adminhtml_catalog_product_edit>-->
 
     <!-- Landed Cost feature -->
     <avatax_landed_cost_import_duties_add_order_total>

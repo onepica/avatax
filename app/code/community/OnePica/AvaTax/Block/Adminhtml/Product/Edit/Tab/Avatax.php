@@ -81,16 +81,6 @@ class OnePica_AvaTax_Block_Adminhtml_Product_Edit_Tab_Avatax
     }
 
     /**
-     * Internal constructor, that is called from real constructor
-     *
-     */
-    protected function _construct()
-    {
-        parent::_construct();
-        $this->setTemplate('onepica/avatax/order/view/tab/avatax.phtml');
-    }
-
-    /**
      * Return Tab label
      *
      * @return string
@@ -138,5 +128,15 @@ class OnePica_AvaTax_Block_Adminhtml_Product_Edit_Tab_Avatax
     public function getHeadText()
     {
         return $this->__('AvaTax');
+    }
+
+    public function getUnitOfWeightOption()
+    {
+        return Mage::getModel('avatax/adminhtml_system_config_source_unitofweight')->toOptionArray();
+    }
+
+    public function getFieldValue($field)
+    {
+        return $this->getProduct()->getData($field);
     }
 }

@@ -19,7 +19,7 @@
 $installer = Mage::getResourceModel('catalog/setup', 'catalog_setup');
 $installer->startSetup();
 
-$attributeCode = 'avatax_hts_code';
+$attributeCode = OnePica_AvaTax_Helper_LandedCost::AVATAX_PRODUCT_LANDED_COST_ATTR_HSCODE;
 
 /** @var $attribute Mage_Eav_Model_Entity_Attribute */
 $attribute = Mage::getModel('eav/entity_attribute')->loadByCode('catalog_product', $attributeCode);
@@ -29,7 +29,7 @@ if (!$attribute->getId()) {
         'type'             => 'varchar',
         'backend'          => '',
         'frontend'         => '',
-        'label'            => 'Avatax HTS Code',
+        'label'            => 'HS Code',
         'input'            => 'text',
         'class'            => '',
         'source'           => '',
@@ -45,9 +45,9 @@ if (!$attribute->getId()) {
         'unique'           => 0,
         'apply_to'         => 'simple,configurable,bundle',
         'is_configurable'  => 0,
-        'group'      => 'Prices',
-        'position'   => 200,
-        'sort_order' => 200,
+        'group'      => OnePica_AvaTax_Helper_LandedCost::AVATAX_PRODUCT_GROUP_LANDED_COST,
+        'position'   => 5,
+        'sort_order' => 5,
     ));
 }
 $installer->endSetup();
