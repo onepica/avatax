@@ -23,13 +23,25 @@
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
 class OnePica_AvaTax_Model_Adminhtml_System_Config_Source_UnitOfWeight
+    extends Mage_Eav_Model_Entity_Attribute_Source_Abstract
 {
+    /**
+     * Get all options
+     *
+     * @return array
+     */
+    public function getAllOptions()
+    {
+        return $this->toOptionArray();
+    }
+
     /**
      * @return array
      */
     public function toOptionArray()
     {
         return array(
+            array('value'=>null, ''),
             array('value'=>Zend_Measure_Weight::KILOGRAM, 'label'=>Mage::helper('adminhtml')->__(Zend_Measure_Weight::KILOGRAM)),
             array('value'=>Zend_Measure_Weight::GRAM, 'label'=>Mage::helper('adminhtml')->__(Zend_Measure_Weight::GRAM)),
             array('value'=>Zend_Measure_Weight::POUND, 'label'=>Mage::helper('adminhtml')->__(Zend_Measure_Weight::POUND)),
