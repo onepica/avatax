@@ -19,7 +19,7 @@
 <config>
     <modules>
         <OnePica_AvaTax>
-            <version>3.5.7.4</version>
+            <version>3.5.7.8</version>
         </OnePica_AvaTax>
     </modules>
     <global>
@@ -46,6 +46,12 @@
                     <hs_code_country>
                         <table>op_avatax_hs_code_country</table>
                     </hs_code_country>
+                    <unit_of_weight>
+                        <table>op_avatax_unit_of_weight</table>
+                    </unit_of_weight>
+                    <agreement>
+                        <table>op_avatax_agreement</table>
+                    </agreement>
                 </entities>
             </avatax_records_mysql4>
             <adminhtml>
