@@ -470,7 +470,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     }
 
     /**
-     * HS Codes action
+     * Units Of Weight grid action
      *
      * @return $this
      */
@@ -478,15 +478,15 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     {
         $this->_setTitle($this->__('AvaTax'))
              ->_setTitle($this->__('Landed Cost'))
-             ->_setTitle($this->__('AvaTax HS Codes'));
+             ->_setTitle($this->__('AvaTax Units Of Weight'));
 
         $this->loadLayout()
-             ->_setActiveMenu('avatax/landedcost/avatax_hscode')
+             ->_setActiveMenu('avatax/landedcost/avatax_unitsofweight')
              ->renderLayout();
 
         return $this;
     }
-
+    
     /**
      * Check if is allowed
      *

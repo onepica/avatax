@@ -41,12 +41,6 @@
         </reference>
     </adminhtml_avatax_grid_logview>
 
-    <adminhtml_avatax_grid_hscode>
-        <reference name="content">
-            <block type="avatax/adminhtml_landedcost_hsCode" name="avatax.hscode.grid" />
-        </reference>
-    </adminhtml_avatax_grid_hscode>
-
     <adminhtml_sales_order_view>
         <reference name="sales_order_tabs">
             <action method="addTab">
@@ -82,6 +76,18 @@
             <action method="addJs"><script>avatax/landedcost.js</script></action>
         </reference>
     </adminhtml_system_config_edit>
+
+    <adminhtml_avatax_grid_hscode>
+        <reference name="content">
+            <block type="avatax/adminhtml_landedcost_hsCode" name="avatax.hscode.grid" />
+        </reference>
+    </adminhtml_avatax_grid_hscode>
+
+    <adminhtml_avatax_grid_unitsofweight>
+        <reference name="content">
+            <block type="avatax/adminhtml_landedcost_unitsOfWeight" name="avatax.unitsofweight.grid" />
+        </reference>
+    </adminhtml_avatax_grid_unitsofweight>
     <!-- Landed Cost feature END -->
 
 </layout>
