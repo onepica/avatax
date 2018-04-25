@@ -16,7 +16,7 @@
  */
 
 /**
- * Avatax admin UnitsOfWeight grid
+ * Avatax admin Agreement grid
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
@@ -70,7 +70,7 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_Agreement_Grid
     /**
      * Get row url
      *
-     * @param \OnePica_AvaTax_Model_Records_UnitOfWeight $row
+     * @param \OnePica_AvaTax_Model_Records_Agreement $row
      * @return string
      */
     public function getRowUrl($row)

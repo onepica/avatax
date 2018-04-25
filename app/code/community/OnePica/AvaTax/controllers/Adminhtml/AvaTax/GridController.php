@@ -684,6 +684,47 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     }
 
     /**
+     * Agreements new action
+     */
+    public function agreementNewAction()
+    {
+        $this->_forward('agreementEdit');
+    }
+
+    /**
+     * Agreements edit action
+     */
+    public function agreementEditAction()
+    {
+        $this->_setTitle($this->__('AvaTax'))
+             ->_setTitle($this->__('Landed Cost'))
+             ->_setTitle($this->__('AvaTax Agreements'));
+
+        $agreementId = $this->getRequest()->getParam('id');
+        /** @var \OnePica_AvaTax_Model_Records_Agreement $agreementModel */
+        $agreementModel = Mage::getModel('avatax_records/agreement')->load($agreementId);
+
+        if ($agreementModel->getId() || $agreementId == 0) {
+            try {
+                Mage::register('agreement_data', $agreementModel);
+
+                $this->loadLayout()->_setActiveMenu('avatax/landedcost/avatax_agreement');
+
+                $this->_addContent($this->getLayout()->createBlock('avatax/adminhtml_landedcost_agreement_edit'));
+
+                $this->renderLayout();
+            } catch (Mage_Core_Exception $e) {
+                $this->_sessionAdminhtml->addError($e->getMessage());
+                $this->_redirect('*/*/agreement');
+            }
+        } else {
+            $this->_sessionAdminhtml->addError($this->__('Item does not exist'));
+
+            $this->_redirect('*/*/agreement');
+        }
+    }
+
+    /**
      * Check if is allowed
      *
      * @return bool
