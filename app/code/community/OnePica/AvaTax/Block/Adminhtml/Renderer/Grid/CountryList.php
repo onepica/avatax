@@ -16,20 +16,19 @@
  */
 
 /**
- * UnitOfWeight collection model
- *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@onepica.com>
+ * Class OnePica_AvaTax_Block_Adminhtml_Renderer_Grid_CountryList
  */
-class OnePica_AvaTax_Model_Records_Mysql4_UnitOfWeight_Collection extends Mage_Core_Model_Mysql4_Collection_Abstract
+class  OnePica_AvaTax_Block_Adminhtml_Renderer_Grid_CountryList
+    extends Mage_Adminhtml_Block_Widget_Grid_Column_Renderer_Abstract
 {
-    /**
-     * Construct
-     */
-    protected function _construct()
+    public function render(Varien_Object $row)
     {
-        parent::_construct();
-        $this->_init('avatax_records/unitOfWeight');
+        $value = $row->getData($this->getColumn()->getIndex());
+
+        if (mb_strlen($value) > 150) {
+            $value = mb_substr($value, 0, 147) . '...';
+        }
+
+        return $value;
     }
 }

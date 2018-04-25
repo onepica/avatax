@@ -23,7 +23,7 @@ $table = $this->getTable('avatax_records/unit_of_weight');
 if ($installer->getConnection()->isTableExists($table)) {
 
     /* @var OnePica_AvaTax_Model_Records_Mysql4_UnitOfWeight_Collection $collection */
-    $collection = Mage::getModel('avatax_records/unitofweight')->getCollection();
+    $collection = Mage::getModel('avatax_records/unitOfWeight')->getCollection();
     $collection->load();
 
     if ($collection->count() == 0) {
@@ -39,7 +39,7 @@ if ($installer->getConnection()->isTableExists($table)) {
         // add Zend_Measure_Weight::KILOGRAM
         {
             /** @var $unit OnePica_AvaTax_Model_Records_UnitOfWeight */
-            $unit = Mage::getModel('avatax_records/unitofweight');
+            $unit = Mage::getModel('avatax_records/unitOfWeight');
             $unit->setStoreId($storeDefault->getId());
             $unit->setAvalaraCode('kg');
             $unit->setZendCode(Zend_Measure_Weight::KILOGRAM);
@@ -52,7 +52,7 @@ if ($installer->getConnection()->isTableExists($table)) {
         // add Zend_Measure_Weight::GRAM
         {
             /** @var $unit OnePica_AvaTax_Model_Records_UnitOfWeight */
-            $unit = Mage::getModel('avatax_records/unitofweight');
+            $unit = Mage::getModel('avatax_records/unitOfWeight');
             $unit->setStoreId($storeDefault->getId());
             $unit->setAvalaraCode('g');
             $unit->setZendCode(Zend_Measure_Weight::GRAM);

@@ -16,25 +16,15 @@
  */
 
 /**
- * Avatax admin HS code grid
+ * Avatax admin UnitsOfWeight grid
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Block_Adminhtml_Landedcost_HsCode_Edit_Tab_Countries_Grid
+class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfWeight_Grid
     extends OnePica_AvaTax_Block_Adminhtml_Landedcost_Abstract_Grid
 {
-    /**
-     * Constructor: sets grid id and sort order
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->setId('landedcost_countries_grid');
-        $this->setUseAjax(true);
-    }
-
     /**
      * Adds columns to grid
      *
@@ -45,8 +35,10 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_HsCode_Edit_Tab_Countries_Grid
     {
         $this->_addColumns(
             array(
-                'id'            => 'number',
-                'hs_full_code'  => 'varchar',
+                'id'           => 'number',
+                'avalara_code' => 'varchar',
+                'zend_code'    => 'varchar',
+                'description'  => 'varchar',
             )
         );
 
@@ -54,7 +46,7 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_HsCode_Edit_Tab_Countries_Grid
             'Country List',
             array(
                 'header'   => $this->__('Country List'),
-                'index'    => 'country_codes',
+                'index'    => 'country_list',
                 'renderer' => 'OnePica_AvaTax_Block_Adminhtml_Renderer_Grid_CountryList'
             )
         );
@@ -66,18 +58,12 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_HsCode_Edit_Tab_Countries_Grid
      * Adds collection
      *
      * @return Mage_Adminhtml_Block_Widget_Grid
-     * @throws \Exception
      */
     protected function _prepareCollection()
     {
-        /** @var \OnePica_AvaTax_Model_Records_Mysql4_HsCodeCountry_Collection $collection */
-        $collection = Mage::getModel('avatax_records/hsCodeCountry')->getCollection();
-        $hsCodeId = $this->getRequest()->getParam('id');
-
-        if ($hsCodeId) {
-            $collection->addFieldToFilter('hs_id', $hsCodeId);
-            $this->setCollection($collection);
-        }
+        /** @var \OnePica_AvaTax_Model_Records_Mysql4_UnitOfWeight_Collection $collection */
+        $collection = Mage::getModel('avatax_records/unitOfWeight')->getCollection();
+        $this->setCollection($collection);
 
         return parent::_prepareCollection();
     }
@@ -85,53 +71,33 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_HsCode_Edit_Tab_Countries_Grid
     /**
      * Get row url
      *
-     * @param OnePica_AvaTax_Model_Records_Log $row
+     * @param \OnePica_AvaTax_Model_Records_UnitOfWeight $row
      * @return string
-     * @throws \Exception
      */
     public function getRowUrl($row)
     {
-        return $this->getUrl(
-            '*/*/hscodecountriesEdit', array(
-                'id'         => $row->getId(),
-                'hs_code_id' => $this->getRequest()->getParam('id')
-            )
-        );
+        return $this->getUrl('*/*/unitsofweightEdit', array('id' => $row->getId()));
     }
 
     /**
      * Prepare mass actions
      *
-     * @return \OnePica_AvaTax_Block_Adminhtml_Landedcost_HsCode_Edit_Tab_Countries_Grid
+     * @return \OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfWeight_Grid
      * @throws \Varien_Exception
      */
     protected function _prepareMassaction()
     {
         $this->setMassactionIdField('id');
-        $this->getMassactionBlock()->setFormFieldName('hscodecountries');
+        $this->getMassactionBlock()->setFormFieldName('unitsofweight');
 
         $this->getMassactionBlock()->addItem(
             'delete', array(
                 'label'   => $this->__('Delete'),
-                'url'     => $this->getUrl(
-                    '*/*/hscodecountriesMassDelete', array(
-                        'hscode_id' => $this->getRequest()->getParam('id'),
-                    )
-                ),
+                'url'     => $this->getUrl('*/*/unitsofweightMassDelete'),
                 'confirm' => $this->__('Are you sure you want to delete selected records?')
             )
         );
 
         return $this;
-    }
-
-    public function getGridUrl()
-    {
-        return $this->getUrl(
-            '*/*/hscodecountriesGrid', array(
-                'id'       => $this->getRequest()->getParam('id'),
-                '_current' => true
-            )
-        );
     }
 }
