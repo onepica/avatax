@@ -751,6 +751,76 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     }
 
     /**
+     * Agreement delete action
+     */
+    public function agreementDeleteAction()
+    {
+        $agreementId = $this->getRequest()->getParam('id');
+
+        if ($agreementId <= 0) {
+            $this->_sessionAdminhtml->addError($this->__('Agreement id is invalid'));
+            $this->_redirect('*/*/agreement');
+        }
+
+        try {
+            /** @var \OnePica_AvaTax_Model_Records_Agreement $agreementModel */
+            $agreementModel = Mage::getModel('avatax_records/agreement')->load($agreementId);
+
+            $agreementModel->setId($agreementId)->delete();
+
+            $this->_sessionAdminhtml->addSuccess($this->__('Item was successfully deleted'));
+
+            $this->_redirect('*/*/agreement');
+        } catch (Exception $e) {
+            $this->_sessionAdminhtml->addError($e->getMessage());
+            $this->_redirect(
+                '*/*/agreementEdit', array(
+                    'id' => $agreementId,
+                )
+            );
+        }
+    }
+
+    /**
+     * Agreement mass delete action
+     *
+     * @return $this
+     */
+    public function agreementMassDeleteAction()
+    {
+        $agreementIds = $this->getRequest()->getParam('agreements');
+
+        if (!is_array($agreementIds)) {
+            $this->_sessionAdminhtml->addError(Mage::helper('adminhtml')->__('Please select  Agreement(s).'));
+        } else {
+            try {
+                /** @var \Mage_Core_Model_Resource_Transaction $transaction */
+                $transaction = Mage::getModel('core/resource_transaction');
+
+                /** @var \OnePica_AvaTax_Model_Records_Agreement $agreementModel */
+                $agreementModel = Mage::getModel('avatax_records/agreement');
+
+                foreach ($agreementIds as $agreementId) {
+                    $agreement = clone $agreementModel;
+                    $transaction->addObject($agreement->load($agreementId));
+                }
+
+                $transaction->delete();
+
+                $this->_sessionAdminhtml->addSuccess(
+                    Mage::helper('adminhtml')->__('Total of %d record(s) were deleted.', count($agreementIds))
+                );
+            } catch (Exception $e) {
+                $this->_sessionAdminhtml->addError($e->getMessage());
+            }
+        }
+
+        $this->_redirect('*/*/agreement');
+
+        return $this;
+    }
+
+    /**
      * Check if is allowed
      *
      * @return bool
