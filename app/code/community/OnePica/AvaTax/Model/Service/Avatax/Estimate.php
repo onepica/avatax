@@ -590,9 +590,10 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
      * Makes a Line object from a product item object
      *
      * @param Varien_Object|Mage_Sales_Model_Quote_Item $item
+     * @param Mage_Sales_Model_Quote_Address $address
      * @return int|bool
      */
-    protected function _newLine($item)
+    protected function _newLine($item, $address)
     {
         if (!$item->getId()) {
             $this->setCanSendRequest(false);
@@ -647,7 +648,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
             $line->setRef2($ref2Value);
         }
 
-        $this->_addLandedCostParamsToLine($line, $item);
+        $this->_addLandedCostParamsToLine($line, $product, $address);
 
         $this->_lines[$lineNumber] = $line;
         $this->_lineToLineId[$lineNumber] = $item->getId();
