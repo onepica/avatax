@@ -208,13 +208,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
             $this->_sessionAdminhtml->addSuccess($this->__('Item was successfully saved'));
             $this->_sessionAdminhtml->setHsCodeData(false);
 
-            if ($this->getRequest()->getParam('back')) {
-                $this->_redirect(
-                    '*/*/' . $this->getRequest()->getParam('back'), array('id' => $hsCodeModel->getId())
-                );
-            } else {
-                $this->_redirect('*/*/hscode');
-            }
+            $this->_redirectAfterSaveModel($hsCodeModel, '*/*/hscode');
         } catch (Exception $e) {
             $this->_sessionAdminhtml->addError($e->getMessage());
             $this->_sessionAdminhtml->setHsCodeData($postData);
@@ -579,13 +573,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
             $this->_sessionAdminhtml->addSuccess($this->__('Item was successfully saved'));
             $this->_sessionAdminhtml->setUnitOfWeightData(false);
 
-            if ($this->getRequest()->getParam('back')) {
-                $this->_redirect(
-                    '*/*/' . $this->getRequest()->getParam('back'), array('id' => $unitOfWeightModel->getId())
-                );
-            } else {
-                $this->_redirect('*/*/unitsofweight');
-            }
+            $this->_redirectAfterSaveModel($unitOfWeightModel, '*/*/unitsofweight');
         } catch (Exception $e) {
             $this->_sessionAdminhtml->addError($e->getMessage());
             $this->_sessionAdminhtml->setUnitOfWeightData($this->getRequest()->getPost());
@@ -725,6 +713,44 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     }
 
     /**
+     * Agreements save action
+     *
+     * @throws \Varien_Exception
+     */
+    public function agreementSaveAction()
+    {
+        $agreementId = $this->getRequest()->getParam('id');
+
+        if (!$this->getRequest()->getPost()) {
+            $this->_sessionAdminhtml->addError($this->__('Post data is empty'));
+            $this->_redirect('*/*/agreementEdit', array('id' => $agreementId));
+        }
+
+        try {
+            /** @var \OnePica_AvaTax_Model_Records_Agreement $agreementModel */
+            $agreementModel = Mage::getModel('avatax_records/agreement');
+
+            $countryList = $this->_getCountryListAsString($this->getRequest()->getPost('country_list'));
+
+            $agreementModel->setId($agreementId);
+            $agreementModel->setAvalaraAgreementCode((string)$this->getRequest()->getPost('avalara_agreement_code'))
+                           ->setDescription((string)$this->getRequest()->getPost('description'))
+                           ->setCountryList($countryList)
+                           ->save();
+
+            $this->_sessionAdminhtml->addSuccess($this->__('Item was successfully saved'));
+            $this->_sessionAdminhtml->setUnitOfWeightData(false);
+
+            $this->_redirectAfterSaveModel($agreementModel, '*/*/agreement');
+        } catch (Exception $e) {
+            $this->_sessionAdminhtml->addError($e->getMessage());
+            $this->_sessionAdminhtml->setUnitOfWeightData($this->getRequest()->getPost());
+
+            $this->_redirect('*/*/agreementEdit', array('id' => $agreementId));
+        }
+    }
+
+    /**
      * Check if is allowed
      *
      * @return bool
@@ -798,5 +824,23 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     protected function _getCountryListAsString($array)
     {
         return is_array($array) ? implode(',', array_filter($array)) : (string)$array;
+    }
+
+    /**
+     * @param Mage_Core_Model_Abstract $model
+     * @param string                   $action
+     */
+    protected function _redirectAfterSaveModel($model, $action)
+    {
+        if ($this->getRequest()->getParam('back')) {
+            $this->_redirect(
+                '*/*/' . $this->getRequest()->getParam('back'),
+                array(
+                    'id' => $model->getId()
+                )
+            );
+        } else {
+            $this->_redirect($action);
+        }
     }
 }
