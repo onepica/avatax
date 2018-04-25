@@ -577,7 +577,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
             $this->_initTaxClassCollection($address);
             foreach ($items as $item) {
                 /** @var Mage_Sales_Model_Quote_Item $item */
-                $this->_newLine($item);
+                $this->_newLine($item, $address);
             }
 
             $this->_request->setLines($this->_lines);
