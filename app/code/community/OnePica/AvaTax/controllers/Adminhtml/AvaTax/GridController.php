@@ -208,13 +208,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
             $this->_sessionAdminhtml->addSuccess($this->__('Item was successfully saved'));
             $this->_sessionAdminhtml->setHsCodeData(false);
 
-            if ($this->getRequest()->getParam('back')) {
-                $this->_redirect(
-                    '*/*/' . $this->getRequest()->getParam('back'), array('id' => $hsCodeModel->getId())
-                );
-            } else {
-                $this->_redirect('*/*/hscode');
-            }
+            $this->_redirectAfterSaveModel($hsCodeModel, '*/*/hscode');
         } catch (Exception $e) {
             $this->_sessionAdminhtml->addError($e->getMessage());
             $this->_sessionAdminhtml->setHsCodeData($postData);
@@ -579,13 +573,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
             $this->_sessionAdminhtml->addSuccess($this->__('Item was successfully saved'));
             $this->_sessionAdminhtml->setUnitOfWeightData(false);
 
-            if ($this->getRequest()->getParam('back')) {
-                $this->_redirect(
-                    '*/*/' . $this->getRequest()->getParam('back'), array('id' => $unitOfWeightModel->getId())
-                );
-            } else {
-                $this->_redirect('*/*/unitsofweight');
-            }
+            $this->_redirectAfterSaveModel($unitOfWeightModel, '*/*/unitsofweight');
         } catch (Exception $e) {
             $this->_sessionAdminhtml->addError($e->getMessage());
             $this->_sessionAdminhtml->setUnitOfWeightData($this->getRequest()->getPost());
@@ -666,6 +654,173 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     }
 
     /**
+     * Agreements grid action
+     *
+     * @return $this
+     */
+    public function agreementAction()
+    {
+        $this->_setTitle($this->__('AvaTax'))
+             ->_setTitle($this->__('Landed Cost'))
+             ->_setTitle($this->__('AvaTax Agreements'));
+
+        $this->loadLayout()
+             ->_setActiveMenu('avatax/landedcost/avatax_agreement')
+             ->renderLayout();
+
+        return $this;
+    }
+
+    /**
+     * Agreements new action
+     */
+    public function agreementNewAction()
+    {
+        $this->_forward('agreementEdit');
+    }
+
+    /**
+     * Agreements edit action
+     */
+    public function agreementEditAction()
+    {
+        $this->_setTitle($this->__('AvaTax'))
+             ->_setTitle($this->__('Landed Cost'))
+             ->_setTitle($this->__('AvaTax Agreements'));
+
+        $agreementId = $this->getRequest()->getParam('id');
+        /** @var \OnePica_AvaTax_Model_Records_Agreement $agreementModel */
+        $agreementModel = Mage::getModel('avatax_records/agreement')->load($agreementId);
+
+        if ($agreementModel->getId() || $agreementId == 0) {
+            try {
+                Mage::register('agreement_data', $agreementModel);
+
+                $this->loadLayout()->_setActiveMenu('avatax/landedcost/avatax_agreement');
+
+                $this->_addContent($this->getLayout()->createBlock('avatax/adminhtml_landedcost_agreement_edit'));
+
+                $this->renderLayout();
+            } catch (Mage_Core_Exception $e) {
+                $this->_sessionAdminhtml->addError($e->getMessage());
+                $this->_redirect('*/*/agreement');
+            }
+        } else {
+            $this->_sessionAdminhtml->addError($this->__('Item does not exist'));
+
+            $this->_redirect('*/*/agreement');
+        }
+    }
+
+    /**
+     * Agreements save action
+     *
+     * @throws \Varien_Exception
+     */
+    public function agreementSaveAction()
+    {
+        $agreementId = $this->getRequest()->getParam('id');
+
+        if (!$this->getRequest()->getPost()) {
+            $this->_sessionAdminhtml->addError($this->__('Post data is empty'));
+            $this->_redirect('*/*/agreementEdit', array('id' => $agreementId));
+        }
+
+        try {
+            /** @var \OnePica_AvaTax_Model_Records_Agreement $agreementModel */
+            $agreementModel = Mage::getModel('avatax_records/agreement');
+
+            $countryList = $this->_getCountryListAsString($this->getRequest()->getPost('country_list'));
+
+            $agreementModel->setId($agreementId);
+            $agreementModel->setAvalaraAgreementCode((string)$this->getRequest()->getPost('avalara_agreement_code'))
+                           ->setDescription((string)$this->getRequest()->getPost('description'))
+                           ->setCountryList($countryList)
+                           ->save();
+
+            $this->_sessionAdminhtml->addSuccess($this->__('Item was successfully saved'));
+            $this->_sessionAdminhtml->setAgreementData(false);
+
+            $this->_redirectAfterSaveModel($agreementModel, '*/*/agreement');
+        } catch (Exception $e) {
+            $this->_sessionAdminhtml->addError($e->getMessage());
+            $this->_sessionAdminhtml->setAgreementData($this->getRequest()->getPost());
+
+            $this->_redirect('*/*/agreementEdit', array('id' => $agreementId));
+        }
+    }
+
+    /**
+     * Agreement delete action
+     */
+    public function agreementDeleteAction()
+    {
+        $agreementId = $this->getRequest()->getParam('id');
+
+        if ($agreementId <= 0) {
+            $this->_sessionAdminhtml->addError($this->__('Agreement id is invalid'));
+            $this->_redirect('*/*/agreement');
+        }
+
+        try {
+            /** @var \OnePica_AvaTax_Model_Records_Agreement $agreementModel */
+            $agreementModel = Mage::getModel('avatax_records/agreement')->load($agreementId);
+
+            $agreementModel->setId($agreementId)->delete();
+
+            $this->_sessionAdminhtml->addSuccess($this->__('Item was successfully deleted'));
+
+            $this->_redirect('*/*/agreement');
+        } catch (Exception $e) {
+            $this->_sessionAdminhtml->addError($e->getMessage());
+            $this->_redirect(
+                '*/*/agreementEdit', array(
+                    'id' => $agreementId,
+                )
+            );
+        }
+    }
+
+    /**
+     * Agreement mass delete action
+     *
+     * @return $this
+     */
+    public function agreementMassDeleteAction()
+    {
+        $agreementIds = $this->getRequest()->getParam('agreements');
+
+        if (!is_array($agreementIds)) {
+            $this->_sessionAdminhtml->addError(Mage::helper('adminhtml')->__('Please select  Agreement(s).'));
+        } else {
+            try {
+                /** @var \Mage_Core_Model_Resource_Transaction $transaction */
+                $transaction = Mage::getModel('core/resource_transaction');
+
+                /** @var \OnePica_AvaTax_Model_Records_Agreement $agreementModel */
+                $agreementModel = Mage::getModel('avatax_records/agreement');
+
+                foreach ($agreementIds as $agreementId) {
+                    $agreement = clone $agreementModel;
+                    $transaction->addObject($agreement->load($agreementId));
+                }
+
+                $transaction->delete();
+
+                $this->_sessionAdminhtml->addSuccess(
+                    Mage::helper('adminhtml')->__('Total of %d record(s) were deleted.', count($agreementIds))
+                );
+            } catch (Exception $e) {
+                $this->_sessionAdminhtml->addError($e->getMessage());
+            }
+        }
+
+        $this->_redirect('*/*/agreement');
+
+        return $this;
+    }
+
+    /**
      * Check if is allowed
      *
      * @return bool
@@ -739,5 +894,23 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     protected function _getCountryListAsString($array)
     {
         return is_array($array) ? implode(',', array_filter($array)) : (string)$array;
+    }
+
+    /**
+     * @param Mage_Core_Model_Abstract $model
+     * @param string                   $action
+     */
+    protected function _redirectAfterSaveModel($model, $action)
+    {
+        if ($this->getRequest()->getParam('back')) {
+            $this->_redirect(
+                '*/*/' . $this->getRequest()->getParam('back'),
+                array(
+                    'id' => $model->getId()
+                )
+            );
+        } else {
+            $this->_redirect($action);
+        }
     }
 }
