@@ -41,4 +41,20 @@ class OnePica_AvaTax_Model_Records_HsCode extends Mage_Core_Model_Abstract
         parent::_construct();
         $this->_init('avatax_records/hsCode');
     }
+
+    /**
+     * Get HS Code for particular country code
+     *
+     * @param $countryCode
+     * @return Varien_Object
+     */
+    public function getCodeForCountry($countryCode)
+    {
+        /* @var OnePica_AvaTax_Model_Records_Mysql4_HsCodeCountry_Collection $collection */
+        $collection = Mage::getModel('avatax_records/hsCodeCountry')->getCollection();
+        $collection->addFilter('hs_id', $this->getId());
+        $collection->getSelect()->where('country_codes REGEXP ?', $countryCode);
+
+        return $collection->getFirstItem();
+    }
 }

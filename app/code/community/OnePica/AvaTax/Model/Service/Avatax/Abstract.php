@@ -286,24 +286,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
     protected function _addGeneralLandedCostInfo($address)
     {
         if ($this->getLandedCostMode()) {
-            /** @var OnePica_AvaTax_Helper_Landedcost_Shipping $shippingHelper */
-            $shippingHelper = Mage::helper('avatax/landedcost_shipping');
-
-            $incoterms = new ParameterBagItem();
-            $incoterms->setName('AvaTax.LandedCost.Incoterms');
-            $incoterms->setValue($this->getLandedCostMode());
-
-            $shippingMode = new ParameterBagItem();
-            $shippingMode->setName('AvaTax.LandedCost.ShippingMode');
-            $shippingMode->setValue($shippingHelper->getShippingMode($address));
-
-            $express = new ParameterBagItem();
-            $express->setName('AvaTax.LandedCost.Express');
-            $express->setValue('true');
-
-            $bagItemsParams = array($incoterms, $shippingMode, $express);
-            $this->_request->setParameterBagItems($bagItemsParams);
-
+            $this->_request->setIsSellerImporterOfRecord($this->getLandedCostMode() == 'DDP');
         }
         return $this;
     }
@@ -312,21 +295,15 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
      * Add Landed Cost Params To Line
      *
      * @param Line $line
-     * @param Varien_Object|Mage_Sales_Model_Quote_Item $item
+     * @param Mage_Catalog_Model_Product $product
+     * @param Mage_Sales_Model_Quote_Address $address
      * @return $this
      */
-    protected function _addLandedCostParamsToLine($line, $item)
+    protected function _addLandedCostParamsToLine($line, $product, $address)
     {
         if ($this->getLandedCostMode()) {
-            $htsCodeValue = $this->_getLandedCostHelper()->getProductHTSCode($item->getProductId());
-            $htsCode = new ParameterBagItem();
-            $htsCode->setName('AvaTax.LandedCost.HTSCode');
-            $htsCode->setValue($htsCodeValue);
-
-            $bagItemsParams = array($htsCode);
-            $line->setParameterBagItems($bagItemsParams);
-
-            $line->setHSCode($htsCodeValue);
+            $hsCodeValue = $this->_getLandedCostHelper()->getProductHTSCode($product, $address->getCountryId());
+            $line->setHSCode($hsCodeValue);
         }
 
         return $this;

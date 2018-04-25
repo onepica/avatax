@@ -108,17 +108,23 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
     /**
      * Get Product HTS Code
      *
-     * @param int $productId
+     * @param int|Mage_Catalog_Model_Product $product
+     * @param string $countryCode
      * @return string
      *
-     * @todo Should be refactored. Collection of HTS code should be initialized before request building
      * example taxClassCollection
      */
-    public function getProductHTSCode($productId)
+    public function getProductHTSCode($product, $countryCode)
     {
-        $product = Mage::getModel('catalog/product')->load($productId);
-        $htsCode = $product->getData('avatax_hts_code');
+        $product = is_int($product) ? Mage::getModel('catalog/product')->load($product) : $product;
+        $hsCode = $product->getData(self::AVATAX_PRODUCT_LANDED_COST_ATTR_HSCODE);
 
-        return $htsCode;
+        /* @var OnePica_AvaTax_Model_Records_HsCode $hsCode */
+        $model = Mage::getModel('avatax_records/hsCode')->load($hsCode,'hs_code');
+
+        /* @var OnePica_AvaTax_Model_Records_HsCodeCountry $code */
+        $code = $model->getCodeForCountry($countryCode);
+
+        return $code->getId() > 0 ? $code->getHsFullCode() : null;
     }
 }
