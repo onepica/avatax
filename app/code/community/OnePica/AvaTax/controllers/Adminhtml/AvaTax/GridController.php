@@ -666,6 +666,24 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     }
 
     /**
+     * Agreements grid action
+     *
+     * @return $this
+     */
+    public function agreementAction()
+    {
+        $this->_setTitle($this->__('AvaTax'))
+             ->_setTitle($this->__('Landed Cost'))
+             ->_setTitle($this->__('AvaTax Agreements'));
+
+        $this->loadLayout()
+             ->_setActiveMenu('avatax/landedcost/avatax_agreement')
+             ->renderLayout();
+
+        return $this;
+    }
+
+    /**
      * Check if is allowed
      *
      * @return bool
