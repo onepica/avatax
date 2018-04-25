@@ -739,12 +739,12 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
                            ->save();
 
             $this->_sessionAdminhtml->addSuccess($this->__('Item was successfully saved'));
-            $this->_sessionAdminhtml->setUnitOfWeightData(false);
+            $this->_sessionAdminhtml->setAgreementData(false);
 
             $this->_redirectAfterSaveModel($agreementModel, '*/*/agreement');
         } catch (Exception $e) {
             $this->_sessionAdminhtml->addError($e->getMessage());
-            $this->_sessionAdminhtml->setUnitOfWeightData($this->getRequest()->getPost());
+            $this->_sessionAdminhtml->setAgreementData($this->getRequest()->getPost());
 
             $this->_redirect('*/*/agreementEdit', array('id' => $agreementId));
         }
