@@ -41,10 +41,19 @@ class OnePica_AvaTax_Model_Adminhtml_System_Config_Source_UnitOfWeight
     public function toOptionArray()
     {
         return array(
-            array('value'=>null, ''),
-            array('value'=>Zend_Measure_Weight::KILOGRAM, 'label'=>Mage::helper('adminhtml')->__(Zend_Measure_Weight::KILOGRAM)),
-            array('value'=>Zend_Measure_Weight::GRAM, 'label'=>Mage::helper('adminhtml')->__(Zend_Measure_Weight::GRAM)),
-            array('value'=>Zend_Measure_Weight::POUND, 'label'=>Mage::helper('adminhtml')->__(Zend_Measure_Weight::POUND)),
+            array('value' => null, 'label' => '---'),
+            array(
+                'value' => Zend_Measure_Weight::KILOGRAM,
+                'label' => Mage::helper('adminhtml')->__(Zend_Measure_Weight::KILOGRAM)
+            ),
+            array(
+                'value' => Zend_Measure_Weight::GRAM,
+                'label' => Mage::helper('adminhtml')->__(Zend_Measure_Weight::GRAM)
+            ),
+            array(
+                'value' => Zend_Measure_Weight::POUND,
+                'label' => Mage::helper('adminhtml')->__(Zend_Measure_Weight::POUND)
+            ),
         );
     }
 }
