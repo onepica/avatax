@@ -51,6 +51,12 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
     const XML_PATH_TO_AVATAX_LANDED_COST_DAP_COUNTRIES = 'tax/avatax_landed_cost/landed_cost_dap_countries';
 
     /**
+     * Xml path to landed cost DAP countries
+     */
+    const XML_PATH_TO_AVATAX_LANDED_COST_DEFAULT_UNITS_OF_WEIGHT = 'tax/avatax_landed_cost/landed_cost_units_of_weight';
+
+
+    /**
      * Get if Landed Cost is Enabled
      *
      * @param Mage_Core_Model_Store|int $store
@@ -111,8 +117,6 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
      * @param int|Mage_Catalog_Model_Product $product
      * @param string $countryCode
      * @return string
-     *
-     * example taxClassCollection
      */
     public function getProductHTSCode($product, $countryCode)
     {
@@ -126,5 +130,58 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
         $code = $model->getCodeForCountry($countryCode);
 
         return $code->getId() > 0 ? $code->getHsFullCode() : null;
+    }
+
+    /**
+     * Get Landed Cost Default Units Of Weight
+     *
+     * @param int|Mage_Core_Model_Store $storeId
+     * @return string|null
+     */
+    public function getLandedCostDefaultUnitsOfWeight($storeId = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_TO_AVATAX_LANDED_COST_DEFAULT_UNITS_OF_WEIGHT, $storeId);
+    }
+
+    /**
+     * Get Product Avalara Unit Of Weight
+     *
+     * @param int|Mage_Catalog_Model_Product $product
+     * @param string $countryCode
+     * @return OnePica_AvaTax_Model_Records_UnitOfWeight
+     *
+     */
+    public function getProductUnitOfWeight($product, $countryCode)
+    {
+        $result = null;
+
+        $product = is_int($product) ? Mage::getModel('catalog/product')->load($product) : $product;
+
+        $weight = $product->getWeight();
+
+        if (!empty($weight) && $weight > 0) {
+
+            $zendCode = $product->getData(self::AVATAX_PRODUCT_LANDED_COST_ATTR_UNIT_OF_WEIGHT);
+
+            if (empty($zendCode)) {
+                //get units from config settings
+                $zendCode = $this->getLandedCostDefaultUnitsOfWeight($product->getStoreId());
+            }
+
+            if (!empty($zendCode)) {
+                /* @var OnePica_AvaTax_Model_Records_Mysql4_UnitOfWeight_Collection $collection */
+                $collection = Mage::getModel('avatax_records/unitOfWeight')
+                    ->getCollection()
+                    ->addFilter('zend_code', $zendCode);
+                $collection->getSelect()->where('country_list REGEXP ?', $countryCode);
+
+                /* @var OnePica_AvaTax_Model_Records_UnitOfWeight $unit */
+                $unit = $collection->getFirstItem();
+
+                $result = $unit->getId() > 0 ? $unit : null;
+            }
+        }
+
+        return $result;
     }
 }

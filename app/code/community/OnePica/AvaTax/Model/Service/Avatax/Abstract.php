@@ -302,8 +302,24 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
     protected function _addLandedCostParamsToLine($line, $product, $address)
     {
         if ($this->getLandedCostMode()) {
-            $hsCodeValue = $this->_getLandedCostHelper()->getProductHTSCode($product, $address->getCountryId());
+
+            /* @var OnePica_AvaTax_Helper_LandedCost $lcHelper */
+            $lcHelper = $this->_getLandedCostHelper();
+
+            // HS Code
+            $hsCodeValue = $lcHelper->getProductHTSCode($product, $address->getCountryId());
             $line->setHSCode($hsCodeValue);
+
+            // Unit
+            $unit = $lcHelper->getProductUnitOfWeight($product, $address->getCountryId());
+            if (!empty($unit)) {
+                $htsWeight = new ParameterBagItem();
+                $htsWeight->setName('AvaTax.Units.Mass');
+                $htsWeight->setValue($product->getWeight());
+                $htsWeight->setUOMCode($unit->getAvalaraCode());
+                $bagItemsParams = array($htsWeight);
+                $line->setParameterBagItems($bagItemsParams);
+            }
         }
 
         return $this;
