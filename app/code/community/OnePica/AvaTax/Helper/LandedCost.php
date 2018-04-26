@@ -189,4 +189,36 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
 
         return $result;
     }
+
+    /**
+     * Get Product HTS Code
+     *
+     * @param int|Mage_Catalog_Model_Product $product
+     * @param string $countryCodeFrom
+     * @param string $countryCodeTo
+     * @return string[];
+     */
+    public function getProductAgreements($product, $countryCodeFrom, $countryCodeTo)
+    {
+        $result = array();
+
+        $product = is_int($product) ? Mage::getModel('catalog/product')->load($product) : $product;
+        $agreements = $product->getData(self::AVATAX_PRODUCT_LANDED_COST_AGREEMENT);
+        if (!empty($agreements)) {
+            $agreements = explode(',',$agreements);
+            /* @var OnePica_AvaTax_Model_Records_Mysql4_Agreement_Collection $collection */
+            $collection = Mage::getModel('avatax_records/agreement')->getCollection();
+            $collection->addFieldToFilter('id', array('in' => $agreements));
+            $collection->getSelect()->where('country_list REGEXP ?', $countryCodeFrom);
+            $collection->getSelect()->where('country_list REGEXP ?', $countryCodeTo);
+            $collection->load();
+
+            /* @var OnePica_AvaTax_Model_Records_Agreement $agr */
+            foreach ($collection as $agr) {
+                array_push($result, $agr->getAvalaraAgreementCode());
+            }
+        }
+
+        return $result;
+    }
 }

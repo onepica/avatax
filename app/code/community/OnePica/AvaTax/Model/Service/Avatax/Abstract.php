@@ -310,6 +310,8 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
             $hsCodeValue = $lcHelper->getProductHTSCode($product, $address->getCountryId());
             $line->setHSCode($hsCodeValue);
 
+            $bagItemsParams = array();
+
             // Unit
             $unit = $lcHelper->getProductUnitOfWeight($product, $address->getCountryId());
             if (!empty($unit)) {
@@ -317,7 +319,22 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
                 $htsWeight->setName('AvaTax.Units.Mass');
                 $htsWeight->setValue($product->getWeight());
                 $htsWeight->setUOMCode($unit->getAvalaraCode());
-                $bagItemsParams = array($htsWeight);
+
+                array_push($bagItemsParams, $htsWeight);
+            }
+
+            //Trade Agreement
+            $agreements = $lcHelper->getProductAgreements($product, 'MX', $address->getCountryId());
+            if (!empty($agreements)) {
+                $agreements = implode(',', $agreements);
+                $bagAgreement = new ParameterBagItem();
+                $bagAgreement->setName('AvaTax.LC.PreferredProgram');
+                $bagAgreement->setValue($agreements);
+
+                array_push($bagItemsParams, $bagAgreement);
+            }
+
+            if (!empty($bagItemsParams)) {
                 $line->setParameterBagItems($bagItemsParams);
             }
         }
