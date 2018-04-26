@@ -76,6 +76,12 @@
                             <resource>avatax</resource>
                             <sort_order>20</sort_order>
                         </avatax_unitsofweight>
+                        <avatax_agreement translate="title" module="avatax">
+                            <title>Agreements</title>
+                            <action>adminhtml/avaTax_grid/agreement</action>
+                            <resource>avatax</resource>
+                            <sort_order>30</sort_order>
+                        </avatax_agreement>
                     </children>
                 </avatax_landedcost>
             </children>

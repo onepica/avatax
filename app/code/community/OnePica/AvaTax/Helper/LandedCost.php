@@ -36,6 +36,11 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
     const AVATAX_PRODUCT_LANDED_COST_ATTR_UNIT_OF_WEIGHT = 'avatax_lc_unit_of_weight';
 
     /**
+     *  Landed Cost product agreement
+     */
+    const AVATAX_PRODUCT_LANDED_COST_AGREEMENT = 'avatax_lc_agreement';
+
+    /**
      * Xml path to landed cost enabled
      */
     const XML_PATH_TO_AVATAX_LANDED_COST_ENABLED = 'tax/avatax_landed_cost/landed_cost_enabled';

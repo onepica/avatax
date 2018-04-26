@@ -22,7 +22,7 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Adminhtml_System_Config_Source_UnitOfWeight
+class OnePica_AvaTax_Model_Adminhtml_System_Config_Source_Agreement
     extends Mage_Eav_Model_Entity_Attribute_Source_Abstract
 {
     /**
@@ -40,20 +40,17 @@ class OnePica_AvaTax_Model_Adminhtml_System_Config_Source_UnitOfWeight
      */
     public function toOptionArray()
     {
-        return array(
-            array('value' => null, 'label' => ' '),
-            array(
-                'value' => Zend_Measure_Weight::KILOGRAM,
-                'label' => Mage::helper('adminhtml')->__(Zend_Measure_Weight::KILOGRAM)
-            ),
-            array(
-                'value' => Zend_Measure_Weight::GRAM,
-                'label' => Mage::helper('adminhtml')->__(Zend_Measure_Weight::GRAM)
-            ),
-            array(
-                'value' => Zend_Measure_Weight::POUND,
-                'label' => Mage::helper('adminhtml')->__(Zend_Measure_Weight::POUND)
-            ),
-        );
+        /** @var \OnePica_AvaTax_Model_Records_Mysql4_Agreement_Collection $agreementCollection */
+        $agreementCollection = Mage::getModel('avatax_records/agreement')->getCollection();
+
+        $agreementCollection->addFieldToSelect(array('id', 'avalara_agreement_code'));
+
+        $values = array(array('value' => null, 'label' => ' '));
+
+        foreach ($agreementCollection as $agreement) {
+            $values[] = array('value' => $agreement->getId(), 'label' => $agreement->getAvalaraAgreementCode());
+        }
+
+        return $values;
     }
 }
