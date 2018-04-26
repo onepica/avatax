@@ -11,10 +11,13 @@ class ParameterBagItem
 {
     private $Name;
 	private $Value;
+	private $UOMCode;
 
     public function getName() { return $this->Name; }
     public function getValue() { return $this->Value; }
+    public function getUOMCode() { return $this->UOMCode; }
 
     public function setName($value) { $this->Name = $value; return $this; }
     public function setValue($value) { $this->Value = $value; return $this; }
+    public function setUOMCode($value) { $this->UOMCode = $value; return $this; }
 }
