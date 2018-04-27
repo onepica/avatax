@@ -34,7 +34,7 @@
 <tr>
     <td class="label"><?php echo $this->getElement()->getLabel() ?></td>
     <td colspan="10" class="grid tier">
-    <table cellspacing="0" class="data border" id="tiers_table">
+    <table cellspacing="0" class="data border" id="lcunits_table">
         <col width="100" />
         <col />
         <col width="1" />
@@ -55,20 +55,20 @@
 
 <script type="text/javascript">
 //<![CDATA[
-var tierPriceRowTemplate = '<tr>'
-    + '<td><input class="<?php echo $_htmlClass ?> required-entry <?php echo $_priceValueValidation ?>" type="text" name="<?php echo $_htmlName ?>[{{index}}][price]" value="{{price}}" id="tier_price_row_{{index}}_price" /></td>'
-    + '<td><select class="<?php echo $_htmlClass ?> custgroup required-entry" name="<?php echo $_htmlName ?>[{{index}}][cust_group]" id="tier_price_row_{{index}}_cust_group">'
+var lcUnitRowTemplate = '<tr>'
+    + '<td><input class="<?php echo $_htmlClass ?> required-entry <?php echo $_priceValueValidation ?>" type="text" name="<?php echo $_htmlName ?>[{{index}}][price]" value="{{price}}" id="lcunit_price_row_{{index}}_price" /></td>'
+    + '<td><select class="<?php echo $_htmlClass ?> custgroup required-entry" name="<?php echo $_htmlName ?>[{{index}}][cust_group]" id="lcunit_price_row_{{index}}_cust_group">'
     <?php foreach ($this->getCustomerGroups() as $_groupId=>$_groupName): ?>
     + '<option value="<?php echo $_groupId ?>"><?php echo $this->jsQuoteEscape($this->escapeHtml($_groupName)) ?></option>'
     <?php endforeach ?>
     + '</select></td>'
-    + '<td class="last"><input type="hidden" name="<?php echo $_htmlName ?>[{{index}}][delete]" class="delete" value="" id="tier_price_row_{{index}}_delete" />'
-    + '<button title="<?php echo Mage::helper('core')->jsQuoteEscape(Mage::helper('catalog')->__("Delete Tier")) ?>" type="button" class="scalable delete icon-btn delete-product-option" id="tier_price_row_{{index}}_delete_button" onclick="return tierPriceControl.deleteItem(event);">'
+    + '<td class="last"><input type="hidden" name="<?php echo $_htmlName ?>[{{index}}][delete]" class="delete" value="" id="lcunit_price_row_{{index}}_delete" />'
+    + '<button title="<?php echo Mage::helper('core')->jsQuoteEscape(Mage::helper('catalog')->__("Delete Unit")) ?>" type="button" class="scalable delete icon-btn delete-product-option" id="lcunit_price_row_{{index}}_delete_button" onclick="return tierPriceControl.deleteItem(event);">'
     + '<span><span><span><?php echo Mage::helper('core')->jsQuoteEscape(Mage::helper('catalog')->__("Delete")) ?></span></span></span></button></td>'
     + '</tr>';
 
-var tierPriceControl = {
-    template: new Template(tierPriceRowTemplate, new RegExp('(^|.|\\r|\\n)({{\\s*(\\w+)\\s*}})', "")),
+var lcUnitControl = {
+    template: new Template(lcUnitRowTemplate, new RegExp('(^|.|\\r|\\n)({{\\s*(\\w+)\\s*}})', "")),
     itemsCount: 0,
     addItem : function () {
         <?php if ($_readonly): ?>
@@ -77,9 +77,8 @@ var tierPriceControl = {
         }
         <?php endif; ?>
         var data = {
-            group: '<?php echo $this->getDefaultCustomerGroup() ?>',
-            qty: '',
             price: '',
+            group: '<?php echo $this->getDefaultCustomerGroup() ?>',
             readOnly: false,
             index: this.itemsCount++
         };
@@ -96,13 +95,13 @@ var tierPriceControl = {
             bottom : this.template.evaluate(data)
         });
 
-        $('tier_price_row_' + data.index + '_cust_group').value = data.group;
+        $('lcunit_price_row_' + data.index + '_cust_group').value = data.group;
 
         if (data.readOnly == '1') {
-            ['cust_group', 'qty', 'price', 'delete'].each(function(idx){
-                $('tier_price_row_'+data.index+'_'+idx).disabled = true;
+            ['cust_group', 'price', 'delete'].each(function(idx){
+                $('lcunit_price_row_'+data.index+'_'+idx).disabled = true;
             });
-            $('tier_price_row_'+data.index+'_delete_button').hide();
+            $('lcunit_price_row_'+data.index+'_delete_button').hide();
         }
 
         <?php if ($_readonly): ?>
@@ -128,14 +127,14 @@ var tierPriceControl = {
     }
 };
 <?php foreach ($this->getValues() as $_item): ?>
-tierPriceControl.addItem(
+lcUnitControl.addItem(
     '<?php echo $_item['price'] ?>',
     '<?php echo $_item['cust_group'] ?>',
     <?php echo 0?>);
 <?php endforeach; ?>
 <?php if ($_readonly): ?>
 $('<?php echo $_htmlId ?>_container').up('table').select('button')
-    .each(tierPriceControl.disableElement);
+    .each(lcUnitControl.disableElement);
 <?php endif; ?>
 //]]>
 </script>

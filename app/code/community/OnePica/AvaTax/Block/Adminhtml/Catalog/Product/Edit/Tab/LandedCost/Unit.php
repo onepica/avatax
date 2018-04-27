@@ -55,8 +55,8 @@ class OnePica_AvaTax_Block_Adminhtml_Catalog_Product_Edit_Tab_LandedCost_Unit
     {
         $button = $this->getLayout()->createBlock('adminhtml/widget_button')
             ->setData(array(
-                'label' => Mage::helper('catalog')->__('Add Tier'),
-                'onclick' => 'return tierPriceControl.addItem()',
+                'label' => Mage::helper('catalog')->__('Add Unit'),
+                'onclick' => 'return lcUnitControl.addItem()',
                 'class' => 'add'
             ));
         $button->setName('add_tier_price_item_button');
