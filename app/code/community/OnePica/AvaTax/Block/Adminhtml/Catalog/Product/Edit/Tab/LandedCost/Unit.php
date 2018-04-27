@@ -59,7 +59,7 @@ class OnePica_AvaTax_Block_Adminhtml_Catalog_Product_Edit_Tab_LandedCost_Unit
                 'onclick' => 'return lcUnitControl.addItem()',
                 'class' => 'add'
             ));
-        $button->setName('add_tier_price_item_button');
+        $button->setName('add_lcost_unit_item_button');
 
         $this->setChild('add_button', $button);
         return parent::_prepareLayout();
