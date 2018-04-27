@@ -1,36 +1,26 @@
 <?php
 /**
- * Magento Enterprise Edition
+ * OnePica_AvaTax
  *
  * NOTICE OF LICENSE
  *
- * This source file is subject to the Magento Enterprise Edition End User License Agreement
- * that is bundled with this package in the file LICENSE_EE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.magento.com/license/enterprise-edition
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@magento.com so we can send you a copy immediately.
+ * This source file is subject to the Open Software License (OSL 3.0), a
+ * copy of which is available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
  *
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade Magento to newer
- * versions in the future. If you wish to customize Magento for your
- * needs please refer to http://www.magento.com for more information.
- *
- * @category    Mage
- * @package     Mage_Adminhtml
- * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
- * @license http://www.magento.com/license/enterprise-edition
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
+ * @copyright  Copyright (c) 2009 One Pica, Inc.
+ * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
 /**
- * Adminhtml group price item abstract renderer
+ * Product Avatax tab
  *
- * @category   Mage
- * @package    Mage_Adminhtml
- * @author     Magento Core Team <core@magentocommerce.com>
- *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
  */
 class OnePica_AvaTax_Block_Adminhtml_Catalog_Product_Edit_Tab_LandedCost_Unit
     extends Mage_Adminhtml_Block_Widget
@@ -309,21 +299,6 @@ class OnePica_AvaTax_Block_Adminhtml_Catalog_Product_Edit_Tab_LandedCost_Unit
     {
         if ($this->hasData('price_column_header')) {
             return $this->getData('price_column_header');
-        } else {
-            return $default;
-        }
-    }
-
-    /**
-     * Retrieve customized price column header
-     *
-     * @param string $default
-     * @return string
-     */
-    public function getPriceValidation($default)
-    {
-        if ($this->hasData('price_validation')) {
-            return $this->getData('price_validation');
         } else {
             return $default;
         }
