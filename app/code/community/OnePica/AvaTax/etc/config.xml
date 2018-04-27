@@ -19,7 +19,7 @@
 <config>
     <modules>
         <OnePica_AvaTax>
-            <version>3.5.8.2</version>
+            <version>3.5.8.3</version>
         </OnePica_AvaTax>
     </modules>
     <global>
@@ -349,6 +349,14 @@
                     </base_avatax_landed_cost_import_duties_amount>
                 </sales_convert_quote_address>
             </fieldsets>
+            <adminhtml_catalog_product_edit_prepare_form>
+                <observers>
+                    <weee>
+                        <class>avatax/observer_adminhtmlCatalogProductEditPrepareForm</class>
+                        <method>execute</method>
+                    </weee>
+                </observers>
+            </adminhtml_catalog_product_edit_prepare_form>
         </events>
     </global>
     <frontend>
