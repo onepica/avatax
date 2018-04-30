@@ -46,6 +46,11 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
     const AVATAX_PRODUCT_LANDED_COST_AGREEMENT = 'avatax_lc_agreement';
 
     /**
+     *  Landed Cost tax type for tax detail
+     */
+    const AVATAX_LANDED_COST_TAX_TYPE = 'LandedCost';
+
+    /**
      * Xml path to landed cost enabled
      */
     const XML_PATH_TO_AVATAX_LANDED_COST_ENABLED = 'tax/avatax_landed_cost/landed_cost_enabled';
@@ -64,7 +69,6 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
      * Xml path to landed cost DAP countries
      */
     const XML_PATH_TO_AVATAX_LANDED_COST_DEFAULT_UNITS_OF_WEIGHT = 'tax/avatax_landed_cost/landed_cost_units_of_weight';
-
 
     /**
      * Get if Landed Cost is Enabled
@@ -106,7 +110,7 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
      * @param string                    $destinationCountry
      * @return null|string
      */
-    public function getLandedCostMode($storeId = null, $destinationCountry)
+    public function getLandedCostMode($destinationCountry, $storeId = null)
     {
         $mode = $this->isSellerImporterOfRecord($storeId, $destinationCountry) ? 'DDP' : null;
 //        $originCountryCode = Mage::getStoreConfig('shipping/origin/country_id', $storeId);
@@ -136,18 +140,19 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
      * Get Product HTS Code
      *
      * @param int|Mage_Catalog_Model_Product $product
-     * @param string $countryCode
+     * @param string                         $countryCode
      * @return string
+     * @throws \Varien_Exception
      */
     public function getProductHTSCode($product, $countryCode)
     {
         $product = is_int($product) ? Mage::getModel('catalog/product')->load($product) : $product;
         $hsCode = $product->getData(self::AVATAX_PRODUCT_LANDED_COST_ATTR_HSCODE);
 
-        /* @var OnePica_AvaTax_Model_Records_HsCode $hsCode */
-        $model = Mage::getModel('avatax_records/hsCode')->load($hsCode,'hs_code');
+        /** @var OnePica_AvaTax_Model_Records_HsCode $hsCode */
+        $model = Mage::getModel('avatax_records/hsCode')->load($hsCode, 'hs_code');
 
-        /* @var OnePica_AvaTax_Model_Records_HsCodeCountry $code */
+        /** @var OnePica_AvaTax_Model_Records_HsCodeCountry $code */
         $code = $model->getCodeForCountry($countryCode);
 
         return $code->getId() > 0 ? $code->getHsFullCode() : null;
@@ -168,7 +173,7 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
      * Get Product Avalara Unit Of Weight
      *
      * @param int|Mage_Catalog_Model_Product $product
-     * @param string $countryCode
+     * @param string                         $countryCode
      * @return OnePica_AvaTax_Model_Records_UnitOfWeight
      *
      */
@@ -181,7 +186,6 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
         $weight = $product->getWeight();
 
         if (!empty($weight) && $weight > 0) {
-
             $zendCode = $product->getData(self::AVATAX_PRODUCT_LANDED_COST_ATTR_UNIT_OF_WEIGHT);
 
             if (empty($zendCode)) {
@@ -190,13 +194,13 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
             }
 
             if (!empty($zendCode)) {
-                /* @var OnePica_AvaTax_Model_Records_Mysql4_UnitOfWeight_Collection $collection */
+                /** @var OnePica_AvaTax_Model_Records_Mysql4_UnitOfWeight_Collection $collection */
                 $collection = Mage::getModel('avatax_records/unitOfWeight')
-                    ->getCollection()
-                    ->addFilter('zend_code', $zendCode);
+                                  ->getCollection()
+                                  ->addFilter('zend_code', $zendCode);
                 $collection->getSelect()->where('country_list REGEXP ?', $countryCode);
 
-                /* @var OnePica_AvaTax_Model_Records_UnitOfWeight $unit */
+                /** @var OnePica_AvaTax_Model_Records_UnitOfWeight $unit */
                 $unit = $collection->getFirstItem();
 
                 $result = $unit->getId() > 0 ? $unit : null;
@@ -221,8 +225,8 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
         $product = is_int($product) ? Mage::getModel('catalog/product')->load($product) : $product;
         $agreements = $product->getData(self::AVATAX_PRODUCT_LANDED_COST_AGREEMENT);
         if (!empty($agreements)) {
-            $agreements = explode(',',$agreements);
-            /* @var OnePica_AvaTax_Model_Records_Mysql4_Agreement_Collection $collection */
+            $agreements = explode(',', $agreements);
+            /** @var OnePica_AvaTax_Model_Records_Mysql4_Agreement_Collection $collection */
             $collection = Mage::getModel('avatax_records/agreement')->getCollection();
             $collection->addFieldToFilter('id', array('in' => $agreements));
             $collection->getSelect()->where('country_list REGEXP ?', $countryCodeFrom);

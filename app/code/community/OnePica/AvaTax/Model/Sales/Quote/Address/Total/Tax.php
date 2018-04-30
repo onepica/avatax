@@ -118,7 +118,8 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax
                 'id'          => $id,
                 'process'     => 0,
                 'amount'      => $store->convertPrice($row['amt']),
-                'base_amount' => $row['amt']
+                'base_amount' => $row['amt'],
+                'tax_type'    => $row['tax_type']
             );
         }
 
@@ -167,6 +168,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax
      *
      * @param   Mage_Sales_Model_Quote_Address $address
      * @return  $this
+     * @throws \Varien_Exception
      */
     public function fetch(Mage_Sales_Model_Quote_Address $address)
     {
@@ -180,12 +182,13 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax
         if (($amount != 0) || (Mage::helper('tax')->displayZeroTax($store))) {
             $address->addTotal(
                 array(
-                    'code'      => $this->getCode(),
-                    'title'     => Mage::helper('tax')->__('Tax'),
-                    'full_info' => $address->getAppliedTaxes(),
-                    'value'     => $amount,
-                    'landed_cost_import_duties_amount' => $landedCostImportDutiesAmount,
-                    'area'      => null
+                    'code'               => $this->getCode(),
+                    'title'              => Mage::helper('tax')->__('Tax'),
+                    'full_info'          => $address->getAppliedTaxes(),
+                    'value'              => $amount,
+                    'landed_cost_amount' => $landedCostImportDutiesAmount,
+                    'landed_cost_items'  => array(),
+                    'area'               => null
                 )
             );
         }
@@ -200,8 +203,8 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax
                 $subtotalInclTax = $address->getSubtotalInclTax();
             } else {
                 $subtotalInclTax = $address->getSubtotal()
-                                   + $address->getTaxAmount()
-                                   - $address->getShippingTaxAmount();
+                    + $address->getTaxAmount()
+                    - $address->getShippingTaxAmount();
             }
 
             $address->addTotal(
@@ -369,6 +372,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax
 
         return $this;
     }
+
     /**
      * Reset address values
      *
@@ -587,6 +591,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax
      *
      * @param float $amount
      * @return Mage_Sales_Model_Quote_Address_Total_Abstract
+     * @throws \OnePica_AvaTax_Exception
      */
     protected function _addAmount($amount)
     {
@@ -600,6 +605,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax
      *
      * @param float $baseAmount
      * @return Mage_Sales_Model_Quote_Address_Total_Abstract
+     * @throws \OnePica_AvaTax_Exception
      */
     protected function _addBaseAmount($baseAmount)
     {
@@ -661,7 +667,6 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax
         return Mage::helper('avatax/requestFilter');
     }
 
-
     /**
      * Apply Landed Cost tax
      *
@@ -669,17 +674,17 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax
      * @param Mage_Core_Model_Store|int              $store
      * @param OnePica_AvaTax_Model_Action_Calculator $calculator
      * @return $this
+     * @throws \Varien_Exception
      */
     protected function _applyLandedCostTax(Mage_Sales_Model_Quote_Address $address, $store, $calculator)
     {
         $baseAmount = 0;
         $amount = 0;
-        $itemsCount = count($address->getAllItems());
 
+        /** @var \Mage_Sales_Model_Quote_Item $item */
         foreach ($address->getAllItems() as $item) {
             $item->setAddress($address);
-            // @todo: need to refactor when import duties will be available for each item
-            $baseItemAmount = $calculator->getLandedCostImportDutiesAmount() / $itemsCount;
+            $baseItemAmount = $calculator->getItemLandedCostAmount($item);
             $itemAmount = $store->convertPrice($baseItemAmount);
 
             $item->setAvataxLandedCostImportDutiesAmount($itemAmount);
@@ -687,7 +692,6 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax
 
             $amount = $amount + $itemAmount;
             $baseAmount = $baseAmount + $baseItemAmount;
-
         }
 
         if ($amount) {
@@ -695,8 +699,10 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax
             $address->setBaseAvataxLandedCostImportDutiesAmount($baseAmount);
             $address->setGrandTotal($address->getGrandTotal() + $amount);
             $address->setBaseGrandTotal($address->getBaseGrandTotal() + $baseAmount);
-        } elseif ($calculator->getLandedCostDapMessage()) {
-            $address->setLandedCostDapMessage($calculator->getLandedCostDapMessage());
+        }
+
+        if ($calculator->getLandedCostMessage()) {
+            $address->setLandedCostMessage($calculator->getLandedCostMessage());
         }
 
         return $this;

@@ -25,39 +25,49 @@
 class OnePica_AvaTax_Block_Checkout_Tax extends Mage_Tax_Block_Checkout_Tax
 {
     /**
-     * Render block HTML
+     * Template used in the block
      *
-     * @return string
+     * @var string
      */
-    protected function _toHtml()
+    protected $_template = 'onepica/avatax/checkout/tax.phtml';
+
+    /**
+     * @return float|null
+     * @throws \Varien_Exception
+     */
+    public function getLandedCostAmount()
     {
-        $importDutiesAmount = $this->getTotal()->getLandedCostImportDutiesAmount();
-        if ($importDutiesAmount) {
-            return parent::_toHtml() . $this->_getImportDutiesHtml($importDutiesAmount);
+        if ($this->_getLandedCostHelper()->isLandedCostEnabled($this->getStore())) {
+            return (float)$this->getTotal()->getLandedCostAmount();
         }
 
-        return parent::_toHtml();
+        return null;
     }
 
     /**
-     * Get DDP HTML
-     *
-     * @param float $importDutiesAmount
-     * @return string
-     * @todo refactor to use template file
+     * @return float
+     * @throws \Varien_Exception
      */
-    protected function _getImportDutiesHtml($importDutiesAmount)
+    public function getTaxAmount()
     {
-        $importDutiesAmount = $this->helper('checkout')->formatPrice($importDutiesAmount);
-        $contentHtml = sprintf(
-            '<tr><td colspan="%s" style="%s" class="a-right">%s</td><td style="%s" class="a-right">%s</td></tr>',
-            $this->getColspan(),
-            $this->getTotal()->getStyle(),
-            $this->__('Customs Duty and Import Tax'),
-            $this->getTotal()->getStyle(),
-            $importDutiesAmount
-        );
+        return $this->getTotal()->getValue() - $this->getLandedCostAmount();
+    }
 
-        return $contentHtml;
+    /**
+     * @return string
+     */
+    public function getLandedCostTitle()
+    {
+        return $this->__('Customs Duty and Import Tax');
+    }
+
+    /**
+     * Returns the AvaTax helper.
+     *
+     * @return OnePica_AvaTax_Helper_LandedCost
+     */
+    protected function _getLandedCostHelper()
+    {
+        return Mage::helper('avatax/landedCost');
     }
 }
