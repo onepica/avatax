@@ -81,8 +81,17 @@ class OnePica_AvaTax_Model_Catalog_Product_Attribute_Backend_Unit extends Mage_E
     {
         $attrCode = $this->getAttribute()->getAttributeCode();
         if ($object->hasData($attrCode)) {
-            $config = json_encode($object->getData($attrCode));
+            $origin = $object->getData($attrCode);
+            $data = array();
+            foreach ($origin as $index => $item) {
+                if(empty($item['delete']) || $item['delete'] == 0) {
+                    array_push($data, $item);
+                }
+            }
+
+            $config = json_encode($data);
             $object->setData($attrCode, $config);
+
         } else if (!$object->hasData($attrCode) && $this->getDefaultValue()) {
             $object->setData($attrCode, $this->getDefaultValue());
         }
