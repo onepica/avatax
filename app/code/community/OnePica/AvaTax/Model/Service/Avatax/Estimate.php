@@ -817,6 +817,10 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
                 $lineRate = 0;
                 /** @var \TaxDetail $taxDetail */
                 foreach ($line->getTaxDetails() as $taxDetail) {
+                    if ($taxDetail->getTaxType() === OnePica_AvaTax_Helper_LandedCost::AVATAX_LANDED_COST_TAX_TYPE) {
+                        continue;
+                    }
+
                     if ($taxDetail->getTax() != 0) {
                         $lineRate = $lineRate + $taxDetail->getRate();
                     }
