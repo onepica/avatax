@@ -108,17 +108,28 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
      */
     public function getLandedCostMode($storeId = null, $destinationCountry)
     {
-        $mode = null;
-        $originCountryCode = Mage::getStoreConfig('shipping/origin/country_id', $storeId);
-        if ($this->isLandedCostEnabled($storeId) && $destinationCountry != $originCountryCode) {
-            if (in_array($destinationCountry, $this->getLandedCostDDPCountries())) {
-                $mode = 'DDP';
-            } elseif (in_array($destinationCountry, $this->getLandedCostDAPCountries())) {
-                $mode = 'DAP';
-            }
-        }
+        $mode = $this->isSellerImporterOfRecord($storeId, $destinationCountry) ? 'DDP' : null;
+//        $originCountryCode = Mage::getStoreConfig('shipping/origin/country_id', $storeId);
+//        if ($this->isLandedCostEnabled($storeId) && $destinationCountry != $originCountryCode) {
+//            if (in_array($destinationCountry, $this->getLandedCostDDPCountries())) {
+//                $mode = 'DDP';
+//            } elseif (in_array($destinationCountry, $this->getLandedCostDAPCountries())) {
+//                $mode = 'DAP';
+//            }
+//        }
 
         return $mode;
+    }
+
+    public function isSellerImporterOfRecord($storeId = null, $destinationCountry)
+    {
+        $result = false;
+        $originCountryCode = Mage::getStoreConfig('shipping/origin/country_id', $storeId);
+        if ($this->isLandedCostEnabled($storeId) && $destinationCountry != $originCountryCode) {
+            $result = true;
+        }
+
+        return $result;
     }
 
     /**
