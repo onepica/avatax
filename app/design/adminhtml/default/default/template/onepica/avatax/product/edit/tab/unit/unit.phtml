@@ -48,8 +48,8 @@
 var lcUnitRowTemplate = '<tr>'
     + '<td><input class="<?php echo $_htmlClass ?> required-entry" type="text" name="<?php echo $_htmlName ?>[{{index}}][unit]" value="{{unit}}" id="lcost_unit_row_{{index}}_unit" /></td>'
     + '<td><select class="<?php echo $_htmlClass ?> custgroup required-entry" name="<?php echo $_htmlName ?>[{{index}}][unit_of_measurement]" id="lcost_unit_row_{{index}}_unit_of_measurement">'
-    <?php foreach ($this->getCustomerGroups() as $_groupId=>$_groupName): ?>
-    + '<option value="<?php echo $_groupId ?>"><?php echo $this->jsQuoteEscape($this->escapeHtml($_groupName)) ?></option>'
+    <?php foreach ($this->getUnitsOfMeasurement() as $unit): ?>
+    + '<option value="<?php echo $unit->getId() ?>"><?php echo $this->jsQuoteEscape($this->escapeHtml($unit->getDescription())) ?></option>'
     <?php endforeach ?>
     + '</select></td>'
     + '<td class="last"><input type="hidden" name="<?php echo $_htmlName ?>[{{index}}][delete]" class="delete" value="" id="lcost_unit_row_{{index}}_delete" />'
@@ -68,7 +68,7 @@ var lcUnitControl = {
         <?php endif; ?>
         var data = {
             unit: '',
-            unitOfMeasurement: '<?php echo $this->getDefaultCustomerGroup() ?>',
+            unitOfMeasurement: '<?php echo $this->getDefaultUnitOfMeasurement() ?>',
             readOnly: false,
             index: this.itemsCount++
         };

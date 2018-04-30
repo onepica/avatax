@@ -63,11 +63,9 @@ class OnePica_AvaTax_Block_Adminhtml_Catalog_Product_Edit_Tab_LandedCost_Unit
     protected $_element;
 
     /**
-     * Customer groups cache
-     *
-     * @var array
+     * @var OnePica_AvaTax_Model_Records_Mysql4_UnitOfWeight_Collection|null;
      */
-    protected $_customerGroups;
+    protected $unitsOfMeasurement = null;
 
     /**
      * Websites cache
@@ -134,12 +132,6 @@ class OnePica_AvaTax_Block_Adminhtml_Catalog_Product_Edit_Tab_LandedCost_Unit
             $values = $this->_sortValues($data);
         }
 
-//        foreach ($values as &$value) {
-//            $value['readonly'] = ($value['website_id'] == 0)
-//                && $this->isShowWebsiteColumn()
-//                && !$this->isAllowChangeWebsite();
-//        }
-
         return $values;
     }
 
@@ -160,36 +152,15 @@ class OnePica_AvaTax_Block_Adminhtml_Catalog_Product_Edit_Tab_LandedCost_Unit
      * @param int|null $groupId  return name by customer group id
      * @return array|string
      */
-    public function getCustomerGroups($groupId = null)
+    public function getUnitsOfMeasurement()
     {
-        if ($this->_customerGroups === null) {
-            if (!Mage::helper('catalog')->isModuleEnabled('Mage_Customer')) {
-                return array();
-            }
-            $collection = Mage::getModel('customer/group')->getCollection();
-            $this->_customerGroups = $this->_getInitialCustomerGroups();
-
-            foreach ($collection as $item) {
-                /** @var $item Mage_Customer_Model_Group */
-                $this->_customerGroups[$item->getId()] = $item->getCustomerGroupCode();
-            }
+        if (empty($this->unitsOfMeasurement)) {
+            /* @var OnePica_AvaTax_Model_Records_Mysql4_UnitOfWeight_Collection $collection */
+            $this->unitsOfMeasurement = Mage::getModel('avatax_records/unitOfWeight')->getCollection();
+            $this->unitsOfMeasurement->load();
         }
 
-        if ($groupId !== null) {
-            return isset($this->_customerGroups[$groupId]) ? $this->_customerGroups[$groupId] : array();
-        }
-
-        return $this->_customerGroups;
-    }
-
-    /**
-     * Retrieve list of initial customer groups
-     *
-     * @return array
-     */
-    protected function _getInitialCustomerGroups()
-    {
-        return array();
+        return $this->unitsOfMeasurement;
     }
 
     /**
@@ -257,13 +228,13 @@ class OnePica_AvaTax_Block_Adminhtml_Catalog_Product_Edit_Tab_LandedCost_Unit
     }
 
     /**
-     * Retrieve default value for customer group
+     * Retrieve default value for unit of measurement
      *
      * @return int
      */
-    public function getDefaultCustomerGroup()
+    public function getDefaultUnitOfMeasurement()
     {
-        return Mage_Customer_Model_Group::CUST_GROUP_ALL;
+        return -1;
     }
 
     /**

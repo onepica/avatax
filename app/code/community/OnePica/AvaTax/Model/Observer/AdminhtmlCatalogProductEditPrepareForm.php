@@ -40,9 +40,9 @@ class OnePica_AvaTax_Model_Observer_AdminhtmlCatalogProductEditPrepareForm exten
                 {
                     case OnePica_AvaTax_Helper_LandedCost::AVATAX_PRODUCT_GROUP_LANDED_COST:
                         {
-                            $tierPrice = $form->getElement('avatax_lc_product_unit');
-                            if ($tierPrice) {
-                                $tierPrice->setRenderer(
+                            $unitOfMeasurement = $form->getElement(OnePica_AvaTax_Helper_LandedCost::AVATAX_PRODUCT_LANDED_COST_ATTR_UNIT_OF_MEASUREMENT);
+                            if ($unitOfMeasurement) {
+                                $unitOfMeasurement->setRenderer(
                                     Mage::app()->getLayout()->createBlock('avatax/adminhtml_catalog_product_edit_tab_landedcost_unit')
                                 );
                             }

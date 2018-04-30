@@ -19,13 +19,12 @@
 $installer = Mage::getResourceModel('catalog/setup', 'catalog_setup');
 $installer->startSetup();
 
-$attributeCode = 'avatax_lc_product_unit';
+$attributeCode = OnePica_AvaTax_Helper_LandedCost::AVATAX_PRODUCT_LANDED_COST_ATTR_UNIT_OF_MEASUREMENT;
 
 /** @var $attribute Mage_Eav_Model_Entity_Attribute */
 $attribute = Mage::getModel('eav/entity_attribute')->loadByCode('catalog_product', $attributeCode);
-$installer->removeAttribute('catalog_product', $attributeCode);
 
-if (!$attribute->getId() || true) {
+if (!$attribute->getId()) {
 
     $installer->addAttribute('catalog_product', $attributeCode, array(
         'type'                  => 'varchar',
