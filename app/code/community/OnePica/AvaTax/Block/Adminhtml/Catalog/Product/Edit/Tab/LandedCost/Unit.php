@@ -85,6 +85,14 @@ class OnePica_AvaTax_Block_Adminhtml_Catalog_Product_Edit_Tab_LandedCost_Unit
     }
 
     /**
+     * @return OnePica_AvaTax_Helper_LandedCost
+     */
+    public function getLandedCostHelper()
+    {
+        return Mage::helper('avatax/landedCost');
+    }
+
+    /**
      * Render HTML
      *
      * @param Varien_Data_Form_Element_Abstract $element
