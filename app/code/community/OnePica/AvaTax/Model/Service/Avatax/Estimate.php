@@ -797,9 +797,11 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
      */
     protected function _setDetailLevel()
     {
-        /** @var OnePica_AvaTax_Model_Service_Avatax_Config $config */
-        $config = Mage::getSingleton('avatax/service_avatax_config');
-        $this->_request->setDetailLevel($config->getDetailLevel());
+        /*
+         * Always set detailLevel = tax, because need more information about tax
+         * especially for "bottle tax" and landedcost feature
+         */
+        $this->_request->setDetailLevel(DetailLevel::$Tax);
 
         return $this;
     }
@@ -807,31 +809,37 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
     /**
      * Calculates rate of tax line
      *
+     * For config -> detailLevel = tax get rate only if line tax is not 0
+     * For config -> detailLevel = line we always summarize rate
+     *
      * @param TaxLine $line
      * @return int
      */
     protected function _getTaxRateFromTaxLineItem(TaxLine $line)
     {
-        switch ($this->_request->getDetailLevel()) {
-            case DetailLevel::$Tax:
-                $lineRate = 0;
-                /** @var \TaxDetail $taxDetail */
-                foreach ($line->getTaxDetails() as $taxDetail) {
-                    if ($taxDetail->getTaxType() === OnePica_AvaTax_Helper_LandedCost::AVATAX_LANDED_COST_TAX_TYPE) {
-                        continue;
-                    }
+        $lineRate = 0;
 
-                    if ($taxDetail->getTax() != 0) {
-                        $lineRate = $lineRate + $taxDetail->getRate();
-                    }
+        /** @var OnePica_AvaTax_Model_Service_Avatax_Config $config */
+        $config = Mage::getSingleton('avatax/service_avatax_config');
+
+        /** @var \TaxDetail $taxDetail */
+        foreach ($line->getTaxDetails() as $taxDetail) {
+            /* We don't need to summarize the landedcost rate */
+            if ($taxDetail->getTaxType() === OnePica_AvaTax_Helper_LandedCost::AVATAX_LANDED_COST_TAX_TYPE) {
+                continue;
+            }
+
+            /* add taxDetail rate to line rate based on tax detail level */
+            if ($config->getDetailLevel() == DetailLevel::$Tax) {
+                if ($taxDetail->getTax() != 0) {
+                    $lineRate = $lineRate + $taxDetail->getRate();
                 }
-
-                $lineRate = $lineRate * 100;
-                break;
-            default:
-                $lineRate = ($line->getTax() ? $line->getRate() : 0) * 100;
-                break;
+            } else {
+                $lineRate = $lineRate + $taxDetail->getRate();
+            }
         }
+
+        $lineRate = $lineRate * 100;
 
         return $lineRate;
     }
@@ -844,11 +852,15 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
      */
     protected function _getLandedCostMessage(GetTaxResult $result)
     {
-        /** @var \Message $message */
-        foreach ($result->getMessages() as $message) {
-            if ($message->getRefersTo() === OnePica_AvaTax_Helper_LandedCost::AVATAX_LANDED_COST_TAX_TYPE) {
-                return $message->getSummary();
+        try {
+            /** @var \Message $message */
+            foreach ($result->getMessages() as $message) {
+                if ($message->getRefersTo() === OnePica_AvaTax_Helper_LandedCost::AVATAX_LANDED_COST_TAX_TYPE) {
+                    return $message->getSummary();
+                }
             }
+        } catch (Exception $e) {
+            // Avalara's lib throws exception "Trying to get property of non-object" when "messages" is empty array
         }
 
         return null;
