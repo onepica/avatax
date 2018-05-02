@@ -28,10 +28,11 @@ class OnePica_AvaTax_Block_Checkout_Grandtotal extends Mage_Checkout_Block_Total
      * Render block HTML
      *
      * @return string
+     * @throws \Varien_Exception
      */
     protected function _toHtml()
     {
-        $DAPMessage = $this->getTotal()->getLandedCostDapMessage();
+        $DAPMessage = $this->getTotal()->getLandedCostMessage();
         if ($DAPMessage) {
             return parent::_toHtml() . $this->_getDAPHtml($DAPMessage);
         }

@@ -169,6 +169,15 @@
                     </avatax>
                 </observers>
             </sales_quote_load_after>
+            <sales_order_invoice_save_before>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer_salesOrderInvoiceSaveBefore</class>
+                        <method>execute</method>
+                    </avatax>
+                </observers>
+            </sales_order_invoice_save_before>
             <sales_order_invoice_save_after>
                 <observers>
                     <avatax>
@@ -178,6 +187,15 @@
                     </avatax>
                 </observers>
             </sales_order_invoice_save_after>
+            <sales_order_creditmemo_save_before>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer_salesOrderCreditmemoSaveBefore</class>
+                        <method>execute</method>
+                    </avatax>
+                </observers>
+            </sales_order_creditmemo_save_before>
             <sales_order_creditmemo_save_after>
                 <observers>
                     <avatax>

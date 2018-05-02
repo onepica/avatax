@@ -29,16 +29,20 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Grand extends Mage_Sales_Mo
      *
      * @param   Mage_Sales_Model_Quote_Address $address
      * @return  Mage_Sales_Model_Quote_Address_Total_Grand
+     * @throws \Varien_Exception
      */
     public function fetch(Mage_Sales_Model_Quote_Address $address)
     {
-        $address->addTotal(array(
-            'code'        => $this->getCode(),
-            'title'       => Mage::helper('sales')->__('Grand Total'),
-            'value'       => $address->getGrandTotal(),
-            'landed_cost_dap_message' => $address->getLandedCostDapMessage(),
-            'area'        => 'footer',
-        ));
+        $address->addTotal(
+            array(
+                'code'                => $this->getCode(),
+                'title'               => Mage::helper('sales')->__('Grand Total'),
+                'value'               => $address->getGrandTotal(),
+                'landed_cost_message' => $address->getLandedCostMessage(),
+                'area'                => 'footer',
+            )
+        );
+
         return $this;
     }
 }

@@ -22,28 +22,33 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Observer_AdminhtmlCatalogProductEditPrepareForm extends OnePica_AvaTax_Model_Observer_Abstract
+class OnePica_AvaTax_Model_Observer_AdminhtmlCatalogProductEditPrepareForm
+    extends OnePica_AvaTax_Model_Observer_Abstract
 {
     /**
      * Save quote address id to Mage_Sales_Model_Order_Address
      *
      * @param Varien_Event_Observer $observer
      * @return $this
+     * @throws \Varien_Exception
      */
     public function execute(Varien_Event_Observer $observer)
     {
         $form = $observer->getForm();
         if (!empty($form)) {
             $elements = $form->getElements();
-            if(!empty($elements) && $elements->count() > 0) {
-                switch($elements[0]->getLegend())
-                {
+            if (!empty($elements) && $elements->count() > 0) {
+                switch ($elements[0]->getLegend()) {
                     case OnePica_AvaTax_Helper_LandedCost::AVATAX_PRODUCT_GROUP_LANDED_COST:
                         {
-                            $unitOfMeasurement = $form->getElement(OnePica_AvaTax_Helper_LandedCost::AVATAX_PRODUCT_LANDED_COST_ATTR_UNIT_OF_MEASUREMENT);
+                            $unitOfMeasurement = $form->getElement(
+                                OnePica_AvaTax_Helper_LandedCost::AVATAX_PRODUCT_LANDED_COST_ATTR_UNIT_OF_MEASUREMENT
+                            );
                             if ($unitOfMeasurement) {
                                 $unitOfMeasurement->setRenderer(
-                                    Mage::app()->getLayout()->createBlock('avatax/adminhtml_catalog_product_edit_tab_landedcost_unit')
+                                    Mage::app()->getLayout()->createBlock(
+                                        'avatax/adminhtml_catalog_product_edit_tab_landedCost_unit'
+                                    )
                                 );
                             }
                         }
@@ -51,6 +56,7 @@ class OnePica_AvaTax_Model_Observer_AdminhtmlCatalogProductEditPrepareForm exten
                 }
             }
         }
+
         return $this;
     }
 }
