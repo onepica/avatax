@@ -852,11 +852,15 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
      */
     protected function _getLandedCostMessage(GetTaxResult $result)
     {
-        /** @var \Message $message */
-        foreach ($result->getMessages() as $message) {
-            if ($message->getRefersTo() === OnePica_AvaTax_Helper_LandedCost::AVATAX_LANDED_COST_TAX_TYPE) {
-                return $message->getSummary();
+        try {
+            /** @var \Message $message */
+            foreach ($result->getMessages() as $message) {
+                if ($message->getRefersTo() === OnePica_AvaTax_Helper_LandedCost::AVATAX_LANDED_COST_TAX_TYPE) {
+                    return $message->getSummary();
+                }
             }
+        } catch (Exception $e) {
+            // Avalara's lib throws exception "Trying to get property of non-object" when "messages" is empty array
         }
 
         return null;
