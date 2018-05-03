@@ -48,7 +48,7 @@ class GetTaxRequest
     private $BRBuyer_IsExemptOrCannotWH_CSLLRF=false;			//boolean	//Changed for 15.6.0.0
     private $BRBuyer_IsExemptOrCannotWH_IRRF=false;			//boolean	//Changed for 15.6.0.0
     private $BRBuyer_IsExemptOrCannotWH_PISRF=false;			//boolean	//Changed for 15.6.0.0
-    private $IsSellerImporterOfRecord=false;			//boolean	//Changed for 15.6.0.0
+    private $IsSellerImporterOfRecord;			//boolean	//Changed for 15.6.0.0
     
     
     //@author: Swetal
@@ -77,8 +77,7 @@ class GetTaxRequest
 		$this->BRBuyer_IsExemptOrCannotWH_COFINSRF=false;	//Changed for 15.6.0.0
 		$this->BRBuyer_IsExemptOrCannotWH_CSLLRF=false;		//Changed for 15.6.0.0
 		$this->BRBuyer_IsExemptOrCannotWH_IRRF=false;		//Changed for 15.6.0.0
-		$this->BRBuyer_IsExemptOrCannotWH_PISRF=false;		//Changed for 15.6.0.0
-		$this->IsSellerImporterOfRecord=false;				//Changed for 15.6.0.0
+		$this->BRBuyer_IsExemptOrCannotWH_PISRF=false;				//Changed for 15.6.0.0
 		$this->HashCode=0;
 		$this->Discount=0.0;
 		$this->DocType=DocumentType::$SalesInvoice;
@@ -435,7 +434,9 @@ class GetTaxRequest
 	 * @param boolean $value
 	 *
 	 */
-	public function setIsSellerImporterOfRecord($value) { $this->IsSellerImporterOfRecord = $value; return $this; }				//boolean	Changed for 15.6.0.0
+	public function setIsSellerImporterOfRecord($value) {
+	    $this->IsSellerImporterOfRecord = $value; return $this;
+	}				//boolean	Changed for 15.6.0.0
 
     /**
 	 * This has been defaulted to False ; 
@@ -649,7 +650,9 @@ class GetTaxRequest
     public function getBRBuyer_IsExemptOrCannotWH_CSLLRF() { return $this->BRBuyer_IsExemptOrCannotWH_CSLLRF;}			//boolean	Changed for 15.6.0.0
     public function getBRBuyer_IsExemptOrCannotWH_IRRF() { return $this->BRBuyer_IsExemptOrCannotWH_IRRF;}			//boolean	Changed for 15.6.0.0
     public function getBRBuyer_IsExemptOrCannotWH_PISRF() { return $this->BRBuyer_IsExemptOrCannotWH_PISRF;}			//boolean	Changed for 15.6.0.0
-    public function getIsSellerImporterOfRecord() { return $this->IsSellerImporterOfRecord;}			//boolean	Changed for 15.6.0.0
+    public function getIsSellerImporterOfRecord() {
+	    return $this->IsSellerImporterOfRecord;
+	}			//boolean	Changed for 15.6.0.0
     //public function getIsTotalTaxOverriden() { return $this->IsTotalTaxOverriden;}	//boolean
 	
 	
