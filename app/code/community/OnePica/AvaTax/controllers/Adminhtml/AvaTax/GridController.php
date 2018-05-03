@@ -519,13 +519,13 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
              ->_setTitle($this->__('Landed Cost'))
              ->_setTitle($this->__('AvaTax Units Of Measurement'));
 
-        $unitofmeasurementId = $this->getRequest()->getParam('id');
-        /** @var \OnePica_AvaTax_Model_Records_UnitOfMeasurement $unitofmeasurementModel */
-        $unitofmeasurementModel = Mage::getModel('avatax_records/unitOfMeasurement')->load($unitofmeasurementId);
+        $unitOfMeasurementId = $this->getRequest()->getParam('id');
+        /** @var \OnePica_AvaTax_Model_Records_UnitOfMeasurement $unitOfMeasurementModel */
+        $unitOfMeasurementModel = Mage::getModel('avatax_records/unitOfMeasurement')->load($unitOfMeasurementId);
 
-        if ($unitofmeasurementModel->getId() || $unitofmeasurementId == 0) {
+        if ($unitOfMeasurementModel->getId() || $unitOfMeasurementId == 0) {
             try {
-                Mage::register('unit_of_measurement_data', $unitofmeasurementModel);
+                Mage::register('unit_of_measurement_data', $unitOfMeasurementModel);
 
                 $this->loadLayout()->_setActiveMenu('avatax/landedcost/avatax_unitsofmeasurement');
 
@@ -550,11 +550,11 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
      */
     public function unitsofmeasurementSaveAction()
     {
-        $unitofmeasurementId = $this->getRequest()->getParam('id');
+        $unitOfMeasurementId = $this->getRequest()->getParam('id');
 
         if (!$this->getRequest()->getPost()) {
             $this->_sessionAdminhtml->addError($this->__('Post data is empty'));
-            $this->_redirect('*/*/unitsofmeasurementEdit', array('id' => $unitofmeasurementId));
+            $this->_redirect('*/*/unitsofmeasurementEdit', array('id' => $unitOfMeasurementId));
         }
 
         try {
@@ -563,7 +563,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
 
             $countryList = $this->_getCountryListAsString($this->getRequest()->getPost('country_list'));
 
-            $unitOfMeasurementModel->setId($unitofmeasurementId);
+            $unitOfMeasurementModel->setId($unitOfMeasurementId);
             $unitOfMeasurementModel->setAvalaraCode((string)$this->getRequest()->getPost('avalara_code'))
                               ->setZendCode((string)$this->getRequest()->getPost('zend_code'))
                               ->setDescription((string)$this->getRequest()->getPost('description'))
@@ -578,7 +578,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
             $this->_sessionAdminhtml->addError($e->getMessage());
             $this->_sessionAdminhtml->setUnitOfMeasurementData($this->getRequest()->getPost());
 
-            $this->_redirect('*/*/unitsofmeasurementEdit', array('id' => $unitofmeasurementId));
+            $this->_redirect('*/*/unitsofmeasurementEdit', array('id' => $unitOfMeasurementId));
         }
     }
 
@@ -587,18 +587,18 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
      */
     public function unitsofmeasurementDeleteAction()
     {
-        $unitofmeasurementId = $this->getRequest()->getParam('id');
+        $unitOfMeasurementId = $this->getRequest()->getParam('id');
 
-        if ($unitofmeasurementId <= 0) {
+        if ($unitOfMeasurementId <= 0) {
             $this->_sessionAdminhtml->addError($this->__('Unit of measurement id is invalid'));
             $this->_redirect('*/*/unitsofmeasurement');
         }
 
         try {
-            /** @var \OnePica_AvaTax_Model_Records_UnitOfMeasurement $unitofmeasurementModel */
-            $unitofmeasurementModel = Mage::getModel('avatax_records/unitOfMeasurement')->load($unitofmeasurementId);
+            /** @var \OnePica_AvaTax_Model_Records_UnitOfMeasurement $unitOfMeasurementModel */
+            $unitOfMeasurementModel = Mage::getModel('avatax_records/unitOfMeasurement')->load($unitOfMeasurementId);
 
-            $unitofmeasurementModel->setId($unitofmeasurementId)->delete();
+            $unitOfMeasurementModel->setId($unitOfMeasurementId)->delete();
 
             $this->_sessionAdminhtml->addSuccess($this->__('Item was successfully deleted'));
 
@@ -607,7 +607,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
             $this->_sessionAdminhtml->addError($e->getMessage());
             $this->_redirect(
                 '*/*/hscodecountriesEdit', array(
-                    'id' => $unitofmeasurementId,
+                    'id' => $unitOfMeasurementId,
                 )
             );
         }
@@ -620,28 +620,28 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
      */
     public function unitsofmeasurementMassDeleteAction()
     {
-        $unitofmeasurementIds = $this->getRequest()->getParam('unitsofmeasurement');
+        $unitOfMeasurementIds = $this->getRequest()->getParam('unitsofmeasurement');
 
-        if (!is_array($unitofmeasurementIds)) {
+        if (!is_array($unitOfMeasurementIds)) {
             $this->_sessionAdminhtml->addError(Mage::helper('adminhtml')->__('Please select  Unit(s) of measurement.'));
         } else {
             try {
                 /** @var \Mage_Core_Model_Resource_Transaction $transaction */
                 $transaction = Mage::getModel('core/resource_transaction');
 
-                /** @var \OnePica_AvaTax_Model_Records_UnitOfMeasurement $unitofmeasurementModel */
-                $unitofmeasurementModel = Mage::getModel('avatax_records/unitOfMeasurement');
+                /** @var \OnePica_AvaTax_Model_Records_UnitOfMeasurement $unitOfMeasurementModel */
+                $unitOfMeasurementModel = Mage::getModel('avatax_records/unitOfMeasurement');
 
-                foreach ($unitofmeasurementIds as $unitofmeasurementId) {
-                    $unitofMeasurement = clone $unitofmeasurementModel;
-                    $unitofMeasurement->load($unitofmeasurementId);
-                    $transaction->addObject($unitofMeasurement);
+                foreach ($unitOfMeasurementIds as $id) {
+                    $unitOfMeasurement = clone $unitOfMeasurementModel;
+                    $unitOfMeasurement->load($id);
+                    $transaction->addObject($unitOfMeasurement);
                 }
 
                 $transaction->delete();
 
                 $this->_sessionAdminhtml->addSuccess(
-                    Mage::helper('adminhtml')->__('Total of %d record(s) were deleted.', count($unitofmeasurementIds))
+                    Mage::helper('adminhtml')->__('Total of %d record(s) were deleted.', count($unitOfMeasurementIds))
                 );
             } catch (Exception $e) {
                 $this->_sessionAdminhtml->addError($e->getMessage());
