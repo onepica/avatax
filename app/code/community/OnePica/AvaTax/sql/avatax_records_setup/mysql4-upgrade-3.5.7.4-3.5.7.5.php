@@ -18,20 +18,18 @@
 $installer = $this;
 $this->startSetup();
 
-$table = $this->getTable('avatax_records/unit_of_weight');
+$table = $this->getTable('avatax_records/unit_of_measurement');
 
 if (!$installer->getConnection()->isTableExists($table)) {
     $installer->run(
         "
-CREATE TABLE `" . $this->getTable('avatax_records/unit_of_weight') . "` (
+CREATE TABLE `" . $this->getTable('avatax_records/unit_of_measurement') . "` (
     `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
     `avalara_code` varchar(100) DEFAULT NULL,
-    `zend_code` varchar(100) DEFAULT NULL,
     `description` text,
     `country_list` text,
     PRIMARY KEY (`id`),
-    KEY `IDX_OP_AVATAX_UNIT_OF_WEIGHT_AVALARA_CODE` (`avalara_code`),
-    KEY `IDX_OP_AVATAX_UNIT_OF_WEIGHT_ZEND_CODE` (`zend_code`)
+    KEY `IDX_OP_AVATAX_UNIT_OF_MEASUREMENT_AVALARA_CODE` (`avalara_code`)
 ) ENGINE=InnoDB COMMENT='Used by One Pica AvaTax extension';
     "
     );

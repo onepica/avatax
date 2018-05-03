@@ -58,17 +58,29 @@ class OnePica_AvaTax_Model_Catalog_Product_Attribute_Backend_Unit extends Mage_E
     {
         $attrCode = $this->getAttribute()->getAttributeCode();
         if ($object->hasData($attrCode)) {
-            $config = json_decode($object->getData($attrCode));
-            $result = array();
-            if (!empty($config)) {
-                foreach ($config as $c) {
-                   array_push($result, (array)$c);
-                }
-            }
-
+            $result = $this->decodeUnitOfMeasurement($object->getData($attrCode));
             $object->setData($attrCode, $result);
         }
         return $this;
+    }
+
+    /**
+     * Decode Unit Of Measurement Product Configuration
+     *
+     * @param string $jsonData
+     * @return array
+     */
+    public function decodeUnitOfMeasurement($jsonData)
+    {
+        $config = json_decode($jsonData);
+        $result = array();
+        if (!empty($config)) {
+            foreach ($config as $c) {
+                array_push($result, (array)$c);
+            }
+        }
+
+        return $result;
     }
 
     /**

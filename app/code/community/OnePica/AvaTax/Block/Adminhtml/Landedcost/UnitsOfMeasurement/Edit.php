@@ -16,9 +16,9 @@
  */
 
 /**
- * Class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfWeight_Edit
+ * Class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement_Edit
  */
-class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfWeight_Edit extends Mage_Adminhtml_Block_Widget_Form_Container
+class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement_Edit extends Mage_Adminhtml_Block_Widget_Form_Container
 {
     /**
      * OnePica_AvaTax_Block_Adminhtml_Landedcost_HsCode_Edit constructor.
@@ -29,9 +29,9 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfWeight_Edit extends Mage_
 
         $this->_objectId = 'id';
         $this->_blockGroup = 'avatax';
-        $this->_controller = 'adminhtml_landedcost_unitsOfWeight';
+        $this->_controller = 'adminhtml_landedcost_unitsOfMeasurement';
 
-        $this->_updateButton('save', 'label', $this->__('Save unit of weight'));
+        $this->_updateButton('save', 'label', $this->__('Save Unit Of Measurement'));
         $this->_updateButton('delete', 'label', $this->__('Delete Item'));
         $this->_addButton(
             'save_and_edit_button',
@@ -51,7 +51,7 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfWeight_Edit extends Mage_
      */
     public function getSaveAndContinueUrl()
     {
-        return $this->getUrl('*/*/unitsofweightSave', array('_current' => true, 'back' => 'unitsofweightEdit'));
+        return $this->getUrl('*/*/unitsofmeasurementSave', array('_current' => true, 'back' => 'unitsofmeasurementEdit'));
     }
 
     /**
@@ -61,7 +61,7 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfWeight_Edit extends Mage_
      */
     public function getBackUrl()
     {
-        return $this->getUrl('*/*/unitsofweight');
+        return $this->getUrl('*/*/unitsofmeasurement');
     }
 
     /**
@@ -71,10 +71,10 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfWeight_Edit extends Mage_
      */
     public function getHeaderText()
     {
-        $unitOfWeightData = Mage::registry('unit_of_weight_data');
+        $unitOfMeasurementData = Mage::registry('unit_of_measurement_data');
 
-        if ($unitOfWeightData && $unitOfWeightData->getId()) {
-            return $this->__("Edit Item '%s'", $this->escapeHtml($unitOfWeightData->getAvalaraCode()));
+        if ($unitOfMeasurementData && $unitOfMeasurementData->getId()) {
+            return $this->__("Edit Item '%s'", $this->escapeHtml($unitOfMeasurementData->getAvalaraCode()));
         } else {
             return $this->__('Add Item');
         }
@@ -87,7 +87,7 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfWeight_Edit extends Mage_
     public function getDeleteUrl()
     {
         return $this->getUrl(
-            '*/*/unitsofweightDelete', array(
+            '*/*/unitsofmeasurementDelete', array(
                 $this->_objectId              => $this->getRequest()->getParam($this->_objectId),
                 Mage_Core_Model_Url::FORM_KEY => $this->getFormKey()
             )

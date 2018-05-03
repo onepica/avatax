@@ -16,28 +16,30 @@
  */
 
 /**
- * Unit Of Weight source config model
+ * Avatax admin UnitsOfMeasurement grid
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Adminhtml_System_Config_Source_UnitOfWeightAvalara
+class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement
+    extends Mage_Adminhtml_Block_Widget_Grid_Container
 {
-    /** kilograms */
-    const KG = 'kg';
+    public function __construct()
+    {
+        $this->_blockGroup = 'avatax';
+        $this->_controller = 'adminhtml_landedcost_unitsOfMeasurement';
+        $this->_headerText = $this->__('Units Of Measurement');
 
-    /** grams */
-    const G = 'g';
+        parent::__construct();
+        $this->_updateButton('add', 'label', $this->__('Add New Unit Of Measurement'));
+    }
 
     /**
-     * @return array
+     * @return string
      */
-    public function toOptionArray()
+    public function getCreateUrl()
     {
-        return array(
-            array('value' => self::KG, 'label' => Mage::helper('avatax')->__(self::KG)),
-            array('value' => self::G, 'label' => Mage::helper('avatax')->__(self::G))
-        );
+        return $this->getUrl('*/*/unitsofmeasurementNew');
     }
 }

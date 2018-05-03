@@ -130,9 +130,9 @@ class OnePica_AvaTax_Block_Adminhtml_Product_Edit_Tab_Avatax
         return $this->__('AvaTax');
     }
 
-    public function getUnitOfWeightOption()
+    public function getUnitOfMeasurementOption()
     {
-        return Mage::getModel('avatax/adminhtml_system_config_source_unitofweight')->toOptionArray();
+        return Mage::getModel('avatax/adminhtml_system_config_source_unitofmeasurement')->toOptionArray();
     }
 
     public function getFieldValue($field)

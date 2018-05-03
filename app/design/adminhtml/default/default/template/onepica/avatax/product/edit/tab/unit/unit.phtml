@@ -20,16 +20,17 @@
 <?php $_htmlClass   = $this->getElement()->getClass() ?>
 <?php $_htmlName    = $this->getElement()->getName() ?>
 <?php $_readonly    = $this->getElement()->getReadonly() ?>
+<?php $_defaultUnitOfMeasurement = $this->getLandedCostHelper()->getDefaultUnitsOfMeasurement(); ?>
 
 <tr>
     <td class="label"><?php echo $this->getElement()->getLabel() ?></td>
-    <td colspan="10" class="grid tier">
-    <div>
-        <span><?php echo $this->getProduct()->getWeight()?></span>
-        <span><?php echo $this->getLandedCostHelper()->getLandedCostDefaultUnitsOfWeight();?></span>
+    <td colspan="10" class="grid tier avatax-unit-of-measurement">
+    <div class="default">
+        <span class="unit"><?php echo $this->getProduct()->getWeight()?></span>
+        <span class="unit-of-measurement"><?php echo $_defaultUnitOfMeasurement ? $_defaultUnitOfMeasurement->getDescription() : '';?></span>
     </div>
     <div>
-        <span>Additional units:</span>
+        <span>Accurate units:</span>
     </div>
     <table cellspacing="0" class="data border" id="lcosts_table">
         <col width="100" />
@@ -49,7 +50,7 @@
             </tr>
         </tfoot>
     </table>
-    <!--<td class="scope-label"><span class="nobr">[GLOBAL]</span></td>-->
+    <span class="nobr">[GLOBAL]</span>
 <script type="text/javascript">
 //<![CDATA[
 var lcUnitRowTemplate = '<tr>'
@@ -135,4 +136,25 @@ $('<?php echo $_htmlId ?>_container').up('table').select('button')
 <?php endif; ?>
 //]]>
 </script>
+<style>
+    td.avatax-unit-of-measurement {
+        padding-left: 5px;
+    }
+
+    td.avatax-unit-of-measurement .default {
+        font-weight: bold;
+    }
+    
+    td.avatax-unit-of-measurement .default .unit{
+        padding-right: 5px;
+    }
+
+    td.avatax-unit-of-measurement table {
+        float: left;
+    }
+
+    td.avatax-unit-of-measurement .nobr {
+        padding-left: 5px;
+    }
+</style>
 </td></tr>

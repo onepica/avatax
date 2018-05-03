@@ -16,7 +16,7 @@
  */
 
 /**
- * Avatax admin UnitsOfWeight grid
+ * Avatax admin Agreement grid
  *
  * @category   OnePica
  * @package    OnePica_AvaTax

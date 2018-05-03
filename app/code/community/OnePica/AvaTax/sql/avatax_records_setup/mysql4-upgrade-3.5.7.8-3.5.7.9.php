@@ -24,7 +24,4 @@ $setName = 'default';
 $groupName = OnePica_AvaTax_Helper_LandedCost::AVATAX_PRODUCT_GROUP_LANDED_COST;
 $installer->addAttributeGroup('catalog_product', $setName, $groupName, 200);
 
-$installer->removeAttribute('catalog_product', OnePica_AvaTax_Helper_LandedCost::AVATAX_PRODUCT_LANDED_COST_ATTR_HSCODE);
-$installer->removeAttribute('catalog_product', OnePica_AvaTax_Helper_LandedCost::AVATAX_PRODUCT_LANDED_COST_ATTR_UNIT_OF_WEIGHT);
-
 $installer->endSetup();

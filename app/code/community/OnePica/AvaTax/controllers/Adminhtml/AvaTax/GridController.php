@@ -225,7 +225,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
         $hsCodeId = $this->getRequest()->getParam('id');
 
         if ($hsCodeId <= 0) {
-            $this->_sessionAdminhtml->addError($this->__('Unit of weight id is invalid'));
+            $this->_sessionAdminhtml->addError($this->__('Unit of measurement id is invalid'));
             $this->_redirect('*/*/hscode');
         }
 
@@ -485,170 +485,170 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     }
 
     /**
-     * Units Of Weight grid action
+     * Units Of Measurement grid action
      *
      * @return $this
      */
-    public function unitsofweightAction()
+    public function unitsofmeasurementAction()
     {
         $this->_setTitle($this->__('AvaTax'))
              ->_setTitle($this->__('Landed Cost'))
-             ->_setTitle($this->__('AvaTax Units Of Weight'));
+             ->_setTitle($this->__('AvaTax Units Of Measurement'));
 
         $this->loadLayout()
-             ->_setActiveMenu('avatax/landedcost/avatax_unitsofweight')
+             ->_setActiveMenu('avatax/landedcost/avatax_unitsofmeasurement')
              ->renderLayout();
 
         return $this;
     }
 
     /**
-     * Units Of Weight new action
+     * Units Of Measurement new action
      */
-    public function unitsofweightNewAction()
+    public function unitsofmeasurementNewAction()
     {
-        $this->_forward('unitsofweightEdit');
+        $this->_forward('unitsofmeasurementEdit');
     }
 
     /**
-     * Units Of Weight edit action
+     * Units Of Measurement edit action
      */
-    public function unitsofweightEditAction()
+    public function unitsofmeasurementEditAction()
     {
         $this->_setTitle($this->__('AvaTax'))
              ->_setTitle($this->__('Landed Cost'))
-             ->_setTitle($this->__('AvaTax Units Of Weight'));
+             ->_setTitle($this->__('AvaTax Units Of Measurement'));
 
-        $unitofweightId = $this->getRequest()->getParam('id');
-        /** @var \OnePica_AvaTax_Model_Records_UnitOfWeight $unitofweightModel */
-        $unitofweightModel = Mage::getModel('avatax_records/unitOfWeight')->load($unitofweightId);
+        $unitOfMeasurementId = $this->getRequest()->getParam('id');
+        /** @var \OnePica_AvaTax_Model_Records_UnitOfMeasurement $unitOfMeasurementModel */
+        $unitOfMeasurementModel = Mage::getModel('avatax_records/unitOfMeasurement')->load($unitOfMeasurementId);
 
-        if ($unitofweightModel->getId() || $unitofweightId == 0) {
+        if ($unitOfMeasurementModel->getId() || $unitOfMeasurementId == 0) {
             try {
-                Mage::register('unit_of_weight_data', $unitofweightModel);
+                Mage::register('unit_of_measurement_data', $unitOfMeasurementModel);
 
-                $this->loadLayout()->_setActiveMenu('avatax/landedcost/avatax_unitsofweight');
+                $this->loadLayout()->_setActiveMenu('avatax/landedcost/avatax_unitsofmeasurement');
 
-                $this->_addContent($this->getLayout()->createBlock('avatax/adminhtml_landedcost_unitsOfWeight_edit'));
+                $this->_addContent($this->getLayout()->createBlock('avatax/adminhtml_landedcost_unitsOfMeasurement_edit'));
 
                 $this->renderLayout();
             } catch (Mage_Core_Exception $e) {
                 $this->_sessionAdminhtml->addError($e->getMessage());
-                $this->_redirect('*/*/unitsofweight');
+                $this->_redirect('*/*/unitsofmeasurement');
             }
         } else {
             $this->_sessionAdminhtml->addError($this->__('Item does not exist'));
 
-            $this->_redirect('*/*/unitsofweight');
+            $this->_redirect('*/*/unitsofmeasurement');
         }
     }
 
     /**
-     * Units Of Weight save action
+     * Units Of Measurement save action
      *
      * @throws \Varien_Exception
      */
-    public function unitsofweightSaveAction()
+    public function unitsofmeasurementSaveAction()
     {
-        $unitofweightId = $this->getRequest()->getParam('id');
+        $unitOfMeasurementId = $this->getRequest()->getParam('id');
 
         if (!$this->getRequest()->getPost()) {
             $this->_sessionAdminhtml->addError($this->__('Post data is empty'));
-            $this->_redirect('*/*/unitsofweightEdit', array('id' => $unitofweightId));
+            $this->_redirect('*/*/unitsofmeasurementEdit', array('id' => $unitOfMeasurementId));
         }
 
         try {
-            /** @var \OnePica_AvaTax_Model_Records_UnitOfWeight $unitOfWeightModel */
-            $unitOfWeightModel = Mage::getModel('avatax_records/unitOfWeight');
+            /** @var \OnePica_AvaTax_Model_Records_UnitOfMeasurement $unitOfMeasurementModel */
+            $unitOfMeasurementModel = Mage::getModel('avatax_records/unitOfMeasurement');
 
             $countryList = $this->_getCountryListAsString($this->getRequest()->getPost('country_list'));
 
-            $unitOfWeightModel->setId($unitofweightId);
-            $unitOfWeightModel->setAvalaraCode((string)$this->getRequest()->getPost('avalara_code'))
+            $unitOfMeasurementModel->setId($unitOfMeasurementId);
+            $unitOfMeasurementModel->setAvalaraCode((string)$this->getRequest()->getPost('avalara_code'))
                               ->setZendCode((string)$this->getRequest()->getPost('zend_code'))
                               ->setDescription((string)$this->getRequest()->getPost('description'))
                               ->setCountryList($countryList)
                               ->save();
 
             $this->_sessionAdminhtml->addSuccess($this->__('Item was successfully saved'));
-            $this->_sessionAdminhtml->setUnitOfWeightData(false);
+            $this->_sessionAdminhtml->setUnitOfMeasurementData(false);
 
-            $this->_redirectAfterSaveModel($unitOfWeightModel, '*/*/unitsofweight');
+            $this->_redirectAfterSaveModel($unitOfMeasurementModel, '*/*/unitsofmeasurement');
         } catch (Exception $e) {
             $this->_sessionAdminhtml->addError($e->getMessage());
-            $this->_sessionAdminhtml->setUnitOfWeightData($this->getRequest()->getPost());
+            $this->_sessionAdminhtml->setUnitOfMeasurementData($this->getRequest()->getPost());
 
-            $this->_redirect('*/*/unitsofweightEdit', array('id' => $unitofweightId));
+            $this->_redirect('*/*/unitsofmeasurementEdit', array('id' => $unitOfMeasurementId));
         }
     }
 
     /**
-     * Units Of Weight delete action
+     * Units Of Measurement delete action
      */
-    public function unitsofweightDeleteAction()
+    public function unitsofmeasurementDeleteAction()
     {
-        $unitofweightId = $this->getRequest()->getParam('id');
+        $unitOfMeasurementId = $this->getRequest()->getParam('id');
 
-        if ($unitofweightId <= 0) {
-            $this->_sessionAdminhtml->addError($this->__('Unit of weight id is invalid'));
-            $this->_redirect('*/*/unitsofweight');
+        if ($unitOfMeasurementId <= 0) {
+            $this->_sessionAdminhtml->addError($this->__('Unit of measurement id is invalid'));
+            $this->_redirect('*/*/unitsofmeasurement');
         }
 
         try {
-            /** @var \OnePica_AvaTax_Model_Records_UnitOfWeight $unitofweightModel */
-            $unitofweightModel = Mage::getModel('avatax_records/unitOfWeight')->load($unitofweightId);
+            /** @var \OnePica_AvaTax_Model_Records_UnitOfMeasurement $unitOfMeasurementModel */
+            $unitOfMeasurementModel = Mage::getModel('avatax_records/unitOfMeasurement')->load($unitOfMeasurementId);
 
-            $unitofweightModel->setId($unitofweightId)->delete();
+            $unitOfMeasurementModel->setId($unitOfMeasurementId)->delete();
 
             $this->_sessionAdminhtml->addSuccess($this->__('Item was successfully deleted'));
 
-            $this->_redirect('*/*/unitsofweight');
+            $this->_redirect('*/*/unitsofmeasurement');
         } catch (Exception $e) {
             $this->_sessionAdminhtml->addError($e->getMessage());
             $this->_redirect(
                 '*/*/hscodecountriesEdit', array(
-                    'id' => $unitofweightId,
+                    'id' => $unitOfMeasurementId,
                 )
             );
         }
     }
 
     /**
-     * Units Of Weight mass delete action
+     * Units Of Measurement mass delete action
      *
      * @return $this
      */
-    public function unitsofweightMassDeleteAction()
+    public function unitsofmeasurementMassDeleteAction()
     {
-        $unitofweightIds = $this->getRequest()->getParam('unitsofweight');
+        $unitOfMeasurementIds = $this->getRequest()->getParam('unitsofmeasurement');
 
-        if (!is_array($unitofweightIds)) {
-            $this->_sessionAdminhtml->addError(Mage::helper('adminhtml')->__('Please select  Unit(s) of weight.'));
+        if (!is_array($unitOfMeasurementIds)) {
+            $this->_sessionAdminhtml->addError(Mage::helper('adminhtml')->__('Please select  Unit(s) of measurement.'));
         } else {
             try {
                 /** @var \Mage_Core_Model_Resource_Transaction $transaction */
                 $transaction = Mage::getModel('core/resource_transaction');
 
-                /** @var \OnePica_AvaTax_Model_Records_UnitOfWeight $unitofweightModel */
-                $unitofweightModel = Mage::getModel('avatax_records/unitOfWeight');
+                /** @var \OnePica_AvaTax_Model_Records_UnitOfMeasurement $unitOfMeasurementModel */
+                $unitOfMeasurementModel = Mage::getModel('avatax_records/unitOfMeasurement');
 
-                foreach ($unitofweightIds as $unitofweightId) {
-                    $unitofweight = clone $unitofweightModel;
-                    $unitofweight->load($unitofweightId);
-                    $transaction->addObject($unitofweight);
+                foreach ($unitOfMeasurementIds as $id) {
+                    $unitOfMeasurement = clone $unitOfMeasurementModel;
+                    $unitOfMeasurement->load($id);
+                    $transaction->addObject($unitOfMeasurement);
                 }
 
                 $transaction->delete();
 
                 $this->_sessionAdminhtml->addSuccess(
-                    Mage::helper('adminhtml')->__('Total of %d record(s) were deleted.', count($unitofweightIds))
+                    Mage::helper('adminhtml')->__('Total of %d record(s) were deleted.', count($unitOfMeasurementIds))
                 );
             } catch (Exception $e) {
                 $this->_sessionAdminhtml->addError($e->getMessage());
             }
         }
 
-        $this->_redirect('*/*/unitsofweight');
+        $this->_redirect('*/*/unitsofmeasurement');
 
         return $this;
     }

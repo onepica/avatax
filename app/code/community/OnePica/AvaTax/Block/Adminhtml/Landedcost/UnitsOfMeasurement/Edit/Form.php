@@ -16,9 +16,9 @@
  */
 
 /**
- * Class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfWeight_Edit_Form
+ * Class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement_Edit_Form
  */
-class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfWeight_Edit_Form extends Mage_Adminhtml_Block_Widget_Form
+class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement_Edit_Form extends Mage_Adminhtml_Block_Widget_Form
 {
     /**
      * Prepare form before rendering HTML
@@ -32,33 +32,21 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfWeight_Edit_Form extends 
         $form = new Varien_Data_Form(
             array(
                 'id'     => 'edit_form',
-                'action' => $this->getUrl('*/*/unitsofweightSave', array('id' => $this->getRequest()->getParam('id'),)),
+                'action' => $this->getUrl('*/*/unitsofmeasurementSave', array('id' => $this->getRequest()->getParam('id'),)),
                 'method' => 'post',
             )
         );
 
         $form->setUseContainer(true);
         $this->setForm($form);
-        $fieldset = $form->addFieldset('unit_of_weight_form', array('legend' => $this->__('Item information')));
+        $fieldset = $form->addFieldset('unit_of_measurement_form', array('legend' => $this->__('Item information')));
 
         $fieldset->addField(
-            'avalara_code', 'select', array(
+            'avalara_code', 'text', array(
                 'name'     => 'avalara_code',
                 'label'    => $this->__('Avalara code'),
                 'class'    => 'required-entry',
-                'required' => true,
-                'values'   => Mage::getModel('avatax/adminhtml_system_config_source_unitOfWeightAvalara')
-                                  ->toOptionArray()
-            )
-        );
-
-        $fieldset->addField(
-            'zend_code', 'select', array(
-                'name'     => 'zend_code',
-                'label'    => $this->__('Zend code'),
-                'class'    => 'required-entry',
-                'required' => true,
-                'values'   => Mage::getModel('avatax/adminhtml_system_config_source_unitOfWeight')->toOptionArray()
+                'required' => true
             )
         );
 
@@ -67,7 +55,7 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfWeight_Edit_Form extends 
                 'name'     => 'description',
                 'label'    => $this->__('Description'),
                 'class'    => 'required-entry',
-                'required' => false,
+                'required' => true,
             )
         );
 
@@ -86,11 +74,11 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfWeight_Edit_Form extends 
             )
         );
 
-        if (Mage::getSingleton('adminhtml/session')->getUnitOfWeightData()) {
-            $form->setValues(Mage::getSingleton('adminhtml/session')->getUnitOfWeightData());
+        if (Mage::getSingleton('adminhtml/session')->getUnitOfMeasurementData()) {
+            $form->setValues(Mage::getSingleton('adminhtml/session')->getUnitOfMeasurementData());
             Mage::getSingleton('adminhtml/session')->setHsCodeCountriesData(null);
-        } elseif (Mage::registry('unit_of_weight_data')) {
-            $form->setValues(Mage::registry('unit_of_weight_data')->getData());
+        } elseif (Mage::registry('unit_of_measurement_data')) {
+            $form->setValues(Mage::registry('unit_of_measurement_data')->getData());
         }
 
         return parent::_prepareForm();

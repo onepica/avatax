@@ -16,7 +16,7 @@
  */
 
 /**
- * Unit Of Weight model
+ * Unit Of Measurement model
  *
  * @method int getId()
  * @method int getStoreId()
@@ -29,14 +29,14 @@
  * @method $this setDescription(string $description)
  * @method string getCountryList() // ISO 2 Code list comma separated
  * @method $this setCountryList(string $countryCodes) // ISO 2 Code list comma separated
- * @method OnePica_AvaTax_Model_Records_Mysql4_UnitOfWeight getResource()
- * @method OnePica_AvaTax_Model_Records_Mysql4_UnitOfWeight_Collection getCollection()
+ * @method OnePica_AvaTax_Model_Records_Mysql4_UnitOfMeasurement getResource()
+ * @method OnePica_AvaTax_Model_Records_Mysql4_UnitOfMeasurement_Collection getCollection()
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Records_UnitOfWeight extends Mage_Core_Model_Abstract
+class OnePica_AvaTax_Model_Records_UnitOfMeasurement extends Mage_Core_Model_Abstract
 {
     /**
      * Internal constructor
@@ -44,7 +44,7 @@ class OnePica_AvaTax_Model_Records_UnitOfWeight extends Mage_Core_Model_Abstract
     protected function _construct()
     {
         parent::_construct();
-        $this->_init('avatax_records/unitOfWeight');
+        $this->_init('avatax_records/unitOfMeasurement');
     }
 
     /**

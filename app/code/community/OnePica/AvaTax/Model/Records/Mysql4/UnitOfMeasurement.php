@@ -16,20 +16,19 @@
  */
 
 /**
- * UnitOfWeight collection model
+ * Unit Of Measurement resource model
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Records_Mysql4_UnitOfWeight_Collection extends Mage_Core_Model_Mysql4_Collection_Abstract
+class OnePica_AvaTax_Model_Records_Mysql4_UnitOfMeasurement extends Mage_Core_Model_Mysql4_Abstract
 {
     /**
      * Construct
      */
     protected function _construct()
     {
-        parent::_construct();
-        $this->_init('avatax_records/unitOfWeight');
+        $this->_init('avatax_records/unit_of_measurement', 'id');
     }
 }

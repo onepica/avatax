@@ -46,9 +46,9 @@
                     <hs_code_country>
                         <table>op_avatax_hs_code_country</table>
                     </hs_code_country>
-                    <unit_of_weight>
-                        <table>op_avatax_unit_of_weight</table>
-                    </unit_of_weight>
+                    <unit_of_measurement>
+                        <table>op_avatax_unit_of_measurement</table>
+                    </unit_of_measurement>
                     <agreement>
                         <table>op_avatax_agreement</table>
                     </agreement>
