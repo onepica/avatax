@@ -42,13 +42,11 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement_Edit_Form ext
         $fieldset = $form->addFieldset('unit_of_measurement_form', array('legend' => $this->__('Item information')));
 
         $fieldset->addField(
-            'avalara_code', 'select', array(
+            'avalara_code', 'text', array(
                 'name'     => 'avalara_code',
                 'label'    => $this->__('Avalara code'),
                 'class'    => 'required-entry',
-                'required' => true,
-                'values'   => Mage::getModel('avatax/adminhtml_system_config_source_unitOfMeasurementAvalara')
-                                  ->toOptionArray()
+                'required' => true
             )
         );
 
@@ -57,7 +55,7 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement_Edit_Form ext
                 'name'     => 'description',
                 'label'    => $this->__('Description'),
                 'class'    => 'required-entry',
-                'required' => false,
+                'required' => true,
             )
         );
 
