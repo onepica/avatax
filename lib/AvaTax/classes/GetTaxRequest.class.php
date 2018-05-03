@@ -434,9 +434,7 @@ class GetTaxRequest
 	 * @param boolean $value
 	 *
 	 */
-	public function setIsSellerImporterOfRecord($value) {
-	    $this->IsSellerImporterOfRecord = $value; return $this;
-	}				//boolean	Changed for 15.6.0.0
+	public function setIsSellerImporterOfRecord($value) { $this->IsSellerImporterOfRecord = $value; return $this; }				//boolean	Changed for 15.6.0.0
 
     /**
 	 * This has been defaulted to False ; 
@@ -650,9 +648,7 @@ class GetTaxRequest
     public function getBRBuyer_IsExemptOrCannotWH_CSLLRF() { return $this->BRBuyer_IsExemptOrCannotWH_CSLLRF;}			//boolean	Changed for 15.6.0.0
     public function getBRBuyer_IsExemptOrCannotWH_IRRF() { return $this->BRBuyer_IsExemptOrCannotWH_IRRF;}			//boolean	Changed for 15.6.0.0
     public function getBRBuyer_IsExemptOrCannotWH_PISRF() { return $this->BRBuyer_IsExemptOrCannotWH_PISRF;}			//boolean	Changed for 15.6.0.0
-    public function getIsSellerImporterOfRecord() {
-	    return $this->IsSellerImporterOfRecord;
-	}			//boolean	Changed for 15.6.0.0
+    public function getIsSellerImporterOfRecord() { return $this->IsSellerImporterOfRecord;}			//boolean	Changed for 15.6.0.0
     //public function getIsTotalTaxOverriden() { return $this->IsTotalTaxOverriden;}	//boolean
 	
 	
