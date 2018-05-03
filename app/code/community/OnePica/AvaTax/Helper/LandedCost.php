@@ -66,6 +66,13 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
     const XML_PATH_TO_AVATAX_LANDED_COST_DEFAULT_UNITS_OF_MEASUREMENT = 'tax/avatax_landed_cost/landed_cost_units_of_measurement';
 
     /**
+     * Default Unit Of Measurement
+     *
+     * @var null
+     */
+    private $defaultUnitOfMeasurement = null;
+
+    /**
      * Get if Landed Cost is Enabled
      *
      * @param Mage_Core_Model_Store|int $store
@@ -157,11 +164,15 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
      * Get Landed Cost Default Units Of Measurement
      *
      * @param int|Mage_Core_Model_Store $storeId
-     * @return string|null
+     * @return OnePica_AvaTax_Model_Records_UnitOfMeasurement|null
      */
     public function getLandedCostDefaultUnitsOfMeasurement($storeId = null)
     {
-        return Mage::getStoreConfig(self::XML_PATH_TO_AVATAX_LANDED_COST_DEFAULT_UNITS_OF_MEASUREMENT, $storeId);
+        if(!$this->defaultUnitOfMeasurement) {
+            $this->defaultUnitOfMeasurement = Mage::getModel('avatax_records/unitOfMeasurement')->load(Mage::getStoreConfig(self::XML_PATH_TO_AVATAX_LANDED_COST_DEFAULT_UNITS_OF_MEASUREMENT, $storeId));
+        }
+
+        return $this->defaultUnitOfMeasurement;
     }
 
     /**

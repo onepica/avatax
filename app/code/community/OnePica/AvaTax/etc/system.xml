@@ -661,8 +661,6 @@
                             <source_model>avatax/adminhtml_system_config_source_unitOfMeasurement</source_model>
                             <sort_order>60</sort_order>
                             <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
                         </landed_cost_units_of_measurement>
                     </fields>
                 </avatax_landed_cost>

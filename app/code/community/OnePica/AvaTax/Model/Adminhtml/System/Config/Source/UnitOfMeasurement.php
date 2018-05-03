@@ -40,20 +40,19 @@ class OnePica_AvaTax_Model_Adminhtml_System_Config_Source_UnitOfMeasurement
      */
     public function toOptionArray()
     {
-        return array(
-            array('value' => null, 'label' => ' '),
-            array(
-                'value' => Zend_Measure_Weight::KILOGRAM,
-                'label' => Mage::helper('adminhtml')->__(Zend_Measure_Weight::KILOGRAM)
-            ),
-            array(
-                'value' => Zend_Measure_Weight::GRAM,
-                'label' => Mage::helper('adminhtml')->__(Zend_Measure_Weight::GRAM)
-            ),
-            array(
-                'value' => Zend_Measure_Weight::POUND,
-                'label' => Mage::helper('adminhtml')->__(Zend_Measure_Weight::POUND)
-            ),
-        );
+        /** @var OnePica_AvaTax_Model_Records_Mysql4_UnitOfMeasurement_Collection $collection */
+        $collection = Mage::getModel('avatax_records/unitOfMeasurement')->getCollection()->load();
+        $result = array();
+        array_push($result, array('value' => null, 'label' => ' '));
+        foreach ($collection as $item) {
+            array_push($result,
+                array(
+                    'value' => $item->getId(),
+                    'label' => $item->getDescription()
+                )
+            );
+        }
+
+        return $result;
     }
 }
