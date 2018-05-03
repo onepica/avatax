@@ -319,14 +319,14 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
             $bagItemsParams = array();
 
             // Unit
-            $unit = $lcHelper->getProductUnitOfWeight($product, $address->getCountryId());
+            $unit = $lcHelper->getProductUnitOfMeasurement($product, $address->getCountryId());
             if (!empty($unit)) {
-                $htsWeight = new ParameterBagItem();
-                $htsWeight->setName('AvaTax.Units.Mass');
-                $htsWeight->setValue($product->getWeight());
-                $htsWeight->setUOMCode($unit->getAvalaraCode());
+                $htsMeasurement = new ParameterBagItem();
+                $htsMeasurement->setName('AvaTax.Units.Mass');
+                $htsMeasurement->setValue($product->getWeight());
+                $htsMeasurement->setUOMCode($unit->getAvalaraCode());
 
-                array_push($bagItemsParams, $htsWeight);
+                array_push($bagItemsParams, $htsMeasurement);
             }
 
             //Trade Agreement

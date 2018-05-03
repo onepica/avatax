@@ -16,20 +16,30 @@
  */
 
 /**
- * UnitOfWeight collection model
+ * Avatax admin UnitsOfMeasurement grid
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Records_Mysql4_UnitOfWeight_Collection extends Mage_Core_Model_Mysql4_Collection_Abstract
+class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement
+    extends Mage_Adminhtml_Block_Widget_Grid_Container
 {
-    /**
-     * Construct
-     */
-    protected function _construct()
+    public function __construct()
     {
-        parent::_construct();
-        $this->_init('avatax_records/unitOfWeight');
+        $this->_blockGroup = 'avatax';
+        $this->_controller = 'adminhtml_landedcost_unitsOfMeasurement';
+        $this->_headerText = $this->__('Units Of Measurement');
+
+        parent::__construct();
+        $this->_updateButton('add', 'label', $this->__('Add New Unit Of Measurement'));
+    }
+
+    /**
+     * @return string
+     */
+    public function getCreateUrl()
+    {
+        return $this->getUrl('*/*/unitsofmeasurementNew');
     }
 }

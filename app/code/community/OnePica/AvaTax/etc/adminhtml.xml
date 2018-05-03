@@ -70,12 +70,12 @@
                             <resource>avatax</resource>
                             <sort_order>10</sort_order>
                         </avatax_hscode>
-                        <avatax_unitsofweight translate="title" module="avatax">
-                            <title>Units Of Weight</title>
-                            <action>adminhtml/avaTax_grid/unitsofweight</action>
+                        <avatax_unitsofmeasurement translate="title" module="avatax">
+                            <title>Units Of Measurement</title>
+                            <action>adminhtml/avaTax_grid/unitsofmeasurement</action>
                             <resource>avatax</resource>
                             <sort_order>20</sort_order>
-                        </avatax_unitsofweight>
+                        </avatax_unitsofmeasurement>
                         <avatax_agreement translate="title" module="avatax">
                             <title>Agreements</title>
                             <action>adminhtml/avaTax_grid/agreement</action>

@@ -31,11 +31,6 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
     const AVATAX_PRODUCT_LANDED_COST_ATTR_HSCODE = 'avatax_lc_hs_code';
 
     /**
-     *  HS Code product weight
-     */
-    const AVATAX_PRODUCT_LANDED_COST_ATTR_UNIT_OF_WEIGHT = 'avatax_lc_unit_of_weight';
-
-    /**
      *  Product Unit of Measurement
      */
     const AVATAX_PRODUCT_LANDED_COST_ATTR_UNIT_OF_MEASUREMENT = 'avatax_lc_unit_of_measurement';
@@ -68,7 +63,7 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
     /**
      * Xml path to landed cost DAP countries
      */
-    const XML_PATH_TO_AVATAX_LANDED_COST_DEFAULT_UNITS_OF_WEIGHT = 'tax/avatax_landed_cost/landed_cost_units_of_weight';
+    const XML_PATH_TO_AVATAX_LANDED_COST_DEFAULT_UNITS_OF_MEASUREMENT = 'tax/avatax_landed_cost/landed_cost_units_of_measurement';
 
     /**
      * Get if Landed Cost is Enabled
@@ -159,48 +154,48 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Get Landed Cost Default Units Of Weight
+     * Get Landed Cost Default Units Of Measurement
      *
      * @param int|Mage_Core_Model_Store $storeId
      * @return string|null
      */
-    public function getLandedCostDefaultUnitsOfWeight($storeId = null)
+    public function getLandedCostDefaultUnitsOfMeasurement($storeId = null)
     {
-        return Mage::getStoreConfig(self::XML_PATH_TO_AVATAX_LANDED_COST_DEFAULT_UNITS_OF_WEIGHT, $storeId);
+        return Mage::getStoreConfig(self::XML_PATH_TO_AVATAX_LANDED_COST_DEFAULT_UNITS_OF_MEASUREMENT, $storeId);
     }
 
     /**
-     * Get Product Avalara Unit Of Weight
+     * Get Product Avalara Unit Of Measurement
      *
      * @param int|Mage_Catalog_Model_Product $product
      * @param string                         $countryCode
-     * @return OnePica_AvaTax_Model_Records_UnitOfWeight
+     * @return OnePica_AvaTax_Model_Records_UnitOfMeasurement
      *
      */
-    public function getProductUnitOfWeight($product, $countryCode)
+    public function getProductUnitOfMeasurement($product, $countryCode)
     {
         $result = null;
 
         $product = is_int($product) ? Mage::getModel('catalog/product')->load($product) : $product;
 
-        $weight = $product->getWeight();
+        $measurement = $product->getMeasurement();
 
-        if (!empty($weight) && $weight > 0) {
-            $zendCode = $product->getData(self::AVATAX_PRODUCT_LANDED_COST_ATTR_UNIT_OF_WEIGHT);
+        if (!empty($measurement) && $measurement > 0) {
+            $zendCode = $product->getData(self::AVATAX_PRODUCT_LANDED_COST_ATTR_UNIT_OF_MEASUREMENT);
 
             if (empty($zendCode)) {
                 //get units from config settings
-                $zendCode = $this->getLandedCostDefaultUnitsOfWeight($product->getStoreId());
+                $zendCode = $this->getLandedCostDefaultUnitsOfMeasurement($product->getStoreId());
             }
 
             if (!empty($zendCode)) {
-                /** @var OnePica_AvaTax_Model_Records_Mysql4_UnitOfWeight_Collection $collection */
-                $collection = Mage::getModel('avatax_records/unitOfWeight')
+                /** @var OnePica_AvaTax_Model_Records_Mysql4_UnitOfMeasurement_Collection $collection */
+                $collection = Mage::getModel('avatax_records/unitOfMeasurement')
                                   ->getCollection()
                                   ->addFilter('zend_code', $zendCode);
                 $collection->getSelect()->where('country_list REGEXP ?', $countryCode);
 
-                /** @var OnePica_AvaTax_Model_Records_UnitOfWeight $unit */
+                /** @var OnePica_AvaTax_Model_Records_UnitOfMeasurement $unit */
                 $unit = $collection->getFirstItem();
 
                 $result = $unit->getId() > 0 ? $unit : null;

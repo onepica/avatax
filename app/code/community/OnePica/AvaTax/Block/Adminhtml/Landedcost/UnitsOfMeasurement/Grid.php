@@ -16,13 +16,13 @@
  */
 
 /**
- * Avatax admin UnitsOfWeight grid
+ * Avatax admin UnitsOfMeasurement grid
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfWeight_Grid
+class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement_Grid
     extends OnePica_AvaTax_Block_Adminhtml_Landedcost_Abstract_Grid
 {
     /**
@@ -37,7 +37,6 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfWeight_Grid
             array(
                 'id'           => 'number',
                 'avalara_code' => 'varchar',
-                'zend_code'    => 'varchar',
                 'description'  => 'varchar',
             )
         );
@@ -61,8 +60,8 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfWeight_Grid
      */
     protected function _prepareCollection()
     {
-        /** @var \OnePica_AvaTax_Model_Records_Mysql4_UnitOfWeight_Collection $collection */
-        $collection = Mage::getModel('avatax_records/unitOfWeight')->getCollection();
+        /** @var \OnePica_AvaTax_Model_Records_Mysql4_UnitOfMeasurement_Collection $collection */
+        $collection = Mage::getModel('avatax_records/unitOfMeasurement')->getCollection();
         $this->setCollection($collection);
 
         return parent::_prepareCollection();
@@ -71,29 +70,29 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfWeight_Grid
     /**
      * Get row url
      *
-     * @param \OnePica_AvaTax_Model_Records_UnitOfWeight $row
+     * @param \OnePica_AvaTax_Model_Records_UnitOfMeasurement $row
      * @return string
      */
     public function getRowUrl($row)
     {
-        return $this->getUrl('*/*/unitsofweightEdit', array('id' => $row->getId()));
+        return $this->getUrl('*/*/unitsofmeasurementEdit', array('id' => $row->getId()));
     }
 
     /**
      * Prepare mass actions
      *
-     * @return \OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfWeight_Grid
+     * @return \OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement_Grid
      * @throws \Varien_Exception
      */
     protected function _prepareMassaction()
     {
         $this->setMassactionIdField('id');
-        $this->getMassactionBlock()->setFormFieldName('unitsofweight');
+        $this->getMassactionBlock()->setFormFieldName('unitsofmeasurement');
 
         $this->getMassactionBlock()->addItem(
             'delete', array(
                 'label'   => $this->__('Delete'),
-                'url'     => $this->getUrl('*/*/unitsofweightMassDelete'),
+                'url'     => $this->getUrl('*/*/unitsofmeasurementMassDelete'),
                 'confirm' => $this->__('Are you sure you want to delete selected records?')
             )
         );

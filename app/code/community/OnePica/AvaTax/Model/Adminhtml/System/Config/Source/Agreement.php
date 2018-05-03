@@ -16,7 +16,7 @@
  */
 
 /**
- * Unit Of Weight source config model
+ * Unit Of Agreement source config model
  *
  * @category   OnePica
  * @package    OnePica_AvaTax

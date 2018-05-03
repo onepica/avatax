@@ -18,12 +18,12 @@
 $installer = $this;
 $this->startSetup();
 
-$table = $this->getTable('avatax_records/unit_of_weight');
+$table = $this->getTable('avatax_records/unit_of_measurement');
 
 if ($installer->getConnection()->isTableExists($table)) {
 
-    /* @var OnePica_AvaTax_Model_Records_Mysql4_UnitOfWeight_Collection $collection */
-    $collection = Mage::getModel('avatax_records/unitOfWeight')->getCollection();
+    /* @var OnePica_AvaTax_Model_Records_Mysql4_UnitOfMeasurement_Collection $collection */
+    $collection = Mage::getModel('avatax_records/unitOfMeasurement')->getCollection();
     $collection->load();
 
     if ($collection->count() == 0) {
@@ -38,12 +38,11 @@ if ($installer->getConnection()->isTableExists($table)) {
 
         // add Zend_Measure_Weight::KILOGRAM
         {
-            /** @var $unit OnePica_AvaTax_Model_Records_UnitOfWeight */
-            $unit = Mage::getModel('avatax_records/unitOfWeight');
+            /** @var $unit OnePica_AvaTax_Model_Records_UnitOfMeasurement */
+            $unit = Mage::getModel('avatax_records/unitOfMeasurement');
             $unit->setStoreId($storeDefault->getId());
             $unit->setAvalaraCode('kg');
-            $unit->setZendCode(Zend_Measure_Weight::KILOGRAM);
-            $unit->setDescription(ucfirst(strtolower($helper->__(Zend_Measure_Weight::KILOGRAM))));
+            $unit->setDescription($helper->__('Kilogram'));
             $unit->setCountryList($allCountriesExceptFew);
 
             $collection->addItem($unit);
@@ -51,12 +50,11 @@ if ($installer->getConnection()->isTableExists($table)) {
 
         // add Zend_Measure_Weight::GRAM
         {
-            /** @var $unit OnePica_AvaTax_Model_Records_UnitOfWeight */
-            $unit = Mage::getModel('avatax_records/unitOfWeight');
+            /** @var $unit OnePica_AvaTax_Model_Records_UnitOfMeasurement */
+            $unit = Mage::getModel('avatax_records/unitOfMeasurement');
             $unit->setStoreId($storeDefault->getId());
             $unit->setAvalaraCode('g');
-            $unit->setZendCode(Zend_Measure_Weight::GRAM);
-            $unit->setDescription(ucfirst(strtolower($helper->__(Zend_Measure_Weight::GRAM))));
+            $unit->setDescription($helper->__('Gram'));
             $unit->setCountryList($allCountriesExceptFew);
 
             $collection->addItem($unit);

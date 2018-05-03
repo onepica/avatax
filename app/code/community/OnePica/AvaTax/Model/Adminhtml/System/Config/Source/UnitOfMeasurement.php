@@ -16,13 +16,13 @@
  */
 
 /**
- * Unit Of Weight source config model
+ * Unit Of Measurement source config model
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Adminhtml_System_Config_Source_UnitOfWeight
+class OnePica_AvaTax_Model_Adminhtml_System_Config_Source_UnitOfMeasurement
     extends Mage_Eav_Model_Entity_Attribute_Source_Abstract
 {
     /**
