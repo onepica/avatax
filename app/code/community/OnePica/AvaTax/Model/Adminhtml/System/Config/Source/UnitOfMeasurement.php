@@ -44,6 +44,7 @@ class OnePica_AvaTax_Model_Adminhtml_System_Config_Source_UnitOfMeasurement
         $collection = Mage::getModel('avatax_records/unitOfMeasurement')->getCollection()->load();
         $result = array();
         array_push($result, array('value' => null, 'label' => ' '));
+        /** @var OnePica_AvaTax_Model_Records_UnitOfMeasurement $item */
         foreach ($collection as $item) {
             array_push($result,
                 array(

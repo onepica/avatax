@@ -166,10 +166,11 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
      * @param int|Mage_Core_Model_Store $storeId
      * @return OnePica_AvaTax_Model_Records_UnitOfMeasurement|null
      */
-    public function getLandedCostDefaultUnitsOfMeasurement($storeId = null)
+    public function getDefaultUnitsOfMeasurement($storeId = null)
     {
         if(!$this->defaultUnitOfMeasurement) {
-            $this->defaultUnitOfMeasurement = Mage::getModel('avatax_records/unitOfMeasurement')->load(Mage::getStoreConfig(self::XML_PATH_TO_AVATAX_LANDED_COST_DEFAULT_UNITS_OF_MEASUREMENT, $storeId));
+            $this->defaultUnitOfMeasurement = Mage::getModel('avatax_records/unitOfMeasurement')
+                ->load(Mage::getStoreConfig(self::XML_PATH_TO_AVATAX_LANDED_COST_DEFAULT_UNITS_OF_MEASUREMENT, $storeId));
         }
 
         return $this->defaultUnitOfMeasurement;
@@ -180,7 +181,7 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
      *
      * @param int|Mage_Catalog_Model_Product $product
      * @param string                         $countryCode
-     * @return OnePica_AvaTax_Model_Records_UnitOfMeasurement
+     * @return Varien_Object|null
      *
      */
     public function getProductUnitOfMeasurement($product, $countryCode)
@@ -189,28 +190,59 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
 
         $product = is_int($product) ? Mage::getModel('catalog/product')->load($product) : $product;
 
-        $measurement = $product->getMeasurement();
+        // get accurate units
+        $units = $product->getData(self::AVATAX_PRODUCT_LANDED_COST_ATTR_UNIT_OF_MEASUREMENT);
+        $units = is_string($units)
+                ? Mage::getModel('avatax/catalog_product_attribute_backend_unit')->decodeUnitOfMeasurement($units)
+                : $units;
+        $units = empty($units) ? array() : $units;
 
-        if (!empty($measurement) && $measurement > 0) {
-            $zendCode = $product->getData(self::AVATAX_PRODUCT_LANDED_COST_ATTR_UNIT_OF_MEASUREMENT);
+        // add default unit
+        $weight = $product->getWeight();
+        $defaultUnit = $this->getDefaultUnitsOfMeasurement($product->getStoreId());
+        if (!empty($defaultUnit) && (!empty($weight)) && $weight > 0) {
+            array_push($units,
+                array(
+                    'unit' => $weight,
+                    'unit_of_measurement' => $defaultUnit->getId(),
+                    'default' => true
+                )
+            );
+        }
 
-            if (empty($zendCode)) {
-                //get units from config settings
-                $zendCode = $this->getLandedCostDefaultUnitsOfMeasurement($product->getStoreId());
+        // gather all unit ids
+        $ids = array();
+        if(!empty($units)) {
+            foreach ($units as $u) {
+                array_push($ids, $u['unit_of_measurement']);
+            }
+        }
+
+        // find first any unit by country
+        if (!empty($ids)) {
+            $collection = Mage::getModel('avatax_records/unitOfMeasurement')
+                ->getCollection()
+                ->addFieldToFilter('id', array('in'=>$ids));
+            $collection->getSelect()->where('country_list REGEXP ?', $countryCode);
+
+            /** @var OnePica_AvaTax_Model_Records_UnitOfMeasurement $unit */
+            $unit = $collection->getFirstItem();
+
+            // search for final unit and measurement,
+            // accurate units first
+            if ($unit->getId()) {
+                $resultUnit = null;
+                foreach ($units as $u) {
+                    if ($u['unit_of_measurement'] == $unit->getId()) {
+                        $resultUnit = $u;
+                        $resultUnit['avalara_code'] = $unit->getAvalaraCode();
+                        $resultUnit['unit_obj'] = $unit;
+                        break;
+                    }
+                }
             }
 
-            if (!empty($zendCode)) {
-                /** @var OnePica_AvaTax_Model_Records_Mysql4_UnitOfMeasurement_Collection $collection */
-                $collection = Mage::getModel('avatax_records/unitOfMeasurement')
-                                  ->getCollection()
-                                  ->addFilter('zend_code', $zendCode);
-                $collection->getSelect()->where('country_list REGEXP ?', $countryCode);
-
-                /** @var OnePica_AvaTax_Model_Records_UnitOfMeasurement $unit */
-                $unit = $collection->getFirstItem();
-
-                $result = $unit->getId() > 0 ? $unit : null;
-            }
+            $result = !empty($resultUnit) ? new \Varien_Object($resultUnit) : null;
         }
 
         return $result;

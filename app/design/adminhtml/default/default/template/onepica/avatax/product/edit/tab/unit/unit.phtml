@@ -20,7 +20,7 @@
 <?php $_htmlClass   = $this->getElement()->getClass() ?>
 <?php $_htmlName    = $this->getElement()->getName() ?>
 <?php $_readonly    = $this->getElement()->getReadonly() ?>
-<?php $_defaultUnitOfMeasurement = $this->getLandedCostHelper()->getLandedCostDefaultUnitsOfMeasurement(); ?>
+<?php $_defaultUnitOfMeasurement = $this->getLandedCostHelper()->getDefaultUnitsOfMeasurement(); ?>
 
 <tr>
     <td class="label"><?php echo $this->getElement()->getLabel() ?></td>
@@ -30,7 +30,7 @@
         <span class="unit-of-measurement"><?php echo $_defaultUnitOfMeasurement ? $_defaultUnitOfMeasurement->getDescription() : '';?></span>
     </div>
     <div>
-        <span>Additional units:</span>
+        <span>Accurate units:</span>
     </div>
     <table cellspacing="0" class="data border" id="lcosts_table">
         <col width="100" />
