@@ -48,7 +48,7 @@ class GetTaxRequest
     private $BRBuyer_IsExemptOrCannotWH_CSLLRF=false;			//boolean	//Changed for 15.6.0.0
     private $BRBuyer_IsExemptOrCannotWH_IRRF=false;			//boolean	//Changed for 15.6.0.0
     private $BRBuyer_IsExemptOrCannotWH_PISRF=false;			//boolean	//Changed for 15.6.0.0
-    private $IsSellerImporterOfRecord=false;			//boolean	//Changed for 15.6.0.0
+    private $IsSellerImporterOfRecord;			//boolean	//Changed for 15.6.0.0
     
     
     //@author: Swetal
@@ -77,8 +77,7 @@ class GetTaxRequest
 		$this->BRBuyer_IsExemptOrCannotWH_COFINSRF=false;	//Changed for 15.6.0.0
 		$this->BRBuyer_IsExemptOrCannotWH_CSLLRF=false;		//Changed for 15.6.0.0
 		$this->BRBuyer_IsExemptOrCannotWH_IRRF=false;		//Changed for 15.6.0.0
-		$this->BRBuyer_IsExemptOrCannotWH_PISRF=false;		//Changed for 15.6.0.0
-		$this->IsSellerImporterOfRecord=false;				//Changed for 15.6.0.0
+		$this->BRBuyer_IsExemptOrCannotWH_PISRF=false;				//Changed for 15.6.0.0
 		$this->HashCode=0;
 		$this->Discount=0.0;
 		$this->DocType=DocumentType::$SalesInvoice;

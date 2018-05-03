@@ -290,10 +290,8 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
      */
     protected function _addGeneralLandedCostInfo($address)
     {
-        if ($this->getLandedCostMode()) {
-            $this->_request->setIsSellerImporterOfRecord($this->getLandedCostMode() == 'DDP');
-        }
-
+        // TODO: set true or false when customer has this parameter. Otherwise don't send IsSellerImporterOfRecord row
+        // $this->_request->setIsSellerImporterOfRecord(true | false);
         return $this;
     }
 
