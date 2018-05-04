@@ -66,6 +66,11 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
     const XML_PATH_TO_AVATAX_LANDED_COST_DEFAULT_UNITS_OF_MEASUREMENT = 'tax/avatax_landed_cost/landed_cost_units_of_measurement';
 
     /**
+     *  Seller is an importer for customer
+     */
+    const AVATAX_CUSTOMER_LANDED_COST_ATTR_SELLER_IS_AN_IMPORTER = 'avatax_lc_seller_is_importer';
+
+    /**
      * Default Unit Of Measurement
      *
      * @var null
