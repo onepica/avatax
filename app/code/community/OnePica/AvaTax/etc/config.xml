@@ -19,7 +19,7 @@
 <config>
     <modules>
         <OnePica_AvaTax>
-            <version>3.5.8.5</version>
+            <version>3.5.8.3</version>
         </OnePica_AvaTax>
     </modules>
     <global>
@@ -100,6 +100,7 @@
                 <rewrite>
                     <tax_class_grid>OnePica_AvaTax_Block_Adminhtml_Tax_Class_Grid</tax_class_grid>
                     <tax_class_edit_form>OnePica_AvaTax_Block_Adminhtml_Tax_Class_Edit_Form</tax_class_edit_form>
+                    <sales_order_totals_tax>OnePica_AvaTax_Block_Adminhtml_Sales_Order_Totals_Tax</sales_order_totals_tax>
                 </rewrite>
             </adminhtml>
         </blocks>

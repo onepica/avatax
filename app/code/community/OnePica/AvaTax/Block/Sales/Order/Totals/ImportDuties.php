@@ -38,14 +38,17 @@ class OnePica_AvaTax_Block_Sales_Order_Totals_ImportDuties extends Mage_Core_Blo
             return $this;
         }
 
-        $total = new Varien_Object(array(
-            'code'  => 'avatax_landed_cost_import_duties_amount',
-            'field' => 'avatax_landed_cost_import_duties_amount',
-            'value' => $this->getSource()->getAvataxLandedCostImportDutiesAmount(),
-            'label' => $this->__('Customs Duty and Import Tax')
-        ));
+        $total = new Varien_Object(
+            array(
+                'code'  => 'avatax_landed_cost_import_duties_amount',
+                'field' => 'avatax_landed_cost_import_duties_amount',
+                'value' => $this->getSource()->getAvataxLandedCostImportDutiesAmount(),
+                'label' => $this->__('Customs Duty and Import Tax')
+            )
+        );
 
         $this->getParentBlock()->addTotal($total, 'tax');
+
         return $this;
     }
 }
