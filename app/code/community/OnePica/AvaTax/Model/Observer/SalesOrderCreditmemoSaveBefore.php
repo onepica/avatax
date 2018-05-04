@@ -35,6 +35,26 @@ class OnePica_AvaTax_Model_Observer_SalesOrderCreditmemoSaveBefore extends OnePi
         /** @var Mage_Sales_Model_Order_Creditmemo $creditmemo */
         $creditmemo = $observer->getEvent()->getCreditmemo();
 
+        /** @var Mage_Sales_Model_Order $order */
+        $order = $creditmemo->getOrder();
+        $isLandedCostPresent = $order->getAvataxLandedCostImportDutiesAmount();
+        if ($isLandedCostPresent) {
+            $isPartialInvoice = false;
+            foreach ($order->getAllItems() as $item) {
+                if ($item->getQtyRefunded() != $item->getQtyOrdered()) {
+                    $isPartialInvoice = true;
+                    break;
+                }
+            }
+
+            if ($isPartialInvoice) {
+                throw new \OnePica_AvaTax_Exception(
+                    Mage::helper('avatax')
+                        ->__('You are not available to make partial creditmemo for orders that include landed cost taxes.')
+                );
+            }
+        }
+
         return $this;
     }
 }
