@@ -26,6 +26,8 @@ class OnePica_AvaTax_Helper_Landedcost_Shipping extends Mage_Core_Helper_Abstrac
 
     protected $_valuesSelect = array();
 
+    const AVATAX_LANDEDCOST_NONE = null;
+
     const AVATAX_LANDEDCOST_GROUND = 'ground';
 
     const AVATAX_LANDEDCOST_AIR = 'air';
@@ -64,6 +66,24 @@ class OnePica_AvaTax_Helper_Landedcost_Shipping extends Mage_Core_Helper_Abstrac
     }
 
     /**
+     * Load Shipping Method with Carrier Code
+     * @param $codeCarrier
+     * @return mixed
+     */
+    public function getShippingMethodByCode($codeCarrier)
+    {
+        $shippingModel = Mage::getSingleton('shipping/config')->getCarrierInstance($codeCarrier);
+        Mage::getModel(
+            'avatax/landedcost_shipping_method', array(
+                'id'    => $codeCarrier,
+                'model' => $shippingModel
+            )
+        );
+
+        return $shippingModel;
+    }
+
+    /**
      * Retrive config data
      *
      * @return array
@@ -93,22 +113,34 @@ class OnePica_AvaTax_Helper_Landedcost_Shipping extends Mage_Core_Helper_Abstrac
         return $formData;
     }
 
+
     /**
      * Defines select labels and values
      *
+     * @param bool $isMultiSelect
      * @return array
      */
-    public function getSelectValues()
+    public function getSelectValues($isMultiSelect = false)
     {
         if (empty($this->_valuesSelect)) {
             $this->_valuesSelect = array(
+                array('label' => Mage::helper('adminhtml')->__(''), 'value' => self::AVATAX_LANDEDCOST_NONE),
                 array('label' => Mage::helper('adminhtml')->__('Ground'), 'value' => self::AVATAX_LANDEDCOST_GROUND),
                 array('label' => Mage::helper('adminhtml')->__('Air'), 'value' => self::AVATAX_LANDEDCOST_AIR),
                 array('label' => Mage::helper('adminhtml')->__('Ocean'), 'value' => self::AVATAX_LANDEDCOST_OCEAN)
             );
         }
 
-        return $this->_valuesSelect;
+        $result = array();
+        foreach ($this->_valuesSelect as $item) {
+            if ($isMultiSelect && $item['value'] === self::AVATAX_LANDEDCOST_NONE) {
+                continue;
+            }
+
+            array_push($result, $item);
+        }
+
+        return $result;
     }
 
     /**
@@ -122,22 +154,24 @@ class OnePica_AvaTax_Helper_Landedcost_Shipping extends Mage_Core_Helper_Abstrac
         $rate = $address->getShippingRateByCode($address->getShippingMethod());
 
         if ($rate) {
-            foreach ($this->getSelectValues() as $selectValue) {
-                $multiselectConfigData = explode(
-                    ',',
-                    $this->getConfigFormData($rate->getCarrier() . '_' . $selectValue['value'])
-                );
+            $shippingMethod = $this->getShippingMethodByCode($rate->getCarrier());
+            $isMultiSelect = $shippingMethod->getCarrierMethods() !== null;
+            if ($isMultiSelect) {
+                foreach ($this->getSelectValues($isMultiSelect) as $selectValue) {
+                    $multiselectConfigData = explode(
+                        ',',
+                        $this->getConfigFormData($rate->getCarrier() . '_' . $selectValue['value'])
+                    );
 
-                if (isset($multiselectConfigData) && in_array($rate->getMethod(), $multiselectConfigData)) {
-                    $shippingMode = $selectValue['value'];
+                    if (isset($multiselectConfigData) && in_array($rate->getMethod(), $multiselectConfigData)) {
+                        $shippingMode = $selectValue['value'];
+                    }
                 }
-            }
-
-            if (!$shippingMode) {
+            } else {
                 $shippingMode = $this->getConfigFormData($rate->getCarrier());
             }
         } else {
-            $shippingMode = self::AVATAX_LANDEDCOST_GROUND;
+            $shippingMode = self::AVATAX_LANDEDCOST_NONE;
         }
 
         return $shippingMode;
