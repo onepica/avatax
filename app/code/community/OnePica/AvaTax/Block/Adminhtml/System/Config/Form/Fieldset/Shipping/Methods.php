@@ -121,7 +121,10 @@ class OnePica_AvaTax_Block_Adminhtml_System_Config_Form_Fieldset_Shipping_Method
             $formId, 'select', array(
                 'name'                  => 'groups[avatax_landed_cost_shipping][fields][' . $formId . '][value]',
                 'label'                 => $shippingMethod->getTitle(),
-                'comment'               => 'Default value for this shipping method (if not defined in multiselect)',
+                'comment'               => (!$isMultiSelect
+                                                ? 'Avalara shipping code for this shipping method'
+                                                : 'Avalara shipping code for shipping methods selected in multiselect below.'
+                                            ),
                 'value'                 => $this->_shippingHelper->getConfigFormData($formId),
                 'values'                => $this->_shippingHelper->getSelectValues($isMultiSelect),
                 'class'                 => "avatax-lc-carrier-method",
