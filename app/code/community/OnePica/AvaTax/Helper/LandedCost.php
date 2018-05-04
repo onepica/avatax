@@ -144,6 +144,36 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * @param OnePica_AvaTax_Model_Sales_Quote_Address $object
+     * @return true|false|null
+     */
+    public function isSellerImporterOfRecordForTheCustomer($object)
+    {
+        $result = null;
+        $customerId = $object->getCustomerId();
+        if($customerId) {
+            /** @var Mage_Customer_Model_Customer $customer */
+            $customer = Mage::getModel('customer/customer');
+            $customer->load($customerId);
+            $result = isset($customer) ? $customer->getData(self::AVATAX_CUSTOMER_LANDED_COST_ATTR_SELLER_IS_AN_IMPORTER) : $result;
+            switch ($result)
+            {
+                case OnePica_AvaTax_Model_Entity_Attribute_Source_Boolean::VALUE_YES:
+                    $result = true;
+                    break;
+                case OnePica_AvaTax_Model_Entity_Attribute_Source_Boolean::VALUE_NO:
+                    $result = false;
+                    break;
+                default:
+                    $result = null;
+                    break;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
      * Get Product HTS Code
      *
      * @param int|Mage_Catalog_Model_Product $product

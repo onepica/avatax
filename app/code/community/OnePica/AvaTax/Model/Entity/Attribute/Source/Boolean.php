@@ -29,9 +29,9 @@ class OnePica_AvaTax_Model_Entity_Attribute_Source_Boolean extends Mage_Eav_Mode
     /**
      * Option values
      */
-    const VALUE_UNDEFINED = -1;
+    const VALUE_UNDEFINED = 0;
     const VALUE_YES = 1;
-    const VALUE_NO = 0;
+    const VALUE_NO = -1;
 
     /**
      * Retrieve all options array
