@@ -382,7 +382,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
                 'name'     => $taxDetail->getTaxName(),
                 'rate'     => $rate,
                 'amt'      => $amt,
-                'tax_type' => $taxDetail->getTaxType()
+                'avatax_tax_type' => $taxDetail->getTaxType()
             );
         }
 
