@@ -94,15 +94,6 @@
                         </shipping>
                     </fields>
                 </display>
-                <sales_display>
-                    <fields>
-                        <full_summary>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </full_summary>
-                    </fields>
-                </sales_display>
             </groups>
         </tax>
     </sections>
