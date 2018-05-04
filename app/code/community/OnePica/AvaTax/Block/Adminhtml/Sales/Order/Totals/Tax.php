@@ -40,24 +40,6 @@ class OnePica_AvaTax_Block_Adminhtml_Sales_Order_Totals_Tax extends Mage_Adminht
     }
 
     /**
-     * Get full information about taxes applied to order
-     *
-     * @return array
-     */
-    public function getFullTaxInfo()
-    {
-        /** @var $source Mage_Sales_Model_Order */
-        $source = $this->getOrder();
-
-        $taxClassAmount = array();
-        if ($source instanceof Mage_Sales_Model_Order) {
-            $taxClassAmount = $this->_getTaxHelper()->getCalculatedTaxes($source);
-        }
-
-        return $taxClassAmount;
-    }
-
-    /**
      * @return float
      * @throws \Varien_Exception
      */

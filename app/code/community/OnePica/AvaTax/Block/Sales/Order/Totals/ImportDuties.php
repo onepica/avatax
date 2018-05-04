@@ -31,6 +31,8 @@ class OnePica_AvaTax_Block_Sales_Order_Totals_ImportDuties extends Mage_Core_Blo
 
     /**
      * Add this total to parent
+     *
+     * @throws \Varien_Exception
      */
     public function initTotals()
     {

@@ -25,10 +25,9 @@
 class OnePica_AvaTax_Model_Observer_SalesConvertQuoteAddressToOrder extends OnePica_AvaTax_Model_Observer_Abstract
 {
     /**
-     * Save quote address id to Mage_Sales_Model_Order_Address
-     *
      * @param Varien_Event_Observer $observer
      * @return $this
+     * @throws \Varien_Exception
      */
     public function execute(Varien_Event_Observer $observer)
     {
