@@ -34,6 +34,27 @@ class OnePica_AvaTax_Model_Observer_SalesOrderInvoiceSaveBefore extends OnePica_
     {
         /** @var Mage_Sales_Model_Order_Invoice $invoice */
         $invoice = $observer->getEvent()->getInvoice();
+
+        /** @var Mage_Sales_Model_Order $order */
+        $order = $invoice->getOrder();
+        $isLandedCostPresent = $order->getAvataxLandedCostImportDutiesAmount();
+        if ($isLandedCostPresent) {
+            $isPartialInvoice = false;
+            foreach ($order->getAllItems() as $item) {
+                if ($item->getQtyInvoiced() != $item->getQtyOrdered()) {
+                    $isPartialInvoice = true;
+                    break;
+                }
+            }
+
+            if ($isPartialInvoice) {
+                throw new \OnePica_AvaTax_Exception(
+                    Mage::helper('avatax')
+                        ->__('You are not available to make partial invoice for orders that include landed cost taxes.')
+                );
+            }
+        }
+
         return $this;
     }
 }
