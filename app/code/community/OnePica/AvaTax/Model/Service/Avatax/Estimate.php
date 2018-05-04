@@ -375,11 +375,14 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
                 $amt = $taxDetail->getTax();
             }
 
+            $rate = $taxDetail->getTaxType() === OnePica_AvaTax_Helper_LandedCost::AVATAX_LANDED_COST_TAX_TYPE ? null
+                : $taxDetail->getRate() * 100;
+
             $result[$resultKey] = array(
                 'name'     => $taxDetail->getTaxName(),
-                'rate'     => $taxDetail->getRate() * 100,
+                'rate'     => $rate,
                 'amt'      => $amt,
-                'tax_type' => $taxDetail->getTaxType()
+                'avatax_tax_type' => $taxDetail->getTaxType()
             );
         }
 

@@ -100,6 +100,7 @@
                 <rewrite>
                     <tax_class_grid>OnePica_AvaTax_Block_Adminhtml_Tax_Class_Grid</tax_class_grid>
                     <tax_class_edit_form>OnePica_AvaTax_Block_Adminhtml_Tax_Class_Edit_Form</tax_class_edit_form>
+                    <sales_order_totals_tax>OnePica_AvaTax_Block_Adminhtml_Sales_Order_Totals_Tax</sales_order_totals_tax>
                 </rewrite>
             </adminhtml>
         </blocks>
@@ -349,6 +350,24 @@
                     </avatax>
                 </observers>
             </sales_convert_quote_address_to_order_address>
+            <sales_convert_quote_address_to_order>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer_salesConvertQuoteAddressToOrder</class>
+                        <method>execute</method>
+                    </avatax>
+                </observers>
+            </sales_convert_quote_address_to_order>
+            <sales_convert_quote_item_to_order_item>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer_salesConvertQuoteItemToOrderItem</class>
+                        <method>execute</method>
+                    </avatax>
+                </observers>
+            </sales_convert_quote_item_to_order_item>
             <fieldsets>
                 <sales_convert_quote_item>
                     <avatax_landed_cost_import_duties_amount>
