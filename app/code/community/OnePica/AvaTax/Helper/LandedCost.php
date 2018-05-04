@@ -314,4 +314,14 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
 
         return $result;
     }
+
+    /**
+     * Return precision for the unit
+     *
+     * @return int
+     */
+    public function getUnitPrecision()
+    {
+        return 4;
+    }
 }
