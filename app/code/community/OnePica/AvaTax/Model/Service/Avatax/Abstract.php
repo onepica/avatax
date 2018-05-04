@@ -295,6 +295,23 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
             if ($isSellerImporter !== null) {
                 $this->_request->setIsSellerImporterOfRecord((boolean)$isSellerImporter);
             }
+
+            $bagItemsParams = array();
+
+            /** @var OnePica_AvaTax_Helper_Landedcost_Shipping $shippingHelper */
+            $shippingHelper = Mage::helper('avatax/landedcost_shipping');
+            $mode = $shippingHelper->getShippingMode($address);
+            if($mode) {
+                $shippingMode = new ParameterBagItem();
+                $shippingMode->setName('AvaTax.LandedCost.ShippingMode');
+                $shippingMode->setValue($mode);
+
+                array_push($bagItemsParams, $shippingMode);
+            }
+
+            if (!empty($bagItemsParams)) {
+                $this->_request->setParameterBagItems($bagItemsParams);
+            }
         }
 
         return $this;
@@ -312,6 +329,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
     protected function _addLandedCostParamsToLine($line, $product, $address)
     {
         if ($this->getLandedCostMode()) {
+
             /* @var OnePica_AvaTax_Helper_LandedCost $lcHelper */
             $lcHelper = $this->_getLandedCostHelper();
 
@@ -324,16 +342,22 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
             // Unit
             $unit = $lcHelper->getProductUnitOfMeasurement($product, $address->getCountryId());
             if (!empty($unit)) {
+                $unitValue = round($unit->getUnit() * $line->getQty(), $lcHelper->getUnitPrecision());
                 $htsMeasurement = new ParameterBagItem();
                 $htsMeasurement->setName('AvaTax.Units.Mass');
-                $htsMeasurement->setValue($unit->getUnit());
+                $htsMeasurement->setValue($unitValue);
                 $htsMeasurement->setUOMCode($unit->getAvalaraCode());
 
                 array_push($bagItemsParams, $htsMeasurement);
             }
 
             //Trade Agreement
-            $agreements = $lcHelper->getProductAgreements($product, 'MX', $address->getCountryId());
+            $storeId = $this->_getStoreIdByObject($address);
+            $agreements = $lcHelper->getProductAgreements(
+                                $product,
+                                $this->_getConfigHelper()->getShippingOriginCountryId($storeId),
+                                $address->getCountryId()
+                            );
             if (!empty($agreements)) {
                 $agreements = implode(',', $agreements);
                 $bagAgreement = new ParameterBagItem();
