@@ -268,15 +268,14 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
     /**
      * Init Landed Cost Mode Param
      *
-     * @param Address
+     * @param OnePica_AvaTax_Model_Sales_Quote_Address|Mage_Sales_Model_Order $object
      * @return $this
      * @throws \Varien_Exception
      */
-    protected function _initLandedCostModeParam($address)
+    protected function _initLandedCostModeParam($object)
     {
-        $storeId = $address->getQuote()->getStoreId();
-        $destinationCountryCode = $address->getCountry();
-        $mode = $this->_getLandedCostHelper()->getLandedCostMode($destinationCountryCode, $storeId);
+        $storeId = $this->_getStoreIdByObject($object);
+        $mode = $this->_getLandedCostHelper()->isLandedCostEnabled($storeId);
         $this->setLandedCostMode($mode);
 
         return $this;
@@ -654,13 +653,17 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
     /**
      * Retrieve storeId from object
      *
-     * @param OnePica_AvaTax_Model_Sales_Quote_Address|Mage_Sales_Model_Order $object
+     * @param OnePica_AvaTax_Model_Sales_Quote_Address|Mage_Sales_Model_Order_Address|Mage_Sales_Model_Order $object
      * @return int
      */
     protected function _getStoreIdByObject($object)
     {
         if ($object instanceof OnePica_AvaTax_Model_Sales_Quote_Address) {
             return $object->getQuote()->getStoreId();
+        }
+
+        if ($object instanceof Mage_Sales_Model_Order_Address) {
+            return $object->getOrder()->getStoreId();
         }
 
         return $object->getStoreId();
