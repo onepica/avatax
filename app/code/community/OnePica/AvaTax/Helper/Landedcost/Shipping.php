@@ -73,14 +73,12 @@ class OnePica_AvaTax_Helper_Landedcost_Shipping extends Mage_Core_Helper_Abstrac
     public function getShippingMethodByCode($codeCarrier)
     {
         $shippingModel = Mage::getSingleton('shipping/config')->getCarrierInstance($codeCarrier);
-        Mage::getModel(
+        return Mage::getModel(
             'avatax/landedcost_shipping_method', array(
                 'id'    => $codeCarrier,
                 'model' => $shippingModel
             )
         );
-
-        return $shippingModel;
     }
 
     /**
@@ -144,31 +142,48 @@ class OnePica_AvaTax_Helper_Landedcost_Shipping extends Mage_Core_Helper_Abstrac
     }
 
     /**
-     * @param \Mage_Sales_Model_Quote_Address $address
+     * @param \Mage_Sales_Model_Quote_Address|Mage_Sales_Model_Order $object
      * @return null|string
      */
-    public function getShippingMode($address)
+    public function getShippingMode($object)
     {
         $shippingMode = null;
-        /** @var Mage_Sales_Model_Quote_Address_Rate $rate */
-        $rate = $address->getShippingRateByCode($address->getShippingMethod());
 
-        if ($rate) {
-            $shippingMethod = $this->getShippingMethodByCode($rate->getCarrier());
+        $info = null;
+        if( $object instanceof Mage_Sales_Model_Order) {
+            $carrier = $object->getShippingCarrier();
+            if($carrier) {
+                $info = new \Varien_Object();
+                $info->setCarrier($carrier->getCarrierCode());
+                $method = preg_replace("/{$info->getCarrier()}_/", '', $object->getShippingMethod(), 1);
+                $info->setMethod($method);
+            }
+        } else {
+            /** @var Mage_Sales_Model_Quote_Address_Rate $info */
+            $rate = $object->getShippingRateByCode($object->getShippingMethod());
+            if($rate) {
+                $info = new \Varien_Object();
+                $info->setCarrier($rate->getCarrier());
+                $info->setMethod($rate->getMethod());
+            }
+        }
+
+        if ($info) {
+            $shippingMethod = $this->getShippingMethodByCode($info->getCarrier());
             $isMultiSelect = $shippingMethod->getCarrierMethods() !== null;
             if ($isMultiSelect) {
                 foreach ($this->getSelectValues($isMultiSelect) as $selectValue) {
                     $multiselectConfigData = explode(
                         ',',
-                        $this->getConfigFormData($rate->getCarrier() . '_' . $selectValue['value'])
+                        $this->getConfigFormData($info->getCarrier() . '_' . $selectValue['value'])
                     );
 
-                    if (isset($multiselectConfigData) && in_array($rate->getMethod(), $multiselectConfigData)) {
+                    if (isset($multiselectConfigData) && in_array($info->getMethod(), $multiselectConfigData)) {
                         $shippingMode = $selectValue['value'];
                     }
                 }
             } else {
-                $shippingMode = $this->getConfigFormData($rate->getCarrier());
+                $shippingMode = $this->getConfigFormData($info->getCarrier());
             }
         } else {
             $shippingMode = self::AVATAX_LANDEDCOST_NONE;
