@@ -7,7 +7,7 @@
  * The type of the address(es) returned in the validation result.
  *
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright Â© 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Address
  * 
  */
@@ -36,5 +36,3 @@ class AddressType extends Enum
     // Unfortunate boiler plate due to polymorphism issues on static functions
     public static function Validate($value) { self::__Validate($value,self::Values(),__CLASS__); }
 }
-
-?>

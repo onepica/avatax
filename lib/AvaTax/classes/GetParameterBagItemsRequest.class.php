@@ -5,7 +5,7 @@
 
 /**
  * @author    Avalara
- * @copyright © 2004 - 2016 Avalara, Inc.  All rights reserved.
+ * @copyright Â© 2004 - 2016 Avalara, Inc.  All rights reserved.
  * @package   Tax
  */
    
@@ -39,5 +39,3 @@ class GetParameterBagItemsRequest
 
     public function getState() { return $this->State;}   	
 }
-
-?>

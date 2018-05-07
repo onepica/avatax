@@ -232,6 +232,26 @@ class OnePica_AvaTax_Model_Action_Calculator extends OnePica_AvaTax_Model_Action
     }
 
     /**
+     * Estimates landed cost amount rate for one item.
+     *
+     * @param Mage_Sales_Model_Quote_Item $item
+     * @return int
+     */
+    public function getItemLandedCostAmount($item)
+    {
+        if ($this->isProductCalculated($item)) {
+            return 0;
+        } else {
+            $id = $item->getId();
+            $ratesData = $this->_getRates();
+
+            return isset($ratesData['items'][$id]['landed_cost_amount'])
+                ? $ratesData['items'][$id]['landed_cost_amount']
+                : 0;
+        }
+    }
+
+    /**
      * Get tax detail summary
      *
      * @param Mage_Sales_Model_Quote_Address $address
@@ -269,5 +289,31 @@ class OnePica_AvaTax_Model_Action_Calculator extends OnePica_AvaTax_Model_Action
         }
 
         return $this;
+    }
+
+    /**
+     * Estimates landed cost tax amount
+     *
+     * @return float|null
+     */
+    public function getLandedCostAmount()
+    {
+        $ratesData = $this->_getRates();
+        $tax = isset($ratesData['landed_cost_amount']) ? (float)$ratesData['landed_cost_amount'] : null;
+
+        return $tax;
+    }
+
+    /**
+     * Get landed cost DAP message
+     *
+     * @return string|null
+     */
+    public function getLandedCostMessage()
+    {
+        $ratesData = $this->_getRates();
+        $message = isset($ratesData['landed_cost_message']) ? $ratesData['landed_cost_message'] : null;
+
+        return $message;
     }
 }

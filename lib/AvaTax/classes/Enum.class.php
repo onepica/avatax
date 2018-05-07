@@ -7,7 +7,7 @@
  * Abstract class for enumerated types - provides validation.
  *
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright Â© 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Base
  */
  
@@ -27,5 +27,3 @@ class Enum
 		throw new Exception('Invalid '.$class.' "'.$value.'" - must be one of "'.implode('"|"',$values).'"');
     }
 }
-
-?>

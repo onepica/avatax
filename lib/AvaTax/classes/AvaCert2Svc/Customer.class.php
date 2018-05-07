@@ -7,7 +7,7 @@
  * Contains customer data. Can be passed to {@link CustomerSave} using {@link CustomerSaveRequest}. 
  * 
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright Â© 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   AvaCert2
  */
 class Customer {
@@ -133,5 +133,3 @@ class Customer {
   public function getEmail(){return $this->Email;} // string
 
 }
-
-?>

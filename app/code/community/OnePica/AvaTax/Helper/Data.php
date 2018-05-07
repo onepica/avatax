@@ -61,7 +61,7 @@ class OnePica_AvaTax_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getDocumentationUrl()
     {
-        return 'http://www.onepica.com/magento-extensions/avatax/';
+        return 'https://astoundcommerce.com/magento-extensions/avatax/';
     }
 
     /**

@@ -19,7 +19,7 @@
 <config>
     <modules>
         <OnePica_AvaTax>
-            <version>3.5.7.0</version>
+            <version>3.5.8.5</version>
         </OnePica_AvaTax>
     </modules>
     <global>
@@ -40,6 +40,18 @@
                     <queue>
                         <table>op_avatax_queue</table>
                     </queue>
+                    <hs_code>
+                        <table>op_avatax_hs_code</table>
+                    </hs_code>
+                    <hs_code_country>
+                        <table>op_avatax_hs_code_country</table>
+                    </hs_code_country>
+                    <unit_of_measurement>
+                        <table>op_avatax_unit_of_measurement</table>
+                    </unit_of_measurement>
+                    <agreement>
+                        <table>op_avatax_agreement</table>
+                    </agreement>
                 </entities>
             </avatax_records_mysql4>
             <adminhtml>
@@ -88,6 +100,7 @@
                 <rewrite>
                     <tax_class_grid>OnePica_AvaTax_Block_Adminhtml_Tax_Class_Grid</tax_class_grid>
                     <tax_class_edit_form>OnePica_AvaTax_Block_Adminhtml_Tax_Class_Edit_Form</tax_class_edit_form>
+                    <sales_order_totals_tax>OnePica_AvaTax_Block_Adminhtml_Sales_Order_Totals_Tax</sales_order_totals_tax>
                 </rewrite>
             </adminhtml>
         </blocks>
@@ -157,6 +170,15 @@
                     </avatax>
                 </observers>
             </sales_quote_load_after>
+            <sales_order_invoice_save_before>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer_salesOrderInvoiceSaveBefore</class>
+                        <method>execute</method>
+                    </avatax>
+                </observers>
+            </sales_order_invoice_save_before>
             <sales_order_invoice_save_after>
                 <observers>
                     <avatax>
@@ -166,6 +188,15 @@
                     </avatax>
                 </observers>
             </sales_order_invoice_save_after>
+            <sales_order_creditmemo_save_before>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer_salesOrderCreditmemoSaveBefore</class>
+                        <method>execute</method>
+                    </avatax>
+                </observers>
+            </sales_order_creditmemo_save_before>
             <sales_order_creditmemo_save_after>
                 <observers>
                     <avatax>
@@ -319,6 +350,50 @@
                     </avatax>
                 </observers>
             </sales_convert_quote_address_to_order_address>
+            <sales_convert_quote_address_to_order>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer_salesConvertQuoteAddressToOrder</class>
+                        <method>execute</method>
+                    </avatax>
+                </observers>
+            </sales_convert_quote_address_to_order>
+            <sales_convert_quote_item_to_order_item>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer_salesConvertQuoteItemToOrderItem</class>
+                        <method>execute</method>
+                    </avatax>
+                </observers>
+            </sales_convert_quote_item_to_order_item>
+            <fieldsets>
+                <sales_convert_quote_item>
+                    <avatax_landed_cost_import_duties_amount>
+                        <to_order_item>*</to_order_item>
+                    </avatax_landed_cost_import_duties_amount>
+                    <base_avatax_landed_cost_import_duties_amount>
+                        <to_order_item>*</to_order_item>
+                    </base_avatax_landed_cost_import_duties_amount>
+                </sales_convert_quote_item>
+                <sales_convert_quote_address>
+                    <avatax_landed_cost_import_duties_amount>
+                        <to_order>*</to_order>
+                    </avatax_landed_cost_import_duties_amount>
+                    <base_avatax_landed_cost_import_duties_amount>
+                        <to_order>*</to_order>
+                    </base_avatax_landed_cost_import_duties_amount>
+                </sales_convert_quote_address>
+            </fieldsets>
+            <adminhtml_catalog_product_edit_prepare_form>
+                <observers>
+                    <weee>
+                        <class>avatax/observer_adminhtmlCatalogProductEditPrepareForm</class>
+                        <method>execute</method>
+                    </weee>
+                </observers>
+            </adminhtml_catalog_product_edit_prepare_form>
         </events>
     </global>
     <frontend>
@@ -394,16 +469,6 @@
                             <import_export>
                                 <!-- enabled/disabled in OnePica_AvaTax_Model_Admin_Session -->
                             </import_export>
-                            <avatax_queue translate="title" module="avatax">
-                                <title>AvaTax Order Sync Queue</title>
-                                <action>adminhtml/avaTax_grid/queue</action>
-                                <resource>avatax</resource>
-                            </avatax_queue>
-                            <avatax_log translate="title" module="avatax">
-                                <title>AvaTax Log</title>
-                                <action>adminhtml/avaTax_grid/log</action>
-                                <resource>avatax</resource>
-                            </avatax_log>
                         </children>
                     </tax>
                 </children>
@@ -461,6 +526,7 @@
                 <normalize_address_disabler_please_wait_label>Updating addresses...</normalize_address_disabler_please_wait_label>
                 <validate_address_message>The address '%s' appears invalid. Please correct it or select another address.</validate_address_message>
                 <avatax16_onepage_validate_address_message>Unable to validate address.</avatax16_onepage_validate_address_message>
+                <landed_cost_enabled>0</landed_cost_enabled>
             </avatax>
             <calculation>
                 <based_on>shipping</based_on>

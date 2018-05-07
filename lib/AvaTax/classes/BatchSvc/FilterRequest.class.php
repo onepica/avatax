@@ -7,7 +7,7 @@
  * 
  *
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright Â© 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Batch
  */
 class FilterRequest {
@@ -27,5 +27,3 @@ class FilterRequest {
   public function getMaxCount(){return $this->MaxCount;} // int
 
 }
-
-?>

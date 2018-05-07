@@ -61,6 +61,8 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
         $this->_request->setDocCode($invoice->getIncrementId());
         $this->_request->setDocType(DocumentType::$SalesInvoice);
 
+        $this->_initLandedCostModeParam($order);
+        $this->_addGeneralLandedCostInfo($order);
         $this->_addGeneralInfo($order);
         $this->_addShipping($invoice);
         $items = $invoice->getItemsCollection();
@@ -83,7 +85,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
 
         foreach ($items as $item) {
             /** @var Mage_Sales_Model_Order_Invoice_Item $item */
-            $this->_newLine($item);
+            $this->_newLine($item, $shippingAddress);
         }
 
         $this->_request->setLines($this->_lines);
@@ -143,6 +145,8 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
         $this->_request->setDocCode($creditmemo->getIncrementId());
         $this->_request->setDocType(DocumentType::$ReturnInvoice);
 
+        $this->_initLandedCostModeParam($order);
+        $this->_addGeneralLandedCostInfo($order);
         $this->_addGeneralInfo($order);
         $this->_addShipping($creditmemo, true);
 
@@ -178,7 +182,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
 
         foreach ($items as $item) {
             /** @var Mage_Sales_Model_Order_Creditmemo_Item $item */
-            $this->_newLine($item, true);
+            $this->_newLine($item, $shippingAddress, true);
         }
 
         $this->_request->setLines($this->_lines);
@@ -444,10 +448,11 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
      * Makes a Line object from a product item object
      *
      * @param Mage_Sales_Model_Order_Invoice_Item|Mage_Sales_Model_Order_Creditmemo_Item $item
+     * @param Mage_Sales_Model_Order_Address $address
      * @param bool $credit
      * @return null
      */
-    protected function _newLine($item, $credit = false)
+    protected function _newLine($item, $address, $credit = false)
     {
         if ($this->isProductCalculated($item->getOrderItem())) {
             return false;
@@ -494,6 +499,9 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
         $line->setTaxCode($productData->getTaxCode());
         $line->setRef1($productData->getRef1());
         $line->setRef2($productData->getRef2());
+
+        $this->_addLandedCostParamsToLine($line, $productData, $address);
+
         $this->_newLineMakeAdditionalProcessingForLine(
             new \Varien_Object(array('productData' => $productData, 'item' => $item, 'line' => $line))
         );
@@ -524,6 +532,15 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
         $lineProductData->setTaxCode($this->_getTaxClassCodeByProduct($product));
         $lineProductData->setRef1($this->_getRefValueByProductAndNumber($product, 1, $storeId));
         $lineProductData->setRef2($this->_getRefValueByProductAndNumber($product, 2, $storeId));
+
+        foreach (array(
+                     OnePica_AvaTax_Helper_LandedCost::AVATAX_PRODUCT_LANDED_COST_ATTR_HSCODE,
+                     OnePica_AvaTax_Helper_LandedCost::AVATAX_PRODUCT_LANDED_COST_AGREEMENT,
+                     OnePica_AvaTax_Helper_LandedCost::AVATAX_PRODUCT_LANDED_COST_ATTR_UNIT_OF_MEASUREMENT
+                 ) as $key) {
+            $lineProductData->setData($key, $product->getData($key));
+        }
+
 
         return $lineProductData;
     }

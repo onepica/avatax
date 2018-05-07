@@ -9,7 +9,7 @@
  * @see GetTaxRequest
  * 
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright Â© 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Tax 
  */
 
@@ -272,5 +272,3 @@ class GetTaxResult // extends BaseResult
 	}					//array		Changed for 15.6.0.0
 
 }
-
-?>

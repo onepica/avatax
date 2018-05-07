@@ -7,7 +7,7 @@
  * ApplyPaymentRequest.class.php
  *
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright Â© 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Tax
  */
 
@@ -96,5 +96,3 @@ class ApplyPaymentRequest
     public function getPaymentDate(){ return $this->PaymentDate;}   //date
     
 }
-
-?>

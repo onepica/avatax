@@ -30,6 +30,7 @@ var
 !app/design/adminhtml/default/default/layout/onepica/avatax.xml
 !app/design/adminhtml/default/default/template/onepica/avatax/**
 !app/design/frontend/base/default/layout/onepica/avatax.xml
+!app/design/frontend/base/default/template/onepica/**
 !app/etc/modules/OnePica_AvaTax.xml
 !app/locale/de_DE/OnePica_AvaTax.csv
 !app/locale/en_US/OnePica_AvaTax.csv
@@ -42,3 +43,4 @@ lib/**
 !lib/AvaTax/
 !lib/AvaTax/**
 !composer/onepica/*
+!js/avatax/*
