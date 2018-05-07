@@ -278,6 +278,10 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
         $mode = $this->_getLandedCostHelper()->isLandedCostEnabled($storeId);
         $this->setLandedCostMode($mode);
 
+        if ($this->getLandedCostMode()) {
+            $this->_request->setIsSellerImporterOfRecord(true);
+        }
+
         return $this;
     }
 
