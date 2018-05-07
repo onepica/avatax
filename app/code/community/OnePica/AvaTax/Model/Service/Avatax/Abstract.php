@@ -275,6 +275,18 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
     }
 
     /**
+     * Applies origin address for request
+     *
+     * @param Mage_Sales_Model_Quote|Mage_Sales_Model_Order $entity
+     * @return $this
+     */
+    protected function _applyOriginAddressForRequest($entity)
+    {
+        $this->_setOriginAddress($entity->getStoreId());
+        return $this;
+    }
+
+    /**
      * Adds the orgin address to the request
      *
      * @param null|bool|int|Mage_Core_Model_Store $store

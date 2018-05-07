@@ -203,7 +203,7 @@ class OnePica_AvaTax_Model_Action_Calculator extends OnePica_AvaTax_Model_Action
         if ($item->getAddress()->getPostcode() && $item->getAddress()->getPostcode() != '-') {
             if ($this->isProductCalculated($item)) {
                 $tax = 0;
-                foreach ($item->getChildren() as $child) {
+                foreach ($this->_getQuoteItemChildren($item) as $child) {
                     $child->setAddress($item->getAddress());
                     $tax += $this->getItemTax($child);
                 }
@@ -219,6 +219,16 @@ class OnePica_AvaTax_Model_Action_Calculator extends OnePica_AvaTax_Model_Action
         }
 
         return 0;
+    }
+
+    /**
+     * @param Mage_Sales_Model_Quote_Item $item
+     *
+     * @return mixed
+     */
+    protected function _getQuoteItemChildren($item)
+    {
+        return $item->getChildren();
     }
 
     /**

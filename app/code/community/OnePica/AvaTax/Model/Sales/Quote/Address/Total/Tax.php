@@ -74,7 +74,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax
         ) {
             return $this;
         }
-
+        $this->_beforeCollectorProcessesAddress(new \Varien_Object(array('address' => $address)));
         $this->_resetAddressValues($address);
 
         $calculator = $this->_getCalculator($address);
@@ -86,7 +86,27 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax
         $this->_setTaxForItems($address, $this->_itemTaxGroups);
         $summary = $calculator->getSummary($address);
         $this->_saveAppliedTax($address, $summary);
+        $this->_afterCollectorProcessesAddress(new \Varien_Object(array('address' => $address)));
+        return $this;
+    }
 
+    /**
+     * @param Varien_Object $data
+     *
+     * @return $this
+     */
+    protected function _beforeCollectorProcessesAddress($data)
+    {
+        return $this;
+    }
+
+    /**
+     * @param Varien_Object $data
+     *
+     * @return $this
+     */
+    protected function _afterCollectorProcessesAddress($data)
+    {
         return $this;
     }
 

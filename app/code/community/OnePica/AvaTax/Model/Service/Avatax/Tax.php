@@ -66,4 +66,24 @@ class OnePica_AvaTax_Model_Service_Avatax_Tax extends OnePica_AvaTax_Model_Servi
 
         return $result;
     }
+
+    /**
+     * @param Varien_Object $data
+     *
+     * @return $this
+     */
+    protected function _newLinePrepareProduct($data)
+    {
+        return $this;
+    }
+
+    /**
+     * @param Varien_Object $data
+     *
+     * @return $this
+     */
+    protected function _newLineMakeAdditionalProcessingForLine($data)
+    {
+        return $this;
+    }
 }
