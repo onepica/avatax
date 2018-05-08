@@ -351,42 +351,6 @@
                     </avatax>
                 </observers>
             </sales_convert_quote_address_to_order_address>
-            <sales_convert_quote_address_to_order>
-                <observers>
-                    <avatax>
-                        <type>singleton</type>
-                        <class>avatax/observer_salesConvertQuoteAddressToOrder</class>
-                        <method>execute</method>
-                    </avatax>
-                </observers>
-            </sales_convert_quote_address_to_order>
-            <sales_convert_quote_item_to_order_item>
-                <observers>
-                    <avatax>
-                        <type>singleton</type>
-                        <class>avatax/observer_salesConvertQuoteItemToOrderItem</class>
-                        <method>execute</method>
-                    </avatax>
-                </observers>
-            </sales_convert_quote_item_to_order_item>
-            <fieldsets>
-                <sales_convert_quote_item>
-                    <avatax_landed_cost_import_duties_amount>
-                        <to_order_item>*</to_order_item>
-                    </avatax_landed_cost_import_duties_amount>
-                    <base_avatax_landed_cost_import_duties_amount>
-                        <to_order_item>*</to_order_item>
-                    </base_avatax_landed_cost_import_duties_amount>
-                </sales_convert_quote_item>
-                <sales_convert_quote_address>
-                    <avatax_landed_cost_import_duties_amount>
-                        <to_order>*</to_order>
-                    </avatax_landed_cost_import_duties_amount>
-                    <base_avatax_landed_cost_import_duties_amount>
-                        <to_order>*</to_order>
-                    </base_avatax_landed_cost_import_duties_amount>
-                </sales_convert_quote_address>
-            </fieldsets>
             <adminhtml_catalog_product_edit_prepare_form>
                 <observers>
                     <weee>
@@ -405,6 +369,44 @@
                 </observers>
             </adminhtml_sales_order_create_process_data>
         </events>
+        <fieldsets>
+            <sales_convert_quote_address>
+                <avatax_landed_cost_import_duties_amount>
+                    <to_order>*</to_order>
+                </avatax_landed_cost_import_duties_amount>
+                <base_avatax_landed_cost_import_duties_amount>
+                    <to_order>*</to_order>
+                </base_avatax_landed_cost_import_duties_amount>
+            </sales_convert_quote_address>
+            <sales_convert_quote_item>
+                <avatax_landed_cost_import_duties_amount>
+                    <to_order_item>*</to_order_item>
+                </avatax_landed_cost_import_duties_amount>
+                <base_avatax_landed_cost_import_duties_amount>
+                    <to_order_item>*</to_order_item>
+                </base_avatax_landed_cost_import_duties_amount>
+            </sales_convert_quote_item>
+            <sales_convert_order>
+                <avatax_landed_cost_import_duties_amount>
+                    <to_invoice>*</to_invoice>
+                    <to_cm>*</to_cm>
+                </avatax_landed_cost_import_duties_amount>
+                <base_avatax_landed_cost_import_duties_amount>
+                    <to_invoice>*</to_invoice>
+                    <to_cm>*</to_cm>
+                </base_avatax_landed_cost_import_duties_amount>
+            </sales_convert_order>
+            <sales_convert_order_item>
+                <avatax_landed_cost_import_duties_amount>
+                    <to_invoice_item>*</to_invoice_item>
+                    <to_cm_item>*</to_cm_item>
+                </avatax_landed_cost_import_duties_amount>
+                <base_avatax_landed_cost_import_duties_amount>
+                    <to_invoice_item>*</to_invoice_item>
+                    <to_cm_item>*</to_cm_item>
+                </base_avatax_landed_cost_import_duties_amount>
+            </sales_convert_order_item>
+        </fieldsets>
     </global>
     <frontend>
         <layout>
