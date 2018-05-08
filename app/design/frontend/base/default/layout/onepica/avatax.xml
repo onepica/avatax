@@ -36,5 +36,15 @@
             <block type="avatax/sales_order_totals_importDuties" name="avatax_landed_cost_import_duties" />
         </reference>
     </sales_order_print>
+    <sales_order_invoice>
+        <reference name="invoice_totals">
+            <block type="avatax/sales_order_totals_importDuties" name="avatax_landed_cost_import_duties" />
+        </reference>
+    </sales_order_invoice>
+    <sales_order_creditmemo>
+        <reference name="creditmemo_totals">
+            <block type="avatax/sales_order_totals_importDuties" name="avatax_landed_cost_import_duties" />
+        </reference>
+    </sales_order_creditmemo>
     <!--Landed Cost-->
 </layout>
