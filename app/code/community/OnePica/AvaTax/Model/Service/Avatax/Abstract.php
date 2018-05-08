@@ -294,8 +294,14 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
     protected function _addGeneralLandedCostInfo($address)
     {
         if ($this->getLandedCostMode()) {
+
             $isSellerImporter = $this->_getLandedCostHelper()->isSellerImporterOfRecordForTheCustomer($address);
-            if ($isSellerImporter !== null) {
+            $isSellerImporterQuote = $this->_getLandedCostHelper()->isSellerImporterOfRecordForQuote($address);
+
+            /* set from quote first */
+            if ($isSellerImporterQuote !== null) {
+                $this->_request->setIsSellerImporterOfRecord((boolean)$isSellerImporterQuote);
+            } elseif ($isSellerImporter !== null) {
                 $this->_request->setIsSellerImporterOfRecord((boolean)$isSellerImporter);
             }
 

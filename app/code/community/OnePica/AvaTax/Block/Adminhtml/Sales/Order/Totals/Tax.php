@@ -74,6 +74,4 @@ class OnePica_AvaTax_Block_Adminhtml_Sales_Order_Totals_Tax extends Mage_Adminht
     {
         return $this->getSource()->getBaseTaxAmount() - $this->getLandedCostBaseAmount();
     }
-
-
 }

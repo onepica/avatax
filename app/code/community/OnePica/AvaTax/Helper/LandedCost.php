@@ -151,13 +151,14 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
     {
         $result = null;
         $customerId = $object->getCustomerId();
-        if($customerId) {
+        if ($customerId) {
             /** @var Mage_Customer_Model_Customer $customer */
             $customer = Mage::getModel('customer/customer');
             $customer->load($customerId);
-            $result = isset($customer) ? $customer->getData(self::AVATAX_CUSTOMER_LANDED_COST_ATTR_SELLER_IS_AN_IMPORTER) : $result;
-            switch ($result)
-            {
+            $result = isset($customer) ? $customer->getData(
+                self::AVATAX_CUSTOMER_LANDED_COST_ATTR_SELLER_IS_AN_IMPORTER
+            ) : $result;
+            switch ($result) {
                 case OnePica_AvaTax_Model_Entity_Attribute_Source_Boolean::VALUE_YES:
                     $result = true;
                     break;
@@ -168,6 +169,36 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
                     $result = null;
                     break;
             }
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param OnePica_AvaTax_Model_Sales_Quote_Address $quoteAddress
+     * @return true|false|null
+     * @throws \Varien_Exception
+     */
+    public function isSellerImporterOfRecordForQuote($quoteAddress)
+    {
+        $result = null;
+
+        if (!$quoteAddress instanceof Mage_Sales_Model_Quote_Address) {
+            return $result;
+        }
+
+        $quoteValue = $quoteAddress->getQuote()->getCustomerAvataxLcSellerIsImporter();
+
+        switch ($quoteValue) {
+            case OnePica_AvaTax_Model_Entity_Attribute_Source_Boolean::VALUE_YES:
+                $result = true;
+                break;
+            case OnePica_AvaTax_Model_Entity_Attribute_Source_Boolean::VALUE_NO:
+                $result = false;
+                break;
+            default:
+                $result = null;
+                break;
         }
 
         return $result;
@@ -203,9 +234,13 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
      */
     public function getDefaultUnitsOfMeasurement($storeId = null)
     {
-        if(!$this->defaultUnitOfMeasurement) {
-            $this->defaultUnitOfMeasurement = Mage::getModel('avatax_records/unitOfMeasurement')
-                ->load(Mage::getStoreConfig(self::XML_PATH_TO_AVATAX_LANDED_COST_DEFAULT_UNITS_OF_MEASUREMENT, $storeId));
+        if (!$this->defaultUnitOfMeasurement) {
+            $this->defaultUnitOfMeasurement = Mage::getModel('avatax_records/unitOfMeasurement')->load(
+                Mage::getStoreConfig(
+                    self::XML_PATH_TO_AVATAX_LANDED_COST_DEFAULT_UNITS_OF_MEASUREMENT,
+                    $storeId
+                )
+            );
         }
 
         return $this->defaultUnitOfMeasurement;
@@ -228,26 +263,27 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
         // get accurate units
         $units = $product->getData(self::AVATAX_PRODUCT_LANDED_COST_ATTR_UNIT_OF_MEASUREMENT);
         $units = is_string($units)
-                ? Mage::getModel('avatax/catalog_product_attribute_backend_unit')->decodeUnitOfMeasurement($units)
-                : $units;
+            ? Mage::getModel('avatax/catalog_product_attribute_backend_unit')->decodeUnitOfMeasurement($units)
+            : $units;
         $units = empty($units) ? array() : $units;
 
         // add default unit
         $weight = $product->getWeight();
         $defaultUnit = $this->getDefaultUnitsOfMeasurement($product->getStoreId());
         if (!empty($defaultUnit) && (!empty($weight)) && $weight > 0) {
-            array_push($units,
+            array_push(
+                $units,
                 array(
-                    'unit' => $weight,
+                    'unit'                => $weight,
                     'unit_of_measurement' => $defaultUnit->getId(),
-                    'default' => true
+                    'default'             => true
                 )
             );
         }
 
         // gather all unit ids
         $ids = array();
-        if(!empty($units)) {
+        if (!empty($units)) {
             foreach ($units as $u) {
                 array_push($ids, $u['unit_of_measurement']);
             }
@@ -256,8 +292,8 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
         // find first any unit by country
         if (!empty($ids)) {
             $collection = Mage::getModel('avatax_records/unitOfMeasurement')
-                ->getCollection()
-                ->addFieldToFilter('id', array('in'=>$ids));
+                              ->getCollection()
+                              ->addFieldToFilter('id', array('in' => $ids));
             $collection->getSelect()->where('country_list REGEXP ?', $countryCode);
 
             /** @var OnePica_AvaTax_Model_Records_UnitOfMeasurement $unit */
@@ -287,8 +323,8 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
      * Get Product HTS Code
      *
      * @param int|Mage_Catalog_Model_Product $product
-     * @param string $countryCodeFrom
-     * @param string $countryCodeTo
+     * @param string                         $countryCodeFrom
+     * @param string                         $countryCodeTo
      * @return string[];
      */
     public function getProductAgreements($product, $countryCodeFrom, $countryCodeTo)
@@ -306,7 +342,7 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
             $collection->getSelect()->where('country_list REGEXP ?', $countryCodeTo);
             $collection->load();
 
-            /* @var OnePica_AvaTax_Model_Records_Agreement $agr */
+            /** @var OnePica_AvaTax_Model_Records_Agreement $agr */
             foreach ($collection as $agr) {
                 array_push($result, $agr->getAvalaraAgreementCode());
             }
