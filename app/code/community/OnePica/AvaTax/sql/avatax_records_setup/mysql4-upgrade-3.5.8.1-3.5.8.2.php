@@ -15,13 +15,13 @@
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
-/** @var $installer Mage_Catalog_Model_Resource_Setup */
+/** @var  \Mage_Catalog_Model_Resource_Eav_Mysql4_Setup $installer */
 $installer = Mage::getResourceModel('catalog/setup', 'catalog_setup');
 $installer->startSetup();
 
 $attributeCode = OnePica_AvaTax_Helper_LandedCost::AVATAX_PRODUCT_LANDED_COST_AGREEMENT;
 
-/** @var $attribute Mage_Eav_Model_Entity_Attribute */
+/** @var \Mage_Eav_Model_Entity_Attribute $attribute */
 $attribute = Mage::getModel('eav/entity_attribute')->loadByCode('catalog_product', $attributeCode);
 
 if (!$attribute->getId()) {

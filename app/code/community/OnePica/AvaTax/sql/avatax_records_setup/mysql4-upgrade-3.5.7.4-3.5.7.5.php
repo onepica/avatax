@@ -15,15 +15,17 @@
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
+/** @var \Mage_Core_Model_Resource_Setup $installer */
 $installer = $this;
-$this->startSetup();
+$installer->startSetup();
+/** @var \Varien_Db_Adapter_Pdo_Mysql $conn */
+$conn = $installer->getConnection();
 
 $table = $this->getTable('avatax_records/unit_of_measurement');
 
-if (!$installer->getConnection()->isTableExists($table)) {
+if ($conn->showTableStatus($table) === false) {
     $installer->run(
-        "
-CREATE TABLE `" . $this->getTable('avatax_records/unit_of_measurement') . "` (
+        "CREATE TABLE `" . $table . "` (
     `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
     `avalara_code` varchar(100) DEFAULT NULL,
     `description` text,
@@ -35,4 +37,4 @@ CREATE TABLE `" . $this->getTable('avatax_records/unit_of_measurement') . "` (
     );
 }
 
-$this->endSetup();
+$installer->endSetup();
