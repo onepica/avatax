@@ -513,7 +513,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
             $storeId = $this->_getStoreIdByObject($address);
 
             $insurance = new \Varien_Object(array('amount' => null, 'document_type' => 'order'));
-            Mage::dispatchEvent('avatax_request_tax_insurance_needs', array('insurance' => $insurance));
+            Mage::dispatchEvent('avatax_landed_cost_request_tax_insurance_needs', array('insurance' => $insurance));
 
             if ($insurance->getAmount() !== null) {
                 $insuranceAmount = $insurance->getAmount();
@@ -529,7 +529,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
 
                 $this->_lines[$lineNumber] = $line;
                 $this->_request->setLines($this->_lines);
-                $this->_lineToLineId[$lineNumber] = $this->_getConfigHelper()->getShippingInsuranceSku($storeId);
+                $this->_lineToLineId[$lineNumber] = $this->_getLandedCostHelper()->getShippingInsuranceSku($storeId);
             }
         }
 
