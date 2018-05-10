@@ -675,7 +675,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
     /**
      * Retrieve storeId from object
      *
-     * @param OnePica_AvaTax_Model_Sales_Quote_Address|Mage_Sales_Model_Order_Address|Mage_Sales_Model_Order $object
+     * @param OnePica_AvaTax_Model_Sales_Quote_Address|Mage_Sales_Model_Order_Address|Mage_Sales_Model_Order|Mage_Sales_Model_Order_Invoice|Mage_Sales_Model_Order_Creditmemo $object
      * @return int
      */
     protected function _getStoreIdByObject($object)
@@ -686,6 +686,14 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
 
         if ($object instanceof Mage_Sales_Model_Order_Address) {
             return $object->getOrder()->getStoreId();
+        }
+
+        if ($object instanceof Mage_Sales_Model_Order_Invoice) {
+            return $object->getStore()->getId();
+        }
+
+        if ($object instanceof Mage_Sales_Model_Order_Creditmemo) {
+            return $object->getStore()->getId();
         }
 
         return $object->getStoreId();

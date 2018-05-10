@@ -65,6 +65,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
         $this->_addGeneralLandedCostInfo($order);
         $this->_addGeneralInfo($order);
         $this->_addShipping($invoice);
+        $this->_addLandedCostShippingInsurance($invoice);
         $items = $invoice->getItemsCollection();
         $this->_initProductCollection($items);
         $this->_initTaxClassCollection($invoice);
@@ -149,6 +150,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
         $this->_addGeneralLandedCostInfo($order);
         $this->_addGeneralInfo($order);
         $this->_addShipping($creditmemo, true);
+        $this->_addLandedCostShippingInsurance($creditmemo, true);
 
         $items = $creditmemo->getAllItems();
         $this->_initProductCollection($items);
@@ -268,6 +270,44 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
         $this->_lineToItemId[$lineNumber] = 'shipping';
         $this->_lines[$lineNumber] = $line;
         $this->_request->setLines($this->_lines);
+        return $lineNumber;
+    }
+
+    /**
+     * Adds shipping insurance to request as item
+     *
+     * @param Mage_Sales_Model_Order_Invoice|Mage_Sales_Model_Order_Creditmemo $object
+     * @param bool $credit
+     * @return int
+     */
+    protected function _addLandedCostShippingInsurance($object, $credit = false)
+    {
+        $lineNumber = count($this->_lines);
+
+        if ($this->getLandedCostMode()) {
+            $storeId = $this->_getStoreIdByObject($object);
+
+            $insurance = new \Varien_Object(array('amount' => null, 'document_type' => ($credit ? 'creditmemo' : 'invoice')));
+            Mage::dispatchEvent('avatax_request_tax_insurance_needs', array('insurance' => $insurance));
+
+            if ($insurance->getAmount() !== null) {
+                $insuranceAmount = $insurance->getAmount();
+
+                $line = new Line();
+                $line->setNo($lineNumber);
+                $shippingSku = $this->_getLandedCostHelper()->getShippingInsuranceSku($storeId);
+                $line->setItemCode($shippingSku ?: 'ShippingInsurance');
+                $line->setDescription('Insurance');
+                $line->setTaxCode($this->_getLandedCostHelper()->getShippingInsuranceTaxCode($storeId));
+                $line->setQty(1);
+                $line->setAmount($insuranceAmount);
+
+                $this->_lines[$lineNumber] = $line;
+                $this->_request->setLines($this->_lines);
+                $this->_lineToLineId[$lineNumber] = $this->_getConfigHelper()->getShippingInsuranceSku($storeId);
+            }
+        }
+
         return $lineNumber;
     }
 
