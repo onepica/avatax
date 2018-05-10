@@ -66,6 +66,16 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
     const XML_PATH_TO_AVATAX_LANDED_COST_DEFAULT_UNITS_OF_MEASUREMENT = 'tax/avatax_landed_cost/landed_cost_units_of_measurement';
 
     /**
+     * Xml path to landed cost shipping insurance sku
+     */
+    const XML_PATH_TO_AVATAX_LANDED_COST_SHIPPING_INSURANCE_SKU = 'tax/avatax_landed_cost/shipping_insurance_sku';
+
+    /**
+     * Xml path to landed cost shipping insurance tax code
+     */
+    const XML_PATH_TO_AVATAX_LANDED_COST_SHIPPING_INSURANCE_TAX_CODE = 'tax/avatax_landed_cost/shipping_insurance_tax_code';
+
+    /**
      *  Seller is an importer for customer
      */
     const AVATAX_CUSTOMER_LANDED_COST_ATTR_SELLER_IS_AN_IMPORTER = 'avatax_lc_seller_is_importer';
@@ -359,5 +369,29 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
     public function getUnitPrecision()
     {
         return 4;
+    }
+
+    /**
+     * Returns shipping insurance line item faked sku
+     *
+     * @param null|bool|int|Mage_Core_Model_Store $store
+     *
+     * @return string
+     */
+    public function getShippingInsuranceSku($store = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_TO_AVATAX_LANDED_COST_SHIPPING_INSURANCE_SKU, $store);
+    }
+
+    /**
+     * Returns shipping insurance line item faked sku
+     *
+     * @param null|bool|int|Mage_Core_Model_Store $store
+     *
+     * @return string
+     */
+    public function getShippingInsuranceTaxCode($store = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_TO_AVATAX_LANDED_COST_SHIPPING_INSURANCE_TAX_CODE, $store);
     }
 }

@@ -551,6 +551,10 @@
                 <avatax16_onepage_validate_address_message>Unable to validate address.</avatax16_onepage_validate_address_message>
                 <landed_cost_enabled>0</landed_cost_enabled>
             </avatax>
+            <avatax_landed_cost>
+                <shipping_insurance_sku>ShippingInsurance</shipping_insurance_sku>
+                <shipping_insurance_tax_code>FR070100</shipping_insurance_tax_code>
+            </avatax_landed_cost>
             <calculation>
                 <based_on>shipping</based_on>
                 <price_includes_tax>0</price_includes_tax>

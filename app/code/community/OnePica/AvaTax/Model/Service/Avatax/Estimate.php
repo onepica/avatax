@@ -130,6 +130,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         $this->_setDetailLevel();
         $this->_addItemsInCart($address);
         $this->_addShipping($address);
+        $this->_addLandedCostShippingInsurance($address);
         //Added code for calculating tax for giftwrap items
         $this->_addGwOrderAmount($address);
         $this->_addGwPrintedCardAmount($address);
@@ -494,6 +495,43 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         $this->_lines[$lineNumber] = $line;
         $this->_request->setLines($this->_lines);
         $this->_lineToLineId[$lineNumber] = $this->_getConfigHelper()->getShippingSku($storeId);
+
+        return $lineNumber;
+    }
+
+    /**
+     * Adds shipping insurance to request as item
+     *
+     * @param Mage_Sales_Model_Quote_Address $address
+     * @return int
+     */
+    protected function _addLandedCostShippingInsurance($address)
+    {
+        $lineNumber = count($this->_lines);
+
+        if ($this->getLandedCostMode()) {
+            $storeId = $this->_getStoreIdByObject($address);
+
+            $insurance = new \Varien_Object(array('amount' => null, 'document_type' => 'order'));
+            Mage::dispatchEvent('avatax_landed_cost_request_tax_insurance_needs', array('insurance' => $insurance));
+
+            if ($insurance->getAmount() !== null) {
+                $insuranceAmount = $insurance->getAmount();
+
+                $line = new Line();
+                $line->setNo($lineNumber);
+                $shippingSku = $this->_getLandedCostHelper()->getShippingInsuranceSku($storeId);
+                $line->setItemCode($shippingSku ?: 'ShippingInsurance');
+                $line->setDescription('Insurance');
+                $line->setTaxCode($this->_getLandedCostHelper()->getShippingInsuranceTaxCode($storeId));
+                $line->setQty(1);
+                $line->setAmount($insuranceAmount);
+
+                $this->_lines[$lineNumber] = $line;
+                $this->_request->setLines($this->_lines);
+                $this->_lineToLineId[$lineNumber] = $this->_getLandedCostHelper()->getShippingInsuranceSku($storeId);
+            }
+        }
 
         return $lineNumber;
     }
