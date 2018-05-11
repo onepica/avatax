@@ -25,17 +25,12 @@
  */
 class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Controller_Action
 {
-    /** @var null|\Mage_Adminhtml_Model_Session $_sessionAdminhtml */
-    protected $_sessionAdminhtml = null;
-
     /**
      * Additional initialization
      */
     protected function _construct()
     {
         $this->setUsedModuleName('OnePica_AvaTax');
-
-        $this->_sessionAdminhtml = Mage::getSingleton('adminhtml/session');
     }
 
     /**
@@ -166,10 +161,10 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
 
                 $this->renderLayout();
             } catch (Mage_Core_Exception $e) {
-                $this->_sessionAdminhtml->addError($e->getMessage());
+                $this->getAdminhtmlSession()->addError($e->getMessage());
             }
         } else {
-            $this->_sessionAdminhtml->addError($this->__('Item does not exist'));
+            $this->getAdminhtmlSession()->addError($this->__('Item does not exist'));
             $this->_redirect('*/*/hscode');
         }
     }
@@ -205,13 +200,13 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
                         ->setDescription((string)$this->getRequest()->getPost('description'))
                         ->save();
 
-            $this->_sessionAdminhtml->addSuccess($this->__('Item was successfully saved'));
-            $this->_sessionAdminhtml->setHsCodeData(false);
+            $this->getAdminhtmlSession()->addSuccess($this->__('Item was successfully saved'));
+            $this->getAdminhtmlSession()->setHsCodeData(false);
 
             $this->_redirectAfterSaveModel($hsCodeModel, '*/*/hscode');
         } catch (Exception $e) {
-            $this->_sessionAdminhtml->addError($e->getMessage());
-            $this->_sessionAdminhtml->setHsCodeData($postData);
+            $this->getAdminhtmlSession()->addError($e->getMessage());
+            $this->getAdminhtmlSession()->setHsCodeData($postData);
 
             $this->_redirect('*/*/hscodeEdit', array('id' => $hsCodeId));
         }
@@ -225,7 +220,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
         $hsCodeId = $this->getRequest()->getParam('id');
 
         if ($hsCodeId <= 0) {
-            $this->_sessionAdminhtml->addError($this->__('Unit of measurement id is invalid'));
+            $this->getAdminhtmlSession()->addError($this->__('Unit of measurement id is invalid'));
             $this->_redirect('*/*/hscode');
         }
 
@@ -235,11 +230,11 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
 
             $hsCodeModel->setId($hsCodeId)->delete();
 
-            $this->_sessionAdminhtml->addSuccess($this->__('Item was successfully deleted'));
+            $this->getAdminhtmlSession()->addSuccess($this->__('Item was successfully deleted'));
 
             $this->_redirect('*/*/hscode');
         } catch (Exception $e) {
-            $this->_sessionAdminhtml->addError($e->getMessage());
+            $this->getAdminhtmlSession()->addError($e->getMessage());
             $this->_redirect('*/*/hscodeEdit', array('id' => $hsCodeId));
         }
     }
@@ -254,7 +249,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
         $hscodeIds = $this->getRequest()->getParam('hscode');
 
         if (!is_array($hscodeIds)) {
-            $this->_sessionAdminhtml->addError(Mage::helper('adminhtml')->__('Please select  HS code(s).'));
+            $this->getAdminhtmlSession()->addError(Mage::helper('adminhtml')->__('Please select  HS code(s).'));
         } else {
             try {
                 /** @var \Mage_Core_Model_Resource_Transaction $transaction */
@@ -271,11 +266,11 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
 
                 $transaction->delete();
 
-                $this->_sessionAdminhtml->addSuccess(
+                $this->getAdminhtmlSession()->addSuccess(
                     Mage::helper('adminhtml')->__('Total of %d record(s) were deleted.', count($hscodeIds))
                 );
             } catch (Exception $e) {
-                $this->_sessionAdminhtml->addError($e->getMessage());
+                $this->getAdminhtmlSession()->addError($e->getMessage());
             }
         }
 
@@ -306,7 +301,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
         $hscodeId = $this->getRequest()->getParam('hscode_id');
 
         if (!is_array($hscodecountriesIds)) {
-            $this->_sessionAdminhtml->addError(Mage::helper('adminhtml')->__('Please select HS code(s).'));
+            $this->getAdminhtmlSession()->addError(Mage::helper('adminhtml')->__('Please select HS code(s).'));
         } else {
             try {
                 /** @var \Mage_Core_Model_Resource_Transaction $transaction */
@@ -323,11 +318,11 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
 
                 $transaction->delete();
 
-                $this->_sessionAdminhtml->addSuccess(
+                $this->getAdminhtmlSession()->addSuccess(
                     Mage::helper('adminhtml')->__('Total of %d record(s) were deleted.', count($hscodecountriesIds))
                 );
             } catch (Exception $e) {
-                $this->_sessionAdminhtml->addError($e->getMessage());
+                $this->getAdminhtmlSession()->addError($e->getMessage());
             }
         }
 
@@ -374,10 +369,10 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
                 );
                 $this->renderLayout();
             } catch (Mage_Core_Exception $e) {
-                $this->_sessionAdminhtml->addError($e->getMessage());
+                $this->getAdminhtmlSession()->addError($e->getMessage());
             }
         } else {
-            $this->_sessionAdminhtml->addError($this->__('Item does not exist'));
+            $this->getAdminhtmlSession()->addError($this->__('Item does not exist'));
 
             $this->_redirect(
                 '*/*/hscodeEdit', array(
@@ -397,7 +392,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
         $hsCodeCountryId = $this->getRequest()->getParam('id');
 
         if ($hsCodeCountryId <= 0) {
-            $this->_sessionAdminhtml->addError($this->__('Country id is invalid'));
+            $this->getAdminhtmlSession()->addError($this->__('Country id is invalid'));
             $this->_redirect(
                 '*/*/hscodeEdit', array(
                     'id'         => $hsCodeId,
@@ -412,7 +407,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
 
             $hsCodeCountryModel->setId($hsCodeCountryId)->delete();
 
-            $this->_sessionAdminhtml->addSuccess($this->__('Item was successfully deleted'));
+            $this->getAdminhtmlSession()->addSuccess($this->__('Item was successfully deleted'));
 
             $this->_redirect(
                 '*/*/hscodeEdit', array(
@@ -421,7 +416,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
                 )
             );
         } catch (Exception $e) {
-            $this->_sessionAdminhtml->addError($e->getMessage());
+            $this->getAdminhtmlSession()->addError($e->getMessage());
             $this->_redirect(
                 '*/*/hscodecountriesEdit', array(
                     'id'         => $hsCodeCountryId,
@@ -442,7 +437,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
         $hsCodeCountryId = $this->getRequest()->getParam('id');
 
         if (!$this->getRequest()->getPost()) {
-            $this->_sessionAdminhtml->addError($this->__('Post data is empty'));
+            $this->getAdminhtmlSession()->addError($this->__('Post data is empty'));
             $this->_redirect(
                 '*/*/hscodecountriesEdit', array(
                     'id'         => $hsCodeCountryId,
@@ -462,8 +457,8 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
                                ->setCountryCodes($countryCodes)
                                ->save();
 
-            $this->_sessionAdminhtml->addSuccess($this->__('Item was successfully saved'));
-            $this->_sessionAdminhtml->setHsCodeCountriesData(false);
+            $this->getAdminhtmlSession()->addSuccess($this->__('Item was successfully saved'));
+            $this->getAdminhtmlSession()->setHsCodeCountriesData(false);
 
             $this->_redirect(
                 '*/*/hscodeEdit', array(
@@ -472,8 +467,8 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
                 )
             );
         } catch (Exception $e) {
-            $this->_sessionAdminhtml->addError($e->getMessage());
-            $this->_sessionAdminhtml->setHsCodeCountriesData($this->getRequest()->getPost());
+            $this->getAdminhtmlSession()->addError($e->getMessage());
+            $this->getAdminhtmlSession()->setHsCodeCountriesData($this->getRequest()->getPost());
 
             $this->_redirect(
                 '*/*/hscodecountriesEdit', array(
@@ -529,15 +524,17 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
 
                 $this->loadLayout()->_setActiveMenu('avatax/landedcost/avatax_unitsofmeasurement');
 
-                $this->_addContent($this->getLayout()->createBlock('avatax/adminhtml_landedcost_unitsOfMeasurement_edit'));
+                $this->_addContent(
+                    $this->getLayout()->createBlock('avatax/adminhtml_landedcost_unitsOfMeasurement_edit')
+                );
 
                 $this->renderLayout();
             } catch (Mage_Core_Exception $e) {
-                $this->_sessionAdminhtml->addError($e->getMessage());
+                $this->getAdminhtmlSession()->addError($e->getMessage());
                 $this->_redirect('*/*/unitsofmeasurement');
             }
         } else {
-            $this->_sessionAdminhtml->addError($this->__('Item does not exist'));
+            $this->getAdminhtmlSession()->addError($this->__('Item does not exist'));
 
             $this->_redirect('*/*/unitsofmeasurement');
         }
@@ -553,7 +550,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
         $unitOfMeasurementId = $this->getRequest()->getParam('id');
 
         if (!$this->getRequest()->getPost()) {
-            $this->_sessionAdminhtml->addError($this->__('Post data is empty'));
+            $this->getAdminhtmlSession()->addError($this->__('Post data is empty'));
             $this->_redirect('*/*/unitsofmeasurementEdit', array('id' => $unitOfMeasurementId));
         }
 
@@ -565,18 +562,18 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
 
             $unitOfMeasurementModel->setId($unitOfMeasurementId);
             $unitOfMeasurementModel->setAvalaraCode((string)$this->getRequest()->getPost('avalara_code'))
-                              ->setZendCode((string)$this->getRequest()->getPost('zend_code'))
-                              ->setDescription((string)$this->getRequest()->getPost('description'))
-                              ->setCountryList($countryList)
-                              ->save();
+                                   ->setZendCode((string)$this->getRequest()->getPost('zend_code'))
+                                   ->setDescription((string)$this->getRequest()->getPost('description'))
+                                   ->setCountryList($countryList)
+                                   ->save();
 
-            $this->_sessionAdminhtml->addSuccess($this->__('Item was successfully saved'));
-            $this->_sessionAdminhtml->setUnitOfMeasurementData(false);
+            $this->getAdminhtmlSession()->addSuccess($this->__('Item was successfully saved'));
+            $this->getAdminhtmlSession()->setUnitOfMeasurementData(false);
 
             $this->_redirectAfterSaveModel($unitOfMeasurementModel, '*/*/unitsofmeasurement');
         } catch (Exception $e) {
-            $this->_sessionAdminhtml->addError($e->getMessage());
-            $this->_sessionAdminhtml->setUnitOfMeasurementData($this->getRequest()->getPost());
+            $this->getAdminhtmlSession()->addError($e->getMessage());
+            $this->getAdminhtmlSession()->setUnitOfMeasurementData($this->getRequest()->getPost());
 
             $this->_redirect('*/*/unitsofmeasurementEdit', array('id' => $unitOfMeasurementId));
         }
@@ -590,7 +587,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
         $unitOfMeasurementId = $this->getRequest()->getParam('id');
 
         if ($unitOfMeasurementId <= 0) {
-            $this->_sessionAdminhtml->addError($this->__('Unit of measurement id is invalid'));
+            $this->getAdminhtmlSession()->addError($this->__('Unit of measurement id is invalid'));
             $this->_redirect('*/*/unitsofmeasurement');
         }
 
@@ -600,11 +597,11 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
 
             $unitOfMeasurementModel->setId($unitOfMeasurementId)->delete();
 
-            $this->_sessionAdminhtml->addSuccess($this->__('Item was successfully deleted'));
+            $this->getAdminhtmlSession()->addSuccess($this->__('Item was successfully deleted'));
 
             $this->_redirect('*/*/unitsofmeasurement');
         } catch (Exception $e) {
-            $this->_sessionAdminhtml->addError($e->getMessage());
+            $this->getAdminhtmlSession()->addError($e->getMessage());
             $this->_redirect(
                 '*/*/hscodecountriesEdit', array(
                     'id' => $unitOfMeasurementId,
@@ -623,7 +620,9 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
         $unitOfMeasurementIds = $this->getRequest()->getParam('unitsofmeasurement');
 
         if (!is_array($unitOfMeasurementIds)) {
-            $this->_sessionAdminhtml->addError(Mage::helper('adminhtml')->__('Please select  Unit(s) of measurement.'));
+            $this->getAdminhtmlSession()->addError(
+                Mage::helper('adminhtml')->__('Please select  Unit(s) of measurement.')
+            );
         } else {
             try {
                 /** @var \Mage_Core_Model_Resource_Transaction $transaction */
@@ -640,11 +639,11 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
 
                 $transaction->delete();
 
-                $this->_sessionAdminhtml->addSuccess(
+                $this->getAdminhtmlSession()->addSuccess(
                     Mage::helper('adminhtml')->__('Total of %d record(s) were deleted.', count($unitOfMeasurementIds))
                 );
             } catch (Exception $e) {
-                $this->_sessionAdminhtml->addError($e->getMessage());
+                $this->getAdminhtmlSession()->addError($e->getMessage());
             }
         }
 
@@ -702,11 +701,11 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
 
                 $this->renderLayout();
             } catch (Mage_Core_Exception $e) {
-                $this->_sessionAdminhtml->addError($e->getMessage());
+                $this->getAdminhtmlSession()->addError($e->getMessage());
                 $this->_redirect('*/*/agreement');
             }
         } else {
-            $this->_sessionAdminhtml->addError($this->__('Item does not exist'));
+            $this->getAdminhtmlSession()->addError($this->__('Item does not exist'));
 
             $this->_redirect('*/*/agreement');
         }
@@ -722,7 +721,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
         $agreementId = $this->getRequest()->getParam('id');
 
         if (!$this->getRequest()->getPost()) {
-            $this->_sessionAdminhtml->addError($this->__('Post data is empty'));
+            $this->getAdminhtmlSession()->addError($this->__('Post data is empty'));
             $this->_redirect('*/*/agreementEdit', array('id' => $agreementId));
         }
 
@@ -738,13 +737,13 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
                            ->setCountryList($countryList)
                            ->save();
 
-            $this->_sessionAdminhtml->addSuccess($this->__('Item was successfully saved'));
-            $this->_sessionAdminhtml->setAgreementData(false);
+            $this->getAdminhtmlSession()->addSuccess($this->__('Item was successfully saved'));
+            $this->getAdminhtmlSession()->setAgreementData(false);
 
             $this->_redirectAfterSaveModel($agreementModel, '*/*/agreement');
         } catch (Exception $e) {
-            $this->_sessionAdminhtml->addError($e->getMessage());
-            $this->_sessionAdminhtml->setAgreementData($this->getRequest()->getPost());
+            $this->getAdminhtmlSession()->addError($e->getMessage());
+            $this->getAdminhtmlSession()->setAgreementData($this->getRequest()->getPost());
 
             $this->_redirect('*/*/agreementEdit', array('id' => $agreementId));
         }
@@ -758,7 +757,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
         $agreementId = $this->getRequest()->getParam('id');
 
         if ($agreementId <= 0) {
-            $this->_sessionAdminhtml->addError($this->__('Agreement id is invalid'));
+            $this->getAdminhtmlSession()->addError($this->__('Agreement id is invalid'));
             $this->_redirect('*/*/agreement');
         }
 
@@ -768,11 +767,11 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
 
             $agreementModel->setId($agreementId)->delete();
 
-            $this->_sessionAdminhtml->addSuccess($this->__('Item was successfully deleted'));
+            $this->getAdminhtmlSession()->addSuccess($this->__('Item was successfully deleted'));
 
             $this->_redirect('*/*/agreement');
         } catch (Exception $e) {
-            $this->_sessionAdminhtml->addError($e->getMessage());
+            $this->getAdminhtmlSession()->addError($e->getMessage());
             $this->_redirect(
                 '*/*/agreementEdit', array(
                     'id' => $agreementId,
@@ -791,7 +790,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
         $agreementIds = $this->getRequest()->getParam('agreements');
 
         if (!is_array($agreementIds)) {
-            $this->_sessionAdminhtml->addError(Mage::helper('adminhtml')->__('Please select  Agreement(s).'));
+            $this->getAdminhtmlSession()->addError(Mage::helper('adminhtml')->__('Please select  Agreement(s).'));
         } else {
             try {
                 /** @var \Mage_Core_Model_Resource_Transaction $transaction */
@@ -807,11 +806,11 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
 
                 $transaction->delete();
 
-                $this->_sessionAdminhtml->addSuccess(
+                $this->getAdminhtmlSession()->addSuccess(
                     Mage::helper('adminhtml')->__('Total of %d record(s) were deleted.', count($agreementIds))
                 );
             } catch (Exception $e) {
-                $this->_sessionAdminhtml->addError($e->getMessage());
+                $this->getAdminhtmlSession()->addError($e->getMessage());
             }
         }
 
@@ -912,5 +911,13 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
         } else {
             $this->_redirect($action);
         }
+    }
+
+    /**
+     * @return \Mage_Adminhtml_Model_Session
+     */
+    protected function getAdminhtmlSession()
+    {
+        return Mage::getSingleton('adminhtml/session');
     }
 }
