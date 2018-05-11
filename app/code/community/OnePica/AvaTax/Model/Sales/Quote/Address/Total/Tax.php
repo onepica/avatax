@@ -88,7 +88,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax
         $this->_setTaxForItems($address, $this->_itemTaxGroups);
         $this->_applyLandedCostTax($address, $store, $calculator);
         $summary = $calculator->getSummary($address);
-        $this->_saveAvataxCollectedTaxes($address, $summary);
+        $this->_saveAvataxCollectedTaxes($address, $summary, $calculator);
         $this->_saveAppliedTax($address, $summary);
         $this->_afterCollectorProcessesAddress(new \Varien_Object(array('address' => $address)));
 
@@ -731,15 +731,26 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax
     }
 
     /**
-     * @param Mage_Sales_Model_Quote_Address $address
-     * @param                                $taxSummary
+     * @param \Mage_Sales_Model_Quote_Address         $address
+     * @param                                         $taxSummary
+     * @param \OnePica_AvaTax_Model_Action_Calculator $calculator
      * @return $this
      * @throws \Varien_Exception
      */
-    protected function _saveAvataxCollectedTaxes(Mage_Sales_Model_Quote_Address $address, $taxSummary)
+    protected function _saveAvataxCollectedTaxes(Mage_Sales_Model_Quote_Address $address, $taxSummary, $calculator)
     {
-        $data = Mage::helper('core')->jsonEncode($taxSummary);
-        $address->setAvataxCollectedTaxes($data);
+        /** @var \Mage_Core_Helper_Data $coreHelper */
+        $coreHelper = Mage::helper('core');
+
+        /** @var \Mage_Sales_Model_Quote_Item $item */
+        foreach ($address->getAllItems() as $item) {
+            $item->setAddress($address);
+            $itemCollectedTaxes = array_values($calculator->getItemCollectedTaxes($item));
+
+            $item->setAvataxCollectedTaxes($coreHelper->jsonEncode($itemCollectedTaxes));
+        }
+
+        $address->setAvataxCollectedTaxes($coreHelper->jsonEncode($taxSummary));
 
         return $this;
     }

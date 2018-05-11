@@ -252,6 +252,24 @@ class OnePica_AvaTax_Model_Action_Calculator extends OnePica_AvaTax_Model_Action
     }
 
     /**
+     * Return tax summary of item
+     *
+     * @param Mage_Sales_Model_Quote_Item $item
+     * @return array
+     */
+    public function getItemCollectedTaxes($item)
+    {
+        if ($this->isProductCalculated($item)) {
+            return array();
+        } else {
+            $id = $item->getId();
+            $ratesData = $this->_getRates();
+
+            return isset($ratesData['items'][$id]['summary']) ? $ratesData['items'][$id]['summary'] : array();
+        }
+    }
+
+    /**
      * Get tax detail summary
      *
      * @param Mage_Sales_Model_Quote_Address $address
