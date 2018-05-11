@@ -15,21 +15,58 @@
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
-/* @var $installer Mage_Sales_Model_Resource_Setup */
-$installer = new Mage_Sales_Model_Resource_Setup('core_setup');
-
+/** @var \Mage_Core_Model_Resource_Setup $installer */
+$installer = $this;
 $installer->startSetup();
+/** @var \Varien_Db_Adapter_Pdo_Mysql $conn */
+$conn = $installer->getConnection();
 
-$installer->addAttribute('quote_address', 'avatax_landed_cost_import_duties_amount', array('type'=>'decimal'));
-$installer->addAttribute('quote_address', 'base_avatax_landed_cost_import_duties_amount', array('type'=>'decimal'));
+$attributesToAdd = array(
+    'avatax_landed_cost_import_duties_amount'      => 'Avatax Landed Cost Import Duties Amount',
+    'base_avatax_landed_cost_import_duties_amount' => 'Base Avatax Landed Cost Import Duties Amount'
+);
 
-$installer->addAttribute('quote_item', 'avatax_landed_cost_import_duties_amount', array('type'=>'decimal'));
-$installer->addAttribute('quote_item', 'base_avatax_landed_cost_import_duties_amount', array('type'=>'decimal'));
+$tables = array(
+    'quote_address' => 'sales_flat_quote_address',
+    'quote_item'    => 'sales_flat_quote_item',
+    'order'         => 'sales_flat_order',
+    'order_item'    => 'sales_flat_order_item',
+);
 
-$installer->addAttribute('order', 'avatax_landed_cost_import_duties_amount', array('type'=>'decimal'));
-$installer->addAttribute('order', 'base_avatax_landed_cost_import_duties_amount', array('type'=>'decimal'));
+$ver = Mage::getVersionInfo();
 
-$installer->addAttribute('order_item', 'avatax_landed_cost_import_duties_amount', array('type'=>'decimal'));
-$installer->addAttribute('order_item', 'base_avatax_landed_cost_import_duties_amount', array('type'=>'decimal'));
+if ($ver['minor'] < 6 || $ver['minor'] == 10) {
+    $adapter = $installer->getConnection();
+    $sqlCommands = "";
+
+    foreach ($tables as $tableCode => $table) {
+        $tableName = $this->getTable($table);
+
+        foreach ($attributesToAdd as $attributeCode => $attributeComment) {
+            /* check if column already exists */
+            if ($conn->tableColumnExists($tableName, $attributeCode) === false) {
+                $sqlCommands .= "ALTER TABLE `" . $tableName . "`
+                   ADD COLUMN   `" . $attributeCode . "` decimal(12,4) DEFAULT NULL COMMENT '" . $attributeComment . "';
+                ";
+            }
+        }
+    }
+
+    $installer->run($sqlCommands);
+} else {
+    /** @var Mage_Sales_Model_Resource_Setup $setup */
+    $setup = Mage::getModel('sales/resource_setup', 'core_setup');
+
+    foreach ($tables as $tableCode => $table) {
+        $tableName = $this->getTable($table);
+
+        foreach ($attributesToAdd as $attributeCode => $attributeComment) {
+            /* check if column already exists */
+            if ($conn->tableColumnExists($tableName, $attributeCode) === false) {
+                $setup->addAttribute($tableCode, $attributeCode, array('type' => 'decimal'));
+            }
+        }
+    }
+}
 
 $installer->endSetup();

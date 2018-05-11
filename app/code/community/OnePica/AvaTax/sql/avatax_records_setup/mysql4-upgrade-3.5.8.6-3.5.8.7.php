@@ -11,7 +11,7 @@
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
- * @copyright  Copyright (c) 2009 One Pica, Inc.
+ * @copyright  Copyright (c) 2015 One Pica, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
@@ -21,11 +21,18 @@ $installer->startSetup();
 /** @var \Varien_Db_Adapter_Pdo_Mysql $conn */
 $conn = $installer->getConnection();
 
-$attributeCode = 'customer_avatax_lc_seller_is_importer';
-$attributeComment = 'Avatax Landed Cost Seller Is Importer Of Record';
+$attributeCode = 'avatax_collected_taxes';
+$attributeComment = 'Avatax Collected Taxes';
 
 $tables = array(
-    'quote' => 'sales_flat_quote',
+    'quote_address'   => 'sales_flat_quote_address',
+    'quote_item'      => 'sales_flat_quote_item',
+    'order'           => 'sales_flat_order',
+    'order_item'      => 'sales_flat_order_item',
+    'invoice'         => 'sales_flat_invoice',
+    'invoice_item'    => 'sales_flat_invoice_item',
+    'creditmemo'      => 'sales_flat_creditmemo',
+    'creditmemo_item' => 'sales_flat_creditmemo_item',
 );
 
 $ver = Mage::getVersionInfo();
@@ -40,7 +47,7 @@ if ($ver['minor'] < 6 || $ver['minor'] == 10) {
         /* check if column already exists */
         if ($conn->tableColumnExists($tableName, $attributeCode) === false) {
             $sqlCommands .= "ALTER TABLE `" . $tableName . "`
-                   ADD COLUMN   `" . $attributeCode . "` int(11) DEFAULT NULL COMMENT '" . $attributeComment . "';
+                   ADD COLUMN   `" . $attributeCode . "` TEXT DEFAULT NULL COMMENT '" . $attributeComment . "';
                 ";
         }
     }
@@ -55,7 +62,7 @@ if ($ver['minor'] < 6 || $ver['minor'] == 10) {
 
         /* check if column already exists */
         if ($conn->tableColumnExists($tableName, $attributeCode) === false) {
-            $setup->addAttribute($tableCode, $attributeCode, array('type' => 'int'));
+            $setup->addAttribute($tableCode, $attributeCode, array('type' => 'text'));
         }
     }
 }

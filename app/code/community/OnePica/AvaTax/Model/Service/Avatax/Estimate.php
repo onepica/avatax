@@ -175,7 +175,8 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
                         'rate'         => $this->_getTaxRateFromTaxLineItem($ctl),
                         'amt'          => $ctl->getTax(),
                         'taxable'      => $ctl->getTaxable(),
-                        'tax_included' => $ctl->getTaxIncluded()
+                        'tax_included' => $ctl->getTaxIncluded(),
+                        'summary'      => $this->_getSummaryFromTaxLineItem($ctl)
                     );
 
                     if ($this->_getLandedCostHelper()->isLandedCostEnabled($quote->getStoreId())) {
@@ -335,6 +336,18 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
     }
 
     /**
+     * Get line rate
+     * Prepares array of tax lines with unique names for correct displaying in Full Tax Summary
+     *
+     * @param \TaxLine $line
+     * @return array
+     */
+    protected function _getSummaryFromTaxLineItem(TaxLine $line)
+    {
+        return $this->_collectSummaryDetail($line->getTaxDetails());
+    }
+
+    /**
      * Prepares array of arrays with data from TaxDetail for different detail levels
      *
      * @param GetTaxResult $response
@@ -342,6 +355,20 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
      * @return array
      */
     protected function _getTaxSummaryItemsFromResponse($response)
+    {
+        $taxDetailItems = $this->_getTaxDetailItemsFromResponse($response);
+
+        return $this->_collectSummaryDetail($taxDetailItems);
+    }
+
+    /**
+     * Prepares array of arrays with data from TaxDetail by jurisdiction
+     *
+     * @param \TaxDetail[] $taxDetailItems
+     *
+     * @return array
+     */
+    protected function _collectSummaryDetail($taxDetailItems)
     {
         /**
          * Variables
@@ -351,22 +378,6 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
          */
 
         $result = array();
-        $taxDetailItems = array();
-        switch ($this->_request->getDetailLevel()) {
-            case DetailLevel::$Tax:
-                // Response Detail Level = Tax
-                /** @var TaxLine $taxLine */
-                foreach ($response->getTaxLines() as $taxLine) {
-                    foreach ($taxLine->getTaxDetails() as $taxDetail) {
-                        $taxDetailItems[] = $taxDetail;
-                    }
-                }
-                break;
-            default:
-                // Response Detail Level = Line
-                $taxDetailItems = $response->getTaxSummary();
-                break;
-        }
 
         /** @var \TaxDetail $taxDetail */
         foreach ($taxDetailItems as $taxDetail) {
@@ -381,14 +392,44 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
                 : $taxDetail->getRate() * 100;
 
             $result[$resultKey] = array(
-                'name'     => $taxDetail->getTaxName(),
-                'rate'     => $rate,
-                'amt'      => $amt,
+                'name'            => $taxDetail->getTaxName(),
+                'rate'            => $rate,
+                'amt'             => $amt,
                 'avatax_tax_type' => $taxDetail->getTaxType()
             );
         }
 
         return $result;
+    }
+
+    /**
+     * Prepares array of Tax Detail Items with data from TaxDetail for different detail levels
+     *
+     * @param GetTaxResult $response
+     *
+     * @return array
+     */
+    protected function _getTaxDetailItemsFromResponse($response)
+    {
+        $taxDetailItems = array();
+        switch ($this->_request->getDetailLevel()) {
+            case DetailLevel::$Tax:
+                // Response Detail Level = Tax
+                /** @var TaxLine $taxLine */
+                foreach ($response->getTaxLines() as $taxLine) {
+                    /** @var TaxDetail $taxDetail */
+                    foreach ($taxLine->getTaxDetails() as $taxDetail) {
+                        $taxDetailItems[] = $taxDetail;
+                    }
+                }
+                break;
+            default:
+                // Response Detail Level = Line
+                $taxDetailItems = $response->getTaxSummary();
+                break;
+        }
+
+        return $taxDetailItems;
     }
 
     /**

@@ -15,8 +15,9 @@
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
-/** @var $installer Mage_Catalog_Model_Resource_Setup */
-$installer = Mage::getResourceModel('catalog/setup', 'catalog_setup');
+/** @var \Mage_Eav_Model_Entity_Setup $installer */
+$installer = Mage::getModel('eav/entity_setup', 'core_setup');
+
 $installer->startSetup();
 
 $setName = 'default';

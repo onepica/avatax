@@ -19,7 +19,7 @@
 <config>
     <modules>
         <OnePica_AvaTax>
-            <version>3.5.8.6</version>
+            <version>3.5.8.7</version>
         </OnePica_AvaTax>
     </modules>
     <global>
@@ -377,6 +377,9 @@
                 <base_avatax_landed_cost_import_duties_amount>
                     <to_order>*</to_order>
                 </base_avatax_landed_cost_import_duties_amount>
+                <avatax_collected_taxes>
+                    <to_order>*</to_order>
+                </avatax_collected_taxes>
             </sales_convert_quote_address>
             <sales_convert_quote_item>
                 <avatax_landed_cost_import_duties_amount>
@@ -385,6 +388,9 @@
                 <base_avatax_landed_cost_import_duties_amount>
                     <to_order_item>*</to_order_item>
                 </base_avatax_landed_cost_import_duties_amount>
+                <avatax_collected_taxes>
+                    <to_order_item>*</to_order_item>
+                </avatax_collected_taxes>
             </sales_convert_quote_item>
             <sales_convert_order>
                 <avatax_landed_cost_import_duties_amount>
@@ -395,6 +401,10 @@
                     <to_invoice>*</to_invoice>
                     <to_cm>*</to_cm>
                 </base_avatax_landed_cost_import_duties_amount>
+                <avatax_collected_taxes>
+                    <to_invoice>*</to_invoice>
+                    <to_cm>*</to_cm>
+                </avatax_collected_taxes>
             </sales_convert_order>
             <sales_convert_order_item>
                 <avatax_landed_cost_import_duties_amount>
@@ -405,6 +415,10 @@
                     <to_invoice_item>*</to_invoice_item>
                     <to_cm_item>*</to_cm_item>
                 </base_avatax_landed_cost_import_duties_amount>
+                <avatax_collected_taxes>
+                    <to_invoice_item>*</to_invoice_item>
+                    <to_cm_item>*</to_cm_item>
+                </avatax_collected_taxes>
             </sales_convert_order_item>
         </fieldsets>
     </global>

@@ -15,20 +15,21 @@
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
+/** @var \Mage_Core_Model_Resource_Setup $installer */
 $installer = $this;
-$this->startSetup();
+$installer->startSetup();
+/** @var \Varien_Db_Adapter_Pdo_Mysql $conn */
+$conn = $installer->getConnection();
 
 $table = $this->getTable('avatax_records/agreement');
 
-if ($installer->getConnection()->isTableExists($table)) {
-
-    /* @var OnePica_AvaTax_Model_Records_Mysql4_Agreement_Collection $collection */
+if ($conn->showTableStatus($table) !== false) {
+    /** @var OnePica_AvaTax_Model_Records_Mysql4_Agreement_Collection $collection */
     $collection = Mage::getModel('avatax_records/agreement')->getCollection();
     $collection->load();
 
     if ($collection->count() == 0) {
-
-        /* @var Mage_Adminhtml_Helper_Data $helper */
+        /** @var Mage_Adminhtml_Helper_Data $helper */
         $helper = Mage::helper('adminhtml');
 
         // NAFTA Agreement
@@ -46,4 +47,4 @@ if ($installer->getConnection()->isTableExists($table)) {
     }
 }
 
-$this->endSetup();
+$installer->endSetup();
