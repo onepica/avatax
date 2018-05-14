@@ -62,6 +62,31 @@ class OnePica_AvaTax_Block_Checkout_Tax extends Mage_Tax_Block_Checkout_Tax
     }
 
     /**
+     * Show Landed Cost block or no
+     *
+     * @return bool
+     * @throws \Mage_Core_Model_Store_Exception
+     * @throws \Varien_Exception
+     */
+    public function showLandedCostBlock()
+    {
+        $result = false;
+        $storeCountryId = Mage::getStoreConfig('shipping/origin/country_id', $this->getStore());
+
+        /* Show when LC is enabled */
+        if ($this->_getLandedCostHelper()->isLandedCostEnabled($this->getStore()->getId())) {
+            $result = true;
+        }
+
+        /* don't show when destination country same as origin and zero */
+        if ($storeCountryId === $this->getTotal()->getAddress()->getCountryId() && $this->getLandedCostAmount() == 0) {
+            $result = false;
+        }
+
+        return $result;
+    }
+
+    /**
      * Returns the AvaTax helper.
      *
      * @return OnePica_AvaTax_Helper_LandedCost
