@@ -101,6 +101,8 @@ $taxIter++; ?>
 <?php $_landedCostAmount = $this->getLandedCostAmount();
 $taxIter++; ?>
 
+<?php if ($this->showLandedCostBlock()): ?>
+
 <?php if ($this->helper('tax')->displayFullSummary() && $_landedCostAmount != 0): ?>
     <?php $isTop = 1; ?>
     <?php foreach ($this->getTotal()->getFullInfo() as $info): ?>
@@ -145,3 +147,4 @@ $taxIter++; ?>
     </td>
     <td style="<?php echo $_style ?>" class="a-right"><?php echo $this->helper('checkout')->formatPrice($_landedCostAmount) ?></td>
 </tr>
+<?php endif; ?>
