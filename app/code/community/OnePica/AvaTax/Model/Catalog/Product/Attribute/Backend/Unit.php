@@ -20,10 +20,9 @@
  *
  * @category    Mage
  * @package     Mage_Catalog
- * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
- * @license http://www.magento.com/license/enterprise-edition
+ * @copyright   Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @license     http://www.magento.com/license/enterprise-edition
  */
-
 
 /**
  * Catalog product price attribute backend model
@@ -33,18 +32,20 @@
  * @author     Magento Core Team <core@magentocommerce.com>
  *
  */
-class OnePica_AvaTax_Model_Catalog_Product_Attribute_Backend_Unit extends Mage_Eav_Model_Entity_Attribute_Backend_Abstract
+class OnePica_AvaTax_Model_Catalog_Product_Attribute_Backend_Unit
+    extends Mage_Eav_Model_Entity_Attribute_Backend_Abstract
 {
     /**
      * Set Attribute instance
      * Rewrite for redefine attribute scope
      *
      * @param Mage_Catalog_Model_Resource_Eav_Attribute $attribute
-     * @return Mage_Catalog_Model_Product_Attribute_Backend_Price
+     * @return \OnePica_AvaTax_Model_Catalog_Product_Attribute_Backend_Unit
      */
     public function setAttribute($attribute)
     {
         parent::setAttribute($attribute);
+
         return $this;
     }
 
@@ -61,6 +62,7 @@ class OnePica_AvaTax_Model_Catalog_Product_Attribute_Backend_Unit extends Mage_E
             $result = $this->decodeUnitOfMeasurement($object->getData($attrCode));
             $object->setData($attrCode, $result);
         }
+
         return $this;
     }
 
@@ -96,16 +98,18 @@ class OnePica_AvaTax_Model_Catalog_Product_Attribute_Backend_Unit extends Mage_E
             $origin = $object->getData($attrCode);
             $data = array();
             foreach ($origin as $index => $item) {
-                if(empty($item['delete']) || $item['delete'] == 0) {
+                if (empty($item['delete']) || $item['delete'] == 0) {
+                    $item['unit'] = number_format($item['unit'], 4);
                     array_push($data, $item);
                 }
             }
 
             $config = json_encode($data);
             $object->setData($attrCode, $config);
-
-        } else if (!$object->hasData($attrCode) && $this->getDefaultValue()) {
-            $object->setData($attrCode, $this->getDefaultValue());
+        } else {
+            if (!$object->hasData($attrCode) && $this->getDefaultValue()) {
+                $object->setData($attrCode, $this->getDefaultValue());
+            }
         }
 
         return $this;
