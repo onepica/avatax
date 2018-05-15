@@ -720,8 +720,6 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax
 
         $address->setAvataxLandedCostImportDutiesAmount($amount);
         $address->setBaseAvataxLandedCostImportDutiesAmount($baseAmount);
-        $address->setGrandTotal($address->getGrandTotal() + $amount);
-        $address->setBaseGrandTotal($address->getBaseGrandTotal() + $baseAmount);
 
         if ($calculator->getLandedCostMessage()) {
             $address->setLandedCostMessage($calculator->getLandedCostMessage());
