@@ -43,4 +43,67 @@ class OnePica_AvaTax_Model_Records_HsCodeCountry extends Mage_Core_Model_Abstrac
         parent::_construct();
         $this->_init('avatax_records/hsCodeCountry');
     }
+
+    /**
+     * Processing object before save data
+     *
+     * @return Mage_Core_Model_Abstract
+     * @throws \Varien_Exception
+     */
+    protected function _beforeSave()
+    {
+        parent::_beforeSave();
+
+        $this->_checkCountryCodes();
+
+        return $this;
+    }
+
+    /**
+     * Check if country is unique for this HS code
+     *
+     * @return $this
+     * @throws \Varien_Exception
+     */
+    protected function _checkCountryCodes()
+    {
+        $countryCodesArray = explode(',', $this->getCountryCodes());
+        $needReset = false;
+
+        foreach ($countryCodesArray as $key => $countryCode) {
+            $hsCodeForCountry = $this->_getCodeForCountry($countryCode);
+
+            if ($hsCodeForCountry->getId()) {
+                $message = sprintf(
+                    'Country "%s" already exist in HS Full Code: "%s"', $countryCode, $hsCodeForCountry->getHsFullCode()
+                );
+                Mage::getSingleton('core/session')->addError($message);
+
+                unset($countryCodesArray[$key]);
+                $needReset = true;
+            }
+        }
+
+        if ($needReset) {
+            $this->setCountryCodes(implode(',', $countryCodesArray));
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get HS Code from country code
+     *
+     * @param string $countryCode
+     * @return $this
+     */
+    protected function _getCodeForCountry($countryCode)
+    {
+        $collection = $this->getCollection();
+        $collection->addFieldToFilter('hs_id', array("eq" => $this->getHsId()));
+        $collection->addFieldToFilter('id', array("neq" => $this->getId()));
+        $collection->addFieldToFilter('country_codes', array("regexp" => $countryCode));
+
+        return $collection->getFirstItem();
+    }
 }
