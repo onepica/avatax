@@ -75,7 +75,8 @@ class OnePica_AvaTax_Model_Records_HsCodeCountry extends Mage_Core_Model_Abstrac
 
             if ($hsCodeForCountry->getId()) {
                 $message = sprintf(
-                    'Country "%s" already exist in HS Full Code: "%s"', $countryCode, $hsCodeForCountry->getHsFullCode()
+                    'Country "%s" already has a Full Code "%s" assigned. "%s" will be omitted in the list for "%s" code.',
+                    $countryCode, $hsCodeForCountry->getHsFullCode(), $countryCode, $this->getHsFullCode()
                 );
                 Mage::getSingleton('core/session')->addError($message);
 
