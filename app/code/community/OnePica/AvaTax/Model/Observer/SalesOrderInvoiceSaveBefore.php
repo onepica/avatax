@@ -29,6 +29,8 @@ class OnePica_AvaTax_Model_Observer_SalesOrderInvoiceSaveBefore extends OnePica_
      *
      * @param Varien_Event_Observer $observer
      * @return $this
+     * @throws \OnePica_AvaTax_Exception
+     * @throws \Varien_Exception
      */
     public function execute(Varien_Event_Observer $observer)
     {
@@ -37,8 +39,8 @@ class OnePica_AvaTax_Model_Observer_SalesOrderInvoiceSaveBefore extends OnePica_
 
         /** @var Mage_Sales_Model_Order $order */
         $order = $invoice->getOrder();
-        $isLandedCostPresent = $order->getAvataxLandedCostImportDutiesAmount();
-        if ($isLandedCostPresent) {
+        $isLandedCostAmount = $order->getAvataxLandedCostImportDutiesAmount();
+        if ($isLandedCostAmount > 0) {
             $isPartialInvoice = false;
             foreach ($order->getAllItems() as $item) {
                 if ($item->getQtyInvoiced() != $item->getQtyOrdered()) {
