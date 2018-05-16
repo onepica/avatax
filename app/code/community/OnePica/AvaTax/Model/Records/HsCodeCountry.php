@@ -71,7 +71,7 @@ class OnePica_AvaTax_Model_Records_HsCodeCountry extends Mage_Core_Model_Abstrac
         $needReset = false;
 
         foreach ($countryCodesArray as $key => $countryCode) {
-            $hsCodeForCountry = $this->_getCodeForCountry($countryCode);
+            $hsCodeForCountry = $this->_getCodeForSameCountry($countryCode);
 
             if ($hsCodeForCountry->getId()) {
                 $message = sprintf(
@@ -98,7 +98,7 @@ class OnePica_AvaTax_Model_Records_HsCodeCountry extends Mage_Core_Model_Abstrac
      * @param string $countryCode
      * @return $this
      */
-    protected function _getCodeForCountry($countryCode)
+    protected function _getCodeForSameCountry($countryCode)
     {
         $collection = $this->getCollection();
         $collection->addFieldToFilter('hs_id', array("eq" => $this->getHsId()));
