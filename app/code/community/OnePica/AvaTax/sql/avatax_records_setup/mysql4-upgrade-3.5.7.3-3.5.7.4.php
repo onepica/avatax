@@ -27,7 +27,7 @@ $columnName = 'description';
 if ($conn->tableColumnExists($tableName, $columnName) === false) {
     $installer->run(
         "ALTER TABLE `" . $tableName . "`
-    ADD `'.$columnName.'` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'HS code description';
+    ADD `" . $columnName . "` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'HS code description';
     "
     );
 }
