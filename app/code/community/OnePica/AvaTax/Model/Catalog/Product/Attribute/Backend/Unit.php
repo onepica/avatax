@@ -78,7 +78,9 @@ class OnePica_AvaTax_Model_Catalog_Product_Attribute_Backend_Unit
         $result = array();
         if (!empty($config)) {
             foreach ($config as $c) {
-                array_push($result, (array)$c);
+                $ac = (array)$c;
+                $ac['unit']=(float)$ac['unit'];
+                array_push($result, $ac);
             }
         }
 
@@ -95,11 +97,14 @@ class OnePica_AvaTax_Model_Catalog_Product_Attribute_Backend_Unit
     {
         $attrCode = $this->getAttribute()->getAttributeCode();
         if ($object->hasData($attrCode)) {
+            /** @var OnePica_AvaTax_Helper_LandedCost $helper */
+            $helper = Mage::helper('avatax/landedCost');
+
             $origin = $object->getData($attrCode);
             $data = array();
             foreach ($origin as $index => $item) {
                 if (empty($item['delete']) || $item['delete'] == 0) {
-                    $item['unit'] = number_format($item['unit'], 4);
+                    $item['unit'] = round((float)$item['unit'], $helper->getUnitPrecision());
                     array_push($data, $item);
                 }
             }

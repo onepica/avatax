@@ -284,7 +284,7 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
             array_push(
                 $units,
                 array(
-                    'unit'                => $weight,
+                    'unit'                => (float)$weight,
                     'unit_of_measurement' => $defaultUnit->getId(),
                     'default'             => true
                 )
