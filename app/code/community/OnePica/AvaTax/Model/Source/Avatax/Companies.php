@@ -84,14 +84,4 @@ class OnePica_AvaTax_Model_Source_Avatax_Companies
     {
         return Mage::helper('avatax/config');
     }
-
-    /**
-     * Get Service Config
-     *
-     * @return OnePica_AvaTax_Model_Service_Avatax_Config
-     */
-    protected function _getServiceConfig()
-    {
-        return Mage::getModel('avatax/service_avatax_config')->init();
-    }
 }
