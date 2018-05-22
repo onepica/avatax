@@ -45,9 +45,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_AjaxController extends Mage_Adminhtml_Cont
             return;
         }
 
-        $dataResponse = array(
-            'success' => false
-        );
+        $dataResponse = array();
 
         try {
             if (!$this->getRequest()->getParam('account')) {
@@ -69,7 +67,9 @@ class OnePica_AvaTax_Adminhtml_AvaTax_AjaxController extends Mage_Adminhtml_Cont
             );
 
             $dataResponse['success'] = true;
+            $dataResponse['message'] = 'Companies successfully fetched';
         } catch (Exception $e) {
+            $dataResponse['companies'] = array();
             $dataResponse['success'] = false;
             $dataResponse['message'] = $e->getMessage();
         }
