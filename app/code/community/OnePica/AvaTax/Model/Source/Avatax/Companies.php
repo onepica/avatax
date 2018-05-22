@@ -57,7 +57,12 @@ class OnePica_AvaTax_Model_Source_Avatax_Companies
      */
     protected function _getCompanies()
     {
-        $companies = $this->_getServiceConfig()->getAccountConnection()->CompanyFetch('')->getValidCompanies();
+        try {
+            $companies = $this->_getConfigHelper()->getAccountCompanies(Mage::app()->getStore()->getId());
+        } catch (Exception $e) {
+            // return empty array if user or account could not be authenticated.
+            $companies = array();
+        }
 
         return (array)$companies;
     }
@@ -79,6 +84,6 @@ class OnePica_AvaTax_Model_Source_Avatax_Companies
      */
     protected function _getServiceConfig()
     {
-        return Mage::getModel('avatax/service_avatax_config')->init(Mage::app()->getStore());
+        return Mage::getModel('avatax/service_avatax_config')->init();
     }
 }

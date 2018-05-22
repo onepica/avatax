@@ -776,7 +776,7 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
      * @param array $params
      * @return array
      */
-    public function getCompanies($storeId, $params = array())
+    public function getAccountCompanies($storeId, $params = array())
     {
         $companies = $this->_getServiceConfig()->getAccountCompanies($storeId, $params);
 

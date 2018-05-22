@@ -65,7 +65,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_AjaxController extends Mage_Adminhtml_Cont
             );
 
             $dataResponse['companies'] = $this->_prepareCompaniesArray(
-                $this->_getConfigHelper()->getCompanies(Mage::app()->getStore()->getStoreId(), $params)
+                $this->_getConfigHelper()->getAccountCompanies(Mage::app()->getStore()->getStoreId(), $params)
             );
 
             $dataResponse['success'] = true;
