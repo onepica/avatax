@@ -89,6 +89,7 @@
         <reference name="head">
             <action method="addJs"><script>avatax/jquery-3.2.1.min.js</script></action>
             <action method="addJs"><script>avatax/landedcost.js</script></action>
+            <action method="addJs"><script>avatax/main.js</script></action>
         </reference>
     </adminhtml_system_config_edit>
 

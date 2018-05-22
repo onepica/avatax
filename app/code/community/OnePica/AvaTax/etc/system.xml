@@ -81,6 +81,7 @@
                             <label>Company Code</label>
                             <comment>Required. Your company code from the dashboard.</comment>
                             <frontend_type>select</frontend_type>
+                            <frontend_model>avatax/adminhtml_system_config_form_field_company</frontend_model>
                             <source_model>avatax/source_companies</source_model>
                             <sort_order>50</sort_order>
                             <show_in_default>1</show_in_default>
