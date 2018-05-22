@@ -32,18 +32,26 @@ class OnePica_AvaTax_Model_Source_Avatax_Companies
      */
     public function toArray()
     {
-        $result = array(
-            array(
-                'value' => '',
-                'label' => ''
-            )
-        );
+        $result = array();
+        $companies = $this->_getCompanies();
 
         /** @var \stdClass $company */
-        foreach ($this->_getCompanies() as $company) {
+        foreach ($companies as $company) {
             $result[] = array(
                 'value' => $company->CompanyCode,
-                'label' => $company->CompanyName
+                'label' => $company->CompanyName . ' (' . $company->CompanyCode . ')'
+            );
+        }
+
+        /* get data from config if there is no companies */
+        if (!$result) {
+            $companyCodeConfig = (string)$this->_getConfigHelper()->getCompanyCode(Mage::app()->getStore()->getId());
+
+            $result = array(
+                array(
+                    'value' => $companyCodeConfig,
+                    'label' => $companyCodeConfig
+                )
             );
         }
 

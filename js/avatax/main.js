@@ -17,20 +17,39 @@
 var AvaTax = Class.create({});
 AvaTax._config = {
     updateCompaniesSelect: function (url) {
-
         this.valueUrl = $("tax_avatax_url").value;
         this.valueAccount = $("tax_avatax_account").value;
         this.valueLicense = $("tax_avatax_license").value;
+        var required = ["tax_avatax_license", "tax_avatax_account"];
+        var canMakeCall = true;
 
-        var params = {
-            url: this.valueUrl,
-            account: this.valueAccount,
-            license: this.valueLicense
-        };
+        // check required fields
+        required.each(function (elmtId) {
+            var elm = $(elmtId);
+            var advice = Validation.getAdvice("required-entry", elm);
+            if (advice === null) {
+                advice = Validation.createAdvice("required-entry", elm);
+            }
+
+            if (!elm.value) {
+                Validation.showAdvice(elm, advice, "required-entry");
+                canMakeCall = false;
+            } else {
+                Validation.hideAdvice(elm, advice);
+            }
+        });
+
+        if (!canMakeCall) {
+            return;
+        }
 
         new Ajax.Request(url, {
             method: "POST",
-            parameters: params,
+            parameters: {
+                url: this.valueUrl,
+                account: this.valueAccount,
+                license: this.valueLicense
+            },
             requestHeaders: {Accept: "application/json"},
             onSuccess: function (transport) {
                 try {
@@ -40,23 +59,32 @@ AvaTax._config = {
                         var select = $("tax_avatax_company_code");
                         select.options.length = 0;
 
-                        response["companies"].each(function (element) {
+                        response.companies.each(function (element) {
                             select.insert(new Element(
                                 "option", {value: element.company_code}
-                            ).update(element.company_name));
+                            ).update(element.company_name + " (" + element.company_code + ")"));
                         });
-
-                        if (response["success"]) {
-                            // show success message
+                        AvaTax._general.removeMessages();
+                        if (response.success) {
+                            AvaTax._general.showMessage(response.message, "success");
                         } else {
-                            // show error message
+                            AvaTax._general.showMessage(response.message, "error");
                         }
                     }
                 } catch (e) {
                     console.log(e);
-                    debugger;
                 }
             }.bind(this)
         });
+    }
+};
+
+AvaTax._general = {
+    showMessage: function (txt, type) {
+        var html = '<ul class="messages"><li class="' + type + '-msg"><ul><li>' + txt + '</li></ul></li></ul>';
+        $("messages").update(html);
+    },
+    removeMessages: function () {
+        $("messages").update("");
     }
 };
