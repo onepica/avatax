@@ -553,7 +553,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         if ($this->getLandedCostMode()) {
             $storeId = $this->_getStoreIdByObject($address);
 
-            $insurance = new \Varien_Object(array('amount' => null, 'document_type' => 'order'));
+            $insurance = new \Varien_Object(array('amount' => null, 'document_type' => 'order', 'object' => $address));
             Mage::dispatchEvent('avatax_landed_cost_request_tax_insurance_needs', array('insurance' => $insurance));
 
             if ($insurance->getAmount() !== null) {
