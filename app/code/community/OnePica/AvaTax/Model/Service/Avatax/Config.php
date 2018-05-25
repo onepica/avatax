@@ -59,14 +59,14 @@ class OnePica_AvaTax_Model_Service_Avatax_Config extends OnePica_AvaTax_Model_Se
                 'account' => Mage::helper('avatax/config')->getServiceAccountId($storeId),
                 'license' => Mage::helper('avatax/config')->getServiceKey($storeId),
                 'trace'   => (Mage::helper('avatax')
-                        ->getLogMode($storeId) == OnePica_AvaTax_Model_Source_Logmode::DEBUG) ? true : false,
+                                  ->getLogMode($storeId) == OnePica_AvaTax_Model_Source_Logmode::DEBUG) ? true : false,
                 'client'  => $this->getClientName()
             );
 
             if ($this->_getLandedCostHelper()->isLandedCostEnabled($storeId)) {
                 $taxServiceKey = 'taxService';
                 $cfgDefault = new ATConfig('Default');
-                $cfgValues[$taxServiceKey] = $cfgDefault->taxService .  '/v2';
+                $cfgValues[$taxServiceKey] = $cfgDefault->taxService . '/v2';
                 $cfgValues['isLandedCostEnabled'] = true;
             }
 
@@ -115,7 +115,6 @@ class OnePica_AvaTax_Model_Service_Avatax_Config extends OnePica_AvaTax_Model_Se
         return $this->_taxConnection;
     }
 
-
     /**
      * Returns the AvaTax Address soap connection client.
      *
@@ -149,6 +148,34 @@ class OnePica_AvaTax_Model_Service_Avatax_Config extends OnePica_AvaTax_Model_Se
     public function getCompanyCode($store = null)
     {
         return Mage::helper('avatax/config')->getCompanyCode($store);
+    }
+
+    /**
+     * Returns the company code to use from the AvaTax dashboard
+     *
+     * @param       $storeId
+     * @param array $params
+     * @return array
+     */
+    public function getAccountCompanies($storeId, $params = array())
+    {
+        if ($params) {
+            $cfgValues = array(
+                'url'     => $params['url'],
+                'account' => $params['account'],
+                'license' => $params['license'],
+                'trace'   => false,
+                'client'  => $this->getClientName()
+            );
+
+            $this->_config = new ATConfig(self::CONFIG_KEY, $cfgValues);
+        } elseif ($this->_config === null) {
+            $this->init($storeId);
+        }
+
+        $companies = $this->getAccountConnection()->CompanyFetch('')->getValidCompanies();
+
+        return (array)$companies;
     }
 
     /**

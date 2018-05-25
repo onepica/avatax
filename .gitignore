@@ -43,4 +43,5 @@ lib/**
 !lib/AvaTax/
 !lib/AvaTax/**
 !composer/onepica/*
-!js/avatax/*
+!js/avatax/
+!js/avatax/**

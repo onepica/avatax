@@ -768,4 +768,28 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
     {
         return (string)Mage::getStoreConfig(self::XML_PATH_TO_AVATAX_SHIPPING_TAX_CODE, $store);
     }
+
+    /**
+     * Get companies for account
+     *
+     * @param       $storeId
+     * @param array $params
+     * @return array
+     */
+    public function getAccountCompanies($storeId, $params = array())
+    {
+        $companies = $this->_getServiceConfig()->getAccountCompanies($storeId, $params);
+
+        return (array)$companies;
+    }
+
+    /**
+     * Get Service Config
+     *
+     * @return OnePica_AvaTax_Model_Service_Avatax_Config
+     */
+    protected function _getServiceConfig()
+    {
+        return Mage::getModel('avatax/service_avatax_config');
+    }
 }
