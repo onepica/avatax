@@ -349,7 +349,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
             if (!empty($unit)) {
                 $unitValue = round($unit->getUnit() * $line->getQty(), $lcHelper->getUnitPrecision());
                 $htsMeasurement = new ParameterBagItem();
-                $htsMeasurement->setName('AvaTax.Units.Mass');
+                $htsMeasurement->setName($unit->getAvalaraMeasurementType());
                 $htsMeasurement->setValue($unitValue);
                 $htsMeasurement->setUOMCode($unit->getAvalaraCode());
 

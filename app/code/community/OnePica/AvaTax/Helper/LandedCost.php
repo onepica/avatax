@@ -317,6 +317,7 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
                     if ($u['unit_of_measurement'] == $unit->getId()) {
                         $resultUnit = $u;
                         $resultUnit['avalara_code'] = $unit->getAvalaraCode();
+                        $resultUnit['avalara_measurement_type'] = $unit->getAvalaraMeasurementType();
                         $resultUnit['unit_obj'] = $unit;
                         break;
                     }

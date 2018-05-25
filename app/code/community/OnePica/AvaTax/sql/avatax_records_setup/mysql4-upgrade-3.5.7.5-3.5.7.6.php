@@ -43,6 +43,7 @@ if ($conn->showTableStatus($table) !== false) {
             $unit = Mage::getModel('avatax_records/unitOfMeasurement');
             $unit->setStoreId($storeDefault->getId());
             $unit->setAvalaraCode('kg');
+            $unit->setAvalaraMeasurementType('AvaTax.Units.Mass');
             $unit->setDescription($helper->__('Kilogram'));
             $unit->setCountryList($allCountriesExceptFew);
 
@@ -55,6 +56,7 @@ if ($conn->showTableStatus($table) !== false) {
             $unit = Mage::getModel('avatax_records/unitOfMeasurement');
             $unit->setStoreId($storeDefault->getId());
             $unit->setAvalaraCode('g');
+            $unit->setAvalaraMeasurementType('AvaTax.Units.Mass');
             $unit->setDescription($helper->__('Gram'));
             $unit->setCountryList($allCountriesExceptFew);
 

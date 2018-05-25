@@ -32,7 +32,9 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement_Edit_Form ext
         $form = new Varien_Data_Form(
             array(
                 'id'     => 'edit_form',
-                'action' => $this->getUrl('*/*/unitsofmeasurementSave', array('id' => $this->getRequest()->getParam('id'),)),
+                'action' => $this->getUrl(
+                    '*/*/unitsofmeasurementSave', array('id' => $this->getRequest()->getParam('id'),)
+                ),
                 'method' => 'post',
             )
         );
@@ -46,6 +48,16 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement_Edit_Form ext
                 'name'     => 'avalara_code',
                 'label'    => $this->__('Avalara code'),
                 'class'    => 'required-entry',
+                'required' => true
+            )
+        );
+
+        $fieldset->addField(
+            'avalara_measurement_type', 'text', array(
+                'name'     => 'avalara_measurement_type',
+                'label'    => $this->__('Avalara Measurement Type Name'),
+                'class'    => 'required-entry',
+                'note'     => $this->__('For example "AvaTax.Units.Mass"'),
                 'required' => true
             )
         );

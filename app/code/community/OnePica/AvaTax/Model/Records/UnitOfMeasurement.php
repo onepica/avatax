@@ -23,8 +23,8 @@
  * @method $this setStoreId(int $storeId)
  * @method string getAvalaraCode()
  * @method $this setAvalaraCode(string $code)
- * @method string getZendCode()
- * @method $this setZendCode(string $code)
+ * @method string getAvalaraMeasurementType()
+ * @method $this setAvalaraMeasurementType(string $measurementType)
  * @method string getDescription()
  * @method $this setDescription(string $description)
  * @method string getCountryList() // ISO 2 Code list comma separated
