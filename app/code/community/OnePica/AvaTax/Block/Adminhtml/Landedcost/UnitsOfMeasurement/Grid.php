@@ -35,9 +35,10 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement_Grid
     {
         $this->_addColumns(
             array(
-                'id'           => 'number',
-                'avalara_code' => 'varchar',
-                'description'  => 'varchar',
+                'id'                       => 'number',
+                'avalara_code'             => 'varchar',
+                'avalara_measurement_type' => 'varchar',
+                'description'              => 'varchar',
             )
         );
 

@@ -28,6 +28,7 @@ if ($conn->showTableStatus($table) === false) {
         "CREATE TABLE `" . $table . "` (
     `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
     `avalara_code` varchar(100) DEFAULT NULL,
+    `avalara_measurement_type` varchar(100) DEFAULT NULL,
     `description` text,
     `country_list` text,
     PRIMARY KEY (`id`),
