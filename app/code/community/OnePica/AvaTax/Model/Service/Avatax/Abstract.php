@@ -306,13 +306,15 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
             /** @var OnePica_AvaTax_Helper_Landedcost_Shipping $shippingHelper */
             $shippingHelper = Mage::helper('avatax/landedcost_shipping');
             $mode = $shippingHelper->getShippingMode($address);
-            if($mode) {
+            if ($mode) {
                 $shippingMode = new ParameterBagItem();
                 $shippingMode->setName('AvaTax.LandedCost.ShippingMode');
                 $shippingMode->setValue($mode);
 
                 array_push($bagItemsParams, $shippingMode);
             }
+
+//            AvaTax.LandedCost.Express
 
             if (!empty($bagItemsParams)) {
                 $this->_request->setParameterBagItems($bagItemsParams);
@@ -359,10 +361,10 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
             //Trade Agreement
             $storeId = $this->_getStoreIdByObject($address);
             $agreements = $lcHelper->getProductAgreements(
-                                $product,
-                                $this->_getConfigHelper()->getShippingOriginCountryId($storeId),
-                                $address->getCountryId()
-                            );
+                $product,
+                $this->_getConfigHelper()->getShippingOriginCountryId($storeId),
+                $address->getCountryId()
+            );
             if (!empty($agreements)) {
                 $agreements = implode(',', $agreements);
                 $bagAgreement = new ParameterBagItem();
@@ -403,6 +405,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
     protected function _applyOriginAddressForRequest($entity)
     {
         $this->_setOriginAddress($entity->getStoreId());
+
         return $this;
     }
 

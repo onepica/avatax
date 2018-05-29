@@ -67,12 +67,14 @@ class OnePica_AvaTax_Helper_Landedcost_Shipping extends Mage_Core_Helper_Abstrac
 
     /**
      * Load Shipping Method with Carrier Code
+     *
      * @param $codeCarrier
      * @return mixed
      */
     public function getShippingMethodByCode($codeCarrier)
     {
         $shippingModel = Mage::getSingleton('shipping/config')->getCarrierInstance($codeCarrier);
+
         return Mage::getModel(
             'avatax/landedcost_shipping_method', array(
                 'id'    => $codeCarrier,
@@ -111,7 +113,6 @@ class OnePica_AvaTax_Helper_Landedcost_Shipping extends Mage_Core_Helper_Abstrac
         return $formData;
     }
 
-
     /**
      * Defines select labels and values
      *
@@ -149,24 +150,7 @@ class OnePica_AvaTax_Helper_Landedcost_Shipping extends Mage_Core_Helper_Abstrac
     {
         $shippingMode = null;
 
-        $info = null;
-        if( $object instanceof Mage_Sales_Model_Order) {
-            $carrier = $object->getShippingCarrier();
-            if($carrier) {
-                $info = new \Varien_Object();
-                $info->setCarrier($carrier->getCarrierCode());
-                $method = preg_replace("/{$info->getCarrier()}_/", '', $object->getShippingMethod(), 1);
-                $info->setMethod($method);
-            }
-        } else {
-            /** @var Mage_Sales_Model_Quote_Address_Rate $info */
-            $rate = $object->getShippingRateByCode($object->getShippingMethod());
-            if($rate) {
-                $info = new \Varien_Object();
-                $info->setCarrier($rate->getCarrier());
-                $info->setMethod($rate->getMethod());
-            }
-        }
+        $info = $this->_getShippingModeInfo($object);
 
         if ($info) {
             $shippingMethod = $this->getShippingMethodByCode($info->getCarrier());
@@ -190,5 +174,34 @@ class OnePica_AvaTax_Helper_Landedcost_Shipping extends Mage_Core_Helper_Abstrac
         }
 
         return $shippingMode;
+    }
+
+    /**
+     * @param \Mage_Sales_Model_Quote_Address|Mage_Sales_Model_Order $object
+     *
+     * @return \Mage_Sales_Model_Quote_Address_Rate|null|\Varien_Object
+     */
+    protected function _getShippingModeInfo($object)
+    {
+        $info = null;
+        if ($object instanceof Mage_Sales_Model_Order) {
+            $carrier = $object->getShippingCarrier();
+            if ($carrier) {
+                $info = new \Varien_Object();
+                $info->setCarrier($carrier->getCarrierCode());
+                $method = preg_replace("/{$info->getCarrier()}_/", '', $object->getShippingMethod(), 1);
+                $info->setMethod($method);
+            }
+        } else {
+            /** @var Mage_Sales_Model_Quote_Address_Rate $info */
+            $rate = $object->getShippingRateByCode($object->getShippingMethod());
+            if ($rate) {
+                $info = new \Varien_Object();
+                $info->setCarrier($rate->getCarrier());
+                $info->setMethod($rate->getMethod());
+            }
+        }
+
+        return $info;
     }
 }
