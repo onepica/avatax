@@ -318,7 +318,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
             if ($isExpress) {
                 $shippingExpress = new ParameterBagItem();
                 $shippingExpress->setName('AvaTax.LandedCost.Express');
-                $shippingExpress->setValue(true);
+                $shippingExpress->setValue('true');
 
                 array_push($bagItemsParams, $shippingExpress);
             }

@@ -55,7 +55,7 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement_Edit_Form ext
         $fieldset->addField(
             'avalara_measurement_type', 'text', array(
                 'name'     => 'avalara_measurement_type',
-                'label'    => $this->__('Avalara Measurement Type Name'),
+                'label'    => $this->__('Avalara Measurement Type'),
                 'class'    => 'required-entry',
                 'note'     => $this->__('For example "AvaTax.Units.Mass"'),
                 'required' => true
