@@ -613,24 +613,24 @@
                             <show_in_store>1</show_in_store>
                         </landed_cost_enabled>
 
-                        <!-- Shipping mapping-->
-                        <title_landed_cost_shipping translate="label">
-                            <label><![CDATA[<strong>Shipping mapping</strong>]]></label>
-                            <frontend_type>label</frontend_type>
+                        <!-- Unit of Measurement -->
+                        <landed_cost_units_of_measurement translate="label comment">
+                            <label>Default Unit Of Measurement</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>avatax/adminhtml_system_config_source_unitOfMeasurement</source_model>
                             <sort_order>40</sort_order>
                             <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </title_landed_cost_shipping>
-                        <landed_cost_shipping>
-                            <label>Shipping</label>
-                            <frontend_type>text</frontend_type>
-                            <frontend_model>avatax/adminhtml_system_config_form_fieldset_shipping_methods</frontend_model>
+                        </landed_cost_units_of_measurement>
+                        <!-- -->
+
+                        <title_landed_cost_shipping translate="label">
+                            <label><![CDATA[<strong>Shipping settings</strong>]]></label>
+                            <frontend_type>label</frontend_type>
                             <sort_order>50</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </landed_cost_shipping>
+                        </title_landed_cost_shipping>
 
                         <!-- Shipping Insurance -->
                         <shipping_insurance_sku translate="label comment">
@@ -665,15 +665,25 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </landed_cost_express_shipping>
-                        <!-- Unit of Measurement -->
-                        <landed_cost_units_of_measurement translate="label comment">
-                            <label>Default Unit Of Measurement</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>avatax/adminhtml_system_config_source_unitOfMeasurement</source_model>
+
+                        <!-- Shipping mapping-->
+                        <title_landed_cost_shipping_mapping translate="label">
+                            <label><![CDATA[<strong>Shipping mapping</strong>]]></label>
+                            <frontend_type>label</frontend_type>
                             <sort_order>90</sort_order>
                             <show_in_default>1</show_in_default>
-                        </landed_cost_units_of_measurement>
-                        <!-- -->
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </title_landed_cost_shipping_mapping>
+                        <landed_cost_shipping>
+                            <label>Shipping</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>avatax/adminhtml_system_config_form_fieldset_shipping_methods</frontend_model>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </landed_cost_shipping>
                     </fields>
                 </avatax_landed_cost>
                 <classes>
