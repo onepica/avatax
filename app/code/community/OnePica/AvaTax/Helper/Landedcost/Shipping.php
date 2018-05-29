@@ -178,6 +178,29 @@ class OnePica_AvaTax_Helper_Landedcost_Shipping extends Mage_Core_Helper_Abstrac
 
     /**
      * @param \Mage_Sales_Model_Quote_Address|Mage_Sales_Model_Order $object
+     * @return bool
+     */
+    public function getShippingIsExpress($object)
+    {
+        $shippingIsExpress = false;
+
+        $info = $this->_getShippingModeInfo($object);
+
+        if (!$info) {
+            return $shippingIsExpress;
+        }
+
+        $expressShippingMethods = explode(',', Mage::helper('avatax/landedCost')->getLandedCostExpressShipping());
+
+        if (in_array($info->getCarrier() . '_' . $info->getMethod(), $expressShippingMethods)) {
+            $shippingIsExpress = true;
+        }
+
+        return $shippingIsExpress;
+    }
+
+    /**
+     * @param \Mage_Sales_Model_Quote_Address|Mage_Sales_Model_Order $object
      *
      * @return \Mage_Sales_Model_Quote_Address_Rate|null|\Varien_Object
      */
