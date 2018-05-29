@@ -81,6 +81,11 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
     const AVATAX_CUSTOMER_LANDED_COST_ATTR_SELLER_IS_AN_IMPORTER = 'avatax_lc_seller_is_importer';
 
     /**
+     *  Seller is an importer for customer
+     */
+    const XML_PATH_TO_AVATAX_LANDED_COST_EXPRESS_SHIPPING = 'tax/avatax_landed_cost/landed_cost_express_shipping';
+
+    /**
      * Default Unit Of Measurement
      *
      * @var null
@@ -394,5 +399,16 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
     public function getShippingInsuranceTaxCode($store = null)
     {
         return Mage::getStoreConfig(self::XML_PATH_TO_AVATAX_LANDED_COST_SHIPPING_INSURANCE_TAX_CODE, $store);
+    }
+
+    /**
+     * Get shipping tax class
+     *
+     * @param int|Mage_Core_Model_Store $store
+     * @return string
+     */
+    public function getLandedCostExpressShipping($store = null)
+    {
+        return (string)Mage::getStoreConfig(self::XML_PATH_TO_AVATAX_LANDED_COST_EXPRESS_SHIPPING, $store);
     }
 }
