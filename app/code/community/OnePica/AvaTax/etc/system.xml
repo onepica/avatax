@@ -623,10 +623,20 @@
                         </landed_cost_units_of_measurement>
                         <!-- -->
 
+                        <!-- Tax subtypes -->
+                        <landed_cost_tax_subtypes translate="label comment">
+                            <label>Landed cost tax types</label>
+                            <comment><![CDATA[Separated by comma. For example:<br/><i>ImportDuty,ClearanceFee,CountervailingDuty</i>]]></comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                        </landed_cost_tax_subtypes>
+                        <!-- -->
+
                         <title_landed_cost_shipping translate="label">
                             <label><![CDATA[<strong>Shipping settings</strong>]]></label>
                             <frontend_type>label</frontend_type>
-                            <sort_order>50</sort_order>
+                            <sort_order>60</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -637,7 +647,7 @@
                             <label>Shipping Insurance Sku</label>
                             <comment>Required. The sku sent to denote shipping insurance amount.</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>60</sort_order>
+                            <sort_order>70</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -647,7 +657,7 @@
                             <label>Shipping Insurance Tax Code</label>
                             <comment>Required. Default is FR070100</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>70</sort_order>
+                            <sort_order>80</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -660,7 +670,7 @@
                             <label>Express shipping methods</label>
                             <frontend_type>multiselect</frontend_type>
                             <source_model>avatax/source_expressShipping</source_model>
-                            <sort_order>80</sort_order>
+                            <sort_order>90</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -670,7 +680,7 @@
                         <title_landed_cost_shipping_mapping translate="label">
                             <label><![CDATA[<strong>Shipping mapping</strong>]]></label>
                             <frontend_type>label</frontend_type>
-                            <sort_order>90</sort_order>
+                            <sort_order>100</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -679,7 +689,7 @@
                             <label>Shipping</label>
                             <frontend_type>text</frontend_type>
                             <frontend_model>avatax/adminhtml_system_config_form_fieldset_shipping_methods</frontend_model>
-                            <sort_order>100</sort_order>
+                            <sort_order>110</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
