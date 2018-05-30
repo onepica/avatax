@@ -228,9 +228,11 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
             'tax_details'       => array(),
         );
 
+        $landedCostSubtypes = $this->_getLandedCostHelper()->getLandedCostTaxSubtypes();
+
         /** @var \TaxDetail $taxDetail */
         foreach ($taxLine->getTaxDetails() as $taxDetail) {
-            if ($taxDetail->getTaxType() === OnePica_AvaTax_Helper_LandedCost::AVATAX_LANDED_COST_TAX_TYPE) {
+            if (in_array($taxDetail->getTaxSubTypeId(), $landedCostSubtypes)) {
                 $landedCostTaxLine['tax_details'][] = $taxDetail;
                 $landedCostTaxLine['exemption'] = $landedCostTaxLine['exemption'] + $taxDetail->getExemption();
                 $landedCostTaxLine['taxable'] = $landedCostTaxLine['taxable'] + $taxDetail->getTaxable();
@@ -379,7 +381,8 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
 
         $result = array();
 
-        /** @var \TaxDetail $taxDetail */
+        $landedCostSubtypes = $this->_getLandedCostHelper()->getLandedCostTaxSubtypes();
+
         foreach ($taxDetailItems as $taxDetail) {
             $resultKey = $taxDetail->getTaxName() . " " . $taxDetail->getJurisCode();
             if (array_key_exists($resultKey, $result)) {
@@ -388,8 +391,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
                 $amt = $taxDetail->getTax();
             }
 
-            $rate = $taxDetail->getTaxType() === OnePica_AvaTax_Helper_LandedCost::AVATAX_LANDED_COST_TAX_TYPE ? null
-                : $taxDetail->getRate() * 100;
+            $rate = in_array($taxDetail->getTaxSubTypeId(), $landedCostSubtypes) ? null : $taxDetail->getRate() * 100;
 
             $result[$resultKey] = array(
                 'name'               => $taxDetail->getTaxName(),
@@ -908,10 +910,12 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         /** @var OnePica_AvaTax_Model_Service_Avatax_Config $config */
         $config = Mage::getSingleton('avatax/service_avatax_config');
 
+        $landedCostSubtypes = $this->_getLandedCostHelper()->getLandedCostTaxSubtypes();
+
         /** @var \TaxDetail $taxDetail */
         foreach ($line->getTaxDetails() as $taxDetail) {
             /* We don't need to summarize the landedcost rate */
-            if ($taxDetail->getTaxType() === OnePica_AvaTax_Helper_LandedCost::AVATAX_LANDED_COST_TAX_TYPE) {
+            if (in_array($taxDetail->getTaxSubTypeId(), $landedCostSubtypes)) {
                 continue;
             }
 

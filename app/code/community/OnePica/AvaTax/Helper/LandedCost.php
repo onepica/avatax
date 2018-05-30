@@ -85,6 +85,9 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
      */
     const XML_PATH_TO_AVATAX_LANDED_COST_EXPRESS_SHIPPING = 'tax/avatax_landed_cost/landed_cost_express_shipping';
 
+    /** Landed cost tax subtypes */
+    const XML_PATH_TO_AVATAX_LANDED_COST_TAX_SUBTYPES = 'tax/avatax_landed_cost/landed_cost_tax_subtypes';
+
     /**
      * Default Unit Of Measurement
      *
@@ -410,5 +413,16 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
     public function getLandedCostExpressShipping($store = null)
     {
         return (string)Mage::getStoreConfig(self::XML_PATH_TO_AVATAX_LANDED_COST_EXPRESS_SHIPPING, $store);
+    }
+
+    /**
+     * Get tax subtypes
+     *
+     * @param int|Mage_Core_Model_Store $store
+     * @return array
+     */
+    public function getLandedCostTaxSubtypes($store = null)
+    {
+        return explode(',', Mage::getStoreConfig(self::XML_PATH_TO_AVATAX_LANDED_COST_TAX_SUBTYPES, $store));
     }
 }
