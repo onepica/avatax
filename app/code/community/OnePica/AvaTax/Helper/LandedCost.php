@@ -425,4 +425,23 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
     {
         return explode(',', Mage::getStoreConfig(self::XML_PATH_TO_AVATAX_LANDED_COST_TAX_SUBTYPES, $store));
     }
+
+    /**
+     * @param TaxDetail|array $taxDetail
+     * @return bool
+     */
+    public function isLandedCostTax($taxDetail)
+    {
+        $landedCostSubtypes = $this->getLandedCostTaxSubtypes();
+
+        if ($taxDetail instanceof TaxDetail) {
+            return in_array($taxDetail->getTaxSubTypeId(), $landedCostSubtypes);
+        }
+
+        if (is_array($taxDetail) && isset($taxDetail['avatax_tax_subtype'])) {
+            return in_array($taxDetail['avatax_tax_subtype'], $landedCostSubtypes);
+        }
+
+        return false;
+    }
 }

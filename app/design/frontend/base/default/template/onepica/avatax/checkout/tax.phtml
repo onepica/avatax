@@ -41,7 +41,7 @@ $taxIter++; ?>
             continue;
         } ?>
 
-        <?php if (isset($info['avatax_tax_type']) && $info['avatax_tax_type'] === OnePica_AvaTax_Helper_LandedCost::AVATAX_LANDED_COST_TAX_TYPE) {
+        <?php if ($this->_getLandedCostHelper()->isLandedCostTax($info)) {
             continue;
         } ?>
 
@@ -110,7 +110,7 @@ $taxIter++; ?>
             continue;
         } ?>
 
-        <?php if (!isset($info['avatax_tax_type']) || $info['avatax_tax_type'] !== OnePica_AvaTax_Helper_LandedCost::AVATAX_LANDED_COST_TAX_TYPE) {
+        <?php if (!$this->_getLandedCostHelper()->isLandedCostTax($info)) {
             continue;
         } ?>
         <?php $amount = $info['amount']; ?>
