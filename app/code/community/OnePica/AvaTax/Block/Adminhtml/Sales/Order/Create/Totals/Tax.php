@@ -16,20 +16,12 @@
  */
 
 /**
- * Total Tax and Landed Cost DDP Renderer
- *
- * @category   OnePica
- * @package    OnePica_AvaTax
- * @author     OnePica Codemaster <codemaster@onepica.com>
+ * Class OnePica_AvaTax_Block_Adminhtml_Sales_Order_Create_Totals_Tax
  */
-class OnePica_AvaTax_Block_Checkout_Tax extends Mage_Tax_Block_Checkout_Tax
+class OnePica_AvaTax_Block_Adminhtml_Sales_Order_Create_Totals_Tax
+    extends Mage_Adminhtml_Block_Sales_Order_Create_Totals_Default
 {
-    /**
-     * Template used in the block
-     *
-     * @var string
-     */
-    protected $_template = 'onepica/avatax/checkout/tax.phtml';
+    protected $_template = 'onepica/avatax/sales/order/create/totals/tax.phtml';
 
     /**
      * @return float|null
@@ -38,10 +30,30 @@ class OnePica_AvaTax_Block_Checkout_Tax extends Mage_Tax_Block_Checkout_Tax
     public function getLandedCostAmount()
     {
         if ($this->_getLandedCostHelper()->isLandedCostEnabled($this->getStore())) {
-            return (float)$this->getTotal()->getLandedCostAmount();
+            $amount = 0;
+            foreach ($this->getLandedCostItems() as $landedCostItem) {
+                $amount += $landedCostItem['amount'];
+            }
+
+            return $amount;
         }
 
         return null;
+    }
+
+    /**
+     * @return array
+     */
+    public function getLandedCostItems()
+    {
+        $items = array();
+        foreach ($this->getTotal()->getFullInfo() as $info) {
+            if ($this->_getLandedCostHelper()->isLandedCostTax($info)) {
+                $items[] = $info;
+            }
+        }
+
+        return $items;
     }
 
     /**
