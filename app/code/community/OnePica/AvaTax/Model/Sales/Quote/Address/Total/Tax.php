@@ -128,7 +128,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax
         foreach ($summary as $key => $row) {
             $id = $row['name'];
             $fullInfo[$id] = array(
-                'rates'           => array(
+                'rates'              => array(
                     array(
                         'code'     => $row['name'],
                         'title'    => $row['name'],
@@ -138,12 +138,13 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax
                         'rule_id'  => 0
                     )
                 ),
-                'percent'         => $row['rate'],
-                'id'              => $id,
-                'process'         => 0,
-                'amount'          => $store->convertPrice($row['amt']),
-                'base_amount'     => $row['amt'],
-                'avatax_tax_type' => $row['avatax_tax_type'],
+                'percent'            => $row['rate'],
+                'id'                 => $id,
+                'process'            => 0,
+                'amount'             => $store->convertPrice($row['amt']),
+                'base_amount'        => $row['amt'],
+                'avatax_tax_type'    => $row['avatax_tax_type'],
+                'avatax_tax_subtype' => $row['avatax_tax_subtype'],
             );
         }
 

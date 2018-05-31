@@ -568,6 +568,7 @@
             <avatax_landed_cost>
                 <shipping_insurance_sku>ShippingInsurance</shipping_insurance_sku>
                 <shipping_insurance_tax_code>FR070100</shipping_insurance_tax_code>
+                <landed_cost_tax_subtypes>ImportDuty,ClearanceFee,CountervailingDuty,ImportExcise,SocialSupport</landed_cost_tax_subtypes>
             </avatax_landed_cost>
             <calculation>
                 <based_on>shipping</based_on>

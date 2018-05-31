@@ -316,6 +316,7 @@
           <s:element minOccurs="1" maxOccurs="1" name="JurisType" type="tns:JurisdictionType" />
           <s:element minOccurs="0" maxOccurs="1" name="JurisCode" type="s:string" />
           <s:element minOccurs="1" maxOccurs="1" name="TaxType" type="tns:TaxType" />
+          <s:element minOccurs="1" maxOccurs="1" name="TaxSubTypeId" type="s:string" />
           <s:element minOccurs="1" maxOccurs="1" name="Base" type="s:decimal" />
           <s:element minOccurs="1" maxOccurs="1" name="Taxable" type="s:decimal" />
           <s:element minOccurs="1" maxOccurs="1" name="Rate" type="s:decimal" />
