@@ -129,7 +129,7 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Get Landed Cost Mode
+     * Is Landed Cost Transaction
      *
      * @param int|Mage_Core_Model_Store $storeId
      * @param string                    $destinationCountry
@@ -137,17 +137,7 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
      */
     public function getLandedCostMode($destinationCountry, $storeId = null)
     {
-        $mode = $this->isSellerImporterOfRecord($storeId, $destinationCountry) ? 'DDP' : null;
-//        $originCountryCode = Mage::getStoreConfig('shipping/origin/country_id', $storeId);
-//        if ($this->isLandedCostEnabled($storeId) && $destinationCountry != $originCountryCode) {
-//            if (in_array($destinationCountry, $this->getLandedCostDDPCountries())) {
-//                $mode = 'DDP';
-//            } elseif (in_array($destinationCountry, $this->getLandedCostDAPCountries())) {
-//                $mode = 'DAP';
-//            }
-//        }
-
-        return $mode;
+        return $this->isSellerImporterOfRecord($storeId, $destinationCountry);
     }
 
     public function isSellerImporterOfRecord($storeId = null, $destinationCountry)

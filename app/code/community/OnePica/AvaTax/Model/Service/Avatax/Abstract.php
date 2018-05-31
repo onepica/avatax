@@ -275,7 +275,9 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
     protected function _initLandedCostModeParam($object)
     {
         $storeId = $this->_getStoreIdByObject($object);
-        $mode = $this->_getLandedCostHelper()->isLandedCostEnabled($storeId);
+        $address = $this->_getShippingAddressFromObject($object);
+        $countryId = ($address) ? $address->getCountryId() : null;
+        $mode = $this->_getLandedCostHelper()->getLandedCostMode($countryId, $storeId);
         $this->setLandedCostMode($mode);
 
         return $this;
@@ -703,6 +705,37 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
         }
 
         return $object->getStoreId();
+    }
+
+    /**
+     * Retrieve shipping addresss from object
+     *
+     * @param OnePica_AvaTax_Model_Sales_Quote_Address|Mage_Sales_Model_Order_Address|Mage_Sales_Model_Order|Mage_Sales_Model_Order_Invoice|Mage_Sales_Model_Order_Creditmemo|Mage_Sales_Model_Order $object
+     * @return int
+     */
+    protected function _getShippingAddressFromObject($object)
+    {
+        if ($object instanceof OnePica_AvaTax_Model_Sales_Quote_Address) {
+            return $object;
+        }
+
+        if ($object instanceof Mage_Sales_Model_Order_Address) {
+            return $object;
+        }
+
+        if ($object instanceof Mage_Sales_Model_Order_Invoice) {
+            return $object->getShippingAddress();
+        }
+
+        if ($object instanceof Mage_Sales_Model_Order_Creditmemo) {
+            return $object->getShippingAddress();
+        }
+
+        if ($object instanceof Mage_Sales_Model_Order) {
+            return $object->getShippingAddress();
+        }
+
+        return null;
     }
 
     /**
