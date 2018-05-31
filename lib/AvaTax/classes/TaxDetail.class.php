@@ -21,7 +21,8 @@ class TaxDetail
 	private $JurisType;     //JurisdictionType 
 	private $JurisCode;     //string 
 	private $TaxType;     //TaxType 
-	
+	private $TaxSubTypeId;     //TaxSubTypeId
+
 	private $Base;		//decimal // See Taxable
 	private $Taxable;     //decimal 
 	private $Rate;		//decimal 
@@ -89,6 +90,16 @@ class TaxDetail
      */
 
 	public function getTaxType() {return $this->TaxType; }
+
+	/**
+     * Gets the TaxSubTypeId.
+     * <p>
+         * </p>
+	   @see GetTaxResults
+     * @return string
+     */
+
+	public function getTaxSubTypeId() {return $this->TaxSubTypeId; }
 
   /**
      * Gets the Taxable amount.
