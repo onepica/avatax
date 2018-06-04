@@ -1,0 +1,124 @@
+<?php
+/**
+ * OnePica_AvaTax
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0), a
+ * copy of which is available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
+ * @copyright  Copyright (c) 2009 One Pica, Inc.
+ * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ */
+
+use Avalara\AvaTaxRestV2\SeverityLevel;
+/**
+ * Avatax service abstract model
+ *
+ * @method getService() OnePica_AvaTax_Model_Service_Avatax
+ * @method $this setLandedCostMode(string $mode)
+ * @method string getLandedCostMode()
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
+ */
+abstract class OnePica_AvaTaxAr2_Model_Service_Avatax_Abstract extends Varien_Object
+{
+    /**
+     * Logs a debug message
+     *
+     * @param string          $type
+     * @param string          $request    the request string
+     * @param string          $result     the result string
+     * @param int             $storeId    id of the store the call is make for
+     * @param mixed           $additional any other info
+     * @param \TaxServiceSoap $connection for logging soap request/response
+     * @param Varien_Object   $quoteData
+     * @return $this
+     * @throws \Varien_Exception
+     */
+    protected function _log(
+        $type,
+        $request,
+        $result,
+        $storeId = null,
+        $additional = null,
+        $connection = null,
+        $quoteData = null
+    ) {
+//        if ($result->getResultCode() == SeverityLevel::C_SUCCESS) {
+//            switch ($this->_getHelper()->getLogMode($storeId)) {
+//                case OnePica_AvaTax_Model_Source_Logmode::ERRORS:
+//                    return $this;
+//                    break;
+//                case OnePica_AvaTax_Model_Source_Logmode::NORMAL:
+//                    $additional = null;
+//                    break;
+//            }
+//        }
+
+        $soapRequest = null;
+        $soapRequestHeaders = null;
+        $soapResponse = null;
+        $soapResponseHeaders = null;
+
+        if ($connection) {
+            $soapRequest = $connection->__getLastRequest();
+            $soapRequestHeaders = $connection->__getLastRequestHeaders();
+            $soapResponse = $connection->__getLastResponse();
+            $soapResponseHeaders = $connection->__getLastResponseHeaders();
+        }
+
+        $quoteId = $quoteData ? $quoteData->getQuoteId() : null;
+        $quoteAddressId = $quoteData ? $quoteData->getQuoteAddressId() : null;
+
+//        if (in_array($type, $this->_getHelper()->getLogType($storeId))) {
+            Mage::getModel('avatax_records/log')
+                ->setStoreId($storeId)
+                ->setLevel($result->getResultCode())
+                ->setType($type)
+                ->setRequest(print_r($request, true))
+                ->setResult(print_r($result, true))
+                ->setAdditional($additional)
+                ->setSoapRequest($soapRequest)
+                ->setSoapRequestHeaders($soapRequestHeaders)
+                ->setSoapResult($soapResponse)
+                ->setSoapResultHeaders($soapResponseHeaders)
+                ->setQuoteId($quoteId)
+                ->setQuoteAddressId($quoteAddressId)
+                ->save();
+//        }
+
+        return $this;
+    }
+
+    /**
+     * Returns the AvaTax session.
+     *
+     * @return OnePica_AvaTax_Model_Session
+     */
+    public function getSession()
+    {
+        return Mage::getSingleton('avatax/session');
+    }
+
+    /**
+     * Sets the company code on the request
+     *
+     * @param int|null $storeId
+     * @return $this
+     * @throws \Varien_Exception
+     */
+    protected function _setCompanyCode($storeId = null)
+    {
+        $config = Mage::getSingleton('avatax/service_avatax_config');
+        $this->_request->setCompanyCode($config->getCompanyCode($storeId));
+
+        return $this;
+    }
+}

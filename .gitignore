@@ -44,3 +44,6 @@ lib/**
 !lib/AvaTax/**
 !composer/onepica/*
 !js/avatax/*
+!lib/AvaTaxRestV2/
+!lib/AvaTaxRestV2/**
+!app/code/community/OnePica/AvaTaxAr2/**

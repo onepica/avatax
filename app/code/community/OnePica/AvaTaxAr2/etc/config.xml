@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * OnePica_AvaTax
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0), a
+ * copy of which is available through the world-wide-web at  this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
+ * @copyright  Copyright (c) 2009 One Pica, Inc.
+ * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ */
+-->
+<config>
+    <modules>
+        <OnePica_AvaTaxAr2>
+            <version>3.6.0.0</version>
+        </OnePica_AvaTaxAr2>
+    </modules>
+    <global>
+        <helpers>
+            <avataxar2>
+                <class>OnePica_AvaTaxAr2_Helper</class>
+            </avataxar2>
+        </helpers>
+        <models>
+            <avataxar2>
+                <class>OnePica_AvaTaxAr2_Model</class>
+            </avataxar2>
+        </models>
+        <events>
+            <controller_front_init_before>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avataxar2/observer_loadAvaTaxExternalLib</class>
+                        <method>execute</method>
+                    </avatax>
+                </observers>
+            </controller_front_init_before>
+        </events>
+    </global>
+
+    <!-- the adminhtml section is repeated in config.xml & adminhtml.xml for backwards compatibility -->
+    <!-- @see http://www.magentocommerce.com/bug-tracking/issue?issue=8496 -->
+    <adminhtml>
+        <translate>
+            <modules>
+                <OnePica_AvaTaxAr2>
+                    <files>
+                        <default>OnePica_AvaTax.csv</default>
+                    </files>
+                </OnePica_AvaTaxAr2>
+            </modules>
+        </translate>
+    </adminhtml>
+</config>
