@@ -23,6 +23,11 @@
         </OnePica_AvaTaxAr2>
     </modules>
     <global>
+        <blocks>
+            <avataxar2>
+                <class>OnePica_AvaTaxAr2_Block</class>
+            </avataxar2>
+        </blocks>
         <helpers>
             <avataxar2>
                 <class>OnePica_AvaTaxAr2_Helper</class>
@@ -49,6 +54,13 @@
     <!-- the adminhtml section is repeated in config.xml & adminhtml.xml for backwards compatibility -->
     <!-- @see http://www.magentocommerce.com/bug-tracking/issue?issue=8496 -->
     <adminhtml>
+        <layout>
+            <updates>
+                <avatax>
+                    <file>onepica/avataxar2.xml</file>
+                </avatax>
+            </updates>
+        </layout>
         <translate>
             <modules>
                 <OnePica_AvaTaxAr2>
