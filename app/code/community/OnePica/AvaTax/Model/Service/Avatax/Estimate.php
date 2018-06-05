@@ -230,7 +230,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
 
         /** @var \TaxDetail $taxDetail */
         foreach ($taxLine->getTaxDetails() as $taxDetail) {
-            if ($taxDetail->getTaxType() === OnePica_AvaTax_Helper_LandedCost::AVATAX_LANDED_COST_TAX_TYPE) {
+            if ($this->_getLandedCostHelper()->isLandedCostTax($taxDetail)) {
                 $landedCostTaxLine['tax_details'][] = $taxDetail;
                 $landedCostTaxLine['exemption'] = $landedCostTaxLine['exemption'] + $taxDetail->getExemption();
                 $landedCostTaxLine['taxable'] = $landedCostTaxLine['taxable'] + $taxDetail->getTaxable();
@@ -379,7 +379,6 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
 
         $result = array();
 
-        /** @var \TaxDetail $taxDetail */
         foreach ($taxDetailItems as $taxDetail) {
             $resultKey = $taxDetail->getTaxName() . " " . $taxDetail->getJurisCode();
             if (array_key_exists($resultKey, $result)) {
@@ -388,14 +387,14 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
                 $amt = $taxDetail->getTax();
             }
 
-            $rate = $taxDetail->getTaxType() === OnePica_AvaTax_Helper_LandedCost::AVATAX_LANDED_COST_TAX_TYPE ? null
-                : $taxDetail->getRate() * 100;
+            $rate = $this->_getLandedCostHelper()->isLandedCostTax($taxDetail) ? null : $taxDetail->getRate() * 100;
 
             $result[$resultKey] = array(
-                'name'            => $taxDetail->getTaxName(),
-                'rate'            => $rate,
-                'amt'             => $amt,
-                'avatax_tax_type' => $taxDetail->getTaxType()
+                'name'               => $taxDetail->getTaxName(),
+                'rate'               => $rate,
+                'amt'                => $amt,
+                'avatax_tax_type'    => $taxDetail->getTaxType(),
+                'avatax_tax_subtype' => $taxDetail->getTaxSubTypeId()
             );
         }
 
@@ -553,7 +552,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         if ($this->getLandedCostMode()) {
             $storeId = $this->_getStoreIdByObject($address);
 
-            $insurance = new \Varien_Object(array('amount' => null, 'document_type' => 'order'));
+            $insurance = new \Varien_Object(array('amount' => null, 'document_type' => 'order', 'object' => $address));
             Mage::dispatchEvent('avatax_landed_cost_request_tax_insurance_needs', array('insurance' => $insurance));
 
             if ($insurance->getAmount() !== null) {
@@ -910,7 +909,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         /** @var \TaxDetail $taxDetail */
         foreach ($line->getTaxDetails() as $taxDetail) {
             /* We don't need to summarize the landedcost rate */
-            if ($taxDetail->getTaxType() === OnePica_AvaTax_Helper_LandedCost::AVATAX_LANDED_COST_TAX_TYPE) {
+            if ($this->_getLandedCostHelper()->isLandedCostTax($taxDetail)) {
                 continue;
             }
 

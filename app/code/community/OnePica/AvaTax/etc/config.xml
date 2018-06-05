@@ -102,6 +102,7 @@
                     <tax_class_edit_form>OnePica_AvaTax_Block_Adminhtml_Tax_Class_Edit_Form</tax_class_edit_form>
                     <sales_order_totals_tax>OnePica_AvaTax_Block_Adminhtml_Sales_Order_Totals_Tax</sales_order_totals_tax>
                     <sales_order_create_form_account>OnePica_AvaTax_Block_Adminhtml_Sales_Order_Create_Form_Account</sales_order_create_form_account>
+                    <sales_order_create_totals_tax>OnePica_AvaTax_Block_Adminhtml_Sales_Order_Create_Totals_Tax</sales_order_create_totals_tax>
                 </rewrite>
             </adminhtml>
         </blocks>
@@ -568,6 +569,7 @@
             <avatax_landed_cost>
                 <shipping_insurance_sku>ShippingInsurance</shipping_insurance_sku>
                 <shipping_insurance_tax_code>FR070100</shipping_insurance_tax_code>
+                <landed_cost_tax_subtypes>ImportDuty,ClearanceFee,CountervailingDuty,ImportExcise,SocialSupport</landed_cost_tax_subtypes>
             </avatax_landed_cost>
             <calculation>
                 <based_on>shipping</based_on>

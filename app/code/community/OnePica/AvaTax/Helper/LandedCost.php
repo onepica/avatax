@@ -81,6 +81,14 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
     const AVATAX_CUSTOMER_LANDED_COST_ATTR_SELLER_IS_AN_IMPORTER = 'avatax_lc_seller_is_importer';
 
     /**
+     *  Seller is an importer for customer
+     */
+    const XML_PATH_TO_AVATAX_LANDED_COST_EXPRESS_SHIPPING = 'tax/avatax_landed_cost/landed_cost_express_shipping';
+
+    /** Landed cost tax subtypes */
+    const XML_PATH_TO_AVATAX_LANDED_COST_TAX_SUBTYPES = 'tax/avatax_landed_cost/landed_cost_tax_subtypes';
+
+    /**
      * Default Unit Of Measurement
      *
      * @var null
@@ -121,7 +129,7 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Get Landed Cost Mode
+     * Is Landed Cost Transaction
      *
      * @param int|Mage_Core_Model_Store $storeId
      * @param string                    $destinationCountry
@@ -129,17 +137,7 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
      */
     public function getLandedCostMode($destinationCountry, $storeId = null)
     {
-        $mode = $this->isSellerImporterOfRecord($storeId, $destinationCountry) ? 'DDP' : null;
-//        $originCountryCode = Mage::getStoreConfig('shipping/origin/country_id', $storeId);
-//        if ($this->isLandedCostEnabled($storeId) && $destinationCountry != $originCountryCode) {
-//            if (in_array($destinationCountry, $this->getLandedCostDDPCountries())) {
-//                $mode = 'DDP';
-//            } elseif (in_array($destinationCountry, $this->getLandedCostDAPCountries())) {
-//                $mode = 'DAP';
-//            }
-//        }
-
-        return $mode;
+        return $this->isSellerImporterOfRecord($storeId, $destinationCountry);
     }
 
     public function isSellerImporterOfRecord($storeId = null, $destinationCountry)
@@ -284,7 +282,7 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
             array_push(
                 $units,
                 array(
-                    'unit'                => $weight,
+                    'unit'                => (float)$weight,
                     'unit_of_measurement' => $defaultUnit->getId(),
                     'default'             => true
                 )
@@ -317,6 +315,7 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
                     if ($u['unit_of_measurement'] == $unit->getId()) {
                         $resultUnit = $u;
                         $resultUnit['avalara_code'] = $unit->getAvalaraCode();
+                        $resultUnit['avalara_measurement_type'] = $unit->getAvalaraMeasurementType();
                         $resultUnit['unit_obj'] = $unit;
                         break;
                     }
@@ -393,5 +392,46 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
     public function getShippingInsuranceTaxCode($store = null)
     {
         return Mage::getStoreConfig(self::XML_PATH_TO_AVATAX_LANDED_COST_SHIPPING_INSURANCE_TAX_CODE, $store);
+    }
+
+    /**
+     * Get shipping tax class
+     *
+     * @param int|Mage_Core_Model_Store $store
+     * @return string
+     */
+    public function getLandedCostExpressShipping($store = null)
+    {
+        return (string)Mage::getStoreConfig(self::XML_PATH_TO_AVATAX_LANDED_COST_EXPRESS_SHIPPING, $store);
+    }
+
+    /**
+     * Get tax subtypes
+     *
+     * @param int|Mage_Core_Model_Store $store
+     * @return array
+     */
+    public function getLandedCostTaxSubtypes($store = null)
+    {
+        return explode(',', Mage::getStoreConfig(self::XML_PATH_TO_AVATAX_LANDED_COST_TAX_SUBTYPES, $store));
+    }
+
+    /**
+     * @param TaxDetail|array $taxDetail
+     * @return bool
+     */
+    public function isLandedCostTax($taxDetail)
+    {
+        $landedCostSubtypes = $this->getLandedCostTaxSubtypes();
+
+        if ($taxDetail instanceof TaxDetail) {
+            return in_array($taxDetail->getTaxSubTypeId(), $landedCostSubtypes);
+        }
+
+        if (is_array($taxDetail) && isset($taxDetail['avatax_tax_subtype'])) {
+            return in_array($taxDetail['avatax_tax_subtype'], $landedCostSubtypes);
+        }
+
+        return false;
     }
 }

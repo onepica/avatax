@@ -287,7 +287,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
         if ($this->getLandedCostMode()) {
             $storeId = $this->_getStoreIdByObject($object);
 
-            $insurance = new \Varien_Object(array('amount' => null, 'document_type' => ($credit ? 'creditmemo' : 'invoice')));
+            $insurance = new \Varien_Object(array('amount' => null, 'document_type' => ($credit ? 'creditmemo' : 'invoice'), 'object' => $object));
             Mage::dispatchEvent('avatax_landed_cost_request_tax_insurance_needs', array('insurance' => $insurance));
 
             if ($insurance->getAmount() !== null) {
