@@ -36,11 +36,11 @@
         <events>
             <controller_front_init_before>
                 <observers>
-                    <avatax>
+                    <avataxar2>
                         <type>singleton</type>
                         <class>avataxar2/observer_loadAvaTaxExternalLib</class>
                         <method>execute</method>
-                    </avatax>
+                    </avataxar2>
                 </observers>
             </controller_front_init_before>
         </events>
