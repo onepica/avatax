@@ -35,13 +35,13 @@ if (!$attribute->getId()) {
             'required'         => false,
             'visible_on_front' => true,
             'position'         => 10,
-            'sort_order'       => 10
         )
     );
 
     // update options for attribute
     $attribute = Mage::getModel('eav/config')->getAttribute('customer', $attributeCode);
     $attribute->setData('used_in_forms', array(OnePica_AvaTaxAr2_Helper_Data::AVATAX_CUSTOMER_EXEMPTION_FORM_CODE));
+    $attribute->setData('sort_order', 10);
     $attribute->save();
 }
 

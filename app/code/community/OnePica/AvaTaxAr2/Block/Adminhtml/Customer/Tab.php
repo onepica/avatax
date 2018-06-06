@@ -40,6 +40,8 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Tab extends Mage_Adminhtml_Bloc
     {
         $form = new Varien_Data_Form();
         $form->setHtmlIdPrefix('avatax_customer_');
+        $form->setFieldNameSuffix('avatax_customer');
+
         $customer = Mage::registry('current_customer');
 
         /** @var $customerForm Mage_Customer_Model_Form */
