@@ -40,7 +40,7 @@ if (!$attribute->getId()) {
 
     // update options for attribute
     $attribute = Mage::getModel('eav/config')->getAttribute('customer', $attributeCode);
-    $attribute->setData('used_in_forms', array(OnePica_AvaTaxAr2_Helper_Data::AVATAX_CUSTOMER_EXEMPTION_FORM_CODE));
+    $attribute->setData('used_in_forms', array(OnePica_AvaTaxAr2_Helper_Data::AVATAX_CUSTOMER_DOCUMENTS_FORM_CODE));
     $attribute->setData('sort_order', 10);
     $attribute->save();
 }

@@ -1,7 +1,9 @@
 <?php
 /**
  * OnePica_AvaTax
+ *
  * NOTICE OF LICENSE
+ *
  * This source file is subject to the Open Software License (OSL 3.0), a
  * copy of which is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
@@ -14,15 +16,33 @@
  */
 
 /**
- * The base AvaTaxAr2 Helper class
+ * Document resource collection
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTaxAr2_Helper_Data extends Mage_Core_Helper_Abstract
+class OnePica_AvaTaxAr2_Model_Records_Mysql4_Document_Collection extends Mage_Core_Model_Resource_Db_Collection_Abstract
 {
-    const AVATAX_CUSTOMER_EXEMPTION_NUMBER = 'avatax_customer_exempt_number';
+    /**
+     * Construct
+     */
+    protected function _construct()
+    {
+        parent::_construct();
+        $this->_init('avataxar2_records/document');
+    }
 
-    const AVATAX_CUSTOMER_DOCUMENTS_FORM_CODE = 'customer_avatax_exempt';
+    /**
+     * Set filter for collection by the customer.
+     *
+     * @param int $customerCode
+     * @return $this
+     */
+    public function addCustomerFilter($customerCode)
+    {
+        // TODO: implement
+
+        return $this;
+    }
 }
