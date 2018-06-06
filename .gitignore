@@ -49,3 +49,5 @@ lib/**
 !app/etc/modules/OnePica_AvaTaxAr2.xml
 !lib/AvaTaxRestV2/
 !lib/AvaTaxRestV2/**
+!app/design/adminhtml/default/default/layout/onepica/avataxar2.xml
+!app/design/adminhtml/default/default/template/onepica/avataxar2/**

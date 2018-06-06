@@ -1,0 +1,113 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magento.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magento.com for more information.
+ *
+ * @category    Mage
+ * @package     Mage_Adminhtml
+ * @copyright   Copyright (c) 2006-2018 Magento, Inc. (http://www.magento.com)
+ * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
+/**
+ * Adminhtml Documents grid block
+ *
+ * @category    Mage
+ * @package     Mage_Adminhtml
+ * @author      Magento Core Team <core@magentocommerce.com>
+ */
+class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents_Grid extends Mage_Adminhtml_Block_Widget_Grid
+{
+    public function __construct()
+    {
+        parent::__construct();
+        $this->setId('exemptionGrid');
+        $this->setDefaultSort('start_at');
+        $this->setDefaultDir('desc');
+
+        $this->setUseAjax(true);
+
+        $this->setEmptyText(Mage::helper('customer')->__('No Exemptions Found'));
+    }
+
+    /**
+     * Grid url getter
+     *
+     * @deprecated after 1.3.2.3 Use getAbsoluteGridUrl() method instead
+     *
+     * @return string current grid url
+     */
+    public function getGridUrl()
+    {
+        return $this->getUrl('adminhtml/avaTaxAr2_grid/documents', array('_current' => true));
+    }
+
+    /**
+     * Prepare grid collection object
+     *
+     * @return Mage_Adminhtml_Block_Widget_Grid
+     */
+    protected function _prepareCollection()
+    {
+        /** @var OnePica_AvaTaxAr2_Model_Records_Mysql4_Document_Collection $collection */
+
+        $collection = Mage::getResourceModel('avataxar2_records/document_collection');
+
+        $collection->addCustomerFilter(Mage::registry('current_customer')->getId());
+
+        $this->setCollection($collection);
+
+        return parent::_prepareCollection();
+    }
+
+    /**
+     * @return \Mage_Adminhtml_Block_Widget_Grid
+     * @throws \Exception
+     */
+    protected function _prepareColumns()
+    {
+        $this->addColumn(
+            'document_id', array(
+                'header' => $this->__('ID'),
+                'align'  => 'left',
+                'index'  => 'document_id',
+                'width'  => 10
+            )
+        );
+
+        $this->addColumn(
+            'document_title', array(
+                'header' => Mage::helper('customer')->__('Title'),
+                'align'  => 'center',
+                'index'  => 'document_title'
+            )
+        );
+
+        $this->addColumn(
+            'exemption_status', array(
+                'header'   => Mage::helper('customer')->__('Status'),
+                'align'    => 'center',
+                'filter'   => 'avataxar2/adminhtml_customer_documents_grid_filter_status',
+                'index'    => 'exemption_status',
+                'renderer' => 'avataxar2/adminhtml_customer_documents_grid_renderer_status'
+            )
+        );
+
+        return parent::_prepareColumns();
+    }
+}
