@@ -49,6 +49,16 @@
                 </observers>
             </controller_front_init_before>
         </events>
+        <resources>
+            <avataxar2_setup>
+                <setup>
+                    <module>OnePica_AvaTaxAr2</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </avataxar2_setup>
+        </resources>
     </global>
 
     <!-- the adminhtml section is repeated in config.xml & adminhtml.xml for backwards compatibility -->
