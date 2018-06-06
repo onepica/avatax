@@ -52,7 +52,7 @@ class OnePica_AvaTaxAr2_Model_Observer_AdminhtmlCustomerPrepareSave extends Mage
         /** @var  Mage_Customer_Model_Form $customerForm */
         $customerForm = Mage::getModel('customer/form');
         $customerForm->setEntity($customer)
-                     ->setFormCode(OnePica_AvaTaxAr2_Helper_Data::AVATAX_CUSTOMER_EXEMPTION_FORM_CODE)
+                     ->setFormCode(OnePica_AvaTaxAr2_Helper_Data::AVATAX_CUSTOMER_DOCUMENTS_FORM_CODE)
                      ->ignoreInvisible(false);
 
         $formData = $customerForm->extractData($request, 'avatax_customer');
