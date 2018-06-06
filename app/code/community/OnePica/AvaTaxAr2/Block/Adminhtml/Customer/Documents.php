@@ -14,13 +14,13 @@
  */
 
 /**
- * The AvaTaxAr2 Adminhtml Custome Tab class
+ * The AvaTaxAr2 Adminhtml Customer Tab class
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Tab extends Mage_Adminhtml_Block_Widget_Form
+class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents extends Mage_Adminhtml_Block_Widget_Form
     implements Mage_Adminhtml_Block_Widget_Tab_Interface
 {
     /**
@@ -29,7 +29,7 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Tab extends Mage_Adminhtml_Bloc
     public function _construct()
     {
         parent::_construct();
-        $this->setTemplate('onepica/avataxar2/customer/tab.phtml');
+        $this->setTemplate('onepica/avataxar2/customer/documents.phtml');
         $this->initForm();
     }
 
@@ -47,11 +47,11 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Tab extends Mage_Adminhtml_Bloc
         /** @var $customerForm Mage_Customer_Model_Form */
         $customerForm = Mage::getModel('customer/form');
         $customerForm->setEntity($customer)
-                     ->setFormCode(OnePica_AvaTaxAr2_Helper_Data::AVATAX_CUSTOMER_EXEMPTION_FORM_CODE)
+                     ->setFormCode(OnePica_AvaTaxAr2_Helper_Data::AVATAX_CUSTOMER_DOCUMENTS_FORM_CODE)
                      ->initDefaultValues();
 
         $fieldset = $form->addFieldset(
-            'base_fieldset', array('legend' => $this->__('Exemption Information'))
+            'base_fieldset', array('legend' => $this->__('General Information'))
         );
 
         $attributes = $customerForm->getAttributes();
@@ -80,11 +80,28 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Tab extends Mage_Adminhtml_Bloc
     }
 
     /**
+     * Preparing global layout
+     *
+     * You can redefine this method in child classes for changing layout
+     *
+     * @return Mage_Core_Block_Abstract
+     */
+    protected function _prepareLayout()
+    {
+        $this->setChild(
+            'documents_grid',
+            $this->getLayout()->createBlock('avataxar2/adminhtml_customer_documents_grid', 'documents.grid')
+        );
+
+        return parent::_prepareLayout();
+    }
+
+    /**
      * @return string
      */
     public function getTabLabel()
     {
-        return $this->__('AvaTax Exemptions');
+        return $this->__('AvaTax Documents');
     }
 
     /**
@@ -92,7 +109,7 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Tab extends Mage_Adminhtml_Bloc
      */
     public function getTabTitle()
     {
-        return $this->__('Click here to view AvaTax Exemption certificates');
+        return $this->__('Click here to view AvaTax Documents');
     }
 
     /**

@@ -36,7 +36,7 @@ class OnePica_AvaTaxAr2_Model_Observer_AdminhtmlCustomerPrepareSave extends Mage
     }
 
     /**
-     * Add data from OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Tab
+     * Add data from OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Exemption
      *
      * @param Varien_Event_Observer $observer
      * @return $this

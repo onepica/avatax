@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
+<?php
 /**
  * OnePica_AvaTax
  *
@@ -15,14 +14,22 @@
  * @copyright  Copyright (c) 2009 One Pica, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
--->
-<layout>
-    <adminhtml_customer_edit>
-        <reference name="customer_edit_tabs">
-            <action method="addTab">
-                <name>avataxar2_exemptions</name>
-                <block>avataxar2/adminhtml_customer_documents</block>
-            </action>
-        </reference>
-    </adminhtml_customer_edit>
-</layout>
+
+/**
+ * Document resource model
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
+ */
+class OnePica_AvaTaxAr2_Model_Records_Mysql4_Document extends Mage_Core_Model_Resource_Db_Abstract
+{
+    /**
+     * Resource initialization
+     */
+    protected function _construct()
+    {
+        // TODO: change to real document table
+        $this->_init('newsletter/subscriber', 'subscriber_id');
+    }
+}

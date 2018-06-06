@@ -37,6 +37,19 @@
             <avataxar2>
                 <class>OnePica_AvaTaxAr2_Model</class>
             </avataxar2>
+            <avataxar2_records>
+                <class>OnePica_AvaTaxAr2_Model_Records</class>
+                <resourceModel>avataxar2_records_mysql4</resourceModel>
+            </avataxar2_records>
+            <avataxar2_records_mysql4>
+                <class>OnePica_AvaTaxAr2_Model_Records_Mysql4</class>
+                <entities>
+                    <!-- TODO: add table -->
+                    <!--<documents>-->
+                        <!--<table>op_avataxar2_documents</table>-->
+                    <!--</documents>-->
+                </entities>
+            </avataxar2_records_mysql4>
         </models>
         <events>
             <controller_front_init_before>
@@ -69,7 +82,17 @@
             </avataxar2_setup>
         </resources>
     </global>
-
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <avataxar2 after="Mage_Adminhtml">OnePica_AvaTaxAr2_Adminhtml</avataxar2>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
     <!-- the adminhtml section is repeated in config.xml & adminhtml.xml for backwards compatibility -->
     <!-- @see http://www.magentocommerce.com/bug-tracking/issue?issue=8496 -->
     <adminhtml>
@@ -89,5 +112,17 @@
                 </OnePica_AvaTaxAr2>
             </modules>
         </translate>
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <avataxar2 translate="title">
+                            <title>AvaTax RestV2 Module</title>
+                            <sort_order>100</sort_order>
+                        </avataxar2>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
     </adminhtml>
 </config>
