@@ -46,7 +46,7 @@
                 <entities>
                     <!-- TODO: add table -->
                     <!--<documents>-->
-                        <!--<table>op_avataxar2_documents</table>-->
+                    <!--<table>op_avataxar2_documents</table>-->
                     <!--</documents>-->
                 </entities>
             </avataxar2_records_mysql4>
@@ -98,9 +98,9 @@
     <adminhtml>
         <layout>
             <updates>
-                <avatax>
+                <avataxar2>
                     <file>onepica/avataxar2.xml</file>
-                </avatax>
+                </avataxar2>
             </updates>
         </layout>
         <translate>
@@ -125,4 +125,11 @@
             </resources>
         </acl>
     </adminhtml>
+    <default>
+        <tax>
+            <avatax_document_management>
+                <action>0</action>
+            </avatax_document_management>
+        </tax>
+    </default>
 </config>
