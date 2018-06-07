@@ -21,9 +21,9 @@
     <!-- @see http://www.magentocommerce.com/bug-tracking/issue?issue=8496 -->
     <layout>
         <updates>
-            <avatax>
+            <avataxar2>
                 <file>onepica/avataxar2.xml</file>
-            </avatax>
+            </avataxar2>
         </updates>
     </layout>
     <translate>
