@@ -216,7 +216,7 @@ class OnePica_AvaTax_Model_Service_Abstract_Tools extends Varien_Object
     /**
      * Retrieve simple product id from quote item
      *
-     * @param Mage_Sales_Model_Quote_Item|Mage_Sales_Model_Quote_Address_Item $item
+     * @param Mage_Sales_Model_Quote_Item|Mage_Sales_Model_Quote_Address_Item|Mage_Sales_Model_Order_Invoice_Item $item
      *
      * @return int
      */
