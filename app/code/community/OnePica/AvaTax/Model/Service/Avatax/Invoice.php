@@ -488,9 +488,11 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
      * Makes a Line object from a product item object
      *
      * @param Mage_Sales_Model_Order_Invoice_Item|Mage_Sales_Model_Order_Creditmemo_Item $item
-     * @param Mage_Sales_Model_Order_Address $address
-     * @param bool $credit
-     * @return null
+     * @param Mage_Sales_Model_Order_Address                                             $address
+     * @param bool                                                                       $credit
+     * @return bool
+     * @throws \Varien_Exception
+     * @throws \OnePica_AvaTax_Exception
      */
     protected function _newLine($item, $address, $credit = false)
     {
@@ -536,17 +538,21 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
         );
 
         $productData = $this->_getLineProductData($item, $storeId);
+
         $line->setTaxCode($productData->getTaxCode());
         $line->setRef1($productData->getRef1());
         $line->setRef2($productData->getRef2());
 
-        $this->_addLandedCostParamsToLine($line, $productData, $address);
+        $product = $this->_getProductByProductId($this->_retrieveProductIdFromQuoteItem($item));
+        $this->_addLandedCostParamsToLine($line, $product, $address);
 
         $this->_newLineMakeAdditionalProcessingForLine(
             new \Varien_Object(array('productData' => $productData, 'item' => $item, 'line' => $line))
         );
         $this->_lineToItemId[count($this->_lines)] = $item->getOrderItemId();
         $this->_lines[] = $line;
+
+        return true;
     }
 
     /**
@@ -557,6 +563,8 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
      * @param Mage_Sales_Model_Order_Invoice_Item|Mage_Sales_Model_Order_Creditmemo_Item $item
      * @param int                                                                        $storeId
      * @return \Varien_Object
+     * @throws \OnePica_AvaTax_Exception
+     * @throws \Varien_Exception
      */
     protected function _getLineProductData($item, $storeId)
     {
