@@ -543,8 +543,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
         $line->setRef1($productData->getRef1());
         $line->setRef2($productData->getRef2());
 
-        $product = $this->_getProductByProductId($this->_retrieveProductIdFromQuoteItem($item));
-        $this->_addLandedCostParamsToLine($line, $product, $address);
+        $this->_addLandedCostParamsToLine($line, $productData->getProduct(), $address);
 
         $this->_newLineMakeAdditionalProcessingForLine(
             new \Varien_Object(array('productData' => $productData, 'item' => $item, 'line' => $line))
@@ -577,6 +576,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
 
         $this->_newLinePrepareProduct(new \Varien_Object(array('product' => $product, 'item' => $item)));
 
+        $lineProductData->setProduct($product);
         $lineProductData->setTaxCode($this->_getTaxClassCodeByProduct($product));
         $lineProductData->setRef1($this->_getRefValueByProductAndNumber($product, 1, $storeId));
         $lineProductData->setRef2($this->_getRefValueByProductAndNumber($product, 2, $storeId));
