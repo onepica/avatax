@@ -43,7 +43,6 @@ class OnePica_AvaTaxAr2_Model_Service_Avatax_Ping extends OnePica_AvaTaxAr2_Mode
         $message = null;
         $result = new Varien_Object();
 
-
         try {
             $pingResult = $client->Ping();
             $result->setActualResult($pingResult);
@@ -84,6 +83,6 @@ class OnePica_AvaTaxAr2_Model_Service_Avatax_Ping extends OnePica_AvaTaxAr2_Mode
      */
     protected function _getExceptionMessage($message)
     {
-        return sprintf('AvaTax Rest V2 Error: "%s"', $message);
+        return Mage::helper('avataxar2')->__('AvaTax Rest V2 Error: "%s"', $message);
     }
 }
