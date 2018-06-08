@@ -70,6 +70,15 @@
                     </avataxar2>
                 </observers>
             </adminhtml_customer_prepare_save>
+            <admin_system_config_changed_section_tax>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avataxar2/observer_adminSystemConfigChangedSectionTax</class>
+                        <method>execute</method>
+                    </avatax>
+                </observers>
+            </admin_system_config_changed_section_tax>
         </events>
         <resources>
             <avataxar2_setup>

@@ -31,6 +31,7 @@ class OnePica_AvaTaxAr2_Model_Service_Avatax_Ping extends OnePica_AvaTaxAr2_Mode
      *
      * @param int $storeId
      * @return bool|array
+     * @throws \Varien_Exception
      */
     public function ping($storeId = null)
     {
@@ -38,27 +39,31 @@ class OnePica_AvaTaxAr2_Model_Service_Avatax_Ping extends OnePica_AvaTaxAr2_Mode
         $config = Mage::getModel('avataxar2/service_avatax_config');
         $client = $config->getClient();
 
-        $result = null;
         $pingResult = null;
         $message = null;
+        $result = new Varien_Object();
 
         try {
             $pingResult = $client->Ping();
+            $result->setActualResult($pingResult);
+
+            if (is_string($pingResult)) {
+                Mage::throwException($this->_getExceptionMessage($pingResult));
+            }
+
+            if (!isset($pingResult) || !is_object($pingResult)) {
+                Mage::throwException($this->_getExceptionMessage('Ping result is not set'));
+            }
+
+            if (!$pingResult->authenticated) {
+                Mage::throwException($this->_getExceptionMessage('Not Authorized'));
+            }
+
+            $result->setResultCode(SeverityLevel::C_SUCCESS);
         } catch (Exception $exception) {
             $message = $exception->getMessage();
-        }
-
-        $result = new Varien_Object();
-        $result->setActualResult($pingResult);
-        $result->setMessage($message);
-
-        if (!isset($pingResult) || !is_object($pingResult)) {
+            $result->setMessage($message);
             $result->setResultCode(SeverityLevel::C_EXCEPTION);
-        }
-
-        if(!$pingResult->authenticated) {
-            $result->setResultCode(SeverityLevel::C_EXCEPTION);
-            $result->setMessage('REST V2 is not Authorized');
         }
 
         $this->_log(
@@ -72,4 +77,12 @@ class OnePica_AvaTaxAr2_Model_Service_Avatax_Ping extends OnePica_AvaTaxAr2_Mode
         return ($result->getResultCode() == SeverityLevel::C_SUCCESS) ? true : $result->getMessage();
     }
 
+    /**
+     * @param $message
+     * @return string
+     */
+    protected function _getExceptionMessage($message)
+    {
+        return Mage::helper('avataxar2')->__('AvaTax Rest V2 Error: "%s"', $message);
+    }
 }

@@ -20,7 +20,7 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTaxAr2_Helper_Congig extends Mage_Core_Helper_Abstract
+class OnePica_AvaTaxAr2_Helper_Config extends Mage_Core_Helper_Abstract
 {
     const XML_PATH_TO_ACTION = 'tax/avatax_document_management/action';
 
@@ -36,7 +36,7 @@ class OnePica_AvaTaxAr2_Helper_Congig extends Mage_Core_Helper_Abstract
      * @return bool
      * @throws Mage_Core_Exception
      */
-    public function isAvaTaxAr2Enabled()
+    public function isEnabled()
     {
         $websiteId = Mage::app()->getRequest()->get('website');
         $storeId = Mage::app()->getRequest()->get('store');
