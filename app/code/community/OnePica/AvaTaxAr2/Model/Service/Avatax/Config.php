@@ -34,33 +34,36 @@ class OnePica_AvaTaxAr2_Model_Service_AvaTax_Config extends Varien_Object
      */
     public function getClient()
     {
-        if(null === $this->_client) {
-            $this->_client = new Avalara\AvaTaxRestV2\AvaTaxClient('phpTestApp', '1.0', 'travis-ci', 'sandbox');
-            $this->_client->withLicenseKey('2000226328X', 'B8B71004DD258CB1');
+        if (null === $this->_client) {
+            $this->_client = new Avalara\AvaTaxRestV2\AvaTaxClient(
+                $this->_getHelper()->getAppName(),
+                $this->_getHelper()->getAppVersion(),
+                $this->_getHelper()->getMachineName(),
+                $this->_getConfigHelper()->getServiceEnv()
+            );
+
+            $this->_client->withLicenseKey(
+                $this->_getConfigHelper()->getServiceAccountId(),
+                $this->_getConfigHelper()->getServiceKey()
+            );
         }
 
         return $this->_client;
     }
 
     /**
-     * Get client name to pass with communications
-     *
-     * @example Magento,1.4,.0.1,OP_AvaTax by One Pica,2,0.1
-     * @return string
+     * @return OnePica_AvaTaxAr2_Helper_Data
      */
-    public function getClientName()
+    protected function _getHelper()
     {
-        return $this->_getHelper()->getClientName();
+        return Mage::helper('avataxar2');
     }
 
     /**
-     * Returns the company code to use from the AvaTax dashboard
-     *
-     * @param null|bool|int|Mage_Core_Model_Store $store
-     * @return string
+     * @return OnePica_AvaTaxAr2_Helper_Config
      */
-    public function getCompanyCode($store = null)
+    protected function _getConfigHelper()
     {
-        return Mage::helper('avatax/config')->getCompanyCode($store);
+        return Mage::helper('avataxar2/config');
     }
 }

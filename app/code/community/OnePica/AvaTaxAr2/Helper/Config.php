@@ -20,11 +20,11 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTaxAr2_Helper_Congig extends Mage_Core_Helper_Abstract
+class OnePica_AvaTaxAr2_Helper_Config extends Mage_Core_Helper_Abstract
 {
     const XML_PATH_TO_ACTION = 'tax/avatax_document_management/action';
 
-    const XML_PATH_TO_URL = 'tax/avatax_document_management/url';
+    const XML_PATH_TO_ENV = 'tax/avatax_document_management/env';
 
     const XML_PATH_TO_ACCOUNT_NUMBER = 'tax/avatax_document_management/account';
 
@@ -36,7 +36,7 @@ class OnePica_AvaTaxAr2_Helper_Congig extends Mage_Core_Helper_Abstract
      * @return bool
      * @throws Mage_Core_Exception
      */
-    public function isAvaTaxAr2Enabled()
+    public function isEnabled()
     {
         $websiteId = Mage::app()->getRequest()->get('website');
         $storeId = Mage::app()->getRequest()->get('store');
@@ -60,15 +60,15 @@ class OnePica_AvaTaxAr2_Helper_Congig extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Returns service url
+     * Returns service environment
      *
      * @param null|bool|int|Mage_Core_Model_Store $store
      *
      * @return string
      */
-    public function getServiceUrl($store = null)
+    public function getServiceEnv($store = null)
     {
-        return Mage::getStoreConfig(self::XML_PATH_TO_URL, $store);
+        return Mage::getStoreConfig(self::XML_PATH_TO_ENV, $store);
     }
 
     /**

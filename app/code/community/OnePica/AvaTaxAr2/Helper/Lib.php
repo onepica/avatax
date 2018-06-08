@@ -43,6 +43,7 @@ class OnePica_AvaTaxAr2_Helper_Lib extends Mage_Core_Helper_Abstract
     {
         $classFile = $this->getLibPath() . DS . 'src' . DS . 'AvaTaxClient.php';
         require_once $classFile;
+
         return $this;
     }
 }
