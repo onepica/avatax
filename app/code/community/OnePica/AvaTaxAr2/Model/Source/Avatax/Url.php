@@ -30,19 +30,9 @@ class OnePica_AvaTaxAr2_Model_Source_Avatax_Url
     const PRODUCTION_URL = 'https://rest.avatax.com/';
 
     /**
-     * Production environment type
-     */
-    const PRODUCTION_ENV = 'production';
-
-    /**
      * Url for development
      */
     const DEVELOPMENT_URL = 'https://sandbox-rest.avatax.com/';
-
-    /**
-     * Development environment type
-     */
-    const DEVELOPMENT_ENV = 'sandbox';
 
     /**
      * Gets the list of urls for the admin config dropdown
@@ -53,11 +43,11 @@ class OnePica_AvaTaxAr2_Model_Source_Avatax_Url
     {
         return array(
             array(
-                'value' => self::PRODUCTION_ENV,
+                'value' => self::PRODUCTION_URL,
                 'label' => Mage::helper('avatax')->__('Production' . ' (' . self::PRODUCTION_URL . ')')
             ),
             array(
-                'value' => self::DEVELOPMENT_ENV,
+                'value' => self::DEVELOPMENT_URL,
                 'label' => Mage::helper('avatax')->__('Development' . ' (' . self::DEVELOPMENT_URL . ')')
             ),
         );

@@ -24,7 +24,7 @@ class OnePica_AvaTaxAr2_Helper_Config extends Mage_Core_Helper_Abstract
 {
     const XML_PATH_TO_ACTION = 'tax/avatax_document_management/action';
 
-    const XML_PATH_TO_ENV = 'tax/avatax_document_management/env';
+    const XML_PATH_TO_URL = 'tax/avatax_document_management/url';
 
     const XML_PATH_TO_ACCOUNT_NUMBER = 'tax/avatax_document_management/account';
 
@@ -60,15 +60,15 @@ class OnePica_AvaTaxAr2_Helper_Config extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Returns service environment
+     * Returns service url
      *
      * @param null|bool|int|Mage_Core_Model_Store $store
      *
      * @return string
      */
-    public function getServiceEnv($store = null)
+    public function getServiceUrl($store = null)
     {
-        return Mage::getStoreConfig(self::XML_PATH_TO_ENV, $store);
+        return Mage::getStoreConfig(self::XML_PATH_TO_URL, $store);
     }
 
     /**

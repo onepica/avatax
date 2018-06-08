@@ -39,7 +39,7 @@ class OnePica_AvaTaxAr2_Model_Service_AvaTax_Config extends Varien_Object
                 $this->_getHelper()->getAppName(),
                 $this->_getHelper()->getAppVersion(),
                 $this->_getHelper()->getMachineName(),
-                $this->_getConfigHelper()->getServiceEnv()
+                $this->_getConfigHelper()->getServiceUrl()
             );
 
             $this->_client->withLicenseKey(
