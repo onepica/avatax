@@ -109,12 +109,67 @@ class OnePica_AvaTax_Model_Catalog_Product_Attribute_Backend_Unit
                 }
             }
 
+            $this->_validateOnCountriesIntersection($data);
+
             $config = json_encode($data);
             $object->setData($attrCode, $config);
         } else {
             if (!$object->hasData($attrCode) && $this->getDefaultValue()) {
                 $object->setData($attrCode, $this->getDefaultValue());
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Validate units on countries intersection
+     *
+     * @param $data
+     * @return $this
+     * @throws Exception
+     */
+    protected function _validateOnCountriesIntersection($data)
+    {
+        $ids = array();
+        array_walk($data, function ($value, $key) use (&$ids) {
+            array_push($ids, $value['unit_of_measurement']);
+        });
+
+        $collection = Mage::getModel('avatax_records/unitOfMeasurement')
+            ->getCollection()
+            ->addFieldToFilter('id', array('in' => $ids));
+
+        $intersectUnitsByCountries = array();
+        /** @var OnePica_AvaTax_Model_Records_UnitOfMeasurement $item */
+        foreach ($collection as $item) {
+            $itemCountries = explode(',', $item->getCountryList());
+            /** @var OnePica_AvaTax_Model_Records_UnitOfMeasurement $j */
+            foreach ($collection as $j) {
+                if ($j->getId() == $item->getId()) {
+                    continue;
+                }
+
+                $jCountries = explode(',', $j->getCountryList());
+                $ints = array_intersect($itemCountries, $jCountries);
+                if (count($ints) > 0) {
+                    if (!in_array($item->getDescription(), $intersectUnitsByCountries)) {
+                        array_push($intersectUnitsByCountries, $item->getDescription());
+                    }
+
+                    if (!in_array($j->getDescription(), $intersectUnitsByCountries)) {
+                        array_push($intersectUnitsByCountries, $j->getDescription());
+                    }
+                }
+            }
+        }
+
+        if (count($intersectUnitsByCountries) > 0) {
+            $message = Mage::helper('avatax')
+                ->__('%s have been configured to use for the same destination countries. You have to choose only one accurate unit to use between them for current product.',
+                    implode(', ', $intersectUnitsByCountries));
+
+            throw new \Exception($message);
         }
 
         return $this;

@@ -32,4 +32,17 @@ class OnePica_AvaTax_Model_Records_Mysql4_UnitOfMeasurement_Collection extends M
         parent::_construct();
         $this->_init('avatax_records/unitOfMeasurement');
     }
+
+    public function getUnitForCountry($ids, $countryCode)
+    {
+        $collection = Mage::getModel('avatax_records/unitOfMeasurement')
+            ->getCollection()
+            ->addFieldToFilter('id', array('in' => $ids));
+        $collection->getSelect()->where('country_list REGEXP ?', $countryCode);
+
+        /** @var OnePica_AvaTax_Model_Records_UnitOfMeasurement $unit */
+        $unit = $collection->getFirstItem();
+
+        return $unit;
+    }
 }
