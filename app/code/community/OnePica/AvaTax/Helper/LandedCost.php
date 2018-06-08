@@ -275,54 +275,70 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
             : $units;
         $units = empty($units) ? array() : $units;
 
-        // add default unit
-        $weight = $product->getWeight();
-        $defaultUnit = $this->getDefaultUnitsOfMeasurement($product->getStoreId());
-        if (!empty($defaultUnit) && (!empty($weight)) && $weight > 0) {
-            array_push(
-                $units,
-                array(
-                    'unit'                => (float)$weight,
-                    'unit_of_measurement' => $defaultUnit->getId(),
-                    'default'             => true
-                )
-            );
-        }
-
-        // gather all unit ids
-        $ids = array();
+        // search for accurate unit
         if (!empty($units)) {
+
+            $ids = array();
             foreach ($units as $u) {
                 array_push($ids, $u['unit_of_measurement']);
             }
-        }
 
-        // find first any unit by country
-        if (!empty($ids)) {
-            $collection = Mage::getModel('avatax_records/unitOfMeasurement')
-                              ->getCollection()
-                              ->addFieldToFilter('id', array('in' => $ids));
-            $collection->getSelect()->where('country_list REGEXP ?', $countryCode);
+            $collection = Mage::getModel('avatax_records/unitOfMeasurement')->getCollection();
+            $foundUnit = $collection->getUnitForCountry($ids, $countryCode);
 
-            /** @var OnePica_AvaTax_Model_Records_UnitOfMeasurement $unit */
-            $unit = $collection->getFirstItem();
-
-            // search for final unit and measurement,
-            // accurate units first
-            if ($unit->getId()) {
+            if ($foundUnit->getId()) {
                 $resultUnit = null;
                 foreach ($units as $u) {
-                    if ($u['unit_of_measurement'] == $unit->getId()) {
+                    if ($u['unit_of_measurement'] == $foundUnit->getId()) {
                         $resultUnit = $u;
-                        $resultUnit['avalara_code'] = $unit->getAvalaraCode();
-                        $resultUnit['avalara_measurement_type'] = $unit->getAvalaraMeasurementType();
-                        $resultUnit['unit_obj'] = $unit;
+                        $resultUnit['avalara_code'] = $foundUnit->getAvalaraCode();
+                        $resultUnit['avalara_measurement_type'] = $foundUnit->getAvalaraMeasurementType();
+                        $resultUnit['unit_obj'] = $foundUnit;
                         break;
                     }
                 }
-            }
 
-            $result = !empty($resultUnit) ? new \Varien_Object($resultUnit) : null;
+                $result = !empty($resultUnit) ? new \Varien_Object($resultUnit) : null;
+            }
+        }
+
+        // try to search default unit if nothing was found
+        if(empty($result)) {
+            $productDefaultUnit = $this->getDefaultUnitOfMeasurementForProduct($product);
+            if(!empty($productDefaultUnit)) {
+                $collection = Mage::getModel('avatax_records/unitOfMeasurement')->getCollection();
+                $foundUnit = $collection->getUnitForCountry(array($productDefaultUnit['unit_of_measurement']), $countryCode);
+
+                if ($foundUnit->getId()) {
+                    $resultUnit = $productDefaultUnit;
+                    $resultUnit['avalara_code'] = $foundUnit->getAvalaraCode();
+                    $resultUnit['avalara_measurement_type'] = $foundUnit->getAvalaraMeasurementType();
+                    $resultUnit['unit_obj'] = $foundUnit;
+
+                    $result = !empty($resultUnit) ? new \Varien_Object($resultUnit) : null;
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param Mage_Catalog_Model_Product $product
+     * @return array
+     */
+    public function getDefaultUnitOfMeasurementForProduct($product)
+    {
+        $result = array();
+
+        $weight = $product->getWeight();
+        $defaultUnit = $this->getDefaultUnitsOfMeasurement($product->getStoreId());
+        if (!empty($defaultUnit) && (!empty($weight)) && $weight > 0) {
+            $result = array(
+                'unit'                => (float)$weight,
+                'unit_of_measurement' => $defaultUnit->getId(),
+                'default'             => true
+            );
         }
 
         return $result;
