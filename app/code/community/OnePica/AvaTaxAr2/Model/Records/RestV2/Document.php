@@ -16,33 +16,34 @@
  */
 
 /**
- * Document resource collection
+ * Document resource model
+ *
+ * @method int getId()
+ * @method int getCompanyId()
+ * @method string getSignedDate()
+ * @method string getExpirationDate()
+ * @method string getFilename()
+ * @method bool getValid()
+ * @method bool getVerified()
+ * @method int getExemptPercentage()
+ * @method bool getIsSingleCertificate()
+ * @method array getExemptionReason()
+ * @method string getCreatedDate()
+ * @method string getModifiedDate()
+ * @method int getPageCount()
+ * @method array getExposureZone()
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTaxAr2_Model_Records_Mysql4_Document_Collection extends Mage_Core_Model_Resource_Db_Collection_Abstract
+class OnePica_AvaTaxAr2_Model_Records_RestV2_Document extends Varien_Object
 {
     /**
-     * Construct
+     * Resource initialization
      */
     protected function _construct()
     {
-        parent::_construct();
-        $this->_init('avataxar2_records/document');
-    }
 
-    /**
-     * Set filter for collection by the customer.
-     *
-     * @param int $customerCode
-     * @return $this
-     */
-    public function addCustomerFilter($customerCode)
-    {
-        // TODO: implement
-
-        return $this;
     }
 }

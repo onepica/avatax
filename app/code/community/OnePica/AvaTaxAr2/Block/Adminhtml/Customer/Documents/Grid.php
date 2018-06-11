@@ -64,11 +64,11 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents_Grid extends Mage_Adm
      */
     protected function _prepareCollection()
     {
-        /** @var OnePica_AvaTaxAr2_Model_Records_Mysql4_Document_Collection $collection */
+        /** @var OnePica_AvaTaxAr2_Model_Records_RestV2_Document_Collection $collection */
 
-        $collection = Mage::getResourceModel('avataxar2_records/document_collection');
+        $collection = Mage::getModel('avataxar2_records/document')->getCollection();
 
-        $collection->addCustomerFilter(Mage::registry('current_customer')->getId());
+//        $collection->addCustomerFilter(Mage::registry('current_customer')->getId());
 
         $this->setCollection($collection);
 
@@ -82,29 +82,87 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents_Grid extends Mage_Adm
     protected function _prepareColumns()
     {
         $this->addColumn(
-            'document_id', array(
+            'id', array(
                 'header' => $this->__('ID'),
+                'index'  => 'id',
                 'align'  => 'left',
-                'index'  => 'document_id',
                 'width'  => 10
             )
         );
 
         $this->addColumn(
-            'document_title', array(
-                'header' => Mage::helper('customer')->__('Title'),
-                'align'  => 'center',
-                'index'  => 'document_title'
+            'valid', array(
+                'header'  => $this->__('Valid'),
+                'index'   => 'valid',
+                'type'    => 'options',
+                'options' => array(0 => $this->__('No'), 1 => $this->__('Yes')),
+                'align'   => 'center'
             )
         );
 
         $this->addColumn(
-            'exemption_status', array(
-                'header'   => Mage::helper('customer')->__('Status'),
+            'verified', array(
+                'header'  => $this->__('Verified'),
+                'index'   => 'verified',
+                'type'    => 'options',
+                'options' => array(0 => $this->__('No'), 1 => $this->__('Yes')),
+                'align'   => 'center'
+            )
+        );
+
+        $this->addColumn(
+            'exposureZoneName', array(
+                'header'   => $this->__('Exposure Zone'),
+                'index'    => 'exposureZone',
+                'type'     => 'text',
+                'renderer' => 'avataxar2/adminhtml_customer_documents_grid_renderer_exposureZoneName',
+                'align'    => 'left'
+            )
+        );
+
+        $this->addColumn(
+            'exemptionReason', array(
+                'header'   => $this->__('Exemption Reason'),
+                'index'    => 'exemptionReason',
+                'type'     => 'text',
+                'renderer' => 'avataxar2/adminhtml_customer_documents_grid_renderer_exemptionReasonName',
+                'align'    => 'left'
+            )
+        );
+
+        $this->addColumn(
+            'signedDate', array(
+                'header' => $this->__('Signed Date'),
+                'index'  => 'signedDate',
+                'type'   => 'datetime',
+                'align'  => 'left'
+            )
+        );
+
+        $this->addColumn(
+            'expirationDate', array(
+                'header' => $this->__('Expiration Date'),
+                'index'  => 'expirationDate',
+                'type'   => 'datetime',
+                'align'  => 'left'
+            )
+        );
+
+        $this->addColumn(
+            'actions', array(
+                'header'   => $this->__('Actions'),
                 'align'    => 'center',
-                'filter'   => 'avataxar2/adminhtml_customer_documents_grid_filter_status',
-                'index'    => 'exemption_status',
-                'renderer' => 'avataxar2/adminhtml_customer_documents_grid_renderer_status'
+                'type'     => 'action',
+                'width'    => '10px',
+                'filter'   => false,
+                'sortable' => false,
+                'actions'  => array(
+                    array(
+                        'caption' => $this->__('Delete'),
+                        'onClick' => 'return Documents.delete(\'$doc_id\')',
+                        'url'     => '#',
+                    ),
+                ),
             )
         );
 

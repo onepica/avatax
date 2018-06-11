@@ -14,26 +14,15 @@
  */
 
 /**
- * Adminhtml Documents grid block status item renderer
+ * Adminhtml Documents grid block ExposureZoneName item renderer
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents_Grid_Renderer_Status
+class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents_Grid_Renderer_ExposureZoneName
     extends Mage_Adminhtml_Block_Widget_Grid_Column_Renderer_Abstract
 {
-    protected static $_statuses;
-
-    public function __construct()
-    {
-        self::$_statuses = array(
-            OnePica_AvaTaxAr2_Model_Records_Document::STATUS_ACTIVE   => $this->__('Active'),
-            OnePica_AvaTaxAr2_Model_Records_Document::STATUS_DISABLED => $this->__('Disabled'),
-        );
-        parent::__construct();
-    }
-
     /**
      * Renders grid column
      *
@@ -42,19 +31,19 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents_Grid_Renderer_Status
      */
     public function render(Varien_Object $row)
     {
-        return $this->__($this->getStatus($row->getStatus()));
+        return $this->getExposureZoneName($row->getData('exposureZone'));
     }
 
     /**
-     * @param $status
+     * @param array $exposureZone
      * @return mixed|string
      */
-    public static function getStatus($status)
+    public static function getExposureZoneName($exposureZone)
     {
-        if (isset(self::$_statuses[$status])) {
-            return self::$_statuses[$status];
+        if (is_array($exposureZone) && isset($exposureZone['name'])) {
+            return $exposureZone['name'];
         }
 
-        return Mage::helper('avataxar2')->__('Unknown');
+        return null;
     }
 }
