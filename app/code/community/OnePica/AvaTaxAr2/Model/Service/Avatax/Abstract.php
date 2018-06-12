@@ -16,6 +16,7 @@
  */
 
 use Avalara\AvaTaxRestV2\SeverityLevel;
+
 /**
  * Avatax service abstract model
  *
@@ -78,20 +79,21 @@ abstract class OnePica_AvaTaxAr2_Model_Service_Avatax_Abstract extends Varien_Ob
         $quoteAddressId = $quoteData ? $quoteData->getQuoteAddressId() : null;
 
 //        if (in_array($type, $this->_getHelper()->getLogType($storeId))) {
-            Mage::getModel('avatax_records/log')
-                ->setStoreId($storeId)
-                ->setLevel($result->getResultCode())
-                ->setType($type)
-                ->setRequest(print_r($request, true))
-                ->setResult(print_r($result, true))
-                ->setAdditional($additional)
-                ->setSoapRequest($soapRequest)
-                ->setSoapRequestHeaders($soapRequestHeaders)
-                ->setSoapResult($soapResponse)
-                ->setSoapResultHeaders($soapResponseHeaders)
-                ->setQuoteId($quoteId)
-                ->setQuoteAddressId($quoteAddressId)
-                ->save();
+        Mage::getModel('avatax_records/log')
+            ->setStoreId($storeId)
+            ->setLevel($result->getResultCode())
+            ->setType($type)
+            ->setRequest(print_r($request, true))
+            ->setResult(print_r($result, true))
+            ->setAdditional($additional)
+            ->setSoapRequest($soapRequest)
+            ->setSoapRequestHeaders($soapRequestHeaders)
+            ->setSoapResult($soapResponse)
+            ->setSoapResultHeaders($soapResponseHeaders)
+            ->setQuoteId($quoteId)
+            ->setQuoteAddressId($quoteAddressId)
+            ->save();
+
 //        }
 
         return $this;
@@ -120,5 +122,35 @@ abstract class OnePica_AvaTaxAr2_Model_Service_Avatax_Abstract extends Varien_Ob
         $this->_request->setCompanyCode($config->getCompanyCode($storeId));
 
         return $this;
+    }
+
+    /**
+     * @param \stdClass|\Avalara\AvaTaxRestV2\FetchResult $response
+     * @return Varien_Data_Collection
+     * @throws \Mage_Core_Exception
+     * @throws \Exception
+     */
+    public function validateResponse($response)
+    {
+        if (is_object($response) && isset($response->error)) {
+            Mage::throwException($response->error->message);
+        }
+
+        $items = array();
+
+        if (is_object($response) && isset($response->value)) {
+            $items = (array)$response->value;
+        }
+
+        $itemsCollection = new Varien_Data_Collection();
+
+        foreach ($items as $item) {
+            $collectionItem = new Varien_Object();
+            $collectionItem->setData((array)$item);
+
+            $itemsCollection->addItem($collectionItem);
+        }
+
+        return $itemsCollection;
     }
 }

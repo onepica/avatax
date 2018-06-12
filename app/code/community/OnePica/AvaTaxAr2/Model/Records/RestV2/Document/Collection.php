@@ -24,12 +24,15 @@
  */
 class OnePica_AvaTaxAr2_Model_Records_RestV2_Document_Collection extends Varien_Data_Collection
 {
+    protected $_customerCode = null;
+
     /**
      * Construct
      */
-    protected function _construct()
+    public function __construct()
     {
-        parent::_construct();
+        parent::__construct();
+
         $this->setItemObjectClass('OnePica_AvaTaxAr2_Model_Records_RestV2_Document');
     }
 
@@ -41,7 +44,7 @@ class OnePica_AvaTaxAr2_Model_Records_RestV2_Document_Collection extends Varien_
      */
     public function addCustomerFilter($customerCode)
     {
-        // TODO: implement
+        $this->_customerCode = $customerCode;
 
         return $this;
     }
@@ -60,8 +63,13 @@ class OnePica_AvaTaxAr2_Model_Records_RestV2_Document_Collection extends Varien_
             return $this;
         }
 
+        $service = $this->_getServiceCertificate();
+        /** @var \Varien_Data_Collection $customerCertificates */
+        $customerCertificates = $service->getAllCustomerCertificates($this->getCustomerCode());
+
         // calculate totals
-        $this->_totalRecords = count($this->_getItemsArray());
+        $this->_totalRecords = count($customerCertificates);
+
         $this->_setIsLoaded();
 
         // paginate and add items
@@ -70,16 +78,14 @@ class OnePica_AvaTaxAr2_Model_Records_RestV2_Document_Collection extends Varien_
         $isPaginated = $this->getPageSize() > 0;
 
         $cnt = 0;
-        foreach ($this->_getItemsArray() as $itemData) {
+        /** @var \Varien_Object $customerCertificate */
+        foreach ($customerCertificates as $customerCertificate) {
             $cnt++;
             if ($isPaginated && ($cnt < $from || $cnt > $to)) {
                 continue;
             }
 
-            $object = $this->getNewEmptyItem();
-            $object->setData($itemData);
-
-            $this->addItem($object);
+            $this->addItem($customerCertificate);
         }
 
         return $this;
@@ -87,6 +93,7 @@ class OnePica_AvaTaxAr2_Model_Records_RestV2_Document_Collection extends Varien_
 
     /**
      * Just to change return type
+     *
      * @inheritdoc
      *
      * @return OnePica_AvaTaxAr2_Model_Records_RestV2_Document
@@ -98,6 +105,7 @@ class OnePica_AvaTaxAr2_Model_Records_RestV2_Document_Collection extends Varien_
 
     /**
      * Just to change return type
+     *
      * @inheritdoc
      *
      * @return OnePica_AvaTaxAr2_Model_Records_RestV2_Document[]
@@ -108,92 +116,18 @@ class OnePica_AvaTaxAr2_Model_Records_RestV2_Document_Collection extends Varien_
     }
 
     /**
-     * Fake items
-     *
-     * @TODO: remove
-     * @return array
+     * @return null|string
      */
-    protected function _getItemsArray()
+    public function getCustomerCode()
     {
-        return array(
-            array(
-                "id"                  => 50,
-                "companyId"           => 662794,
-                "signedDate"          => "2018-03-29",
-                "expirationDate"      => "2019-03-29",
-                "filename"            => "n/a",
-                "valid"               => true,
-                "verified"            => false,
-                "exemptPercentage"    => 0,
-                "isSingleCertificate" => false,
-                "exemptionReason"     => array(
-                    "id"   => 61,
-                    "name" => "FEDERAL GOV"
-                ),
-                "createdDate"         => "2018-03-29T13:41:16",
-                "modifiedDate"        => "2018-04-12",
-                "pageCount"           => 0,
-                "exposureZone"        => array(
-                    "id"          => 140,
-                    "name"        => "Alaska",
-                    "tag"         => "EZ_US_AK",
-                    "description" => "Alaska Sales Tax",
-                    "region"      => "AK",
-                    "country"     => "US"
-                )
-            ),
-            array(
-                "id"                  => 51,
-                "companyId"           => 662794,
-                "signedDate"          => "2016-02-01",
-                "expirationDate"      => "2020-12-31",
-                "filename"            => "39535_51_1522332263.pdf",
-                "valid"               => true,
-                "verified"            => false,
-                "exemptPercentage"    => 0,
-                "isSingleCertificate" => false,
-                "exemptionReason"     => array(
-                    "id"   => 55,
-                    "name" => "AGRICULTURE"
-                ),
-                "createdDate"         => "2018-03-29T14:04:22",
-                "modifiedDate"        => "2018-04-12",
-                "pageCount"           => 0,
-                "exposureZone"        => array(
-                    "id"          => 100,
-                    "name"        => "Pennsylvania",
-                    "tag"         => "EZ_US_PA",
-                    "description" => "Pennsylvania Sales Tax",
-                    "region"      => "PA",
-                    "country"     => "US"
-                )
-            ),
-            array(
-                "id"                  => 56,
-                "companyId"           => 662794,
-                "signedDate"          => "2016-02-01",
-                "expirationDate"      => "2020-12-31",
-                "filename"            => "39535_56_1523547372.pdf",
-                "valid"               => true,
-                "verified"            => false,
-                "exemptPercentage"    => 0,
-                "isSingleCertificate" => false,
-                "exemptionReason"     => array(
-                    "id"   => 70,
-                    "name" => "RESALE"
-                ),
-                "createdDate"         => "2018-04-12T15:36:10",
-                "modifiedDate"        => "2018-04-12",
-                "pageCount"           => 0,
-                "exposureZone"        => array(
-                    "id"          => 100,
-                    "name"        => "Pennsylvania",
-                    "tag"         => "EZ_US_PA",
-                    "description" => "Pennsylvania Sales Tax",
-                    "region"      => "PA",
-                    "country"     => "US"
-                )
-            ),
-        );
+        return $this->_customerCode;
+    }
+
+    /**
+     * @return OnePica_AvaTaxAr2_Model_Service_Avatax_Certificate
+     */
+    protected function _getServiceCertificate()
+    {
+        return Mage::getSingleton('avataxar2/service_avatax_certificate');
     }
 }

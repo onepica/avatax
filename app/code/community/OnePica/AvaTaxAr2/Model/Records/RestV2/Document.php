@@ -27,11 +27,11 @@
  * @method bool getVerified()
  * @method int getExemptPercentage()
  * @method bool getIsSingleCertificate()
- * @method array getExemptionReason()
+ * @method array|\stdClass getExemptionReason()
  * @method string getCreatedDate()
  * @method string getModifiedDate()
  * @method int getPageCount()
- * @method array getExposureZone()
+ * @method array|\stdClass getExposureZone()
  *
  * @category   OnePica
  * @package    OnePica_AvaTax

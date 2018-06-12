@@ -35,13 +35,17 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents_Grid_Renderer_Exposur
     }
 
     /**
-     * @param array $exposureZone
+     * @param array|stdClass $exposureZone
      * @return mixed|string
      */
     public static function getExposureZoneName($exposureZone)
     {
         if (is_array($exposureZone) && isset($exposureZone['name'])) {
             return $exposureZone['name'];
+        }
+
+        if (is_object($exposureZone) && isset($exposureZone->name)) {
+            return $exposureZone->name;
         }
 
         return null;

@@ -35,13 +35,17 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents_Grid_Renderer_Exempti
     }
 
     /**
-     * @param array $exemptionReason
+     * @param array|stdClass $exemptionReason
      * @return mixed|string
      */
     public static function getExemptionReasonName($exemptionReason)
     {
         if (is_array($exemptionReason) && isset($exemptionReason['name'])) {
             return $exemptionReason['name'];
+        }
+
+        if (is_object($exemptionReason) && isset($exemptionReason->name)) {
+            return $exemptionReason->name;
         }
 
         return null;

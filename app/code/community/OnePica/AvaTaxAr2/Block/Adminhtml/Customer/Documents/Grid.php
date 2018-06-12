@@ -64,13 +64,19 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents_Grid extends Mage_Adm
      */
     protected function _prepareCollection()
     {
-        /** @var OnePica_AvaTaxAr2_Model_Records_RestV2_Document_Collection $collection */
+        try {
+            $exempt = $this->_getCustomer()->getData(OnePica_AvaTaxAr2_Helper_Data::AVATAX_CUSTOMER_EXEMPTION_NUMBER);
 
-        $collection = Mage::getModel('avataxar2_records/document')->getCollection();
+            /** @var OnePica_AvaTaxAr2_Model_Records_RestV2_Document_Collection $collection */
+            $collection = Mage::getModel('avataxar2_records/document')->getCollection();
 
-//        $collection->addCustomerFilter(Mage::registry('current_customer')->getId());
+            $collection->addCustomerFilter($exempt);
 
-        $this->setCollection($collection);
+            $this->setCollection($collection);
+        } catch (Exception $exception) {
+            $session = $this->_getAdminhtmlSession();
+            $session->addError($exception->getMessage());
+        }
 
         return parent::_prepareCollection();
     }
@@ -167,5 +173,23 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents_Grid extends Mage_Adm
         );
 
         return parent::_prepareColumns();
+    }
+
+    /**
+     * @return Mage_Customer_Model_Customer
+     */
+    protected function _getCustomer()
+    {
+        return Mage::registry('current_customer');
+    }
+
+    /**
+     * Get adminhtml model session
+     *
+     * @return \Mage_Adminhtml_Model_Session
+     */
+    protected function _getAdminhtmlSession()
+    {
+        return Mage::getSingleton('adminhtml/session');
     }
 }

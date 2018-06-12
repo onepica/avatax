@@ -30,9 +30,10 @@ class OnePica_AvaTaxAr2_Model_Service_AvaTax_Config extends Varien_Object
     protected $_client = null;
 
     /**
+     * @param  null|bool|int|Mage_Core_Model_Store $store
      * @return \Avalara\AvaTaxRestV2\AvaTaxClient|null
      */
-    public function getClient()
+    public function getClient($store = null)
     {
         if (null === $this->_client) {
             $this->_client = new Avalara\AvaTaxRestV2\AvaTaxClient(
@@ -43,13 +44,14 @@ class OnePica_AvaTaxAr2_Model_Service_AvaTax_Config extends Varien_Object
             );
 
             $this->_client->withLicenseKey(
-                $this->_getConfigHelper()->getServiceAccountId(),
-                $this->_getConfigHelper()->getServiceKey()
+                $this->_getConfigHelper()->getServiceAccountId($store),
+                $this->_getConfigHelper()->getServiceKey($store)
             );
         }
 
         return $this->_client;
     }
+
 
     /**
      * @return OnePica_AvaTaxAr2_Helper_Data
