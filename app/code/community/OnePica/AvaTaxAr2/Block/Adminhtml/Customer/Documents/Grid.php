@@ -160,7 +160,7 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents_Grid extends Mage_Adm
             '\'$id\'',
             '\'' . $customerId . '\'',
             '\'' . $this->getUrl('adminhtml/avaTaxAr2_grid/documentDelete') . '\'',
-            'exemptionGridJsObject'
+            $this->getJsObjectName()
         );
 
         $this->addColumn(
@@ -174,7 +174,7 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents_Grid extends Mage_Adm
                 'actions'  => array(
                     array(
                         'caption' => $this->__('Revoke'),
-                        'onClick' => 'return AvaTax . _certificate . delete(' . implode(', ', $actionParams) . ')',
+                        'onClick' => 'return AvaTax._certificate.delete(' . implode(', ', $actionParams) . ')',
                         'url'     => '#'
                     ),
                 ),
@@ -182,6 +182,35 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents_Grid extends Mage_Adm
         );
 
         return parent::_prepareColumns();
+    }
+
+    /**
+     * Prepare grid mass action
+     *
+     * @return Mage_Adminhtml_Block_Widget_Grid
+     * @throws \Exception
+     */
+    protected function _prepareMassaction()
+    {
+        $this->setMassactionIdField('id');
+        $this->getMassactionBlock()->setFormFieldName('documents');
+
+        $data = array(
+            'customerId'   => $this->_getCustomer()->getId(),
+            'customerCode' => $this->_getCustomer()->getData(
+                OnePica_AvaTaxAr2_Helper_Data::AVATAX_CUSTOMER_EXEMPTION_NUMBER
+            ),
+            'activeTab'    => $this->getRequest()->getParam('tab')
+        );
+        $this->getMassactionBlock()->addItem(
+            'delete', array(
+                'label'   => $this->__('Revoke'),
+                'url'     => $this->getUrl('adminhtml/avaTaxAr2_grid/documentMassDelete', $data),
+                'confirm' => $this->__('Are you sure?')
+            )
+        );
+
+        return $this;
     }
 
     /**

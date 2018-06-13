@@ -76,6 +76,37 @@ class OnePica_AvaTaxAr2_Adminhtml_AvaTaxAr2_GridController extends Mage_Adminhtm
     }
 
     /**
+     * Customer newsletter grid
+     *
+     */
+    public function documentMassDeleteAction()
+    {
+        $certsToDelete = $this->getRequest()->getParam('documents');
+        $customerId = $this->getRequest()->getParam('customerId');
+        $customerCode = $this->getRequest()->getParam('customerCode');
+        $activeTab = $this->getRequest()->getParam('activeTab');
+
+        if (!$certsToDelete) {
+            $this->_getAdminhtmlSession()->addError($this->__('Please select document(s).'));
+            $this->_redirect('adminhtml/customer/edit', array('id' => $customerId, 'tab' => $activeTab));
+
+            return;
+        }
+
+        try {
+            // TODO: implement deleting
+
+            $this->_getAdminhtmlSession()->addSuccess(
+                $this->__('Total of %d record(s) were deleted.', count($certsToDelete))
+            );
+        } catch (Exception $e) {
+            $this->_getAdminhtmlSession()->addError($e->getMessage());
+        }
+
+        $this->_redirect('adminhtml/customer/edit', array('id' => $customerId, 'tab' => $activeTab));
+    }
+
+    /**
      * @param string $idFieldName
      * @return $this
      * @throws \Mage_Core_Exception
@@ -102,5 +133,13 @@ class OnePica_AvaTaxAr2_Adminhtml_AvaTaxAr2_GridController extends Mage_Adminhtm
     protected function _getServiceCertificate()
     {
         return Mage::getSingleton('avataxar2/service_avatax_certificate');
+    }
+
+    /**
+     * @return \Mage_Adminhtml_Model_Session
+     */
+    protected function _getAdminhtmlSession()
+    {
+        return Mage::getSingleton('adminhtml/session');
     }
 }
