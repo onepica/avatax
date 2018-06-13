@@ -92,6 +92,93 @@ class OnePica_AvaTaxAr2_Model_Service_Avatax_Certificate extends OnePica_AvaTaxA
         return $this->_certificates;
     }
 
+    public function createCerts( $store = null){
+        $client = $this->_getServiceConfig()->getClient($store);
+        $model = new Avalara\AvaTaxRestV2\CertificateModel;
+
+
+        $client->createCertificates($this->_getServiceCompany()->getCurrentCompanyId($store), array($model));
+    }
+    /**
+     * @param  int                                 $id
+     * @param  string                              $customerId
+     * @param  null|bool|int|Mage_Core_Model_Store $store
+     * @return bool
+     * @throws \Mage_Core_Exception
+     */
+    public function deleteCertificate($id, $customerId, $store = null)
+    {
+        $client = $this->_getServiceConfig()->getClient($store);
+
+        $customerCodesInCertificate = $this->getCustomerCodesFromCertificate($id, $store);
+        $customerCodesToDelete = array($customerId);
+
+        $this->unlinkCustomersFromCertificate($id, $customerCodesToDelete, $store);
+
+        $customersLeft = array_diff($customerCodesInCertificate, $customerCodesToDelete);
+
+        if (!$customersLeft) {
+            $client->deleteCertificate($this->_getServiceCompany()->getCurrentCompanyId($store), $id);
+        }
+
+        return true;
+    }
+
+    /**
+     * @param  int                                 $id
+     * @param  array                               $customerIds
+     * @param  null|bool|int|Mage_Core_Model_Store $store
+     * @return \Varien_Data_Collection
+     * @throws \Mage_Core_Exception
+     */
+    public function unlinkCustomersFromCertificate($id, $customerIds, $store = null)
+    {
+        $client = $this->_getServiceConfig()->getClient($store);
+
+        $model = new Avalara\AvaTaxRestV2\LinkCustomersModel;
+        $model->customers = $customerIds;
+        $response = $client->unlinkCustomersFromCertificate(
+            $this->_getServiceCompany()->getCurrentCompanyId($store), $id, $model
+        );
+
+        return $this->validateResponse($response);
+    }
+
+    /**
+     * @param  int                                 $id
+     * @param  null|bool|int|Mage_Core_Model_Store $store
+     * @return \Varien_Data_Collection
+     * @throws \Mage_Core_Exception
+     */
+    public function getCustomersFromCertificate($id, $store = null)
+    {
+        $client = $this->_getServiceConfig()->getClient($store);
+
+        $response = $client->listCustomersForCertificate(
+            $this->_getServiceCompany()->getCurrentCompanyId($store), $id, $this->getInclude()
+        );
+
+        return $this->validateResponse($response);
+    }
+
+    /**
+     * @param  int                                 $id
+     * @param  null|bool|int|Mage_Core_Model_Store $store
+     * @return array
+     * @throws \Mage_Core_Exception
+     */
+    public function getCustomerCodesFromCertificate($id, $store = null)
+    {
+        $customerCodes = array();
+
+        /** @var \Varien_Object $customer */
+        foreach ($this->getCustomersFromCertificate($id, $store)->getItems() as $customer) {
+            $customerCodes[] = $customer->getData('customerCode');
+        }
+
+        return $customerCodes;
+    }
+
     /**
      * @return \OnePica_AvaTaxAr2_Model_Service_AvaTax_Config
      */

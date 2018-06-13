@@ -154,8 +154,11 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents_Grid extends Mage_Adm
             )
         );
 
+        $customerId = $this->_getCustomer()->getData(OnePica_AvaTaxAr2_Helper_Data::AVATAX_CUSTOMER_EXEMPTION_NUMBER);
+
         $actionParams = array(
             '\'$id\'',
+            '\'' . $customerId . '\'',
             '\'' . $this->getUrl('adminhtml/avaTaxAr2_grid/documentDelete') . '\'',
             'exemptionGridJsObject'
         );

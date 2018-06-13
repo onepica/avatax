@@ -60,10 +60,17 @@ class OnePica_AvaTaxAr2_Adminhtml_AvaTaxAr2_GridController extends Mage_Adminhtm
     public function documentDeleteAction()
     {
         $certId = $this->getRequest()->getPost('certId');
+        $customerId = $this->getRequest()->getPost('customerId');
 
         $dataResponse = array();
-        $dataResponse['success'] = true;
-        $dataResponse['message'] = $certId . ' deleted';
+        try {
+            $this->_getServiceCertificate()->deleteCertificate($certId, $customerId);
+            $dataResponse['success'] = true;
+            $dataResponse['message'] = $this->__('Certificate with ID "%s" deleted successfully', $certId);
+        } catch (Exception $exception) {
+            $dataResponse['success'] = false;
+            $dataResponse['message'] = $exception->getMessage();
+        }
 
         $this->getResponse()->setBody(json_encode($dataResponse));
     }
@@ -87,5 +94,13 @@ class OnePica_AvaTaxAr2_Adminhtml_AvaTaxAr2_GridController extends Mage_Adminhtm
         Mage::register('current_customer', $customer);
 
         return $this;
+    }
+
+    /**
+     * @return OnePica_AvaTaxAr2_Model_Service_Avatax_Certificate
+     */
+    protected function _getServiceCertificate()
+    {
+        return Mage::getSingleton('avataxar2/service_avatax_certificate');
     }
 }

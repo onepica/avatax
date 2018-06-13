@@ -90,11 +90,12 @@ AvaTax._general = {
 };
 
 AvaTax._certificate = {
-    delete: function (certId, url, jsObject) {
+    delete: function (certId, customerId, url, jsObject) {
         new Ajax.Request(url, {
             method: "POST",
             parameters: {
-                certId: certId
+                certId: certId,
+                customerId: customerId
             },
             requestHeaders: {Accept: "application/json"},
             onSuccess: function (transport) {
