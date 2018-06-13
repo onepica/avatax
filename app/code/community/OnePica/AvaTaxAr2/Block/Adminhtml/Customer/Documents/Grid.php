@@ -154,6 +154,12 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents_Grid extends Mage_Adm
             )
         );
 
+        $actionParams = array(
+            '\'$id\'',
+            '\'' . $this->getUrl('adminhtml/avaTaxAr2_grid/documentDelete') . '\'',
+            'exemptionGridJsObject'
+        );
+
         $this->addColumn(
             'actions', array(
                 'header'   => $this->__('Actions'),
@@ -164,9 +170,9 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents_Grid extends Mage_Adm
                 'sortable' => false,
                 'actions'  => array(
                     array(
-                        'caption' => $this->__('Delete'),
-                        'onClick' => 'return Documents.delete(\'$doc_id\')',
-                        'url'     => '#',
+                        'caption' => $this->__('Revoke'),
+                        'onClick' => 'return AvaTax . _certificate . delete(' . implode(', ', $actionParams) . ')',
+                        'url'     => '#'
                     ),
                 ),
             )

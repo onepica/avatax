@@ -36,9 +36,7 @@ class OnePica_AvaTaxAr2_Model_Service_Avatax_Company extends OnePica_AvaTaxAr2_M
      */
     public function getCurrentCompanyId($store = null)
     {
-        $company = $this->getCurrentCompany($store);
-
-        return $company->getId();
+        return $this->getCurrentCompany($store)->getId();
     }
 
     /**
@@ -56,11 +54,13 @@ class OnePica_AvaTaxAr2_Model_Service_Avatax_Company extends OnePica_AvaTaxAr2_M
                 sprintf("companyCode eq '%s'", $this->_getAvaTaxConfigHelper()->getCompanyCode($store))
             );
 
-            $response = $this->validateResponse(
-                $client->queryCompanies('', implode(' AND ', $filterParams), '', '', '')
+            $this->setFilter(implode(' AND ', $filterParams));
+
+            $responseQuery = $client->queryCompanies(
+                $this->getInclude(), $this->getFilter(), $this->getTop(), $this->getSkip(), $this->getOrderBy()
             );
 
-            $this->_company = $response->getFirstItem();
+            $this->_company = $this->validateResponse($responseQuery)->getFirstItem();
         }
 
         return $this->_company;

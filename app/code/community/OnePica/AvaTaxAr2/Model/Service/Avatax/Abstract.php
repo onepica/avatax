@@ -30,6 +30,21 @@ use Avalara\AvaTaxRestV2\SeverityLevel;
  */
 abstract class OnePica_AvaTaxAr2_Model_Service_Avatax_Abstract extends Varien_Object
 {
+    /** @var null|string $_include */
+    protected $_include = null;
+
+    /** @var null|string $_filter */
+    protected $_filter = null;
+
+    /** @var null|string $_top */
+    protected $_top = null;
+
+    /** @var null|string $_skip */
+    protected $_skip = null;
+
+    /** @var null|string $_orderBy */
+    protected $_orderBy = null;
+
     /**
      * Logs a debug message
      *
@@ -152,5 +167,85 @@ abstract class OnePica_AvaTaxAr2_Model_Service_Avatax_Abstract extends Varien_Ob
         }
 
         return $itemsCollection;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getInclude()
+    {
+        return $this->_include;
+    }
+
+    /**
+     * @param null|string $include
+     */
+    public function setInclude($include)
+    {
+        $this->_include = $include;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getFilter()
+    {
+        return $this->_filter;
+    }
+
+    /**
+     * @param null|string $filter
+     */
+    public function setFilter($filter)
+    {
+        $this->_filter = $filter;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getTop()
+    {
+        return $this->_top;
+    }
+
+    /**
+     * @param null|string $top
+     */
+    public function setTop($top)
+    {
+        $this->_top = $top;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getSkip()
+    {
+        return $this->_skip;
+    }
+
+    /**
+     * @param null|string $skip
+     */
+    public function setSkip($skip)
+    {
+        $this->_skip = $skip;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getOrderBy()
+    {
+        return $this->_orderBy;
+    }
+
+    /**
+     * @param null|string $orderBy
+     */
+    public function setOrderBy($orderBy)
+    {
+        $this->_orderBy = $orderBy;
     }
 }

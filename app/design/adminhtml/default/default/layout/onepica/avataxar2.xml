@@ -18,6 +18,12 @@
 -->
 <layout>
     <adminhtml_customer_edit>
+        <reference name="head">
+            <action method="addJs">
+                <script>avatax/main.js</script>
+            </action>
+        </reference>
+
         <reference name="customer_edit_tabs">
             <action method="addTab">
                 <name>avataxar2_exemptions</name>

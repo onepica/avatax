@@ -48,20 +48,14 @@ class OnePica_AvaTaxAr2_Model_Service_Avatax_Certificate extends OnePica_AvaTaxA
 
         $client = $this->_getServiceConfig()->getClient($store);
 
-        $include = '';
-        $filter = '';
-        $top = '';
-        $skip = '';
-        $orderBy = '';
-
         $response = $client->listCertificatesForCustomer(
             $this->_getServiceCompany()->getCurrentCompanyId($store),
             $customerCode,
-            $include,
-            $filter,
-            $top,
-            $skip,
-            $orderBy
+            $this->getInclude(),
+            $this->getFilter(),
+            $this->getTop(),
+            $this->getSkip(),
+            $this->getOrderBy()
         );
 
         $this->_allCustomerCertificates = $this->validateResponse($response);
@@ -84,19 +78,13 @@ class OnePica_AvaTaxAr2_Model_Service_Avatax_Certificate extends OnePica_AvaTaxA
 
         $client = $this->_getServiceConfig()->getClient($store);
 
-        $include = '';
-        $filter = '';
-        $top = '';
-        $skip = '';
-        $orderBy = '';
-
         $response = $client->queryCertificates(
             $this->_getServiceCompany()->getCurrentCompanyId($store),
-            $include,
-            $filter,
-            $top,
-            $skip,
-            $orderBy
+            $this->getInclude(),
+            $this->getFilter(),
+            $this->getTop(),
+            $this->getSkip(),
+            $this->getOrderBy()
         );
 
         $this->_certificates = $this->validateResponse($response);

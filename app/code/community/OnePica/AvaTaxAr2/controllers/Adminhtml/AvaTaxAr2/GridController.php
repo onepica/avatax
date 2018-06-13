@@ -54,6 +54,21 @@ class OnePica_AvaTaxAr2_Adminhtml_AvaTaxAr2_GridController extends Mage_Adminhtm
     }
 
     /**
+     * Customer newsletter grid
+     *
+     */
+    public function documentDeleteAction()
+    {
+        $certId = $this->getRequest()->getPost('certId');
+
+        $dataResponse = array();
+        $dataResponse['success'] = true;
+        $dataResponse['message'] = $certId . ' deleted';
+
+        $this->getResponse()->setBody(json_encode($dataResponse));
+    }
+
+    /**
      * @param string $idFieldName
      * @return $this
      * @throws \Mage_Core_Exception
