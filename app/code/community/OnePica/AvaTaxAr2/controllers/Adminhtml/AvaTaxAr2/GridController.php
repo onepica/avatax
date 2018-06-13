@@ -94,7 +94,9 @@ class OnePica_AvaTaxAr2_Adminhtml_AvaTaxAr2_GridController extends Mage_Adminhtm
         }
 
         try {
-            // TODO: implement deleting
+            foreach ($certsToDelete as $certId) {
+                $this->_getServiceCertificate()->deleteCertificate($certId, $customerCode);
+            }
 
             $this->_getAdminhtmlSession()->addSuccess(
                 $this->__('Total of %d record(s) were deleted.', count($certsToDelete))

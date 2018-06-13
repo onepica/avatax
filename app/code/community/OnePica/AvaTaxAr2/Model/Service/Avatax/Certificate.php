@@ -92,13 +92,6 @@ class OnePica_AvaTaxAr2_Model_Service_Avatax_Certificate extends OnePica_AvaTaxA
         return $this->_certificates;
     }
 
-    public function createCerts( $store = null){
-        $client = $this->_getServiceConfig()->getClient($store);
-        $model = new Avalara\AvaTaxRestV2\CertificateModel;
-
-
-        $client->createCertificates($this->_getServiceCompany()->getCurrentCompanyId($store), array($model));
-    }
     /**
      * @param  int                                 $id
      * @param  string                              $customerId
