@@ -22,7 +22,7 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTaxAr2_Model_Source_Avatax_Url
+class OnePica_AvaTaxAr2_Model_Source_Rest_Url
 {
     /**
      * Url for production
