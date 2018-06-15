@@ -79,7 +79,8 @@ class OnePica_AvaTaxAr2_Model_Observer_AdminSystemConfigChangedSectionTax extend
         $errors = array();
         $errors = array_merge(
             $errors,
-            $this->_sendPing($storeId)
+            $this->_sendPing($storeId),
+            $this->_sendEcomPing($storeId)
         );
 
         return $errors;
@@ -95,6 +96,23 @@ class OnePica_AvaTaxAr2_Model_Observer_AdminSystemConfigChangedSectionTax extend
     {
         $errors = array();
         $ping = Mage::getSingleton('avataxar2/service_avatax_ping')->ping($storeId);
+        if ($ping !== true) {
+            $errors[] = $ping;
+        }
+
+        return $errors;
+    }
+
+    /**
+     * Send ping request
+     *
+     * @param int $storeId
+     * @return array
+     */
+    protected function _sendEcomPing($storeId)
+    {
+        $errors = array();
+        $ping = Mage::getSingleton('avataxar2/service_ecom_ping')->ping($storeId);
         if ($ping !== true) {
             $errors[] = $ping;
         }
