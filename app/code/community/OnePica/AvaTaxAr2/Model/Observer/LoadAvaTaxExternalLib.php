@@ -28,6 +28,7 @@ class OnePica_AvaTaxAr2_Model_Observer_LoadAvaTaxExternalLib extends Mage_Core_M
         'AvaTaxClient',
         'Avalara\AvaTaxRestV2\AvaTaxClient'
     );
+
     /**
      * Load AvaTax External Lib
      *
@@ -35,7 +36,8 @@ class OnePica_AvaTaxAr2_Model_Observer_LoadAvaTaxExternalLib extends Mage_Core_M
      */
     public function loadAvaTaxExternalLib()
     {
-        spl_autoload_register(array($this, 'loadLib'), true, true);
+        spl_autoload_register(array($this, 'loadLib'), false, true);
+
         return $this;
     }
 
@@ -54,6 +56,18 @@ class OnePica_AvaTaxAr2_Model_Observer_LoadAvaTaxExternalLib extends Mage_Core_M
     }
 
     /**
+     * @return $this
+     */
+    public function loadAvaTaxEcomLib()
+    {
+        /** @var OnePica_AvaTaxAr2_Helper_Lib $helper */
+        $helper = Mage::helper('avataxar2/lib');
+        spl_autoload_register(array($helper, 'loadEcomClass'), false, true);
+
+        return $this;
+    }
+
+    /**
      * This an observer function for the event 'controller_front_init_before' and 'default'
      * It prepends our autoloader, so we can load the extra libraries.
      *
@@ -63,6 +77,8 @@ class OnePica_AvaTaxAr2_Model_Observer_LoadAvaTaxExternalLib extends Mage_Core_M
     public function execute(Varien_Event_Observer $observer)
     {
         $this->loadAvaTaxExternalLib();
+        $this->loadAvaTaxEcomLib();
+
         return $this;
     }
 }

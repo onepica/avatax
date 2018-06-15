@@ -24,6 +24,8 @@
  */
 class OnePica_AvaTaxAr2_Helper_Lib extends Mage_Core_Helper_Abstract
 {
+    const ECOM_SDK_LIB_DIR_NAME = 'AvaTaxEcomSDK';
+
     /**
      * Returns the path to the AvaTax SDK lib directory.
      *
@@ -43,6 +45,37 @@ class OnePica_AvaTaxAr2_Helper_Lib extends Mage_Core_Helper_Abstract
     {
         $classFile = $this->getLibPath() . DS . 'src' . DS . 'AvaTaxClient.php';
         require_once $classFile;
+
+        return $this;
+    }
+
+    /**
+     * Returns the path to the AvaTax SDK lib directory.
+     *
+     * @return string
+     */
+    public function getEcomLibPath()
+    {
+        return Mage::getBaseDir('lib') . DS . self::ECOM_SDK_LIB_DIR_NAME . DS . 'src';
+    }
+
+    /**
+     * Loads a class from the AvaTax library.
+     *
+     * @param $class
+     * @return \OnePica_AvaTaxAr2_Helper_Lib
+     */
+    public function loadEcomClass($class)
+    {
+        if (!strpos($class, self::ECOM_SDK_LIB_DIR_NAME)) {
+            return $this;
+        }
+
+        $fileName = $this->getEcomLibPath() . DS . end(explode("\\", $class)) . '.php';
+
+        if (file_exists($fileName)) {
+            require_once $fileName;
+        }
 
         return $this;
     }
