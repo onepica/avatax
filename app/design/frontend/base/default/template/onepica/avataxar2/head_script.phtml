@@ -1,0 +1,10 @@
+<?php /** @var \OnePica_AvaTaxAr2_Block_Head_Script $this */ ?>
+<?php if ($this->isEnabled()): ?>
+    <style>
+        #gencert_iframe {
+            height: 1200px;
+        }
+    </style>
+    <script src="https://app.certcapture.com/gencert2/js"></script>
+    <script src="<?php echo Mage::getBaseUrl() ?>/js/avatax/certcapture.js"></script>
+<?php endif; ?>
