@@ -30,6 +30,12 @@ class OnePica_AvaTaxAr2_Helper_Config extends Mage_Core_Helper_Abstract
 
     const XML_PATH_TO_KEY = 'tax/avatax_document_management/license';
 
+    const XML_PATH_TO_ECOM_URL = 'tax/avatax_document_management/ecom_url';
+
+    const XML_PATH_TO_ECOM_USERNAME = 'tax/avatax_document_management/ecom_username';
+
+    const XML_PATH_TO_ECOM_PASSWORD = 'tax/avatax_document_management/ecom_password';
+
     /**
      * Is AvaTaxAr2 enabled.
      *
@@ -93,5 +99,41 @@ class OnePica_AvaTaxAr2_Helper_Config extends Mage_Core_Helper_Abstract
     public function getServiceKey($store = null)
     {
         return Mage::getStoreConfig(self::XML_PATH_TO_KEY, $store);
+    }
+
+    /**
+     * Returns ecom service url
+     *
+     * @param null|bool|int|Mage_Core_Model_Store $store
+     *
+     * @return string
+     */
+    public function getEcomUrl($store = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_TO_ECOM_URL, $store);
+    }
+
+    /**
+     * Returns ecom service account id
+     *
+     * @param null|bool|int|Mage_Core_Model_Store $store
+     *
+     * @return string
+     */
+    public function getEcomUsername($store = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_TO_ECOM_USERNAME, $store);
+    }
+
+    /**
+     * Returns ecom service account id
+     *
+     * @param null|bool|int|Mage_Core_Model_Store $store
+     *
+     * @return string
+     */
+    public function getEcomPassword($store = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_TO_ECOM_PASSWORD, $store);
     }
 }
