@@ -134,6 +134,15 @@
             </resources>
         </acl>
     </adminhtml>
+    <frontend>
+        <layout>
+            <updates>
+                <avataxar2>
+                    <file>onepica/avataxar2.xml</file>
+                </avataxar2>
+            </updates>
+        </layout>
+    </frontend>
     <default>
         <tax>
             <avatax_document_management>
