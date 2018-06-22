@@ -1,12 +1,13 @@
 <?php /** @var OnePica_AvaTaxAr2_Block_ActionButton $this */ ?>
-<?php if ($this->isEnabled()): ?>
-    <div class="avatax-certcapture-button">
+
+<tr class="a-right">
+    <td colspan="4">
         <button class="button2" id="avatax_certcapture_gencert2_button"
                 onclick="AvaTaxCert.initApi('<?php echo $this->getToken() ?>', '<?php echo $this->getShipZone() ?>');">
-           <span><?php echo $this->__('Is this purchase tax-exempt?'); ?></span>
+            <span><?php echo $this->__('Is this purchase tax-exempt?'); ?></span>
         </button>
         <div id="avatax_certcapture_form_container">
             <div id="avatax_certcapture_form_parent" style="display:none;"></div>
         </div>
-    </div>
-<?php endif; ?>
+    </td>
+</tr>

@@ -90,6 +90,18 @@
                 </connection>
             </avataxar2_setup>
         </resources>
+        <sales>
+            <quote>
+                <totals>
+                    <certcapture_button>
+                        <class>avataxar2/total_button</class>
+                        <renderer>avataxar2/total_button</renderer>
+                        <admin_renderer>avataxar2/total_button</admin_renderer>
+                        <before>subtotal</before>
+                    </certcapture_button>
+                </totals>
+            </quote>
+        </sales>
     </global>
     <admin>
         <routers>

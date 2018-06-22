@@ -14,17 +14,26 @@
  */
 
 /**
- * Class OnePica_AvaTaxAr2_Block_Head_Script
+ * Class OnePica_AvaTaxAr2_Model_Total_Button
  */
-class OnePica_AvaTaxAr2_Block_Head_Script extends Mage_Core_Block_Template
+class OnePica_AvaTaxAr2_Model_Total_Button extends Mage_Sales_Model_Quote_Address_Total_Abstract
 {
+    protected $_code = 'certcapture_button';
+
     /**
-     * @return bool
+     * Fetch (Retrieve data as array)
+     *
+     * @param Mage_Sales_Model_Quote_Address $address
+     * @return \OnePica_AvaTaxAr2_Model_Total_Button
      * @throws \Mage_Core_Exception
      */
-    public function isEnabled()
+    public function fetch(Mage_Sales_Model_Quote_Address $address)
     {
-        return $this->_getConfigHelper()->isEnabled();
+        if ($this->_getConfigHelper()->isEnabled()) {
+            $address->addTotal(array('code' => $this->getCode()));
+        }
+
+        return $this;
     }
 
     /**
