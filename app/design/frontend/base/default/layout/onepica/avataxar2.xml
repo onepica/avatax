@@ -26,5 +26,8 @@
         <reference name="head">
             <block type="avataxar2/head_script" name="avataxar2.head.script" template="onepica/avataxar2/head_script.phtml" />
         </reference>
+        <reference name="checkout.cart.methods">
+            <block type="avataxar2/actionButton" name="checkout.cart.extra" template="onepica/avataxar2/action_button.phtml" before="-" />
+        </reference>
     </checkout_cart_index>
 </layout>
