@@ -42,6 +42,8 @@ class OnePica_AvaTaxAr2_Model_Service_Ecom_Config extends Varien_Object
                 $this->_getConfigHelper()->getEcomUrl()
             );
 
+            $this->_client->setClientId($this->_getConfigHelper()->getClientId());
+
             $this->_client->withSecurity(
                 $this->_getConfigHelper()->getEcomUsername(),
                 $this->_getConfigHelper()->getEcomPassword()
