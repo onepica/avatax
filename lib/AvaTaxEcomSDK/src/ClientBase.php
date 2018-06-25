@@ -150,6 +150,12 @@ class ClientBase
                 "{$this->appName}; {$this->appVersion}; PhpRestClient; 17.5.0-67; {$this->machineName}"
             );
 
+            if (isset($params['headers']) && is_array($params['headers'])) {
+                foreach ($params['headers'] as $key => $value) {
+                    $this->client->setHeaders($key, $value);
+                }
+            }
+
             // Set authentication on the parameters
             if (count($this->auth) == 2) {
                 $this->client->setAuth($this->auth[0], $this->auth[1]);

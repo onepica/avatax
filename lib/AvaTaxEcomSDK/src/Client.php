@@ -26,15 +26,20 @@ class Client extends ClientBase
 {
     /**
      * Generate bearer token by given credentials
+     *
+     * @param null|string|int $customerNumber
      * @return mixed|string
      */
-    public function getToken()
+    public function getToken($customerNumber = null)
     {
         $path = "/v2/auth/get-token";
         $params = [
             'query' => [],
             'body'  => null
         ];
+        if ($customerNumber != null) {
+            $params['headers'] = array('x-customer-number' => $customerNumber);
+        }
 
         return $this->restCall($path, 'POST', $params);
     }
