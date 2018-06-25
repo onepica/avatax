@@ -20,3 +20,21 @@ AvaTaxCert.initApi = function (token, ship_zone) {
 
     document.getElementById("avatax_certcapture_gencert2_button").style.display = "none";
 };
+
+AvaTaxCert.showPopup = function (url, title) {
+    win = new Window({
+        title: title,
+        url: url,
+        id:"avatax_certcapture",
+        zIndex: 3000,
+        destroyOnClose: true,
+        recenterAuto: false,
+        resizable: false,
+        width: 450,
+        height: 473,
+        minimizable: false,
+        maximizable: false,
+        draggable: false
+    });
+    win.showCenter(true);
+};

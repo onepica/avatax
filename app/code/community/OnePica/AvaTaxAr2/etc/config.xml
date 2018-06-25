@@ -154,6 +154,15 @@
                 </avataxar2>
             </updates>
         </layout>
+        <routers>
+            <avataxar2>
+                <use>standard</use>
+                <args>
+                    <module>OnePica_AvaTaxAr2</module>
+                    <frontName>avataxcert</frontName>
+                </args>
+            </avataxar2>
+        </routers>
     </frontend>
     <default>
         <tax>

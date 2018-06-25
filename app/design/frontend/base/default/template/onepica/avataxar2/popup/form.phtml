@@ -1,0 +1,10 @@
+<?php /** @var OnePica_AvaTaxAr2_Block_Popup_Form $this */ ?>
+
+<div id="avatax_certcapture_form_container">
+    <button class="button2" id="avatax_certcapture_gencert2_button"
+            onclick="AvaTaxCert.initApi('<?php echo $this->getToken() ?>', '<?php echo $this->getShipZone() ?>');">
+        <span><?php echo $this->__('Next step'); ?></span>
+    </button>
+
+    <div id="avatax_certcapture_form_parent" style="display:none;"></div>
+</div>

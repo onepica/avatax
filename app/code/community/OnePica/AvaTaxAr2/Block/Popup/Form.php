@@ -14,25 +14,24 @@
  */
 
 /**
- * Class OnePica_AvaTaxAr2_Block_ActionButton
+ * Class OnePica_AvaTaxAr2_Block_Popup_Form
  */
-class OnePica_AvaTaxAr2_Block_Total_Button extends Mage_Checkout_Block_Total_Default
+class OnePica_AvaTaxAr2_Block_Popup_Form extends Mage_Core_Block_Template
 {
-    protected $_template = 'onepica/avataxar2/total/button.phtml';
-
     /**
      * @return string
      */
-    public function getPopupUrl()
+    public function getToken()
     {
-        return $this->getUrl('avataxcert/popup/genCert');
+        return 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjdXN0b21lcl9udW1iZXIiOiIxMDAiLCJjbGllbnRfaWQiOiI3MTAxMSIsImVjb21tIjp0cnVlLCJzdWIiOjEwMzM4MywiaXNzIjoiaHR0cDovL2FwaS5jZXJ0Y2FwdHVyZS5jb20vdjIvYXV0aC9nZXQtdG9rZW4iLCJpYXQiOjE1Mjk1NDI3NzAsImV4cCI6MTUyOTU0NjM3MCwibmJmIjoxNTI5NTQyNzcwLCJqdGkiOiJTbWdXeFlnMHM3Vktwem40In0.ix8-neBixHq3NGFbDtlKMEtnxe6SHYbGpU6stZU2-bk';
     }
 
     /**
      * @return string
      */
-    public function getPopupTitle()
+    public function getShipZone()
     {
-        return $this->__('Create Exempt Certificate');
+        return 'Washington';
     }
+
 }
