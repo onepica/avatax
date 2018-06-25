@@ -47,7 +47,7 @@ class OnePica_AvaTaxAr2_Model_Service_Ecom_Ping extends OnePica_AvaTaxAr2_Model_
                 Mage::throwException($this->_getExceptionMessage($response));
             }
 
-            if (is_object($response) && !$response->success) {
+            if (is_object($response) && isset($response->error)) {
                 Mage::throwException($this->_getExceptionMessage($response->error));
             }
 

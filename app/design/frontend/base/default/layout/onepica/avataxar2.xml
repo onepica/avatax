@@ -33,6 +33,9 @@
         <reference name="root">
             <remove name="header"/>
             <remove name="footer"/>
+            <remove name="global_notices"/>
+            <remove name="global_messages"/>
+            <remove name="messages"/>
             <action method="setTemplate"><template>page/1column.phtml</template></action>
         </reference>
         <reference name="head">
