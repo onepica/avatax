@@ -36,6 +36,8 @@ class OnePica_AvaTaxAr2_Helper_Config extends Mage_Core_Helper_Abstract
 
     const XML_PATH_TO_ECOM_PASSWORD = 'tax/avatax_document_management/ecom_password';
 
+    const XML_PATH_TO_ECOM_CLIENT_ID = 'tax/avatax_document_management/ecom_client_id';
+
     /**
      * Is AvaTaxAr2 enabled.
      *
@@ -135,5 +137,17 @@ class OnePica_AvaTaxAr2_Helper_Config extends Mage_Core_Helper_Abstract
     public function getEcomPassword($store = null)
     {
         return Mage::getStoreConfig(self::XML_PATH_TO_ECOM_PASSWORD, $store);
+    }
+
+    /**
+     * Returns client id
+     *
+     * @param null|bool|int|Mage_Core_Model_Store $store
+     *
+     * @return string
+     */
+    public function getClientId($store = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_TO_ECOM_CLIENT_ID, $store);
     }
 }
