@@ -33,6 +33,9 @@ class ClientBase
     /** @var string The application name as reported to AvaTax $appName */
     private $appName;
 
+    /** @var string $clientId */
+    private $clientId;
+
     /** @var string The application version as reported to AvaTax $appVersion */
     private $appVersion;
 
@@ -89,6 +92,19 @@ class ClientBase
     }
 
     /**
+     * Set the client id for requests
+     *
+     * @param string $clientId
+     * @return ClientBase
+     */
+    public function setClientId($clientId)
+    {
+        $this->clientId = $clientId;
+
+        return $this;
+    }
+
+    /**
      * Configure this client to use Account ID / License Key security
      *
      * @param  int    $accountId  The account ID for your AvaTax account
@@ -128,6 +144,7 @@ class ClientBase
         // Contact the server
         try {
             $this->client->setHeaders('Accept', "application/json");
+            $this->client->setHeaders('x-client-id', $this->clientId);
             $this->client->setHeaders(
                 'X-Avalara-Client',
                 "{$this->appName}; {$this->appVersion}; PhpRestClient; 17.5.0-67; {$this->machineName}"
