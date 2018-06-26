@@ -21,17 +21,8 @@ class OnePica_AvaTaxAr2_Block_Popup_Form extends Mage_Core_Block_Template
     /**
      * @return string
      */
-    public function getToken()
+    public function getTokenUrl()
     {
-        return 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjdXN0b21lcl9udW1iZXIiOiIxMDAiLCJjbGllbnRfaWQiOiI3MTAxMSIsImVjb21tIjp0cnVlLCJzdWIiOjEwMzM4MywiaXNzIjoiaHR0cDovL2FwaS5jZXJ0Y2FwdHVyZS5jb20vdjIvYXV0aC9nZXQtdG9rZW4iLCJpYXQiOjE1Mjk1NDI3NzAsImV4cCI6MTUyOTU0NjM3MCwibmJmIjoxNTI5NTQyNzcwLCJqdGkiOiJTbWdXeFlnMHM3Vktwem40In0.ix8-neBixHq3NGFbDtlKMEtnxe6SHYbGpU6stZU2-bk';
+        return $this->getUrl('avataxcert/popup/getToken');
     }
-
-    /**
-     * @return string
-     */
-    public function getShipZone()
-    {
-        return 'Washington';
-    }
-
 }
