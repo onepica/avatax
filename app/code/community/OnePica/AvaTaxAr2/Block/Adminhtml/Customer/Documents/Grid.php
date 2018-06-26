@@ -57,7 +57,7 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents_Grid extends Mage_Adm
                  ->setData(
                      array(
                          'label'   => $this->__('New Certificate'),
-                         'onclick' => 'AvataxCert.showPopup()',
+                         'onclick' => 'AvaTaxCert.showPopup()',
                          'class'   => 'add'
                      )
                  )

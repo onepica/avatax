@@ -18,15 +18,11 @@
 -->
 <layout>
     <checkout_cart_index>
-        <reference name="head">
-            <block type="avataxar2/head_script" name="avataxar2.head.script" template="onepica/avataxar2/head_script.phtml" />
-        </reference>
+        <update handle="avataxar2_cert_additional_scripts" />
     </checkout_cart_index>
 
     <checkout_onepage_index>
-        <reference name="head">
-            <block type="avataxar2/head_script" name="avataxar2.head.script" template="onepica/avataxar2/head_script.phtml" />
-        </reference>
+        <update handle="avataxar2_cert_additional_scripts" />
     </checkout_onepage_index>
 
     <avataxar2_popup_gencert>
@@ -38,11 +34,33 @@
             <remove name="messages"/>
             <action method="setTemplate"><template>page/1column.phtml</template></action>
         </reference>
-        <reference name="head">
-            <block type="avataxar2/head_script" name="avataxar2.head.script" template="onepica/avataxar2/head_script.phtml" />
-        </reference>
+        <update handle="avataxar2_cert_additional_scripts" />
         <reference name="content">
             <block type="avataxar2/popup_form" name="avataxar2.popup.form" template="onepica/avataxar2/popup/form.phtml" />
         </reference>
     </avataxar2_popup_gencert>
+
+
+    <!-- Cert additional scripts -->
+    <avataxar2_cert_additional_scripts>
+        <reference name="head">
+            <action method="addItem" ifconfig="tax/avatax_document_management/action">
+                <type>js</type>
+                <name>avatax/certcapture.js</name>
+            </action>
+            <action method="addItem" ifconfig="tax/avatax_document_management/action">
+                <type>js_css</type>
+                <name>avatax/themes/certcapture.css</name>
+            </action>
+            <action method="addItem" ifconfig="tax/avatax_document_management/action">
+                <type>js</type>
+                <name>prototype/window.js</name>
+                <params />
+            </action>
+            <action method="addItem" ifconfig="tax/avatax_document_management/action">
+                <type>js_css</type>
+                <name>prototype/windows/themes/default.css</name>
+            </action>
+        </reference>
+    </avataxar2_cert_additional_scripts>
 </layout>

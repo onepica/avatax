@@ -14,9 +14,9 @@
  */
 
 /**
- * Class OnePica_AvaTaxAr2_Block_ActionButton
+ * Class OnePica_AvaTaxAr2_Block_Adminhtml_Total_Button
  */
-class OnePica_AvaTaxAr2_Block_Total_Button extends Mage_Checkout_Block_Total_Default
+class OnePica_AvaTaxAr2_Block_Adminhtml_Total_Button extends Mage_Checkout_Block_Total_Default
 {
     protected $_template = '';
 }
