@@ -42,15 +42,7 @@ class OnePica_AvaTaxAr2_Model_Service_Ecom_Ping extends OnePica_AvaTaxAr2_Model_
         $result = new Varien_Object();
 
         try {
-            $response = $client->getToken();
-            if (is_string($response)) {
-                Mage::throwException($this->_getExceptionMessage($response));
-            }
-
-            if (is_object($response) && !$response->success) {
-                Mage::throwException($this->_getExceptionMessage($response->error));
-            }
-
+            $client->getToken();
             $result->setResultCode(SeverityLevel::C_SUCCESS);
         } catch (Exception $exception) {
             $result->setMessage($exception->getMessage());

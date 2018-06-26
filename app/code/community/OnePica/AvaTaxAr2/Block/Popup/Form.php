@@ -14,25 +14,15 @@
  */
 
 /**
- * Class OnePica_AvaTaxAr2_Block_ActionButton
+ * Class OnePica_AvaTaxAr2_Block_Popup_Form
  */
-class OnePica_AvaTaxAr2_Block_Total_Button extends Mage_Checkout_Block_Total_Default
+class OnePica_AvaTaxAr2_Block_Popup_Form extends Mage_Core_Block_Template
 {
-    protected $_template = 'onepica/avataxar2/total/button.phtml';
-
     /**
      * @return string
      */
-    public function getPopupUrl()
+    public function getTokenUrl()
     {
-        return $this->getUrl('avataxcert/popup/genCert');
-    }
-
-    /**
-     * @return string
-     */
-    public function getPopupTitle()
-    {
-        return $this->__('Create Exempt Certificate');
+        return $this->getUrl('avataxcert/popup/getToken');
     }
 }
