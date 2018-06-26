@@ -26,9 +26,12 @@ class Client extends ClientBase
 {
     /**
      * Generate bearer token by given credentials
-     * @return mixed|string
+     *
+     * @param null|string|int $customerNumber
+     * @return \stdClass|string
+     * @throws \Exception
      */
-    public function getToken()
+    public function getToken($customerNumber = null)
     {
         $path = "/v2/auth/get-token";
         $params = [
@@ -36,6 +39,28 @@ class Client extends ClientBase
             'body'  => null
         ];
 
-        return $this->restCall($path, 'POST', $params);
+        if ($customerNumber != null) {
+            $params['headers'] = array('x-customer-number' => $customerNumber);
+        }
+
+        $response = $this->restCall($path, 'POST', $params);
+
+        if (is_string($response)) {
+            throw new \Exception($response);
+        }
+
+        if (is_object($response) && isset($response->error)) {
+            throw new \Exception($response->error);
+        }
+
+        if (!isset($response->response)) {
+            throw new \Exception('Response is empty');
+        }
+
+        if (!isset($response->response->token)) {
+            throw new \Exception('Token is not set');
+        }
+
+        return $response->response;
     }
 }

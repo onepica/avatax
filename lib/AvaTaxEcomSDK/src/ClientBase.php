@@ -157,6 +157,12 @@ class ClientBase
                 $this->client->setHeaders('Authorization', "Bearer {$this->auth[0]}");
             }
 
+            if (isset($params['headers']) && is_array($params['headers'])) {
+                foreach ($params['headers'] as $key => $value) {
+                    $this->client->setHeaders($key, $value);
+                }
+            }
+
             /** @var \Zend_Uri $uri */
             $uri = $this->client->getUri();
             $uri->setPath($apiUriPath);

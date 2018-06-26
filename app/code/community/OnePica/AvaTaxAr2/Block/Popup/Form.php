@@ -14,24 +14,15 @@
  */
 
 /**
- * Class OnePica_AvaTaxAr2_Block_Head_Script
+ * Class OnePica_AvaTaxAr2_Block_Popup_Form
  */
-class OnePica_AvaTaxAr2_Block_Head_Script extends Mage_Core_Block_Template
+class OnePica_AvaTaxAr2_Block_Popup_Form extends Mage_Core_Block_Template
 {
     /**
-     * @return bool
-     * @throws \Mage_Core_Exception
+     * @return string
      */
-    public function isEnabled()
+    public function getTokenUrl()
     {
-        return $this->_getConfigHelper()->isEnabled();
-    }
-
-    /**
-     * @return \OnePica_AvaTaxAr2_Helper_Config
-     */
-    protected function _getConfigHelper()
-    {
-        return Mage::helper('avataxar2/config');
+        return $this->getUrl('avataxcert/popup/getToken');
     }
 }

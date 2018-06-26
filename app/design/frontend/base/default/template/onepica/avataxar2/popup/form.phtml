@@ -1,0 +1,41 @@
+<?php /** @var OnePica_AvaTaxAr2_Block_Popup_Form $this */ ?>
+
+<form id="avatax_certcapture_form_container" action="<?php echo $this->getTokenUrl() ?>">
+    <div class="field">
+        <label for="customer_number" class="required"><?php echo $this->__('Customer number'); ?></label>
+        <div class="input-box">
+            <input type="text" value="" name="customer_number" id="customer_number" required="required"/>
+        </div>
+    </div>
+    <div class="field">
+        <label for="ship_zone" class="required"><?php echo $this->__('State'); ?></label>
+        <div class="input-box">
+            <input type="text" value="" name="ship_zone" id="ship_zone" required="required"/>
+        </div>
+    </div>
+
+    <div id="avatax_certcapture_form_parent" style="display:none;"></div>
+
+    <div class="buttons-set">
+        <button class="button2" onclick='window.parent.Windows.close("avatax_certcapture", event)'>
+            <span><?php echo $this->__('Cancel'); ?></span>
+        </button>
+
+        <button type="submit" form="avatax_certcapture_form_container" id="avatax_certcapture_form_submit"
+                title="<?php echo $this->__('Next step'); ?>"
+                value="<?php echo $this->__('Next step'); ?>"
+                class="button">
+            <span><?php echo $this->__('Next step'); ?></span>
+        </button>
+    </div>
+</form>
+
+<script type="text/javascript">
+    $("avatax_certcapture_form_container").on("submit", function (e) {
+        e.stop();
+        var form = $("avatax_certcapture_form_container"),
+            tokenUrl = form.readAttribute("action");
+
+        AvaTaxCert.initApi(tokenUrl);
+    });
+</script>

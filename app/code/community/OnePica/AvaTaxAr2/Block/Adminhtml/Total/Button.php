@@ -14,24 +14,9 @@
  */
 
 /**
- * Class OnePica_AvaTaxAr2_Block_Head_Script
+ * Class OnePica_AvaTaxAr2_Block_ActionButton
  */
-class OnePica_AvaTaxAr2_Block_Head_Script extends Mage_Core_Block_Template
+class OnePica_AvaTaxAr2_Block_Total_Button extends Mage_Checkout_Block_Total_Default
 {
-    /**
-     * @return bool
-     * @throws \Mage_Core_Exception
-     */
-    public function isEnabled()
-    {
-        return $this->_getConfigHelper()->isEnabled();
-    }
-
-    /**
-     * @return \OnePica_AvaTaxAr2_Helper_Config
-     */
-    protected function _getConfigHelper()
-    {
-        return Mage::helper('avataxar2/config');
-    }
+    protected $_template = '';
 }

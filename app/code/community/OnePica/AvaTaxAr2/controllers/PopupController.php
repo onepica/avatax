@@ -1,0 +1,69 @@
+<?php
+/**
+ * OnePica_AvaTax
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0), a
+ * copy of which is available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
+ * @copyright  Copyright (c) 2009 One Pica, Inc.
+ * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ */
+
+/**
+ * popup controller
+ *
+ * @property \Mage_Adminhtml_Model_Session _sessionAdminhtml
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
+ */
+class OnePica_AvaTaxAr2_PopupController extends Mage_Core_Controller_Front_Action
+{
+    public function genCertAction()
+    {
+        $this->loadLayout();
+        $this->renderLayout();
+    }
+
+    /**
+     * Generates token with given customer number
+     */
+    public function getTokenAction()
+    {
+        /** @var OnePica_AvaTaxAr2_Model_Service_Ecom_Config $config */
+        $config = Mage::getModel('avataxar2/service_ecom_config');
+        $client = $config->getClient();
+
+        $responseData = array();
+
+        try {
+            $customerNumber = $this->getRequest()->getPost('customerNumber');
+            if (!$customerNumber) {
+                Mage::throwException($this->__('Customer number is not set'));
+            }
+
+            $response = $client->getToken($customerNumber);
+            $responseData['token'] = $response->token;
+            $responseData['success'] = true;
+        } catch (Exception $e) {
+            $responseData['message'] = $e->getMessage();
+            $responseData['success'] = false;
+        }
+
+        $this->getResponse()->setBody($this->_getCoreHelper()->jsonEncode($responseData));
+    }
+
+    /**
+     * @return \Mage_Core_Helper_Data
+     */
+    protected function _getCoreHelper()
+    {
+        return Mage::helper('core');
+    }
+}
