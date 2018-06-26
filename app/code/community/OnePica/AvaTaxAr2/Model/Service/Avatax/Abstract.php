@@ -16,6 +16,7 @@
  */
 
 use Avalara\AvaTaxRestV2\SeverityLevel;
+
 /**
  * Avatax service abstract model
  *
@@ -29,6 +30,21 @@ use Avalara\AvaTaxRestV2\SeverityLevel;
  */
 abstract class OnePica_AvaTaxAr2_Model_Service_Avatax_Abstract extends Varien_Object
 {
+    /** @var null|string $_include */
+    protected $_include = null;
+
+    /** @var null|string $_filter */
+    protected $_filter = null;
+
+    /** @var null|string $_top */
+    protected $_top = null;
+
+    /** @var null|string $_skip */
+    protected $_skip = null;
+
+    /** @var null|string $_orderBy */
+    protected $_orderBy = null;
+
     /**
      * Logs a debug message
      *
@@ -78,20 +94,21 @@ abstract class OnePica_AvaTaxAr2_Model_Service_Avatax_Abstract extends Varien_Ob
         $quoteAddressId = $quoteData ? $quoteData->getQuoteAddressId() : null;
 
 //        if (in_array($type, $this->_getHelper()->getLogType($storeId))) {
-            Mage::getModel('avatax_records/log')
-                ->setStoreId($storeId)
-                ->setLevel($result->getResultCode())
-                ->setType($type)
-                ->setRequest(print_r($request, true))
-                ->setResult(print_r($result, true))
-                ->setAdditional($additional)
-                ->setSoapRequest($soapRequest)
-                ->setSoapRequestHeaders($soapRequestHeaders)
-                ->setSoapResult($soapResponse)
-                ->setSoapResultHeaders($soapResponseHeaders)
-                ->setQuoteId($quoteId)
-                ->setQuoteAddressId($quoteAddressId)
-                ->save();
+        Mage::getModel('avatax_records/log')
+            ->setStoreId($storeId)
+            ->setLevel($result->getResultCode())
+            ->setType($type)
+            ->setRequest(print_r($request, true))
+            ->setResult(print_r($result, true))
+            ->setAdditional($additional)
+            ->setSoapRequest($soapRequest)
+            ->setSoapRequestHeaders($soapRequestHeaders)
+            ->setSoapResult($soapResponse)
+            ->setSoapResultHeaders($soapResponseHeaders)
+            ->setQuoteId($quoteId)
+            ->setQuoteAddressId($quoteAddressId)
+            ->save();
+
 //        }
 
         return $this;
@@ -120,5 +137,120 @@ abstract class OnePica_AvaTaxAr2_Model_Service_Avatax_Abstract extends Varien_Ob
         $this->_request->setCompanyCode($config->getCompanyCode($storeId));
 
         return $this;
+    }
+
+    /**
+     * @param \stdClass|\Avalara\AvaTaxRestV2\FetchResult $response
+     * @return Varien_Data_Collection
+     * @throws \Mage_Core_Exception
+     * @throws \Exception
+     */
+    public function validateResponse($response)
+    {
+        if (is_object($response) && isset($response->error)) {
+            if (isset($response->error->details[0]) && is_object($response->error->details[0])) {
+                $message = $response->error->details[0]->message . ": " . $response->error->details[0]->description;
+                Mage::throwException($message);
+            }
+
+            Mage::throwException($response->error->message);
+        }
+
+        $items = array();
+
+        if (is_object($response) && isset($response->value)) {
+            $items = (array)$response->value;
+        }
+
+        $itemsCollection = new Varien_Data_Collection();
+
+        foreach ($items as $item) {
+            $collectionItem = new Varien_Object();
+            $collectionItem->setData((array)$item);
+
+            $itemsCollection->addItem($collectionItem);
+        }
+
+        return $itemsCollection;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getInclude()
+    {
+        return $this->_include;
+    }
+
+    /**
+     * @param null|string $include
+     */
+    public function setInclude($include)
+    {
+        $this->_include = $include;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getFilter()
+    {
+        return $this->_filter;
+    }
+
+    /**
+     * @param null|string $filter
+     */
+    public function setFilter($filter)
+    {
+        $this->_filter = $filter;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getTop()
+    {
+        return $this->_top;
+    }
+
+    /**
+     * @param null|string $top
+     */
+    public function setTop($top)
+    {
+        $this->_top = $top;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getSkip()
+    {
+        return $this->_skip;
+    }
+
+    /**
+     * @param null|string $skip
+     */
+    public function setSkip($skip)
+    {
+        $this->_skip = $skip;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getOrderBy()
+    {
+        return $this->_orderBy;
+    }
+
+    /**
+     * @param null|string $orderBy
+     */
+    public function setOrderBy($orderBy)
+    {
+        $this->_orderBy = $orderBy;
     }
 }

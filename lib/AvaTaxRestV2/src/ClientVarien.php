@@ -128,6 +128,7 @@ class AvaTaxClientBase
             /** @var \Zend_Uri $uri */
             $uri = $this->client->getUri();
             $uri->setPath($apiUriPath);
+            $uri->setQuery($params['query']);
 
             $this->client->setConfig($params);
             if ($method == 'POST' && isset($params['body'])) {

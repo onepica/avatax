@@ -18,6 +18,12 @@
 -->
 <layout>
     <adminhtml_customer_edit>
+        <reference name="head">
+            <action method="addJs">
+                <script>avatax/main.js</script>
+            </action>
+        </reference>
+
         <reference name="customer_edit_tabs">
             <action method="addTab">
                 <name>avataxar2_exemptions</name>
@@ -25,4 +31,10 @@
             </action>
         </reference>
     </adminhtml_customer_edit>
+
+    <adminhtml_avataxar2_grid_documents>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="avataxar2/adminhtml_customer_documents_grid" name="admin.avataxar2.documents.grid" />
+        </block>
+    </adminhtml_avataxar2_grid_documents>
 </layout>

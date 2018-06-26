@@ -36,4 +36,16 @@ class OnePica_AvaTaxAr2_Model_Records_Document extends Mage_Core_Model_Abstract
         parent::_construct();
         $this->_init('avataxar2_records/document');
     }
+
+    /**
+     * @return \OnePica_AvaTaxAr2_Model_Records_RestV2_Document_Collection
+     * @throws \Exception
+     */
+    public function getCollection()
+    {
+        /** @var \OnePica_AvaTaxAr2_Model_Records_RestV2_Document_Collection $collection */
+        $collection = Mage::getModel('avataxar2/records_restV2_document_collection');
+
+        return $collection;
+    }
 }
