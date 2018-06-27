@@ -27,12 +27,4 @@ class OnePica_AvaTaxAr2_Block_Total_Button extends Mage_Checkout_Block_Total_Def
     {
         return $this->getUrl('avataxcert/popup/genCert');
     }
-
-    /**
-     * @return string
-     */
-    public function getPopupTitle()
-    {
-        return $this->__('Create Exempt Certificate');
-    }
 }

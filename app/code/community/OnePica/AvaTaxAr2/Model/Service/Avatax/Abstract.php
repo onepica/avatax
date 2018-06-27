@@ -141,7 +141,7 @@ abstract class OnePica_AvaTaxAr2_Model_Service_Avatax_Abstract extends Varien_Ob
 
     /**
      * @param \stdClass|\Avalara\AvaTaxRestV2\FetchResult $response
-     * @return Varien_Data_Collection
+     * @return \Varien_Data_Collection
      * @throws \Mage_Core_Exception
      * @throws \Exception
      */

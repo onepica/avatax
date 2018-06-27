@@ -79,3 +79,31 @@ AvaTaxCert.showPopup = function (url, title) {
     });
     win.showCenter(true);
 };
+
+AvaTaxCert.delete = function (certId, customerId, url, jsObject) {
+    new Ajax.Request(url, {
+        method: "POST",
+        parameters: {
+            certId: certId,
+            customerId: customerId
+        },
+        requestHeaders: {Accept: "application/json"},
+        onSuccess: function (transport) {
+            try {
+                if (transport.responseText) {
+                    var response = transport.responseText.evalJSON(true);
+
+                    AvaTax._general.removeMessages();
+                    if (response.success) {
+                        AvaTax._general.showMessage(response.message, "success");
+                    } else {
+                        AvaTax._general.showMessage(response.message, "error");
+                    }
+                    jsObject.doFilter();
+                }
+            } catch (e) {
+                console.log(e);
+            }
+        }.bind(this)
+    });
+};
