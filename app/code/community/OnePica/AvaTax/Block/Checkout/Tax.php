@@ -50,7 +50,7 @@ class OnePica_AvaTax_Block_Checkout_Tax extends Mage_Tax_Block_Checkout_Tax
      */
     public function getTaxAmount()
     {
-        return $this->getTotal()->getValue() - $this->getLandedCostAmount();
+        return $this->getTotal()->getValue() - $this->getLandedCostAmount() - $this->getFixedTaxAmount();
     }
 
     /**
@@ -82,5 +82,44 @@ class OnePica_AvaTax_Block_Checkout_Tax extends Mage_Tax_Block_Checkout_Tax
     protected function _getLandedCostHelper()
     {
         return Mage::helper('avatax/landedCost');
+    }
+
+
+    /**
+     * Show Fixed Tax block or no
+     *
+     * @return bool
+     * @throws \Varien_Exception
+     */
+    public function showFixedTaxBlock()
+    {
+        return $this->getFixedTaxAmount() != 0;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFixedTaxTitle()
+    {
+        return $this->__('Fixed Tax');
+    }
+
+    /**
+     * @return float|null
+     * @throws \Varien_Exception
+     */
+    public function getFixedTaxAmount()
+    {
+        return (float)$this->getTotal()->getFixedTaxAmount();
+    }
+
+    /**
+     * Returns the AvaTax helper.
+     *
+     * @return OnePica_AvaTax_Helper_FixedTax
+     */
+    protected function _getFixedTaxHelper()
+    {
+        return Mage::helper('avatax/fixedTax');
     }
 }

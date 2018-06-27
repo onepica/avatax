@@ -269,6 +269,17 @@
                             <show_in_store>1</show_in_store>
                             <validate>required-entry</validate>
                         </shipping_tax_code>
+                        <fied_tax_subtypes translate="label">
+                            <label>Fixed Tax Types</label>
+                            <comment><![CDATA[
+                                Separated by comma.
+                            ]]></comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>214</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </fied_tax_subtypes>
                         <gw_order_sku translate="label comment">
                             <label>Gift Wrap Order Sku</label>
                             <comment>Required. The sku sent to denote gift wrap order costs.</comment>
