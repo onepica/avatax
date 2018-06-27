@@ -252,6 +252,26 @@ class OnePica_AvaTax_Model_Action_Calculator extends OnePica_AvaTax_Model_Action
     }
 
     /**
+     * Estimates fixed tax amount rate for one item.
+     *
+     * @param Mage_Sales_Model_Quote_Item $item
+     * @return int
+     */
+    public function getItemFixedTaxAmount($item)
+    {
+        if ($this->isProductCalculated($item)) {
+            return 0;
+        } else {
+            $id = $item->getId();
+            $ratesData = $this->_getRates();
+
+            return isset($ratesData['items'][$id]['fixed_tax_amount'])
+                ? $ratesData['items'][$id]['fixed_tax_amount']
+                : 0;
+        }
+    }
+
+    /**
      * Return tax summary of item
      *
      * @param Mage_Sales_Model_Quote_Item $item

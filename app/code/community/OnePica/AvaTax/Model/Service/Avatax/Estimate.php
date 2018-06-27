@@ -152,6 +152,12 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
                 )
             );
             $result = $this->_send($quote->getStoreId(), $quoteData);
+//            $ser = serialize($result);
+//            file_put_contents("c:/log/fixed/response.s", $ser);
+//
+//            $loadedSer = file_get_contents('c:/log/fixed/good/response.s');
+//            $result = unserialize($loadedSer);
+
             $this->_rates[$requestKey] = array(
                 'timestamp'  => $this->_getDateModel()->timestamp(),
                 'address_id' => $address->getId(),
@@ -188,6 +194,17 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
                         /* request level */
                         $landedCostAmt = $this->_rates[$requestKey]['landed_cost_amount'] + $landedCostLine->getTax();
                         $this->_rates[$requestKey]['landed_cost_amount'] = $landedCostAmt;;
+                    }
+
+                    {
+                        $fixedTaxLine = $this->_collectFixedTaxLine($ctl);
+                        /* line level */
+                        $this->_rates[$requestKey][$code][$id]['fixed_tax_amount'] = $fixedTaxLine->getTax();
+                        $this->_rates[$requestKey][$code][$id]['fixed_tax_items'] = $fixedTaxLine->getTaxDetails();
+
+                        /* request level */
+                        $fixedTaxAmt = $this->_rates[$requestKey]['fixed_tax_amount'] + $fixedTaxLine->getTax();
+                        $this->_rates[$requestKey]['fixed_tax_amount'] = $fixedTaxAmt;
                     }
                 }
 
@@ -239,6 +256,40 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         }
 
         return new Varien_Object($landedCostTaxLine);
+    }
+
+    /**
+     * @param \TaxLine $taxLine
+     * @return \Varien_Object
+     */
+    protected function _collectFixedTaxLine($taxLine)
+    {
+        $fixedTaxLine = array(
+            'no'                => $taxLine->getNo(),
+            'tax_code'          => $taxLine->getTaxCode(),
+            'taxability'        => $taxLine->getTaxability(),
+            'boundary_level'    => $taxLine->getBoundaryLevel(),
+            'reporting_date'    => $taxLine->getReportingDate(),
+            'accounting_method' => $taxLine->getAccountingMethod(),
+            'tax_included'      => $taxLine->getTaxIncluded(),
+            'exempt_cert_id'    => $taxLine->getExemptCertId(),
+            'exemption'         => 0,
+            'taxable'           => 0,
+            'tax'               => 0,
+            'tax_details'       => array(),
+        );
+
+        /** @var \TaxDetail $taxDetail */
+        foreach ($taxLine->getTaxDetails() as $taxDetail) {
+            if ($this->_getFixedTaxHelper()->isFixedTax($taxDetail)) {
+                $fixedTaxLine['tax_details'][] = $taxDetail;
+                $fixedTaxLine['exemption'] = $fixedTaxLine['exemption'] + $taxDetail->getExemption();
+                $fixedTaxLine['taxable'] = $fixedTaxLine['taxable'] + $taxDetail->getTaxable();
+                $fixedTaxLine['tax'] = $fixedTaxLine['tax'] + $taxDetail->getTax();
+            }
+        }
+
+        return new Varien_Object($fixedTaxLine);
     }
 
     /**
