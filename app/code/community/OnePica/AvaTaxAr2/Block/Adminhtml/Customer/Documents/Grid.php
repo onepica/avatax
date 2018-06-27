@@ -46,6 +46,48 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents_Grid extends Mage_Adm
     }
 
     /**
+     * @return \Mage_Core_Block_Abstract
+     */
+    protected function _prepareLayout()
+    {
+        $url = $this->getUrl('avataxcert/popup/genCert', array('customerNumber' => $this->_getCustomerNumber()));
+        $this->setChild(
+            'add_cert_button',
+            $this->getLayout()
+                 ->createBlock('adminhtml/widget_button')
+                 ->setData(
+                     array(
+                         'label'   => $this->__('New Certificate'),
+                         'onclick' => 'AvaTaxCert.showPopup(\'' . $url . '\', \'' .
+                             $this->__('Create Exempt Certificate') . '\')',
+                         'class'   => 'add'
+                     )
+                 )
+        );
+
+        return parent::_prepareLayout();
+    }
+
+    /**
+     * @return string
+     */
+    public function getMainButtonsHtml()
+    {
+        $html = parent::getMainButtonsHtml();
+        $html .= $this->getNewCertificateButtonHtml();
+
+        return $html;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNewCertificateButtonHtml()
+    {
+        return $this->getChildHtml('add_cert_button');
+    }
+
+    /**
      * Grid url getter
      *
      * @deprecated after 1.3.2.3 Use getAbsoluteGridUrl() method instead
@@ -65,20 +107,19 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents_Grid extends Mage_Adm
     protected function _prepareCollection()
     {
         try {
-            $exempt = $this->_getCustomer()->getData(OnePica_AvaTaxAr2_Helper_Data::AVATAX_CUSTOMER_EXEMPTION_NUMBER);
-
             /** @var OnePica_AvaTaxAr2_Model_Records_RestV2_Document_Collection $collection */
             $collection = Mage::getModel('avataxar2_records/document')->getCollection();
 
-            $collection->addCustomerFilter($exempt);
+            $collection->addCustomerFilter($this->_getCustomerNumber());
 
             $this->setCollection($collection);
+            parent::_prepareCollection();
         } catch (Exception $exception) {
             $session = $this->_getAdminhtmlSession();
             $session->addError($exception->getMessage());
         }
 
-        return parent::_prepareCollection();
+        return $this;
     }
 
     /**
@@ -174,7 +215,7 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents_Grid extends Mage_Adm
                 'actions'  => array(
                     array(
                         'caption' => $this->__('Revoke'),
-                        'onClick' => 'return AvaTax._certificate.delete(' . implode(', ', $actionParams) . ')',
+                        'onClick' => 'return AvaTaxCert.delete(' . implode(', ', $actionParams) . ')',
                         'url'     => '#'
                     ),
                 ),
@@ -219,6 +260,14 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents_Grid extends Mage_Adm
     protected function _getCustomer()
     {
         return Mage::registry('current_customer');
+    }
+
+    /**
+     * @return string
+     */
+    protected function _getCustomerNumber()
+    {
+        return $this->_getCustomer()->getData(OnePica_AvaTaxAr2_Helper_Data::AVATAX_CUSTOMER_EXEMPTION_NUMBER);
     }
 
     /**

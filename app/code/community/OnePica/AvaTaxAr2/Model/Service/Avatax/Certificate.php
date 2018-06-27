@@ -46,6 +46,12 @@ class OnePica_AvaTaxAr2_Model_Service_Avatax_Certificate extends OnePica_AvaTaxA
             return $this->_allCustomerCertificates;
         }
 
+        /*
+         * we need to set empty collection because of validation exception when something is wrong
+         * so _allCustomerCertificates is not set and we try to load collection from service again and again
+         */
+        $this->_allCustomerCertificates = new Varien_Data_Collection();
+
         $client = $this->_getServiceConfig()->getClient($store);
 
         $response = $client->listCertificatesForCustomer(

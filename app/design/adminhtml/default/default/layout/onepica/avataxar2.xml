@@ -23,7 +23,7 @@
                 <script>avatax/main.js</script>
             </action>
         </reference>
-
+        <update handle="avataxar2_cert_additional_scripts" />
         <reference name="customer_edit_tabs">
             <action method="addTab">
                 <name>avataxar2_exemptions</name>
@@ -37,4 +37,30 @@
             <block type="avataxar2/adminhtml_customer_documents_grid" name="admin.avataxar2.documents.grid" />
         </block>
     </adminhtml_avataxar2_grid_documents>
+
+    <!-- Cert additional scripts -->
+    <avataxar2_cert_additional_scripts>
+        <reference name="head">
+            <action method="addItem" ifconfig="tax/avatax_document_management/action">
+                <type>js</type>
+                <name>avatax/certcapture.js</name>
+                <params />
+            </action>
+            <action method="addItem" ifconfig="tax/avatax_document_management/action">
+                <type>js_css</type>
+                <name>avatax/themes/certcapture.css</name>
+                <params />
+            </action>
+            <action method="addItem" ifconfig="tax/avatax_document_management/action">
+                <type>js</type>
+                <name>prototype/window.js</name>
+                <params />
+            </action>
+            <action method="addItem" ifconfig="tax/avatax_document_management/action">
+                <type>js_css</type>
+                <name>prototype/windows/themes/default.css</name>
+                <params />
+            </action>
+        </reference>
+    </avataxar2_cert_additional_scripts>
 </layout>
