@@ -111,4 +111,16 @@
     </adminhtml_avatax_grid_agreement>
     <!-- Landed Cost feature END -->
 
+    <!-- Fixed Tax feature -->
+    <avatax_fixed_tax_add_order_total>
+        <reference name="order_totals">
+            <block type="avatax/sales_order_totals_fixedTax" name="avatax_fixed_tax" />
+        </reference>
+    </avatax_fixed_tax_add_order_total>
+
+    <adminhtml_sales_order_view>
+        <update handle="avatax_fixed_tax_add_order_total" />
+    </adminhtml_sales_order_view>
+    <!-- Fixed Tax feature -->
+
 </layout>

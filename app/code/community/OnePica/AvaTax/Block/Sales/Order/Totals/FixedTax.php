@@ -36,7 +36,7 @@ class OnePica_AvaTax_Block_Sales_Order_Totals_FixedTax extends Mage_Core_Block_A
      */
     public function initTotals()
     {
-        if ((float)$this->getSource()->getAvataxLandedCostImportDutiesAmount() == 0) {
+        if ((float)$this->getSource()->getAvataxFixedTaxAmount() == 0) {
             return $this;
         }
 
@@ -44,7 +44,7 @@ class OnePica_AvaTax_Block_Sales_Order_Totals_FixedTax extends Mage_Core_Block_A
             array(
                 'code'  => 'avatax_fixed_tax_amount',
                 'field' => 'avatax_fixed_tax_amount',
-                'value' => $this->getSource()->getAvataxLandedCostImportDutiesAmount(),
+                'value' => $this->getSource()->getAvataxFixedTaxAmount(),
                 'label' => $this->__('Fixed Tax')
             )
         );
