@@ -380,17 +380,20 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         $result = array();
 
         foreach ($taxDetailItems as $taxDetail) {
-            $resultKey = $taxDetail->getTaxName() . " " . $taxDetail->getJurisCode();
+            $taxName = $this->_getLandedCostHelper()->isLandedCostTax($taxDetail)
+                ? $taxDetail->getTaxSubTypeId()
+                : $taxDetail->getTaxName();
+            $rate = $this->_getLandedCostHelper()->isLandedCostTax($taxDetail) ? null : $taxDetail->getRate() * 100;
+
+            $resultKey = $taxName . " " . $taxDetail->getJurisCode();
             if (array_key_exists($resultKey, $result)) {
                 $amt = $result[$resultKey]['amt'] + $taxDetail->getTax();
             } else {
                 $amt = $taxDetail->getTax();
             }
 
-            $rate = $this->_getLandedCostHelper()->isLandedCostTax($taxDetail) ? null : $taxDetail->getRate() * 100;
-
             $result[$resultKey] = array(
-                'name'               => $taxDetail->getTaxName(),
+                'name'               => $taxName,
                 'rate'               => $rate,
                 'amt'                => $amt,
                 'avatax_tax_type'    => $taxDetail->getTaxType(),
