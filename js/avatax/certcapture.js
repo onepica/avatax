@@ -37,7 +37,8 @@ AvaTaxCert.initApi = function (tokenUrl) {
         onSuccess: function (transport) {
             try {
                 if (transport.responseText) {
-                    var response = transport.responseText.evalJSON(true);
+                    var response = transport.responseText.evalJSON(true),
+                        form = $("avatax_certcapture_form_container");
                     if (response.success) {
                         GenCert.init(form_element, {
                             token: response.token,
@@ -53,6 +54,10 @@ AvaTaxCert.initApi = function (tokenUrl) {
 
                         GenCert.show();
                         $("avatax_certcapture_form_submit").hide();
+
+                        form.select("input").forEach(function (item, i) {
+                            item.disable();
+                        });
                     } else {
                         console.log(response.message);
                     }
