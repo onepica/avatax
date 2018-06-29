@@ -18,14 +18,13 @@
     <div id="avatax_certcapture_form_parent" style="display:none;"></div>
 
     <div class="buttons-set">
-        <button class="button2" onclick='window.parent.Windows.close("avatax_certcapture", event)'>
+        <button class="button2" id="avatax_certcapture_form_close" data-close-text="<?php echo $this->__('Close'); ?>"
+                onclick='window.parent.Windows.close("avatax_certcapture", event)'>
             <span><?php echo $this->__('Cancel'); ?></span>
         </button>
 
-        <button type="submit" form="avatax_certcapture_form_container" id="avatax_certcapture_form_submit"
-                title="<?php echo $this->__('Next step'); ?>"
-                value="<?php echo $this->__('Next step'); ?>"
-                class="button">
+        <button class="button" type="submit" id="avatax_certcapture_form_submit"
+                form="avatax_certcapture_form_container">
             <span><?php echo $this->__('Next step'); ?></span>
         </button>
     </div>
