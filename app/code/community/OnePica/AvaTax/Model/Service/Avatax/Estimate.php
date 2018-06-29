@@ -380,10 +380,13 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         $result = array();
 
         foreach ($taxDetailItems as $taxDetail) {
-            $taxName = $this->_getLandedCostHelper()->isLandedCostTax($taxDetail)
-                ? $taxDetail->getTaxSubTypeId()
-                : $taxDetail->getTaxName();
-            $rate = $this->_getLandedCostHelper()->isLandedCostTax($taxDetail) ? null : $taxDetail->getRate() * 100;
+            $taxName = $taxDetail->getTaxName();
+            $rate = $taxDetail->getRate() * 100;
+
+            if ($this->_getLandedCostHelper()->isLandedCostTax($taxDetail)) {
+                $taxName = $taxDetail->getTaxSubTypeId();
+                $rate = null;
+            }
 
             $resultKey = $taxName . " " . $taxDetail->getJurisCode();
             if (array_key_exists($resultKey, $result)) {
