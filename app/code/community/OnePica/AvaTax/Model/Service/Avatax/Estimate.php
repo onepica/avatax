@@ -159,11 +159,13 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
 //            $result = unserialize($loadedSer);
 
             $this->_rates[$requestKey] = array(
-                'timestamp'  => $this->_getDateModel()->timestamp(),
-                'address_id' => $address->getId(),
-                'summary'    => array(),
-                'items'      => array(),
-                'gw_items'   => array()
+                'timestamp'          => $this->_getDateModel()->timestamp(),
+                'address_id'         => $address->getId(),
+                'summary'            => array(),
+                'items'              => array(),
+                'gw_items'           => array(),
+                'landed_cost_amount' => null,
+                'fixed_tax_amount'   => null
             );
 
             //success
