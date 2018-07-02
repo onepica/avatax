@@ -61,7 +61,7 @@
                     <sort_order>20</sort_order>
                 </avatax_log>
                 <avatax_landedcost translate="title" module="avatax">
-                    <title>AvaTax Landed Cost</title>
+                    <title>AvaTax Customs Duty</title>
                     <sort_order>30</sort_order>
                     <children>
                         <avatax_hscode translate="title" module="avatax">

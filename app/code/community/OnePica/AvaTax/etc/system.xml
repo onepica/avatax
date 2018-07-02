@@ -600,14 +600,14 @@
                     </fields>
                 </avatax>
                 <avatax_landed_cost translate="label" module="avatax">
-                    <label>AvaTax landed cost</label>
+                    <label>AvaTax Customs Duty Calculator</label>
                     <sort_order>1</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <fields>
                         <title_landed_cost translate="label">
-                            <label><![CDATA[<strong>Landed Cost</strong>]]></label>
+                            <label><![CDATA[<strong>Customs Duty Calculator</strong>]]></label>
                             <frontend_type>label</frontend_type>
                             <sort_order>1</sort_order>
                             <show_in_default>1</show_in_default>
@@ -636,7 +636,7 @@
 
                         <!-- Tax subtypes -->
                         <landed_cost_tax_subtypes translate="label comment">
-                            <label>Landed cost tax types</label>
+                            <label>Customs Duty tax types</label>
                             <comment><![CDATA[Separated by comma. For example:<br/><i>ImportDuty,ClearanceFee,CountervailingDuty</i>]]></comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>50</sort_order>
