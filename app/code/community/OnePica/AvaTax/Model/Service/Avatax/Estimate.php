@@ -152,11 +152,6 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
                 )
             );
             $result = $this->_send($quote->getStoreId(), $quoteData);
-//            $ser = serialize($result);
-//            file_put_contents("c:/log/fixed/response.s", $ser);
-//
-//            $loadedSer = file_get_contents('c:/log/fixed/good/response.s');
-//            $result = unserialize($loadedSer);
 
             $this->_rates[$requestKey] = array(
                 'timestamp'          => $this->_getDateModel()->timestamp(),
@@ -198,7 +193,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
                         $this->_rates[$requestKey]['landed_cost_amount'] = $landedCostAmt;;
                     }
 
-                    {
+                    if ($this->_getFixedTaxHelper()->isFixedTaxEnabled($quote->getStoreId())) {
                         $fixedTaxLine = $this->_collectFixedTaxLine($ctl);
                         /* line level */
                         $this->_rates[$requestKey][$code][$id]['fixed_tax_amount'] = $fixedTaxLine->getTax();

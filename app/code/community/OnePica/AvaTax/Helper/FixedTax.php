@@ -24,6 +24,19 @@ class OnePica_AvaTax_Helper_FixedTax extends Mage_Core_Helper_Abstract
     const XML_PATH_TO_AVATAX_FIXED_TAX_SUBTYPES = 'tax/avatax/field_tax_subtypes';
 
     /**
+     * Get if Fixed Tax is Enabled
+     *
+     * @param Mage_Core_Model_Store|int $store
+     * @return bool
+     */
+    public function isFixedTaxEnabled($store)
+    {
+        /** @var OnePica_AvaTax_Helper_LandedCost $helper */
+        $helper = Mage::helper('avatax/landedCost');
+        return $helper->isLandedCostEnabled($store);
+    }
+
+    /**
      * Get tax subtypes
      *
      * @param int|Mage_Core_Model_Store $store

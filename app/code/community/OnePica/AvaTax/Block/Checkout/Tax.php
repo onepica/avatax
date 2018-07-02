@@ -110,7 +110,11 @@ class OnePica_AvaTax_Block_Checkout_Tax extends Mage_Tax_Block_Checkout_Tax
      */
     public function getFixedTaxAmount()
     {
-        return (float)$this->getTotal()->getFixedTaxAmount();
+        if ($this->_getFixedTaxHelper()->isFixedTaxEnabled($this->getStore())) {
+            return (float)$this->getTotal()->getFixedTaxAmount();
+        }
+
+        return null;
     }
 
     /**
