@@ -43,7 +43,7 @@ class OnePica_AvaTax_Model_Observer_AdminSystemConfigSaveBefore extends OnePica_
                         if ($isLandedCostEnabled && $isPriceIncludeTax) {
                             throw new \OnePica_AvaTax_Exception(
                                 Mage::helper('avatax')->__(
-                                    'You can only use \'Excluding Tax\' calculation model for \'Catalog Prices\' when \'Landed Cost\' feature is enabled.'
+                                    'You can only use \'Excluding Tax\' calculation model for \'Catalog Prices\' when \'Customs Duty\' feature is enabled.'
                                 ));
                         }
                     }
