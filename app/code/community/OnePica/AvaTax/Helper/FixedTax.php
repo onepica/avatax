@@ -21,7 +21,7 @@
 class OnePica_AvaTax_Helper_FixedTax extends Mage_Core_Helper_Abstract
 {
     /** Landed cost tax subtypes */
-    const XML_PATH_TO_AVATAX_FIXED_TAX_SUBTYPES = 'tax/avatax/fied_tax_subtypes';
+    const XML_PATH_TO_AVATAX_FIXED_TAX_SUBTYPES = 'tax/avatax/field_tax_subtypes';
 
     /**
      * Get tax subtypes
