@@ -48,7 +48,7 @@
             </action>
             <action method="addItem" ifconfig="tax/avatax_document_management/action">
                 <type>js_css</type>
-                <name>avatax/themes/certcapture.css</name>
+                <name>avatax/themes/adminhtml/certcapture.css</name>
                 <params />
             </action>
             <action method="addItem" ifconfig="tax/avatax_document_management/action">
