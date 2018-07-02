@@ -964,6 +964,11 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
                 continue;
             }
 
+            /* We don't need to summarize the fixed tax rate */
+            if ($this->_getFixedTaxHelper()->isFixedTax($taxDetail)) {
+                continue;
+            }
+
             /* add taxDetail rate to line rate based on tax detail level */
             if ($config->getDetailLevel() == DetailLevel::$Tax) {
                 if ($taxDetail->getTax() != 0) {
