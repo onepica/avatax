@@ -4,3 +4,12 @@
 #avatax_certcapture_content.dialog_content {
     background-color: #fff;
 }
+.button.button-orange {
+    background: #fa641d;
+}
+.button.button-orange:hover {
+    background-color: #e65000;
+}
+#shopping-cart-totals-table .a-right > td {
+    padding: 10px 0 15px;
+}
