@@ -641,6 +641,9 @@
                             <frontend_type>text</frontend_type>
                             <sort_order>50</sort_order>
                             <show_in_default>1</show_in_default>
+                            <depends>
+                                <landed_cost_tax_subtypes_not_show_me>1</landed_cost_tax_subtypes_not_show_me>
+                            </depends>
                         </landed_cost_tax_subtypes>
                         <!-- -->
 
