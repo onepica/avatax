@@ -25,7 +25,6 @@ class OnePica_AvaTax_Block_Adminhtml_Sales_Order_Create_Totals_Tax
 
     /**
      * @return float|null
-     * @throws \Varien_Exception
      */
     public function getLandedCostAmount()
     {
@@ -57,12 +56,43 @@ class OnePica_AvaTax_Block_Adminhtml_Sales_Order_Create_Totals_Tax
     }
 
     /**
+     * @return float|null
+     */
+    public function getFixedTaxAmount()
+    {
+        if ($this->_getFixedTaxHelper()->isFixedTaxEnabled($this->getStore())) {
+            $amount = 0;
+            foreach ($this->getFixedTaxItems() as $landedCostItem) {
+                $amount += $landedCostItem['amount'];
+            }
+
+            return $amount;
+        }
+
+        return null;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFixedTaxItems()
+    {
+        $items = array();
+        foreach ($this->getTotal()->getFullInfo() as $info) {
+            if ($this->_getFixedTaxHelper()->isFixedTax($info)) {
+                $items[] = $info;
+            }
+        }
+
+        return $items;
+    }
+
+    /**
      * @return float
-     * @throws \Varien_Exception
      */
     public function getTaxAmount()
     {
-        return $this->getTotal()->getValue() - $this->getLandedCostAmount();
+        return $this->getTotal()->getValue() - $this->getLandedCostAmount() - $this->getFixedTaxAmount();
     }
 
     /**
@@ -71,6 +101,14 @@ class OnePica_AvaTax_Block_Adminhtml_Sales_Order_Create_Totals_Tax
     public function getLandedCostTitle()
     {
         return $this->__('Customs Duty and Import Tax');
+    }
+
+    /**
+     * @return string
+     */
+    public function getFixedTaxTitle()
+    {
+        return $this->__('Fixed Tax');
     }
 
     /**
@@ -94,5 +132,15 @@ class OnePica_AvaTax_Block_Adminhtml_Sales_Order_Create_Totals_Tax
     protected function _getLandedCostHelper()
     {
         return Mage::helper('avatax/landedCost');
+    }
+
+    /**
+     * Returns the AvaTax helper.
+     *
+     * @return \OnePica_AvaTax_Helper_FixedTax
+     */
+    protected function _getFixedTaxHelper()
+    {
+        return Mage::helper('avatax/fixedTax');
     }
 }
