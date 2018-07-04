@@ -46,9 +46,19 @@ AvaTaxCert.initApi = function (tokenUrl) {
                             onCertSuccess: function () {
                                 var closeButton = $("avatax_certcapture_form_close"),
                                     closeButtonText = closeButton.readAttribute("data-close-text"),
-                                    message = "Certificate id created successfully: " + GenCert.certificateIds;
+                                    message = "Certificate id created successfully: " + GenCert.certificateIds,
+                                    gencertIframeDoc = $("gencert_iframe").contentWindow.document,
+                                    gencertContainer = gencertIframeDoc.getElementById("certificate_id_container");
+
                                 closeButton.update("<span>" + closeButtonText + "</span>");
-                                console.log(message);
+                                if (gencertContainer) {
+                                    var gencertMessageDiv = gencertIframeDoc.createElement("div");
+                                    gencertMessageDiv.setAttribute("id", "certificate_id_message");
+                                    gencertMessageDiv.classList.add("layout-align-center-center");
+                                    gencertMessageDiv.classList.add("layout-row");
+                                    gencertMessageDiv.appendChild(document.createTextNode(message));
+                                    gencertContainer.insertAdjacentElement("afterEnd", gencertMessageDiv);
+                                }
                             },
                         });
 
