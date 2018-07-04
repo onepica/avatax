@@ -195,7 +195,7 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents_Grid extends Mage_Adm
             )
         );
 
-        $customerId = $this->_getCustomer()->getData(OnePica_AvaTaxAr2_Helper_Data::AVATAX_CUSTOMER_EXEMPTION_NUMBER);
+        $customerId = $this->_getCustomer()->getData(OnePica_AvaTaxAr2_Helper_Data::AVATAX_CUSTOMER_CODE);
 
         $actionParams = array(
             '\'$id\'',
@@ -239,7 +239,7 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents_Grid extends Mage_Adm
         $data = array(
             'customerId'   => $this->_getCustomer()->getId(),
             'customerCode' => $this->_getCustomer()->getData(
-                OnePica_AvaTaxAr2_Helper_Data::AVATAX_CUSTOMER_EXEMPTION_NUMBER
+                OnePica_AvaTaxAr2_Helper_Data::AVATAX_CUSTOMER_CODE
             ),
             'activeTab'    => $this->getRequest()->getParam('tab')
         );
@@ -267,7 +267,7 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents_Grid extends Mage_Adm
      */
     protected function _getCustomerNumber()
     {
-        return $this->_getCustomer()->getData(OnePica_AvaTaxAr2_Helper_Data::AVATAX_CUSTOMER_EXEMPTION_NUMBER);
+        return $this->_getCustomer()->getData(OnePica_AvaTaxAr2_Helper_Data::AVATAX_CUSTOMER_CODE);
     }
 
     /**
