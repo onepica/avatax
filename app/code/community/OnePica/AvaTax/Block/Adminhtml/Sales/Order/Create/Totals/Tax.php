@@ -56,6 +56,17 @@ class OnePica_AvaTax_Block_Adminhtml_Sales_Order_Create_Totals_Tax
     }
 
     /**
+     * Show Fixed Tax block or no
+     *
+     * @return bool
+     * @throws \Varien_Exception
+     */
+    public function showFixedTaxBlock()
+    {
+        return $this->getFixedTaxAmount() != 0;
+    }
+
+    /**
      * @return float|null
      */
     public function getFixedTaxAmount()
