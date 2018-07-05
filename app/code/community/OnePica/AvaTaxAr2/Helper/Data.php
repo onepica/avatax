@@ -22,7 +22,7 @@
  */
 class OnePica_AvaTaxAr2_Helper_Data extends Mage_Core_Helper_Abstract
 {
-    const AVATAX_CUSTOMER_EXEMPTION_NUMBER = 'avatax_customer_exempt_number';
+    const AVATAX_CUSTOMER_CODE = 'avatax_customer_code';
 
     const AVATAX_CUSTOMER_DOCUMENTS_FORM_CODE = 'customer_avatax_exempt';
 

@@ -18,31 +18,14 @@
 $installer = Mage::getResourceModel('catalog/setup', 'catalog_setup');
 $installer->startSetup();
 
-$attributeCode = OnePica_AvaTaxAr2_Helper_Data::AVATAX_CUSTOMER_EXEMPTION_NUMBER;
+/** @var \Mage_Eav_Model_Entity_Attribute $attr */
+$attr = Mage::getModel('eav/config')->getAttribute('customer', OnePica_AvaTaxAr2_Helper_Data::AVATAX_CUSTOMER_CODE);
 
-/** @var \Mage_Eav_Model_Entity_Attribute $attribute */
-$attribute = Mage::getModel('eav/entity_attribute')->loadByCode('customer', $attributeCode);
-
-if (!$attribute->getId()) {
-    $installer->addAttribute(
-        'customer', $attributeCode, array(
-            'input'            => 'text',
-            'type'             => 'text',
-            'label'            => Mage::helper('avataxar2')->__('Exemption number'),
-            'default'          => null,
-            'backend'          => '',
-            'visible'          => true,
-            'required'         => false,
-            'visible_on_front' => true,
-            'position'         => 10,
-        )
-    );
-
-    // update options for attribute
-    $attribute = Mage::getModel('eav/config')->getAttribute('customer', $attributeCode);
-    $attribute->setData('used_in_forms', array(OnePica_AvaTaxAr2_Helper_Data::AVATAX_CUSTOMER_DOCUMENTS_FORM_CODE));
-    $attribute->setData('sort_order', 10);
-    $attribute->save();
+if ($attr->getId()) {
+    $attr->setData('used_in_forms', array(OnePica_AvaTaxAr2_Helper_Data::AVATAX_CUSTOMER_DOCUMENTS_FORM_CODE));
+    $attr->setData('sort_order', 10);
+    $attr->setData('frontend_label', Mage::helper('avataxar2')->__('Customer Number'));
+    $attr->save();
 }
 
 $installer->endSetup();
