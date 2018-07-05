@@ -72,7 +72,6 @@ AvaTaxCert.initApi = function (tokenUrl) {
 AvaTaxCert.showPopup = function (url, title) {
     win = new Window({
         title: title,
-        url: url,
         id: "avatax_certcapture",
         zIndex: 3000,
         destroyOnClose: true,
@@ -85,6 +84,7 @@ AvaTaxCert.showPopup = function (url, title) {
         draggable: false
     });
     win.showCenter(true);
+    win.setAjaxContent(url);
 };
 
 AvaTaxCert.delete = function (certId, customerId, url, jsObject) {
