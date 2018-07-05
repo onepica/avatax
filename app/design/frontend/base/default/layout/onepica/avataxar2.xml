@@ -40,6 +40,22 @@
         </reference>
     </avataxar2_popup_gencert>
 
+    <customer_account>
+        <reference name="customer_account_navigation">
+            <action method="addLink">
+                <name>avataxar2_documents_grid</name>
+                <path>avataxar2/documents/grid</path>
+                <label>AvaTax Documents</label>
+            </action>
+        </reference>
+    </customer_account>
+
+    <avataxar2_documents_grid>
+        <update handle="customer_account"/>
+        <reference name="my.account.wrapper">
+            <block type="avataxar2/documents_grid" name="avataxar2.documents.grid"/>
+        </reference>
+    </avataxar2_documents_grid>
 
     <!-- Cert additional scripts -->
     <avataxar2_cert_additional_scripts>
