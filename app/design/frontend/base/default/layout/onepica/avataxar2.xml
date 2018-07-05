@@ -41,6 +41,8 @@
                 <type>js_css</type>
                 <name>avatax/themes/certcapture.css</name>
             </action>
+            <action method="addJs"><script>lib/jquery/jquery-1.12.0.min.js</script></action>
+            <action method="addJs"><script>lib/jquery/noconflict.js</script></action>
             <action method="addItem" ifconfig="tax/avatax_document_management/action">
                 <type>js</type>
                 <name>prototype/window.js</name>
