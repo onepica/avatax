@@ -4,6 +4,8 @@
 #avatax_certcapture_content.dialog_content {
     background-color: #fff;
 }
+
+/* AvaTax Button on Cart Page and Checkout */
 .button.button-orange {
     background: #fa641d;
 }
@@ -12,4 +14,103 @@
 }
 #shopping-cart-totals-table .a-right > td {
     padding: 10px 0 15px;
+}
+@media (max-width: 766px) {
+    tr.a-right td.avatax-button.last {
+        width: 100%;
+    }
+    .button.button-orange {
+        width: 100%;
+    }
+}
+
+/* AvaTax Pop-up */
+
+#avatax_certcapture {
+    border: solid 1px #cccccc;
+    display: block;
+    position: absolute;
+    z-index: 200;
+    top: 40px;
+    right: 0;
+    width: 320px;
+    background: white;
+}
+#avatax_certcapture .top.table_window {
+    color: #50A4CF;
+    font-family: "Raleway", "Helvetica Neue", Verdana, Arial, sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+    line-height: 1.4;
+    padding: 5px;
+    text-align: center;
+    text-transform: uppercase;
+    margin-bottom: 0px;
+    background-color: #fff;
+}
+
+#avatax_certcapture .dialog_close {
+    position: relative;
+    width: 15px;
+    float: right;
+    display: block;
+    margin-right: 30px;
+    top: 17px;
+    color: #636363;
+    text-decoration: none;
+    font-weight: normal;
+    font-size: 25px;
+    background: transparent;
+}
+#avatax_certcapture .dialog_close:before {
+    content: '×';
+    display: block;
+    width: 15x;
+    height: 15px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    line-height: 15px;
+}
+#avatax_certcapture .dialog_sw,
+#avatax_certcapture .dialog_sw,
+#avatax_certcapture .dialog_sw,
+#avatax_certcapture .dialog_nw,
+#avatax_certcapture .dialog_n,
+#avatax_certcapture .dialog_ne,
+#avatax_certcapture .dialog_sw,
+#avatax_certcapture .dialog_s,
+#avatax_certcapture .dialog_se {
+    background: transparent;
+    width: auto;
+}
+#avatax_certcapture .dialog_w,
+#avatax_certcapture .dialog_e {
+    width: 0;
+}
+#avatax_certcapture .dialog_title {
+    color: #50A4CF;
+    font-family: "Raleway", "Helvetica Neue", Verdana, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1.4;
+    padding: 5px;
+    height: auto;
+    text-align: center;
+    text-transform: uppercase;
+    margin-bottom: 0px;
+}
+.avataxar2-popup-gencert .field:nth-child(2) {
+    margin-bottom: 20px;
+}
+
+@media (max-width: 766px) {
+    #avatax_certcapture,
+    #avatax_certcapture_content {
+        width: 100% !important;
+        height: 90vh !important;
+    }
+    #avatax_certcapture {
+        left: 0 !important;
+    }
 }
