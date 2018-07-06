@@ -1,15 +1,10 @@
-#avatax_certcapture_table_content.dialog_content {
-    background-color: #fff;
-}
-#avatax_certcapture_content.dialog_content {
-    background-color: #fff;
-}
-
 /* AvaTax Button on Cart Page and Checkout */
 .button.button-orange {
     background: #fa641d;
 }
-.button.button-orange:hover {
+.button.button-orange:hover,
+.button.button-orange:active,
+.button.button-orange:focus {
     background-color: #e65000;
 }
 #shopping-cart-totals-table .a-right > td {
@@ -24,8 +19,27 @@
     }
 }
 
-/* AvaTax Pop-up */
+/* AvaTax Pop-up on Store Front */
 
+#avatax_certcapture_table_content.dialog_content {
+    background-color: #fff;
+}
+#avatax_certcapture_content.dialog_content {
+    background-color: #fff;
+    min-height: 570px;
+    height: auto !important;
+}
+#avatax_certcapture_form_container {
+    display: block;
+    padding: 10px 20px;
+}
+#overlay_modal.overlay_dialog {
+    position: fixed !important;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
 #avatax_certcapture {
     border: solid 1px #cccccc;
     display: block;
@@ -88,6 +102,35 @@
 #avatax_certcapture .dialog_e {
     width: 0;
 }
+#avatax_certcapture_form_container .field {
+    margin-bottom: 15px;
+}
+#avatax_certcapture_form_container .field {
+    display: flex;
+    flex-direction: row;
+}
+#avatax_certcapture_form_container .field input {
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 280px;
+    height: 25px;
+    -webkit-appearance: none;
+    border-radius: 2px;
+    border: 1px solid silver;
+    background: #FFFFFF;
+    font-size: 14px;
+    font-family: "Helvetica Neue", Verdana, Arial, sans-serif;
+}
+#avatax_certcapture_form_container .field label {
+    color: #333 !important;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    width: 140px;
+    font-weight: normal !important;
+    position: relative;
+    line-height: 25px;
+}
+
 #avatax_certcapture .dialog_title {
     color: #50A4CF;
     font-family: "Raleway", "Helvetica Neue", Verdana, Arial, sans-serif;
@@ -112,5 +155,12 @@
     }
     #avatax_certcapture {
         left: 0 !important;
+    }
+    #avatax_certcapture_form_container .field {
+        flex-direction: column;
+    }
+    #avatax_certcapture_form_container .field input,
+    #avatax_certcapture_form_container .field label {
+        width: 100%;
     }
 }
