@@ -51,9 +51,9 @@
     </customer_account>
 
     <avataxar2_documents_grid>
-        <update handle="customer_account"/>
+        <update handle="customer_account" />
         <reference name="my.account.wrapper">
-            <block type="avataxar2/documents_grid" name="avataxar2.documents.grid"/>
+            <block type="avataxar2/documents_grid" name="avataxar2.documents.grid" template="onepica/avataxar2/documents/grid.phtml" />
         </reference>
     </avataxar2_documents_grid>
 
