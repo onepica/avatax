@@ -85,6 +85,6 @@ class OnePica_AvaTaxAr2_Block_Documents_Grid extends Mage_Core_Block_Template
      */
     public function getRevokeUrl($document)
     {
-        return $this->getUrl('*/*/*', array('document_id' => $document->getId()));
+        return $this->getUrl('*/*/delete', array('document_id' => $document->getId()));
     }
 }
