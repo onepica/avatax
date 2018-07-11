@@ -129,7 +129,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     {
         $this->_setTitle($this->__('AvaTax'))
              ->_setTitle($this->__('Customs Duty'))
-             ->_setTitle($this->__('AvaTax HS Codes'));
+             ->_setTitle($this->__('AvaTax HS Code Groups'));
 
         $this->loadLayout()
              ->_setActiveMenu('avatax/landedcost/avatax_hscode')
@@ -145,7 +145,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     {
         $this->_setTitle($this->__('AvaTax'))
              ->_setTitle($this->__('Customs Duty'))
-             ->_setTitle($this->__('AvaTax HS Code'));
+             ->_setTitle($this->__('AvaTax HS Code Group'));
 
         $hsCodeId = $this->getRequest()->getParam('id');
         $hsCodeModel = Mage::getModel('avatax_records/hsCode')->load($hsCodeId);
@@ -249,7 +249,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
         $hscodeIds = $this->getRequest()->getParam('hscode');
 
         if (!is_array($hscodeIds)) {
-            $this->getAdminhtmlSession()->addError(Mage::helper('adminhtml')->__('Please select  HS code(s).'));
+            $this->getAdminhtmlSession()->addError(Mage::helper('adminhtml')->__('Please select HS code(s).'));
         } else {
             try {
                 /** @var \Mage_Core_Model_Resource_Transaction $transaction */

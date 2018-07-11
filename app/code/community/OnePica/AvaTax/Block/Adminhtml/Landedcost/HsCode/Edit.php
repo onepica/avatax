@@ -16,7 +16,7 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_HsCode_Edit extends Mage_Adminht
         $this->_blockGroup = 'avatax';
         $this->_controller = 'adminhtml_landedcost_hsCode';
 
-        $this->_updateButton('save', 'label', $this->__('Save HS code'));
+        $this->_updateButton('save', 'label', $this->__('Save HS Code Group'));
         $this->_updateButton('delete', 'label', $this->__('Delete Item'));
         $this->_addButton(
             'save_and_edit_button',
@@ -57,9 +57,9 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_HsCode_Edit extends Mage_Adminht
     public function getHeaderText()
     {
         if (Mage::registry('hsCode_data') && Mage::registry('hsCode_data')->getId()) {
-            return $this->__("Edit Item '%s'", $this->escapeHtml(Mage::registry('hsCode_data')->getHsCode()));
+            return $this->__("Edit HS Code Group '%s'", $this->escapeHtml(Mage::registry('hsCode_data')->getHsCode()));
         } else {
-            return $this->__('Add Item');
+            return $this->__('Add HS Code Group');
         }
     }
 

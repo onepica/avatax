@@ -29,10 +29,10 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_HsCode
     {
         $this->_blockGroup = 'avatax';
         $this->_controller = 'adminhtml_landedcost_hsCode';
-        $this->_headerText = $this->__('HS codes');
+        $this->_headerText = $this->__('HS Code Groups');
 
         parent::__construct();
-        $this->_updateButton('add', 'label', $this->__('Add New HS code'));
+        $this->_updateButton('add', 'label', $this->__('Add New HS Code Group'));
     }
 
     /**
