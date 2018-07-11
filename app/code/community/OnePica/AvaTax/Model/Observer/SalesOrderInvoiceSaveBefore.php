@@ -52,7 +52,7 @@ class OnePica_AvaTax_Model_Observer_SalesOrderInvoiceSaveBefore extends OnePica_
             if ($isPartialInvoice) {
                 throw new \OnePica_AvaTax_Exception(
                     Mage::helper('avatax')
-                        ->__('You are not available to make partial invoice for orders that include landed cost taxes.')
+                        ->__('You are not available to make partial invoice for orders that include customs duty taxes.')
                 );
             }
         }

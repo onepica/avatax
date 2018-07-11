@@ -13,7 +13,7 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  * @copyright  Copyright (c) 2009 One Pica, Inc.
- * @license    http://opensource.org/licenses/osl-3.0.php Open Software License  (OSL 3.0)
+ * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 -->
 <config>
@@ -378,6 +378,12 @@
                 <base_avatax_landed_cost_import_duties_amount>
                     <to_order>*</to_order>
                 </base_avatax_landed_cost_import_duties_amount>
+                <avatax_fixed_tax_amount>
+                    <to_order>*</to_order>
+                </avatax_fixed_tax_amount>
+                <base_avatax_fixed_tax_amount>
+                    <to_order>*</to_order>
+                </base_avatax_fixed_tax_amount>
                 <avatax_collected_taxes>
                     <to_order>*</to_order>
                 </avatax_collected_taxes>
@@ -389,6 +395,12 @@
                 <base_avatax_landed_cost_import_duties_amount>
                     <to_order_item>*</to_order_item>
                 </base_avatax_landed_cost_import_duties_amount>
+                <avatax_fixed_tax_amount>
+                    <to_order_item>*</to_order_item>
+                </avatax_fixed_tax_amount>
+                <base_avatax_fixed_tax_amount>
+                    <to_order_item>*</to_order_item>
+                </base_avatax_fixed_tax_amount>
                 <avatax_collected_taxes>
                     <to_order_item>*</to_order_item>
                 </avatax_collected_taxes>
@@ -402,6 +414,14 @@
                     <to_invoice>*</to_invoice>
                     <to_cm>*</to_cm>
                 </base_avatax_landed_cost_import_duties_amount>
+                <avatax_fixed_tax_amount>
+                    <to_invoice>*</to_invoice>
+                    <to_cm>*</to_cm>
+                </avatax_fixed_tax_amount>
+                <base_avatax_fixed_tax_amount>
+                    <to_invoice>*</to_invoice>
+                    <to_cm>*</to_cm>
+                </base_avatax_fixed_tax_amount>
                 <avatax_collected_taxes>
                     <to_invoice>*</to_invoice>
                     <to_cm>*</to_cm>
@@ -416,6 +436,14 @@
                     <to_invoice_item>*</to_invoice_item>
                     <to_cm_item>*</to_cm_item>
                 </base_avatax_landed_cost_import_duties_amount>
+                <avatax_fixed_tax_amount>
+                    <to_invoice_item>*</to_invoice_item>
+                    <to_cm_item>*</to_cm_item>
+                </avatax_fixed_tax_amount>
+                <base_avatax_fixed_tax_amount>
+                    <to_invoice_item>*</to_invoice_item>
+                    <to_cm_item>*</to_cm_item>
+                </base_avatax_fixed_tax_amount>
                 <avatax_collected_taxes>
                     <to_invoice_item>*</to_invoice_item>
                     <to_cm_item>*</to_cm_item>

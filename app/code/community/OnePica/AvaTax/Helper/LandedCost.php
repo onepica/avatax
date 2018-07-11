@@ -23,7 +23,7 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
     /**
      *  Landed Cost Product Group Tab
      */
-    const AVATAX_PRODUCT_GROUP_LANDED_COST = 'AvaTax Landed Cost';
+    const AVATAX_PRODUCT_GROUP_LANDED_COST = 'AvaTax Customs Duty';
 
     /**
      *  HS Code product attribute

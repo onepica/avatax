@@ -152,12 +152,15 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
                 )
             );
             $result = $this->_send($quote->getStoreId(), $quoteData);
+
             $this->_rates[$requestKey] = array(
-                'timestamp'  => $this->_getDateModel()->timestamp(),
-                'address_id' => $address->getId(),
-                'summary'    => array(),
-                'items'      => array(),
-                'gw_items'   => array()
+                'timestamp'          => $this->_getDateModel()->timestamp(),
+                'address_id'         => $address->getId(),
+                'summary'            => array(),
+                'items'              => array(),
+                'gw_items'           => array(),
+                'landed_cost_amount' => null,
+                'fixed_tax_amount'   => null
             );
 
             //success
@@ -188,6 +191,17 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
                         /* request level */
                         $landedCostAmt = $this->_rates[$requestKey]['landed_cost_amount'] + $landedCostLine->getTax();
                         $this->_rates[$requestKey]['landed_cost_amount'] = $landedCostAmt;;
+                    }
+
+                    if ($this->_getFixedTaxHelper()->isFixedTaxEnabled($quote->getStoreId())) {
+                        $fixedTaxLine = $this->_collectFixedTaxLine($ctl);
+                        /* line level */
+                        $this->_rates[$requestKey][$code][$id]['fixed_tax_amount'] = $fixedTaxLine->getTax();
+                        $this->_rates[$requestKey][$code][$id]['fixed_tax_items'] = $fixedTaxLine->getTaxDetails();
+
+                        /* request level */
+                        $fixedTaxAmt = $this->_rates[$requestKey]['fixed_tax_amount'] + $fixedTaxLine->getTax();
+                        $this->_rates[$requestKey]['fixed_tax_amount'] = $fixedTaxAmt;
                     }
                 }
 
@@ -239,6 +253,40 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         }
 
         return new Varien_Object($landedCostTaxLine);
+    }
+
+    /**
+     * @param \TaxLine $taxLine
+     * @return \Varien_Object
+     */
+    protected function _collectFixedTaxLine($taxLine)
+    {
+        $fixedTaxLine = array(
+            'no'                => $taxLine->getNo(),
+            'tax_code'          => $taxLine->getTaxCode(),
+            'taxability'        => $taxLine->getTaxability(),
+            'boundary_level'    => $taxLine->getBoundaryLevel(),
+            'reporting_date'    => $taxLine->getReportingDate(),
+            'accounting_method' => $taxLine->getAccountingMethod(),
+            'tax_included'      => $taxLine->getTaxIncluded(),
+            'exempt_cert_id'    => $taxLine->getExemptCertId(),
+            'exemption'         => 0,
+            'taxable'           => 0,
+            'tax'               => 0,
+            'tax_details'       => array(),
+        );
+
+        /** @var \TaxDetail $taxDetail */
+        foreach ($taxLine->getTaxDetails() as $taxDetail) {
+            if ($this->_getFixedTaxHelper()->isFixedTax($taxDetail)) {
+                $fixedTaxLine['tax_details'][] = $taxDetail;
+                $fixedTaxLine['exemption'] = $fixedTaxLine['exemption'] + $taxDetail->getExemption();
+                $fixedTaxLine['taxable'] = $fixedTaxLine['taxable'] + $taxDetail->getTaxable();
+                $fixedTaxLine['tax'] = $fixedTaxLine['tax'] + $taxDetail->getTax();
+            }
+        }
+
+        return new Varien_Object($fixedTaxLine);
     }
 
     /**
@@ -916,6 +964,11 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         foreach ($line->getTaxDetails() as $taxDetail) {
             /* We don't need to summarize the landedcost rate */
             if ($this->_getLandedCostHelper()->isLandedCostTax($taxDetail)) {
+                continue;
+            }
+
+            /* We don't need to summarize the fixed tax rate */
+            if ($this->_getFixedTaxHelper()->isFixedTax($taxDetail)) {
                 continue;
             }
 
