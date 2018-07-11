@@ -20,22 +20,22 @@
 <?php $_htmlClass   = $this->getElement()->getClass() ?>
 <?php $_htmlName    = $this->getElement()->getName() ?>
 <?php $_readonly    = $this->getElement()->getReadonly() ?>
-<?php $_defaultUnitOfMeasurement = $this->getLandedCostHelper()->getDefaultUnitsOfMeasurement(); ?>
+<?php //$_defaultUnitOfMeasurement = $this->getLandedCostHelper()->getDefaultUnitsOfMeasurement(); ?>
 
 <tr>
     <td class="label"><?php echo $this->getElement()->getLabel() ?></td>
     <td colspan="10" class="grid tier avatax-unit-of-measurement">
-    <div class="default">
-        <span class="unit"><?php echo $this->getProduct()->getWeight()?></span>
-        <span class="unit-of-measurement"><?php echo $_defaultUnitOfMeasurement ? $_defaultUnitOfMeasurement->getDescription() : '';?></span>
-    </div>
-    <div>
-        <span>Accurate units:</span>
-    </div>
-    <div>
-        <i>Default unit above will be used when there are no accurate unit will be found</i>
-        <br/><i>for destination country during tax estimation.</i>
-    </div>
+<!--    <div class="default">-->
+<!--        <span class="unit">--><?php //echo $this->getProduct()->getWeight()?><!--</span>-->
+<!--        <span class="unit-of-measurement">--><?php //echo $_defaultUnitOfMeasurement ? $_defaultUnitOfMeasurement->getDescription() : '';?><!--</span>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--        <span>Accurate units:</span>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--        <i>Default unit above will be used when there are no accurate unit will be found</i>-->
+<!--        <br/><i>for destination country during tax estimation.</i>-->
+<!--    </div>-->
     <table cellspacing="0" class="data border" id="lcosts_table">
         <col width="100" />
         <col />
