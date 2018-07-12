@@ -29,6 +29,26 @@
         <block type="avataxar2/popup_form" name="root" template="onepica/avataxar2/popup/form.phtml" />
     </avataxar2_popup_gencert>
 
+    <customer_account>
+        <reference name="customer_account_navigation">
+            <action method="addLink">
+                <name>avataxar2_documents_grid</name>
+                <path>avataxar2/documents/grid</path>
+                <label>AvaTax Documents</label>
+            </action>
+        </reference>
+    </customer_account>
+
+    <avataxar2_documents_grid>
+        <update handle="customer_account" />
+        <update handle="avataxar2_cert_additional_scripts" />
+        <reference name="my.account.wrapper">
+            <block type="avataxar2/documents_grid" name="avataxar2.documents.grid" template="onepica/avataxar2/documents/grid.phtml">
+                <block type="avataxar2/documents_grid_form" name="avataxar2.documents.grid.form" template="onepica/avataxar2/documents/grid/form.phtml" />
+                <block type="avataxar2/documents_grid_button" name="avataxar2.documents.grid.button" template="onepica/avataxar2/documents/grid/button.phtml" />
+            </block>
+        </reference>
+    </avataxar2_documents_grid>
 
     <!-- Cert additional scripts -->
     <avataxar2_cert_additional_scripts>
