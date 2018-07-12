@@ -5,10 +5,19 @@
 <div class="page-title">
     <h1><?php echo $this->__('AvaTax Documents') ?></h1>
 </div>
-<?php echo $this->getChildHtml('avataxar2.documents.grid.form'); ?>
+<table class="data-table" id="avatax_certcapture_grid_header">
+    <col width="1"/>
+    <col width="1"/>
+    <tbody>
+    <tr>
+        <td><?php echo $this->getChildHtml('avataxar2.documents.grid.form'); ?></td>
+        <td><?php echo $this->getChildHtml('avataxar2.documents.grid.button'); ?></td>
+    </tr>
+    </tbody>
+</table>
 <?php echo $this->getPagerHtml(); ?>
 <?php if ($documents->getSize()): ?>
-    <table class="data-table orders" id="my-orders-table">
+    <table class="data-table" id="avatax_certcapture_grid">
         <col width="1"/>
         <col width="1"/>
         <col/>
@@ -47,7 +56,7 @@
         <?php endforeach; ?>
         </tbody>
     </table>
-    <script type="text/javascript">decorateTable('my-orders-table');</script>
+    <script type="text/javascript">decorateTable('avatax_certcapture_grid');</script>
     <?php echo $this->getPagerHtml(); ?>
 <?php else: ?>
     <p><?php echo $this->__('There is no any documents'); ?></p>
