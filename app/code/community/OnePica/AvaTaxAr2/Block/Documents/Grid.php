@@ -41,10 +41,15 @@ class OnePica_AvaTaxAr2_Block_Documents_Grid extends Mage_Core_Block_Template
     {
         parent::_prepareLayout();
 
-        $pager = $this->getLayout()->createBlock('page/html_pager', 'avataxar2.documents.grid.pager')
-                      ->setCollection($this->getCollection());
-        $this->setChild('pager', $pager);
-        $this->getCollection()->load();
+        try {
+            $pager = $this->getLayout()
+                          ->createBlock('page/html_pager', 'avataxar2.documents.grid.pager')
+                          ->setCollection($this->getCollection());
+            $this->setChild('pager', $pager);
+            $this->getCollection()->load();
+        } catch (Exception $exception) {
+            $this->_getCoreSession()->addError($exception->getMessage());
+        }
 
         return $this;
     }
@@ -55,7 +60,6 @@ class OnePica_AvaTaxAr2_Block_Documents_Grid extends Mage_Core_Block_Template
     public function getCollection()
     {
         if (!$this->_collection) {
-            $this->_collection = new Varien_Data_Collection();
             $this->_collection = Mage::getModel('avataxar2_records/document')->getCollection();
             $this->_collection->addCustomerFilter($this->getCustomerNumber());
         }
@@ -68,7 +72,7 @@ class OnePica_AvaTaxAr2_Block_Documents_Grid extends Mage_Core_Block_Template
      */
     public function getCustomerNumber()
     {
-        return 100;
+        return $this->getCustomer()->getData(OnePica_AvaTaxAr2_Helper_Data::AVATAX_CUSTOMER_CODE);
     }
 
     /**
@@ -86,5 +90,29 @@ class OnePica_AvaTaxAr2_Block_Documents_Grid extends Mage_Core_Block_Template
     public function getRevokeUrl($document)
     {
         return $this->getUrl('*/*/delete', array('document_id' => $document->getId()));
+    }
+
+    /**
+     * @return \Mage_Customer_Model_Customer
+     */
+    protected function getCustomer()
+    {
+        return $this->_getCustomerSession()->getCustomer();
+    }
+
+    /**
+     * @return \Mage_Customer_Model_Session
+     */
+    protected function _getCustomerSession()
+    {
+        return Mage::getSingleton('customer/session');
+    }
+
+    /**
+     * @return \Mage_Core_Model_Session
+     */
+    protected function _getCoreSession()
+    {
+        return Mage::getSingleton('core/session');
     }
 }

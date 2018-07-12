@@ -41,13 +41,33 @@ class OnePica_AvaTaxAr2_DocumentsController extends Mage_Core_Controller_Front_A
     {
         try {
             $docId = $this->getRequest()->getParam('document_id');
-            $customer = $this->_getSession()->getCustomer();
+            $customer = $this->_getCustomerSession()->getCustomer();
             $customerId = $customer->getData(OnePica_AvaTaxAr2_Helper_Data::AVATAX_CUSTOMER_CODE);
 
             $this->_getServiceCertificate()->deleteCertificate($docId, $customerId);
             $this->_getCoreSession()->addSuccess($this->__('Certificate with ID "%s" deleted successfully', $docId));
         } catch (Exception $exception) {
-            $this->_getCoreSession()->addError($exception);
+            $this->_getCoreSession()->addError($exception->getMessage());
+        }
+
+        $this->_redirect('*/*/grid');
+    }
+
+    public function postFormAction()
+    {
+        try {
+            $customerNumber = $this->getRequest()->getParam('customer_number');
+            if (!$customerNumber) {
+                Mage::throwException('Customer Number not set');
+            }
+
+            $customer = $this->_getCustomerSession()->getCustomer();
+            $customer->setData(OnePica_AvaTaxAr2_Helper_Data::AVATAX_CUSTOMER_CODE, $customerNumber);
+            $customer->save();
+
+            $this->_getCoreSession()->addSuccess($this->__('Customer number saved successfully'));
+        } catch (Exception $exception) {
+            $this->_getCoreSession()->addError($exception->getMessage());
         }
 
         $this->_redirect('*/*/grid');
@@ -64,7 +84,7 @@ class OnePica_AvaTaxAr2_DocumentsController extends Mage_Core_Controller_Front_A
     /**
      * @return \Mage_Customer_Model_Session
      */
-    protected function _getSession()
+    protected function _getCustomerSession()
     {
         return Mage::getSingleton('customer/session');
     }

@@ -27,12 +27,14 @@
 
     <avataxar2_popup_gencert>
         <reference name="root">
-            <remove name="header"/>
-            <remove name="footer"/>
-            <remove name="global_notices"/>
-            <remove name="global_messages"/>
-            <remove name="messages"/>
-            <action method="setTemplate"><template>page/1column.phtml</template></action>
+            <remove name="header" />
+            <remove name="footer" />
+            <remove name="global_notices" />
+            <remove name="global_messages" />
+            <remove name="messages" />
+            <action method="setTemplate">
+                <template>page/1column.phtml</template>
+            </action>
         </reference>
         <update handle="avataxar2_cert_additional_scripts" />
         <reference name="content">
@@ -53,7 +55,9 @@
     <avataxar2_documents_grid>
         <update handle="customer_account" />
         <reference name="my.account.wrapper">
-            <block type="avataxar2/documents_grid" name="avataxar2.documents.grid" template="onepica/avataxar2/documents/grid.phtml" />
+            <block type="avataxar2/documents_grid" name="avataxar2.documents.grid" template="onepica/avataxar2/documents/grid.phtml">
+                <block type="avataxar2/documents_grid_form" name="avataxar2.documents.grid.form" template="onepica/avataxar2/documents/grid/form.phtml" />
+            </block>
         </reference>
     </avataxar2_documents_grid>
 
