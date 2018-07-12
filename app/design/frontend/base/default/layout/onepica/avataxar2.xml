@@ -26,20 +26,7 @@
     </checkout_onepage_index>
 
     <avataxar2_popup_gencert>
-        <reference name="root">
-            <remove name="header" />
-            <remove name="footer" />
-            <remove name="global_notices" />
-            <remove name="global_messages" />
-            <remove name="messages" />
-            <action method="setTemplate">
-                <template>page/1column.phtml</template>
-            </action>
-        </reference>
-        <update handle="avataxar2_cert_additional_scripts" />
-        <reference name="content">
-            <block type="avataxar2/popup_form" name="avataxar2.popup.form" template="onepica/avataxar2/popup/form.phtml" />
-        </reference>
+        <block type="avataxar2/popup_form" name="root" template="onepica/avataxar2/popup/form.phtml" />
     </avataxar2_popup_gencert>
 
     <customer_account>
@@ -72,6 +59,8 @@
                 <type>js_css</type>
                 <name>avatax/themes/certcapture.css</name>
             </action>
+            <action method="addJs"><script>lib/jquery/jquery-1.12.0.min.js</script></action>
+            <action method="addJs"><script>lib/jquery/noconflict.js</script></action>
             <action method="addItem" ifconfig="tax/avatax_document_management/action">
                 <type>js</type>
                 <name>prototype/window.js</name>
