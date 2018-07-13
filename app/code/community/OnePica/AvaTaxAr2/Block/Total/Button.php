@@ -40,6 +40,34 @@ class OnePica_AvaTaxAr2_Block_Total_Button extends Mage_Checkout_Block_Total_Def
      */
     public function getPopupUrl()
     {
+        if ($this->_getCustomerSession()->isLoggedIn()) {
+            return $this->getUrl('avataxcert/popup/genCert', array('customerNumber' => $this->getCustomerNumber()));
+        }
+
         return $this->getUrl('avataxcert/popup/genCert');
+    }
+
+    /**
+     * @return int|string
+     */
+    public function getCustomerNumber()
+    {
+        return $this->getCustomer()->getData(OnePica_AvaTaxAr2_Helper_Data::AVATAX_CUSTOMER_CODE);
+    }
+
+    /**
+     * @return int|string
+     */
+    public function getCustomer()
+    {
+        return $this->_getCustomerSession()->getCustomer();
+    }
+
+    /**
+     * @return \Mage_Customer_Model_Session
+     */
+    protected function _getCustomerSession()
+    {
+        return Mage::getSingleton('customer/session');
     }
 }
