@@ -44,9 +44,16 @@ AvaTaxCert.initApi = function (tokenUrl) {
                             token: response.token,
                             ship_zone: ship_zone,
                             onCertSuccess: function () {
-                                win.setCloseCallback(function () {
-                                    location.reload();
-                                });
+                                try {
+                                    // back to one step when cert is added
+                                    checkout.back();
+                                } catch (e) {
+                                    // reload whole page if 'checkout' is not defined
+                                    win.setCloseCallback(function () {
+                                        location.reload();
+                                    });
+                                }
+
                                 var closeButton = $("avatax_certcapture_form_close"),
                                     closeButtonText = closeButton.readAttribute("data-close-text"),
                                     message = "Certificate id created successfully: " + GenCert.certificateIds,
