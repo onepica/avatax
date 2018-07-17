@@ -46,6 +46,7 @@ class OnePica_AvaTaxAr2_DocumentsController extends Mage_Core_Controller_Front_A
 
             $this->_getServiceCertificate()->deleteCertificate($docId, $customerId);
             $this->_getCoreSession()->addSuccess($this->__('Certificate with ID "%s" deleted successfully', $docId));
+            $this->_getAvataxSession()->setCertUpdatedDate(Mage::getModel('core/date')->date());
         } catch (Exception $exception) {
             $this->_getCoreSession()->addError($exception->getMessage());
         }
@@ -95,5 +96,13 @@ class OnePica_AvaTaxAr2_DocumentsController extends Mage_Core_Controller_Front_A
     protected function _getCoreSession()
     {
         return Mage::getSingleton('core/session');
+    }
+
+    /**
+     * @return \OnePica_AvaTax_Model_Session
+     */
+    protected function _getAvataxSession()
+    {
+        return Mage::getSingleton('avatax/session');
     }
 }

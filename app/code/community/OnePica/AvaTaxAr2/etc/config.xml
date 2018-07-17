@@ -79,6 +79,15 @@
                     </avatax>
                 </observers>
             </admin_system_config_changed_section_tax>
+            <avatax_make_request_before>
+                <observers>
+                    <avataxar2>
+                        <type>singleton</type>
+                        <class>avataxar2/observer_avataxMakeRequestBefore</class>
+                        <method>execute</method>
+                    </avataxar2>
+                </observers>
+            </avatax_make_request_before>
         </events>
         <resources>
             <avataxar2_setup>

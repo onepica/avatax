@@ -17,21 +17,21 @@ document.write("<script src='https://app.certcapture.com/gencert2/js'><\/script>
 
 var AvaTaxCert = Class.create();
 
-AvaTaxCert.initApi = function (tokenUrl) {
+AvaTaxCert.initApi = function (tokenUrl, updateUrl) {
     if (GenCert.getStatus() != 0) {
         GenCert.hide();
     }
-    var ship_zone = $("ship_zone").value,
-        customer_number = $("customer_number").value,
-        form_element = $("avatax_certcapture_form_parent");
+    var shipZone = $("ship_zone").value,
+        customerNumber = $("customer_number").value,
+        formElement = $("avatax_certcapture_form_parent");
 
-    form_element.className = "";
+    formElement.className = "";
 
     new Ajax.Request(tokenUrl, {
         method: "POST",
         parameters: {
             url: tokenUrl,
-            customerNumber: customer_number
+            customerNumber: customerNumber
         },
         requestHeaders: {Accept: "application/json"},
         onSuccess: function (transport) {
@@ -40,9 +40,9 @@ AvaTaxCert.initApi = function (tokenUrl) {
                     var response = transport.responseText.evalJSON(true),
                         form = $("avatax_certcapture_form_container");
                     if (response.success) {
-                        GenCert.init(form_element, {
+                        GenCert.init(formElement, {
                             token: response.token,
-                            ship_zone: ship_zone,
+                            ship_zone: shipZone,
                             onCertSuccess: function () {
                                 try {
                                     // back to one step when cert is added
@@ -53,6 +53,8 @@ AvaTaxCert.initApi = function (tokenUrl) {
                                         location.reload();
                                     });
                                 }
+
+                                AvaTaxCert.updateCertDate(updateUrl);
 
                                 var closeButton = $("avatax_certcapture_form_close"),
                                     closeButtonText = closeButton.readAttribute("data-close-text"),
@@ -84,6 +86,27 @@ AvaTaxCert.initApi = function (tokenUrl) {
                 }
             } catch (e) {
                 console.log(e);
+            }
+        }.bind(this)
+    });
+};
+
+AvaTaxCert.updateCertDate = function (updateUrl) {
+    return new Ajax.Request(updateUrl, {
+        method: "POST",
+        parameters: {},
+        requestHeaders: {Accept: "application/json"},
+        onSuccess: function (transport) {
+            if (!transport.responseText) {
+                console.log("The response is empty");
+            }
+        }.bind(this),
+        onFailure: function (transport) {
+            if (transport.responseText) {
+                var response = transport.responseText.evalJSON(true);
+                console.log(response.message);
+            } else {
+                console.log("The response is empty");
             }
         }.bind(this)
     });

@@ -25,6 +25,13 @@ class OnePica_AvaTaxAr2_Block_Popup_Form extends Mage_Core_Block_Template
     {
         return $this->getUrl('avataxcert/popup/getToken');
     }
+ /**
+     * @return string
+     */
+    public function getUpdateUrl()
+    {
+        return $this->getUrl('avataxcert/popup/updateCertDate');
+    }
 
     /**
      * @return string|int|null

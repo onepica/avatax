@@ -134,6 +134,9 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
         //Added code for calculating tax for giftwrap items
         $this->_addGwOrderAmount($address);
         $this->_addGwPrintedCardAmount($address);
+
+        Mage::dispatchEvent('avatax_make_request_before', array('request' =>  $this->_request));
+
         //check to see if we can/need to make the request to Avalara
         $requestKey = $this->_genRequestKey();
         $makeRequest = empty($this->_rates[$requestKey]['items']);

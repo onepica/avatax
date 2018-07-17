@@ -1,6 +1,7 @@
 <?php /** @var OnePica_AvaTaxAr2_Block_Popup_Form $this */ ?>
 
-<form id="avatax_certcapture_form_container" action="<?php echo $this->getTokenUrl() ?>">
+<form id="avatax_certcapture_form_container" action="<?php echo $this->getTokenUrl() ?>"
+      data-update-url="<?php echo $this->getUpdateUrl() ?>">
     <div class="field">
         <label for="customer_number" class="required"><?php echo $this->__('Customer number'); ?></label>
         <div class="input-box">
@@ -34,8 +35,9 @@
     $("avatax_certcapture_form_container").on("submit", function (e) {
         e.stop();
         var form = $("avatax_certcapture_form_container"),
-            tokenUrl = form.readAttribute("action");
+            tokenUrl = form.readAttribute("action"),
+            updateUrl = form.readAttribute("data-update-url");
 
-        AvaTaxCert.initApi(tokenUrl);
+        AvaTaxCert.initApi(tokenUrl, updateUrl);
     });
 </script>
