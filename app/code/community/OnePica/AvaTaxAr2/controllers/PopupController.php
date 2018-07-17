@@ -60,6 +60,36 @@ class OnePica_AvaTaxAr2_PopupController extends Mage_Core_Controller_Front_Actio
     }
 
     /**
+     * Generates token with given customer number
+     *
+     * @throws \Zend_Controller_Response_Exception
+     */
+    public function updateCertDateAction()
+    {
+        $responseData = array();
+
+        try {
+            $this->_getAvataxSession()->setCertUpdatedDate(Mage::getModel('core/date')->date());
+
+            $responseData['success'] = true;
+        } catch (Exception $e) {
+            $responseData['success'] = false;
+            $responseData['message'] = $e->getMessage();
+            $this->getResponse()->setHttpResponseCode(400);
+        }
+
+        $this->getResponse()->setBody($this->_getCoreHelper()->jsonEncode($responseData));
+    }
+
+    /**
+     * @return \OnePica_AvaTax_Model_Session
+     */
+    protected function _getAvataxSession()
+    {
+        return Mage::getSingleton('avatax/session');
+    }
+
+    /**
      * @return \Mage_Core_Helper_Data
      */
     protected function _getCoreHelper()

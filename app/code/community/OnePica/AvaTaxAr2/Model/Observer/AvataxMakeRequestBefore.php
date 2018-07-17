@@ -30,22 +30,34 @@ class OnePica_AvaTaxAr2_Model_Observer_AvataxMakeRequestBefore extends Mage_Core
      */
     public function execute(Varien_Event_Observer $observer)
     {
-        $this->_checkIfRequestShouldSend($observer);
+        $this->_addCertUpdatedDate($observer);
 
         return $this;
     }
 
     /**
+     * Add magentoCertificateUpdatedDate param to recalculate tax
+     *
      * @param Varien_Event_Observer $observer
      * @return $this
      */
-    protected function _checkIfRequestShouldSend($observer)
+    protected function _addCertUpdatedDate($observer)
     {
         /** @var \GetTaxRequest $request */
         $request = $observer->getRequest();
 
-        $request->magentoRequestUniqValue = 'uniqValueToUpdate';
+        if ($this->_getAvataxSession()->getCertUpdatedDate()) {
+            $request->magentoCertificateUpdatedDate = $this->_getAvataxSession()->getCertUpdatedDate();
+        }
 
         return $this;
+    }
+
+    /**
+     * @return \OnePica_AvaTax_Model_Session
+     */
+    protected function _getAvataxSession()
+    {
+        return Mage::getSingleton('avatax/session');
     }
 }
