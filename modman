@@ -14,3 +14,9 @@ app/locale/zh_CN/OnePica_AvaTax.csv                                app/locale/zh
 lib/AvaTax                                                         lib/AvaTax
 ../avatax16/src/OnePica                                            lib/OnePica
 js/avatax/                                                         js/avatax/
+app/code/community/OnePica/AvaTaxAr2/                              app/code/community/OnePica/AvaTaxAr2/
+app/design/adminhtml/default/default/layout/onepica/avataxar2.xml  app/design/adminhtml/default/default/layout/onepica/avataxar2.xml
+app/design/adminhtml/default/default/template/onepica/avataxar2/   app/design/adminhtml/default/default/template/onepica/avataxar2/
+app/design/frontend/base/default/layout/onepica/avataxar2.xml      app/design/frontend/base/default/layout/onepica/avataxar2.xml
+app/design/frontend/base/default/template/onepica/avataxar2/       app/design/frontend/base/default/template/onepica/avatax/
+app/etc/modules/OnePica_AvaTaxAr2.xml                              app/etc/modules/OnePica_AvaTaxAr2.xml
