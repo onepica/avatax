@@ -18,5 +18,7 @@ app/code/community/OnePica/AvaTaxAr2/                              app/code/comm
 app/design/adminhtml/default/default/layout/onepica/avataxar2.xml  app/design/adminhtml/default/default/layout/onepica/avataxar2.xml
 app/design/adminhtml/default/default/template/onepica/avataxar2/   app/design/adminhtml/default/default/template/onepica/avataxar2/
 app/design/frontend/base/default/layout/onepica/avataxar2.xml      app/design/frontend/base/default/layout/onepica/avataxar2.xml
-app/design/frontend/base/default/template/onepica/avataxar2/       app/design/frontend/base/default/template/onepica/avatax/
+app/design/frontend/base/default/template/onepica/avataxar2/       app/design/frontend/base/default/template/onepica/avataxar2/
 app/etc/modules/OnePica_AvaTaxAr2.xml                              app/etc/modules/OnePica_AvaTaxAr2.xml
+lib/AvaTaxEcomSDK                                                  lib/AvaTaxEcomSDK
+lib/AvaTaxRestV2                                                   lib/AvaTaxRestV2
