@@ -625,13 +625,13 @@
                         </landed_cost_enabled>
 
                         <!-- Unit of Measurement -->
-                        <landed_cost_units_of_measurement translate="label comment">
-                            <label>Default Unit Of Measurement</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>avatax/adminhtml_system_config_source_unitOfMeasurement</source_model>
-                            <sort_order>40</sort_order>
-                            <show_in_default>1</show_in_default>
-                        </landed_cost_units_of_measurement>
+                        <!--<landed_cost_units_of_measurement translate="label comment">-->
+                            <!--<label>Default Unit Of Measurement</label>-->
+                            <!--<frontend_type>select</frontend_type>-->
+                            <!--<source_model>avatax/adminhtml_system_config_source_unitOfMeasurement</source_model>-->
+                            <!--<sort_order>40</sort_order>-->
+                            <!--<show_in_default>1</show_in_default>-->
+                        <!--</landed_cost_units_of_measurement>-->
                         <!-- -->
 
                         <!-- Tax subtypes -->

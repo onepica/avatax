@@ -242,6 +242,7 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
      */
     public function getDefaultUnitsOfMeasurement($storeId = null)
     {
+        return null;
         if (!$this->defaultUnitOfMeasurement) {
             $this->defaultUnitOfMeasurement = Mage::getModel('avatax_records/unitOfMeasurement')->load(
                 Mage::getStoreConfig(
