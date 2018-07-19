@@ -71,6 +71,13 @@ class OnePica_AvaTaxAr2_PopupController extends Mage_Core_Controller_Front_Actio
         try {
             $this->_getAvataxSession()->setCertUpdatedDate(Mage::getModel('core/date')->date());
 
+            $customerNumber = $this->getRequest()->getPost('customerNumber');
+            if (!$customerNumber) {
+                Mage::throwException($this->__('Customer number is not set'));
+            }
+
+            $this->_getAvataxSession()->setCustomerNumber($customerNumber);
+
             $responseData['success'] = true;
         } catch (Exception $e) {
             $responseData['success'] = false;

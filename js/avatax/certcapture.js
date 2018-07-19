@@ -54,7 +54,7 @@ AvaTaxCert.initApi = function (tokenUrl, updateUrl) {
                                     });
                                 }
 
-                                AvaTaxCert.updateCertDate(updateUrl);
+                                AvaTaxCert.updateCertDate(updateUrl, customerNumber);
 
                                 var closeButton = $("avatax_certcapture_form_close"),
                                     closeButtonText = closeButton.readAttribute("data-close-text"),
@@ -91,10 +91,12 @@ AvaTaxCert.initApi = function (tokenUrl, updateUrl) {
     });
 };
 
-AvaTaxCert.updateCertDate = function (updateUrl) {
+AvaTaxCert.updateCertDate = function (updateUrl, customerNumber) {
     return new Ajax.Request(updateUrl, {
         method: "POST",
-        parameters: {},
+        parameters: {
+            customerNumber: customerNumber
+        },
         requestHeaders: {Accept: "application/json"},
         onSuccess: function (transport) {
             if (!transport.responseText) {
