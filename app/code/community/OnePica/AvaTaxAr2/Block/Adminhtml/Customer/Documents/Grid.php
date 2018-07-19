@@ -107,10 +107,12 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents_Grid extends Mage_Adm
     protected function _prepareCollection()
     {
         try {
-            /** @var OnePica_AvaTaxAr2_Model_Records_RestV2_Document_Collection $collection */
-            $collection = Mage::getModel('avataxar2_records/document')->getCollection();
-
-            $collection->addCustomerFilter($this->_getCustomerNumber());
+            $collection = new Varien_Data_Collection();
+            if ($this->_getCustomerNumber() !== null) {
+                /** @var OnePica_AvaTaxAr2_Model_Records_RestV2_Document_Collection $collection */
+                $collection = Mage::getModel('avataxar2_records/document')->getCollection();
+                $collection->addCustomerFilter($this->_getCustomerNumber());
+            }
 
             $this->setCollection($collection);
             parent::_prepareCollection();
