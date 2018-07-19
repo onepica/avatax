@@ -60,8 +60,11 @@ class OnePica_AvaTaxAr2_Block_Documents_Grid extends Mage_Core_Block_Template
     public function getCollection()
     {
         if (!$this->_collection) {
-            $this->_collection = Mage::getModel('avataxar2_records/document')->getCollection();
-            $this->_collection->addCustomerFilter($this->getCustomerNumber());
+            $this->_collection = new Varien_Data_Collection();
+            if ($this->getCustomerNumber() !== null) {
+                $this->_collection = Mage::getModel('avataxar2_records/document')->getCollection();
+                $this->_collection->addCustomerFilter($this->getCustomerNumber());
+            }
         }
 
         return $this->_collection;
