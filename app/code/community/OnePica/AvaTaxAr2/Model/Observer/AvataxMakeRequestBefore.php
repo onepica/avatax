@@ -50,10 +50,6 @@ class OnePica_AvaTaxAr2_Model_Observer_AvataxMakeRequestBefore extends Mage_Core
             $request->magentoCertificateUpdatedDate = $this->_getAvataxSession()->getCertUpdatedDate();
         }
 
-        if (!$this->_getCustomerSession()->isLoggedIn() && $this->_getAvataxSession()->getCustomerNumber()) {
-            $request->setCustomerCode($this->_getAvataxSession()->getCustomerNumber());
-        }
-
         return $this;
     }
 
@@ -63,12 +59,5 @@ class OnePica_AvaTaxAr2_Model_Observer_AvataxMakeRequestBefore extends Mage_Core
     protected function _getAvataxSession()
     {
         return Mage::getSingleton('avatax/session');
-    }
-    /**
-     * @return \Mage_Customer_Model_Session
-     */
-    protected function _getCustomerSession()
-    {
-        return Mage::getSingleton('customer/session');
     }
 }
