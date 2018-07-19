@@ -164,3 +164,18 @@
         width: 100%;
     }
 }
+
+#avatax_certcapture_customer_form div.input-box {
+    width: 80%;
+    display: inline-block;
+}
+
+#avatax_certcapture_customer_form input.input-text {
+    width: 55%;
+}
+
+#avatax_certcapture_customer_form div.actions {
+    width: 20%;
+    float: right;
+    display: inline-block;
+}
