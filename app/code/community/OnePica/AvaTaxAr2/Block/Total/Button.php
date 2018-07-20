@@ -44,7 +44,7 @@ class OnePica_AvaTaxAr2_Block_Total_Button extends Mage_Checkout_Block_Total_Def
             return $this->getUrl('avataxcert/popup/genCert', array('customerNumber' => $this->getCustomerNumber()));
         }
 
-        return $this->getUrl('avataxcert/popup/genCert');
+        return $this->getUrl('avataxcert/popup/loginMessage');
     }
 
     /**

@@ -29,6 +29,10 @@
         <block type="avataxar2/popup_form" name="root" template="onepica/avataxar2/popup/form.phtml" />
     </avataxar2_popup_gencert>
 
+    <avataxar2_popup_loginmessage>
+        <block type="avataxar2/popup_loginMessage" name="root" template="onepica/avataxar2/popup/loginmessage.phtml" />
+    </avataxar2_popup_loginmessage>
+
     <customer_account>
         <reference name="customer_account_navigation">
             <action method="addLink">
