@@ -31,6 +31,12 @@ class OnePica_AvaTaxAr2_PopupController extends Mage_Core_Controller_Front_Actio
         $this->renderLayout();
     }
 
+    public function loginMessageAction()
+    {
+        $this->loadLayout();
+        $this->renderLayout();
+    }
+
     /**
      * Generates token with given customer number
      */
