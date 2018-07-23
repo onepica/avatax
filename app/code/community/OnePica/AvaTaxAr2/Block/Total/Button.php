@@ -20,9 +20,6 @@ class OnePica_AvaTaxAr2_Block_Total_Button extends Mage_Checkout_Block_Total_Def
 {
     protected $_template = 'onepica/avataxar2/total/button.phtml';
 
-    /**
-     * Constructor
-     */
     protected function _construct()
     {
         parent::_construct();
@@ -72,13 +69,5 @@ class OnePica_AvaTaxAr2_Block_Total_Button extends Mage_Checkout_Block_Total_Def
     protected function _getCustomerSession()
     {
         return Mage::getSingleton('customer/session');
-    }
-
-    /**
-     * @return \Mage_Core_Helper_Abstract|\OnePica_AvaTaxAr2_Helper_Config
-     */
-    protected function _getConfigHelper()
-    {
-        return Mage::helper('avataxar2/config');
     }
 }
