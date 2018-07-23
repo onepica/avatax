@@ -121,7 +121,7 @@ AvaTaxCert.showPopup = function (url, title) {
         recenterAuto: false,
         resizable: false,
         width: 780,
-        height: 540,
+        height: 200,
         minimizable: false,
         maximizable: false,
         draggable: false
