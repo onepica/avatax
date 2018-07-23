@@ -26,6 +26,7 @@ if ($attr->getId()) {
     $attr->setData('sort_order', 10);
     $attr->setData('is_user_defined', 0);
     $attr->setData('is_system', 1);
+    $attr->setData('is_visible_on_front', 0);
     $attr->setData('frontend_label', Mage::helper('avataxar2')->__('Customer Number'));
     $attr->save();
 }

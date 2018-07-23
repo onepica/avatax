@@ -27,9 +27,15 @@ class OnePica_AvaTaxAr2_DocumentsController extends Mage_Core_Controller_Front_A
 {
     /**
      * Customer documents grid action
+     *
+     * @throws \Mage_Core_Exception
      */
     public function gridAction()
     {
+        if (!$this->_getConfigHelper()->isEnabled()) {
+            $this->_redirect('customer/account');
+        }
+
         $this->loadLayout();
         $this->renderLayout();
     }
@@ -104,5 +110,13 @@ class OnePica_AvaTaxAr2_DocumentsController extends Mage_Core_Controller_Front_A
     protected function _getAvataxSession()
     {
         return Mage::getSingleton('avatax/session');
+    }
+
+    /**
+     * @return \Mage_Core_Helper_Abstract|\OnePica_AvaTaxAr2_Helper_Config
+     */
+    protected function _getConfigHelper()
+    {
+        return Mage::helper('avataxar2/config');
     }
 }

@@ -35,7 +35,7 @@
 
     <customer_account>
         <reference name="customer_account_navigation">
-            <action method="addLink">
+            <action method="addLink" ifconfig="tax/avatax_document_management/action">
                 <name>avataxar2_documents_grid</name>
                 <path>avataxar2/documents/grid</path>
                 <label>AvaTax Documents</label>
