@@ -20,21 +20,6 @@ class OnePica_AvaTaxAr2_Block_Total_Button extends Mage_Checkout_Block_Total_Def
 {
     protected $_template = 'onepica/avataxar2/total/button.phtml';
 
-    protected function _construct()
-    {
-        parent::_construct();
-
-        $totals = $this->getTotals();
-
-        if (!isset($totals['tax'])) {
-            $this->setTemplate('');
-        }
-
-        if (isset($totals['tax']) && $totals['tax']->getValue() == 0) {
-            $this->setTemplate('');
-        }
-    }
-
     /**
      * @return string
      */
@@ -61,6 +46,27 @@ class OnePica_AvaTaxAr2_Block_Total_Button extends Mage_Checkout_Block_Total_Def
     public function getCustomer()
     {
         return $this->_getCustomerSession()->getCustomer();
+    }
+
+    /**
+     * Render block HTML
+     *
+     * @return string
+     */
+    protected function _toHtml()
+    {
+        $html = parent::_toHtml();
+
+        $totals = $this->getTotals();
+        if (!isset($totals['tax'])) {
+            $html = '';
+        }
+
+        if (isset($totals['tax']) && $totals['tax']->getValue() == 0) {
+            $html = '';
+        }
+
+        return $html;
     }
 
     /**
