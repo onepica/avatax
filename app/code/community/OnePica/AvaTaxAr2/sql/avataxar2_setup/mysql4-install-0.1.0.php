@@ -24,6 +24,8 @@ $attr = Mage::getModel('eav/config')->getAttribute('customer', OnePica_AvaTaxAr2
 if ($attr->getId()) {
     $attr->setData('used_in_forms', array(OnePica_AvaTaxAr2_Helper_Data::AVATAX_CUSTOMER_DOCUMENTS_FORM_CODE));
     $attr->setData('sort_order', 10);
+    $attr->setData('is_user_defined', 0);
+    $attr->setData('is_system', 1);
     $attr->setData('frontend_label', Mage::helper('avataxar2')->__('Customer Number'));
     $attr->save();
 }
