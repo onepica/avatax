@@ -44,11 +44,10 @@
     border: solid 1px #cccccc;
     display: block;
     position: absolute;
-    z-index: 200;
-    top: 40px;
     right: 0;
-    width: 320px;
     background: white;
+    left: 50% !important;
+    margin-left: -392px;
 }
 #avatax_certcapture .top.table_window {
     color: #50A4CF;
@@ -155,6 +154,7 @@
     }
     #avatax_certcapture {
         left: 0 !important;
+        margin-left: 0;
     }
     #avatax_certcapture_form_container .field {
         flex-direction: column;
