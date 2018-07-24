@@ -22,6 +22,7 @@ AvaTaxCert.initApi = function (tokenUrl, updateUrl) {
         GenCert.hide();
     }
     var shipZone = $("ship_zone").value,
+        customerId = $("customer_id").value,
         customerNumber = $("customer_number").value,
         formElement = $("avatax_certcapture_form_parent");
 
@@ -53,7 +54,7 @@ AvaTaxCert.initApi = function (tokenUrl, updateUrl) {
                                 });
                             }
 
-                            AvaTaxCert.updateCertDate(updateUrl);
+                            AvaTaxCert.updateCertDate(updateUrl, customerId, customerNumber);
 
                             var closeButton = $("avatax_certcapture_form_close"),
                                 closeButtonText = closeButton.readAttribute("data-close-text"),
@@ -95,10 +96,13 @@ AvaTaxCert.initApi = function (tokenUrl, updateUrl) {
     });
 };
 
-AvaTaxCert.updateCertDate = function (updateUrl) {
+AvaTaxCert.updateCertDate = function (updateUrl, customerId, customerNumber) {
     return new Ajax.Request(updateUrl, {
         method: "POST",
-        parameters: {},
+        parameters: {
+            customerId: customerId,
+            customerNumber: customerNumber
+        },
         requestHeaders: {Accept: "application/json"},
         onSuccess: function (transport) {
             if (!transport.responseText) {

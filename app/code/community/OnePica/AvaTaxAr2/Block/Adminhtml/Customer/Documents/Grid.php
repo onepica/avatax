@@ -50,7 +50,12 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents_Grid extends Mage_Adm
      */
     protected function _prepareLayout()
     {
-        $url = $this->getUrl('avataxcert/popup/genCert', array('customerNumber' => $this->_getCustomerNumber()));
+        $url = $this->getUrl(
+            'adminhtml/avaTaxAr2_popup/genCert', array(
+                'customerId'     => $this->_getCustomer()->getId(),
+                'customerNumber' => $this->_getCustomerNumber()
+            )
+        );
         $this->setChild(
             'add_cert_button',
             $this->getLayout()

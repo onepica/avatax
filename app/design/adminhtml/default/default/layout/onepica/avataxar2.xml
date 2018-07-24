@@ -38,6 +38,12 @@
         </block>
     </adminhtml_avataxar2_grid_documents>
 
+    <adminhtml_avataxar2_popup_gencert>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="avataxar2/adminhtml_popup_form" name="admin.avataxar2.popup.form" template="onepica/avataxar2/popup/form.phtml" />
+        </block>
+    </adminhtml_avataxar2_popup_gencert>
+
     <!-- Cert additional scripts -->
     <avataxar2_cert_additional_scripts>
         <reference name="head">
