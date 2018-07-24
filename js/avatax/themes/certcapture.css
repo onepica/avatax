@@ -26,7 +26,7 @@
 }
 #avatax_certcapture_content.dialog_content {
     background-color: #fff;
-    min-height: 570px;
+    min-height: 100px;
     height: auto !important;
 }
 #avatax_certcapture_form_container {
@@ -48,6 +48,12 @@
     background: white;
     left: 50% !important;
     margin-left: -392px;
+}
+.avataxar2-popup-login-message {
+    margin-top: 40px;
+}
+.avataxar2-popup-login-message .page-head {
+    margin-bottom: 30px;
 }
 #avatax_certcapture .top.table_window {
     color: #50A4CF;
@@ -150,7 +156,6 @@
     #avatax_certcapture,
     #avatax_certcapture_content {
         width: 100% !important;
-        height: 90vh !important;
     }
     #avatax_certcapture {
         left: 0 !important;
