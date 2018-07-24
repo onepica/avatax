@@ -13,6 +13,10 @@
  * @copyright  Copyright (c) 2009 One Pica, Inc.
  * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
+if (!window.jQuery) {
+    document.write("<script src='/js/avatax/jquery-3.2.1.min.js'><\/script>");
+    document.write("<script src='/js/lib/jquery/noconflict.js'><\/script>");
+}
 document.write("<script src='https://app.certcapture.com/gencert2/js'><\/script>");
 
 var AvaTaxCert = Class.create();
