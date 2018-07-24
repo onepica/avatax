@@ -23,15 +23,25 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTaxAr2_PopupController extends Mage_Core_Controller_Front_Action
+class OnePica_AvaTaxAr2_Adminhtml_AvaTaxAr2_PopupController extends Mage_Adminhtml_Controller_Action
 {
-    public function genCertAction()
+    /**
+     * Additional initialization
+     */
+    protected function _construct()
     {
-        $this->loadLayout();
-        $this->renderLayout();
+        $this->setUsedModuleName('OnePica_AvaTaxAr2');
     }
 
-    public function loginMessageAction()
+    /**
+     * @return mixed
+     */
+    protected function _isAllowed()
+    {
+        return Mage::getSingleton('admin/session')->isAllowed('avataxar2');
+    }
+
+    public function genCertAction()
     {
         $this->loadLayout();
         $this->renderLayout();
@@ -73,12 +83,21 @@ class OnePica_AvaTaxAr2_PopupController extends Mage_Core_Controller_Front_Actio
      *
      * @throws \Zend_Controller_Response_Exception
      */
-    public function updateCertDateAction()
+    public function updateCustomerNumberAction()
     {
         $responseData = array();
 
         try {
-            $this->_getAvataxSession()->setCertUpdatedDate(Mage::getModel('core/date')->date());
+            $customerId = $this->getRequest()->getPost('customerId');
+            $customerNumber = $this->getRequest()->getPost('customerNumber');
+
+            if (!$customerId || !$customerNumber) {
+                Mage::throwException('Required data is not set');
+            }
+
+            $customer = Mage::getModel('customer/customer')->load($customerId);
+            $customer->setData(OnePica_AvaTaxAr2_Helper_Data::AVATAX_CUSTOMER_CODE, $customerNumber);
+            $customer->save();
 
             $responseData['success'] = true;
         } catch (Exception $e) {
@@ -88,14 +107,6 @@ class OnePica_AvaTaxAr2_PopupController extends Mage_Core_Controller_Front_Actio
         }
 
         $this->getResponse()->setBody($this->_getCoreHelper()->jsonEncode($responseData));
-    }
-
-    /**
-     * @return \OnePica_AvaTax_Model_Session
-     */
-    protected function _getAvataxSession()
-    {
-        return Mage::getSingleton('avatax/session');
     }
 
     /**

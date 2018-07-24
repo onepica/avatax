@@ -52,7 +52,6 @@
         <update handle="avataxar2_cert_additional_scripts" />
         <reference name="my.account.wrapper">
             <block type="avataxar2/documents_grid" name="avataxar2.documents.grid" template="onepica/avataxar2/documents/grid.phtml">
-                <block type="avataxar2/documents_grid_form" name="avataxar2.documents.grid.form" template="onepica/avataxar2/documents/grid/form.phtml" />
                 <block type="avataxar2/documents_grid_button" name="avataxar2.documents.grid.button" template="onepica/avataxar2/documents/grid/button.phtml" />
             </block>
         </reference>
@@ -69,12 +68,9 @@
                 <type>js_css</type>
                 <name>avatax/themes/certcapture.css</name>
             </action>
-            <action method="addJs"><script>lib/jquery/jquery-1.12.0.min.js</script></action>
-            <action method="addJs"><script>lib/jquery/noconflict.js</script></action>
             <action method="addItem" ifconfig="tax/avatax_document_management/action">
                 <type>js</type>
                 <name>prototype/window.js</name>
-                <params />
             </action>
             <action method="addItem" ifconfig="tax/avatax_document_management/action">
                 <type>js_css</type>

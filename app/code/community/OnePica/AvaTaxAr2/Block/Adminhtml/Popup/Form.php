@@ -14,16 +14,16 @@
  */
 
 /**
- * Class OnePica_AvaTaxAr2_Block_Popup_Form
+ * Class OnePica_AvaTaxAr2_Block_Adminhtml_Popup_Form
  */
-class OnePica_AvaTaxAr2_Block_Popup_Form extends Mage_Core_Block_Template
+class OnePica_AvaTaxAr2_Block_Adminhtml_Popup_Form extends Mage_Core_Block_Template
 {
     /**
      * @return string
      */
     public function getTokenUrl()
     {
-        return $this->getUrl('avataxcert/popup/getToken');
+        return $this->getUrl('adminhtml/avaTaxAr2_popup/getToken');
     }
 
     /**
@@ -31,7 +31,7 @@ class OnePica_AvaTaxAr2_Block_Popup_Form extends Mage_Core_Block_Template
      */
     public function getUpdateUrl()
     {
-        return $this->getUrl('avataxcert/popup/updateCertDate');
+        return $this->getUrl('adminhtml/avaTaxAr2_popup/updateCustomerNumber');
     }
 
     /**
@@ -45,6 +45,7 @@ class OnePica_AvaTaxAr2_Block_Popup_Form extends Mage_Core_Block_Template
             return null;
         }
     }
+
     /**
      * @return string|int|null
      */

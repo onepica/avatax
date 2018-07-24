@@ -60,26 +60,6 @@ class OnePica_AvaTaxAr2_DocumentsController extends Mage_Core_Controller_Front_A
         $this->_redirect('*/*/grid');
     }
 
-    public function postFormAction()
-    {
-        try {
-            $customerNumber = $this->getRequest()->getParam('customer_number');
-            if (!$customerNumber) {
-                Mage::throwException('Customer Number not set');
-            }
-
-            $customer = $this->_getCustomerSession()->getCustomer();
-            $customer->setData(OnePica_AvaTaxAr2_Helper_Data::AVATAX_CUSTOMER_CODE, $customerNumber);
-            $customer->save();
-
-            $this->_getCoreSession()->addSuccess($this->__('Customer number saved successfully'));
-        } catch (Exception $exception) {
-            $this->_getCoreSession()->addError($exception->getMessage());
-        }
-
-        $this->_redirect('*/*/grid');
-    }
-
     /**
      * @return OnePica_AvaTaxAr2_Model_Service_Avatax_Certificate
      */
