@@ -39,6 +39,8 @@ class OnePica_AvaTaxAr2_PopupController extends Mage_Core_Controller_Front_Actio
 
     /**
      * Generates token with given customer number
+     *
+     * @throws \Zend_Controller_Response_Exception
      */
     public function getTokenAction()
     {
@@ -60,6 +62,7 @@ class OnePica_AvaTaxAr2_PopupController extends Mage_Core_Controller_Front_Actio
         } catch (Exception $e) {
             $responseData['message'] = $e->getMessage();
             $responseData['success'] = false;
+            $this->getResponse()->setHttpResponseCode(400);
         }
 
         $this->getResponse()->setBody($this->_getCoreHelper()->jsonEncode($responseData));

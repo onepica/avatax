@@ -39,53 +39,57 @@ AvaTaxCert.initApi = function (tokenUrl, updateUrl) {
                 if (transport.responseText) {
                     var response = transport.responseText.evalJSON(true),
                         form = $("avatax_certcapture_form_container");
-                    if (response.success) {
-                        GenCert.init(formElement, {
-                            token: response.token,
-                            ship_zone: shipZone,
-                            onCertSuccess: function () {
-                                try {
-                                    // back to one step when cert is added
-                                    checkout.back();
-                                } catch (e) {
-                                    // reload whole page if 'checkout' is not defined
-                                    win.setCloseCallback(function () {
-                                        location.reload();
-                                    });
-                                }
+                    GenCert.init(formElement, {
+                        token: response.token,
+                        ship_zone: shipZone,
+                        onCertSuccess: function () {
+                            try {
+                                // back to one step when cert is added
+                                checkout.back();
+                            } catch (e) {
+                                // reload whole page if 'checkout' is not defined
+                                win.setCloseCallback(function () {
+                                    location.reload();
+                                });
+                            }
 
-                                AvaTaxCert.updateCertDate(updateUrl);
+                            AvaTaxCert.updateCertDate(updateUrl);
 
-                                var closeButton = $("avatax_certcapture_form_close"),
-                                    closeButtonText = closeButton.readAttribute("data-close-text"),
-                                    message = "Certificate id created successfully: " + GenCert.certificateIds,
-                                    gencertIframeDoc = $("gencert_iframe").contentWindow.document,
-                                    gencertContainer = gencertIframeDoc.getElementById("certificate_id_container");
+                            var closeButton = $("avatax_certcapture_form_close"),
+                                closeButtonText = closeButton.readAttribute("data-close-text"),
+                                message = "Certificate id created successfully: " + GenCert.certificateIds,
+                                gencertIframeDoc = $("gencert_iframe").contentWindow.document,
+                                gencertContainer = gencertIframeDoc.getElementById("certificate_id_container");
 
-                                closeButton.update("<span>" + closeButtonText + "</span>");
-                                if (gencertContainer) {
-                                    var gencertMessageDiv = gencertIframeDoc.createElement("div");
-                                    gencertMessageDiv.setAttribute("id", "certificate_id_message");
-                                    gencertMessageDiv.classList.add("layout-align-center-center");
-                                    gencertMessageDiv.classList.add("layout-row");
-                                    gencertMessageDiv.appendChild(document.createTextNode(message));
-                                    gencertContainer.insertAdjacentElement("afterEnd", gencertMessageDiv);
-                                }
-                            },
-                        });
+                            closeButton.update("<span>" + closeButtonText + "</span>");
+                            if (gencertContainer) {
+                                var gencertMessageDiv = gencertIframeDoc.createElement("div");
+                                gencertMessageDiv.setAttribute("id", "certificate_id_message");
+                                gencertMessageDiv.classList.add("layout-align-center-center");
+                                gencertMessageDiv.classList.add("layout-row");
+                                gencertMessageDiv.appendChild(document.createTextNode(message));
+                                gencertContainer.insertAdjacentElement("afterEnd", gencertMessageDiv);
+                            }
+                        }
+                    });
 
-                        GenCert.show();
-                        $("avatax_certcapture_form_submit").hide();
+                    GenCert.show();
+                    $("avatax_certcapture_form_submit").hide();
 
-                        form.select("input").forEach(function (item, i) {
-                            item.disable();
-                        });
-                    } else {
-                        console.log(response.message);
-                    }
+                    form.select("input").forEach(function (item, i) {
+                        item.disable();
+                    });
                 }
             } catch (e) {
                 console.log(e);
+            }
+        }.bind(this),
+        onFailure: function (transport) {
+            if (transport.responseText) {
+                var response = transport.responseText.evalJSON(true);
+                console.log(response.message);
+            } else {
+                console.log("The response is empty");
             }
         }.bind(this)
     });
