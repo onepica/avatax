@@ -68,8 +68,44 @@ class OnePica_AvaTaxAr2_Model_Records_RestV2_Document_Collection extends Varien_
         $this->_items = $customerCertificates->getItems();
         $this->_totalRecords = count($customerCertificates->getItems());
         $this->_setIsLoaded();
+        $this->_renderFilters();
         $this->_renderOrders();
         $this->_renderLimit();
+
+        return $this;
+    }
+
+    /**
+     * Render conditions
+     *
+     * @return  Varien_Data_Collection
+     */
+    protected function _renderFilters()
+    {
+        if (!$this->_filters) {
+            return $this;
+        }
+
+        foreach ($this->_filters as $filter) {
+            $this->_items = array_filter(
+                $this->_items,
+                function ($item) use ($filter) {
+                    $valueItem = $item->getData($filter->getField());
+                    $valueFilter = mb_strtolower($filter->getValue());
+                    if (is_bool($valueItem)) {
+                        return $valueItem == $valueFilter;
+                    }
+
+                    if (is_object($valueItem)) {
+                        return mb_strpos(mb_strtolower($valueItem->name), $valueFilter) !== false ? true : false;
+                    }
+
+                    return mb_strpos(mb_strtolower($valueItem), $valueFilter) !== false ? true : false;
+                }
+            );
+        }
+
+        $this->_totalRecords = count($this->_items);
 
         return $this;
     }
