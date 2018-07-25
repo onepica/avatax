@@ -37,7 +37,7 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents_Grid extends Mage_Adm
     {
         parent::__construct();
         $this->setId('exemptionGrid');
-        $this->setDefaultSort('start_at');
+        $this->setDefaultSort('id');
         $this->setDefaultDir('desc');
 
         $this->setUseAjax(true);
@@ -116,14 +116,58 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents_Grid extends Mage_Adm
             if ($this->_getCustomerNumber() !== null) {
                 /** @var OnePica_AvaTaxAr2_Model_Records_RestV2_Document_Collection $collection */
                 $collection = Mage::getModel('avataxar2_records/document')->getCollection();
-                $collection->addCustomerFilter($this->_getCustomerNumber());
             }
 
             $this->setCollection($collection);
-            parent::_prepareCollection();
+
+            $sort = $this->getParam($this->getVarNameSort(), $this->_defaultSort);
+            $dir = $this->getParam($this->getVarNameDir(), $this->_defaultDir);
+            $page = $this->getParam($this->getVarNamePage(), $this->_defaultPage);
+            $limit = $this->getParam($this->getVarNameLimit(), $this->_defaultLimit);
+            $filter = $this->getParam($this->getVarNameFilter(), $this->_defaultFilter);
+
+            if (is_string($filter)) {
+                $data = $this->helper('adminhtml')->prepareFilterString($filter);
+                $this->_setFilterValues($data);
+            } elseif (is_array($filter)) {
+                $this->_setFilterValues($filter);
+            }
+
+            if (isset($this->_columns[$sort]) && $this->_columns[$sort]->getIndex()) {
+                $dir = (strtolower($dir) == 'desc') ? 'desc' : 'asc';
+                $this->_columns[$sort]->setDir($dir);
+            }
+
+            $collection->addCustomerFilter($this->_getCustomerNumber())
+                       ->setOrder($sort, $dir)
+                       ->setCurPage($page)
+                       ->setPageSize($limit);
+
+            $this->_preparePage();
         } catch (Exception $exception) {
             $session = $this->_getAdminhtmlSession();
             $session->addError($exception->getMessage());
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param $column
+     * @return $this|\Mage_Adminhtml_Block_Widget_Grid
+     */
+    protected function _addColumnFilterToCollection($column)
+    {
+        if ($this->getCollection()) {
+            $field = ($column->getFilterIndex()) ? $column->getFilterIndex() : $column->getIndex();
+            if ($column->getFilterConditionCallback()) {
+                call_user_func($column->getFilterConditionCallback(), $this->getCollection(), $column);
+            } else {
+                $cond = $column->getFilter()->getValue();
+                if ($field && isset($cond)) {
+                    $this->getCollection()->addFilter($field, $cond);
+                }
+            }
         }
 
         return $this;
@@ -165,7 +209,7 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents_Grid extends Mage_Adm
         );
 
         $this->addColumn(
-            'exposureZoneName', array(
+            'exposureZone', array(
                 'header'   => $this->__('Exposure Zone'),
                 'index'    => 'exposureZone',
                 'type'     => 'text',
@@ -186,19 +230,23 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents_Grid extends Mage_Adm
 
         $this->addColumn(
             'signedDate', array(
-                'header' => $this->__('Signed Date'),
-                'index'  => 'signedDate',
-                'type'   => 'datetime',
-                'align'  => 'left'
+                'header'   => $this->__('Signed Date'),
+                'index'    => 'signedDate',
+                'type'     => 'datetime',
+                'align'    => 'left',
+                'filter'   => false,
+                'sortable' => false,
             )
         );
 
         $this->addColumn(
             'expirationDate', array(
-                'header' => $this->__('Expiration Date'),
-                'index'  => 'expirationDate',
-                'type'   => 'datetime',
-                'align'  => 'left'
+                'header'   => $this->__('Expiration Date'),
+                'index'    => 'expirationDate',
+                'type'     => 'datetime',
+                'align'    => 'left',
+                'filter'   => false,
+                'sortable' => false,
             )
         );
 

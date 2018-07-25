@@ -63,29 +63,99 @@ class OnePica_AvaTaxAr2_Model_Records_RestV2_Document_Collection extends Varien_
             return $this;
         }
 
-        $service = $this->_getServiceCertificate();
         /** @var \Varien_Data_Collection $customerCertificates */
-        $customerCertificates = $service->getAllCustomerCertificates($this->getCustomerCode());
-
-        // calculate totals
-        $this->_totalRecords = count($customerCertificates);
-
+        $customerCertificates = $this->_getServiceCertificate()->getAllCustomerCertificates($this->getCustomerCode());
+        $this->_items = $customerCertificates->getItems();
+        $this->_totalRecords = count($customerCertificates->getItems());
         $this->_setIsLoaded();
+        $this->_renderFilters();
+        $this->_renderOrders();
+        $this->_renderLimit();
 
-        // paginate and add items
+        return $this;
+    }
+
+    /**
+     * Render conditions
+     *
+     * @return  Varien_Data_Collection
+     */
+    protected function _renderFilters()
+    {
+        if (!$this->_filters) {
+            return $this;
+        }
+
+        foreach ($this->_filters as $filter) {
+            $this->_items = array_filter(
+                $this->_items,
+                function ($item) use ($filter) {
+                    $valueItem = $item->getData($filter->getField());
+                    $valueFilter = mb_strtolower($filter->getValue());
+                    if (is_bool($valueItem)) {
+                        return $valueItem == $valueFilter;
+                    }
+
+                    if (is_object($valueItem)) {
+                        return mb_strpos(mb_strtolower($valueItem->name), $valueFilter) !== false ? true : false;
+                    }
+
+                    return mb_strpos(mb_strtolower($valueItem), $valueFilter) !== false ? true : false;
+                }
+            );
+        }
+
+        $this->_totalRecords = count($this->_items);
+
+        return $this;
+    }
+
+    /**
+     * Render limit
+     *
+     * @return  Varien_Data_Collection
+     * @throws \Exception
+     */
+    protected function _renderLimit()
+    {
         $from = ($this->getCurPage() - 1) * $this->getPageSize();
-        $to = $from + $this->getPageSize() - 1;
+        $to = $from + $this->getPageSize();
         $isPaginated = $this->getPageSize() > 0;
 
-        $cnt = 0;
-        /** @var \Varien_Object $customerCertificate */
-        foreach ($customerCertificates as $customerCertificate) {
-            $cnt++;
-            if ($isPaginated && ($cnt < $from || $cnt > $to)) {
-                continue;
-            }
+        if ($isPaginated) {
+            $this->_items = array_slice($this->_items, $from, $to);
+        }
 
-            $this->addItem($customerCertificate);
+        return $this;
+    }
+
+    /**
+     * Render orders
+     *
+     * @return  Varien_Data_Collection
+     */
+    protected function _renderOrders()
+    {
+        foreach ($this->_orders as $fieldId => $dir) {
+            usort(
+                $this->_items,
+                function ($a, $b) use ($fieldId) {
+                    $paramA = $a->getData($fieldId);
+                    $paramB = $b->getData($fieldId);
+                    if (is_numeric($paramA) && is_numeric($paramB)) {
+                        return $paramA - $paramB;
+                    }
+                    if (is_object($paramA) && is_object($paramB)) {
+                        return strcmp($paramA->name, $paramB->name);
+                    }
+
+                    return strcmp($paramA, $paramB);
+                }
+            );
+
+            if (mb_strtoupper($dir) === self::SORT_ORDER_DESC) {
+                $this->_items = array_reverse($this->_items);
+            }
         }
 
         return $this;
