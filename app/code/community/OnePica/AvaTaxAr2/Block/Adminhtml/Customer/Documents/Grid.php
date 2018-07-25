@@ -116,6 +116,7 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents_Grid extends Mage_Adm
             if ($this->_getCustomerNumber() !== null) {
                 /** @var OnePica_AvaTaxAr2_Model_Records_RestV2_Document_Collection $collection */
                 $collection = Mage::getModel('avataxar2_records/document')->getCollection();
+                $collection->addCustomerFilter($this->_getCustomerNumber());
             }
 
             $this->setCollection($collection);
@@ -138,8 +139,7 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents_Grid extends Mage_Adm
                 $this->_columns[$sort]->setDir($dir);
             }
 
-            $collection->addCustomerFilter($this->_getCustomerNumber())
-                       ->setOrder($sort, $dir)
+            $collection->setOrder($sort, $dir)
                        ->setCurPage($page)
                        ->setPageSize($limit);
 
