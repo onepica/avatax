@@ -2,7 +2,7 @@
 
 #avatax_certcapture_content.dialog_content {
     background-color: #fff;
-    min-height: 570px;
+    min-height: 200px;
     height: auto !important;
 }
 #avatax_certcapture_table_content.dialog_content {
@@ -24,9 +24,9 @@
     display: block;
     position: absolute;
     z-index: 200;
-    top: 40px;
-    right: 0;
-    width: 320px;
+    top: 30vh !important;
+    left: 50% !important;
+    margin-left: -392px;
     background: white;
 }
 #avatax_certcapture .dialog_close {
@@ -144,9 +144,9 @@
     #avatax_certcapture,
     #avatax_certcapture_content {
         width: 100% !important;
-        height: 90vh !important;
     }
     #avatax_certcapture {
         left: 0 !important;
+        margin-left: 0;
     }
 }
