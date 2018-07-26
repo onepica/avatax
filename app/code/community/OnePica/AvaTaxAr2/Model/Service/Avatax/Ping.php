@@ -67,7 +67,7 @@ class OnePica_AvaTaxAr2_Model_Service_Avatax_Ping extends OnePica_AvaTaxAr2_Mode
         }
 
         $this->_log(
-            OnePica_AvaTaxAr2_Model_Source_Avatax_Logtype::PING,
+            OnePica_AvaTaxAr2_Model_Source_Avatax_Logtype::PING_REST,
             new stdClass(),
             $result,
             $storeId,

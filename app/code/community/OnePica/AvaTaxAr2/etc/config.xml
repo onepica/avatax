@@ -50,6 +50,11 @@
                     <!--</documents>-->
                 </entities>
             </avataxar2_records_mysql4>
+            <avatax>
+                <rewrite>
+                    <source_avatax_logtype>OnePica_AvaTaxAr2_Model_Source_Avatax_Logtype</source_avatax_logtype>
+                </rewrite>
+            </avatax>
         </models>
         <events>
             <controller_front_init_before>
@@ -72,11 +77,11 @@
             </adminhtml_customer_prepare_save>
             <admin_system_config_changed_section_tax>
                 <observers>
-                    <avatax>
+                    <avataxar2>
                         <type>singleton</type>
                         <class>avataxar2/observer_adminSystemConfigChangedSectionTax</class>
                         <method>execute</method>
-                    </avatax>
+                    </avataxar2>
                 </observers>
             </admin_system_config_changed_section_tax>
             <avatax_make_request_before>
