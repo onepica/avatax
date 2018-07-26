@@ -62,4 +62,18 @@ class OnePica_AvaTaxAr2_Helper_Data extends Mage_Core_Helper_Abstract
 
         return implode(',', $nameParams);
     }
+
+    /**
+     * @param \Mage_Customer_Model_Customer $customer
+     * @return string
+     */
+    public function getCustomerNumber($customer)
+    {
+        $customerNumber = $customer->getData(OnePica_AvaTaxAr2_Helper_Data::AVATAX_CUSTOMER_CODE);
+        if (!$customerNumber) {
+            $customerNumber = $customer->getEmail();
+        }
+
+        return $customerNumber;
+    }
 }

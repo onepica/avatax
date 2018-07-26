@@ -26,10 +26,31 @@ class OnePica_AvaTaxAr2_Block_Total_Button extends Mage_Checkout_Block_Total_Def
     public function getPopupUrl()
     {
         if ($this->_getCustomerSession()->isLoggedIn()) {
-            return $this->getUrl('avataxcert/popup/genCert', array('customerNumber' => $this->getCustomerNumber()));
+            return $this->getUrl(
+                'avataxcert/popup/genCert', array(
+                    'customerId'     => $this->getCustomerId(),
+                    'customerNumber' => $this->getCustomerNumber()
+                )
+            );
         }
 
         return $this->getUrl('avataxcert/popup/loginMessage');
+    }
+
+    /**
+     * @return \Mage_Customer_Model_Customer
+     */
+    public function getCustomer()
+    {
+        return $this->_getCustomerSession()->getCustomer();
+    }
+
+    /**
+     * @return int|string
+     */
+    public function getCustomerId()
+    {
+        return $this->getCustomer()->getId();
     }
 
     /**
@@ -37,15 +58,23 @@ class OnePica_AvaTaxAr2_Block_Total_Button extends Mage_Checkout_Block_Total_Def
      */
     public function getCustomerNumber()
     {
-        return $this->getCustomer()->getData(OnePica_AvaTaxAr2_Helper_Data::AVATAX_CUSTOMER_CODE);
+        return $this->_getHelper()->getCustomerNumber($this->getCustomer());
     }
 
     /**
-     * @return int|string
+     * @return \Mage_Customer_Model_Session
      */
-    public function getCustomer()
+    protected function _getCustomerSession()
     {
-        return $this->_getCustomerSession()->getCustomer();
+        return Mage::getSingleton('customer/session');
+    }
+
+    /**
+     * @return \OnePica_AvaTaxAr2_Helper_Data
+     */
+    protected function _getHelper()
+    {
+        return Mage::helper('avataxar2');
     }
 
     /**
@@ -67,13 +96,5 @@ class OnePica_AvaTaxAr2_Block_Total_Button extends Mage_Checkout_Block_Total_Def
         }
 
         return $html;
-    }
-
-    /**
-     * @return \Mage_Customer_Model_Session
-     */
-    protected function _getCustomerSession()
-    {
-        return Mage::getSingleton('customer/session');
     }
 }

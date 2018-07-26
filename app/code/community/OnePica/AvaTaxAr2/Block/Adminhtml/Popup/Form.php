@@ -31,7 +31,7 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Popup_Form extends Mage_Core_Block_Templ
      */
     public function getUpdateUrl()
     {
-        return $this->getUrl('adminhtml/avaTaxAr2_popup/updateCustomerNumber');
+        return $this->getUrl('adminhtml/avaTaxAr2_popup/certCreateAfter');
     }
 
     /**
