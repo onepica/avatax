@@ -50,7 +50,7 @@ class OnePica_AvaTaxAr2_Model_Service_Ecom_Ping extends OnePica_AvaTaxAr2_Model_
         }
 
         $this->_log(
-            OnePica_AvaTaxAr2_Model_Source_Avatax_Logtype::PING,
+            OnePica_AvaTaxAr2_Model_Source_Avatax_Logtype::PING_ECOM,
             new stdClass(),
             $result,
             $storeId,
