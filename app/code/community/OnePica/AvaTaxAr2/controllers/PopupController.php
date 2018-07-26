@@ -73,12 +73,27 @@ class OnePica_AvaTaxAr2_PopupController extends Mage_Core_Controller_Front_Actio
      *
      * @throws \Zend_Controller_Response_Exception
      */
-    public function updateCertDateAction()
+    public function certCreateAfterAction()
     {
         $responseData = array();
 
         try {
             $this->_getAvataxSession()->setCertUpdatedDate(Mage::getModel('core/date')->date());
+
+            $customerId = $this->getRequest()->getPost('customerId');
+            $customerNumber = $this->getRequest()->getPost('customerNumber');
+
+            if (!$customerId || !$customerNumber) {
+                Mage::throwException('Required data is not set');
+            }
+
+            $customer = Mage::getModel('customer/customer')->load($customerId);
+            $customerNumAttr = $customer->getData(OnePica_AvaTaxAr2_Helper_Data::AVATAX_CUSTOMER_CODE, $customerNumber);
+
+            if ($customerNumAttr != $customerNumber) {
+                $customer->setData(OnePica_AvaTaxAr2_Helper_Data::AVATAX_CUSTOMER_CODE, $customerNumber);
+                $customer->save();
+            }
 
             $responseData['success'] = true;
         } catch (Exception $e) {

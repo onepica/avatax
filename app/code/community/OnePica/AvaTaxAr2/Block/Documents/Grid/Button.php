@@ -23,7 +23,20 @@ class OnePica_AvaTaxAr2_Block_Documents_Grid_Button extends Mage_Core_Block_Temp
      */
     public function getPopupUrl()
     {
-        return $this->getUrl('avataxcert/popup/genCert', array('customerNumber' => $this->getCustomerNumber()));
+        return $this->getUrl(
+            'avataxcert/popup/genCert', array(
+                'customerId'     => $this->getCustomerId(),
+                'customerNumber' => $this->getCustomerNumber()
+            )
+        );
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCustomerId()
+    {
+        return $this->_getSession()->getCustomer()->getId();
     }
 
     /**
@@ -31,7 +44,7 @@ class OnePica_AvaTaxAr2_Block_Documents_Grid_Button extends Mage_Core_Block_Temp
      */
     public function getCustomerNumber()
     {
-        return $this->_getSession()->getCustomer()->getData(OnePica_AvaTaxAr2_Helper_Data::AVATAX_CUSTOMER_CODE);
+        return $this->_getHelper()->getCustomerNumber($this->_getSession()->getCustomer());
     }
 
     /**
@@ -40,5 +53,13 @@ class OnePica_AvaTaxAr2_Block_Documents_Grid_Button extends Mage_Core_Block_Temp
     protected function _getSession()
     {
         return Mage::getSingleton('customer/session');
+    }
+
+    /**
+     * @return \OnePica_AvaTaxAr2_Helper_Data
+     */
+    protected function _getHelper()
+    {
+        return Mage::helper('avataxar2');
     }
 }

@@ -31,7 +31,15 @@ class OnePica_AvaTaxAr2_Block_Documents_Grid_Form extends Mage_Core_Block_Templa
      */
     public function getCustomerNumber()
     {
-        return $this->_getSession()->getCustomer()->getData(OnePica_AvaTaxAr2_Helper_Data::AVATAX_CUSTOMER_CODE);
+        return $this->_getHelper()->getCustomerNumber($this->_getSession()->getCustomer());
+    }
+
+    /**
+     * @return \OnePica_AvaTaxAr2_Helper_Data
+     */
+    protected function _getHelper()
+    {
+        return Mage::helper('avataxar2');
     }
 
     /**
