@@ -60,7 +60,7 @@ class OnePica_AvaTaxAr2_Model_Service_Avatax_Company extends OnePica_AvaTaxAr2_M
                 $this->getInclude(), $this->getFilter(), $this->getTop(), $this->getSkip(), $this->getOrderBy()
             );
 
-            $this->_company = $this->validateResponse($responseQuery)->getFirstItem();
+            $this->_company = $this->processResponse($responseQuery)->getFirstItem();
         }
 
         return $this->_company;

@@ -145,16 +145,9 @@ abstract class OnePica_AvaTaxAr2_Model_Service_Avatax_Abstract extends Varien_Ob
      * @throws \Mage_Core_Exception
      * @throws \Exception
      */
-    public function validateResponse($response)
+    public function processResponse($response)
     {
-        if (is_object($response) && isset($response->error)) {
-            if (isset($response->error->details[0]) && is_object($response->error->details[0])) {
-                $message = $response->error->details[0]->message . ": " . $response->error->details[0]->description;
-                Mage::throwException($message);
-            }
-
-            Mage::throwException($response->error->message);
-        }
+        $this->validateResponse($response);
 
         $items = array();
 
@@ -172,6 +165,20 @@ abstract class OnePica_AvaTaxAr2_Model_Service_Avatax_Abstract extends Varien_Ob
         }
 
         return $itemsCollection;
+    }
+
+    public function validateResponse($response)
+    {
+        if (is_object($response) && isset($response->error)) {
+            if (isset($response->error->details[0]) && is_object($response->error->details[0])) {
+                $message = $response->error->details[0]->message . ": " . $response->error->details[0]->description;
+                Mage::throwException($message);
+            }
+
+            Mage::throwException($response->error->message);
+        }
+
+        return $this;
     }
 
     /**

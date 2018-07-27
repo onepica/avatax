@@ -44,6 +44,12 @@
         </block>
     </adminhtml_avataxar2_popup_gencert>
 
+    <adminhtml_avataxar2_customer_savecustomertoavalara>
+        <reference name="content">
+            <block type="avataxar2/adminhtml_customer_savetoavalara" name ="admin.avataxar2.customer.saveToAvalara.container" />
+        </reference>
+    </adminhtml_avataxar2_customer_savecustomertoavalara>
+
     <!-- Cert additional scripts -->
     <avataxar2_cert_additional_scripts>
         <reference name="head">

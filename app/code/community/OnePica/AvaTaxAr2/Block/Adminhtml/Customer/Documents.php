@@ -63,6 +63,34 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents extends Mage_Adminhtm
 
         $this->_setFieldset($attributes, $fieldset);
 
+        $buttons = array();
+
+        array_push($buttons,
+            $fieldset->addField('send_invitation', 'button', array(
+                'label' => '', //Mage::helper('core')->__('Send e-mail to all registered customers'),
+                'value' => 'Send invitation e-mail to customer.', //Mage::helper('core')->__('Button Caption'),
+                'name'  => 'send-invitation',
+                'class' => 'form-button',
+                'onclick' => "debugger;
+                              var customerCode = $('avatax_customer_avatax_customer_exempt_number').value;
+                              var url = '{$this->getUrl('*/avaTaxAr2_customer/sendInvitation/id/' . $customer->getId())}customerCode/' + customerCode;
+                              setLocation(url);",
+            ))
+        );
+
+        array_push($buttons,
+            $fieldset->addField('save_customer_to_avalara', 'button', array(
+                'label' => '', //Mage::helper('core')->__('Send e-mail to all registered customers'),
+                'value' => 'Update customer information in Avalara.', //Mage::helper('core')->__('Button Caption'),
+                'name'  => 'save-customer-to-avalara',
+                'class' => 'form-button',
+                'onclick' => "debugger;
+                              var customerCode = $('avatax_customer_avatax_customer_exempt_number').value;
+                              var url = '{$this->getUrl('*/avaTaxAr2_customer/saveCustomerToAvalara/id/'. $customer->getId())}customerCode/' + customerCode;
+                              setLocation(url);",
+            ))
+        );
+
         if ($customer->isReadonly()) {
             foreach ($customer->getAttributes() as $attribute) {
                 $element = $form->getElement($attribute->getAttributeCode());
@@ -72,7 +100,12 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents extends Mage_Adminhtm
             }
         }
 
-        $form->setValues($customer->getData());
+        $values = array();
+        foreach ($buttons as $button) {
+            $values[$button->getData('html_id')] = $button->getValue();
+        }
+        $values = array_merge($values, $customer->getData());
+        $form->setValues($values);
 
         $this->setForm($form);
 
