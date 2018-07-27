@@ -16,7 +16,7 @@
 /**
  * Class OnePica_AvaTaxAr2_Block_Adminhtml_Popup_Form
  */
-class OnePica_AvaTaxAr2_Block_Adminhtml_Popup_Form extends Mage_Core_Block_Template
+class OnePica_AvaTaxAr2_Block_Adminhtml_Popup_Form extends Mage_Adminhtml_Block_Template
 {
     /**
      * @return string
@@ -55,6 +55,22 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Popup_Form extends Mage_Core_Block_Templ
             return $this->getRequest()->getParam('customerId');
         } catch (Exception $e) {
             return null;
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function getRegions()
+    {
+        try {
+            /** @var \Mage_Directory_Model_Region_Api $regionApiModel */
+            $regionApiModel = Mage::getModel('directory/region_api');
+            $regionApiItems = $regionApiModel->items('US');
+
+            return $regionApiItems ? $regionApiItems : array();
+        } catch (Exception $exception) {
+            return array();
         }
     }
 }
