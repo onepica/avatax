@@ -1,23 +1,36 @@
-<?php /** @var OnePica_AvaTaxAr2_Block_Popup_Form $this */ ?>
+<?php
+/** @var OnePica_AvaTaxAr2_Block_Popup_Form $this */
+$regions = $this->getRegions();
+?>
 
 <form id="avatax_certcapture_form_container" action="<?php echo $this->getTokenUrl() ?>"
       data-update-url="<?php echo $this->getUpdateUrl() ?>">
     <input type="hidden" id="customer_id" name="customer_id" value="<?php echo $this->getCustomerId() ?>"/>
     <input type="hidden" id="customer_number" name="customer_number" value="<?php echo $this->getCustomerNumber() ?>"/>
 
-    <div class="field shipping">
-        <label for="ship_zone" class="required"><?php echo $this->__('State/Province') ?></label>
-        <div class="input-box shipping-region">
-            <select id="ship_zone" name="ship_zone" title="<?php echo $this->__('State/Province') ?>"
-                    class="validate-select" required>
-                <option value=""><?php echo $this->__('Please select region, state or province') ?></option>
-                <?php foreach ($this->getRegions() as $region) : ?>
-                    <option value="<?php echo $region['name'] ?>"><?php echo $region['name'] ?></option>
-                <?php endforeach; ?>
-            </select>
+    <?php if ($regions) : ?>
+        <div class="field shipping">
+            <label for="ship_zone" class="required"><?php echo $this->__('State/Province') ?></label>
+            <div class="input-box shipping-region">
+                <select id="ship_zone" name="ship_zone" title="<?php echo $this->__('State/Province') ?>"
+                        class="validate-select" required>
+                    <option value=""><?php echo $this->__('Please select region, state or province') ?></option>
+                    <?php foreach ($this->getRegions() as $region) : ?>
+                        <option value="<?php echo $region['name'] ?>"><?php echo $region['name'] ?></option>
+                    <?php endforeach; ?>
+                </select>
 
+            </div>
         </div>
-    </div>
+    <?php else: ?>
+        <div class="field">
+            <label for="ship_zone" class="required"><?php echo $this->__('State'); ?></label>
+            <div class="input-box">
+                <input type="text" value="" name="ship_zone" id="ship_zone" required="required"/>
+            </div>
+        </div>
+    <?php endif; ?>
+
 
     <div id="avatax_certcapture_form_parent" style="display:none;"></div>
 
