@@ -25,6 +25,7 @@ AvaTaxCert.initApi = function (tokenUrl, updateUrl) {
     if (GenCert.getStatus() != 0) {
         GenCert.hide();
     }
+    $("avatax_certcapture_form_submit").addClassName('disabled').disable();
     var shipZone = $("ship_zone").value,
         customerId = $("customer_id").value,
         customerNumber = $("customer_number").value,
@@ -44,6 +45,10 @@ AvaTaxCert.initApi = function (tokenUrl, updateUrl) {
                 if (transport.responseText) {
                     var response = transport.responseText.evalJSON(true),
                         form = $("avatax_certcapture_form_container");
+
+                    $("avatax_certcapture_form_submit").hide();
+                    $("ship_zone").disable();
+
                     GenCert.init(formElement, {
                         token: response.token,
                         ship_zone: shipZone,
@@ -58,7 +63,7 @@ AvaTaxCert.initApi = function (tokenUrl, updateUrl) {
                                 });
                             }
 
-                            AvaTaxCert.updateCertDate(updateUrl, customerId, customerNumber);
+                            AvaTaxCert.certCreateAfter(updateUrl, customerId, customerNumber);
 
                             var closeButton = $("avatax_certcapture_form_close"),
                                 closeButtonText = closeButton.readAttribute("data-close-text"),
@@ -79,11 +84,6 @@ AvaTaxCert.initApi = function (tokenUrl, updateUrl) {
                     });
 
                     GenCert.show();
-                    $("avatax_certcapture_form_submit").hide();
-
-                    form.select("input").forEach(function (item, i) {
-                        item.disable();
-                    });
                 }
             } catch (e) {
                 console.log(e);
@@ -100,7 +100,7 @@ AvaTaxCert.initApi = function (tokenUrl, updateUrl) {
     });
 };
 
-AvaTaxCert.updateCertDate = function (updateUrl, customerId, customerNumber) {
+AvaTaxCert.certCreateAfter = function (updateUrl, customerId, customerNumber) {
     return new Ajax.Request(updateUrl, {
         method: "POST",
         parameters: {

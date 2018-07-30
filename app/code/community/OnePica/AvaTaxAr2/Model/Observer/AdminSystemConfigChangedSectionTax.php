@@ -34,7 +34,8 @@ class OnePica_AvaTaxAr2_Model_Observer_AdminSystemConfigChangedSectionTax extend
     public function execute(Varien_Event_Observer $observer)
     {
         if ($this->_getConfigHelper()->isEnabled()) {
-            $storeId = $observer->getEvent()->getStore();
+            $storeId = Mage::app()->getStore($observer->getEvent()->getStore())->getStoreId();
+
             $this->_addErrorsToSession($storeId);
         }
 

@@ -93,25 +93,31 @@ abstract class OnePica_AvaTaxAr2_Model_Service_Avatax_Abstract extends Varien_Ob
         $quoteId = $quoteData ? $quoteData->getQuoteId() : null;
         $quoteAddressId = $quoteData ? $quoteData->getQuoteAddressId() : null;
 
-//        if (in_array($type, $this->_getHelper()->getLogType($storeId))) {
-        Mage::getModel('avatax_records/log')
-            ->setStoreId($storeId)
-            ->setLevel($result->getResultCode())
-            ->setType($type)
-            ->setRequest(print_r($request, true))
-            ->setResult(print_r($result, true))
-            ->setAdditional($additional)
-            ->setSoapRequest($soapRequest)
-            ->setSoapRequestHeaders($soapRequestHeaders)
-            ->setSoapResult($soapResponse)
-            ->setSoapResultHeaders($soapResponseHeaders)
-            ->setQuoteId($quoteId)
-            ->setQuoteAddressId($quoteAddressId)
-            ->save();
-
-//        }
+        if (in_array($type, $this->_getAvataxHelper()->getLogType($storeId))) {
+            Mage::getModel('avatax_records/log')
+                ->setStoreId($storeId)
+                ->setLevel($result->getResultCode())
+                ->setType($type)
+                ->setRequest(print_r($request, true))
+                ->setResult(print_r($result, true))
+                ->setAdditional($additional)
+                ->setSoapRequest($soapRequest)
+                ->setSoapRequestHeaders($soapRequestHeaders)
+                ->setSoapResult($soapResponse)
+                ->setSoapResultHeaders($soapResponseHeaders)
+                ->setQuoteId($quoteId)
+                ->setQuoteAddressId($quoteAddressId)
+                ->save();
+        }
 
         return $this;
+    }
+
+    /**
+     * @return \OnePica_AvaTax_Helper_Data
+     */
+    protected function _getAvataxHelper(){
+        return Mage::helper('avatax');
     }
 
     /**

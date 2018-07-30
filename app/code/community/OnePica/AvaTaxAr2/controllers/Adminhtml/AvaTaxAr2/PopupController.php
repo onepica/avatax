@@ -83,7 +83,7 @@ class OnePica_AvaTaxAr2_Adminhtml_AvaTaxAr2_PopupController extends Mage_Adminht
      *
      * @throws \Zend_Controller_Response_Exception
      */
-    public function updateCustomerNumberAction()
+    public function certCreateAfterAction()
     {
         $responseData = array();
 
