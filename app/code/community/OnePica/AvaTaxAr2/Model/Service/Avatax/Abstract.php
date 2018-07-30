@@ -145,9 +145,9 @@ abstract class OnePica_AvaTaxAr2_Model_Service_Avatax_Abstract extends Varien_Ob
      * @throws \Mage_Core_Exception
      * @throws \Exception
      */
-    public function processResponse($response)
+    public function processResponse($response, $throwException = true)
     {
-        $this->validateResponse($response);
+        $this->validateResponse($response, $throwException);
 
         $items = array();
 
@@ -174,7 +174,9 @@ abstract class OnePica_AvaTaxAr2_Model_Service_Avatax_Abstract extends Varien_Ob
 
             $exception = new \OnePica_AvaTaxAr2_Exception($response);
             if ($throwError) {
-                throw $exception;
+                Mage::throwException($exception->getMessage());
+
+                //throw $exception;
             }
         }
 

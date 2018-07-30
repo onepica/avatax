@@ -22,6 +22,9 @@
  */
 class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_SaveToAvalara_Form extends Mage_Adminhtml_Block_Widget_Form
 {
+    /**
+     * OnePica_AvaTaxAr2_Block_Adminhtml_Customer_SaveToAvalara_Form constructor.
+     */
     public function __construct()
     {
         parent::__construct();
@@ -29,6 +32,9 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_SaveToAvalara_Form extends Mage
         $this->setId('saveCustomerToAvalara');
     }
 
+    /**
+     * @return Mage_Adminhtml_Block_Widget_Form
+     */
     protected function _prepareForm()
     {
         $model  = Mage::registry('save_customer_to_avalara');
@@ -156,6 +162,9 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_SaveToAvalara_Form extends Mage
         return parent::_prepareForm();
     }
 
+    /**
+     * @return Mage_Core_Helper_Abstract
+     */
     protected function _getHelper()
     {
         return Mage::helper('adminhtml');

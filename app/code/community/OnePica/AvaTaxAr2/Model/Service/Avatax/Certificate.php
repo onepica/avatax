@@ -64,7 +64,7 @@ class OnePica_AvaTaxAr2_Model_Service_Avatax_Certificate extends OnePica_AvaTaxA
             $this->getOrderBy()
         );
 
-        $this->_allCustomerCertificates = $this->processResponse($response);
+        $this->_allCustomerCertificates = $this->processResponse($response, false);
 
         return $this->_allCustomerCertificates;
     }

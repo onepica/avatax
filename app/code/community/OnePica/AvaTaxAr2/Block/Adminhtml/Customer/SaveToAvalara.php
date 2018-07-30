@@ -34,6 +34,9 @@
 
 class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_SaveToAvalara extends Mage_Adminhtml_Block_Widget_Container
 {
+    /**
+     * OnePica_AvaTaxAr2_Block_Adminhtml_Customer_SaveToAvalara constructor.
+     */
     public function __construct()
     {
         parent::__construct();
@@ -57,11 +60,17 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_SaveToAvalara extends Mage_Admi
         ), 1);
     }
 
+    /**
+     * @return mixed
+     */
     private function _getFormData()
     {
         return  Mage::registry('save_customer_to_avalara');
     }
 
+    /**
+     * @return string
+     */
     public function getHeaderText()
     {
         return $this->_getFormData()->getIsNew()
@@ -69,6 +78,9 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_SaveToAvalara extends Mage_Admi
                 : $this->_getHelper()->__('Update customer data  in Avalara.');
     }
 
+    /**
+     * @return Mage_Core_Block_Abstract
+     */
     protected function _prepareLayout()
     {
         $form = $this->getLayout()->createBlock('avataxar2/adminhtml_customer_saveToAvalara_form');
@@ -77,12 +89,18 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_SaveToAvalara extends Mage_Admi
         return parent::_prepareLayout();
     }
 
+    /**
+     * @return string
+     */
     public function getFormHtml()
     {
         $this->getChild('form')->setData('action', null);
         return $this->getChildHtml('form');
     }
 
+    /**
+     * @return Mage_Core_Helper_Abstract
+     */
     protected function _getHelper()
     {
         return Mage::helper('adminhtml');

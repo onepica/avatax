@@ -65,6 +65,8 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents extends Mage_Adminhtm
 
         $buttons = array();
 
+        /** @var OnePica_AvaTax_Helper_Config $avaHelper */
+        $avaHelper = Mage::helper('avatax/config');
         array_push($buttons,
             $fieldset->addField('send_invitation', 'button', array(
                 'label' => '', //Mage::helper('core')->__('Send e-mail to all registered customers'),
@@ -72,7 +74,7 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents extends Mage_Adminhtm
                 'name'  => 'send-invitation',
                 'class' => 'form-button',
                 'onclick' => "debugger;
-                              var customerCode = $('avatax_customer_avatax_customer_exempt_number').value;
+                              var customerCode = $('avatax_customer_{$avaHelper->getCustomerCodeFormatAttribute()}').value;
                               var url = '{$this->getUrl('*/avaTaxAr2_customer/sendInvitation/id/' . $customer->getId())}customerCode/' + customerCode;
                               setLocation(url);",
             ))
@@ -85,7 +87,7 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents extends Mage_Adminhtm
                 'name'  => 'save-customer-to-avalara',
                 'class' => 'form-button',
                 'onclick' => "debugger;
-                              var customerCode = $('avatax_customer_avatax_customer_exempt_number').value;
+                              var customerCode = $('avatax_customer_{$avaHelper->getCustomerCodeFormatAttribute()}').value;
                               var url = '{$this->getUrl('*/avaTaxAr2_customer/saveCustomerToAvalara/id/'. $customer->getId())}customerCode/' + customerCode;
                               setLocation(url);",
             ))
