@@ -1,0 +1,58 @@
+<?php
+/**
+ * Magento Enterprise Edition
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magento Enterprise Edition End User License Agreement
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.magento.com/license/enterprise-edition
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magento.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magento.com for more information.
+ *
+ * @category    Mage
+ * @package     Mage_Customer
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @license http://www.magento.com/license/enterprise-edition
+ */
+
+class OnePica_AvaTaxAr2_Exception extends Mage_Core_Exception
+{
+    protected $_responceCode = null;
+
+    public function __construct($response, Throwable $previous = null)
+    {
+        $message = '';
+
+        if (self::isResponseError($response)) {
+            if (isset($response->error->details[0]) && is_object($response->error->details[0])) {
+                $message = $response->error->details[0]->message . ": " . $response->error->details[0]->description;
+            } else {
+                $message = $response->error->message;
+            }
+
+            $this->_responceCode = $response->error->code;
+        }
+
+        parent::__construct($message, 0, $previous);
+    }
+
+    public function getResponseCode()
+    {
+        return $this->_responceCode;
+    }
+
+    public static function isResponseError($response)
+    {
+        return (is_object($response) && isset($response->error));
+    }
+
+}
