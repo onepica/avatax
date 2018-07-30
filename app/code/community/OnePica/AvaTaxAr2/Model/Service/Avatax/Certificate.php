@@ -184,11 +184,49 @@ class OnePica_AvaTaxAr2_Model_Service_Avatax_Certificate extends OnePica_AvaTaxA
      * @return \Varien_Data_Collection
      * @throws \Mage_Core_Exception
      */
-    public function getCustomer($customerCode, $store = null)
+    public function getCustomer($customerCode, $store = null, $throwError = true)
     {
         $client = $this->_getServiceConfig()->getClient($store);
 
         $response = $client->getCustomer($this->_getServiceCompany()->getCurrentCompanyId($store), $customerCode);
+
+        $exception = $this->validateResponse($response, $throwError);
+
+        return $exception ? $exception : Mage::getModel('avataxar2/service_avatax_model_customer', (array)$response);
+    }
+
+    /**
+     * @param $customer \OnePica_AvaTaxAr2_Model_Service_Avatax_Model_Customer
+     * @param null $store
+     * @return Varien_Object
+     * @throws Mage_Core_Exception
+     */
+    public function createCustomer($customer, $store = null)
+    {
+        $avaCustomer = $customer->toAvalaraCustomerModel();
+
+        $client = $this->_getServiceConfig()->getClient($store);
+
+        $response = $client->createCustomers($this->_getServiceCompany()->getCurrentCompanyId($store), array($avaCustomer));
+
+        $this->validateResponse($response);
+
+        return new \Varien_Object((array)$response);
+    }
+
+    /**
+     * @param $customer \OnePica_AvaTaxAr2_Model_Service_Avatax_Model_Customer
+     * @param null $store
+     * @return Varien_Object
+     * @throws Mage_Core_Exception
+     */
+    public function updateCustomer($customer, $store = null)
+    {
+        $avaCustomer = $customer->toAvalaraCustomerModel();
+
+        $client = $this->_getServiceConfig()->getClient($store);
+
+        $response = $client->updateCustomer($this->_getServiceCompany()->getCurrentCompanyId($store), $avaCustomer);
 
         $this->validateResponse($response);
 

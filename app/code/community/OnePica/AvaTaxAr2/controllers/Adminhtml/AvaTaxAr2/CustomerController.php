@@ -50,7 +50,17 @@ class OnePica_AvaTaxAr2_Adminhtml_AvaTaxAr2_CustomerController extends Mage_Admi
 
             /** @var Mage_Customer_Model_Customer $mageCustomer */
             $mageCustomer = Mage::getModel('customer/customer')->load($mageCustomerId);
-            $avaCustomer = $this->_getServiceCertificate()->getCustomer($customerCode);
+            $avaCustomer = $this->_getServiceCertificate()->getCustomer($customerCode, null, false);
+            if ($avaCustomer instanceof OnePica_AvaTaxAr2_Exception) {
+                /** @var  OnePica_AvaTaxAr2_Exception $exception */
+                $exception = $avaCustomer;
+                if($exception->getResponseCode() == 'EntityNotFoundError') {
+                    $this->_redirect('*/*/saveCustomerToAvalara', array('id' => $mageCustomer->getId(), 'customerCode' => null, 'need_invitation' => true));
+                    return $this;
+                } else {
+                    throw $exception;
+                }
+            }
             $company = $this->_getServiceCertificate()->getCompanyInfo();
 
 
@@ -66,11 +76,8 @@ class OnePica_AvaTaxAr2_Adminhtml_AvaTaxAr2_CustomerController extends Mage_Admi
             $this->_getCoreSession()->addError($ex->getMessage());
         }
 
-        //tab/customer_info_tabs_account/
-        //$url = $this->getUrl('*', array('active_tab'=>'customer_info_tabs_avataxar2_exemptions'));// . 'tab/customer_info_tabs_account/';
-        //$this->_redirectReferer($url);
-        $this->_redirectReferer();
-        //$this->_redirect('*/*/edit', array('_current'=>true, 'active_tab' => 'customers_tab'));
+        $this->_getCoreSession()->addSuccess($this->_getHelper()->__('Invitation sent.'));
+        $this->_redirect('*/customer/edit', array('id'=>$mageCustomer->getId(), 'tab' => 'customer_info_tabs_avataxar2_exemptions'));
 
         return $this;
     }
@@ -81,20 +88,29 @@ class OnePica_AvaTaxAr2_Adminhtml_AvaTaxAr2_CustomerController extends Mage_Admi
         {
             $mageCustomerId = $this->getRequest()->getParam('id');
             $customerCode = $this->getRequest()->getParam('customerCode');
+            $needInvitation = $this->getRequest()->getParam('need_invitation');
 
             /** @var Mage_Customer_Model_Customer $mageCustomer */
             $mageCustomer = Mage::getModel('customer/customer')->load($mageCustomerId);
-            $avaCustomer = null;
-            try {
-                $avaCustomer = $this->_getServiceCertificate()->getCustomer($customerCode);
-            } catch (Exception $exInner) {}
-            $company = $this->_getServiceCertificate()->getCompanyInfo();
+            if ($customerCode) {
+                $avaCustomer = $this->_getServiceCertificate()->getCustomer($customerCode, null, false);
+                if ($avaCustomer instanceof OnePica_AvaTaxAr2_Exception) {
+                    /** @var  OnePica_AvaTaxAr2_Exception $exception */
+                    $exception = $avaCustomer;
+                    if ($exception->getResponseCode() == 'EntityNotFoundError') {
+                        $avaCustomer = null;
+                    } else {
+                        throw $exception;
+                    }
+                }
+            }
 
             $data = new \Varien_Object(array(
                 'mage_customer' => $mageCustomer,
                 'customer_code' => $customerCode,
                 'ava_customer' => $avaCustomer,
-                'back_url' => 'some',
+                'back_url' => $this->getUrl('*/customer/edit', array('id'=>$mageCustomer->getId(), 'tab' => 'customer_info_tabs_avataxar2_exemptions')),
+                'need_invitation' => $needInvitation,
                 'is_new' => $avaCustomer == null
             ));
 
@@ -116,14 +132,18 @@ class OnePica_AvaTaxAr2_Adminhtml_AvaTaxAr2_CustomerController extends Mage_Admi
     {
         try
         {
+            $data = $this->getRequest()->getPost();
+            $model = Mage::getModel('avataxar2/service_avatax_model_customer')->setData($data);
+            $this->_getServiceCertificate()->createCustomer($model);
+
             $this->_getCoreSession()->addSuccess('Customer was successfully registered in Avalara.');
+
+            $this->_redirect('*/customer/edit', array('id'=>$data['mage_id'], 'tab' => 'customer_info_tabs_avataxar2_exemptions'));
         }
         catch (Exception $ex) {
             /* todo : use admin session instead of core session */
             $this->_getCoreSession()->addError($ex->getMessage());
         }
-
-        $this->_redirectReferer();
 
         return $this;
     }
@@ -132,14 +152,23 @@ class OnePica_AvaTaxAr2_Adminhtml_AvaTaxAr2_CustomerController extends Mage_Admi
     {
         try
         {
+            $data = $this->getRequest()->getPost();
+            $model = Mage::getModel('avataxar2/service_avatax_model_customer')->setData($data);
+            $this->_getServiceCertificate()->updateCustomer($model);
+
             $this->_getCoreSession()->addSuccess('Customer data was updated in Avalara.');
+
+            $customer = Mage::getModel('customer/customer');
+            $customer->setId($data['mage_id']);
+            $customer->setData('avatax_customer_code', $data['customer_code']);
+            $customer->getResource()->saveAttribute($customer, 'avatax_customer_code');
+
+            $this->_redirect('*/customer/edit', array('id'=>$data['mage_id'], 'tab' => 'customer_info_tabs_avataxar2_exemptions'));
         }
         catch (Exception $ex) {
             /* todo : use admin session instead of core session */
             $this->_getCoreSession()->addError($ex->getMessage());
         }
-
-        $this->_redirectReferer();
 
         return $this;
     }

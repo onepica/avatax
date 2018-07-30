@@ -26,7 +26,8 @@ class OnePica_AvaTaxAr2_Model_Observer_LoadAvaTaxExternalLib extends Mage_Core_M
 {
     protected static $_classesRestV2 = array(
         'AvaTaxClient',
-        'Avalara\AvaTaxRestV2\AvaTaxClient'
+        'Avalara\AvaTaxRestV2\AvaTaxClient',
+        'Avalara\AvaTaxRestV2\CustomerModel'
     );
 
     /**
