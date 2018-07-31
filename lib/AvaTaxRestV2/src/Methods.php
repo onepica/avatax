@@ -1822,6 +1822,7 @@ class AvaTaxClient extends AvaTaxClientBase
     public function updateCustomer($companyId, $customerCode, $model)
     {
         $path = "/api/v2/companies/{$companyId}/customers/{$customerCode}";
+        $model->companyId = $companyId;
         $guzzleParams = [
             'query' => [],
             'body' => json_encode($model)

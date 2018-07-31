@@ -63,8 +63,8 @@ class OnePica_AvaTaxAr2_Adminhtml_AvaTaxAr2_CustomerController extends Mage_Admi
             $needToRegister = false;
             if ($customerCode) {
                 $avaCustomer = $this->_getServiceCertificate()->getCustomer($customerCode, null, false);
-                if ($avaCustomer instanceof OnePica_AvaTaxAr2_Exception) {
-                    /** @var  OnePica_AvaTaxAr2_Exception $exception */
+                if ($avaCustomer instanceof OnePica_AvaTaxAr2_Exception_Response) {
+                    /** @var  OnePica_AvaTaxAr2_Exception_Response $exception */
                     $exception = $avaCustomer;
                     if ($exception->getResponseCode() == 'EntityNotFoundError') {
                         $needToRegister = true;
@@ -121,8 +121,8 @@ class OnePica_AvaTaxAr2_Adminhtml_AvaTaxAr2_CustomerController extends Mage_Admi
             $customerCode = $customerCode ? $customerCode : Mage::helper('avataxar2')->generateCustomerNumber($mageCustomer);
             if ($customerCode) {
                 $avaCustomer = $this->_getServiceCertificate()->getCustomer($customerCode, null, false);
-                if ($avaCustomer instanceof OnePica_AvaTaxAr2_Exception) {
-                    /** @var  OnePica_AvaTaxAr2_Exception $exception */
+                if ($avaCustomer instanceof OnePica_AvaTaxAr2_Exception_Response) {
+                    /** @var  OnePica_AvaTaxAr2_Exception_Response $exception */
                     $exception = $avaCustomer;
                     if ($exception->getResponseCode() == 'EntityNotFoundError') {
                         $avaCustomer = null;
