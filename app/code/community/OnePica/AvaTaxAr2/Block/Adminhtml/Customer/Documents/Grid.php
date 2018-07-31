@@ -250,7 +250,7 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents_Grid extends Mage_Adm
             )
         );
 
-        $customerId = $this->_getHelper()->getCustomerNumberEx($this->_getCustomer());
+        $customerId = $this->_getHelper()->getCustomerNumber($this->_getCustomer());
 
         $actionParams = array(
             '\'$id\'',
@@ -293,7 +293,7 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents_Grid extends Mage_Adm
 
         $data = array(
             'customerId'   => $this->_getCustomer()->getId(),
-            'customerCode' => $this->_getHelper()->getCustomerNumberEx($this->_getCustomer()),
+            'customerCode' => $this->_getHelper()->getCustomerNumber($this->_getCustomer()),
             'activeTab'    => $this->getRequest()->getParam('tab')
         );
         $this->getMassactionBlock()->addItem(
@@ -320,7 +320,7 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents_Grid extends Mage_Adm
      */
     protected function _getCustomerNumberAttribute()
     {
-        return $this->_getHelper()->getCustomerNumberEx($this->_getCustomer());
+        return $this->_getHelper()->getCustomerNumber($this->_getCustomer());
     }
 
     /**

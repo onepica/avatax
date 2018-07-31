@@ -88,10 +88,10 @@ class OnePica_AvaTaxAr2_PopupController extends Mage_Core_Controller_Front_Actio
             }
 
             $customer = Mage::getModel('customer/customer')->load($customerId);
-            $customerNumAttr = $this->_getHelper()->getCustomerNumberEx($customer, $customerNumber);
+            $customerNumAttr = $this->_getHelper()->getCustomerNumber($customer, $customerNumber);
 
             if ($customerNumAttr != $customerNumber) {
-                $this->_getHelper()->setCustomerNumberEx($customer, $customerNumber);
+                $this->_getHelper()->setCustomerNumber($customer, $customerNumber);
                 $customer->save();
             }
 

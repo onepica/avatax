@@ -81,7 +81,7 @@ class OnePica_AvaTaxAr2_Helper_Data extends Mage_Core_Helper_Abstract
      * @param $customerNumber
      * @return mixed
      */
-    public function getCustomerNumberEx($customer, $customerNumber = null)
+    public function getCustomerNumber($customer, $customerNumber = null)
     {
         $store = $customer->getStore();
         $result = $customer->getData($this->getConfig()->getCustomerCodeFormatAttribute($store), $customerNumber);
@@ -93,7 +93,7 @@ class OnePica_AvaTaxAr2_Helper_Data extends Mage_Core_Helper_Abstract
      * @param $customerNumber
      * @return mixed
      */
-    public function setCustomerNumberEx($customer, $customerNumber)
+    public function setCustomerNumber($customer, $customerNumber)
     {
         $store = $customer->getStore();
         return $customer->setData($this->getConfig()->getCustomerCodeFormatAttribute($store), $customerNumber);

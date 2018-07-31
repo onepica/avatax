@@ -96,7 +96,7 @@ class OnePica_AvaTaxAr2_Adminhtml_AvaTaxAr2_PopupController extends Mage_Adminht
             }
 
             $customer = Mage::getModel('customer/customer')->load($customerId);
-            $this->_getHelper()->setCustomerNumberEx($customerNumber, $customerNumber);
+            $this->_getHelper()->setCustomerNumber($customerNumber, $customerNumber);
             $customer->save();
 
             $responseData['success'] = true;

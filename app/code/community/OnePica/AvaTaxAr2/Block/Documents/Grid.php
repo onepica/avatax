@@ -75,7 +75,7 @@ class OnePica_AvaTaxAr2_Block_Documents_Grid extends Mage_Core_Block_Template
      */
     public function getCustomerNumber()
     {
-        return $this->_getHelper()->getCustomerNumberEx($this->getCustomer());
+        return $this->_getHelper()->getCustomerNumber($this->getCustomer());
     }
 
     /**
