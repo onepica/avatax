@@ -77,6 +77,7 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_SaveToAvalara_Form extends Mage
                 'label' => $this->_getHelper()->__('Customer Code'),
                 'class' => 'required-entry',
                 'value' => $model->getCustomerCode(),
+                'disabled'  => true,
                 'required' => true,
             )
         );
@@ -143,7 +144,7 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_SaveToAvalara_Form extends Mage
             'title'     => $this->_getHelper()->__('Country'),
             'required'  => true,
             'value'     => $countryCode,
-            //'disabled'  => true,
+            'disabled'  => true,
             'values'    => $countryList,
             'onchange'  => "AvaTaxCertCustomerForm.onCountryChanged();"
         ));
