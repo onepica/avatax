@@ -36,6 +36,8 @@ class OnePica_AvaTaxAr2_Exception_Response extends Mage_Core_Exception
                 $message = $response->error->message;
             }
 
+            $message = $this->_getHelper()->__('AvaTax Document Management. ') . $message;
+
             $this->_responceCode = $response->error->code;
         }
 
@@ -59,6 +61,14 @@ class OnePica_AvaTaxAr2_Exception_Response extends Mage_Core_Exception
     public static function isResponseError($response)
     {
         return (is_object($response) && isset($response->error));
+    }
+
+    /**
+     * @return \OnePica_AvaTaxAr2_Helper_Data
+     */
+    protected function _getHelper()
+    {
+        return Mage::helper('avataxar2');
     }
 
 }
