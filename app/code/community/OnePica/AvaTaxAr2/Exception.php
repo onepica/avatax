@@ -26,33 +26,5 @@
 
 class OnePica_AvaTaxAr2_Exception extends Mage_Core_Exception
 {
-    protected $_responceCode = null;
-
-    public function __construct($response, Throwable $previous = null)
-    {
-        $message = '';
-
-        if (self::isResponseError($response)) {
-            if (isset($response->error->details[0]) && is_object($response->error->details[0])) {
-                $message = $response->error->details[0]->message . ": " . $response->error->details[0]->description;
-            } else {
-                $message = $response->error->message;
-            }
-
-            $this->_responceCode = $response->error->code;
-        }
-
-        parent::__construct($message, 0, $previous);
-    }
-
-    public function getResponseCode()
-    {
-        return $this->_responceCode;
-    }
-
-    public static function isResponseError($response)
-    {
-        return (is_object($response) && isset($response->error));
-    }
 
 }

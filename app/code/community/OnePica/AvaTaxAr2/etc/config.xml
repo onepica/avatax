@@ -159,6 +159,17 @@
                 </admin>
             </resources>
         </acl>
+        <events>
+            <model_config_data_save_before>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avataxar2/observer_adminSystemConfigSaveBefore</class>
+                        <method>execute</method>
+                    </avatax>
+                </observers>
+            </model_config_data_save_before>
+        </events>
     </adminhtml>
     <frontend>
         <layout>

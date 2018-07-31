@@ -176,9 +176,9 @@ abstract class OnePica_AvaTaxAr2_Model_Service_Avatax_Abstract extends Varien_Ob
     public function validateResponse($response, $throwError = true)
     {
         $exception = null;
-        if(OnePica_AvaTaxAr2_Exception::isResponseError($response)) {
+        if(OnePica_AvaTaxAr2_Exception_Response::isResponseError($response)) {
 
-            $exception = new \OnePica_AvaTaxAr2_Exception($response);
+            $exception = new \OnePica_AvaTaxAr2_Exception_Response($response);
             if ($throwError) {
                 Mage::throwException($exception->getMessage());
 
