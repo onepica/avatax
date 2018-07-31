@@ -88,10 +88,10 @@ class OnePica_AvaTaxAr2_PopupController extends Mage_Core_Controller_Front_Actio
             }
 
             $customer = Mage::getModel('customer/customer')->load($customerId);
-            $customerNumAttr = $customer->getData(OnePica_AvaTaxAr2_Helper_Data::AVATAX_CUSTOMER_CODE, $customerNumber);
+            $customerNumAttr = $this->_getHelper()->getCustomerNumberEx($customer, $customerNumber);
 
             if ($customerNumAttr != $customerNumber) {
-                $customer->setData(OnePica_AvaTaxAr2_Helper_Data::AVATAX_CUSTOMER_CODE, $customerNumber);
+                $this->_getHelper()->setCustomerNumberEx($customer, $customerNumber);
                 $customer->save();
             }
 
@@ -119,5 +119,13 @@ class OnePica_AvaTaxAr2_PopupController extends Mage_Core_Controller_Front_Actio
     protected function _getCoreHelper()
     {
         return Mage::helper('core');
+    }
+
+    /**
+     * @return \OnePica_AvaTaxAr2_Helper_Data
+     */
+    protected function _getHelper()
+    {
+        return Mage::helper('avataxar2');
     }
 }

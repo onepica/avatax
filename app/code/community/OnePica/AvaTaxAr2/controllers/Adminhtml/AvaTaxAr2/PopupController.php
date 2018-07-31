@@ -96,7 +96,7 @@ class OnePica_AvaTaxAr2_Adminhtml_AvaTaxAr2_PopupController extends Mage_Adminht
             }
 
             $customer = Mage::getModel('customer/customer')->load($customerId);
-            $customer->setData(OnePica_AvaTaxAr2_Helper_Data::AVATAX_CUSTOMER_CODE, $customerNumber);
+            $this->_getHelper()->setCustomerNumberEx($customerNumber, $customerNumber);
             $customer->save();
 
             $responseData['success'] = true;
@@ -115,5 +115,13 @@ class OnePica_AvaTaxAr2_Adminhtml_AvaTaxAr2_PopupController extends Mage_Adminht
     protected function _getCoreHelper()
     {
         return Mage::helper('core');
+    }
+
+    /**
+     * @return \OnePica_AvaTaxAr2_Helper_Data
+     */
+    protected function _getHelper()
+    {
+        return Mage::helper('avataxar2');
     }
 }
