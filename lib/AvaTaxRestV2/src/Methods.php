@@ -8298,4 +8298,14 @@ class AvaTaxClient extends AvaTaxClientBase
         return $this->restCall($path, 'GET', $guzzleParams);
     }
 
+    public function sendCoverLetter($companyId, $customerCode, $letterType, $letterInfo)
+    {
+        $path = "/api/v2/companies/{$companyId}/customers/{$customerCode}/{$letterType}";
+        $guzzleParams = [
+            'query' => [],
+            'body' => json_encode(array($letterInfo))
+        ];
+
+        return $this->restCall($path, 'POST', $guzzleParams);
+    }
 }

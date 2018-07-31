@@ -64,7 +64,7 @@ class OnePica_AvaTaxAr2_Model_Service_Avatax_Certificate extends OnePica_AvaTaxA
             $this->getOrderBy()
         );
 
-        $this->_allCustomerCertificates = $this->validateResponse($response);
+        $this->_allCustomerCertificates = $this->processResponse($response, false);
 
         return $this->_allCustomerCertificates;
     }
@@ -93,7 +93,7 @@ class OnePica_AvaTaxAr2_Model_Service_Avatax_Certificate extends OnePica_AvaTaxA
             $this->getOrderBy()
         );
 
-        $this->_certificates = $this->validateResponse($response);
+        $this->_certificates = $this->processResponse($response);
 
         return $this->_certificates;
     }
@@ -140,7 +140,7 @@ class OnePica_AvaTaxAr2_Model_Service_Avatax_Certificate extends OnePica_AvaTaxA
             $this->_getServiceCompany()->getCurrentCompanyId($store), $id, $model
         );
 
-        return $this->validateResponse($response);
+        return $this->processResponse($response);
     }
 
     /**
@@ -157,7 +157,7 @@ class OnePica_AvaTaxAr2_Model_Service_Avatax_Certificate extends OnePica_AvaTaxA
             $this->_getServiceCompany()->getCurrentCompanyId($store), $id, $this->getInclude()
         );
 
-        return $this->validateResponse($response);
+        return $this->processResponse($response);
     }
 
     /**
@@ -176,6 +176,89 @@ class OnePica_AvaTaxAr2_Model_Service_Avatax_Certificate extends OnePica_AvaTaxA
         }
 
         return $customerCodes;
+    }
+
+    /**
+     * @param  int                                 $id
+     * @param  null|bool|int|Mage_Core_Model_Store $store
+     * @return \Varien_Data_Collection
+     * @throws \Mage_Core_Exception
+     */
+    public function getCustomer($customerCode, $store = null, $throwError = true)
+    {
+        $client = $this->_getServiceConfig()->getClient($store);
+
+        $response = $client->getCustomer($this->_getServiceCompany()->getCurrentCompanyId($store), $customerCode);
+
+        $exception = $this->validateResponse($response, $throwError);
+
+        return $exception ? $exception : Mage::getModel('avataxar2/service_avatax_model_customer', (array)$response);
+    }
+
+    /**
+     * @param $customer \OnePica_AvaTaxAr2_Model_Service_Avatax_Model_Customer
+     * @param null $store
+     * @return Varien_Object
+     * @throws Mage_Core_Exception
+     */
+    public function createCustomer($customer, $store = null)
+    {
+        $avaCustomer = $customer->toAvalaraCustomerModel();
+
+        $client = $this->_getServiceConfig()->getClient($store);
+
+        $response = $client->createCustomers($this->_getServiceCompany()->getCurrentCompanyId($store), array($avaCustomer));
+
+        $this->validateResponse($response);
+
+        return new \Varien_Object((array)$response);
+    }
+
+    /**
+     * @param $customer \OnePica_AvaTaxAr2_Model_Service_Avatax_Model_Customer
+     * @param null $store
+     * @return Varien_Object
+     * @throws Mage_Core_Exception
+     */
+    public function updateCustomer($customer, $store = null)
+    {
+        $avaCustomer = $customer->toAvalaraCustomerModel();
+
+        $client = $this->_getServiceConfig()->getClient($store);
+
+        $response = $client->updateCustomer($this->_getServiceCompany()->getCurrentCompanyId($store), $avaCustomer->customerCode, $avaCustomer);
+
+        $this->validateResponse($response);
+
+        return new \Varien_Object((array)$response);
+    }
+
+    public function getCompanyInfo($store = null)
+    {
+        $client = $this->_getServiceConfig()->getClient($store);
+
+        $response = $client->getCompany($this->_getServiceCompany()->getCurrentCompanyId($store));
+
+        $this->validateResponse($response);
+
+        return new \Varien_Object((array)$response);
+    }
+
+    public function sendCertExpressInvite($companyId, $customerCode, $email, $store = null)
+    {
+        $client = $this->_getServiceConfig()->getClient($store);
+
+        $letterInfo = array(
+            'recipient' => $email,
+            'coverLetterTitle' => 'STANDARD_REQUEST',
+            'deliveryMethod' => 'Email'
+        );
+
+        $response = $client->sendCoverLetter($companyId, $customerCode, 'certexpressinvites', $letterInfo);
+
+        $this->validateResponse($response);
+
+        return new \Varien_Object((array)$response);
     }
 
     /**

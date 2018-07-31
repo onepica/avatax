@@ -63,6 +63,36 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents extends Mage_Adminhtm
 
         $this->_setFieldset($attributes, $fieldset);
 
+        $buttons = array();
+
+        /** @var OnePica_AvaTax_Helper_Config $avaHelper */
+        $avaHelper = Mage::helper('avatax/config');
+        array_push($buttons,
+            $fieldset->addField('send_invitation', 'button', array(
+                'label' => '',
+                'value' => $avaHelper->__('Send invitation e-mail to customer.'),
+                'name'  => 'send-invitation',
+                'class' => 'form-button',
+                'onclick' => "
+                              var customerCode = $('avatax_customer_{$avaHelper->getCustomerCodeFormatAttribute()}').value;
+                              var url = '{$this->getUrl('*/avaTaxAr2_customer/sendInvitation/id/' . $customer->getId())}customerCode/' + customerCode;
+                              setLocation(url);",
+            ))
+        );
+
+        array_push($buttons,
+            $fieldset->addField('save_customer_to_avalara', 'button', array(
+                'label' => '',
+                'value' => $avaHelper->__('Save customer information to Avalara.'),
+                'name'  => 'save-customer-to-avalara',
+                'class' => 'form-button',
+                'onclick' => "
+                              var customerCode = $('avatax_customer_{$avaHelper->getCustomerCodeFormatAttribute()}').value;
+                              var url = '{$this->getUrl('*/avaTaxAr2_customer/saveCustomerToAvalara/id/'. $customer->getId())}customerCode/' + customerCode;
+                              setLocation(url);",
+            ))
+        );
+
         if ($customer->isReadonly()) {
             foreach ($customer->getAttributes() as $attribute) {
                 $element = $form->getElement($attribute->getAttributeCode());
@@ -72,7 +102,12 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents extends Mage_Adminhtm
             }
         }
 
-        $form->setValues($customer->getData());
+        $values = array();
+        foreach ($buttons as $button) {
+            $values[$button->getData('html_id')] = $button->getValue();
+        }
+        $values = array_merge($values, $customer->getData());
+        $form->setValues($values);
 
         $this->setForm($form);
 
