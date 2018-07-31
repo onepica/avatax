@@ -33,21 +33,22 @@ class OnePica_AvaTaxAr2_Model_Observer_AdminCustomerSaveBefore extends OnePica_A
     public function execute(Varien_Event_Observer $observer)
     {
         try {
-            /** @var Mage_Customer_Model_Customer $customer */
-            $customer = $observer->getEvent()->getCustomer();
-            $customerCode = $this->_getHelper()->getCustomerNumber($customer);
+            if ($this->_getConfigHelper()->isEnabled()) {
+                /** @var Mage_Customer_Model_Customer $customer */
+                $customer = $observer->getEvent()->getCustomer();
+                $customerCode = $this->_getHelper()->getCustomerNumber($customer);
 
-            if ($customerCode) {
-                $avaCustomer = $this->_getServiceCertificate()->getCustomer($customerCode, null, false);
-                if ($avaCustomer instanceof OnePica_AvaTaxAr2_Exception_Response) {
-                    /** @var  OnePica_AvaTaxAr2_Exception_Response $exception */
-                    $exception = $avaCustomer;
-                    if ($exception->getResponseCode() == 'EntityNotFoundError') {
-                        $this->_getCoreSession()->addWarning($avaCustomer->getMessage());
+                if ($customerCode) {
+                    $avaCustomer = $this->_getServiceCertificate()->getCustomer($customerCode, null, false);
+                    if ($avaCustomer instanceof OnePica_AvaTaxAr2_Exception_Response) {
+                        /** @var  OnePica_AvaTaxAr2_Exception_Response $exception */
+                        $exception = $avaCustomer;
+                        if ($exception->getResponseCode() == 'EntityNotFoundError') {
+                            $this->_getCoreSession()->addWarning($avaCustomer->getMessage());
+                        }
                     }
                 }
             }
-
         } catch (Exception $ex) {
             //hide all errors
         }
@@ -62,6 +63,16 @@ class OnePica_AvaTaxAr2_Model_Observer_AdminCustomerSaveBefore extends OnePica_A
     {
         return Mage::helper('avataxar2');
     }
+
+
+    /**
+     * @return \OnePica_AvaTaxAr2_Helper_Config
+     */
+    protected function _getConfigHelper()
+    {
+        return Mage::helper('avataxar2/config');
+    }
+
 
     /**
      * Get Core Session
