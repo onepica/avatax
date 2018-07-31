@@ -65,7 +65,7 @@ class OnePica_AvaTaxAr2_Helper_Data extends Mage_Core_Helper_Abstract
      * @param \Mage_Customer_Model_Customer $customer
      * @return string
      */
-    public function getCustomerNumber($customer)
+    public function getCustomerNumberOrGenerate($customer)
     {
         $store = $customer->getStore();
         $customerNumber = $customer->getData($this->getConfig()->getCustomerCodeFormatAttribute($store));

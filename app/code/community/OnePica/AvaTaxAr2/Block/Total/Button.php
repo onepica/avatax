@@ -29,7 +29,7 @@ class OnePica_AvaTaxAr2_Block_Total_Button extends Mage_Checkout_Block_Total_Def
             return $this->getUrl(
                 'avataxcert/popup/genCert', array(
                     'customerId'     => $this->getCustomerId(),
-                    'customerNumber' => $this->getCustomerNumber()
+                    'customerNumber' => $this->getCustomerNumberOrGenerate()
                 )
             );
         }
@@ -56,9 +56,9 @@ class OnePica_AvaTaxAr2_Block_Total_Button extends Mage_Checkout_Block_Total_Def
     /**
      * @return int|string
      */
-    public function getCustomerNumber()
+    public function getCustomerNumberOrGenerate()
     {
-        return $this->_getHelper()->getCustomerNumber($this->getCustomer());
+        return $this->_getHelper()->getCustomerNumberOrGenerate($this->getCustomer());
     }
 
     /**

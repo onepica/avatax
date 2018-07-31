@@ -53,7 +53,7 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents_Grid extends Mage_Adm
         $url = $this->getUrl(
             'adminhtml/avaTaxAr2_popup/genCert', array(
                 'customerId'     => $this->_getCustomer()->getId(),
-                'customerNumber' => $this->_getCustomerNumber()
+                'customerNumber' => $this->_getCustomerNumberOrGenerate()
             )
         );
         $this->setChild(
@@ -326,9 +326,9 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents_Grid extends Mage_Adm
     /**
      * @return string
      */
-    protected function _getCustomerNumber()
+    protected function _getCustomerNumberOrGenerate()
     {
-        return $this->_getHelper()->getCustomerNumber($this->_getCustomer());
+        return $this->_getHelper()->getCustomerNumberOrGenerate($this->_getCustomer());
     }
 
     /**

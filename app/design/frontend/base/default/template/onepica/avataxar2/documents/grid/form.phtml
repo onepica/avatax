@@ -5,7 +5,7 @@
     <div class="input-box">
         <label for="customer_number"><?php echo $this->__('Customer Number') ?>: <span class="required"></span></label>
         <input type="text" class="input-text required-entry" title="<?php echo $this->__('Customer Number') ?>"
-               name="customer_number" id="customer_number" value="<?php echo $this->getCustomerNumber() ?>" required>
+               name="customer_number" id="customer_number" value="<?php echo $this->getCustomerNumberOrGenerate() ?>" required>
     </div>
     <div class="actions">
         <button type="submit" title="<?php echo $this->__('Submit') ?>"
