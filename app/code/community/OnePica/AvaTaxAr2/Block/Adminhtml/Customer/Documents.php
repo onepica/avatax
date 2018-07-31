@@ -69,11 +69,11 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents extends Mage_Adminhtm
         $avaHelper = Mage::helper('avatax/config');
         array_push($buttons,
             $fieldset->addField('send_invitation', 'button', array(
-                'label' => '', //Mage::helper('core')->__('Send e-mail to all registered customers'),
-                'value' => 'Send invitation e-mail to customer.', //Mage::helper('core')->__('Button Caption'),
+                'label' => '',
+                'value' => $avaHelper->__('Send invitation e-mail to customer.'),
                 'name'  => 'send-invitation',
                 'class' => 'form-button',
-                'onclick' => "debugger;
+                'onclick' => "
                               var customerCode = $('avatax_customer_{$avaHelper->getCustomerCodeFormatAttribute()}').value;
                               var url = '{$this->getUrl('*/avaTaxAr2_customer/sendInvitation/id/' . $customer->getId())}customerCode/' + customerCode;
                               setLocation(url);",
@@ -82,11 +82,11 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents extends Mage_Adminhtm
 
         array_push($buttons,
             $fieldset->addField('save_customer_to_avalara', 'button', array(
-                'label' => '', //Mage::helper('core')->__('Send e-mail to all registered customers'),
-                'value' => 'Update customer information in Avalara.', //Mage::helper('core')->__('Button Caption'),
+                'label' => '',
+                'value' => $avaHelper->__('Save customer information to Avalara.'),
                 'name'  => 'save-customer-to-avalara',
                 'class' => 'form-button',
-                'onclick' => "debugger;
+                'onclick' => "
                               var customerCode = $('avatax_customer_{$avaHelper->getCustomerCodeFormatAttribute()}').value;
                               var url = '{$this->getUrl('*/avaTaxAr2_customer/saveCustomerToAvalara/id/'. $customer->getId())}customerCode/' + customerCode;
                               setLocation(url);",

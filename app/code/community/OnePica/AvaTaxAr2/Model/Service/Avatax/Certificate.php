@@ -226,7 +226,7 @@ class OnePica_AvaTaxAr2_Model_Service_Avatax_Certificate extends OnePica_AvaTaxA
 
         $client = $this->_getServiceConfig()->getClient($store);
 
-        $response = $client->updateCustomer($this->_getServiceCompany()->getCurrentCompanyId($store), $avaCustomer);
+        $response = $client->updateCustomer($this->_getServiceCompany()->getCurrentCompanyId($store), $avaCustomer->customerCode, $avaCustomer);
 
         $this->validateResponse($response);
 

@@ -131,24 +131,38 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_SaveToAvalara_Form extends Mage
             )
         );
 
-        $fieldset->addField('country', 'text',
-            array(
-                'name'      => 'country',
-                'label'     => $this->_getHelper()->__('Country'),
-                'class'     => 'required-entry',
-                'value'     => ($model->getAvaCustomer()) ? $model->getAvaCustomer()->getCountry() : '',
-                'required'  => true,
-            )
-        );
+        $countryCode = ($model->getAvaCustomer()) ? $model->getAvaCustomer()->getCountry() : null;
+        $countryCode = ($countryCode) ? $countryCode : 'US';
+        $countryList = Mage::getModel('directory/country')
+            ->getResourceCollection()
+            ->loadByStore()
+            ->toOptionArray($this->_getHelper()->__('-- Please select --'));
+        $fieldset->addField('country', 'select', array(
+            'name'      => 'country',
+            'label'     => $this->_getHelper()->__('Country'),
+            'title'     => $this->_getHelper()->__('Country'),
+            'required'  => true,
+            'value'     => $countryCode,
+            //'disabled'  => true,
+            'values'    => $countryList,
+            'onchange'  => "AvaTaxCertCustomerForm.onCountryChanged();"
+        ));
 
-        $fieldset->addField('region', 'text',
-            array(
-                'name'      => 'region',
-                'label'     => $this->_getHelper()->__('Region'),
-                'class'     => 'required-entry',
-                'value'     => ($model->getAvaCustomer()) ? $model->getAvaCustomer()->getRegion() : '',
-                'required'  => true,
-            )
+        $regionCode = ($model->getAvaCustomer()) ? $model->getAvaCustomer()->getRegion() : '';
+        $regionList = $this->_getRegions($countryCode, $this->_getHelper()->__('-- Please select --'));
+        $fieldset->addField('regions', 'select', array(
+            'name'      => 'regions',
+            'label'     => $this->_getHelper()->__('Region'),
+            'title'     => $this->_getHelper()->__('Region'),
+            'value'     => $regionCode,
+            'values'    => $regionList,
+            'onchange'  => "$('region').value = this.value"
+        ))->setAfterElementHtml(
+            "<input id='region' name='region' value='{$regionCode}' class='required-entry input-text required-entry' type='text' style=''/>"
+            ."<script type='text/javascript'>
+                var actionUrl ='{$this->getUrl('*/json/countryRegion')}';
+                AvaTaxCertCustomerForm.init(actionUrl, 'country', 'regions', 'region');
+              </script>"
         );
 
         $saveUrl = $model->getIsNew()
@@ -168,5 +182,31 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_SaveToAvalara_Form extends Mage
     protected function _getHelper()
     {
         return Mage::helper('adminhtml');
+    }
+
+    /**
+     * @return array
+     */
+    protected function _getRegions($countryCode, $emptyLabel = '')
+    {
+        try {
+            /** @var \Mage_Directory_Model_Region_Api $regionApiModel */
+            $regionApiModel = Mage::getModel('directory/region_api');
+            $regionApiItems = $regionApiModel->items($countryCode);
+
+            $result = array();
+            foreach ($regionApiItems as $item) {
+                if(!$result) {
+                    // push empty first
+                    array_push($result, array('value' => null, 'label' => $emptyLabel));
+                }
+
+                array_push($result, array('value' => $item['code'], 'label' => $item['name']));
+            }
+
+            return $result;
+        } catch (Exception $exception) {
+            return array();
+        }
     }
 }

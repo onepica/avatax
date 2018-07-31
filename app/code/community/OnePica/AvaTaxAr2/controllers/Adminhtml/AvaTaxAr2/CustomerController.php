@@ -59,17 +59,28 @@ class OnePica_AvaTaxAr2_Adminhtml_AvaTaxAr2_CustomerController extends Mage_Admi
 
             /** @var Mage_Customer_Model_Customer $mageCustomer */
             $mageCustomer = Mage::getModel('customer/customer')->load($mageCustomerId);
-            $avaCustomer = $this->_getServiceCertificate()->getCustomer($customerCode, null, false);
-            if ($avaCustomer instanceof OnePica_AvaTaxAr2_Exception) {
-                /** @var  OnePica_AvaTaxAr2_Exception $exception */
-                $exception = $avaCustomer;
-                if ($exception->getResponseCode() == 'EntityNotFoundError') {
-                    $this->_redirect('*/*/saveCustomerToAvalara', array('id' => $mageCustomer->getId(), 'customerCode' => $customerCode, 'need_invitation' => true));
-                    return $this;
-                } else {
-                    throw $exception;
+
+            $needToRegister = false;
+            if ($customerCode) {
+                $avaCustomer = $this->_getServiceCertificate()->getCustomer($customerCode, null, false);
+                if ($avaCustomer instanceof OnePica_AvaTaxAr2_Exception) {
+                    /** @var  OnePica_AvaTaxAr2_Exception $exception */
+                    $exception = $avaCustomer;
+                    if ($exception->getResponseCode() == 'EntityNotFoundError') {
+                        $needToRegister = true;
+                    } else {
+                        throw $exception;
+                    }
                 }
+            } else {
+                $needToRegister = true;
             }
+
+            if ($needToRegister) {
+                $this->_redirect('*/*/saveCustomerToAvalara', array('id' => $mageCustomer->getId(), 'customerCode' => $customerCode, 'need_invitation' => true));
+                return $this;
+            }
+
             $company = $this->_getServiceCertificate()->getCompanyInfo();
 
             $result = $this->_getServiceCertificate()
