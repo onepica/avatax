@@ -75,7 +75,7 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_SaveToAvalara extends Mage_Admi
     {
         return $this->_getFormData()->getIsNew()
                 ? $this->_getHelper()->__('Registration in Avalara.')
-                : $this->_getHelper()->__('Update customer data  in Avalara.');
+                : $this->_getHelper()->__('Update Customer Information in Avalara.');
     }
 
     /**

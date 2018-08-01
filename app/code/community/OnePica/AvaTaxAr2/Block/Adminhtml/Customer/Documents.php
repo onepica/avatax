@@ -83,7 +83,7 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents extends Mage_Adminhtm
         array_push($buttons,
             $fieldset->addField('save_customer_to_avalara', 'button', array(
                 'label' => '',
-                'value' => $avaHelper->__('Save customer information to Avalara.'),
+                'value' => $avaHelper->__('Update Customer Information in Avalara.'),
                 'name'  => 'save-customer-to-avalara',
                 'class' => 'form-button',
                 'onclick' => "

@@ -29,8 +29,8 @@ use Avalara\AvaTaxRestV2\SeverityLevel;
  * @method string getName()
  * @method string setName()
  *
- * @method string getEmail()
- * @method string setEmail()
+ * @method string getEmailAddress()
+ * @method string setEmailAddress()
  *
  * @method string getLine1()
  * @method string setLine1()
@@ -59,7 +59,7 @@ class OnePica_AvaTaxAr2_Model_Service_Avatax_Model_Customer extends Varien_Objec
             $this->setId($model->getId());
             $this->setCustomerCode($model->customerCode);
             $this->setName($model->name);
-            $this->setEmail($model->emailAddress);
+            $this->setEmailAddress($model->emailAddress);
             $this->setLine1($model->line1);
             $this->setCity($model->city);
             $this->setCountry($model->country);
@@ -82,7 +82,7 @@ class OnePica_AvaTaxAr2_Model_Service_Avatax_Model_Customer extends Varien_Objec
         $avaCustomer = new \Avalara\AvaTaxRestV2\CustomerModel();
         $avaCustomer->customerCode = $this->getCustomerCode();
         $avaCustomer->name = $this->getName();
-        $avaCustomer->emailAddress = $this->getEmail();
+        $avaCustomer->emailAddress = $this->getEmailAddress();
         $avaCustomer->line1 = $this->getLine1();
         $avaCustomer->city = $this->getCity();
         $avaCustomer->country = $this->getCountry();

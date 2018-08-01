@@ -38,27 +38,51 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_SaveToAvalara_Form extends Mage
     protected function _prepareForm()
     {
         $model  = Mage::registry('save_customer_to_avalara');
+        $formData = new \Varien_Object(array());
+        if($model->getIsNew()) {
+            $formData = new \Varien_Object(array(
+                'mage_id' => $model->getMageCustomer()->getId(),
+                'customer_code' => $model->getCustomerCode(),
+                'name' => $model->getMageCustomer()->getName(),
+                'email_address' => $model->getMageCustomer()->getEmailAddress(),
+                'is_new' => $model->getIsNew()
+            ));
+        } else {
+            $formData = new \Varien_Object(array(
+                'id' => $model->getAvaCustomer()->getId(),
+                'mage_id' => $model->getMageCustomer()->getId(),
+                'customer_code' => $model->getCustomerCode(),
+                'name' => $model->getAvaCustomer()->getName(),
+                'email_address' => $model->getAvaCustomer()->getEmailAddress(),
+                'line1' => $model->getAvaCustomer()->getLine1(),
+                'city' => $model->getAvaCustomer()->getCity(),
+                'postal_code' => $model->getAvaCustomer()->getPostalCode(),
+                'country' => $model->getAvaCustomer()->getCountry(),
+                'region' => $model->getAvaCustomer()->getRegion(),
+                'is_new' => $model->getIsNew()
+            ));
+        }
         $form   = new Varien_Data_Form(array(
             'id'        => 'edit_form',
             'action'    => $this->getData('action'),
-            'method'    => 'post'
+            'method'    => 'post',
         ));
 
         $this->setTitle($model->getIsNew()
-            ? $this->_getHelper()->__('Register Customer in Avalara')
-            : $this->_getHelper()->__('Update Customer Information in Avalara')
+            ? $this->_getHelper()->__('Register Customer in Avalara.')
+            : $this->_getHelper()->__('Avalara Customer Information.')
         );
 
         $fieldset   = $form->addFieldset('base_fieldset', array(
             'legend'    => $model->getIsNew()
-                ? $this->_getHelper()->__('Register Customer in Avalara')
-                : $this->_getHelper()->__('Update Customer Information in Avalara')
+                ? $this->_getHelper()->__('Register Customer in Avalara.')
+                : $this->_getHelper()->__('Avalara Customer Information.')
         ));
 
         $fieldset->addField('id', 'hidden',
             array(
                 'name'      => 'id',
-                'value'     => $model->getAvaCustomer() ? $model->getAvaCustomer()->getId() : '',
+                'value'     => $formData->getId(),
                 'no_span'   => true
             )
         );
@@ -66,7 +90,7 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_SaveToAvalara_Form extends Mage
         $fieldset->addField('mage_id', 'hidden',
             array(
                 'name'      => 'mage_id',
-                'value'     => $model->getMageCustomer()->getId(),
+                'value'     => $formData->getMageId(),
                 'no_span'   => true
             )
         );
@@ -76,7 +100,7 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_SaveToAvalara_Form extends Mage
                 'name'  => 'customer_code',
                 'label' => $this->_getHelper()->__('Customer Code'),
                 'class' => 'required-entry',
-                'value' => $model->getCustomerCode(),
+                'value' => $formData->getCustomerCode(),
                 'readonly' => true,
                 'required' => true,
             )
@@ -87,7 +111,7 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_SaveToAvalara_Form extends Mage
                 'name'  => 'customer_code_label',
                 'label' => $this->_getHelper()->__('Customer Code'),
                 'class' => 'required-entry',
-                'value' => $model->getCustomerCode(),
+                'value' => $formData->getCustomerCode(),
                 'required' => true
             )
         );
@@ -97,17 +121,17 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_SaveToAvalara_Form extends Mage
                 'name'      => 'name',
                 'label'     => $this->_getHelper()->__('Name'),
                 'class'     => 'required-entry',
-                'value'     => $model->getMageCustomer()->getName(),
+                'value'     => $formData->getName(),
                 'required'  => true,
             )
         );
 
-        $fieldset->addField('customer_email', 'text',
+        $fieldset->addField('email_address', 'text',
             array(
-                'name'      => 'customer_email',
-                'label'     => $this->_getHelper()->__('Email'),
+                'name'      => 'email_address',
+                'label'     => $this->_getHelper()->__('Email Address'),
                 'class'     => 'required-entry',
-                'value'     => $model->getMageCustomer()->getEmail(),
+                'value'     => $formData->getEmailAddress(),
                 'required'  => true,
             )
         );
@@ -117,7 +141,7 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_SaveToAvalara_Form extends Mage
                 'name'      => 'line1',
                 'label'     => $this->_getHelper()->__('Address Line'),
                 'class'     => 'required-entry',
-                'value'     => ($model->getAvaCustomer()) ? $model->getAvaCustomer()->getLine1() : '',
+                'value'     => $formData->getLine1(),
                 'required'  => true,
             )
         );
@@ -127,7 +151,7 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_SaveToAvalara_Form extends Mage
                 'name'      => 'city',
                 'label'     => $this->_getHelper()->__('City'),
                 'class'     => 'required-entry',
-                'value'     => ($model->getAvaCustomer()) ? $model->getAvaCustomer()->getCity() : '',
+                'value'     => $formData->getCity(),
                 'required'  => true,
             )
         );
@@ -137,12 +161,12 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_SaveToAvalara_Form extends Mage
                 'name'      => 'postal_code',
                 'label'     => $this->_getHelper()->__('Postal Caode'),
                 'class'     => 'required-entry',
-                'value'     => ($model->getAvaCustomer()) ? $model->getAvaCustomer()->getPostalCode() : '',
+                'value'     => $formData->getPostalCode(),
                 'required'  => true,
             )
         );
 
-        $countryCode = ($model->getAvaCustomer()) ? $model->getAvaCustomer()->getCountry() : null;
+        $countryCode = $formData->getCountry();
         $countryCode = ($countryCode) ? $countryCode : 'US';
         $countryList = Mage::getModel('directory/country')
             ->getResourceCollection()
@@ -159,7 +183,7 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_SaveToAvalara_Form extends Mage
             'onchange'  => "AvaTaxCertCustomerForm.onCountryChanged();"
         ));
 
-        $regionCode = ($model->getAvaCustomer()) ? $model->getAvaCustomer()->getRegion() : '';
+        $regionCode = $formData->getRegion();
         $regionList = $this->_getRegions($countryCode, $this->_getHelper()->__('-- Please select --'));
         $fieldset->addField('regions', 'select', array(
             'name'      => 'regions',

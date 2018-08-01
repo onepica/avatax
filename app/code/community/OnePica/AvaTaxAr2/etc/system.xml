@@ -22,7 +22,7 @@
             <tab>sales</tab>
             <groups>
                 <avatax_document_management translate="label" module="avatax">
-                    <label>AvaTax document management</label>
+                    <label>AvaTax Document Management</label>
                     <sort_order>2</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
