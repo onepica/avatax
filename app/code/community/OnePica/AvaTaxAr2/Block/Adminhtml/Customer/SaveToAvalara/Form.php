@@ -44,7 +44,7 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_SaveToAvalara_Form extends Mage
                 'mage_id' => $model->getMageCustomer()->getId(),
                 'customer_code' => $model->getCustomerCode(),
                 'name' => $model->getMageCustomer()->getName(),
-                'email_address' => $model->getMageCustomer()->getEmailAddress(),
+                'email_address' => $model->getMageCustomer()->getEmail(),
                 'is_new' => $model->getIsNew()
             ));
         } else {
