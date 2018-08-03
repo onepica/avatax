@@ -51,7 +51,7 @@
             </action>
         </reference>
         <reference name="content">
-            <block type="avataxar2/adminhtml_customer_savetoavalara" name ="admin.avataxar2.customer.saveToAvalara.container" />
+            <block type="avataxar2/adminhtml_customer_saveToAvalara" name ="admin.avataxar2.customer.saveToAvalara.container" />
         </reference>
     </adminhtml_avataxar2_customer_savecustomertoavalara>
 
