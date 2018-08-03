@@ -56,7 +56,7 @@ class AvaTaxClientBase
         }
 
         // Configure the HTTP client
-        $this->client = new \Varien_Http_Client($env, $params);
+        $this->client = new \Zend_Http_Client($env, $params);
     }
 
     /**
@@ -131,7 +131,7 @@ class AvaTaxClientBase
             $uri->setQuery($params['query']);
 
             $this->client->setConfig($params);
-            if ($method == 'POST' && isset($params['body'])) {
+            if (in_array($method, array('POST', 'PUT')) && isset($params['body'])) {
                 $this->client->setRawData($params['body'], 'application/json');
             }
 
