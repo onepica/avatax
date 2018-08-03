@@ -86,7 +86,7 @@ class OnePica_AvaTaxAr2_Adminhtml_AvaTaxAr2_CustomerController extends Mage_Admi
             $result = $this->_getServiceCertificate()
                 ->sendCertExpressInvite(
                     $company->getId(),
-                    $avaCustomer->getData('customerCode'),
+                    $avaCustomer->getCustomerCode(),
                     $mageCustomer->getEmail()
                 );
 
