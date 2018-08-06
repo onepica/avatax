@@ -75,7 +75,7 @@ class OnePica_AvaTaxAr2_Block_Documents_Grid extends Mage_Core_Block_Template
      */
     public function getCustomerNumber()
     {
-        return $this->getCustomer()->getData(OnePica_AvaTaxAr2_Helper_Data::AVATAX_CUSTOMER_CODE);
+        return $this->_getHelper()->getCustomerNumber($this->getCustomer());
     }
 
     /**
@@ -117,6 +117,14 @@ class OnePica_AvaTaxAr2_Block_Documents_Grid extends Mage_Core_Block_Template
     protected function _getCoreSession()
     {
         return Mage::getSingleton('core/session');
+    }
+
+    /**
+     * @return \OnePica_AvaTaxAr2_Helper_Data
+     */
+    protected function _getHelper()
+    {
+        return Mage::helper('avataxar2');
     }
 
     /**

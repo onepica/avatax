@@ -44,7 +44,7 @@ class OnePica_AvaTaxAr2_DocumentsController extends Mage_Core_Controller_Front_A
         try {
             $docId = $this->getRequest()->getParam('document_id');
             $customer = $this->_getCustomerSession()->getCustomer();
-            $customerId = $customer->getData(OnePica_AvaTaxAr2_Helper_Data::AVATAX_CUSTOMER_CODE);
+            $customerId = $this->_getHelper()->getCustomerNumber($customer);
 
             $this->_getServiceCertificate()->deleteCertificate($docId, $customerId);
             $this->_getCoreSession()->addSuccess($this->__('Certificate with ID "%s" deleted successfully', $docId));
@@ -94,5 +94,13 @@ class OnePica_AvaTaxAr2_DocumentsController extends Mage_Core_Controller_Front_A
     protected function _getConfigHelper()
     {
         return Mage::helper('avataxar2/config');
+    }
+
+    /**
+     * @return \OnePica_AvaTaxAr2_Helper_Data
+     */
+    protected function _getHelper()
+    {
+        return Mage::helper('avataxar2');
     }
 }

@@ -22,8 +22,6 @@
  */
 class OnePica_AvaTaxAr2_Helper_Data extends Mage_Core_Helper_Abstract
 {
-    const AVATAX_CUSTOMER_CODE = 'avatax_customer_code';
-
     const AVATAX_CUSTOMER_DOCUMENTS_FORM_CODE = 'customer_avatax_exempt';
 
     /**
@@ -67,14 +65,48 @@ class OnePica_AvaTaxAr2_Helper_Data extends Mage_Core_Helper_Abstract
      * @param \Mage_Customer_Model_Customer $customer
      * @return string
      */
-    public function getCustomerNumber($customer)
+    public function getCustomerNumberOrGenerate($customer)
     {
-        $customerNumber = $customer->getData(OnePica_AvaTaxAr2_Helper_Data::AVATAX_CUSTOMER_CODE);
+        $store = $customer->getStore();
+        $customerNumber = $customer->getData($this->getConfig()->getCustomerCodeFormatAttribute($store));
         if (!$customerNumber) {
             $customerNumber = $this->generateCustomerNumber($customer);
         }
 
         return $customerNumber;
+    }
+
+    /**
+     * @param $customer
+     * @param $customerNumber
+     * @return mixed
+     */
+    public function getCustomerNumber($customer, $customerNumber = null)
+    {
+        $store = $customer->getStore();
+        $result = $customer->getData($this->getConfig()->getCustomerCodeFormatAttribute($store), $customerNumber);
+        return $result;
+    }
+
+    /**
+     * @param $customer
+     * @param $customerNumber
+     * @return mixed
+     */
+    public function setCustomerNumber($customer, $customerNumber)
+    {
+        $store = $customer->getStore();
+        return $customer->setData($this->getConfig()->getCustomerCodeFormatAttribute($store), $customerNumber);
+    }
+
+    /**
+     * Config
+     *
+     * @return OnePica_AvaTaxAr2_Helper_Config
+     */
+    public function getConfig()
+    {
+        return Mage::helper('avataxar2/config');
     }
 
     /**

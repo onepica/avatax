@@ -156,4 +156,16 @@ class OnePica_AvaTaxAr2_Helper_Config extends Mage_Core_Helper_Abstract
     {
         return Mage::getStoreConfig(self::XML_PATH_TO_ECOM_CLIENT_ID, $store);
     }
+
+    /**
+     * Get customer code format attribute
+     *
+     * @param int|Mage_Core_Model_Store $store
+     * @return string
+     */
+    public function getCustomerCodeFormatAttribute($store)
+    {
+        $avataxConfig = Mage::helper('avatax/config');
+        return $avataxConfig->getCustomerCodeFormatAttribute($store);
+    }
 }
