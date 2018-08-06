@@ -49,6 +49,12 @@ class OnePica_AvaTaxAr2_Helper_Config extends Mage_Core_Helper_Abstract
         $websiteId = Mage::app()->getRequest()->get('website');
         $storeId = Mage::app()->getRequest()->get('store');
 
+        /** @var OnePica_AvaTax_Helper_Data $avataxHelper */
+        $avataxHelper = Mage::helper('avatax');
+        if (!$avataxHelper->isServiceEnabled($storeId)) {
+            return false;
+        }
+
         if ($websiteId && !$storeId) {
             return (bool)Mage::app()->getWebsite($websiteId)->getConfig(self::XML_PATH_TO_ACTION);
         }

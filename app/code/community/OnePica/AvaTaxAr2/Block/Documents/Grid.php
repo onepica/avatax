@@ -118,4 +118,15 @@ class OnePica_AvaTaxAr2_Block_Documents_Grid extends Mage_Core_Block_Template
     {
         return Mage::getSingleton('core/session');
     }
+
+    /**
+     * @return bool
+     * @throws Mage_Core_Exception
+     */
+    public function isEnabled()
+    {
+        /** @var OnePica_AvaTaxAr2_Helper_Config $config */
+        $config = Mage::helper('avataxar2/config');
+        return $config->isEnabled();
+    }
 }
