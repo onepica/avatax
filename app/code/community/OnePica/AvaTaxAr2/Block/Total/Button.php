@@ -29,7 +29,7 @@ class OnePica_AvaTaxAr2_Block_Total_Button extends Mage_Checkout_Block_Total_Def
 
             $params = array(
                 'customerId'     => $this->getCustomerId(),
-                'customerNumber' => $this->getCustomerNumber()
+                'customerNumber' => $this->getCustomerNumberOrGenerate()
             );
             if (Mage::app()->getStore()->isCurrentlySecure()) {
                 $params['_secure'] = true;

@@ -64,11 +64,15 @@ class OnePica_AvaTaxAr2_Block_Popup_Form extends Mage_Core_Block_Template
     public function getRegions()
     {
         try {
-            /** @var \Mage_Directory_Model_Region_Api $regionApiModel */
-            $regionApiModel = Mage::getModel('directory/region_api');
-            $regionApiItems = $regionApiModel->items('US');
+            $country = Mage::getModel('directory/country')->loadByCode('US');
+            $result = array();
+            foreach ($country->getRegions() as $region) {
+                $item = $region->toArray(array('region_id', 'code', 'name'));
+                $item['name'] = isset($item['name']) ? $item['name'] : $region->getDefaultName();
+                $result[] = $item;
+            }
 
-            return $regionApiItems ? $regionApiItems : array();
+            return $result ? $result : array();
         } catch (Exception $exception) {
             return array();
         }
