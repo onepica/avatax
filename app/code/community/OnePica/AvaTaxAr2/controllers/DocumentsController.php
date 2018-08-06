@@ -32,10 +32,6 @@ class OnePica_AvaTaxAr2_DocumentsController extends Mage_Core_Controller_Front_A
      */
     public function gridAction()
     {
-        if (!$this->_getConfigHelper()->isEnabled()) {
-            $this->_redirect('customer/account');
-        }
-
         $this->loadLayout();
         $this->renderLayout();
     }
