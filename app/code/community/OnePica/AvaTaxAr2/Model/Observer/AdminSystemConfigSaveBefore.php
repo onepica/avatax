@@ -38,8 +38,19 @@ class OnePica_AvaTaxAr2_Model_Observer_AdminSystemConfigSaveBefore extends OnePi
             switch ($config->getSection()) {
                 case 'tax':
                     {
-                        $customerCodeFormat = $config->getData('groups/avatax/fields/cust_code_format/value');
-                        $isCertEnabled = (bool)$config->getData('groups/avatax_document_management/fields/action/value');
+                        $idDefaultStoreId = Mage::app()->getWebsite(true)->getDefaultGroup()->getDefaultStoreId();
+                        Mage::getModel('store/store');
+                        /** @var OnePica_AvaTax_Helper_Config $avaConfig */
+                        $avaConfig = Mage::helper('avatax/config');
+                        /** @var OnePica_AvaTaxAr2_Helper_Config $ar2Config */
+                        $ar2Config = Mage::helper('avataxar2/config');
+
+                        $customerCodeFormat = (bool)$config->getData('groups/avatax/fields/cust_code_format/inherit')
+                                                ? $avaConfig->getCustomerCodeFormat($idDefaultStoreId)
+                                                : $config->getData('groups/avatax/fields/cust_code_format/value');
+                        $isCertEnabled =  (bool) $config->getData('groups/avatax_document_management/fields/action/inherit')
+                                                ? $ar2Config->getStatusServiceAction($idDefaultStoreId)
+                                                : (bool)$config->getData('groups/avatax_document_management/fields/action/value');
                         if ($isCertEnabled && $customerCodeFormat != OnePica_AvaTax_Model_Source_Customercodeformat::CUST_ATTRIBUTE) {
                             throw new \OnePica_AvaTaxAr2_Exception(
                                 Mage::helper('avataxar2')->__(
