@@ -30,15 +30,20 @@ class OnePica_AvaTaxAr2_Exception_Response extends Mage_Core_Exception
         $message = '';
 
         if (self::isResponseError($response)) {
-            if (isset($response->error->details[0]) && is_object($response->error->details[0])) {
-                $message = $response->error->details[0]->message . ": " . $response->error->details[0]->description;
+            $prefix = $this->_getHelper()->__('AvaTax Document Management. ');
+            if(is_object($response)) {
+                if (isset($response->error->details[0]) && is_object($response->error->details[0])) {
+                    $message = $response->error->details[0]->message . ": " . $response->error->details[0]->description;
+                } else {
+                    $message = $response->error->message;
+                }
+
+                $message = $prefix . $message;
+
+                $this->_responceCode = $response->error->code;
             } else {
-                $message = $response->error->message;
+                $message = $prefix . $this->_getHelper()->__('Unexpected exception occurred.');
             }
-
-            $message = $this->_getHelper()->__('AvaTax Document Management. ') . $message;
-
-            $this->_responceCode = $response->error->code;
         }
 
         parent::__construct($message, 0, $previous);
@@ -60,7 +65,7 @@ class OnePica_AvaTaxAr2_Exception_Response extends Mage_Core_Exception
      */
     public static function isResponseError($response)
     {
-        return (is_object($response) && isset($response->error));
+        return !isset($response) || (is_object($response) && isset($response->error));
     }
 
     /**

@@ -90,14 +90,14 @@ class OnePica_AvaTaxAr2_Adminhtml_AvaTaxAr2_CustomerController extends Mage_Admi
                     $mageCustomer->getEmail()
                 );
 
-            $this->_saveCustomerCode($mageCustomer->getId(), $customerCode);
+            $this->_getCoreSession()->addSuccess($this->_getHelper()->__('Invitation sent.'));
 
+            $this->_saveCustomerCode($mageCustomer->getId(), $customerCode);
         } catch (Exception $ex) {
             /* todo : use admin session instead of core session */
             $this->_getCoreSession()->addError($ex->getMessage());
         }
 
-        $this->_getCoreSession()->addSuccess($this->_getHelper()->__('Invitation sent.'));
         $this->_redirect('*/customer/edit', array('id' => $mageCustomer->getId(), 'tab' => self::AVATAX_DOCUMENTS_TAB_CODE));
 
         return $this;
