@@ -280,7 +280,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     }
 
     /**
-     * HS Codes for countries grid action
+     * HS Codes for Countries grid action
      */
     public function hscodecountriesGridAction()
     {
@@ -291,7 +291,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     }
 
     /**
-     * HS Codes for countries mass delete action
+     * HS Codes for Countries mass delete action
      *
      * @return $this
      */
@@ -337,7 +337,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     }
 
     /**
-     * HS Codes for countries new action
+     * HS Codes for Countries new action
      */
     public function hscodecountriesNewAction()
     {
@@ -345,13 +345,13 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     }
 
     /**
-     * HS Codes for countries edit action
+     * HS Codes for Countries edit action
      */
     public function hscodecountriesEditAction()
     {
         $this->_setTitle($this->__('AvaTax'))
              ->_setTitle($this->__('Customs Duty'))
-             ->_setTitle($this->__('AvaTax HS Code for countries'));
+             ->_setTitle($this->__('AvaTax HS Codes for Countries'));
 
         $hsCodeId = $this->getRequest()->getParam('hs_code_id');
         $hsCodeCountryId = $this->getRequest()->getParam('id');
@@ -384,7 +384,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     }
 
     /**
-     * HS Codes for countries delete action
+     * HS Codes for Countries delete action
      */
     public function hscodecountriesDeleteAction()
     {

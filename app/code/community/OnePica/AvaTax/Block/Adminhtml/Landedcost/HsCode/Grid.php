@@ -38,6 +38,9 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_HsCode_Grid
                 'id'          => 'number',
                 'hs_code'     => 'varchar',
                 'description' => 'varchar',
+            ),
+            array(
+                'hs_code' => array('header' => Mage::helper('avatax')->__('HS Code Group'))
             )
         );
     }

@@ -65,7 +65,7 @@
                     <sort_order>30</sort_order>
                     <children>
                         <avatax_hscode translate="title" module="avatax">
-                            <title>HS Codes</title>
+                            <title>HS Code Group</title>
                             <action>adminhtml/avaTax_grid/hscode</action>
                             <resource>avatax</resource>
                             <sort_order>10</sort_order>
