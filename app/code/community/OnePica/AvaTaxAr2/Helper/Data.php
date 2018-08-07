@@ -69,7 +69,7 @@ class OnePica_AvaTaxAr2_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getCustomerNumberOrGenerate($customer)
     {
-        $store = $customer->getStore();
+        $store = Mage::app()->getStore();
         $customerNumber = $customer->getData($this->getConfig()->getCustomerCodeFormatAttribute($store));
         if (!$customerNumber) {
             $customerNumber = $this->generateCustomerNumber($customer);
@@ -85,7 +85,7 @@ class OnePica_AvaTaxAr2_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getCustomerNumber($customer, $customerNumber = null)
     {
-        $store = $customer->getStore();
+        $store = Mage::app()->getStore();
         $result = $customer->getData($this->getConfig()->getCustomerCodeFormatAttribute($store), $customerNumber);
         return $result;
     }
@@ -97,7 +97,7 @@ class OnePica_AvaTaxAr2_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function setCustomerNumber($customer, $customerNumber)
     {
-        $store = $customer->getStore();
+        $store = Mage::app()->getStore();
         return $customer->setData($this->getConfig()->getCustomerCodeFormatAttribute($store), $customerNumber);
     }
 
