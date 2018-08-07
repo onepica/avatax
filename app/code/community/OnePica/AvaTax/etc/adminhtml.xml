@@ -71,7 +71,7 @@
                             <sort_order>10</sort_order>
                         </avatax_hscode>
                         <avatax_unitsofmeasurement translate="title" module="avatax">
-                            <title>Units Of Measurement</title>
+                            <title>Parameters</title>
                             <action>adminhtml/avaTax_grid/unitsofmeasurement</action>
                             <resource>avatax</resource>
                             <sort_order>20</sort_order>

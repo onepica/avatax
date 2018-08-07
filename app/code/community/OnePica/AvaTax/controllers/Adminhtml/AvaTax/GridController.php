@@ -480,7 +480,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     }
 
     /**
-     * Units Of Measurement grid action
+     * Parameters grid action
      *
      * @return $this
      */
@@ -488,7 +488,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     {
         $this->_setTitle($this->__('AvaTax'))
              ->_setTitle($this->__('Customs Duty'))
-             ->_setTitle($this->__('AvaTax Units Of Measurement'));
+             ->_setTitle($this->__('AvaTax Parameters'));
 
         $this->loadLayout()
              ->_setActiveMenu('avatax/landedcost/avatax_unitsofmeasurement')
@@ -498,7 +498,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     }
 
     /**
-     * Units Of Measurement new action
+     * Parameters new action
      */
     public function unitsofmeasurementNewAction()
     {
@@ -506,13 +506,13 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     }
 
     /**
-     * Units Of Measurement edit action
+     * Parameters edit action
      */
     public function unitsofmeasurementEditAction()
     {
         $this->_setTitle($this->__('AvaTax'))
              ->_setTitle($this->__('Customs Duty'))
-             ->_setTitle($this->__('AvaTax Units Of Measurement'));
+             ->_setTitle($this->__('AvaTax Parameters'));
 
         $unitOfMeasurementId = $this->getRequest()->getParam('id');
         /** @var \OnePica_AvaTax_Model_Records_UnitOfMeasurement $unitOfMeasurementModel */
@@ -541,7 +541,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     }
 
     /**
-     * Units Of Measurement save action
+     * Parameters save action
      *
      * @throws \Varien_Exception
      */
@@ -580,7 +580,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     }
 
     /**
-     * Units Of Measurement delete action
+     * Parameters delete action
      */
     public function unitsofmeasurementDeleteAction()
     {
@@ -611,7 +611,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     }
 
     /**
-     * Units Of Measurement mass delete action
+     * Parameters mass delete action
      *
      * @return $this
      */
