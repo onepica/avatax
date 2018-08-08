@@ -45,7 +45,7 @@ class OnePica_AvaTax_Block_Adminhtml_Catalog_Product_Edit_Tab_LandedCost_Unit
     {
         $button = $this->getLayout()->createBlock('adminhtml/widget_button')
             ->setData(array(
-                'label' => Mage::helper('catalog')->__('Add Unit'),
+                'label' => Mage::helper('catalog')->__('Add Parameter'),
                 'onclick' => 'return lcUnitControl.addItem()',
                 'class' => 'add'
             ));

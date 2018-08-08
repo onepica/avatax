@@ -28,7 +28,7 @@ if (!$attribute->getId()) {
     $installer->addAttribute(
         'catalog_product', $attributeCode, array(
             'type'             => 'varchar',
-            'label'            => 'Unit',
+            'label'            => OnePica_AvaTax_Helper_LandedCost::AVATAX_PRODUCT_GROUP_LANDED_COST_LABEL,
             'input'            => 'text',
             'backend'          => 'avatax/catalog_product_attribute_backend_unit',
             'visible'          => 1,
