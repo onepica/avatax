@@ -18,6 +18,8 @@
  */
 class OnePica_AvaTaxAr2_Block_Popup_LoginMessage extends Mage_Core_Block_Template
 {
+    use OnePica_AvaTaxAr2_Block_Secure_Url;
+
     /**
      * @return string
      */
