@@ -138,7 +138,8 @@ class OnePica_AvaTax_Model_Catalog_Product_Attribute_Backend_Unit
 
         $collection = Mage::getModel('avatax_records/unitOfMeasurement')
             ->getCollection()
-            ->addFieldToFilter('id', array('in' => $ids));
+            ->addFieldToFilter('id', array('in' => $ids))
+            ->addFieldToFilter('avalara_measurement_type', array('eq' => 'AvaTax.Units.Mass'));
 
         $intersectUnitsByCountries = array();
         /** @var OnePica_AvaTax_Model_Records_UnitOfMeasurement $item */
