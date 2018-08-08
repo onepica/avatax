@@ -20,6 +20,8 @@ class OnePica_AvaTaxAr2_Block_Total_Button extends Mage_Checkout_Block_Total_Def
 {
     protected $_template = 'onepica/avataxar2/total/button.phtml';
 
+    use OnePica_AvaTaxAr2_Block_Secure_Url;
+
     /**
      * @return string
      */
@@ -31,9 +33,7 @@ class OnePica_AvaTaxAr2_Block_Total_Button extends Mage_Checkout_Block_Total_Def
                 'customerId'     => $this->getCustomerId(),
                 'customerNumber' => $this->getCustomerNumberOrGenerate()
             );
-            if (Mage::app()->getStore()->isCurrentlySecure()) {
-                $params['_secure'] = true;
-            }
+
             return $this->getUrl('avataxcert/popup/genCert', $params);
         }
 
