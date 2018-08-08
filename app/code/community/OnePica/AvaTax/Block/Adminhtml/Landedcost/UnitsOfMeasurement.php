@@ -29,10 +29,10 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement
     {
         $this->_blockGroup = 'avatax';
         $this->_controller = 'adminhtml_landedcost_unitsOfMeasurement';
-        $this->_headerText = $this->__('Units Of Measurement');
+        $this->_headerText = $this->__('Parameters');
 
         parent::__construct();
-        $this->_updateButton('add', 'label', $this->__('Add New Unit Of Measurement'));
+        $this->_updateButton('add', 'label', $this->__('Add New Parameter'));
     }
 
     /**

@@ -47,6 +47,9 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_HsCode_Edit_Tab_Countries_Grid
             array(
                 'id'            => 'number',
                 'hs_full_code'  => 'varchar',
+            ),
+            array(
+                'hs_full_code' => array('header' => Mage::helper('avatax')->__('HS Code'))
             )
         );
 

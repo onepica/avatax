@@ -13,7 +13,7 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_HsCode_Edit_Tab_Countries
         $this->_headerText = $this->__('HS code for countries');
 
         parent::__construct();
-        $this->_updateButton('add', 'label', $this->__('Add full HS code for countries'));
+        $this->_updateButton('add', 'label', $this->__('Add HS Code'));
     }
 
     /**
