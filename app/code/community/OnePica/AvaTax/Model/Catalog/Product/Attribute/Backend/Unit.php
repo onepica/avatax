@@ -109,6 +109,7 @@ class OnePica_AvaTax_Model_Catalog_Product_Attribute_Backend_Unit
                 }
             }
 
+            $this->_validateOnDuplicates($data);
             $this->_validateOnCountriesIntersection($data);
 
             $config = json_encode($data);
@@ -117,6 +118,44 @@ class OnePica_AvaTax_Model_Catalog_Product_Attribute_Backend_Unit
             if (!$object->hasData($attrCode) && $this->getDefaultValue()) {
                 $object->setData($attrCode, $this->getDefaultValue());
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param $data
+     * @return $this
+     * @throws Exception
+     */
+    protected function _validateOnDuplicates($data)
+    {
+        $duplicates = array();
+        $ids = array();
+        array_walk($data, function ($value, $key) use (&$ids, &$duplicates) {
+            $id = $value['unit_of_measurement'];
+            $ids[$id] = isset($ids[$id]) ? $ids[$id] + 1 : 1;
+            if ($ids[$id] > 1) {
+                $duplicates[] = $id;
+            }
+        });
+
+        if (count($duplicates) > 0) {
+            $collection = Mage::getModel('avatax_records/unitOfMeasurement')
+                ->getCollection()
+                ->addFieldToFilter('id', array('in' => $duplicates));
+
+            $titles = array();
+            /** @var OnePica_AvaTax_Model_Records_UnitOfMeasurement $item */
+            foreach ($collection as $item) {
+                $titles[] = $item->getDescription();
+            }
+
+            $message = Mage::helper('avatax')
+                ->__('%s has been configured few times. You have to choose only one accurate configuration.',
+                    implode(', ', $titles));
+
+            throw new \Exception($message);
         }
 
         return $this;
@@ -138,7 +177,8 @@ class OnePica_AvaTax_Model_Catalog_Product_Attribute_Backend_Unit
 
         $collection = Mage::getModel('avatax_records/unitOfMeasurement')
             ->getCollection()
-            ->addFieldToFilter('id', array('in' => $ids));
+            ->addFieldToFilter('id', array('in' => $ids))
+            ->addFieldToFilter('avalara_measurement_type', array('eq' => 'AvaTax.Units.Mass'));
 
         $intersectUnitsByCountries = array();
         /** @var OnePica_AvaTax_Model_Records_UnitOfMeasurement $item */
