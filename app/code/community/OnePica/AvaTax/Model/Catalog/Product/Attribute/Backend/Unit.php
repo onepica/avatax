@@ -180,7 +180,8 @@ class OnePica_AvaTax_Model_Catalog_Product_Attribute_Backend_Unit
         $collection = Mage::getModel('avatax_records/unitOfMeasurement')
             ->getCollection()
             ->addFieldToFilter('id', array('in' => $ids))
-            ->addFieldToFilter('avalara_measurement_type', array('eq' => 'AvaTax.Units.Mass'));
+            ->addFieldToFilter('avalara_measurement_type',
+                array('eq' => OnePica_AvaTax_Helper_LandedCost::AVATAX_PRODUCT_LANDED_COST_ATTR_UNIT_OF_MEASUREMENT_TYPE_MASS));
 
         return $collection;
     }
