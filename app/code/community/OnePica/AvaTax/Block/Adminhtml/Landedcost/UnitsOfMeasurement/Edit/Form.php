@@ -46,7 +46,7 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement_Edit_Form ext
         $fieldset->addField(
             'avalara_code', 'text', array(
                 'name'     => 'avalara_code',
-                'label'    => $this->__('UOM (optional)')
+                'label'    => $this->__('UOM')
             )
         );
 
