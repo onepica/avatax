@@ -79,7 +79,7 @@ class OnePica_AvaTax_Model_Catalog_Product_Attribute_Backend_Unit
         if (!empty($config)) {
             foreach ($config as $c) {
                 $ac = (array)$c;
-                $ac['unit']=(float)$ac['unit'];
+                $ac['unit']= isset($ac['unit']) ? (float)$ac['unit'] : null;
                 array_push($result, $ac);
             }
         }
@@ -104,12 +104,16 @@ class OnePica_AvaTax_Model_Catalog_Product_Attribute_Backend_Unit
             $data = array();
             foreach ($origin as $index => $item) {
                 if (empty($item['delete']) || $item['delete'] == 0) {
-                    $item['unit'] = round((float)$item['unit'], $helper->getUnitPrecision());
+                    $item['unit'] = isset($item['unit']) && $item['unit'] != '' ?  round((float)$item['unit'], $helper->getUnitPrecision()) : null;
                     array_push($data, $item);
                 }
             }
 
-            $this->_validateOnCountriesIntersection($data);
+            $this->_validateOnDuplicates($data);
+
+            $configuredUnits = $this->_getConfiguredUnits($data);
+            $this->_validateOnEmptyUnit($data, $configuredUnits);
+            $this->_validateOnCountriesIntersection($configuredUnits);
 
             $config = json_encode($data);
             $object->setData($attrCode, $config);
@@ -123,13 +127,50 @@ class OnePica_AvaTax_Model_Catalog_Product_Attribute_Backend_Unit
     }
 
     /**
-     * Validate units on countries intersection
-     *
      * @param $data
      * @return $this
      * @throws Exception
      */
-    protected function _validateOnCountriesIntersection($data)
+    protected function _validateOnDuplicates($data)
+    {
+        $duplicates = array();
+        $ids = array();
+        array_walk($data, function ($value, $key) use (&$ids, &$duplicates) {
+            $id = $value['unit_of_measurement'];
+            $ids[$id] = isset($ids[$id]) ? $ids[$id] + 1 : 1;
+            if ($ids[$id] > 1) {
+                $duplicates[] = $id;
+            }
+        });
+
+        if (count($duplicates) > 0) {
+            $collection = Mage::getModel('avatax_records/unitOfMeasurement')
+                ->getCollection()
+                ->addFieldToFilter('id', array('in' => $duplicates));
+
+            $titles = array();
+            /** @var OnePica_AvaTax_Model_Records_UnitOfMeasurement $item */
+            foreach ($collection as $item) {
+                $titles[] = $item->getDescription();
+            }
+
+            $message = Mage::helper('avatax')
+                ->__('%s has been configured few times. You have to choose only one accurate configuration.',
+                    implode(', ', $titles));
+
+            throw new \Exception($message);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get Configured Units (AvaTax.Units.Mass)
+     *
+     * @param $data
+     * @return OnePica_AvaTax_Model_Records_Mysql4_UnitOfMeasurement_Collection
+     */
+    protected function _getConfiguredUnits($data)
     {
         $ids = array();
         array_walk($data, function ($value, $key) use (&$ids) {
@@ -138,14 +179,60 @@ class OnePica_AvaTax_Model_Catalog_Product_Attribute_Backend_Unit
 
         $collection = Mage::getModel('avatax_records/unitOfMeasurement')
             ->getCollection()
-            ->addFieldToFilter('id', array('in' => $ids));
+            ->addFieldToFilter('id', array('in' => $ids))
+            ->addFieldToFilter('avalara_measurement_type',
+                array('eq' => OnePica_AvaTax_Helper_LandedCost::AVATAX_PRODUCT_LANDED_COST_ATTR_UNIT_OF_MEASUREMENT_TYPE_MASS));
 
+        return $collection;
+    }
+
+    /**
+     * @param $data
+     * @param $configuredUnits OnePica_AvaTax_Model_Records_Mysql4_UnitOfMeasurement_Collection
+     */
+    protected function _validateOnEmptyUnit($data, $configuredUnits)
+    {
+        $idsToCheck = array();
+        /** @var OnePica_AvaTax_Model_Records_UnitOfMeasurement $item */
+        foreach ($configuredUnits as $item) {
+            $idsToCheck[] = $item->getId();
+        }
+
+        $emptyUnits = array();
+        foreach ($data as $key => $value) {
+            $id = $value['unit_of_measurement'];
+            if (in_array($id, $idsToCheck) && (!isset($value['unit']))) {
+                $item = $configuredUnits->getItemById($id);
+                $emptyUnits[] = $item->getDescription();
+            }
+        }
+
+        if (count($emptyUnits) > 0) {
+            $message = Mage::helper('avatax')
+                ->__('Unit column value is required for %s.',
+                    implode(', ', $emptyUnits));
+
+            throw new \Exception($message);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Validate units on countries intersection
+     *
+     * @param $configuredUnits OnePica_AvaTax_Model_Records_Mysql4_UnitOfMeasurement_Collection
+     * @return $this
+     * @throws Exception
+     */
+    protected function _validateOnCountriesIntersection($configuredUnits)
+    {
         $intersectUnitsByCountries = array();
         /** @var OnePica_AvaTax_Model_Records_UnitOfMeasurement $item */
-        foreach ($collection as $item) {
+        foreach ($configuredUnits as $item) {
             $itemCountries = explode(',', $item->getCountryList());
             /** @var OnePica_AvaTax_Model_Records_UnitOfMeasurement $j */
-            foreach ($collection as $j) {
+            foreach ($configuredUnits as $j) {
                 if ($j->getId() == $item->getId()) {
                     continue;
                 }

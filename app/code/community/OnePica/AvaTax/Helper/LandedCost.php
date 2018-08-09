@@ -31,9 +31,19 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
     const AVATAX_PRODUCT_LANDED_COST_ATTR_HSCODE = 'avatax_lc_hs_code';
 
     /**
+     *  HS Code product attribute label
+     */
+    const AVATAX_PRODUCT_LANDED_COST_ATTR_HSCODE_LABEL = 'Parameter';
+
+    /**
      *  Product Unit of Measurement
      */
     const AVATAX_PRODUCT_LANDED_COST_ATTR_UNIT_OF_MEASUREMENT = 'avatax_lc_unit_of_measurement';
+
+    /**
+     * AvaTax.Units.Mass Parameter
+     */
+    const AVATAX_PRODUCT_LANDED_COST_ATTR_UNIT_OF_MEASUREMENT_TYPE_MASS = 'AvaTax.Units.Mass';
 
     /**
      *  Landed Cost product agreement
@@ -140,6 +150,11 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
         return $this->isSellerImporterOfRecord($storeId, $destinationCountry);
     }
 
+    /**
+     * @param null $storeId
+     * @param $destinationCountry
+     * @return bool
+     */
     public function isSellerImporterOfRecord($storeId = null, $destinationCountry)
     {
         $result = false;
@@ -450,5 +465,14 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
         }
 
         return false;
+    }
+
+    /**
+     * @param $unit OnePica_AvaTax_Model_Records_UnitOfMeasurement
+     * @return bool
+     */
+    public function isMassType($unit)
+    {
+       return $unit->getAvalaraMeasurementType() == self::AVATAX_PRODUCT_LANDED_COST_ATTR_UNIT_OF_MEASUREMENT_TYPE_MASS;
     }
 }

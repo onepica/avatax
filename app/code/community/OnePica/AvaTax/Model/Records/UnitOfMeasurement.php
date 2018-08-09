@@ -39,6 +39,13 @@
 class OnePica_AvaTax_Model_Records_UnitOfMeasurement extends Mage_Core_Model_Abstract
 {
     /**
+     * Event Handler Prefix
+     *
+     * @var string
+     */
+    protected $_eventPrefix = 'avatax_records_unitofmeasurement';
+
+    /**
      * Internal constructor
      */
     protected function _construct()

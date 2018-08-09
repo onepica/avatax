@@ -35,10 +35,10 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_HsCode_Edit_Tab_Countries_Edit_F
         $fieldset->addField(
             'hs_full_code', 'text', array(
                 'name'     => 'hs_full_code',
-                'label'    => $this->__('HS Code for countries'),
+                'label'    => $this->__('HS Code'),
                 'class'    => 'required-entry',
                 'required' => true,
-                'note'     => 'You can find full list of HS codes at <a href="https://www.avalara.com/hs-codes/">Avalara website</a>',
+                'note'     => 'You can find full list of HS Codes at <a href="https://www.avalara.com/hs-codes/">Avalara website</a>',
             )
         );
 
