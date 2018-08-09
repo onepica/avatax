@@ -33,7 +33,7 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
     /**
      *  HS Code product attribute label
      */
-    const AVATAX_PRODUCT_LANDED_COST_ATTR_HSCODE_LABEL = 'Parameter';
+    const AVATAX_PRODUCT_LANDED_COST_ATTR_UNIT_OF_MEASUREMENT_LABEL = 'Parameter';
 
     /**
      *  Product Unit of Measurement
