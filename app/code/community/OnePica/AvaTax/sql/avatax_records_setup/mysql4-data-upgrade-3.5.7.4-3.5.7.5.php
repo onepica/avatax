@@ -31,8 +31,8 @@ try {
     // add Kilogram
     $adapter->insert(
         $table, array(
-            'avalara_code'             => 'kg',
-            'avalara_measurement_type' => 'AvaTax.Units.Mass',
+            'avalara_code'             => 'Kilogram',
+            'avalara_measurement_type' => 'Mass',
             'description'              => $helper->__('Kilogram'),
             'country_list'             => $allCountriesExceptFew,
         )
@@ -41,8 +41,8 @@ try {
     // add Gram
     $adapter->insert(
         $table, array(
-            'avalara_code'             => 'g',
-            'avalara_measurement_type' => 'AvaTax.Units.Mass',
+            'avalara_code'             => 'Gram',
+            'avalara_measurement_type' => 'Mass',
             'description'              => $helper->__('Gram'),
             'country_list'             => $allCountriesExceptFew,
         )

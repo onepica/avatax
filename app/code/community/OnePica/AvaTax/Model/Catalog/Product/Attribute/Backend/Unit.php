@@ -165,7 +165,7 @@ class OnePica_AvaTax_Model_Catalog_Product_Attribute_Backend_Unit
     }
 
     /**
-     * Get Configured Units (AvaTax.Units.Mass)
+     * Get Configured Units (Mass)
      *
      * @param $data
      * @return OnePica_AvaTax_Model_Records_Mysql4_UnitOfMeasurement_Collection
@@ -177,11 +177,14 @@ class OnePica_AvaTax_Model_Catalog_Product_Attribute_Backend_Unit
             array_push($ids, $value['unit_of_measurement']);
         });
 
+        /** @var OnePica_AvaTax_Helper_LandedCost $helper */
+        $helper = Mage::helper('avatax/landedCost');
+
         $collection = Mage::getModel('avatax_records/unitOfMeasurement')
             ->getCollection()
             ->addFieldToFilter('id', array('in' => $ids))
             ->addFieldToFilter('avalara_measurement_type',
-                array('eq' => OnePica_AvaTax_Helper_LandedCost::AVATAX_PRODUCT_LANDED_COST_ATTR_UNIT_OF_MEASUREMENT_TYPE_MASS));
+                array('eq' => $helper->getMassType()));
 
         return $collection;
     }

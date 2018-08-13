@@ -41,11 +41,6 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
     const AVATAX_PRODUCT_LANDED_COST_ATTR_UNIT_OF_MEASUREMENT = 'avatax_lc_unit_of_measurement';
 
     /**
-     * AvaTax.Units.Mass Parameter
-     */
-    const AVATAX_PRODUCT_LANDED_COST_ATTR_UNIT_OF_MEASUREMENT_TYPE_MASS = 'AvaTax.Units.Mass';
-
-    /**
      *  Landed Cost product agreement
      */
     const AVATAX_PRODUCT_LANDED_COST_AGREEMENT = 'avatax_lc_agreement';
@@ -97,6 +92,9 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
 
     /** Landed cost tax subtypes */
     const XML_PATH_TO_AVATAX_LANDED_COST_TAX_SUBTYPES = 'tax/avatax_landed_cost/landed_cost_tax_subtypes';
+
+    /** Landed param type Mass */
+    const XML_PATH_TO_AVATAX_LANDED_COST_PARAM_TYPE_MASS = 'tax/avatax_landed_cost/param_type_mass';
 
     /**
      * Default Unit Of Measurement
@@ -473,6 +471,16 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
      */
     public function isMassType($unit)
     {
-       return $unit->getAvalaraMeasurementType() == self::AVATAX_PRODUCT_LANDED_COST_ATTR_UNIT_OF_MEASUREMENT_TYPE_MASS;
+       return $unit->getAvalaraMeasurementType() == $this->getMassType();
+    }
+
+    /**
+     * Get Mass Type
+     *
+     * @return string
+     */
+    public function getMassType()
+    {
+        return (string)Mage::getStoreConfig(self::XML_PATH_TO_AVATAX_LANDED_COST_PARAM_TYPE_MASS);
     }
 }
