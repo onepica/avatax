@@ -29,6 +29,9 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement_Edit_Form ext
      */
     protected function _prepareForm()
     {
+        /** @var OnePica_AvaTax_Helper_LandedCost $helper */
+        $helper = Mage::helper('avatax/landedCost');
+
         $form = new Varien_Data_Form(
             array(
                 'id'     => 'edit_form',
@@ -55,7 +58,7 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement_Edit_Form ext
                 'name'     => 'avalara_measurement_type',
                 'label'    => $this->__('Parameter'),
                 'class'    => 'required-entry',
-                'note'     => $this->__('For example "AvaTax.Units.Mass"'),
+                'note'     => $this->__('For example "%s"', $helper->getMassType()),
                 'required' => true
             )
         );
