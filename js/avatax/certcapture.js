@@ -143,7 +143,7 @@ AvaTaxCert.showPopup = function (url, title) {
 };
 
 AvaTaxCert.delete = function (certId, customerId, url, jsObject) {
-    var confirmation = confirm("Are you shure?");
+    var confirmation = confirm("Are you sure?");
     if (!confirmation) {
         return;
     }

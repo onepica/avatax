@@ -39,7 +39,7 @@ class OnePica_AvaTaxAr2_Model_Observer_AdminSystemConfigSaveBefore extends OnePi
                 case 'tax':
                     {
                         $idDefaultStoreId = Mage::app()->getWebsite(true)->getDefaultGroup()->getDefaultStoreId();
-                        Mage::getModel('store/store');
+
                         /** @var OnePica_AvaTax_Helper_Config $avaConfig */
                         $avaConfig = Mage::helper('avatax/config');
                         /** @var OnePica_AvaTaxAr2_Helper_Config $ar2Config */

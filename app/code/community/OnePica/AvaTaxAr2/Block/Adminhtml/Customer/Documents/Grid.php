@@ -311,7 +311,8 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents_Grid extends Mage_Adm
                         'caption'  => $this->__('Download'),
                         'url'      => $pdfUrl,
                         'field'    => 'id',
-                        'download' => $this->_getConfigHelper()->getClientId() . '_$id.pdf'
+                        'target'   => '_blank',
+                        'download' => '$filename'
                     ),
                 ),
             )
