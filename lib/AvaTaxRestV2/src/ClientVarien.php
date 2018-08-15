@@ -8,8 +8,13 @@ namespace Avalara\AvaTaxRestV2;
  */
 class AvaTaxClientBase
 {
-    /**  @var \Varien_Http_Client The client to use to connect to AvaTax $client */
+    /**  @var \Zend_Http_Client The client to use to connect to AvaTax $client */
     private $client;
+
+    /**
+     * @var callable
+     */
+    public $_logsCallback;
 
     /** @var array The authentication credentials to use to connect to AvaTax $auth */
     private $auth;
@@ -165,6 +170,9 @@ class AvaTaxClientBase
         } catch (\Exception $e) {
             return $e->getMessage();
         }
+        finally {
+            call_user_func_array($this->_logsCallback, array());
+        }
     }
 
     /**
@@ -187,5 +195,13 @@ class AvaTaxClientBase
         } catch (\Exception $e) {
             return $e->getMessage();
         }
+    }
+
+    /**
+     * @return \Zend_Http_Client
+     */
+    public function getClient()
+    {
+        return $this->client;
     }
 }
