@@ -1,5 +1,7 @@
 <?php
+
 namespace Avalara\AvaTaxRestV2;
+
 /**
  * Base AvaTaxClient object that handles connectivity to the AvaTax v2 API server.
  * This class is overridden by the descendant AvaTaxClient which implements all the API methods.
@@ -107,38 +109,77 @@ class AvaTaxClientBase
      * @param string $method     The HTTP verb being used in this request
      * @param array  $params     The parameters for this request, including query string and body parameters
      * @return mixed|string
+     * @throws \Zend_Http_Client_Exception
+     */
+    protected function _httpRequest($apiUriPath, $method, $params, $headers)
+    {
+        // Contact the server
+        $this->client->setHeaders(
+            'X-Avalara-Client', "{$this->appName}; {$this->appVersion}; PhpRestClient; 17.5.0-67; {$this->machineName}"
+        );
+
+        foreach ($headers as $key => $value) {
+            $this->client->setHeaders($key, $value);
+        }
+
+        // Set authentication on the parameters
+        if (count($this->auth) == 2) {
+            $this->client->setAuth($this->auth[0], $this->auth[1]);
+        } else {
+            $this->client->setHeaders('Authorization', "Bearer {$this->auth[0]}");
+        }
+
+        /** @var \Zend_Uri $uri */
+        $uri = $this->client->getUri();
+        $uri->setPath($apiUriPath);
+        $uri->setQuery($params['query']);
+
+        $this->client->setConfig($params);
+        if (in_array($method, array('POST', 'PUT')) && isset($params['body'])) {
+            $this->client->setRawData($params['body'], 'application/json');
+        }
+
+        return $this->client->request($method);
+    }
+
+    /**
+     * Make a single REST call to the AvaTax v2 API server
+     *
+     * @param string $apiUriPath The relative path of the API on the server
+     * @param string $method     The HTTP verb being used in this request
+     * @param array  $params     The parameters for this request, including query string and body parameters
+     * @return mixed|string
      */
     protected function restCall($apiUriPath, $method, $params)
     {
         // Contact the server
         try {
-            $this->client->setHeaders('Accept', "application/json");
-            $this->client->setHeaders(
-                'X-Avalara-Client',
-                "{$this->appName}; {$this->appVersion}; PhpRestClient; 17.5.0-67; {$this->machineName}"
-            );
+            $headers = array("Accept" => "application/json");
+            $response = $this->_httpRequest($apiUriPath, $method, $params, $headers);
 
-            // Set authentication on the parameters
-            if (count($this->auth) == 2) {
-                $this->client->setAuth($this->auth[0], $this->auth[1]);
-            } else {
-                $this->client->setHeaders('Authorization', "Bearer {$this->auth[0]}");
-            }
+            return json_decode($response->getBody());
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    }
 
-            /** @var \Zend_Uri $uri */
-            $uri = $this->client->getUri();
-            $uri->setPath($apiUriPath);
-            $uri->setQuery($params['query']);
+    /**
+     * Make a single REST call to the AvaTax v2 API server
+     *
+     * @param string $apiUriPath The relative path of the API on the server
+     * @param string $method     The HTTP verb being used in this request
+     * @param array  $params     The parameters for this request, including query string and body parameters
+     * @param string $type
+     * @return mixed|string
+     */
+    protected function getResource($apiUriPath, $method, $params, $type)
+    {
+        // Contact the server
+        try {
+            $headers = array("Accept" => $type);
+            $response = $this->_httpRequest($apiUriPath, $method, $params, $headers);
 
-            $this->client->setConfig($params);
-            if (in_array($method, array('POST', 'PUT')) && isset($params['body'])) {
-                $this->client->setRawData($params['body'], 'application/json');
-            }
-
-            $response = $this->client->request($method);
-            $body = $response->getBody();
-
-            return json_decode($body);
+            return $response->getBody();
         } catch (\Exception $e) {
             return $e->getMessage();
         }

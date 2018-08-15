@@ -577,7 +577,10 @@ class AvaTaxClient extends AvaTaxClientBase
             'query' => ['$page' => $page, '$type' => $type],
             'body' => null
         ];
-        return $this->restCall($path, 'GET', $guzzleParams);
+
+        $acceptType = $type == 'Jpeg' ? self::ACCEPT_TYPE_JPEG : self::ACCEPT_TYPE_PDF;
+
+        return $this->getResource($path, 'GET', $guzzleParams, $acceptType);
     }
 
     /**

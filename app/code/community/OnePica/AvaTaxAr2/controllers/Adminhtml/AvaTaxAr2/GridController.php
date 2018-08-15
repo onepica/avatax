@@ -42,8 +42,7 @@ class OnePica_AvaTaxAr2_Adminhtml_AvaTaxAr2_GridController extends Mage_Adminhtm
     }
 
     /**
-     * Customer newsletter grid
-     *
+     * Documents grid
      */
     public function documentsAction()
     {
@@ -54,8 +53,9 @@ class OnePica_AvaTaxAr2_Adminhtml_AvaTaxAr2_GridController extends Mage_Adminhtm
     }
 
     /**
-     * Customer newsletter grid
+     * Document delete
      *
+     * @throws \Zend_Controller_Response_Exception
      */
     public function documentDeleteAction()
     {
@@ -70,14 +70,14 @@ class OnePica_AvaTaxAr2_Adminhtml_AvaTaxAr2_GridController extends Mage_Adminhtm
         } catch (Exception $exception) {
             $dataResponse['success'] = false;
             $dataResponse['message'] = $exception->getMessage();
+            $this->getResponse()->setHttpResponseCode(400);
         }
 
-        $this->getResponse()->setBody(json_encode($dataResponse));
+        $this->getResponse()->setBody($this->_getCoreHelper()->jsonEncode($dataResponse));
     }
 
     /**
-     * Customer newsletter grid
-     *
+     * Documents mass delete
      */
     public function documentMassDeleteAction()
     {
@@ -106,6 +106,26 @@ class OnePica_AvaTaxAr2_Adminhtml_AvaTaxAr2_GridController extends Mage_Adminhtm
         }
 
         $this->_redirect('adminhtml/customer/edit', array('id' => $customerId, 'tab' => $activeTab));
+    }
+
+    /**
+     * Document view
+     *
+     * @throws \Zend_Controller_Response_Exception
+     */
+    public function documentGetPDFAction()
+    {
+        $certId = $this->getRequest()->getParam('id');
+
+        try {
+            $this->getResponse()->setBody($this->_getServiceCertificate()->getCertificatePdf($certId));
+            $this->getResponse()->setHeader('Content-Type', 'application/pdf', true);
+        } catch (Exception $exception) {
+            $this->getResponse()->setHttpResponseCode(400);
+            $this->getResponse()->setBody(
+                $this->_getCoreHelper()->jsonEncode(array('message' => $exception->getMessage()))
+            );
+        }
     }
 
     /**
@@ -143,5 +163,13 @@ class OnePica_AvaTaxAr2_Adminhtml_AvaTaxAr2_GridController extends Mage_Adminhtm
     protected function _getAdminhtmlSession()
     {
         return Mage::getSingleton('adminhtml/session');
+    }
+
+    /**
+     * @return \Mage_Core_Helper_Data
+     */
+    protected function _getCoreHelper()
+    {
+        return Mage::helper('core');
     }
 }

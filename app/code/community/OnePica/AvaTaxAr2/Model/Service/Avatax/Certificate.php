@@ -70,6 +70,44 @@ class OnePica_AvaTaxAr2_Model_Service_Avatax_Certificate extends OnePica_AvaTaxA
     }
 
     /**
+     * Retrieve certificate preview image
+     *
+     * @param string                               $id
+     * @param  null|bool|int|Mage_Core_Model_Store $store
+     * @return string
+     * @throws \Mage_Core_Exception
+     */
+    public function getCertificateImage($id, $store = null)
+    {
+        $client = $this->_getServiceConfig()->getClient($store);
+
+        $response = $client->downloadCertificateImage(
+            $this->_getServiceCompany()->getCurrentCompanyId($store), $id, 1, 'Jpeg'
+        );
+
+        return $response;
+    }
+
+    /**
+     * Retrieve certificate preview image
+     *
+     * @param string                               $id
+     * @param  null|bool|int|Mage_Core_Model_Store $store
+     * @return string
+     * @throws \Mage_Core_Exception
+     */
+    public function getCertificatePdf($id, $store = null)
+    {
+        $client = $this->_getServiceConfig()->getClient($store);
+
+        $response = $client->downloadCertificateImage(
+            $this->_getServiceCompany()->getCurrentCompanyId($store), $id, null, null
+        );
+
+        return $response;
+    }
+
+    /**
      * Retrieves all  certificates
      *
      * @param  null|bool|int|Mage_Core_Model_Store $store
