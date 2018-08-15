@@ -87,12 +87,30 @@ class OnePica_AvaTaxAr2_Block_Documents_Grid extends Mage_Core_Block_Template
     }
 
     /**
-     * @param $document
+     * @param OnePica_AvaTaxAr2_Model_Records_RestV2_Document $document
      * @return string
      */
     public function getRevokeUrl($document)
     {
         return $this->getUrl('*/*/delete', array('document_id' => $document->getId()));
+    }
+
+    /**
+     * @param OnePica_AvaTaxAr2_Model_Records_RestV2_Document $document
+     * @return string
+     */
+    public function getDocumentPdfUrl($document)
+    {
+        return $this->getUrl('*/*/documentGetPDF', array('document_id' => $document->getId()));
+    }
+
+    /**
+     * @param OnePica_AvaTaxAr2_Model_Records_RestV2_Document $document
+     * @return string
+     */
+    public function getDocumentPdfName($document)
+    {
+        return $document->getFilename();
     }
 
     /**
@@ -135,6 +153,7 @@ class OnePica_AvaTaxAr2_Block_Documents_Grid extends Mage_Core_Block_Template
     {
         /** @var OnePica_AvaTaxAr2_Helper_Config $config */
         $config = Mage::helper('avataxar2/config');
+
         return $config->isEnabled();
     }
 }

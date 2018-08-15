@@ -143,7 +143,12 @@ AvaTaxCert.showPopup = function (url, title) {
 };
 
 AvaTaxCert.delete = function (certId, customerId, url, jsObject) {
-    new Ajax.Request(url, {
+    var confirmation = confirm("Are you sure?");
+    if (!confirmation) {
+        return;
+    }
+
+    return new Ajax.Request(url, {
         method: "POST",
         parameters: {
             certId: certId,
@@ -151,21 +156,22 @@ AvaTaxCert.delete = function (certId, customerId, url, jsObject) {
         },
         requestHeaders: {Accept: "application/json"},
         onSuccess: function (transport) {
-            try {
-                if (transport.responseText) {
-                    var response = transport.responseText.evalJSON(true);
+            var response = transport.responseText.evalJSON(true);
 
-                    AvaTax._general.removeMessages();
-                    if (response.success) {
-                        AvaTax._general.showMessage(response.message, "success");
-                    } else {
-                        AvaTax._general.showMessage(response.message, "error");
-                    }
-                    jsObject.doFilter();
-                }
-            } catch (e) {
-                console.log(e);
+            if (response.message) {
+                AvaTax._general.removeMessages();
+                AvaTax._general.showMessage(response.message, "success");
+                jsObject.doFilter();
             }
-        }.bind(this)
+        },
+        onFailure: function (transport) {
+            AvaTax._general.removeMessages();
+            if (transport.responseText) {
+                var response = transport.responseText.evalJSON(true);
+                AvaTax._general.showMessage(response.message, "success");
+            } else {
+                AvaTax._general.showMessage("Empty response", "error");
+            }
+        }
     });
 };

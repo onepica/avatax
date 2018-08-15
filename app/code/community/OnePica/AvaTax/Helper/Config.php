@@ -742,7 +742,7 @@ class OnePica_AvaTax_Helper_Config extends Mage_Core_Helper_Abstract
      * @param int|Mage_Core_Model_Store $store
      * @return string
      */
-    public function getCustomerCodeFormatAttribute($store)
+    public function getCustomerCodeFormatAttribute($store = null)
     {
         return (string)Mage::getStoreConfig(self::PATH_TAX_AVATAX_CUST_CODE_FORMAT_ATTRIBUTE, $store);
     }

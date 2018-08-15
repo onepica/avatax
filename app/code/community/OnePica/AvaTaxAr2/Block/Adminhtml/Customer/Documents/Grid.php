@@ -252,13 +252,6 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents_Grid extends Mage_Adm
 
         $customerId = $this->_getHelper()->getCustomerNumber($this->_getCustomer());
 
-        $actionParams = array(
-            '\'$id\'',
-            '\'' . $customerId . '\'',
-            '\'' . $this->getUrl('adminhtml/avaTaxAr2_grid/documentDelete') . '\'',
-            $this->getJsObjectName()
-        );
-
         $this->addColumn(
             'actions', array(
                 'header'   => $this->__('Actions'),
@@ -270,8 +263,56 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents_Grid extends Mage_Adm
                 'actions'  => array(
                     array(
                         'caption' => $this->__('Revoke'),
-                        'onClick' => 'return AvaTaxCert.delete(' . implode(', ', $actionParams) . ')',
+                        'onClick' => 'return AvaTaxCert.delete(' . implode(
+                                ', ',
+                                array(
+                                    '\'$id\'',
+                                    '\'' . $customerId . '\'',
+                                    '\'' . $this->getUrl('adminhtml/avaTaxAr2_grid/documentDelete') . '\'',
+                                    $this->getJsObjectName()
+                                )
+                            ) . ')',
                         'url'     => '#'
+                    ),
+                ),
+            )
+        );
+
+        $pdfUrl = $this->getUrl('adminhtml/avaTaxAr2_grid/documentGetPDF', array('id' => '$id'));
+        $this->addColumn(
+            'actions_view', array(
+                'header'   => '',
+                'align'    => 'center',
+                'type'     => 'action',
+                'width'    => '10px',
+                'filter'   => false,
+                'sortable' => false,
+                'actions'  => array(
+                    array(
+                        'caption' => $this->__('View'),
+                        'url'     => $pdfUrl,
+                        'field'   => 'id',
+                        'popup'   => true,
+                    ),
+                ),
+            )
+        );
+
+        $this->addColumn(
+            'actions_download', array(
+                'header'   => '',
+                'align'    => 'center',
+                'type'     => 'action',
+                'width'    => '10px',
+                'filter'   => false,
+                'sortable' => false,
+                'actions'  => array(
+                    array(
+                        'caption'  => $this->__('Download'),
+                        'url'      => $pdfUrl,
+                        'field'    => 'id',
+                        'target'   => '_blank',
+                        'download' => '$filename'
                     ),
                 ),
             )
@@ -337,6 +378,14 @@ class OnePica_AvaTaxAr2_Block_Adminhtml_Customer_Documents_Grid extends Mage_Adm
     protected function _getHelper()
     {
         return Mage::helper('avataxar2');
+    }
+
+    /**
+     * @return \OnePica_AvaTaxAr2_Helper_Config
+     */
+    protected function _getConfigHelper()
+    {
+        return Mage::helper('avataxar2/config');
     }
 
     /**

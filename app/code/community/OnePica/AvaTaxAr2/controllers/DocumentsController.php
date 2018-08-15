@@ -57,6 +57,26 @@ class OnePica_AvaTaxAr2_DocumentsController extends Mage_Core_Controller_Front_A
     }
 
     /**
+     * Document Get PDF
+     *
+     * @throws \Zend_Controller_Response_Exception
+     */
+    public function documentGetPDFAction()
+    {
+        $certId = $this->getRequest()->getParam('document_id');
+
+        try {
+            $this->getResponse()->setBody($this->_getServiceCertificate()->getCertificatePdf($certId));
+            $this->getResponse()->setHeader('Content-Type', 'application/pdf', true);
+        } catch (Exception $exception) {
+            $this->getResponse()->setHttpResponseCode(400);
+            $this->getResponse()->setBody(
+                $this->_getCoreHelper()->jsonEncode(array('message' => $exception->getMessage()))
+            );
+        }
+    }
+
+    /**
      * @return OnePica_AvaTaxAr2_Model_Service_Avatax_Certificate
      */
     protected function _getServiceCertificate()
@@ -102,5 +122,13 @@ class OnePica_AvaTaxAr2_DocumentsController extends Mage_Core_Controller_Front_A
     protected function _getHelper()
     {
         return Mage::helper('avataxar2');
+    }
+
+    /**
+     * @return \Mage_Core_Helper_Data
+     */
+    protected function _getCoreHelper()
+    {
+        return Mage::helper('core');
     }
 }
