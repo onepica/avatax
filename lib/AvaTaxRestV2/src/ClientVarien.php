@@ -26,6 +26,10 @@ class AvaTaxClientBase
     /** @var string The root URL of the AvaTax environment to contact $environment */
     private $environment;
 
+    const ACCEPT_TYPE_PDF = 'application/pdf';
+
+    const ACCEPT_TYPE_JPEG = 'image/jpeg';
+
     /**
      * Construct a new AvaTaxClient
      *
