@@ -24,7 +24,7 @@ namespace Avalara\AvaTaxEcomSDK;
  */
 class ClientBase
 {
-    /**  @var \Varien_Http_Client The client to use to connect to AvaTax $client */
+    /**  @var \Zend_Http_Client The client to use to connect to AvaTax $client */
     private $client;
 
     /** @var array The authentication credentials to use to connect to AvaTax $auth */
@@ -44,6 +44,27 @@ class ClientBase
 
     /** @var string The root URL of the AvaTax environment to contact $environment */
     private $environment;
+
+    /**
+     * Log layer, callback
+     *
+     * @var callable
+     */
+    public $_logsCallback;
+
+    /**
+     * Log layer, last model json encoded
+     *
+     * @var null|object
+     */
+    protected $_lastJsonModelEncoded = null;
+
+    /**
+     * Log layer, last model json decoded
+     *
+     * @var null|object
+     */
+    protected $_lastJsonModelDecoded = null;
 
     /**
      * Construct a new AvaTaxClient
@@ -74,7 +95,7 @@ class ClientBase
         }
 
         // Configure the HTTP client
-        $this->client = new \Varien_Http_Client($env, $params);
+        $this->client = new \Zend_Http_Client($env, array('adapter' => 'Zend_Http_Client_Adapter_Curl'));
     }
 
     /**
@@ -141,6 +162,29 @@ class ClientBase
      */
     protected function restCall($apiUriPath, $method, $params)
     {
+        try {
+            // clean last json model if no body is set
+            if (!isset($params['body']) || !$params['body']) {
+                $this->_lastJsonModelEncoded = null;
+            }
+
+            return $this->_restCall($apiUriPath, $method, $params);
+        }
+        finally {
+            call_user_func_array($this->_logsCallback, array());
+        }
+    }
+
+    /**
+     * Make a single REST call to the AvaTax v2 API server
+     *
+     * @param string $apiUriPath The relative path of the API on the server
+     * @param string $method     The HTTP verb being used in this request
+     * @param array  $params     The parameters for this request, including query string and body parameters
+     * @return mixed|string
+     */
+    private function _restCall($apiUriPath, $method, $params)
+    {
         // Contact the server
         try {
             $this->client->setHeaders('Accept', "application/json");
@@ -175,9 +219,70 @@ class ClientBase
             $response = $this->client->request($method);
             $body = $response->getBody();
 
-            return json_decode($body);
+            return $this->jsonDecode($body);
         } catch (\Exception $e) {
             return $e->getMessage();
         }
+    }
+
+    /**
+     * @return \Zend_Http_Client
+     */
+    public function getClient()
+    {
+        return $this->client;
+    }
+
+    /**
+     * Log layer, wrapper for json_encode
+     *
+     * @param $value
+     * @param int $options
+     * @param int $depth
+     * @return string
+     */
+    protected function jsonEncode($value, $options = 0, $depth = 512)
+    {
+        $this->_lastJsonModelEncoded = $value;
+
+        return json_encode($value, $options, $depth);
+    }
+
+    /**
+     * Log layer, wrapper for json_decode
+     *
+     * @param $json
+     * @param bool $assoc
+     * @param int $depth
+     * @param int $options
+     * @return mixed
+     */
+    protected function jsonDecode($json, $assoc = false, $depth = 512, $options = 0)
+    {
+        $result = json_decode($json, $assoc, $depth, $options);
+
+        $this->_lastJsonModelDecoded = $result;
+
+        return $result;
+    }
+
+    /**
+     * Log layer last model json encoded
+     *
+     * @return null
+     */
+    public function getLastJsonModelEncoded()
+    {
+        return $this->_lastJsonModelEncoded;
+    }
+
+    /**
+     * Log layer last model json decoded
+     *
+     * @return null
+     */
+    public function getLastJsonModelDecoded()
+    {
+        return $this->_lastJsonModelDecoded;
     }
 }

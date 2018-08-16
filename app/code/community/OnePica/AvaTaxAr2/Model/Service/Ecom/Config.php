@@ -30,24 +30,48 @@ class OnePica_AvaTaxAr2_Model_Service_Ecom_Config extends Varien_Object
     protected $_client = null;
 
     /**
+     * @var null
+     */
+    protected $_store = null;
+
+    /**
+     * @var OnePica_AvaTaxAr2_Model_Service_Ecom_Log_Interpreter|null
+     */
+    protected $_logInterpreter = null;
+
+    /**
+     * OnePica_AvaTaxAr2_Model_Service_Ecom_Config constructor.
+     */
+    public function __construct()
+    {
+        $this->_logInterpreter = Mage::getModel('avataxar2/service_ecom_log_interpreter');
+    }
+
+    /**
      * @return \Avalara\AvaTaxEcomSDK\Client|null
      */
-    public function getClient()
+    public function getClient($store = null)
     {
         if (null === $this->_client) {
+            $this->_store = $store;
             $this->_client = new \Avalara\AvaTaxEcomSDK\Client(
                 $this->_getHelper()->getAppName(),
                 $this->_getHelper()->getAppVersion(),
                 $this->_getHelper()->getMachineName(),
-                $this->_getConfigHelper()->getEcomUrl()
+                $this->_getConfigHelper()->getEcomUrl($store)
             );
 
-            $this->_client->setClientId($this->_getConfigHelper()->getClientId());
+            $this->_client->setClientId($this->_getConfigHelper()->getClientId($store));
 
             $this->_client->withSecurity(
-                $this->_getConfigHelper()->getEcomUsername(),
-                $this->_getConfigHelper()->getEcomPassword()
+                $this->_getConfigHelper()->getEcomUsername($store),
+                $this->_getConfigHelper()->getEcomPassword($store)
             );
+
+            $this->_client->_logsCallback = function ($params = array()){
+                $this->getLogInterpreter()->interpret($this->_client, $this->_store);
+            };
+            Closure::bind($this->_client->_logsCallback, $this);
         }
 
         return $this->_client;
@@ -67,5 +91,13 @@ class OnePica_AvaTaxAr2_Model_Service_Ecom_Config extends Varien_Object
     protected function _getConfigHelper()
     {
         return Mage::helper('avataxar2/config');
+    }
+
+    /**
+     * @return OnePica_AvaTaxAr2_Model_Service_Ecom_Log_Interpreter
+     */
+    protected function getLogInterpreter()
+    {
+        return $this->_logInterpreter;
     }
 }
