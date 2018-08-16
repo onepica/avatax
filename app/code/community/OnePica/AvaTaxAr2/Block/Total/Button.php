@@ -81,23 +81,33 @@ class OnePica_AvaTaxAr2_Block_Total_Button extends Mage_Checkout_Block_Total_Def
     }
 
     /**
+     * @return \OnePica_AvaTaxAr2_Helper_Config
+     */
+    protected function _getHelperConfig()
+    {
+        return Mage::helper('avataxar2/config');
+    }
+
+    /**
      * Render block HTML
      *
      * @return string
      */
     protected function _toHtml()
     {
-        $html = parent::_toHtml();
+        if (!$this->_getHelperConfig()->isCountrySupported($this->getTotal()->getAddress()->getCountry())) {
+            return '';
+        }
 
         $totals = $this->getTotals();
         if (!isset($totals['tax'])) {
-            $html = '';
+            return '';
         }
 
         if (isset($totals['tax']) && $totals['tax']->getValue() == 0) {
-            $html = '';
+            return '';
         }
 
-        return $html;
+        return parent::_toHtml();
     }
 }
