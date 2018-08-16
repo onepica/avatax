@@ -39,6 +39,9 @@ class OnePica_AvaTaxAr2_Model_Service_AvaTax_Config extends Varien_Object
      */
     protected $_logInterpreter = null;
 
+    /**
+     * OnePica_AvaTaxAr2_Model_Service_AvaTax_Config constructor.
+     */
     public function __construct()
     {
         $this->_logInterpreter = Mage::getModel('avataxar2/service_log_interpreter');
@@ -89,5 +92,13 @@ class OnePica_AvaTaxAr2_Model_Service_AvaTax_Config extends Varien_Object
     protected function _getConfigHelper()
     {
         return Mage::helper('avataxar2/config');
+    }
+
+    /**
+     * @return OnePica_AvaTaxAr2_Model_Service_Log_Interpreter
+     */
+    protected function getLogInterpreter()
+    {
+        return $this->_logInterpreter;
     }
 }

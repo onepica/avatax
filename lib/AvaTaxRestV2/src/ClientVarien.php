@@ -12,9 +12,25 @@ class AvaTaxClientBase
     private $client;
 
     /**
+     * Log layer, callback
+     *
      * @var callable
      */
     public $_logsCallback;
+
+    /**
+     * Log layer, last model json encoded
+     *
+     * @var null|object
+     */
+    protected $_lastJsonModelEncoded = null;
+
+    /**
+     * Log layer, last model json decoded
+     *
+     * @var null|object
+     */
+    protected $_lastJsonModelDecoded = null;
 
     /** @var array The authentication credentials to use to connect to AvaTax $auth */
     private $auth;
@@ -31,8 +47,14 @@ class AvaTaxClientBase
     /** @var string The root URL of the AvaTax environment to contact $environment */
     private $environment;
 
+    /**
+     *
+     */
     const ACCEPT_TYPE_PDF = 'application/pdf';
 
+    /**
+     *
+     */
     const ACCEPT_TYPE_JPEG = 'image/jpeg';
 
     /**
@@ -163,10 +185,16 @@ class AvaTaxClientBase
     {
         // Contact the server
         try {
+
+            // clean last json model if no body is set
+            if (!isset($params['body']) || !$params['body']) {
+                $this->_lastJsonModelEncoded = null;
+            }
+
             $headers = array("Accept" => "application/json");
             $response = $this->_httpRequest($apiUriPath, $method, $params, $headers);
 
-            return json_decode($response->getBody());
+            return $this->jsonDecode($response->getBody());
         } catch (\Exception $e) {
             return $e->getMessage();
         }
@@ -203,5 +231,58 @@ class AvaTaxClientBase
     public function getClient()
     {
         return $this->client;
+    }
+
+    /**
+     * Log layer, wrapper for json_encode
+     *
+     * @param $value
+     * @param int $options
+     * @param int $depth
+     * @return string
+     */
+    protected function jsonEncode($value, $options = 0, $depth = 512)
+    {
+        $this->_lastJsonModelEncoded = $value;
+
+        return json_encode($value, $options, $depth);
+    }
+
+    /**
+     * Log layer, wrapper for json_decode
+     *
+     * @param $json
+     * @param bool $assoc
+     * @param int $depth
+     * @param int $options
+     * @return mixed
+     */
+    protected function jsonDecode($json, $assoc = false, $depth = 512, $options = 0)
+    {
+        $result = json_decode($json, $assoc, $depth, $options);
+
+        $this->_lastJsonModelDecoded = $result;
+
+        return $result;
+    }
+
+    /**
+     * Log layer last model json encoded
+     *
+     * @return null
+     */
+    public function getLastJsonModelEncoded()
+    {
+        return $this->_lastJsonModelEncoded;
+    }
+
+    /**
+     * Log layer last model json decoded
+     *
+     * @return null
+     */
+    public function getLastJsonModelDecoded()
+    {
+        return $this->_lastJsonModelDecoded;
     }
 }
