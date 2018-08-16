@@ -166,6 +166,18 @@ class OnePica_AvaTaxAr2_Helper_Config extends Mage_Core_Helper_Abstract
     public function getCustomerCodeFormatAttribute($store)
     {
         $avataxConfig = Mage::helper('avatax/config');
+
         return $avataxConfig->getCustomerCodeFormatAttribute($store);
+    }
+
+    /**
+     * @param string $country
+     * @return bool
+     */
+    public function isCountrySupported($country)
+    {
+        $supported = array('US');
+
+        return in_array($country, $supported);
     }
 }
