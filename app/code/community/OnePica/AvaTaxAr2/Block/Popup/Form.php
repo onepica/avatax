@@ -79,4 +79,27 @@ class OnePica_AvaTaxAr2_Block_Popup_Form extends Mage_Core_Block_Template
             return array();
         }
     }
+
+    /**
+     * @return string|null
+     * @throws \Exception
+     */
+    public function getSelectedRegion()
+    {
+        if ($this->getRequest()->getParam('skipQuote')) {
+            return null;
+        }
+
+        $address = $this->_getCheckoutSession()->getQuote()->getShippingAddress();
+
+        return $address ? $address->getRegion() : null;
+    }
+
+    /**
+     * @return \Mage_Checkout_Model_Session
+     */
+    protected function _getCheckoutSession()
+    {
+        return Mage::getSingleton('checkout/session');
+    }
 }

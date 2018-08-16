@@ -26,7 +26,8 @@ class OnePica_AvaTaxAr2_Block_Documents_Grid_Button extends Mage_Core_Block_Temp
         return $this->getUrl(
             'avataxcert/popup/genCert', array(
                 'customerId'     => $this->getCustomerId(),
-                'customerNumber' => $this->getCustomerNumberOrGenerate()
+                'customerNumber' => $this->getCustomerNumberOrGenerate(),
+                'skipQuote' => true,
             )
         );
     }
