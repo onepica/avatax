@@ -44,7 +44,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/accounts/{$id}/resetlicensekey";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -74,7 +74,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/accounts/{$id}/activate";
         $guzzleParams = [
             'query' => ['$include' => $include],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -159,7 +159,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/accounts/{$id}/configuration";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -216,7 +216,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/addresses/resolve";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -239,7 +239,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/batches";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -396,7 +396,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/customers/{$customerCode}/certexpressinvites";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -508,7 +508,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/certificates";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -674,7 +674,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/certificates/{$id}/attributes/link";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -709,7 +709,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/certificates/{$id}/customers/link";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -877,7 +877,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/certificates/{$id}/attributes/unlink";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -913,7 +913,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/certificates/{$id}/customers/unlink";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -944,7 +944,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/certificates/{$id}";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'PUT', $guzzleParams);
     }
@@ -1010,7 +1010,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$id}/filingstatus";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -1040,7 +1040,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/initialize";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -1061,7 +1061,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -1090,7 +1090,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$id}/funding/setup";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -1355,7 +1355,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$id}/configuration";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -1378,7 +1378,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$id}";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'PUT', $guzzleParams);
     }
@@ -1400,7 +1400,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/contacts";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -1522,7 +1522,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/contacts/{$id}";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'PUT', $guzzleParams);
     }
@@ -1553,7 +1553,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/customers";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -1652,7 +1652,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/customers/{$customerCode}/certificates/link";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -1795,7 +1795,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/customers/{$customerCode}/certificates/unlink";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -1828,7 +1828,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $model->companyId = $companyId;
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'PUT', $guzzleParams);
     }
@@ -3212,7 +3212,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/distancethresholds";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -3346,7 +3346,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/distancethresholds/{$id}";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'PUT', $guzzleParams);
     }
@@ -3415,7 +3415,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/filingcalendars/{$id}/cancel/request";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -3436,7 +3436,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/filingcalendars";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -3458,7 +3458,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/filingcalendars/add/request";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -3499,7 +3499,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/filingcalendars/{$id}/edit/options";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -3655,7 +3655,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/filingcalendars/credentials/verify";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -3755,7 +3755,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/filingcalendars/{$id}/edit/request";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -3776,7 +3776,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/filingcalendars/{$id}";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'PUT', $guzzleParams);
     }
@@ -3799,7 +3799,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/filingrequests/{$id}";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'PUT', $guzzleParams);
     }
@@ -3827,7 +3827,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/filings/{$year}/{$month}/approve";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -3856,7 +3856,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/filings/{$year}/{$month}/{$country}/approve";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -3886,7 +3886,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/filings/{$year}/{$month}/{$country}/{$region}/approve";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -3916,7 +3916,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/filings/{$year}/{$month}/{$country}/{$region}/{$formCode}/adjust";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -3945,7 +3945,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/filings/{$year}/{$month}/{$country}/{$region}/{$formCode}/augment";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -3975,7 +3975,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/filings/{$year}/{$month}/{$country}/{$region}/{$formCode}/payment";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -4331,7 +4331,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/filings/{$year}/{$month}/rebuild";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -4359,7 +4359,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/filings/{$year}/{$month}/{$country}/rebuild";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -4388,7 +4388,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/filings/{$year}/{$month}/{$country}/{$region}/rebuild";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -4414,7 +4414,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/filings/adjust/{$id}";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'PUT', $guzzleParams);
     }
@@ -4439,7 +4439,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/filings/augment/{$id}";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'PUT', $guzzleParams);
     }
@@ -4465,7 +4465,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/filings/payment/{$id}";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'PUT', $guzzleParams);
     }
@@ -4495,7 +4495,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/accounts/freetrials/request";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -4674,7 +4674,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/items";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -4829,7 +4829,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/items/{$id}";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'PUT', $guzzleParams);
     }
@@ -4854,7 +4854,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/accounts/{$accountId}/jurisdictionoverrides";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -4983,7 +4983,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/accounts/{$accountId}/jurisdictionoverrides/{$id}";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'PUT', $guzzleParams);
     }
@@ -5003,7 +5003,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/locations";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -5143,7 +5143,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/locations/{$id}";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'PUT', $guzzleParams);
     }
@@ -5196,7 +5196,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/transactions/multidocument/{$code}/type/{$type}/adjust";
         $guzzleParams = [
             'query' => ['include' => $include],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -5255,7 +5255,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/transactions/multidocument/commit";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -5306,7 +5306,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/transactions/multidocument";
         $guzzleParams = [
             'query' => ['$include' => $include],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -5476,7 +5476,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/transactions/multidocument/{$code}/type/{$type}/refund";
         $guzzleParams = [
             'query' => ['$include' => $include],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -5500,7 +5500,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/transactions/multidocument/verify";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -5529,7 +5529,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/transactions/multidocument/{$code}/type/{$type}/void";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -5557,7 +5557,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/nexus";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -5724,7 +5724,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/nexus/{$id}";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'PUT', $guzzleParams);
     }
@@ -5748,7 +5748,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/notices/{$id}/comments";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -5773,7 +5773,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/notices/{$id}/financedetails";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -5797,7 +5797,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/notices/{$id}/responsibilities";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -5821,7 +5821,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/notices/{$id}/rootcauses";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -5844,7 +5844,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/notices";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -6137,7 +6137,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/notices/{$id}";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'PUT', $guzzleParams);
     }
@@ -6158,7 +6158,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/notices/files/attachment";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -6190,7 +6190,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/accounts/request";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -6214,7 +6214,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/passwords";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'PUT', $guzzleParams);
     }
@@ -6237,7 +6237,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/accounts";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -6262,7 +6262,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/accounts/{$accountId}/subscriptions";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -6390,7 +6390,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/passwords/{$userId}/reset";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -6413,7 +6413,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/accounts/{$id}";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'PUT', $guzzleParams);
     }
@@ -6441,7 +6441,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/accounts/{$accountId}/subscriptions/{$id}";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'PUT', $guzzleParams);
     }
@@ -6500,7 +6500,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/reports/exportdocumentline";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -6559,7 +6559,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/reports/exportdocumentline/initiate";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -6613,7 +6613,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/settings";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -6753,7 +6753,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/settings/{$id}";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'PUT', $guzzleParams);
     }
@@ -6854,7 +6854,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/taxcodes";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -6986,7 +6986,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/taxcodes/{$id}";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'PUT', $guzzleParams);
     }
@@ -7017,7 +7017,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/pointofsaledata/build";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -7112,7 +7112,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/taxrules";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -7244,7 +7244,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/taxrules/{$id}";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'PUT', $guzzleParams);
     }
@@ -7283,7 +7283,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/transactions/lines/add";
         $guzzleParams = [
             'query' => ['$include' => $include],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -7315,7 +7315,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyCode}/transactions/{$transactionCode}/adjust";
         $guzzleParams = [
             'query' => ['documentType' => $documentType],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -7409,7 +7409,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/transactions/lock";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -7441,7 +7441,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyCode}/transactions/{$transactionCode}/changecode";
         $guzzleParams = [
             'query' => ['documentType' => $documentType],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -7472,7 +7472,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyCode}/transactions/{$transactionCode}/commit";
         $guzzleParams = [
             'query' => ['documentType' => $documentType],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -7519,7 +7519,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/transactions/createoradjust";
         $guzzleParams = [
             'query' => ['$include' => $include],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -7572,7 +7572,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/transactions/create";
         $guzzleParams = [
             'query' => ['$include' => $include],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -7608,7 +7608,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/transactions/lines/delete";
         $guzzleParams = [
             'query' => ['$include' => $include],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -7786,7 +7786,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyCode}/transactions/{$transactionCode}/lock";
         $guzzleParams = [
             'query' => ['documentType' => $documentType],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -7839,7 +7839,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyCode}/transactions/{$transactionCode}/refund";
         $guzzleParams = [
             'query' => ['$include' => $include, 'documentType' => $documentType],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -7870,7 +7870,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyCode}/transactions/{$transactionCode}/settle";
         $guzzleParams = [
             'query' => ['documentType' => $documentType],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -7899,7 +7899,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyCode}/transactions/{$transactionCode}/verify";
         $guzzleParams = [
             'query' => ['documentType' => $documentType],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -7930,7 +7930,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyCode}/transactions/{$transactionCode}/void";
         $guzzleParams = [
             'query' => ['documentType' => $documentType],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -7951,7 +7951,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/upcs";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -8071,7 +8071,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/upcs/{$id}";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'PUT', $guzzleParams);
     }
@@ -8099,7 +8099,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/accounts/{$accountId}/users";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
@@ -8234,7 +8234,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/accounts/{$accountId}/users/{$id}";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode($model)
+            'body' => $this->jsonEncode($model)
         ];
         return $this->restCall($path, 'PUT', $guzzleParams);
     }
@@ -8307,7 +8307,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/customers/{$customerCode}/{$letterType}";
         $guzzleParams = [
             'query' => [],
-            'body' => json_encode(array($letterInfo))
+            'body' => $this->jsonEncode(array($letterInfo))
         ];
 
         return $this->restCall($path, 'POST', $guzzleParams);

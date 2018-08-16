@@ -44,11 +44,15 @@ class OnePica_AvaTaxAr2_Model_Service_Log_Interpreter extends Varien_Object
             $httpClient = $client->getClient();
             $storeId = Mage::app()->getStore($store)->getId();
             $logType = $this->interpretTransactionType($httpClient);
+            $lastJsonModelEncoded = $client->getLastJsonModelEncoded();
+            $lastJsonModelDecoded = $client->getLastJsonModelDecoded();
             $log = Mage::getModel('avatax_records/log')
                 ->setStoreId($storeId)
                 ->setType($logType)
                 ->setLevel($httpClient->getLastResponse()->isSuccessful() ? 'Success' : 'Error')
+                ->setRequest(print_r($lastJsonModelEncoded, true))
                 ->setSoapRequest($httpClient->getLastRequest())
+                ->setResult(print_r($lastJsonModelDecoded, true))
                 ->setSoapResult($httpClient->getLastResponse()->asString());
             $log->save();
         } catch (Exception $ex) {
