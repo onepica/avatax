@@ -1,6 +1,7 @@
 <?php
 /** @var OnePica_AvaTaxAr2_Block_Popup_Form $this */
 $regions = $this->getRegions();
+$regionSelected = $this->getSelectedRegion();
 ?>
 
 <form id="avatax_certcapture_form_container" action="<?php echo $this->getTokenUrl() ?>"
@@ -16,7 +17,10 @@ $regions = $this->getRegions();
                         class="validate-select" required>
                     <option value=""><?php echo $this->__('Please select region, state or province') ?></option>
                     <?php foreach ($this->getRegions() as $region) : ?>
-                        <option value="<?php echo $region['name'] ?>"><?php echo $region['name'] ?></option>
+                        <option value="<?php echo $region['name'] ?>"
+                            <?php echo $region['name'] === $regionSelected ? 'selected' : '' ?> >
+                            <?php echo $region['name'] ?>
+                        </option>
                     <?php endforeach; ?>
                 </select>
 
