@@ -74,7 +74,7 @@ class OnePica_AvaTaxAr2_Model_Service_Log_Interpreter extends Varien_Object
             case $this->_checkRegex($uri, '/\/utilities\/ping/'):
                 $result = OnePica_AvaTaxAr2_Model_Source_Avatax_Logtype::REST_PING;
                 break;
-            /** AvaTaxClient::listCertificatesForCustomer */
+            /* AvaTaxClient::listCertificatesForCustomer */
             case $this->_checkRegex($uri, '/\/companies\/[^\/]*\/customers\/[^\/]*\/certificates/'):
                 $result = OnePica_AvaTaxAr2_Model_Source_Avatax_Logtype::REST_CUSTOMER_CERTIFICATE;
                 break;
