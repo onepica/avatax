@@ -436,6 +436,11 @@ class OnePica_AvaTax_Model_Service_Avatax_Estimate
                 $rate = null;
             }
 
+            if ($this->_getFixedTaxHelper()->isFixedTax($taxDetail)) {
+                $taxName = $taxDetail->getTaxSubTypeId();
+                $rate = null;
+            }
+
             $resultKey = $taxName . " " . $taxDetail->getJurisCode();
             if (array_key_exists($resultKey, $result)) {
                 $amt = $result[$resultKey]['amt'] + $taxDetail->getTax();
