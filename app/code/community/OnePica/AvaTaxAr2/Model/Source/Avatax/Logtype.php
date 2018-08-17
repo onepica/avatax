@@ -29,13 +29,29 @@ class OnePica_AvaTaxAr2_Model_Source_Avatax_Logtype extends OnePica_AvaTax_Model
      */
     const PING_ECOM = 'PingCertAPI';
 
-    const PING_REST = 'PingRestV2';
+    const REST_PING = 'RestV2:Ping';
 
     const REST_COMMON = 'RestV2:Common';
 
+    const REST_COMPANIES = 'RestV2:Companies';
+
+    const REST_COMPANY = 'RestV2:Company';
+
+    const REST_COMPANY_CERTIFICATE_CUSTOMERS = 'RestV2:CompanyCertificateCustomers';
+
+    const REST_COMPANY_CERTIFICATE_ATTACHMENT = 'RestV2:CompanyCertificateAttachment';
+
+    const REST_COMPANY_CERTIFICATE = 'RestV2:CompanyCertificate';
+
+    const REST_COMPANY_CERTIFICATES = 'RestV2:CompanyCertificates';
+
     const REST_CUSTOMER = 'RestV2:Customer';
 
+    const REST_CUSTOMERS = 'RestV2:Customers';
+
     const REST_CUSTOMER_CERTIFICATE = 'RestV2:CustomerCertificate';
+
+    const REST_CUSTOMER_CERTIFICATE_UNLINK = 'RestV2:CustomerCertificateUnlink';
 
     const REST_CUSTOMER_CERT_EXPRESS_INVITE = 'RestV2:CustomerCertExpressInvite';
 
@@ -61,8 +77,8 @@ class OnePica_AvaTaxAr2_Model_Source_Avatax_Logtype extends OnePica_AvaTax_Model
         );
 
         $array[] = array(
-            'value' => self::PING_REST,
-            'label' => Mage::helper('avatax')->__('Ping Rest V2')
+            'value' => self::REST_PING,
+            'label' => Mage::helper('avatax')->__('Rest V2: Ping')
         );
 
         $array[] = array(
@@ -71,13 +87,53 @@ class OnePica_AvaTaxAr2_Model_Source_Avatax_Logtype extends OnePica_AvaTax_Model
         );
 
         $array[] = array(
+            'value' => self::REST_COMPANIES,
+            'label' => Mage::helper('avatax')->__('Rest V2: Companies')
+        );
+
+        $array[] = array(
+            'value' => self::REST_COMPANY,
+            'label' => Mage::helper('avatax')->__('Rest V2: Company')
+        );
+
+        $array[] = array(
+            'value' => self::REST_COMPANY_CERTIFICATE_CUSTOMERS,
+            'label' => Mage::helper('avatax')->__('Rest V2: Company Certificate Customers')
+        );
+
+        $array[] = array(
+            'value' => self::REST_COMPANY_CERTIFICATE_ATTACHMENT,
+            'label' => Mage::helper('avatax')->__('Rest V2: Company Certificate Attachment')
+        );
+
+        $array[] = array(
+            'value' => self::REST_COMPANY_CERTIFICATE,
+            'label' => Mage::helper('avatax')->__('Rest V2: Company Certificate')
+        );
+
+        $array[] = array(
+            'value' => self::REST_COMPANY_CERTIFICATE,
+            'label' => Mage::helper('avatax')->__('Rest V2: Company Certificates')
+        );
+
+        $array[] = array(
             'value' => self::REST_CUSTOMER,
             'label' => Mage::helper('avatax')->__('Rest V2: Customer')
         );
 
         $array[] = array(
+            'value' => self::REST_CUSTOMERS,
+            'label' => Mage::helper('avatax')->__('Rest V2: Customers')
+        );
+
+        $array[] = array(
             'value' => self::REST_CUSTOMER_CERTIFICATE,
             'label' => Mage::helper('avatax')->__('Rest V2: Customer Certificate')
+        );
+
+        $array[] = array(
+            'value' => self::REST_CUSTOMER_CERTIFICATE_UNLINK,
+            'label' => Mage::helper('avatax')->__('Rest V2: Customer Certificate Unlink')
         );
 
         $array[] = array(
@@ -100,9 +156,16 @@ class OnePica_AvaTaxAr2_Model_Source_Avatax_Logtype extends OnePica_AvaTax_Model
         $logTypes = parent::getLogTypes();
         $logTypes[self::PING_ECOM] = self::PING_ECOM;
         $logTypes[self::ECOM_COMMON] = self::ECOM_COMMON;
-        $logTypes[self::PING_REST] = self::PING_REST;
+        $logTypes[self::REST_PING] = self::REST_PING;
         $logTypes[self::REST_COMMON] = self::REST_COMMON;
+        $logTypes[self::REST_COMPANY] = self::REST_COMPANY;
+        $logTypes[self::REST_COMPANIES] = self::REST_COMPANIES;
+        $logTypes[self::REST_COMPANY_CERTIFICATE_CUSTOMERS] = self::REST_COMPANY_CERTIFICATE_CUSTOMERS;
+        $logTypes[self::REST_COMPANY_CERTIFICATE_ATTACHMENT] = self::REST_COMPANY_CERTIFICATE_ATTACHMENT;
+        $logTypes[self::REST_COMPANY_CERTIFICATE] = self::REST_COMPANY_CERTIFICATE;
+        $logTypes[self::REST_COMPANY_CERTIFICATES] = self::REST_COMPANY_CERTIFICATES;
         $logTypes[self::REST_CUSTOMER] = self::REST_CUSTOMER;
+        $logTypes[self::REST_CUSTOMERS] = self::REST_CUSTOMERS;
         $logTypes[self::REST_CUSTOMER_CERTIFICATE] = self::REST_CUSTOMER_CERTIFICATE;
         $logTypes[self::REST_CUSTOMER_CERT_EXPRESS_INVITE] = self::REST_CUSTOMER_CERT_EXPRESS_INVITE;
 

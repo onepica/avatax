@@ -223,6 +223,9 @@ class AvaTaxClientBase
         } catch (\Exception $e) {
             return $e->getMessage();
         }
+        finally {
+            call_user_func_array($this->_logsCallback, array());
+        }
     }
 
     /**

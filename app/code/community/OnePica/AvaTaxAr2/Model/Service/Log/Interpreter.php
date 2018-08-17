@@ -24,7 +24,6 @@ use Avalara\AvaTaxRestV2\SeverityLevel;
  */
 class OnePica_AvaTaxAr2_Model_Service_Log_Interpreter extends Varien_Object
 {
-
     /**
      * OnePica_AvaTaxAr2_Model_Service_Log_Interpreter constructor.
      */
@@ -33,8 +32,8 @@ class OnePica_AvaTaxAr2_Model_Service_Log_Interpreter extends Varien_Object
     }
 
     /**
-     * @param \Avalara\AvaTaxRestV2\AvaTaxClient $client
-     * @param $store
+     * @param \Avalara\AvaTaxRestV2\AvaTaxClient         $client
+     * @param null|string|bool|int|Mage_Core_Model_Store $store
      * @return $this
      */
     public function interpret(\Avalara\AvaTaxRestV2\AvaTaxClient $client, $store)
@@ -47,13 +46,13 @@ class OnePica_AvaTaxAr2_Model_Service_Log_Interpreter extends Varien_Object
             $lastJsonModelEncoded = $client->getLastJsonModelEncoded();
             $lastJsonModelDecoded = $client->getLastJsonModelDecoded();
             $log = Mage::getModel('avatax_records/log')
-                ->setStoreId($storeId)
-                ->setType($logType)
-                ->setLevel($httpClient->getLastResponse()->isSuccessful() ? 'Success' : 'Error')
-                ->setRequest(print_r($lastJsonModelEncoded, true))
-                ->setSoapRequest($httpClient->getLastRequest())
-                ->setResult(print_r($lastJsonModelDecoded, true))
-                ->setSoapResult($httpClient->getLastResponse()->asString());
+                       ->setStoreId($storeId)
+                       ->setType($logType)
+                       ->setLevel($httpClient->getLastResponse()->isSuccessful() ? 'Success' : 'Error')
+                       ->setRequest(print_r($lastJsonModelEncoded, true))
+                       ->setSoapRequest($httpClient->getLastRequest())
+                       ->setResult(print_r($lastJsonModelDecoded, true))
+                       ->setSoapResult($httpClient->getLastResponse()->asString());
             $log->save();
         } catch (Exception $ex) {
             Mage::logException($ex);
@@ -62,22 +61,78 @@ class OnePica_AvaTaxAr2_Model_Service_Log_Interpreter extends Varien_Object
         return $this;
     }
 
-
     /**
      * @param Zend_Http_Client $httpClient
      * @return string
      */
     protected function interpretTransactionType(Zend_Http_Client $httpClient)
     {
-        $result = OnePica_AvaTaxAr2_Model_Source_Avatax_Logtype::REST_COMMON;
-
         $uri = $httpClient->getUri(true);
-        if (preg_match('/\/companies\/.*\/customers\/.*\/certificates/', $uri)) {
-            $result = OnePica_AvaTaxAr2_Model_Source_Avatax_Logtype::REST_CUSTOMER_CERTIFICATE;
-        } elseif (preg_match('/\/companies\/.*\/customers\/.*\/certexpressinvites/', $uri)) {
-            $result = OnePica_AvaTaxAr2_Model_Source_Avatax_Logtype::REST_CUSTOMER_CERT_EXPRESS_INVITE;
+
+        switch ($uri) {
+            /* AvaTaxClient::ping */
+            case $this->_checkRegex($uri, '/\/utilities\/ping/'):
+                $result = OnePica_AvaTaxAr2_Model_Source_Avatax_Logtype::REST_PING;
+                break;
+            /** AvaTaxClient::listCertificatesForCustomer */
+            case $this->_checkRegex($uri, '/\/companies\/[^\/]*\/customers\/[^\/]*\/certificates/'):
+                $result = OnePica_AvaTaxAr2_Model_Source_Avatax_Logtype::REST_CUSTOMER_CERTIFICATE;
+                break;
+            /* AvaTaxClient::createCertExpressInvitation */
+            case $this->_checkRegex($uri, '/\/companies\/[^\/]*\/customers\/[^\/]*\/certexpressinvites/'):
+                $result = OnePica_AvaTaxAr2_Model_Source_Avatax_Logtype::REST_CUSTOMER_CERT_EXPRESS_INVITE;
+                break;
+            /* AvaTaxClient::getCustomer | AvaTaxClient::updateCustomer | AvaTaxClient::deleteCustomer */
+            case $this->_checkRegex($uri, '/\/companies\/[^\/]*\/customers\/[^\/]+/'):
+                $result = OnePica_AvaTaxAr2_Model_Source_Avatax_Logtype::REST_CUSTOMER;
+                break;
+            /* AvaTaxClient::queryCustomers | AvaTaxClient::createCustomers */
+            case $this->_checkRegex($uri, '/\/companies\/[^\/]*\/customers/'):
+                $result = OnePica_AvaTaxAr2_Model_Source_Avatax_Logtype::REST_CUSTOMERS;
+                break;
+            /* AvaTaxClient::unlinkCustomersFromCertificate */
+            case $this->_checkRegex($uri, '/\/companies\/[^\/]*\/certificates\/[^\/]*\/customers\/unlink/'):
+                $result = OnePica_AvaTaxAr2_Model_Source_Avatax_Logtype::REST_CUSTOMER_CERTIFICATE_UNLINK;
+                break;
+            /* AvaTaxClient::listCustomersForCertificate */
+            case $this->_checkRegex($uri, '/\/companies\/[^\/]*\/certificates\/[^\/]*\/customers/'):
+                $result = OnePica_AvaTaxAr2_Model_Source_Avatax_Logtype::REST_COMPANY_CERTIFICATE_CUSTOMERS;
+                break;
+            /* AvaTaxClient::downloadCertificateImage | AvaTaxClient::uploadCertificateImage */
+            case $this->_checkRegex($uri, '/\/companies\/[^\/]*\/certificates\/[^\/]*\/attachment/'):
+                $result = OnePica_AvaTaxAr2_Model_Source_Avatax_Logtype::REST_COMPANY_CERTIFICATE_ATTACHMENT;
+                break;
+            /* AvaTaxClient::getCertificate | AvaTaxClient::updateCertificate | AvaTaxClient::deleteCertificate */
+            case $this->_checkRegex($uri, '/\/companies\/[^\/]*\/certificates\/[^\/]+/'):
+                $result = OnePica_AvaTaxAr2_Model_Source_Avatax_Logtype::REST_COMPANY_CERTIFICATE;
+                break;
+            /* AvaTaxClient::queryCertificates | AvaTaxClient::createCertificates */
+            case $this->_checkRegex($uri, '/\/companies\/[^\/]*\/certificates/'):
+                $result = OnePica_AvaTaxAr2_Model_Source_Avatax_Logtype::REST_COMPANY_CERTIFICATES;
+                break;
+            /* AvaTaxClient::queryCompany */
+            case $this->_checkRegex($uri, '/\/companies\/[^\/]+/'):
+                $result = OnePica_AvaTaxAr2_Model_Source_Avatax_Logtype::REST_COMPANY;
+                break;
+            /* AvaTaxClient::queryCompanies */
+            case $this->_checkRegex($uri, '/\/companies\?.+/'):
+                $result = OnePica_AvaTaxAr2_Model_Source_Avatax_Logtype::REST_COMPANIES;
+                break;
+            default:
+                $result = OnePica_AvaTaxAr2_Model_Source_Avatax_Logtype::REST_COMMON;
+                break;
         }
 
         return $result;
+    }
+
+    /**
+     * @param string $stringToCheck
+     * @param string $regexRule
+     * @return bool
+     */
+    protected function _checkRegex($stringToCheck, $regexRule)
+    {
+        return preg_match($regexRule, $stringToCheck) ? true : false;
     }
 }
