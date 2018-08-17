@@ -24,14 +24,9 @@
  */
 class OnePica_AvaTaxAr2_Model_Source_Avatax_Logtype extends OnePica_AvaTax_Model_Source_Avatax_Logtype
 {
-    /**
-     * Ping type
-     */
-    const PING_ECOM = 'PingCertAPI';
+    const REST_COMMON = 'RestV2:Common';
 
     const REST_PING = 'RestV2:Ping';
-
-    const REST_COMMON = 'RestV2:Common';
 
     const REST_COMPANIES = 'RestV2:Companies';
 
@@ -57,6 +52,8 @@ class OnePica_AvaTaxAr2_Model_Source_Avatax_Logtype extends OnePica_AvaTax_Model
 
     const ECOM_COMMON = 'CertAPI:Common';
 
+    const ECOM_PING = 'CertAPI:Ping';
+
     /**
      * Gets the list of type for the admin config dropdown
      *
@@ -67,8 +64,8 @@ class OnePica_AvaTaxAr2_Model_Source_Avatax_Logtype extends OnePica_AvaTax_Model
         $array = parent::toArray();
 
         $array[] = array(
-            'value' => self::PING_ECOM,
-            'label' => Mage::helper('avatax')->__('Ping Cert API')
+            'value' => self::ECOM_PING,
+            'label' => Mage::helper('avatax')->__('Cert API: Ping')
         );
 
         $array[] = array(
@@ -154,7 +151,7 @@ class OnePica_AvaTaxAr2_Model_Source_Avatax_Logtype extends OnePica_AvaTax_Model
     public function getLogTypes()
     {
         $logTypes = parent::getLogTypes();
-        $logTypes[self::PING_ECOM] = self::PING_ECOM;
+        $logTypes[self::ECOM_PING] = self::ECOM_PING;
         $logTypes[self::ECOM_COMMON] = self::ECOM_COMMON;
         $logTypes[self::REST_PING] = self::REST_PING;
         $logTypes[self::REST_COMMON] = self::REST_COMMON;

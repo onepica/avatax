@@ -35,7 +35,7 @@ class OnePica_AvaTaxAr2_Model_Service_AvaTax_Config extends Varien_Object
     protected $_store = null;
 
     /**
-     * @var OnePica_AvaTaxAr2_Model_Service_Log_Interpreter|null
+     * @var OnePica_AvaTaxAr2_Model_Service_Avatax_Log_Interpreter|null
      */
     protected $_logInterpreter = null;
 
@@ -44,7 +44,7 @@ class OnePica_AvaTaxAr2_Model_Service_AvaTax_Config extends Varien_Object
      */
     public function __construct()
     {
-        $this->_logInterpreter = Mage::getModel('avataxar2/service_log_interpreter');
+        $this->_logInterpreter = Mage::getModel('avataxar2/service_avatax_log_interpreter');
     }
 
     /**
@@ -94,7 +94,7 @@ class OnePica_AvaTaxAr2_Model_Service_AvaTax_Config extends Varien_Object
     }
 
     /**
-     * @return OnePica_AvaTaxAr2_Model_Service_Log_Interpreter
+     * @return OnePica_AvaTaxAr2_Model_Service_Avatax_Log_Interpreter
      */
     protected function getLogInterpreter()
     {

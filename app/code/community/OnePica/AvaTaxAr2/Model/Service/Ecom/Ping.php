@@ -49,14 +49,6 @@ class OnePica_AvaTaxAr2_Model_Service_Ecom_Ping extends OnePica_AvaTaxAr2_Model_
             $result->setResultCode(SeverityLevel::C_EXCEPTION);
         }
 
-        $this->_log(
-            OnePica_AvaTaxAr2_Model_Source_Avatax_Logtype::PING_ECOM,
-            new stdClass(),
-            $result,
-            $storeId,
-            $config->getParams()
-        );
-
         return ($result->getResultCode() == SeverityLevel::C_SUCCESS) ? true : $result->getMessage();
     }
 
