@@ -39,6 +39,8 @@ class OnePica_AvaTaxAr2_Model_Source_Avatax_Logtype extends OnePica_AvaTax_Model
 
     const REST_CUSTOMER_CERT_EXPRESS_INVITE = 'RestV2:CustomerCertExpressInvite';
 
+    const ECOM_COMMON = 'CertAPI:Common';
+
     /**
      * Gets the list of type for the admin config dropdown
      *
@@ -51,6 +53,11 @@ class OnePica_AvaTaxAr2_Model_Source_Avatax_Logtype extends OnePica_AvaTax_Model
         $array[] = array(
             'value' => self::PING_ECOM,
             'label' => Mage::helper('avatax')->__('Ping Cert API')
+        );
+
+        $array[] = array(
+            'value' => self::ECOM_COMMON,
+            'label' => Mage::helper('avatax')->__('Cert API: Common')
         );
 
         $array[] = array(
@@ -92,6 +99,7 @@ class OnePica_AvaTaxAr2_Model_Source_Avatax_Logtype extends OnePica_AvaTax_Model
     {
         $logTypes = parent::getLogTypes();
         $logTypes[self::PING_ECOM] = self::PING_ECOM;
+        $logTypes[self::ECOM_COMMON] = self::ECOM_COMMON;
         $logTypes[self::PING_REST] = self::PING_REST;
         $logTypes[self::REST_COMMON] = self::REST_COMMON;
         $logTypes[self::REST_CUSTOMER] = self::REST_CUSTOMER;
