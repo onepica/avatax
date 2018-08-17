@@ -138,8 +138,6 @@ class OnePica_AvaTaxAr2_Model_Source_Avatax_Logtype extends OnePica_AvaTax_Model
             'label' => Mage::helper('avatax')->__('Rest V2: Customer Cert Express Invite')
         );
 
-        sort($array);
-
         return $array;
     }
 
