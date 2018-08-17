@@ -20,12 +20,12 @@ use Avalara\AvaTaxRestV2\SeverityLevel;
 /**
  *
  *
- * Class OnePica_AvaTaxAr2_Model_Service_Log_Interpreter
+ * Class OnePica_AvaTaxAr2_Model_Service_Avatax_Log_Interpreter
  */
-class OnePica_AvaTaxAr2_Model_Service_Log_Interpreter extends Varien_Object
+class OnePica_AvaTaxAr2_Model_Service_Avatax_Log_Interpreter extends Varien_Object
 {
     /**
-     * OnePica_AvaTaxAr2_Model_Service_Log_Interpreter constructor.
+     * OnePica_AvaTaxAr2_Model_Service_Avatax_Log_Interpreter constructor.
      */
     public function __construct()
     {
@@ -127,12 +127,19 @@ class OnePica_AvaTaxAr2_Model_Service_Log_Interpreter extends Varien_Object
     }
 
     /**
-     * @param string $stringToCheck
-     * @param string $regexRule
+     * @param $stringToCheck
+     * @param $regexRule
      * @return bool
      */
-    protected function _checkRegex($stringToCheck, $regexRule)
+    protected function _checkRegex($stringToCheck, $regexRule){
+        return $this->getHelper()->checkRegex($stringToCheck, $regexRule);
+    }
+
+    /**
+     * @return \OnePica_AvaTaxAr2_Helper_Data
+     */
+    protected function getHelper()
     {
-        return preg_match($regexRule, $stringToCheck) ? true : false;
+        return Mage::helper('avataxar2');
     }
 }

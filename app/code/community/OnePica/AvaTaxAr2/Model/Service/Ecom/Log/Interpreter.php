@@ -20,13 +20,12 @@ use Avalara\AvaTaxRestV2\SeverityLevel;
 /**
  *
  *
- * Class OnePica_AvaTaxAr2_Model_Service_Log_Interpreter
+ * Class OnePica_AvaTaxAr2_Model_Service_Ecom_Log_Interpreter
  */
 class OnePica_AvaTaxAr2_Model_Service_Ecom_Log_Interpreter extends Varien_Object
 {
-
     /**
-     * OnePica_AvaTaxAr2_Model_Service_Log_Interpreter constructor.
+     * OnePica_AvaTaxAr2_Model_Service_Ecom_Log_Interpreter constructor.
      */
     public function __construct()
     {
@@ -34,7 +33,7 @@ class OnePica_AvaTaxAr2_Model_Service_Ecom_Log_Interpreter extends Varien_Object
 
     /**
      * @param \Avalara\AvaTaxRestV2\AvaTaxClient $client
-     * @param $store
+     * @param                                    $store
      * @return $this
      */
     public function interpret(\Avalara\AvaTaxEcomSDK\ClientBase $client, $store)
@@ -47,13 +46,13 @@ class OnePica_AvaTaxAr2_Model_Service_Ecom_Log_Interpreter extends Varien_Object
             $lastJsonModelEncoded = $client->getLastJsonModelEncoded();
             $lastJsonModelDecoded = $client->getLastJsonModelDecoded();
             $log = Mage::getModel('avatax_records/log')
-                ->setStoreId($storeId)
-                ->setType($logType)
-                ->setLevel($httpClient->getLastResponse()->isSuccessful() ? 'Success' : 'Error')
-                ->setRequest(print_r($lastJsonModelEncoded, true))
-                ->setSoapRequest($httpClient->getLastRequest())
-                ->setResult(print_r($lastJsonModelDecoded, true))
-                ->setSoapResult($httpClient->getLastResponse()->asString());
+                       ->setStoreId($storeId)
+                       ->setType($logType)
+                       ->setLevel($httpClient->getLastResponse()->isSuccessful() ? 'Success' : 'Error')
+                       ->setRequest(print_r($lastJsonModelEncoded, true))
+                       ->setSoapRequest($httpClient->getLastRequest())
+                       ->setResult(print_r($lastJsonModelDecoded, true))
+                       ->setSoapResult($httpClient->getLastResponse()->asString());
             $log->save();
         } catch (Exception $ex) {
             Mage::logException($ex);
@@ -62,17 +61,42 @@ class OnePica_AvaTaxAr2_Model_Service_Ecom_Log_Interpreter extends Varien_Object
         return $this;
     }
 
-
     /**
      * @param Zend_Http_Client $httpClient
      * @return string
      */
     protected function interpretTransactionType(Zend_Http_Client $httpClient)
     {
-        $result = OnePica_AvaTaxAr2_Model_Source_Avatax_Logtype::ECOM_COMMON;
-
         $uri = $httpClient->getUri(true);
 
+        switch ($uri) {
+            /* AvaTaxClient::ping */
+            case $this->_checkRegex($uri, '/\/auth\/get-token/'):
+                $result = OnePica_AvaTaxAr2_Model_Source_Avatax_Logtype::ECOM_PING;
+                break;
+            default:
+                $result = OnePica_AvaTaxAr2_Model_Source_Avatax_Logtype::ECOM_COMMON;
+                break;
+        }
+
         return $result;
+    }
+
+    /**
+     * @param $stringToCheck
+     * @param $regexRule
+     * @return bool
+     */
+    protected function _checkRegex($stringToCheck, $regexRule)
+    {
+        return $this->getHelper()->checkRegex($stringToCheck, $regexRule);
+    }
+
+    /**
+     * @return \OnePica_AvaTaxAr2_Helper_Data
+     */
+    protected function getHelper()
+    {
+        return Mage::helper('avataxar2');
     }
 }

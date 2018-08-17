@@ -121,4 +121,14 @@ class OnePica_AvaTaxAr2_Helper_Data extends Mage_Core_Helper_Abstract
     {
         return $customer->getEmail();
     }
+
+    /**
+     * @param string $stringToCheck
+     * @param string $regexRule
+     * @return bool
+     */
+    public function checkRegex($stringToCheck, $regexRule)
+    {
+        return preg_match($regexRule, $stringToCheck) ? true : false;
+    }
 }
