@@ -217,8 +217,9 @@ class OnePica_AvaTaxAr2_Model_Service_Avatax_Certificate extends OnePica_AvaTaxA
     }
 
     /**
-     * @param  int                                 $id
-     * @param  null|bool|int|Mage_Core_Model_Store $store
+     * @param string                              $customerCode
+     * @param null|bool|int|Mage_Core_Model_Store $store
+     * @param bool                                $throwError
      * @return \Varien_Data_Collection
      * @throws \Mage_Core_Exception
      */
@@ -226,7 +227,7 @@ class OnePica_AvaTaxAr2_Model_Service_Avatax_Certificate extends OnePica_AvaTaxA
     {
         $client = $this->_getServiceConfig()->getClient($store);
 
-        $response = $client->getCustomer($this->_getServiceCompany()->getCurrentCompanyId($store), $customerCode);
+        $response = $client->getCustomer($this->_getServiceCompany()->getCurrentCompanyId($store), $customerCode, null);
 
         $exception = $this->validateResponse($response, $throwError);
 
@@ -234,7 +235,7 @@ class OnePica_AvaTaxAr2_Model_Service_Avatax_Certificate extends OnePica_AvaTaxA
     }
 
     /**
-     * @param $customer \OnePica_AvaTaxAr2_Model_Service_Avatax_Model_Customer
+     * @param      $customer \OnePica_AvaTaxAr2_Model_Service_Avatax_Model_Customer
      * @param null $store
      * @return Varien_Object
      * @throws Mage_Core_Exception
@@ -245,7 +246,9 @@ class OnePica_AvaTaxAr2_Model_Service_Avatax_Certificate extends OnePica_AvaTaxA
 
         $client = $this->_getServiceConfig()->getClient($store);
 
-        $response = $client->createCustomers($this->_getServiceCompany()->getCurrentCompanyId($store), array($avaCustomer));
+        $response = $client->createCustomers(
+            $this->_getServiceCompany()->getCurrentCompanyId($store), array($avaCustomer)
+        );
 
         $this->validateResponse($response);
 
@@ -253,7 +256,7 @@ class OnePica_AvaTaxAr2_Model_Service_Avatax_Certificate extends OnePica_AvaTaxA
     }
 
     /**
-     * @param $customer \OnePica_AvaTaxAr2_Model_Service_Avatax_Model_Customer
+     * @param      $customer \OnePica_AvaTaxAr2_Model_Service_Avatax_Model_Customer
      * @param null $store
      * @return Varien_Object
      * @throws Mage_Core_Exception
@@ -264,32 +267,46 @@ class OnePica_AvaTaxAr2_Model_Service_Avatax_Certificate extends OnePica_AvaTaxA
 
         $client = $this->_getServiceConfig()->getClient($store);
 
-        $response = $client->updateCustomer($this->_getServiceCompany()->getCurrentCompanyId($store), $avaCustomer->customerCode, $avaCustomer);
+        $response = $client->updateCustomer(
+            $this->_getServiceCompany()->getCurrentCompanyId($store), $avaCustomer->customerCode, $avaCustomer
+        );
 
         $this->validateResponse($response);
 
         return new \Varien_Object((array)$response);
     }
 
+    /**
+     * @param null $store
+     * @return \Varien_Object
+     * @throws \Mage_Core_Exception
+     */
     public function getCompanyInfo($store = null)
     {
         $client = $this->_getServiceConfig()->getClient($store);
 
-        $response = $client->getCompany($this->_getServiceCompany()->getCurrentCompanyId($store));
+        $response = $client->getCompany($this->_getServiceCompany()->getCurrentCompanyId($store), null);
 
         $this->validateResponse($response);
 
         return new \Varien_Object((array)$response);
     }
 
+    /**
+     * @param string $companyId
+     * @param string $customerCode
+     * @param string $email
+     * @param null   $store
+     * @return \Varien_Object
+     */
     public function sendCertExpressInvite($companyId, $customerCode, $email, $store = null)
     {
         $client = $this->_getServiceConfig()->getClient($store);
 
         $letterInfo = array(
-            'recipient' => $email,
+            'recipient'        => $email,
             'coverLetterTitle' => 'STANDARD_REQUEST',
-            'deliveryMethod' => 'Email'
+            'deliveryMethod'   => 'Email'
         );
 
         $response = $client->sendCoverLetter($companyId, $customerCode, 'certexpressinvites', $letterInfo);

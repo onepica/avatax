@@ -44,7 +44,7 @@ class OnePica_AvaTaxAr2_Model_Service_Avatax_Ping extends OnePica_AvaTaxAr2_Mode
         $result = new Varien_Object();
 
         try {
-            $pingResult = $client->Ping();
+            $pingResult = $client->ping();
             $result->setActualResult($pingResult);
 
             if (is_string($pingResult)) {
@@ -65,14 +65,6 @@ class OnePica_AvaTaxAr2_Model_Service_Avatax_Ping extends OnePica_AvaTaxAr2_Mode
             $result->setMessage($message);
             $result->setResultCode(SeverityLevel::C_EXCEPTION);
         }
-
-        $this->_log(
-            OnePica_AvaTaxAr2_Model_Source_Avatax_Logtype::PING_REST,
-            new stdClass(),
-            $result,
-            $storeId,
-            $config->getParams()
-        );
 
         return ($result->getResultCode() == SeverityLevel::C_SUCCESS) ? true : $result->getMessage();
     }

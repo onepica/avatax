@@ -68,11 +68,10 @@ class OnePica_AvaTaxAr2_Model_Service_AvaTax_Config extends Varien_Object
                 $this->_getConfigHelper()->getServiceKey($store)
             );
 
-            $this->_client->_logsCallback = function ($params = array()){
+            $this->_client->_logsCallback = function ($params = array()) {
                 $this->getLogInterpreter()->interpret($this->_client, $this->_store);
             };
             Closure::bind($this->_client->_logsCallback, $this);
-
         }
 
         return $this->_client;
