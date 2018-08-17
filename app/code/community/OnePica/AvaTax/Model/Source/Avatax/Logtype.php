@@ -59,23 +59,23 @@ class OnePica_AvaTax_Model_Source_Avatax_Logtype
         return array(
             array(
                 'value' => self::PING,
-                'label' => Mage::helper('avatax')->__('Ping')
+                'label' => Mage::helper('avatax')->__('Avatax: Ping')
             ),
             array(
                 'value' => self::GET_TAX,
-                'label' => Mage::helper('avatax')->__('GetTax')
+                'label' => Mage::helper('avatax')->__('Avatax: GetTax')
             ),
             array(
                 'value' => self::FILTER,
-                'label' => Mage::helper('avatax')->__('Filter')
+                'label' => Mage::helper('avatax')->__('Avatax: Filter')
             ),
             array(
                 'value' => self::VALIDATE,
-                'label' => Mage::helper('avatax')->__('Validate')
+                'label' => Mage::helper('avatax')->__('Avatax: Validate')
             ),
             array(
                 'value' => self::QUEUE,
-                'label' => Mage::helper('avatax')->__('Queue')
+                'label' => Mage::helper('avatax')->__('Avatax: Queue')
             )
         );
     }
