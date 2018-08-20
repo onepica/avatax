@@ -67,6 +67,11 @@ class ClientBase
     protected $_lastJsonModelDecoded = null;
 
     /**
+     * @var int Last transaction routing time
+     */
+    private $lastRoutingTime = -1;
+
+    /**
      * Construct a new AvaTaxClient
      *
      * @param string $appName     Specify the name of your application here.
@@ -185,6 +190,10 @@ class ClientBase
      */
     private function _restCall($apiUriPath, $method, $params)
     {
+        //clean routing time
+        $this->lastRoutingTime = -1;
+        $startTime = microtime(true);
+
         // Contact the server
         try {
             $this->client->setHeaders('Accept', "application/json");
@@ -216,12 +225,17 @@ class ClientBase
                 $this->client->setRawData($params['body'], 'application/json');
             }
 
+            $startTime = microtime(true);
+
             $response = $this->client->request($method);
             $body = $response->getBody();
 
             return $this->jsonDecode($body);
         } catch (\Exception $e) {
             return $e->getMessage();
+        } finally {
+            $endTime = microtime(true);
+            $this->lastRoutingTime = $endTime - $startTime;
         }
     }
 
@@ -284,5 +298,15 @@ class ClientBase
     public function getLastJsonModelDecoded()
     {
         return $this->_lastJsonModelDecoded;
+    }
+
+    /**
+     * Get last routing time
+     *
+     * @return int
+     */
+    public function getLastRoutingTime()
+    {
+        return $this->lastRoutingTime;
     }
 }

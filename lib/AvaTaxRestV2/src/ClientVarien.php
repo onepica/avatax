@@ -6,6 +6,10 @@ namespace Avalara\AvaTaxRestV2;
  * Base AvaTaxClient object that handles connectivity to the AvaTax v2 API server.
  * This class is overridden by the descendant AvaTaxClient which implements all the API methods.
  */
+/**
+ * Class AvaTaxClientBase
+ * @package Avalara\AvaTaxRestV2
+ */
 class AvaTaxClientBase
 {
     /**  @var \Zend_Http_Client The client to use to connect to AvaTax $client */
@@ -46,6 +50,11 @@ class AvaTaxClientBase
 
     /** @var string The root URL of the AvaTax environment to contact $environment */
     private $environment;
+
+    /**
+     * @var int Last transaction routing time
+     */
+    private $lastRoutingTime = -1;
 
     /**
      *
@@ -144,33 +153,44 @@ class AvaTaxClientBase
      */
     protected function _httpRequest($apiUriPath, $method, $params, $headers)
     {
-        // Contact the server
-        $this->client->setHeaders(
-            'X-Avalara-Client', "{$this->appName}; {$this->appVersion}; PhpRestClient; 17.5.0-67; {$this->machineName}"
-        );
+        //clean rounting time
+        $this->lastRoutingTime = -1;
+        $startTime = microtime(true);
 
-        foreach ($headers as $key => $value) {
-            $this->client->setHeaders($key, $value);
+        try {
+            // Contact the server
+            $this->client->setHeaders(
+                'X-Avalara-Client', "{$this->appName}; {$this->appVersion}; PhpRestClient; 17.5.0-67; {$this->machineName}"
+            );
+
+            foreach ($headers as $key => $value) {
+                $this->client->setHeaders($key, $value);
+            }
+
+            // Set authentication on the parameters
+            if (count($this->auth) == 2) {
+                $this->client->setAuth($this->auth[0], $this->auth[1]);
+            } else {
+                $this->client->setHeaders('Authorization', "Bearer {$this->auth[0]}");
+            }
+
+            /** @var \Zend_Uri $uri */
+            $uri = $this->client->getUri();
+            $uri->setPath($apiUriPath);
+            $uri->setQuery($params['query']);
+
+            $this->client->setConfig($params);
+            if (in_array($method, array('POST', 'PUT')) && isset($params['body'])) {
+                $this->client->setRawData($params['body'], 'application/json');
+            }
+
+            $startTime = microtime(true);
+            return $this->client->request($method);
         }
-
-        // Set authentication on the parameters
-        if (count($this->auth) == 2) {
-            $this->client->setAuth($this->auth[0], $this->auth[1]);
-        } else {
-            $this->client->setHeaders('Authorization', "Bearer {$this->auth[0]}");
+        finally {
+            $endTime = microtime(true);
+            $this->lastRoutingTime = $endTime - $startTime;
         }
-
-        /** @var \Zend_Uri $uri */
-        $uri = $this->client->getUri();
-        $uri->setPath($apiUriPath);
-        $uri->setQuery($params['query']);
-
-        $this->client->setConfig($params);
-        if (in_array($method, array('POST', 'PUT')) && isset($params['body'])) {
-            $this->client->setRawData($params['body'], 'application/json');
-        }
-
-        return $this->client->request($method);
     }
 
     /**
@@ -216,6 +236,11 @@ class AvaTaxClientBase
     {
         // Contact the server
         try {
+            // clean last json model if no body is set
+            if (!isset($params['body']) || !$params['body']) {
+                $this->_lastJsonModelEncoded = null;
+            }
+
             $headers = array("Accept" => $type);
             $response = $this->_httpRequest($apiUriPath, $method, $params, $headers);
 
@@ -287,5 +312,15 @@ class AvaTaxClientBase
     public function getLastJsonModelDecoded()
     {
         return $this->_lastJsonModelDecoded;
+    }
+
+    /**
+     * Get last routing time
+     *
+     * @return int
+     */
+    public function getLastRoutingTime()
+    {
+        return $this->lastRoutingTime;
     }
 }

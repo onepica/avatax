@@ -45,14 +45,17 @@ class OnePica_AvaTaxAr2_Model_Service_Ecom_Log_Interpreter extends Varien_Object
             $logType = $this->interpretTransactionType($httpClient);
             $lastJsonModelEncoded = $client->getLastJsonModelEncoded();
             $lastJsonModelDecoded = $client->getLastJsonModelDecoded();
+            $lastRequest = $httpClient->getLastRequest();
+            $lastResponse = $httpClient->getLastResponse()->asString();
+            $lastResponse = $lastResponse . PHP_EOL . PHP_EOL . "Rounting time : " . $client->getLastRoutingTime();
             $log = Mage::getModel('avatax_records/log')
                        ->setStoreId($storeId)
                        ->setType($logType)
                        ->setLevel($httpClient->getLastResponse()->isSuccessful() ? 'Success' : 'Error')
                        ->setRequest(print_r($lastJsonModelEncoded, true))
-                       ->setSoapRequest($httpClient->getLastRequest())
+                       ->setSoapRequest($lastRequest)
                        ->setResult(print_r($lastJsonModelDecoded, true))
-                       ->setSoapResult($httpClient->getLastResponse()->asString());
+                       ->setSoapResult($lastResponse);
             $log->save();
         } catch (Exception $ex) {
             Mage::logException($ex);
