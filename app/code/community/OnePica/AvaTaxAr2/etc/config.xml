@@ -208,6 +208,9 @@
             <avatax_document_management>
                 <action>0</action>
             </avatax_document_management>
+            <avatax>
+                <log_type_list>Ping,GetTax,Filter,Validate,Queue,CertAPI:Ping,CertAPI:Common,RestV2:Ping,RestV2:Common,RestV2:Companies,RestV2:Company,RestV2:CompanyCertificateCustomers,RestV2:CompanyCertificateAttachment,RestV2:CompanyCertificate,RestV2:CompanyCertificate,RestV2:Customer,RestV2:Customers,RestV2:CustomerCertificate,RestV2:CustomerCertificateUnlink,RestV2:CustomerCertExpressInvite</log_type_list>
+            </avatax>
         </tax>
     </default>
 </config>
