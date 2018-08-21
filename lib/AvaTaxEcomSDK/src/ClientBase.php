@@ -167,17 +167,22 @@ class ClientBase
      */
     protected function restCall($apiUriPath, $method, $params)
     {
+        $result = '';
+
         try {
             // clean last json model if no body is set
             if (!isset($params['body']) || !$params['body']) {
                 $this->_lastJsonModelEncoded = null;
             }
 
-            return $this->_restCall($apiUriPath, $method, $params);
+            $result = $this->_restCall($apiUriPath, $method, $params);
+        } catch (\Exception $ex) {
+            $result = $ex->getMessage();
         }
-        finally {
-            call_user_func_array($this->_logsCallback, array());
-        }
+
+        call_user_func_array($this->_logsCallback, array());
+
+        return $result;
     }
 
     /**
@@ -190,6 +195,8 @@ class ClientBase
      */
     private function _restCall($apiUriPath, $method, $params)
     {
+        $result = '';
+
         //clean routing time
         $this->lastRoutingTime = -1;
         $startTime = microtime(true);
@@ -230,13 +237,15 @@ class ClientBase
             $response = $this->client->request($method);
             $body = $response->getBody();
 
-            return $this->jsonDecode($body);
+            $result = $this->jsonDecode($body);
         } catch (\Exception $e) {
-            return $e->getMessage();
-        } finally {
-            $endTime = microtime(true);
-            $this->lastRoutingTime = $endTime - $startTime;
+            $result = $e->getMessage();
         }
+
+        $endTime = microtime(true);
+        $this->lastRoutingTime = $endTime - $startTime;
+
+        return $result;
     }
 
     /**

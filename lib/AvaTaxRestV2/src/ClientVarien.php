@@ -153,6 +153,8 @@ class AvaTaxClientBase
      */
     protected function _httpRequest($apiUriPath, $method, $params, $headers)
     {
+        $result = '';
+
         //clean rounting time
         $this->lastRoutingTime = -1;
         $startTime = microtime(true);
@@ -185,12 +187,17 @@ class AvaTaxClientBase
             }
 
             $startTime = microtime(true);
-            return $this->client->request($method);
+
+            $result = $this->client->request($method);
+
+        } catch(\Exception $ex) {
+            $result = $ex->getMessage();
         }
-        finally {
-            $endTime = microtime(true);
-            $this->lastRoutingTime = $endTime - $startTime;
-        }
+
+        $endTime = microtime(true);
+        $this->lastRoutingTime = $endTime - $startTime;
+
+        return $result;
     }
 
     /**
@@ -203,6 +210,8 @@ class AvaTaxClientBase
      */
     protected function restCall($apiUriPath, $method, $params)
     {
+        $result = '';
+
         // Contact the server
         try {
 
@@ -214,13 +223,14 @@ class AvaTaxClientBase
             $headers = array("Accept" => "application/json");
             $response = $this->_httpRequest($apiUriPath, $method, $params, $headers);
 
-            return $this->jsonDecode($response->getBody());
+            $result = $this->jsonDecode($response->getBody());
         } catch (\Exception $e) {
-            return $e->getMessage();
+            $result = $e->getMessage();
         }
-        finally {
-            call_user_func_array($this->_logsCallback, array());
-        }
+
+        call_user_func_array($this->_logsCallback, array());
+
+        return $result;
     }
 
     /**
@@ -234,6 +244,8 @@ class AvaTaxClientBase
      */
     protected function getResource($apiUriPath, $method, $params, $type)
     {
+        $result = '';
+
         // Contact the server
         try {
             // clean last json model if no body is set
@@ -244,13 +256,14 @@ class AvaTaxClientBase
             $headers = array("Accept" => $type);
             $response = $this->_httpRequest($apiUriPath, $method, $params, $headers);
 
-            return $response->getBody();
+            $result = $response->getBody();
         } catch (\Exception $e) {
-            return $e->getMessage();
+            $result = $e->getMessage();
         }
-        finally {
-            call_user_func_array($this->_logsCallback, array());
-        }
+
+        call_user_func_array($this->_logsCallback, array());
+
+        return $result;
     }
 
     /**
