@@ -47,8 +47,8 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement_Edit_Form ext
         $fieldset = $form->addFieldset('unit_of_measurement_form', array('legend' => $this->__('Item information')));
 
         $fieldset->addField(
-            'avalara_measurement_type', 'text', array(
-                'name'     => 'avalara_measurement_type',
+            'avalara_parameter_type', 'text', array(
+                'name'     => 'avalara_parameter_type',
                 'label'    => $this->__('Parameter'),
                 'class'    => 'required-entry',
                 'note'     => $this->__('For example "%s"', $helper->getMassType()),
@@ -57,8 +57,8 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement_Edit_Form ext
         );
 
         $fieldset->addField(
-            'avalara_code', 'text', array(
-                'name'     => 'avalara_code',
+            'avalara_uom', 'text', array(
+                'name'     => 'avalara_uom',
                 'label'    => $this->__('UOM')
             )
         );

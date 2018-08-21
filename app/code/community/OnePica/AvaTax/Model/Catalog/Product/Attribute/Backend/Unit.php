@@ -183,7 +183,7 @@ class OnePica_AvaTax_Model_Catalog_Product_Attribute_Backend_Unit
         $collection = Mage::getModel('avatax_records/unitOfMeasurement')
             ->getCollection()
             ->addFieldToFilter('id', array('in' => $ids))
-            ->addFieldToFilter('avalara_measurement_type',
+            ->addFieldToFilter('avalara_parameter_type',
                 array('eq' => $helper->getMassType()));
 
         return $collection;
