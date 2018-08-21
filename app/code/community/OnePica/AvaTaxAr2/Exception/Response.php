@@ -31,7 +31,7 @@ class OnePica_AvaTaxAr2_Exception_Response extends Mage_Core_Exception
 
         if (self::isResponseError($response)) {
             $prefix = $this->_getHelper()->__('AvaTax Document Management. ');
-            if(is_object($response)) {
+            if (is_object($response)) {
                 if (isset($response->error->details[0]) && is_object($response->error->details[0])) {
                     $message = $response->error->details[0]->message . ": " . $response->error->details[0]->description;
                 } else {
@@ -41,6 +41,8 @@ class OnePica_AvaTaxAr2_Exception_Response extends Mage_Core_Exception
                 $message = $prefix . $message;
 
                 $this->_responceCode = $response->error->code;
+            } elseif (is_string($response) && !empty($response)) {
+                $message = $prefix . $response;
             } else {
                 $message = $prefix . $this->_getHelper()->__('Unexpected exception occurred.');
             }
@@ -65,7 +67,9 @@ class OnePica_AvaTaxAr2_Exception_Response extends Mage_Core_Exception
      */
     public static function isResponseError($response)
     {
-        return !isset($response) || (is_object($response) && isset($response->error));
+        // is_string used because we and http client adapter return exception message as response,
+        // we have methods in API that returns string as success value but we do not use such methods currently
+        return !isset($response) || (is_object($response) && isset($response->error)) || is_string($response);
     }
 
     /**

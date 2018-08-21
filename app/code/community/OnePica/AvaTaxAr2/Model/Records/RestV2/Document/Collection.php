@@ -63,14 +63,19 @@ class OnePica_AvaTaxAr2_Model_Records_RestV2_Document_Collection extends Varien_
             return $this;
         }
 
-        /** @var \Varien_Data_Collection $customerCertificates */
-        $customerCertificates = $this->_getServiceCertificate()->getAllCustomerCertificates($this->getCustomerCode());
-        $this->_items = $customerCertificates->getItems();
-        $this->_totalRecords = count($customerCertificates->getItems());
-        $this->_setIsLoaded();
-        $this->_renderFilters();
-        $this->_renderOrders();
-        $this->_renderLimit();
+        try {
+            /** @var \Varien_Data_Collection $customerCertificates */
+            $customerCertificates = $this->_getServiceCertificate()->getAllCustomerCertificates($this->getCustomerCode());
+            $this->_items = $customerCertificates->getItems();
+            $this->_totalRecords = count($customerCertificates->getItems());
+            $this->_setIsLoaded();
+            $this->_renderFilters();
+            $this->_renderOrders();
+            $this->_renderLimit();
+        } catch (\Exception $ex) {
+            Mage::logException($ex);
+            $this->_getCoreSession()->addError($ex->getMessage());
+        }
 
         return $this;
     }
@@ -199,5 +204,15 @@ class OnePica_AvaTaxAr2_Model_Records_RestV2_Document_Collection extends Varien_
     protected function _getServiceCertificate()
     {
         return Mage::getSingleton('avataxar2/service_avatax_certificate');
+    }
+
+    /**
+     * Get Core Session
+     *
+     * @return \Mage_Core_Model_Session
+     */
+    protected function _getCoreSession()
+    {
+        return Mage::getSingleton('core/session');
     }
 }
