@@ -53,12 +53,12 @@ class OnePica_AvaTaxAr2_Model_Service_Ecom_Log_Interpreter extends Varien_Object
                     $lastRequest = isset($lastRequest) ? $lastRequest : $httpClient->getUri(true);
 
                     $lastResponse = $httpClient->getLastResponse();
-                    $lastResponseAsString =  $lastResponse instanceof \Zend_Http_Response ? $httpClient->getLastResponse()->asString() : null;
+                    $lastResponseAsString =  $lastResponse instanceof \Zend_Http_Response ? $lastResponse->asString() : null;
                     $lastResponseAsString = $lastResponseAsString . PHP_EOL . PHP_EOL . "Routing time : " . $client->getLastRoutingTime();
 
                     $level = 'Error';
                     if ($lastResponse instanceof \Zend_Http_Response) {
-                        $level = $httpClient->getLastResponse()->isSuccessful() ? 'Success' : 'Error';
+                        $level = $lastResponse->isSuccessful() ? 'Success' : 'Error';
                     }
 
                     $log = Mage::getModel('avatax_records/log')
