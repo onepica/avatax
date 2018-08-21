@@ -37,9 +37,8 @@ $taxIter++; ?>
 <?php if ($this->helper('tax')->displayFullSummary()): ?>
     <?php $isTop = 1; ?>
     <?php foreach ($this->getTotal()->getFullInfo() as $info): ?>
-        <?php if ($this->_getLandedCostHelper()->isLandedCostTax($info)) {
-            continue;
-        } ?>
+        <?php if ($this->_getLandedCostHelper()->isLandedCostTax($info)) continue; ?>
+        <?php if ($this->_getFixedTaxHelper()->isFixedTax($info)) continue; ?>
         <?php if (isset($info['hidden']) && $info['hidden']) continue; ?>
         <?php $percent = $info['percent']; ?>
         <?php $amount = $info['amount']; ?>
@@ -145,4 +144,54 @@ $taxIter++; ?>
         </td>
         <td style="" class="a-right"><?php echo $this->helper('checkout')->formatPrice($_landedCostAmount) ?></td>
     </tr>
+<?php endif; ?>
+
+<!--FIXED TAX-->
+<?php $_fixedTaxAmount = $this->getFixedTaxAmount();
+$taxIter++; ?>
+
+<?php if ($this->showFixedTaxBlock()): ?>
+
+    <?php if ($this->helper('tax')->displayFullSummary() && $_fixedTaxAmount != 0): ?>
+        <?php $isTop = 1; ?>
+        <?php foreach ($this->getFixedTaxItems() as $info): ?>
+            <?php if (isset($info['hidden']) && $info['hidden']) {
+                continue;
+            } ?>
+
+            <?php $amount = $info['amount']; ?>
+            <?php $rates = $info['rates']; ?>
+            <?php $isFirst = 1; ?>
+
+            <?php foreach ($rates as $rate): ?>
+                <tr class="summary-details-<?php echo $taxIter; ?> summary-details<?php if ($isTop): echo ' summary-details-first'; endif; ?>"
+                    style="display:none;">
+                    <td class="a-right" style="" colspan="<?php echo $this->getColspan(); ?>">
+                        <?php echo $this->escapeHtml($rate['title']); ?>
+                        <br/>
+                    </td>
+                    <?php if ($isFirst): ?>
+                        <td style="" class="a-right" rowspan="<?php echo count($rates); ?>">
+                            <?php echo $this->helper('checkout')->formatPrice($amount); ?>
+                        </td>
+                    <?php endif; ?>
+                </tr>
+                <?php $isFirst = 0; ?>
+                <?php $isTop = 0; ?>
+            <?php endforeach; ?>
+        <?php endforeach; ?>
+    <?php endif; ?>
+
+    <tr <?php if ($this->helper('tax')->displayFullSummary() && $_fixedTaxAmount != 0): ?> class="summary-total"
+        onclick="expandDetails(this, '.summary-details-<?php echo $taxIter; ?>')"<?php endif; ?>>
+        <td style="" class="a-right" colspan="<?php echo $this->getColspan(); ?>">
+            <?php if ($this->helper('tax')->displayFullSummary()): ?>
+                <div class="summary-collapse"><?php echo $this->getFixedTaxTitle() ?></div>
+            <?php else: ?>
+                <?php echo $this->getFixedTaxTitle(); ?>
+            <?php endif; ?>
+        </td>
+        <td style="" class="a-right"><?php echo $this->helper('checkout')->formatPrice($_fixedTaxAmount) ?></td>
+    </tr>
+
 <?php endif; ?>

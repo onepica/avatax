@@ -13,10 +13,10 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_HsCode_Edit_Tab_Form
         $fieldset->addField(
             'hs_code', 'text', array(
                 'name'     => 'hs_code',
-                'label'    => $this->__('HS Code'),
+                'label'    => $this->__('HS Code Group Name'),
                 'class'    => 'required-entry',
                 'required' => true,
-                'note'     => 'You can find full list of HS codes at <a href="https://www.avalara.com/hs-codes/">Avalara website</a>',
+                'note'     => 'You can find full list of HS Codes at <a href="https://www.avalara.com/hs-codes/">Avalara website</a>',
             )
         );
 

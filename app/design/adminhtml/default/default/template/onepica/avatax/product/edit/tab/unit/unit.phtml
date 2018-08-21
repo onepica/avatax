@@ -20,27 +20,31 @@
 <?php $_htmlClass   = $this->getElement()->getClass() ?>
 <?php $_htmlName    = $this->getElement()->getName() ?>
 <?php $_readonly    = $this->getElement()->getReadonly() ?>
-<?php $_defaultUnitOfMeasurement = $this->getLandedCostHelper()->getDefaultUnitsOfMeasurement(); ?>
+<?php $_helper      = Mage::helper('avatax') ?>
 
 <tr>
     <td class="label"><?php echo $this->getElement()->getLabel() ?></td>
     <td colspan="10" class="grid tier avatax-unit-of-measurement">
-    <div class="default">
-        <span class="unit"><?php echo $this->getProduct()->getWeight()?></span>
-        <span class="unit-of-measurement"><?php echo $_defaultUnitOfMeasurement ? $_defaultUnitOfMeasurement->getDescription() : '';?></span>
-    </div>
-    <div>
-        <span>Accurate units:</span>
-    </div>
+<!--    <div class="default">-->
+<!--        <span class="unit">--><?php //echo $this->getProduct()->getWeight()?><!--</span>-->
+<!--        <span class="unit-of-measurement">--><?php //echo $_defaultUnitOfMeasurement ? $_defaultUnitOfMeasurement->getDescription() : '';?><!--</span>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--        <span>Accurate units:</span>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--        <i>Default unit above will be used when there are no accurate unit will be found</i>-->
+<!--        <br/><i>for destination country during tax estimation.</i>-->
+<!--    </div>-->
     <table cellspacing="0" class="data border" id="lcosts_table">
         <col width="100" />
         <col />
         <col width="1" />
         <thead>
             <tr class="headings">
-                <th><?php echo Mage::helper('catalog')->__('Unit') ?></th>
-                <th><?php echo $this->getPriceColumnHeader(Mage::helper('catalog')->__('Unit Of Measurement')) ?></th>
-                <th class="last"><?php echo Mage::helper('catalog')->__('Action') ?></th>
+                <th><?php echo $_helper->__('Parameter') ?></th>
+                <th><?php echo $_helper->__('Unit') ?></th>
+                <th class="last"><?php echo $_helper->__('Action') ?></th>
             </tr>
         </thead>
         <tbody id="<?php echo $_htmlId ?>_container"></tbody>
@@ -54,12 +58,12 @@
 <script type="text/javascript">
 //<![CDATA[
 var lcUnitRowTemplate = '<tr>'
-    + '<td><input class="<?php echo $_htmlClass ?> required-entry" type="number" step="0.0001" min="0" name="<?php echo $_htmlName ?>[{{index}}][unit]" value="{{unit}}" id="lcost_unit_row_{{index}}_unit" /></td>'
     + '<td><select class="<?php echo $_htmlClass ?> custgroup required-entry" name="<?php echo $_htmlName ?>[{{index}}][unit_of_measurement]" id="lcost_unit_row_{{index}}_unit_of_measurement">'
     <?php foreach ($this->getUnitsOfMeasurement() as $unit): ?>
     + '<option value="<?php echo $unit->getId() ?>"><?php echo $this->jsQuoteEscape($this->escapeHtml($unit->getDescription())) ?></option>'
     <?php endforeach ?>
     + '</select></td>'
+    + '<td><input class="<?php echo $_htmlClass ?>" type="number" step="0.0001" min="0" name="<?php echo $_htmlName ?>[{{index}}][unit]" value="{{unit}}" id="lcost_unit_row_{{index}}_unit" /></td>'
     + '<td class="last"><input type="hidden" name="<?php echo $_htmlName ?>[{{index}}][delete]" class="delete" value="" id="lcost_unit_row_{{index}}_delete" />'
     + '<button title="<?php echo Mage::helper('core')->jsQuoteEscape(Mage::helper('catalog')->__("Delete Unit")) ?>" type="button" class="scalable delete icon-btn delete-product-option" id="lcost_unit_row_{{index}}_delete_button" onclick="return lcUnitControl.deleteItem(event);">'
     + '<span><span><span><?php echo Mage::helper('core')->jsQuoteEscape(Mage::helper('catalog')->__("Delete")) ?></span></span></span></button></td>'
@@ -82,8 +86,8 @@ var lcUnitControl = {
         };
 
         if(arguments.length >= 2) {
-            data.unit      = arguments[0];
-            data.unitOfMeasurement      = arguments[1];
+            data.unitOfMeasurement      = arguments[0];
+            data.unit      = arguments[1];
         }
         if (arguments.length == 5) {
             data.readOnly = arguments[4];
@@ -126,8 +130,8 @@ var lcUnitControl = {
 };
 <?php foreach ($this->getValues() as $_item): ?>
 lcUnitControl.addItem(
-    '<?php echo $_item['unit'] ?>',
     '<?php echo $_item['unit_of_measurement'] ?>',
+    '<?php echo $_item['unit'] ?>',
     <?php echo 0?>);
 <?php endforeach; ?>
 <?php if ($_readonly): ?>

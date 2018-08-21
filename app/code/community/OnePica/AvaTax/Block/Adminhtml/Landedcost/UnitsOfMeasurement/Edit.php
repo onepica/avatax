@@ -31,7 +31,7 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement_Edit extends 
         $this->_blockGroup = 'avatax';
         $this->_controller = 'adminhtml_landedcost_unitsOfMeasurement';
 
-        $this->_updateButton('save', 'label', $this->__('Save Unit Of Measurement'));
+        $this->_updateButton('save', 'label', $this->__('Save Parameter'));
         $this->_updateButton('delete', 'label', $this->__('Delete Item'));
         $this->_addButton(
             'save_and_edit_button',

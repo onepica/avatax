@@ -38,12 +38,42 @@ class OnePica_AvaTax_Model_Observer_AdminSystemConfigSaveBefore extends OnePica_
             switch ($config->getSection()) {
                 case 'tax':
                     {
-                        $isPriceIncludeTax = (bool)$config->getData('groups/calculation/fields/price_includes_tax/value');
-                        $isLandedCostEnabled = (bool)$config->getData('groups/avatax_landed_cost/fields/landed_cost_enabled/value');
+                        $website = Mage::app()->getWebsite(true);
+                        $currentStoreCode = $config->getStore();
+
+                        /** @var OnePica_AvaTax_Helper_LandedCost $lcConfig */
+                        $lcConfig = Mage::helper('avatax/landedCost');
+
+                        $isPriceIncludeTaxSaveValue = $config->getData('groups/calculation/fields/price_includes_tax/value');
+                        $isPriceIncludeTax = isset($isPriceIncludeTaxSaveValue)
+                                            ? (bool)$isPriceIncludeTaxSaveValue
+                                            : $website->getConfig('tax/calculation/price_includes_tax');
+
+
+                        $storeLandedCostEnabled = null;
+                        $isLandedCostEnabledSaveValue = $config->getData('groups/avatax_landed_cost/fields/landed_cost_enabled/value');
+                        $isLandedCostEnabled = (isset($isLandedCostEnabledSaveValue)) ? (bool)$isLandedCostEnabledSaveValue : false;
+                        if (!$isLandedCostEnabled) {
+                            $storesToCheck = $website->getStoreCodes();
+                            if (($key = array_search($currentStoreCode, $storesToCheck)) !== false) {
+                                unset($storesToCheck[$key]);
+                            }
+                            foreach ($storesToCheck as $code) {
+                                $isLandedCostEnabled = $isLandedCostEnabled | (bool)$lcConfig->isLandedCostEnabled($code);
+                                if ($isLandedCostEnabled) {
+                                    $storeLandedCostEnabled = $code;
+                                    break;
+                                }
+                            }
+                        }
+
+
+
                         if ($isLandedCostEnabled && $isPriceIncludeTax) {
                             throw new \OnePica_AvaTax_Exception(
                                 Mage::helper('avatax')->__(
-                                    'You can only use \'Excluding Tax\' calculation model for \'Catalog Prices\' when \'Landed Cost\' feature is enabled.'
+                                    'You can only use \'Excluding Tax\' calculation model for \'Catalog Prices\' when \'Customs Duty\' feature is enabled. %s',
+                                    (($storeLandedCostEnabled) ? 'Store code : ' . $storeLandedCostEnabled . '.' : '')
                                 ));
                         }
                     }

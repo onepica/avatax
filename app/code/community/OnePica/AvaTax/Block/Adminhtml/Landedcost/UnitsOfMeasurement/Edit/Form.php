@@ -29,6 +29,9 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement_Edit_Form ext
      */
     protected function _prepareForm()
     {
+        /** @var OnePica_AvaTax_Helper_LandedCost $helper */
+        $helper = Mage::helper('avatax/landedCost');
+
         $form = new Varien_Data_Form(
             array(
                 'id'     => 'edit_form',
@@ -44,21 +47,19 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement_Edit_Form ext
         $fieldset = $form->addFieldset('unit_of_measurement_form', array('legend' => $this->__('Item information')));
 
         $fieldset->addField(
-            'avalara_code', 'text', array(
-                'name'     => 'avalara_code',
-                'label'    => $this->__('Avalara code'),
+            'avalara_parameter_type', 'text', array(
+                'name'     => 'avalara_parameter_type',
+                'label'    => $this->__('Parameter'),
                 'class'    => 'required-entry',
+                'note'     => $this->__('For example "%s"', $helper->getMassType()),
                 'required' => true
             )
         );
 
         $fieldset->addField(
-            'avalara_measurement_type', 'text', array(
-                'name'     => 'avalara_measurement_type',
-                'label'    => $this->__('Avalara Measurement Type'),
-                'class'    => 'required-entry',
-                'note'     => $this->__('For example "AvaTax.Units.Mass"'),
-                'required' => true
+            'avalara_uom', 'text', array(
+                'name'     => 'avalara_uom',
+                'label'    => $this->__('UOM')
             )
         );
 

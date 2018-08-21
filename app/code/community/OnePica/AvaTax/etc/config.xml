@@ -47,7 +47,7 @@
                         <table>op_avatax_hs_code_country</table>
                     </hs_code_country>
                     <unit_of_measurement>
-                        <table>op_avatax_unit_of_measurement</table>
+                        <table>op_avatax_landed_cost_parameter</table>
                     </unit_of_measurement>
                     <agreement>
                         <table>op_avatax_agreement</table>
@@ -369,6 +369,15 @@
                     </avatax>
                 </observers>
             </adminhtml_sales_order_create_process_data>
+            <avatax_records_unitofmeasurement_save_before>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avatax/observer_avataxRecordsUnitOfMeasurementSaveBefore</class>
+                        <method>execute</method>
+                    </avatax>
+                </observers>
+            </avatax_records_unitofmeasurement_save_before>
         </events>
         <fieldsets>
             <sales_convert_quote_address>
@@ -378,6 +387,12 @@
                 <base_avatax_landed_cost_import_duties_amount>
                     <to_order>*</to_order>
                 </base_avatax_landed_cost_import_duties_amount>
+                <avatax_fixed_tax_amount>
+                    <to_order>*</to_order>
+                </avatax_fixed_tax_amount>
+                <base_avatax_fixed_tax_amount>
+                    <to_order>*</to_order>
+                </base_avatax_fixed_tax_amount>
                 <avatax_collected_taxes>
                     <to_order>*</to_order>
                 </avatax_collected_taxes>
@@ -389,6 +404,12 @@
                 <base_avatax_landed_cost_import_duties_amount>
                     <to_order_item>*</to_order_item>
                 </base_avatax_landed_cost_import_duties_amount>
+                <avatax_fixed_tax_amount>
+                    <to_order_item>*</to_order_item>
+                </avatax_fixed_tax_amount>
+                <base_avatax_fixed_tax_amount>
+                    <to_order_item>*</to_order_item>
+                </base_avatax_fixed_tax_amount>
                 <avatax_collected_taxes>
                     <to_order_item>*</to_order_item>
                 </avatax_collected_taxes>
@@ -402,6 +423,14 @@
                     <to_invoice>*</to_invoice>
                     <to_cm>*</to_cm>
                 </base_avatax_landed_cost_import_duties_amount>
+                <avatax_fixed_tax_amount>
+                    <to_invoice>*</to_invoice>
+                    <to_cm>*</to_cm>
+                </avatax_fixed_tax_amount>
+                <base_avatax_fixed_tax_amount>
+                    <to_invoice>*</to_invoice>
+                    <to_cm>*</to_cm>
+                </base_avatax_fixed_tax_amount>
                 <avatax_collected_taxes>
                     <to_invoice>*</to_invoice>
                     <to_cm>*</to_cm>
@@ -416,6 +445,14 @@
                     <to_invoice_item>*</to_invoice_item>
                     <to_cm_item>*</to_cm_item>
                 </base_avatax_landed_cost_import_duties_amount>
+                <avatax_fixed_tax_amount>
+                    <to_invoice_item>*</to_invoice_item>
+                    <to_cm_item>*</to_cm_item>
+                </avatax_fixed_tax_amount>
+                <base_avatax_fixed_tax_amount>
+                    <to_invoice_item>*</to_invoice_item>
+                    <to_cm_item>*</to_cm_item>
+                </base_avatax_fixed_tax_amount>
                 <avatax_collected_taxes>
                     <to_invoice_item>*</to_invoice_item>
                     <to_cm_item>*</to_cm_item>
@@ -570,6 +607,7 @@
                 <shipping_insurance_sku>ShippingInsurance</shipping_insurance_sku>
                 <shipping_insurance_tax_code>FR070100</shipping_insurance_tax_code>
                 <landed_cost_tax_subtypes>ImportDuty,ClearanceFee,CountervailingDuty,ImportExcise,SocialSupport</landed_cost_tax_subtypes>
+                <param_type_mass>Mass</param_type_mass>
             </avatax_landed_cost>
             <calculation>
                 <based_on>shipping</based_on>

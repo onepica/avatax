@@ -21,10 +21,6 @@
  * @method int getId()
  * @method int getStoreId()
  * @method $this setStoreId(int $storeId)
- * @method string getAvalaraCode()
- * @method $this setAvalaraCode(string $code)
- * @method string getAvalaraMeasurementType()
- * @method $this setAvalaraMeasurementType(string $measurementType)
  * @method string getDescription()
  * @method $this setDescription(string $description)
  * @method string getCountryList() // ISO 2 Code list comma separated
@@ -38,6 +34,13 @@
  */
 class OnePica_AvaTax_Model_Records_UnitOfMeasurement extends Mage_Core_Model_Abstract
 {
+    /**
+     * Event Handler Prefix
+     *
+     * @var string
+     */
+    protected $_eventPrefix = 'avatax_records_unitofmeasurement';
+
     /**
      * Internal constructor
      */
@@ -56,4 +59,39 @@ class OnePica_AvaTax_Model_Records_UnitOfMeasurement extends Mage_Core_Model_Abs
     {
         return Mage::helper('avatax/config');
     }
+
+    /**
+     * @return string
+     */
+    public function getAvalaraCode()
+    {
+        return parent::getAvalaraUom();
+    }
+
+    /**
+     * @param $code string
+     * @return mixed
+     */
+    public function setAvalaraCode($code)
+    {
+        return parent::setAvalaraUom($code);
+    }
+
+    /**
+     * @return string
+     */
+    public function getAvalaraMeasurementType()
+    {
+        return parent::getAvalaraParameterType();
+    }
+
+    /**
+     * @param $measurementType string
+     * @return mixed
+     */
+    public function setAvalaraMeasurementType($measurementType)
+    {
+        return parent::setAvalaraParameterType($measurementType);
+    }
+
 }

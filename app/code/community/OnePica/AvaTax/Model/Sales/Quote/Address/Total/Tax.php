@@ -86,6 +86,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax
         $this->_applyShippingTax($address, $store, $calculator);
         $this->_applyGwTax($address, $store, $calculator);
         $this->_setTaxForItems($address, $this->_itemTaxGroups);
+        $this->_applyFixedTax($address, $store, $calculator);
         $this->_applyLandedCostTax($address, $store, $calculator);
         $summary = $calculator->getSummary($address);
         $this->_saveAvataxCollectedTaxes($address, $summary, $calculator);
@@ -203,6 +204,8 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax
         $amount = $address->getTaxAmount();
         // Landed Cost DDP amount
         $landedCostImportDutiesAmount = $address->getAvataxLandedCostImportDutiesAmount();
+        //Fixed Tax
+        $fixedTaxAmount = $address->getAvataxFixedTaxAmount();
 
         if (($amount != 0) || (Mage::helper('tax')->displayZeroTax($store))) {
             $address->addTotal(
@@ -213,6 +216,8 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax
                     'value'              => $amount,
                     'landed_cost_amount' => $landedCostImportDutiesAmount,
                     'landed_cost_items'  => array(),
+                    'fixed_tax_amount'   => $fixedTaxAmount,
+                    'fixed_tax_items'    => array(),
                     'area'               => null
                 )
             );
@@ -725,6 +730,39 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax
         if ($calculator->getLandedCostMessage()) {
             $address->setLandedCostMessage($calculator->getLandedCostMessage());
         }
+
+        return $this;
+    }
+
+    /**
+     * Apply Fixed tax
+     *
+     * @param Mage_Sales_Model_Quote_Address         $address
+     * @param Mage_Core_Model_Store|int              $store
+     * @param OnePica_AvaTax_Model_Action_Calculator $calculator
+     * @return $this
+     * @throws \Varien_Exception
+     */
+    protected function _applyFixedTax(Mage_Sales_Model_Quote_Address $address, $store, $calculator)
+    {
+        $baseAmount = 0;
+        $amount = 0;
+
+        /** @var \Mage_Sales_Model_Quote_Item $item */
+        foreach ($address->getAllItems() as $item) {
+            $item->setAddress($address);
+            $baseItemAmount = $calculator->getItemFixedTaxAmount($item);
+            $itemAmount = $store->convertPrice($baseItemAmount);
+
+            $item->setAvataxFixedTaxAmount($itemAmount);
+            $item->setBaseAvataxFixedTaxAmount($baseItemAmount);
+
+            $amount = $amount + $itemAmount;
+            $baseAmount = $baseAmount + $baseItemAmount;
+        }
+
+        $address->setAvataxFixedTaxAmount($amount);
+        $address->setBaseAvataxFixedTaxAmount($baseAmount);
 
         return $this;
     }

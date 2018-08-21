@@ -128,8 +128,8 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     public function hscodeAction()
     {
         $this->_setTitle($this->__('AvaTax'))
-             ->_setTitle($this->__('Landed Cost'))
-             ->_setTitle($this->__('AvaTax HS Codes'));
+             ->_setTitle($this->__('Customs Duty'))
+             ->_setTitle($this->__('AvaTax HS Code Groups'));
 
         $this->loadLayout()
              ->_setActiveMenu('avatax/landedcost/avatax_hscode')
@@ -144,8 +144,8 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     public function hscodeEditAction()
     {
         $this->_setTitle($this->__('AvaTax'))
-             ->_setTitle($this->__('Landed Cost'))
-             ->_setTitle($this->__('AvaTax HS Code'));
+             ->_setTitle($this->__('Customs Duty'))
+             ->_setTitle($this->__('AvaTax HS Code Group'));
 
         $hsCodeId = $this->getRequest()->getParam('id');
         $hsCodeModel = Mage::getModel('avatax_records/hsCode')->load($hsCodeId);
@@ -249,7 +249,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
         $hscodeIds = $this->getRequest()->getParam('hscode');
 
         if (!is_array($hscodeIds)) {
-            $this->getAdminhtmlSession()->addError(Mage::helper('adminhtml')->__('Please select  HS code(s).'));
+            $this->getAdminhtmlSession()->addError(Mage::helper('adminhtml')->__('Please select HS code(s).'));
         } else {
             try {
                 /** @var \Mage_Core_Model_Resource_Transaction $transaction */
@@ -280,7 +280,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     }
 
     /**
-     * HS Codes for countries grid action
+     * HS Codes for Countries grid action
      */
     public function hscodecountriesGridAction()
     {
@@ -291,7 +291,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     }
 
     /**
-     * HS Codes for countries mass delete action
+     * HS Codes for Countries mass delete action
      *
      * @return $this
      */
@@ -337,7 +337,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     }
 
     /**
-     * HS Codes for countries new action
+     * HS Codes for Countries new action
      */
     public function hscodecountriesNewAction()
     {
@@ -345,13 +345,13 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     }
 
     /**
-     * HS Codes for countries edit action
+     * HS Codes for Countries edit action
      */
     public function hscodecountriesEditAction()
     {
         $this->_setTitle($this->__('AvaTax'))
-             ->_setTitle($this->__('Landed Cost'))
-             ->_setTitle($this->__('AvaTax HS Code for countries'));
+             ->_setTitle($this->__('Customs Duty'))
+             ->_setTitle($this->__('AvaTax HS Codes for Countries'));
 
         $hsCodeId = $this->getRequest()->getParam('hs_code_id');
         $hsCodeCountryId = $this->getRequest()->getParam('id');
@@ -384,7 +384,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     }
 
     /**
-     * HS Codes for countries delete action
+     * HS Codes for Countries delete action
      */
     public function hscodecountriesDeleteAction()
     {
@@ -480,15 +480,15 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     }
 
     /**
-     * Units Of Measurement grid action
+     * Parameters grid action
      *
      * @return $this
      */
     public function unitsofmeasurementAction()
     {
         $this->_setTitle($this->__('AvaTax'))
-             ->_setTitle($this->__('Landed Cost'))
-             ->_setTitle($this->__('AvaTax Units Of Measurement'));
+             ->_setTitle($this->__('Customs Duty'))
+             ->_setTitle($this->__('AvaTax Parameters'));
 
         $this->loadLayout()
              ->_setActiveMenu('avatax/landedcost/avatax_unitsofmeasurement')
@@ -498,7 +498,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     }
 
     /**
-     * Units Of Measurement new action
+     * Parameters new action
      */
     public function unitsofmeasurementNewAction()
     {
@@ -506,13 +506,13 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     }
 
     /**
-     * Units Of Measurement edit action
+     * Parameters edit action
      */
     public function unitsofmeasurementEditAction()
     {
         $this->_setTitle($this->__('AvaTax'))
-             ->_setTitle($this->__('Landed Cost'))
-             ->_setTitle($this->__('AvaTax Units Of Measurement'));
+             ->_setTitle($this->__('Customs Duty'))
+             ->_setTitle($this->__('AvaTax Parameters'));
 
         $unitOfMeasurementId = $this->getRequest()->getParam('id');
         /** @var \OnePica_AvaTax_Model_Records_UnitOfMeasurement $unitOfMeasurementModel */
@@ -541,7 +541,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     }
 
     /**
-     * Units Of Measurement save action
+     * Parameters save action
      *
      * @throws \Varien_Exception
      */
@@ -561,8 +561,8 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
             $countryList = $this->_getCountryListAsString($this->getRequest()->getPost('country_list'));
 
             $unitOfMeasurementModel->setId($unitOfMeasurementId);
-            $unitOfMeasurementModel->setAvalaraCode((string)$this->getRequest()->getPost('avalara_code'))
-                                   ->setAvalaraMeasurementType((string)$this->getRequest()->getPost('avalara_measurement_type'))
+            $unitOfMeasurementModel->setAvalaraCode((string)$this->getRequest()->getPost('avalara_uom'))
+                                   ->setAvalaraMeasurementType((string)$this->getRequest()->getPost('avalara_parameter_type'))
                                    ->setDescription((string)$this->getRequest()->getPost('description'))
                                    ->setCountryList($countryList)
                                    ->save();
@@ -580,7 +580,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     }
 
     /**
-     * Units Of Measurement delete action
+     * Parameters delete action
      */
     public function unitsofmeasurementDeleteAction()
     {
@@ -611,7 +611,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     }
 
     /**
-     * Units Of Measurement mass delete action
+     * Parameters mass delete action
      *
      * @return $this
      */
@@ -660,7 +660,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     public function agreementAction()
     {
         $this->_setTitle($this->__('AvaTax'))
-             ->_setTitle($this->__('Landed Cost'))
+             ->_setTitle($this->__('Customs Duty'))
              ->_setTitle($this->__('AvaTax Agreements'));
 
         $this->loadLayout()
@@ -684,7 +684,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     public function agreementEditAction()
     {
         $this->_setTitle($this->__('AvaTax'))
-             ->_setTitle($this->__('Landed Cost'))
+             ->_setTitle($this->__('Customs Duty'))
              ->_setTitle($this->__('AvaTax Agreements'));
 
         $agreementId = $this->getRequest()->getParam('id');

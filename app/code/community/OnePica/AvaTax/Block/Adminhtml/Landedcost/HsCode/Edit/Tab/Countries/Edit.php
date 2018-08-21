@@ -36,8 +36,8 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_HsCode_Edit_Tab_Countries_Edit
         $this->_blockGroup = 'avatax';
         $this->_controller = 'adminhtml_landedcost_hsCode_edit_tab_countries';
 
-        $this->_updateButton('save', 'label', $this->__('Save HS code for countries'));
-        $this->_updateButton('delete', 'label', $this->__('Delete HS code for countries'));
+        $this->_updateButton('save', 'label', $this->__('Save HS Code'));
+        $this->_updateButton('delete', 'label', $this->__('Delete Item'));
     }
 
     /**

@@ -338,7 +338,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
      *
      * @param Line                           $line
      * @param Mage_Catalog_Model_Product     $product
-     * @param Mage_Sales_Model_Quote_Address $address
+     * @param Mage_Sales_Model_Quote_Address|Mage_Sales_Model_Order_Address $address
      * @return $this
      * @throws \Varien_Exception
      */

@@ -32,7 +32,7 @@ if (!$attribute->getId()) {
             'type'             => 'varchar',
             'backend'          => '',
             'frontend'         => '',
-            'label'            => 'HS Code',
+            'label'            => 'HS Code Group Name',
             'input'            => 'text',
             'class'            => '',
             'source'           => '',
