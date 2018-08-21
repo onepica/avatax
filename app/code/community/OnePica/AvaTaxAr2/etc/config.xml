@@ -27,6 +27,11 @@
             <avataxar2>
                 <class>OnePica_AvaTaxAr2_Block</class>
             </avataxar2>
+            <avatax>
+                <rewrite>
+                    <adminhtml_export_log_view>OnePica_AvaTaxAr2_Block_Adminhtml_Export_Log_View</adminhtml_export_log_view>
+                </rewrite>
+            </avatax>
         </blocks>
         <helpers>
             <avataxar2>
