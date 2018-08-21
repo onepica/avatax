@@ -561,8 +561,8 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
             $countryList = $this->_getCountryListAsString($this->getRequest()->getPost('country_list'));
 
             $unitOfMeasurementModel->setId($unitOfMeasurementId);
-            $unitOfMeasurementModel->setAvalaraCode((string)$this->getRequest()->getPost('avalara_code'))
-                                   ->setAvalaraMeasurementType((string)$this->getRequest()->getPost('avalara_measurement_type'))
+            $unitOfMeasurementModel->setAvalaraCode((string)$this->getRequest()->getPost('avalara_uom'))
+                                   ->setAvalaraMeasurementType((string)$this->getRequest()->getPost('avalara_parameter_type'))
                                    ->setDescription((string)$this->getRequest()->getPost('description'))
                                    ->setCountryList($countryList)
                                    ->save();

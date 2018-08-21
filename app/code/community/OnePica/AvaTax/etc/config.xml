@@ -47,7 +47,7 @@
                         <table>op_avatax_hs_code_country</table>
                     </hs_code_country>
                     <unit_of_measurement>
-                        <table>op_avatax_unit_of_measurement</table>
+                        <table>op_avatax_landed_cost_parameter</table>
                     </unit_of_measurement>
                     <agreement>
                         <table>op_avatax_agreement</table>

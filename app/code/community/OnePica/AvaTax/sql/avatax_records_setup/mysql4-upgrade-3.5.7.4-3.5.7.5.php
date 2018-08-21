@@ -27,12 +27,12 @@ if ($conn->showTableStatus($table) === false) {
     $installer->run(
         "CREATE TABLE `" . $table . "` (
     `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-    `avalara_code` varchar(100) DEFAULT NULL,
-    `avalara_measurement_type` varchar(100) DEFAULT NULL,
+    `avalara_uom` varchar(100) DEFAULT NULL,
+    `avalara_parameter_type` varchar(100) DEFAULT NULL,
     `description` text,
     `country_list` text,
     PRIMARY KEY (`id`),
-    KEY `IDX_OP_AVATAX_UNIT_OF_MEASUREMENT_AVALARA_CODE` (`avalara_code`)
+    KEY `IDX_OP_AVATAX_UNIT_OF_MEASUREMENT_AVALARA_UOM` (`avalara_uom`)
 ) ENGINE=InnoDB COMMENT='Used by One Pica AvaTax extension';
     "
     );

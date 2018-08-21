@@ -36,13 +36,13 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement_Grid
         $this->_addColumns(
             array(
                 'id'                       => 'number',
-                'avalara_code'             => 'varchar',
-                'avalara_measurement_type' => 'varchar',
+                'avalara_uom'             => 'varchar',
+                'avalara_parameter_type' => 'varchar',
                 'description'              => 'varchar',
             ),
             array(
-                'avalara_code' => array('header' => 'UOM'),
-                'avalara_measurement_type' => array('header' => 'Parameter')
+                'avalara_uom' => array('header' => 'UOM'),
+                'avalara_parameter_type' => array('header' => 'Parameter')
             )
         );
 
