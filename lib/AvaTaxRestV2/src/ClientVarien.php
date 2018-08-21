@@ -223,7 +223,7 @@ class AvaTaxClientBase
             $headers = array("Accept" => "application/json");
             $response = $this->_httpRequest($apiUriPath, $method, $params, $headers);
 
-            $result = $this->jsonDecode($response->getBody());
+            $result = $this->jsonDecode(is_string($response) ? $response : $response->getBody());
         } catch (\Exception $e) {
             $result = $e->getMessage();
         }
@@ -301,6 +301,8 @@ class AvaTaxClientBase
     protected function jsonDecode($json, $assoc = false, $depth = 512, $options = 0)
     {
         $result = json_decode($json, $assoc, $depth, $options);
+
+        $result = json_last_error() == JSON_ERROR_NONE ? $result : $json;
 
         $this->_lastJsonModelDecoded = $result;
 

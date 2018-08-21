@@ -45,21 +45,30 @@ class OnePica_AvaTaxAr2_Model_Service_Avatax_Log_Interpreter extends Varien_Obje
 
                 if (in_array($logType, $this->getHelperAvaTax()->getLogType($store))) {
                     $storeId = Mage::app()->getStore($store)->getId();
-                    $logType = $this->interpretTransactionType($httpClient);
+
                     $lastJsonModelEncoded = $client->getLastJsonModelEncoded();
                     $lastJsonModelDecoded = $client->getLastJsonModelDecoded();
+
                     $lastRequest = $httpClient->getLastRequest();
-                    $lastResponse = $httpClient->getLastResponse()->asString();
-                    $lastResponse = $lastResponse . PHP_EOL . PHP_EOL .
-                        "Rounting time : " . $client->getLastRoutingTime();
+                    $lastRequest = isset($lastRequest) ? $lastRequest : $httpClient->getUri(true);
+
+                    $lastResponse = $httpClient->getLastResponse();
+                    $lastResponseAsString =  $lastResponse instanceof \Zend_Http_Response ? $httpClient->getLastResponse()->asString() : null;
+                    $lastResponseAsString = $lastResponseAsString . PHP_EOL . PHP_EOL . "Routing time : " . $client->getLastRoutingTime();
+
+                    $level = 'Error';
+                    if ($lastResponse instanceof \Zend_Http_Response) {
+                        $level = $httpClient->getLastResponse()->isSuccessful() ? 'Success' : 'Error';
+                    }
+
                     $log = Mage::getModel('avatax_records/log')
                                ->setStoreId($storeId)
                                ->setType($logType)
-                               ->setLevel($httpClient->getLastResponse()->isSuccessful() ? 'Success' : 'Error')
+                               ->setLevel($level)
                                ->setRequest(print_r($lastJsonModelEncoded, true))
                                ->setSoapRequest($lastRequest)
                                ->setResult(print_r($lastJsonModelDecoded, true))
-                               ->setSoapResult($lastResponse);
+                               ->setSoapResult($lastResponseAsString);
                     $log->save();
                 }
             }

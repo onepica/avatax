@@ -284,6 +284,8 @@ class ClientBase
     {
         $result = json_decode($json, $assoc, $depth, $options);
 
+        $result = json_last_error() == JSON_ERROR_NONE ? $result : $json;
+
         $this->_lastJsonModelDecoded = $result;
 
         return $result;
