@@ -162,6 +162,7 @@ class OnePica_AvaTaxAr2_Model_Source_Avatax_Logtype extends OnePica_AvaTax_Model
         $logTypes[self::REST_CUSTOMER] = self::REST_CUSTOMER;
         $logTypes[self::REST_CUSTOMERS] = self::REST_CUSTOMERS;
         $logTypes[self::REST_CUSTOMER_CERTIFICATE] = self::REST_CUSTOMER_CERTIFICATE;
+        $logTypes[self::REST_CUSTOMER_CERTIFICATE_UNLINK] = self::REST_CUSTOMER_CERTIFICATE_UNLINK;
         $logTypes[self::REST_CUSTOMER_CERT_EXPRESS_INVITE] = self::REST_CUSTOMER_CERT_EXPRESS_INVITE;
 
         return $logTypes;
