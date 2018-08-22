@@ -515,8 +515,8 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
              ->_setTitle($this->__('AvaTax Parameters'));
 
         $unitOfMeasurementId = $this->getRequest()->getParam('id');
-        /** @var \OnePica_AvaTax_Model_Records_UnitOfMeasurement $unitOfMeasurementModel */
-        $unitOfMeasurementModel = Mage::getModel('avatax_records/unitOfMeasurement')->load($unitOfMeasurementId);
+        /** @var \OnePica_AvaTax_Model_Records_Parameter $unitOfMeasurementModel */
+        $unitOfMeasurementModel = Mage::getModel('avatax_records/parameter')->load($unitOfMeasurementId);
 
         if ($unitOfMeasurementModel->getId() || $unitOfMeasurementId == 0) {
             try {
@@ -555,8 +555,8 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
         }
 
         try {
-            /** @var \OnePica_AvaTax_Model_Records_UnitOfMeasurement $unitOfMeasurementModel */
-            $unitOfMeasurementModel = Mage::getModel('avatax_records/unitOfMeasurement');
+            /** @var \OnePica_AvaTax_Model_Records_Parameter $unitOfMeasurementModel */
+            $unitOfMeasurementModel = Mage::getModel('avatax_records/parameter');
 
             $countryList = $this->_getCountryListAsString($this->getRequest()->getPost('country_list'));
 
@@ -592,8 +592,8 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
         }
 
         try {
-            /** @var \OnePica_AvaTax_Model_Records_UnitOfMeasurement $unitOfMeasurementModel */
-            $unitOfMeasurementModel = Mage::getModel('avatax_records/unitOfMeasurement')->load($unitOfMeasurementId);
+            /** @var \OnePica_AvaTax_Model_Records_Parameter $unitOfMeasurementModel */
+            $unitOfMeasurementModel = Mage::getModel('avatax_records/parameter')->load($unitOfMeasurementId);
 
             $unitOfMeasurementModel->setId($unitOfMeasurementId)->delete();
 
@@ -628,8 +628,8 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
                 /** @var \Mage_Core_Model_Resource_Transaction $transaction */
                 $transaction = Mage::getModel('core/resource_transaction');
 
-                /** @var \OnePica_AvaTax_Model_Records_UnitOfMeasurement $unitOfMeasurementModel */
-                $unitOfMeasurementModel = Mage::getModel('avatax_records/unitOfMeasurement');
+                /** @var \OnePica_AvaTax_Model_Records_Parameter $unitOfMeasurementModel */
+                $unitOfMeasurementModel = Mage::getModel('avatax_records/parameter');
 
                 foreach ($unitOfMeasurementIds as $id) {
                     $unitOfMeasurement = clone $unitOfMeasurementModel;

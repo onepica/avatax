@@ -21,7 +21,7 @@ $installer->startSetup();
 /** @var \Varien_Db_Adapter_Pdo_Mysql $conn */
 $conn = $installer->getConnection();
 
-$table = $this->getTable('avatax_records/unit_of_measurement');
+$table = $this->getTable('avatax_records/parameter');
 
 if ($conn->showTableStatus($table) === false) {
     $installer->run(

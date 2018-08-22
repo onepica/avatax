@@ -65,8 +65,8 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement_Grid
      */
     protected function _prepareCollection()
     {
-        /** @var \OnePica_AvaTax_Model_Records_Mysql4_UnitOfMeasurement_Collection $collection */
-        $collection = Mage::getModel('avatax_records/unitOfMeasurement')->getCollection();
+        /** @var \OnePica_AvaTax_Model_Records_Mysql4_Parameter_Collection $collection */
+        $collection = Mage::getModel('avatax_records/parameter')->getCollection();
         $this->setCollection($collection);
 
         return parent::_prepareCollection();
@@ -75,7 +75,7 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement_Grid
     /**
      * Get row url
      *
-     * @param \OnePica_AvaTax_Model_Records_UnitOfMeasurement $row
+     * @param \OnePica_AvaTax_Model_Records_Parameter $row
      * @return string
      */
     public function getRowUrl($row)

@@ -25,14 +25,14 @@
  * @method $this setDescription(string $description)
  * @method string getCountryList() // ISO 2 Code list comma separated
  * @method $this setCountryList(string $countryCodes) // ISO 2 Code list comma separated
- * @method OnePica_AvaTax_Model_Records_Mysql4_UnitOfMeasurement getResource()
- * @method OnePica_AvaTax_Model_Records_Mysql4_UnitOfMeasurement_Collection getCollection()
+ * @method OnePica_AvaTax_Model_Records_Mysql4_Parameter getResource()
+ * @method OnePica_AvaTax_Model_Records_Mysql4_Parameter_Collection getCollection()
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Records_UnitOfMeasurement extends Mage_Core_Model_Abstract
+class OnePica_AvaTax_Model_Records_Parameter extends Mage_Core_Model_Abstract
 {
     /**
      * Event Handler Prefix
@@ -47,7 +47,7 @@ class OnePica_AvaTax_Model_Records_UnitOfMeasurement extends Mage_Core_Model_Abs
     protected function _construct()
     {
         parent::_construct();
-        $this->_init('avatax_records/unitOfMeasurement');
+        $this->_init('avatax_records/parameter');
     }
 
     /**

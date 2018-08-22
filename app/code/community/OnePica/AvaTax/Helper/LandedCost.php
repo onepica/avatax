@@ -251,13 +251,13 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
      * Get Landed Cost Default Units Of Measurement
      *
      * @param int|Mage_Core_Model_Store $storeId
-     * @return OnePica_AvaTax_Model_Records_UnitOfMeasurement|null
+     * @return OnePica_AvaTax_Model_Records_Parameter|null
      */
     public function getDefaultUnitsOfMeasurement($storeId = null)
     {
         return null;
         if (!$this->defaultUnitOfMeasurement) {
-            $this->defaultUnitOfMeasurement = Mage::getModel('avatax_records/unitOfMeasurement')->load(
+            $this->defaultUnitOfMeasurement = Mage::getModel('avatax_records/parameter')->load(
                 Mage::getStoreConfig(
                     self::XML_PATH_TO_AVATAX_LANDED_COST_DEFAULT_UNITS_OF_MEASUREMENT,
                     $storeId
@@ -297,7 +297,7 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
                 array_push($ids, $u['unit_of_measurement']);
             }
 
-            $collection = Mage::getModel('avatax_records/unitOfMeasurement')->getCollection();
+            $collection = Mage::getModel('avatax_records/parameter')->getCollection();
             $foundUnit = $collection->getUnitForCountry($ids, $countryCode);
 
             if ($foundUnit->getId()) {
@@ -320,7 +320,7 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
         if(empty($result)) {
             $productDefaultUnit = $this->getDefaultUnitOfMeasurementForProduct($product);
             if(!empty($productDefaultUnit)) {
-                $collection = Mage::getModel('avatax_records/unitOfMeasurement')->getCollection();
+                $collection = Mage::getModel('avatax_records/parameter')->getCollection();
                 $foundUnit = $collection->getUnitForCountry(array($productDefaultUnit['unit_of_measurement']), $countryCode);
 
                 if ($foundUnit->getId()) {
@@ -466,7 +466,7 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * @param $unit OnePica_AvaTax_Model_Records_UnitOfMeasurement
+     * @param $unit OnePica_AvaTax_Model_Records_Parameter
      * @return bool
      */
     public function isMassType($unit)

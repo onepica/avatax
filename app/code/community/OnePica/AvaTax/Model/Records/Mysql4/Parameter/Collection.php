@@ -16,19 +16,33 @@
  */
 
 /**
- * Unit Of Measurement resource model
+ * Parameter collection model
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Records_Mysql4_UnitOfMeasurement extends Mage_Core_Model_Mysql4_Abstract
+class OnePica_AvaTax_Model_Records_Mysql4_Parameter_Collection extends Mage_Core_Model_Mysql4_Collection_Abstract
 {
     /**
      * Construct
      */
     protected function _construct()
     {
-        $this->_init('avatax_records/unit_of_measurement', 'id');
+        parent::_construct();
+        $this->_init('avatax_records/parameter');
+    }
+
+    public function getUnitForCountry($ids, $countryCode)
+    {
+        $collection = Mage::getModel('avatax_records/parameter')
+            ->getCollection()
+            ->addFieldToFilter('id', array('in' => $ids));
+        $collection->getSelect()->where('country_list REGEXP ?', $countryCode);
+
+        /** @var OnePica_AvaTax_Model_Records_Parameter $unit */
+        $unit = $collection->getFirstItem();
+
+        return $unit;
     }
 }

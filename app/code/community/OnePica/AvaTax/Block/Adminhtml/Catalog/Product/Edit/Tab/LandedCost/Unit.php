@@ -63,7 +63,7 @@ class OnePica_AvaTax_Block_Adminhtml_Catalog_Product_Edit_Tab_LandedCost_Unit
     protected $_element;
 
     /**
-     * @var OnePica_AvaTax_Model_Records_Mysql4_UnitOfMeasurement_Collection|null;
+     * @var OnePica_AvaTax_Model_Records_Mysql4_Parameter_Collection|null;
      */
     protected $unitsOfMeasurement = null;
 
@@ -163,8 +163,8 @@ class OnePica_AvaTax_Block_Adminhtml_Catalog_Product_Edit_Tab_LandedCost_Unit
     public function getUnitsOfMeasurement()
     {
         if (empty($this->unitsOfMeasurement)) {
-            /* @var OnePica_AvaTax_Model_Records_Mysql4_UnitOfMeasurement_Collection $collection */
-            $this->unitsOfMeasurement = Mage::getModel('avatax_records/unitOfMeasurement')->getCollection();
+            /* @var OnePica_AvaTax_Model_Records_Mysql4_Parameter_Collection $collection */
+            $this->unitsOfMeasurement = Mage::getModel('avatax_records/parameter')->getCollection();
             $this->unitsOfMeasurement->load();
         }
 

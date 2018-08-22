@@ -37,7 +37,7 @@ class OnePica_AvaTax_Model_Observer_AvataxRecordsUnitOfMeasurementSaveBefore ext
         /** @var OnePica_AvaTax_Helper_LandedCost $helper */
         $helper = Mage::helper('avatax/landedCost');
 
-        /** @var OnePica_AvaTax_Model_Records_UnitOfMeasurement $unit */
+        /** @var OnePica_AvaTax_Model_Records_Parameter $unit */
         $unit = $observer->getEvent()->getObject();
         if ($helper->isMassType($unit)) {
             $isValid = !empty($unit->getAvalaraCode());
