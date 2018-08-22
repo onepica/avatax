@@ -39,14 +39,7 @@ class OnePica_AvaTax_Model_Observer_SalesOrderCreditmemoSaveBefore extends OnePi
         $order = $creditmemo->getOrder();
         $isLandedCostAmount = $order->getAvataxLandedCostImportDutiesAmount();
         if ($isLandedCostAmount > 0) {
-            $isPartialInvoice = false;
-            foreach ($order->getAllItems() as $item) {
-                if ($item->getQtyRefunded() != $item->getQtyOrdered()) {
-                    $isPartialInvoice = true;
-                    break;
-                }
-            }
-
+            $isPartialInvoice = $order->getTaxAmount() != $creditmemo->getTaxAmount();
             if ($isPartialInvoice) {
                 throw new \OnePica_AvaTax_Exception(
                     Mage::helper('avatax')
