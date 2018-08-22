@@ -54,7 +54,9 @@
                     </td>
                     <td class="a-center view">
                         <span class="nobr">
-                            <a href="<?php echo $this->getRevokeUrl($document) ?>"><?php echo $this->__('Revoke') ?></a>
+                            <a href="<?php echo $this->getRevokeUrl($document) ?>"
+                               onclick=" if(!confirm('<?php echo $this->__('You are going to delete certificate #%s.', $document->getId()) ?>')) {debugger; event.preventDefault(); };"
+                            ><?php echo $this->__('Revoke') ?></a>
                         </span>
                     </td>
                     <td class="a-center view">
