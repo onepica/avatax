@@ -16,13 +16,13 @@
  */
 
 /**
- * Avatax Observer RecordsUnitOfMeasurementSaveBefore
+ * Avatax Observer RecordsParameterSaveBefore
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Observer_AvataxRecordsUnitOfMeasurementSaveBefore extends OnePica_AvaTax_Model_Observer_Abstract
+class OnePica_AvaTax_Model_Observer_AvataxRecordsParameterSaveBefore extends OnePica_AvaTax_Model_Observer_Abstract
 {
     /**
      * Validate Model Before Save
@@ -37,10 +37,10 @@ class OnePica_AvaTax_Model_Observer_AvataxRecordsUnitOfMeasurementSaveBefore ext
         /** @var OnePica_AvaTax_Helper_LandedCost $helper */
         $helper = Mage::helper('avatax/landedCost');
 
-        /** @var OnePica_AvaTax_Model_Records_UnitOfMeasurement $unit */
+        /** @var OnePica_AvaTax_Model_Records_Parameter $unit */
         $unit = $observer->getEvent()->getObject();
         if ($helper->isMassType($unit)) {
-            $isValid = !empty($unit->getAvalaraCode());
+            $isValid = !empty($unit->getAvalaraUom());
             if (!$isValid) {
                 throw new \OnePica_AvaTax_Exception(
                     Mage::helper('avatax')->__('UOM field is required for this Parameter.')

@@ -220,7 +220,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
         $hsCodeId = $this->getRequest()->getParam('id');
 
         if ($hsCodeId <= 0) {
-            $this->getAdminhtmlSession()->addError($this->__('Unit of measurement id is invalid'));
+            $this->getAdminhtmlSession()->addError($this->__('HS code id is invalid'));
             $this->_redirect('*/*/hscode');
         }
 
@@ -484,14 +484,14 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
      *
      * @return $this
      */
-    public function unitsofmeasurementAction()
+    public function parameterAction()
     {
         $this->_setTitle($this->__('AvaTax'))
              ->_setTitle($this->__('Customs Duty'))
              ->_setTitle($this->__('AvaTax Parameters'));
 
         $this->loadLayout()
-             ->_setActiveMenu('avatax/landedcost/avatax_unitsofmeasurement')
+             ->_setActiveMenu('avatax/landedcost/avatax_parameter')
              ->renderLayout();
 
         return $this;
@@ -500,43 +500,43 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
     /**
      * Parameters new action
      */
-    public function unitsofmeasurementNewAction()
+    public function parameterNewAction()
     {
-        $this->_forward('unitsofmeasurementEdit');
+        $this->_forward('parameterEdit');
     }
 
     /**
      * Parameters edit action
      */
-    public function unitsofmeasurementEditAction()
+    public function parameterEditAction()
     {
         $this->_setTitle($this->__('AvaTax'))
              ->_setTitle($this->__('Customs Duty'))
              ->_setTitle($this->__('AvaTax Parameters'));
 
-        $unitOfMeasurementId = $this->getRequest()->getParam('id');
-        /** @var \OnePica_AvaTax_Model_Records_UnitOfMeasurement $unitOfMeasurementModel */
-        $unitOfMeasurementModel = Mage::getModel('avatax_records/unitOfMeasurement')->load($unitOfMeasurementId);
+        $parameterId = $this->getRequest()->getParam('id');
+        /** @var \OnePica_AvaTax_Model_Records_Parameter $parameterModel */
+        $parameterModel = Mage::getModel('avatax_records/parameter')->load($parameterId);
 
-        if ($unitOfMeasurementModel->getId() || $unitOfMeasurementId == 0) {
+        if ($parameterModel->getId() || $parameterId == 0) {
             try {
-                Mage::register('unit_of_measurement_data', $unitOfMeasurementModel);
+                Mage::register('parameter_data', $parameterModel);
 
-                $this->loadLayout()->_setActiveMenu('avatax/landedcost/avatax_unitsofmeasurement');
+                $this->loadLayout()->_setActiveMenu('avatax/landedcost/avatax_parameter');
 
                 $this->_addContent(
-                    $this->getLayout()->createBlock('avatax/adminhtml_landedcost_unitsOfMeasurement_edit')
+                    $this->getLayout()->createBlock('avatax/adminhtml_landedcost_parameter_edit')
                 );
 
                 $this->renderLayout();
             } catch (Mage_Core_Exception $e) {
                 $this->getAdminhtmlSession()->addError($e->getMessage());
-                $this->_redirect('*/*/unitsofmeasurement');
+                $this->_redirect('*/*/parameter');
             }
         } else {
             $this->getAdminhtmlSession()->addError($this->__('Item does not exist'));
 
-            $this->_redirect('*/*/unitsofmeasurement');
+            $this->_redirect('*/*/parameter');
         }
     }
 
@@ -545,66 +545,66 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
      *
      * @throws \Varien_Exception
      */
-    public function unitsofmeasurementSaveAction()
+    public function parameterSaveAction()
     {
-        $unitOfMeasurementId = $this->getRequest()->getParam('id');
+        $parameterId = $this->getRequest()->getParam('id');
 
         if (!$this->getRequest()->getPost()) {
             $this->getAdminhtmlSession()->addError($this->__('Post data is empty'));
-            $this->_redirect('*/*/unitsofmeasurementEdit', array('id' => $unitOfMeasurementId));
+            $this->_redirect('*/*/parameterEdit', array('id' => $parameterId));
         }
 
         try {
-            /** @var \OnePica_AvaTax_Model_Records_UnitOfMeasurement $unitOfMeasurementModel */
-            $unitOfMeasurementModel = Mage::getModel('avatax_records/unitOfMeasurement');
+            /** @var \OnePica_AvaTax_Model_Records_Parameter $parameterModel */
+            $parameterModel = Mage::getModel('avatax_records/parameter');
 
             $countryList = $this->_getCountryListAsString($this->getRequest()->getPost('country_list'));
 
-            $unitOfMeasurementModel->setId($unitOfMeasurementId);
-            $unitOfMeasurementModel->setAvalaraCode((string)$this->getRequest()->getPost('avalara_uom'))
-                                   ->setAvalaraMeasurementType((string)$this->getRequest()->getPost('avalara_parameter_type'))
+            $parameterModel->setId($parameterId);
+            $parameterModel->setAvalaraUom((string)$this->getRequest()->getPost('avalara_uom'))
+                                   ->setAvalaraParameterType((string)$this->getRequest()->getPost('avalara_parameter_type'))
                                    ->setDescription((string)$this->getRequest()->getPost('description'))
                                    ->setCountryList($countryList)
                                    ->save();
 
             $this->getAdminhtmlSession()->addSuccess($this->__('Item was successfully saved'));
-            $this->getAdminhtmlSession()->setUnitOfMeasurementData(false);
+            $this->getAdminhtmlSession()->setParameterData(false);
 
-            $this->_redirectAfterSaveModel($unitOfMeasurementModel, '*/*/unitsofmeasurement');
+            $this->_redirectAfterSaveModel($parameterModel, '*/*/parameter');
         } catch (Exception $e) {
             $this->getAdminhtmlSession()->addError($e->getMessage());
-            $this->getAdminhtmlSession()->setUnitOfMeasurementData($this->getRequest()->getPost());
+            $this->getAdminhtmlSession()->setParameterData($this->getRequest()->getPost());
 
-            $this->_redirect('*/*/unitsofmeasurementEdit', array('id' => $unitOfMeasurementId));
+            $this->_redirect('*/*/parameterEdit', array('id' => $parameterId));
         }
     }
 
     /**
      * Parameters delete action
      */
-    public function unitsofmeasurementDeleteAction()
+    public function parameterDeleteAction()
     {
-        $unitOfMeasurementId = $this->getRequest()->getParam('id');
+        $parameterId = $this->getRequest()->getParam('id');
 
-        if ($unitOfMeasurementId <= 0) {
-            $this->getAdminhtmlSession()->addError($this->__('Unit of measurement id is invalid'));
-            $this->_redirect('*/*/unitsofmeasurement');
+        if ($parameterId <= 0) {
+            $this->getAdminhtmlSession()->addError($this->__('Parameter id is invalid'));
+            $this->_redirect('*/*/parameter');
         }
 
         try {
-            /** @var \OnePica_AvaTax_Model_Records_UnitOfMeasurement $unitOfMeasurementModel */
-            $unitOfMeasurementModel = Mage::getModel('avatax_records/unitOfMeasurement')->load($unitOfMeasurementId);
+            /** @var \OnePica_AvaTax_Model_Records_Parameter $parameterModel */
+            $parameterModel = Mage::getModel('avatax_records/parameter')->load($parameterId);
 
-            $unitOfMeasurementModel->setId($unitOfMeasurementId)->delete();
+            $parameterModel->setId($parameterId)->delete();
 
             $this->getAdminhtmlSession()->addSuccess($this->__('Item was successfully deleted'));
 
-            $this->_redirect('*/*/unitsofmeasurement');
+            $this->_redirect('*/*/parameter');
         } catch (Exception $e) {
             $this->getAdminhtmlSession()->addError($e->getMessage());
             $this->_redirect(
                 '*/*/hscodecountriesEdit', array(
-                    'id' => $unitOfMeasurementId,
+                    'id' => $parameterId,
                 )
             );
         }
@@ -615,39 +615,39 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
      *
      * @return $this
      */
-    public function unitsofmeasurementMassDeleteAction()
+    public function parameterMassDeleteAction()
     {
-        $unitOfMeasurementIds = $this->getRequest()->getParam('unitsofmeasurement');
+        $parameterIds = $this->getRequest()->getParam('parameter');
 
-        if (!is_array($unitOfMeasurementIds)) {
+        if (!is_array($parameterIds)) {
             $this->getAdminhtmlSession()->addError(
-                Mage::helper('adminhtml')->__('Please select  Unit(s) of measurement.')
+                Mage::helper('adminhtml')->__('Please select Parameter(s).')
             );
         } else {
             try {
                 /** @var \Mage_Core_Model_Resource_Transaction $transaction */
                 $transaction = Mage::getModel('core/resource_transaction');
 
-                /** @var \OnePica_AvaTax_Model_Records_UnitOfMeasurement $unitOfMeasurementModel */
-                $unitOfMeasurementModel = Mage::getModel('avatax_records/unitOfMeasurement');
+                /** @var \OnePica_AvaTax_Model_Records_Parameter $parameterModel */
+                $parameterModel = Mage::getModel('avatax_records/parameter');
 
-                foreach ($unitOfMeasurementIds as $id) {
-                    $unitOfMeasurement = clone $unitOfMeasurementModel;
-                    $unitOfMeasurement->load($id);
-                    $transaction->addObject($unitOfMeasurement);
+                foreach ($parameterIds as $id) {
+                    $parameter = clone $parameterModel;
+                    $parameter->load($id);
+                    $transaction->addObject($parameter);
                 }
 
                 $transaction->delete();
 
                 $this->getAdminhtmlSession()->addSuccess(
-                    Mage::helper('adminhtml')->__('Total of %d record(s) were deleted.', count($unitOfMeasurementIds))
+                    Mage::helper('adminhtml')->__('Total of %d record(s) were deleted.', count($parameterIds))
                 );
             } catch (Exception $e) {
                 $this->getAdminhtmlSession()->addError($e->getMessage());
             }
         }
 
-        $this->_redirect('*/*/unitsofmeasurement');
+        $this->_redirect('*/*/parameter');
 
         return $this;
     }

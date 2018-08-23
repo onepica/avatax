@@ -16,13 +16,13 @@
  */
 
 /**
- * Unit Of Measurement source config model
+ * Parameter source config model
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Adminhtml_System_Config_Source_UnitOfMeasurement
+class OnePica_AvaTax_Model_Adminhtml_System_Config_Source_Parameter
     extends Mage_Eav_Model_Entity_Attribute_Source_Abstract
 {
     /**
@@ -40,11 +40,11 @@ class OnePica_AvaTax_Model_Adminhtml_System_Config_Source_UnitOfMeasurement
      */
     public function toOptionArray()
     {
-        /** @var OnePica_AvaTax_Model_Records_Mysql4_UnitOfMeasurement_Collection $collection */
-        $collection = Mage::getModel('avatax_records/unitOfMeasurement')->getCollection()->load();
+        /** @var OnePica_AvaTax_Model_Records_Mysql4_Parameter_Collection $collection */
+        $collection = Mage::getModel('avatax_records/parameter')->getCollection()->load();
         $result = array();
         array_push($result, array('value' => null, 'label' => ' '));
-        /** @var OnePica_AvaTax_Model_Records_UnitOfMeasurement $item */
+        /** @var OnePica_AvaTax_Model_Records_Parameter $item */
         foreach ($collection as $item) {
             array_push($result,
                 array(

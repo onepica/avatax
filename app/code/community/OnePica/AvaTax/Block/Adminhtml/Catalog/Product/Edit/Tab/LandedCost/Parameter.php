@@ -22,7 +22,7 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Block_Adminhtml_Catalog_Product_Edit_Tab_LandedCost_Unit
+class OnePica_AvaTax_Block_Adminhtml_Catalog_Product_Edit_Tab_LandedCost_Parameter
     extends Mage_Adminhtml_Block_Widget
     implements Varien_Data_Form_Element_Renderer_Interface
 {
@@ -32,7 +32,7 @@ class OnePica_AvaTax_Block_Adminhtml_Catalog_Product_Edit_Tab_LandedCost_Unit
      */
     public function __construct()
     {
-        $this->setTemplate('onepica/avatax/product/edit/tab/unit/unit.phtml');
+        $this->setTemplate('onepica/avatax/product/edit/tab/parameter/parameter.phtml');
     }
 
     /**
@@ -63,9 +63,9 @@ class OnePica_AvaTax_Block_Adminhtml_Catalog_Product_Edit_Tab_LandedCost_Unit
     protected $_element;
 
     /**
-     * @var OnePica_AvaTax_Model_Records_Mysql4_UnitOfMeasurement_Collection|null;
+     * @var OnePica_AvaTax_Model_Records_Mysql4_Parameter_Collection|null;
      */
-    protected $unitsOfMeasurement = null;
+    protected $parameters = null;
 
     /**
      * Websites cache
@@ -160,15 +160,15 @@ class OnePica_AvaTax_Block_Adminhtml_Catalog_Product_Edit_Tab_LandedCost_Unit
      * @param int|null $groupId  return name by customer group id
      * @return array|string
      */
-    public function getUnitsOfMeasurement()
+    public function getParameters()
     {
-        if (empty($this->unitsOfMeasurement)) {
-            /* @var OnePica_AvaTax_Model_Records_Mysql4_UnitOfMeasurement_Collection $collection */
-            $this->unitsOfMeasurement = Mage::getModel('avatax_records/unitOfMeasurement')->getCollection();
-            $this->unitsOfMeasurement->load();
+        if (empty($this->parameters)) {
+            /* @var OnePica_AvaTax_Model_Records_Mysql4_Parameter_Collection $collection */
+            $this->parameters = Mage::getModel('avatax_records/parameter')->getCollection();
+            $this->parameters->load();
         }
 
-        return $this->unitsOfMeasurement;
+        return $this->parameters;
     }
 
     /**

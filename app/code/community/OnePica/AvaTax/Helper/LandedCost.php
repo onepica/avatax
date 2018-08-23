@@ -33,12 +33,12 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
     /**
      *  HS Code product attribute label
      */
-    const AVATAX_PRODUCT_LANDED_COST_ATTR_UNIT_OF_MEASUREMENT_LABEL = 'Parameter';
+    const AVATAX_PRODUCT_LANDED_COST_ATTR_PARAMETER_LABEL = 'Parameter';
 
     /**
      *  Product Unit of Measurement
      */
-    const AVATAX_PRODUCT_LANDED_COST_ATTR_UNIT_OF_MEASUREMENT = 'avatax_lc_unit_of_measurement';
+    const AVATAX_PRODUCT_LANDED_COST_ATTR_PARAMETER = 'avatax_lc_parameter';
 
     /**
      *  Landed Cost product agreement
@@ -251,13 +251,13 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
      * Get Landed Cost Default Units Of Measurement
      *
      * @param int|Mage_Core_Model_Store $storeId
-     * @return OnePica_AvaTax_Model_Records_UnitOfMeasurement|null
+     * @return OnePica_AvaTax_Model_Records_Parameter|null
      */
     public function getDefaultUnitsOfMeasurement($storeId = null)
     {
         return null;
         if (!$this->defaultUnitOfMeasurement) {
-            $this->defaultUnitOfMeasurement = Mage::getModel('avatax_records/unitOfMeasurement')->load(
+            $this->defaultUnitOfMeasurement = Mage::getModel('avatax_records/parameter')->load(
                 Mage::getStoreConfig(
                     self::XML_PATH_TO_AVATAX_LANDED_COST_DEFAULT_UNITS_OF_MEASUREMENT,
                     $storeId
@@ -269,23 +269,23 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Get Product Avalara Unit Of Measurement
+     * Get Product Avalara Parameter
      *
      * @param int|Mage_Catalog_Model_Product $product
      * @param string                         $countryCode
      * @return Varien_Object|null
      *
      */
-    public function getProductUnitOfMeasurement($product, $countryCode)
+    public function getProductParameter($product, $countryCode)
     {
         $result = null;
 
         $product = is_int($product) ? Mage::getModel('catalog/product')->load($product) : $product;
 
         // get accurate units
-        $units = $product->getData(self::AVATAX_PRODUCT_LANDED_COST_ATTR_UNIT_OF_MEASUREMENT);
+        $units = $product->getData(self::AVATAX_PRODUCT_LANDED_COST_ATTR_PARAMETER);
         $units = is_string($units)
-            ? Mage::getModel('avatax/catalog_product_attribute_backend_unit')->decodeUnitOfMeasurement($units)
+            ? Mage::getModel('avatax/catalog_product_attribute_backend_parameter')->decodeParameter($units)
             : $units;
         $units = empty($units) ? array() : $units;
 
@@ -294,19 +294,19 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
 
             $ids = array();
             foreach ($units as $u) {
-                array_push($ids, $u['unit_of_measurement']);
+                array_push($ids, $u['parameter']);
             }
 
-            $collection = Mage::getModel('avatax_records/unitOfMeasurement')->getCollection();
+            $collection = Mage::getModel('avatax_records/parameter')->getCollection();
             $foundUnit = $collection->getUnitForCountry($ids, $countryCode);
 
             if ($foundUnit->getId()) {
                 $resultUnit = null;
                 foreach ($units as $u) {
-                    if ($u['unit_of_measurement'] == $foundUnit->getId()) {
+                    if ($u['parameter'] == $foundUnit->getId()) {
                         $resultUnit = $u;
-                        $resultUnit['avalara_code'] = $foundUnit->getAvalaraCode();
-                        $resultUnit['avalara_measurement_type'] = $foundUnit->getAvalaraMeasurementType();
+                        $resultUnit['avalara_uom'] = $foundUnit->getAvalaraUom();
+                        $resultUnit['avalara_parameter_type'] = $foundUnit->getAvalaraParameterType();
                         $resultUnit['unit_obj'] = $foundUnit;
                         break;
                     }
@@ -320,13 +320,13 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
         if(empty($result)) {
             $productDefaultUnit = $this->getDefaultUnitOfMeasurementForProduct($product);
             if(!empty($productDefaultUnit)) {
-                $collection = Mage::getModel('avatax_records/unitOfMeasurement')->getCollection();
-                $foundUnit = $collection->getUnitForCountry(array($productDefaultUnit['unit_of_measurement']), $countryCode);
+                $collection = Mage::getModel('avatax_records/parameter')->getCollection();
+                $foundUnit = $collection->getUnitForCountry(array($productDefaultUnit['parameter']), $countryCode);
 
                 if ($foundUnit->getId()) {
                     $resultUnit = $productDefaultUnit;
-                    $resultUnit['avalara_code'] = $foundUnit->getAvalaraCode();
-                    $resultUnit['avalara_measurement_type'] = $foundUnit->getAvalaraMeasurementType();
+                    $resultUnit['avalara_uom'] = $foundUnit->getAvalaraUom();
+                    $resultUnit['avalara_parameter_type'] = $foundUnit->getAvalaraParameterType();
                     $resultUnit['unit_obj'] = $foundUnit;
 
                     $result = !empty($resultUnit) ? new \Varien_Object($resultUnit) : null;
@@ -350,7 +350,7 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
         if (!empty($defaultUnit) && (!empty($weight)) && $weight > 0) {
             $result = array(
                 'unit'                => (float)$weight,
-                'unit_of_measurement' => $defaultUnit->getId(),
+                'parameter' => $defaultUnit->getId(),
                 'default'             => true
             );
         }
@@ -466,12 +466,12 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * @param $unit OnePica_AvaTax_Model_Records_UnitOfMeasurement
+     * @param $unit OnePica_AvaTax_Model_Records_Parameter
      * @return bool
      */
     public function isMassType($unit)
     {
-       return $unit->getAvalaraMeasurementType() == $this->getMassType();
+       return $unit->getAvalaraParameterType() == $this->getMassType();
     }
 
     /**

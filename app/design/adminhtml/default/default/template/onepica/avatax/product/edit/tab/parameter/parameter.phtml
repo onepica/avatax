@@ -25,17 +25,6 @@
 <tr>
     <td class="label"><?php echo $this->getElement()->getLabel() ?></td>
     <td colspan="10" class="grid tier avatax-unit-of-measurement">
-<!--    <div class="default">-->
-<!--        <span class="unit">--><?php //echo $this->getProduct()->getWeight()?><!--</span>-->
-<!--        <span class="unit-of-measurement">--><?php //echo $_defaultUnitOfMeasurement ? $_defaultUnitOfMeasurement->getDescription() : '';?><!--</span>-->
-<!--    </div>-->
-<!--    <div>-->
-<!--        <span>Accurate units:</span>-->
-<!--    </div>-->
-<!--    <div>-->
-<!--        <i>Default unit above will be used when there are no accurate unit will be found</i>-->
-<!--        <br/><i>for destination country during tax estimation.</i>-->
-<!--    </div>-->
     <table cellspacing="0" class="data border" id="lcosts_table">
         <col width="100" />
         <col />
@@ -58,8 +47,8 @@
 <script type="text/javascript">
 //<![CDATA[
 var lcUnitRowTemplate = '<tr>'
-    + '<td><select class="<?php echo $_htmlClass ?> custgroup required-entry" name="<?php echo $_htmlName ?>[{{index}}][unit_of_measurement]" id="lcost_unit_row_{{index}}_unit_of_measurement">'
-    <?php foreach ($this->getUnitsOfMeasurement() as $unit): ?>
+    + '<td><select class="<?php echo $_htmlClass ?> custgroup required-entry" name="<?php echo $_htmlName ?>[{{index}}][parameter]" id="lcost_unit_row_{{index}}_parameter">'
+    <?php foreach ($this->getParameters() as $unit): ?>
     + '<option value="<?php echo $unit->getId() ?>"><?php echo $this->jsQuoteEscape($this->escapeHtml($unit->getDescription())) ?></option>'
     <?php endforeach ?>
     + '</select></td>'
@@ -80,13 +69,13 @@ var lcUnitControl = {
         <?php endif; ?>
         var data = {
             unit: '',
-            unitOfMeasurement: '<?php echo $this->getDefaultUnitOfMeasurement() ?>',
+            parameter: '<?php echo $this->getDefaultUnitOfMeasurement() ?>',
             readOnly: false,
             index: this.itemsCount++
         };
 
         if(arguments.length >= 2) {
-            data.unitOfMeasurement      = arguments[0];
+            data.parameter      = arguments[0];
             data.unit      = arguments[1];
         }
         if (arguments.length == 5) {
@@ -97,10 +86,10 @@ var lcUnitControl = {
             bottom : this.template.evaluate(data)
         });
 
-        $('lcost_unit_row_' + data.index + '_unit_of_measurement').value = data.unitOfMeasurement;
+        $('lcost_unit_row_' + data.index + '_parameter').value = data.parameter;
 
         if (data.readOnly == '1') {
-            ['unit_of_measurement', 'unit', 'delete'].each(function(idx){
+            ['parameter', 'unit', 'delete'].each(function(idx){
                 $('lcost_unit_row_'+data.index+'_'+idx).disabled = true;
             });
             $('lcost_unit_row_'+data.index+'_delete_button').hide();
@@ -130,7 +119,7 @@ var lcUnitControl = {
 };
 <?php foreach ($this->getValues() as $_item): ?>
 lcUnitControl.addItem(
-    '<?php echo $_item['unit_of_measurement'] ?>',
+    '<?php echo $_item['parameter'] ?>',
     '<?php echo $_item['unit'] ?>',
     <?php echo 0?>);
 <?php endforeach; ?>

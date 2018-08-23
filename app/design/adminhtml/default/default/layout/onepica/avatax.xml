@@ -99,11 +99,11 @@
         </reference>
     </adminhtml_avatax_grid_hscode>
 
-    <adminhtml_avatax_grid_unitsofmeasurement>
+    <adminhtml_avatax_grid_parameter>
         <reference name="content">
-            <block type="avatax/adminhtml_landedcost_unitsOfMeasurement" name="avatax.unitsofmeasurement.grid" />
+            <block type="avatax/adminhtml_landedcost_parameter" name="avatax.parameter.grid" />
         </reference>
-    </adminhtml_avatax_grid_unitsofmeasurement>
+    </adminhtml_avatax_grid_parameter>
 
     <adminhtml_avatax_grid_agreement>
         <reference name="content">

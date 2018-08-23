@@ -16,9 +16,9 @@
  */
 
 /**
- * Class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement_Edit_Form
+ * Class OnePica_AvaTax_Block_Adminhtml_Landedcost_Parameter_Edit_Form
  */
-class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement_Edit_Form extends Mage_Adminhtml_Block_Widget_Form
+class OnePica_AvaTax_Block_Adminhtml_Landedcost_Parameter_Edit_Form extends Mage_Adminhtml_Block_Widget_Form
 {
     /**
      * Prepare form before rendering HTML
@@ -36,7 +36,7 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement_Edit_Form ext
             array(
                 'id'     => 'edit_form',
                 'action' => $this->getUrl(
-                    '*/*/unitsofmeasurementSave', array('id' => $this->getRequest()->getParam('id'),)
+                    '*/*/parameterSave', array('id' => $this->getRequest()->getParam('id'),)
                 ),
                 'method' => 'post',
             )
@@ -44,7 +44,7 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement_Edit_Form ext
 
         $form->setUseContainer(true);
         $this->setForm($form);
-        $fieldset = $form->addFieldset('unit_of_measurement_form', array('legend' => $this->__('Item information')));
+        $fieldset = $form->addFieldset('parameter_form', array('legend' => $this->__('Item information')));
 
         $fieldset->addField(
             'avalara_parameter_type', 'text', array(
@@ -87,11 +87,11 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement_Edit_Form ext
             )
         );
 
-        if (Mage::getSingleton('adminhtml/session')->getUnitOfMeasurementData()) {
-            $form->setValues(Mage::getSingleton('adminhtml/session')->getUnitOfMeasurementData());
+        if (Mage::getSingleton('adminhtml/session')->getParameterData()) {
+            $form->setValues(Mage::getSingleton('adminhtml/session')->getParameterData());
             Mage::getSingleton('adminhtml/session')->setHsCodeCountriesData(null);
-        } elseif (Mage::registry('unit_of_measurement_data')) {
-            $form->setValues(Mage::registry('unit_of_measurement_data')->getData());
+        } elseif (Mage::registry('parameter_data')) {
+            $form->setValues(Mage::registry('parameter_data')->getData());
         }
 
         return parent::_prepareForm();

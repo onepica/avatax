@@ -21,7 +21,7 @@ $installer->startSetup();
 /** @var \Varien_Db_Adapter_Pdo_Mysql $conn */
 $conn = $installer->getConnection();
 
-$table = $this->getTable('avatax_records/unit_of_measurement');
+$table = $this->getTable('avatax_records/parameter');
 
 if ($conn->showTableStatus($table) === false) {
     $installer->run(
@@ -32,7 +32,7 @@ if ($conn->showTableStatus($table) === false) {
     `description` text,
     `country_list` text,
     PRIMARY KEY (`id`),
-    KEY `IDX_OP_AVATAX_UNIT_OF_MEASUREMENT_AVALARA_UOM` (`avalara_uom`)
+    KEY `IDX_OP_AVATAX_PARAMETER_AVALARA_UOM` (`avalara_uom`)
 ) ENGINE=InnoDB COMMENT='Used by One Pica AvaTax extension';
     "
     );

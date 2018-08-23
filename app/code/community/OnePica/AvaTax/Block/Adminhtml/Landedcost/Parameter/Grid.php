@@ -16,13 +16,13 @@
  */
 
 /**
- * Avatax admin UnitsOfMeasurement grid
+ * Avatax admin Parameter grid
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement_Grid
+class OnePica_AvaTax_Block_Adminhtml_Landedcost_Parameter_Grid
     extends OnePica_AvaTax_Block_Adminhtml_Landedcost_Abstract_Grid
 {
     /**
@@ -65,8 +65,8 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement_Grid
      */
     protected function _prepareCollection()
     {
-        /** @var \OnePica_AvaTax_Model_Records_Mysql4_UnitOfMeasurement_Collection $collection */
-        $collection = Mage::getModel('avatax_records/unitOfMeasurement')->getCollection();
+        /** @var \OnePica_AvaTax_Model_Records_Mysql4_Parameter_Collection $collection */
+        $collection = Mage::getModel('avatax_records/parameter')->getCollection();
         $this->setCollection($collection);
 
         return parent::_prepareCollection();
@@ -75,29 +75,29 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement_Grid
     /**
      * Get row url
      *
-     * @param \OnePica_AvaTax_Model_Records_UnitOfMeasurement $row
+     * @param \OnePica_AvaTax_Model_Records_Parameter $row
      * @return string
      */
     public function getRowUrl($row)
     {
-        return $this->getUrl('*/*/unitsofmeasurementEdit', array('id' => $row->getId()));
+        return $this->getUrl('*/*/parameterEdit', array('id' => $row->getId()));
     }
 
     /**
      * Prepare mass actions
      *
-     * @return \OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement_Grid
+     * @return \OnePica_AvaTax_Block_Adminhtml_Landedcost_Parameter_Grid
      * @throws \Varien_Exception
      */
     protected function _prepareMassaction()
     {
         $this->setMassactionIdField('id');
-        $this->getMassactionBlock()->setFormFieldName('unitsofmeasurement');
+        $this->getMassactionBlock()->setFormFieldName('parameter');
 
         $this->getMassactionBlock()->addItem(
             'delete', array(
                 'label'   => $this->__('Delete'),
-                'url'     => $this->getUrl('*/*/unitsofmeasurementMassDelete'),
+                'url'     => $this->getUrl('*/*/parameterMassDelete'),
                 'confirm' => $this->__('Are you sure you want to delete selected records?')
             )
         );

@@ -41,13 +41,13 @@ class OnePica_AvaTax_Model_Observer_AdminhtmlCatalogProductEditPrepareForm
                 switch ($elements[0]->getLegend()) {
                     case OnePica_AvaTax_Helper_LandedCost::AVATAX_PRODUCT_GROUP_LANDED_COST:
                         {
-                            $unitOfMeasurement = $form->getElement(
-                                OnePica_AvaTax_Helper_LandedCost::AVATAX_PRODUCT_LANDED_COST_ATTR_UNIT_OF_MEASUREMENT
+                            $parameter = $form->getElement(
+                                OnePica_AvaTax_Helper_LandedCost::AVATAX_PRODUCT_LANDED_COST_ATTR_PARAMETER
                             );
-                            if ($unitOfMeasurement) {
-                                $unitOfMeasurement->setRenderer(
+                            if ($parameter) {
+                                $parameter->setRenderer(
                                     Mage::app()->getLayout()->createBlock(
-                                        'avatax/adminhtml_catalog_product_edit_tab_landedCost_unit'
+                                        'avatax/adminhtml_catalog_product_edit_tab_landedCost_parameter'
                                     )
                                 );
                             }
