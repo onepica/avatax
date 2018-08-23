@@ -48,7 +48,7 @@
 //<![CDATA[
 var lcUnitRowTemplate = '<tr>'
     + '<td><select class="<?php echo $_htmlClass ?> custgroup required-entry" name="<?php echo $_htmlName ?>[{{index}}][parameter]" id="lcost_unit_row_{{index}}_parameter">'
-    <?php foreach ($this->getUnitsOfMeasurement() as $unit): ?>
+    <?php foreach ($this->getParameters() as $unit): ?>
     + '<option value="<?php echo $unit->getId() ?>"><?php echo $this->jsQuoteEscape($this->escapeHtml($unit->getDescription())) ?></option>'
     <?php endforeach ?>
     + '</select></td>'

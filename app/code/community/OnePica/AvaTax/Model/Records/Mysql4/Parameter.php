@@ -16,7 +16,7 @@
  */
 
 /**
- * Unit Of Measurement resource model
+ * Parameter resource model
  *
  * @category   OnePica
  * @package    OnePica_AvaTax

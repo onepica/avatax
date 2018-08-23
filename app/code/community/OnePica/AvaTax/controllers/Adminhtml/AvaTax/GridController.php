@@ -587,7 +587,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
         $parameterId = $this->getRequest()->getParam('id');
 
         if ($parameterId <= 0) {
-            $this->getAdminhtmlSession()->addError($this->__('Unit of measurement id is invalid'));
+            $this->getAdminhtmlSession()->addError($this->__('Parameter id is invalid'));
             $this->_redirect('*/*/parameter');
         }
 

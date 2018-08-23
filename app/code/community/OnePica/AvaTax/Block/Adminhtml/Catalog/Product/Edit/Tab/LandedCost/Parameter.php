@@ -65,7 +65,7 @@ class OnePica_AvaTax_Block_Adminhtml_Catalog_Product_Edit_Tab_LandedCost_Paramet
     /**
      * @var OnePica_AvaTax_Model_Records_Mysql4_Parameter_Collection|null;
      */
-    protected $unitsOfMeasurement = null;
+    protected $parameters = null;
 
     /**
      * Websites cache
@@ -160,15 +160,15 @@ class OnePica_AvaTax_Block_Adminhtml_Catalog_Product_Edit_Tab_LandedCost_Paramet
      * @param int|null $groupId  return name by customer group id
      * @return array|string
      */
-    public function getUnitsOfMeasurement()
+    public function getParameters()
     {
-        if (empty($this->unitsOfMeasurement)) {
+        if (empty($this->parameters)) {
             /* @var OnePica_AvaTax_Model_Records_Mysql4_Parameter_Collection $collection */
-            $this->unitsOfMeasurement = Mage::getModel('avatax_records/parameter')->getCollection();
-            $this->unitsOfMeasurement->load();
+            $this->parameters = Mage::getModel('avatax_records/parameter')->getCollection();
+            $this->parameters->load();
         }
 
-        return $this->unitsOfMeasurement;
+        return $this->parameters;
     }
 
     /**

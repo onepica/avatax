@@ -356,7 +356,7 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
             $bagItemsParams = array();
 
             // Unit
-            $unit = $lcHelper->getProductUnitOfMeasurement($product, $address->getCountryId());
+            $unit = $lcHelper->getProductParameter($product, $address->getCountryId());
             if (!empty($unit)) {
                 $unitValue = $unit->getUnit();
                 $htsMeasurement = new ParameterBagItem();

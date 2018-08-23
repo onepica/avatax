@@ -269,14 +269,14 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Get Product Avalara Unit Of Measurement
+     * Get Product Avalara Parameter
      *
      * @param int|Mage_Catalog_Model_Product $product
      * @param string                         $countryCode
      * @return Varien_Object|null
      *
      */
-    public function getProductUnitOfMeasurement($product, $countryCode)
+    public function getProductParameter($product, $countryCode)
     {
         $result = null;
 

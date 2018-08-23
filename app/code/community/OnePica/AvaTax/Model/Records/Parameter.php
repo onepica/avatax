@@ -16,7 +16,7 @@
  */
 
 /**
- * Unit Of Measurement model
+ * Parameter model
  *
  * @method int getId()
  * @method int getStoreId()

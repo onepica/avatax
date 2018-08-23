@@ -67,7 +67,7 @@ class OnePica_AvaTax_Model_Catalog_Product_Attribute_Backend_Parameter
     }
 
     /**
-     * Decode Unit Of Measurement Product Configuration
+     * Decode Parameter Product Configuration
      *
      * @param string $jsonData
      * @return array
