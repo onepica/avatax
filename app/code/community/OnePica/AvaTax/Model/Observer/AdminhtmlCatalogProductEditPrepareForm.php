@@ -42,7 +42,7 @@ class OnePica_AvaTax_Model_Observer_AdminhtmlCatalogProductEditPrepareForm
                     case OnePica_AvaTax_Helper_LandedCost::AVATAX_PRODUCT_GROUP_LANDED_COST:
                         {
                             $unitOfMeasurement = $form->getElement(
-                                OnePica_AvaTax_Helper_LandedCost::AVATAX_PRODUCT_LANDED_COST_ATTR_UNIT_OF_MEASUREMENT
+                                OnePica_AvaTax_Helper_LandedCost::AVATAX_PRODUCT_LANDED_COST_ATTR_PARAMETER
                             );
                             if ($unitOfMeasurement) {
                                 $unitOfMeasurement->setRenderer(

@@ -19,7 +19,7 @@
 $installer = Mage::getResourceModel('catalog/setup', 'catalog_setup');
 $installer->startSetup();
 
-$attributeCode = OnePica_AvaTax_Helper_LandedCost::AVATAX_PRODUCT_LANDED_COST_ATTR_UNIT_OF_MEASUREMENT;
+$attributeCode = OnePica_AvaTax_Helper_LandedCost::AVATAX_PRODUCT_LANDED_COST_ATTR_PARAMETER;
 
 /** @var $attribute \Mage_Eav_Model_Entity_Attribute $attribute */
 $attribute = Mage::getModel('eav/entity_attribute')->loadByCode('catalog_product', $attributeCode);
@@ -28,9 +28,9 @@ if (!$attribute->getId()) {
     $installer->addAttribute(
         'catalog_product', $attributeCode, array(
             'type'             => 'varchar',
-            'label'            => OnePica_AvaTax_Helper_LandedCost::AVATAX_PRODUCT_LANDED_COST_ATTR_UNIT_OF_MEASUREMENT_LABEL,
+            'label'            => OnePica_AvaTax_Helper_LandedCost::AVATAX_PRODUCT_LANDED_COST_ATTR_PARAMETER_LABEL,
             'input'            => 'text',
-            'backend'          => 'avatax/catalog_product_attribute_backend_unit',
+            'backend'          => 'avatax/catalog_product_attribute_backend_parameter',
             'visible'          => 1,
             'required'         => 0,
             'user_defined'     => 1,

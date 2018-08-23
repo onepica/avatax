@@ -584,7 +584,7 @@ class OnePica_AvaTax_Model_Service_Avatax_Invoice extends OnePica_AvaTax_Model_S
         foreach (array(
                      OnePica_AvaTax_Helper_LandedCost::AVATAX_PRODUCT_LANDED_COST_ATTR_HSCODE,
                      OnePica_AvaTax_Helper_LandedCost::AVATAX_PRODUCT_LANDED_COST_AGREEMENT,
-                     OnePica_AvaTax_Helper_LandedCost::AVATAX_PRODUCT_LANDED_COST_ATTR_UNIT_OF_MEASUREMENT
+                     OnePica_AvaTax_Helper_LandedCost::AVATAX_PRODUCT_LANDED_COST_ATTR_PARAMETER
                  ) as $key) {
             $lineProductData->setData($key, $product->getData($key));
         }

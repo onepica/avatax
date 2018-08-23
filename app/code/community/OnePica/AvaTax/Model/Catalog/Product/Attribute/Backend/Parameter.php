@@ -32,7 +32,7 @@
  * @author     Magento Core Team <core@magentocommerce.com>
  *
  */
-class OnePica_AvaTax_Model_Catalog_Product_Attribute_Backend_Unit
+class OnePica_AvaTax_Model_Catalog_Product_Attribute_Backend_Parameter
     extends Mage_Eav_Model_Entity_Attribute_Backend_Abstract
 {
     /**
@@ -40,7 +40,7 @@ class OnePica_AvaTax_Model_Catalog_Product_Attribute_Backend_Unit
      * Rewrite for redefine attribute scope
      *
      * @param Mage_Catalog_Model_Resource_Eav_Attribute $attribute
-     * @return \OnePica_AvaTax_Model_Catalog_Product_Attribute_Backend_Unit
+     * @return \OnePica_AvaTax_Model_Catalog_Product_Attribute_Backend_Parameter
      */
     public function setAttribute($attribute)
     {
@@ -136,7 +136,7 @@ class OnePica_AvaTax_Model_Catalog_Product_Attribute_Backend_Unit
         $duplicates = array();
         $ids = array();
         array_walk($data, function ($value, $key) use (&$ids, &$duplicates) {
-            $id = $value['unit_of_measurement'];
+            $id = $value['parameter'];
             $ids[$id] = isset($ids[$id]) ? $ids[$id] + 1 : 1;
             if ($ids[$id] > 1) {
                 $duplicates[] = $id;
@@ -174,7 +174,7 @@ class OnePica_AvaTax_Model_Catalog_Product_Attribute_Backend_Unit
     {
         $ids = array();
         array_walk($data, function ($value, $key) use (&$ids) {
-            array_push($ids, $value['unit_of_measurement']);
+            array_push($ids, $value['parameter']);
         });
 
         /** @var OnePica_AvaTax_Helper_LandedCost $helper */
@@ -203,7 +203,7 @@ class OnePica_AvaTax_Model_Catalog_Product_Attribute_Backend_Unit
 
         $emptyUnits = array();
         foreach ($data as $key => $value) {
-            $id = $value['unit_of_measurement'];
+            $id = $value['parameter'];
             if (in_array($id, $idsToCheck) && (!isset($value['unit']))) {
                 $item = $configuredUnits->getItemById($id);
                 $emptyUnits[] = $item->getDescription();
