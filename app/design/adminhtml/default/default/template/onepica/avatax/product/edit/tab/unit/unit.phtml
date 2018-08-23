@@ -58,7 +58,7 @@
 <script type="text/javascript">
 //<![CDATA[
 var lcUnitRowTemplate = '<tr>'
-    + '<td><select class="<?php echo $_htmlClass ?> custgroup required-entry" name="<?php echo $_htmlName ?>[{{index}}][unit_of_measurement]" id="lcost_unit_row_{{index}}_unit_of_measurement">'
+    + '<td><select class="<?php echo $_htmlClass ?> custgroup required-entry" name="<?php echo $_htmlName ?>[{{index}}][parameter]" id="lcost_unit_row_{{index}}_parameter">'
     <?php foreach ($this->getUnitsOfMeasurement() as $unit): ?>
     + '<option value="<?php echo $unit->getId() ?>"><?php echo $this->jsQuoteEscape($this->escapeHtml($unit->getDescription())) ?></option>'
     <?php endforeach ?>
@@ -97,10 +97,10 @@ var lcUnitControl = {
             bottom : this.template.evaluate(data)
         });
 
-        $('lcost_unit_row_' + data.index + '_unit_of_measurement').value = data.unitOfMeasurement;
+        $('lcost_unit_row_' + data.index + '_parameter').value = data.unitOfMeasurement;
 
         if (data.readOnly == '1') {
-            ['unit_of_measurement', 'unit', 'delete'].each(function(idx){
+            ['parameter', 'unit', 'delete'].each(function(idx){
                 $('lcost_unit_row_'+data.index+'_'+idx).disabled = true;
             });
             $('lcost_unit_row_'+data.index+'_delete_button').hide();
@@ -130,7 +130,7 @@ var lcUnitControl = {
 };
 <?php foreach ($this->getValues() as $_item): ?>
 lcUnitControl.addItem(
-    '<?php echo $_item['unit_of_measurement'] ?>',
+    '<?php echo $_item['parameter'] ?>',
     '<?php echo $_item['unit'] ?>',
     <?php echo 0?>);
 <?php endforeach; ?>
