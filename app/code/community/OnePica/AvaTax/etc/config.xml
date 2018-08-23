@@ -369,15 +369,15 @@
                     </avatax>
                 </observers>
             </adminhtml_sales_order_create_process_data>
-            <avatax_records_unitofmeasurement_save_before>
+            <avatax_records_parameter_save_before>
                 <observers>
                     <avatax>
                         <type>singleton</type>
-                        <class>avatax/observer_avataxRecordsUnitOfMeasurementSaveBefore</class>
+                        <class>avatax/observer_avataxRecordsParameterSaveBefore</class>
                         <method>execute</method>
                     </avatax>
                 </observers>
-            </avatax_records_unitofmeasurement_save_before>
+            </avatax_records_parameter_save_before>
         </events>
         <fieldsets>
             <sales_convert_quote_address>

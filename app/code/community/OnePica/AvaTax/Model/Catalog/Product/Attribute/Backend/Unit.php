@@ -196,7 +196,7 @@ class OnePica_AvaTax_Model_Catalog_Product_Attribute_Backend_Unit
     protected function _validateOnEmptyUnit($data, $configuredUnits)
     {
         $idsToCheck = array();
-        /** @var OnePica_AvaTax_Model_Records_UnitOfMeasurement $item */
+        /** @var OnePica_AvaTax_Model_Records_Parameter $item */
         foreach ($configuredUnits as $item) {
             $idsToCheck[] = $item->getId();
         }

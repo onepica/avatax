@@ -16,19 +16,19 @@
  */
 
 /**
- * Avatax admin UnitsOfMeasurement grid
+ * Avatax admin Parameter grid
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement
+class OnePica_AvaTax_Block_Adminhtml_Landedcost_Parameter
     extends Mage_Adminhtml_Block_Widget_Grid_Container
 {
     public function __construct()
     {
         $this->_blockGroup = 'avatax';
-        $this->_controller = 'adminhtml_landedcost_unitsOfMeasurement';
+        $this->_controller = 'adminhtml_landedcost_parameter';
         $this->_headerText = $this->__('Parameters');
 
         parent::__construct();
@@ -40,6 +40,6 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement
      */
     public function getCreateUrl()
     {
-        return $this->getUrl('*/*/unitsofmeasurementNew');
+        return $this->getUrl('*/*/parameterNew');
     }
 }

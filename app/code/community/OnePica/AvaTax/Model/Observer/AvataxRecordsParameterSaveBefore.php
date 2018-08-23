@@ -16,13 +16,13 @@
  */
 
 /**
- * Avatax Observer RecordsUnitOfMeasurementSaveBefore
+ * Avatax Observer RecordsParameterSaveBefore
  *
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Observer_AvataxRecordsUnitOfMeasurementSaveBefore extends OnePica_AvaTax_Model_Observer_Abstract
+class OnePica_AvaTax_Model_Observer_AvataxRecordsParameterSaveBefore extends OnePica_AvaTax_Model_Observer_Abstract
 {
     /**
      * Validate Model Before Save

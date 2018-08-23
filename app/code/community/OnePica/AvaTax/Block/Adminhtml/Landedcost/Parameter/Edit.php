@@ -16,9 +16,9 @@
  */
 
 /**
- * Class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement_Edit
+ * Class OnePica_AvaTax_Block_Adminhtml_Landedcost_Parameter_Edit
  */
-class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement_Edit extends Mage_Adminhtml_Block_Widget_Form_Container
+class OnePica_AvaTax_Block_Adminhtml_Landedcost_Parameter_Edit extends Mage_Adminhtml_Block_Widget_Form_Container
 {
     /**
      * OnePica_AvaTax_Block_Adminhtml_Landedcost_HsCode_Edit constructor.
@@ -29,7 +29,7 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement_Edit extends 
 
         $this->_objectId = 'id';
         $this->_blockGroup = 'avatax';
-        $this->_controller = 'adminhtml_landedcost_unitsOfMeasurement';
+        $this->_controller = 'adminhtml_landedcost_parameter';
 
         $this->_updateButton('save', 'label', $this->__('Save Parameter'));
         $this->_updateButton('delete', 'label', $this->__('Delete Item'));
@@ -51,7 +51,7 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement_Edit extends 
      */
     public function getSaveAndContinueUrl()
     {
-        return $this->getUrl('*/*/unitsofmeasurementSave', array('_current' => true, 'back' => 'unitsofmeasurementEdit'));
+        return $this->getUrl('*/*/parameterSave', array('_current' => true, 'back' => 'parameterEdit'));
     }
 
     /**
@@ -61,7 +61,7 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement_Edit extends 
      */
     public function getBackUrl()
     {
-        return $this->getUrl('*/*/unitsofmeasurement');
+        return $this->getUrl('*/*/parameter');
     }
 
     /**
@@ -71,7 +71,7 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement_Edit extends 
      */
     public function getHeaderText()
     {
-        $unitOfMeasurementData = Mage::registry('unit_of_measurement_data');
+        $unitOfMeasurementData = Mage::registry('parameter_data');
 
         if ($unitOfMeasurementData && $unitOfMeasurementData->getId()) {
             return $this->__("Edit Item '%s'", $this->escapeHtml($unitOfMeasurementData->getAvalaraCode()));
@@ -87,7 +87,7 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_UnitsOfMeasurement_Edit extends 
     public function getDeleteUrl()
     {
         return $this->getUrl(
-            '*/*/unitsofmeasurementDelete', array(
+            '*/*/parameterDelete', array(
                 $this->_objectId              => $this->getRequest()->getParam($this->_objectId),
                 Mage_Core_Model_Url::FORM_KEY => $this->getFormKey()
             )

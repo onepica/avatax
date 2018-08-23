@@ -22,7 +22,7 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Model_Adminhtml_System_Config_Source_UnitOfMeasurement
+class OnePica_AvaTax_Model_Adminhtml_System_Config_Source_Parameter
     extends Mage_Eav_Model_Entity_Attribute_Source_Abstract
 {
     /**
