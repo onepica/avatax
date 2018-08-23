@@ -47,7 +47,7 @@ class OnePica_AvaTax_Model_Observer_AdminhtmlCatalogProductEditPrepareForm
                             if ($unitOfMeasurement) {
                                 $unitOfMeasurement->setRenderer(
                                     Mage::app()->getLayout()->createBlock(
-                                        'avatax/adminhtml_catalog_product_edit_tab_landedCost_unit'
+                                        'avatax/adminhtml_catalog_product_edit_tab_landedCost_parameter'
                                     )
                                 );
                             }

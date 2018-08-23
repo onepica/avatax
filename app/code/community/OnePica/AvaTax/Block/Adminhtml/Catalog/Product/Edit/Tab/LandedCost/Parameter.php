@@ -22,7 +22,7 @@
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
  */
-class OnePica_AvaTax_Block_Adminhtml_Catalog_Product_Edit_Tab_LandedCost_Unit
+class OnePica_AvaTax_Block_Adminhtml_Catalog_Product_Edit_Tab_LandedCost_Parameter
     extends Mage_Adminhtml_Block_Widget
     implements Varien_Data_Form_Element_Renderer_Interface
 {
@@ -32,7 +32,7 @@ class OnePica_AvaTax_Block_Adminhtml_Catalog_Product_Edit_Tab_LandedCost_Unit
      */
     public function __construct()
     {
-        $this->setTemplate('onepica/avatax/product/edit/tab/unit/unit.phtml');
+        $this->setTemplate('onepica/avatax/product/edit/tab/parameter/parameter.phtml');
     }
 
     /**
