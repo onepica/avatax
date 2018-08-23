@@ -71,10 +71,10 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_Parameter_Edit extends Mage_Admi
      */
     public function getHeaderText()
     {
-        $unitOfMeasurementData = Mage::registry('parameter_data');
+        $parameterData = Mage::registry('parameter_data');
 
-        if ($unitOfMeasurementData && $unitOfMeasurementData->getId()) {
-            return $this->__("Edit Item '%s'", $this->escapeHtml($unitOfMeasurementData->getAvalaraCode()));
+        if ($parameterData && $parameterData->getId()) {
+            return $this->__("Edit Item '%s'", $this->escapeHtml($parameterData->getAvalaraCode()));
         } else {
             return $this->__('Add Item');
         }

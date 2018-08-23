@@ -285,7 +285,7 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
         // get accurate units
         $units = $product->getData(self::AVATAX_PRODUCT_LANDED_COST_ATTR_PARAMETER);
         $units = is_string($units)
-            ? Mage::getModel('avatax/catalog_product_attribute_backend_parameter')->decodeUnitOfMeasurement($units)
+            ? Mage::getModel('avatax/catalog_product_attribute_backend_parameter')->decodeParameter($units)
             : $units;
         $units = empty($units) ? array() : $units;
 

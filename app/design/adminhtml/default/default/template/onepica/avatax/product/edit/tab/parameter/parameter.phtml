@@ -25,17 +25,6 @@
 <tr>
     <td class="label"><?php echo $this->getElement()->getLabel() ?></td>
     <td colspan="10" class="grid tier avatax-unit-of-measurement">
-<!--    <div class="default">-->
-<!--        <span class="unit">--><?php //echo $this->getProduct()->getWeight()?><!--</span>-->
-<!--        <span class="unit-of-measurement">--><?php //echo $_defaultUnitOfMeasurement ? $_defaultUnitOfMeasurement->getDescription() : '';?><!--</span>-->
-<!--    </div>-->
-<!--    <div>-->
-<!--        <span>Accurate units:</span>-->
-<!--    </div>-->
-<!--    <div>-->
-<!--        <i>Default unit above will be used when there are no accurate unit will be found</i>-->
-<!--        <br/><i>for destination country during tax estimation.</i>-->
-<!--    </div>-->
     <table cellspacing="0" class="data border" id="lcosts_table">
         <col width="100" />
         <col />
@@ -80,13 +69,13 @@ var lcUnitControl = {
         <?php endif; ?>
         var data = {
             unit: '',
-            unitOfMeasurement: '<?php echo $this->getDefaultUnitOfMeasurement() ?>',
+            parameter: '<?php echo $this->getDefaultUnitOfMeasurement() ?>',
             readOnly: false,
             index: this.itemsCount++
         };
 
         if(arguments.length >= 2) {
-            data.unitOfMeasurement      = arguments[0];
+            data.parameter      = arguments[0];
             data.unit      = arguments[1];
         }
         if (arguments.length == 5) {
@@ -97,7 +86,7 @@ var lcUnitControl = {
             bottom : this.template.evaluate(data)
         });
 
-        $('lcost_unit_row_' + data.index + '_parameter').value = data.unitOfMeasurement;
+        $('lcost_unit_row_' + data.index + '_parameter').value = data.parameter;
 
         if (data.readOnly == '1') {
             ['parameter', 'unit', 'delete'].each(function(idx){

@@ -59,7 +59,7 @@ class OnePica_AvaTax_Model_Catalog_Product_Attribute_Backend_Parameter
     {
         $attrCode = $this->getAttribute()->getAttributeCode();
         if ($object->hasData($attrCode)) {
-            $result = $this->decodeUnitOfMeasurement($object->getData($attrCode));
+            $result = $this->decodeParameter($object->getData($attrCode));
             $object->setData($attrCode, $result);
         }
 
@@ -72,7 +72,7 @@ class OnePica_AvaTax_Model_Catalog_Product_Attribute_Backend_Parameter
      * @param string $jsonData
      * @return array
      */
-    public function decodeUnitOfMeasurement($jsonData)
+    public function decodeParameter($jsonData)
     {
         $config = json_decode($jsonData);
         $result = array();
