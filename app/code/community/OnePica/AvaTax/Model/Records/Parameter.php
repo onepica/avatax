@@ -59,39 +59,4 @@ class OnePica_AvaTax_Model_Records_Parameter extends Mage_Core_Model_Abstract
     {
         return Mage::helper('avatax/config');
     }
-
-    /**
-     * @return string
-     */
-    public function getAvalaraCode()
-    {
-        return parent::getAvalaraUom();
-    }
-
-    /**
-     * @param $code string
-     * @return mixed
-     */
-    public function setAvalaraCode($code)
-    {
-        return parent::setAvalaraUom($code);
-    }
-
-    /**
-     * @return string
-     */
-    public function getAvalaraMeasurementType()
-    {
-        return parent::getAvalaraParameterType();
-    }
-
-    /**
-     * @param $measurementType string
-     * @return mixed
-     */
-    public function setAvalaraMeasurementType($measurementType)
-    {
-        return parent::setAvalaraParameterType($measurementType);
-    }
-
 }

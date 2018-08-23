@@ -305,8 +305,8 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
                 foreach ($units as $u) {
                     if ($u['parameter'] == $foundUnit->getId()) {
                         $resultUnit = $u;
-                        $resultUnit['avalara_code'] = $foundUnit->getAvalaraCode();
-                        $resultUnit['avalara_measurement_type'] = $foundUnit->getAvalaraMeasurementType();
+                        $resultUnit['avalara_uom'] = $foundUnit->getAvalaraUom();
+                        $resultUnit['avalara_parameter_type'] = $foundUnit->getAvalaraParameterType();
                         $resultUnit['unit_obj'] = $foundUnit;
                         break;
                     }
@@ -325,8 +325,8 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
 
                 if ($foundUnit->getId()) {
                     $resultUnit = $productDefaultUnit;
-                    $resultUnit['avalara_code'] = $foundUnit->getAvalaraCode();
-                    $resultUnit['avalara_measurement_type'] = $foundUnit->getAvalaraMeasurementType();
+                    $resultUnit['avalara_uom'] = $foundUnit->getAvalaraUom();
+                    $resultUnit['avalara_parameter_type'] = $foundUnit->getAvalaraParameterType();
                     $resultUnit['unit_obj'] = $foundUnit;
 
                     $result = !empty($resultUnit) ? new \Varien_Object($resultUnit) : null;
@@ -471,7 +471,7 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
      */
     public function isMassType($unit)
     {
-       return $unit->getAvalaraMeasurementType() == $this->getMassType();
+       return $unit->getAvalaraParameterType() == $this->getMassType();
     }
 
     /**

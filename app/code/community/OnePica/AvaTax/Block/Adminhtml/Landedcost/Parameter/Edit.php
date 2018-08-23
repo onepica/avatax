@@ -74,7 +74,7 @@ class OnePica_AvaTax_Block_Adminhtml_Landedcost_Parameter_Edit extends Mage_Admi
         $parameterData = Mage::registry('parameter_data');
 
         if ($parameterData && $parameterData->getId()) {
-            return $this->__("Edit Item '%s'", $this->escapeHtml($parameterData->getAvalaraCode()));
+            return $this->__("Edit Item '%s'", $this->escapeHtml($parameterData->getAvalaraUom()));
         } else {
             return $this->__('Add Item');
         }

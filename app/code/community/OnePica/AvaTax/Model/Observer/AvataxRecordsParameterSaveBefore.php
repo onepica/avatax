@@ -40,7 +40,7 @@ class OnePica_AvaTax_Model_Observer_AvataxRecordsParameterSaveBefore extends One
         /** @var OnePica_AvaTax_Model_Records_Parameter $unit */
         $unit = $observer->getEvent()->getObject();
         if ($helper->isMassType($unit)) {
-            $isValid = !empty($unit->getAvalaraCode());
+            $isValid = !empty($unit->getAvalaraUom());
             if (!$isValid) {
                 throw new \OnePica_AvaTax_Exception(
                     Mage::helper('avatax')->__('UOM field is required for this Parameter.')

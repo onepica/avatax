@@ -360,9 +360,9 @@ abstract class OnePica_AvaTax_Model_Service_Avatax_Abstract extends OnePica_AvaT
             if (!empty($unit)) {
                 $unitValue = $unit->getUnit();
                 $htsMeasurement = new ParameterBagItem();
-                $htsMeasurement->setName($unit->getAvalaraMeasurementType());
+                $htsMeasurement->setName($unit->getAvalaraParameterType());
                 $htsMeasurement->setValue($unitValue);
-                $htsMeasurement->setUOMCode($unit->getAvalaraCode());
+                $htsMeasurement->setUOMCode($unit->getAvalaraUom());
 
                 array_push($bagItemsParams, $htsMeasurement);
             }
