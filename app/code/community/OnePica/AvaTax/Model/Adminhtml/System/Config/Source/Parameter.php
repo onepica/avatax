@@ -16,7 +16,7 @@
  */
 
 /**
- * Unit Of Measurement source config model
+ * Parameter source config model
  *
  * @category   OnePica
  * @package    OnePica_AvaTax

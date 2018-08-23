@@ -621,7 +621,7 @@ class OnePica_AvaTax_Adminhtml_AvaTax_GridController extends Mage_Adminhtml_Cont
 
         if (!is_array($parameterIds)) {
             $this->getAdminhtmlSession()->addError(
-                Mage::helper('adminhtml')->__('Please select  Unit(s) of measurement.')
+                Mage::helper('adminhtml')->__('Please select Parameter(s).')
             );
         } else {
             try {
