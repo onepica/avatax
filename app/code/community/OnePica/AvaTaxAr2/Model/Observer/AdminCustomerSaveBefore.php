@@ -39,6 +39,7 @@ class OnePica_AvaTaxAr2_Model_Observer_AdminCustomerSaveBefore extends OnePica_A
                 $customerCode = $this->_getHelper()->getCustomerNumber($customer);
 
                 if ($customerCode) {
+                    $this->_getHelper()->validateCustomerCodeForHttpRequest($customerCode);
                     $avaCustomer = $this->_getServiceCertificate()->getCustomer($customerCode, null, false);
                     if ($avaCustomer instanceof OnePica_AvaTaxAr2_Exception_Response) {
                         /** @var  OnePica_AvaTaxAr2_Exception_Response $exception */
@@ -50,7 +51,12 @@ class OnePica_AvaTaxAr2_Model_Observer_AdminCustomerSaveBefore extends OnePica_A
                 }
             }
         } catch (Exception $ex) {
-            //hide all errors
+            if ($customer) {
+                $customerCodeAttr = $this->_getConfigHelper()->getCustomerCodeFormatAttribute(Mage::app()->getStore());
+                $this->_getHelper()->setCustomerNumber($customer, $customer->getOrigData($customerCodeAttr));
+            }
+
+            $this->_getCoreSession()->addError($ex->getMessage());
         }
 
         return $this;
@@ -64,7 +70,6 @@ class OnePica_AvaTaxAr2_Model_Observer_AdminCustomerSaveBefore extends OnePica_A
         return Mage::helper('avataxar2');
     }
 
-
     /**
      * @return \OnePica_AvaTaxAr2_Helper_Config
      */
@@ -72,7 +77,6 @@ class OnePica_AvaTaxAr2_Model_Observer_AdminCustomerSaveBefore extends OnePica_A
     {
         return Mage::helper('avataxar2/config');
     }
-
 
     /**
      * Get Core Session
