@@ -87,6 +87,7 @@ class OnePica_AvaTaxAr2_Helper_Data extends Mage_Core_Helper_Abstract
     {
         $store = Mage::app()->getStore();
         $result = $customer->getData($this->getConfig()->getCustomerCodeFormatAttribute($store), $customerNumber);
+
         return $result;
     }
 
@@ -98,6 +99,7 @@ class OnePica_AvaTaxAr2_Helper_Data extends Mage_Core_Helper_Abstract
     public function setCustomerNumber($customer, $customerNumber)
     {
         $store = Mage::app()->getStore();
+
         return $customer->setData($this->getConfig()->getCustomerCodeFormatAttribute($store), $customerNumber);
     }
 
@@ -114,12 +116,43 @@ class OnePica_AvaTaxAr2_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Generate Customer Number
      *
+     * Return `customer id` if there is special characters except -._@ in email
+     * othervice return `customer email`
+     *
      * @param $customer
      * @return mixed
      */
     public function generateCustomerNumber($customer)
     {
-        return $customer->getEmail();
+        try {
+            $this->validateCustomerCodeForHttpRequest($customer->getEmail());
+
+            return $customer->getEmail();
+        } catch (Exception $exception) {
+            Mage::logException($exception);
+
+            return $customer->getId();
+        }
+    }
+
+    /**
+     *  Returns true if there is no special characters except -._@ in email
+     *
+     * @param string $code
+     * @return bool
+     * @throws \Mage_Core_Exception
+     */
+    public function validateCustomerCodeForHttpRequest($code)
+    {
+        if (preg_replace('/[^A-Za-z0-9\-\.\@\_]/', '', $code) !== $code) {
+            Mage::throwException(
+                $this->__(
+                    'The "%s" is not a valid customer code. Only latin letters, numbers and -._@ are allowed', $code
+                )
+            );
+        }
+
+        return true;
     }
 
     /**
