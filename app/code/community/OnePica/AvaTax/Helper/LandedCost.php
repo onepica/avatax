@@ -307,7 +307,7 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
                         $resultUnit = $u;
                         $resultUnit['avalara_uom'] = $foundUnit->getAvalaraUom();
                         $resultUnit['avalara_parameter_type'] = $foundUnit->getAvalaraParameterType();
-                        $resultUnit['unit_obj'] = $foundUnit;
+                        $resultUnit['parameter_obj'] = $foundUnit;
                         break;
                     }
                 }
@@ -327,7 +327,7 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
                     $resultUnit = $productDefaultUnit;
                     $resultUnit['avalara_uom'] = $foundUnit->getAvalaraUom();
                     $resultUnit['avalara_parameter_type'] = $foundUnit->getAvalaraParameterType();
-                    $resultUnit['unit_obj'] = $foundUnit;
+                    $resultUnit['parameter_obj'] = $foundUnit;
 
                     $result = !empty($resultUnit) ? new \Varien_Object($resultUnit) : null;
                 }
@@ -349,7 +349,7 @@ class OnePica_AvaTax_Helper_LandedCost extends Mage_Core_Helper_Abstract
         $defaultUnit = $this->getDefaultUnitsOfMeasurement($product->getStoreId());
         if (!empty($defaultUnit) && (!empty($weight)) && $weight > 0) {
             $result = array(
-                'unit'                => (float)$weight,
+                'value'                => (float)$weight,
                 'parameter' => $defaultUnit->getId(),
                 'default'             => true
             );

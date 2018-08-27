@@ -79,7 +79,7 @@ class OnePica_AvaTax_Model_Catalog_Product_Attribute_Backend_Parameter
         if (!empty($config)) {
             foreach ($config as $c) {
                 $ac = (array)$c;
-                $ac['unit']= isset($ac['unit']) ? (float)$ac['unit'] : null;
+                $ac['value']= isset($ac['value']) ? (float)$ac['value'] : null;
                 array_push($result, $ac);
             }
         }
@@ -104,7 +104,7 @@ class OnePica_AvaTax_Model_Catalog_Product_Attribute_Backend_Parameter
             $data = array();
             foreach ($origin as $index => $item) {
                 if (empty($item['delete']) || $item['delete'] == 0) {
-                    $item['unit'] = isset($item['unit']) && $item['unit'] != '' ?  round((float)$item['unit'], $helper->getUnitPrecision()) : null;
+                    $item['value'] = isset($item['value']) && $item['value'] != '' ?  round((float)$item['value'], $helper->getUnitPrecision()) : null;
                     array_push($data, $item);
                 }
             }
@@ -204,7 +204,7 @@ class OnePica_AvaTax_Model_Catalog_Product_Attribute_Backend_Parameter
         $emptyUnits = array();
         foreach ($data as $key => $value) {
             $id = $value['parameter'];
-            if (in_array($id, $idsToCheck) && (!isset($value['unit']))) {
+            if (in_array($id, $idsToCheck) && (!isset($value['value']))) {
                 $item = $configuredUnits->getItemById($id);
                 $emptyUnits[] = $item->getDescription();
             }
