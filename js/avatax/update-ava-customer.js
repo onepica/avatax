@@ -32,7 +32,7 @@ AvaTaxCertCustomerForm.init = function (actionUrl, idCountries, idRegions, idReg
     }
 };
 
-AvaTaxCertCustomerForm.onCountryChanged = function() {
+AvaTaxCertCustomerForm.onCountryChanged = function () {
     var countryCode = this.ctrlCountries.value;
     new Ajax.Request(this.actionUrl, {
         method: "POST",
