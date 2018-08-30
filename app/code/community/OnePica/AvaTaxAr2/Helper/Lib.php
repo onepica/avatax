@@ -67,7 +67,7 @@ class OnePica_AvaTaxAr2_Helper_Lib extends Mage_Core_Helper_Abstract
      */
     public function loadEcomClass($class)
     {
-        if (strpos($class, self::ECOM_SDK_LIB_DIR_NAME) !== false) {
+        if (strpos($class, self::ECOM_SDK_LIB_DIR_NAME) === false) {
             return $this;
         }
 
