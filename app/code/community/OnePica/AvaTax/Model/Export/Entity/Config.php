@@ -225,7 +225,7 @@ class OnePica_AvaTax_Model_Export_Entity_Config
                 $loadParents = !in_array($node, $ignoreAutoloadFor);
 
                 $rewrites[$group][$node] = array_map(
-                    function ($val) use($loadParents) {
+                    function ($val) use ($loadParents) {
                         return array('class' => $val/*, 'parents' => class_parents($val, $loadParents)*/);
                     }, $rewrite->asArray()
                 );

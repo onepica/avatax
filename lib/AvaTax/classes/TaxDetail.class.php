@@ -11,7 +11,7 @@
  * @see GetTaxResult
  * 
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright Â© 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Tax
  */
 
@@ -21,7 +21,8 @@ class TaxDetail
 	private $JurisType;     //JurisdictionType 
 	private $JurisCode;     //string 
 	private $TaxType;     //TaxType 
-	
+	private $TaxSubTypeId;     //TaxSubTypeId
+
 	private $Base;		//decimal // See Taxable
 	private $Taxable;     //decimal 
 	private $Rate;		//decimal 
@@ -89,6 +90,16 @@ class TaxDetail
      */
 
 	public function getTaxType() {return $this->TaxType; }
+
+	/**
+     * Gets the TaxSubTypeId.
+     * <p>
+         * </p>
+	   @see GetTaxResults
+     * @return string
+     */
+
+	public function getTaxSubTypeId() {return $this->TaxSubTypeId; }
 
   /**
      * Gets the Taxable amount.
@@ -202,9 +213,3 @@ class TaxDetail
 	
 	public function getTaxGroup(){ return $this->TaxGroup;}	    
 }
-
-	
-	
-	
-
-?>

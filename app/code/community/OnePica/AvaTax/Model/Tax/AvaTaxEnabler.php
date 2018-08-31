@@ -38,6 +38,10 @@ class OnePica_AvaTax_Model_Tax_AvaTaxEnabler
             if ($configAction != OnePica_AvaTax_Model_Service_Abstract_Config::ACTION_DISABLE) {
                 Mage::getConfig()
                     ->setNode('global/sales/quote/totals/tax/class', 'avatax/sales_quote_address_total_tax');
+                // rewrites for Landed Cost feature
+                Mage::getConfig()->setNode('global/sales/quote/totals/tax/renderer', 'avatax/checkout_tax');
+                Mage::getConfig()->setNode('global/sales/quote/totals/grand_total/class', 'avatax/sales_quote_address_total_grand');
+                Mage::getConfig()->setNode('global/sales/quote/totals/grand_total/renderer', 'avatax/checkout_grandtotal');
             }
 
             $this->_isSwitched = true;

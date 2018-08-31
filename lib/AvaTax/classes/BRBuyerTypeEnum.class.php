@@ -8,7 +8,7 @@
  * 
  *
  * @author    Avalara
- * @copyright © 2004 - 2016 Avalara, Inc.  All rights reserved.
+ * @copyright Â© 2004 - 2016 Avalara, Inc.  All rights reserved.
  * @package   Tax
  */
 
@@ -32,4 +32,3 @@ class BRBuyerTypeEnum extends Enum
 	// Unfortunate boiler plate due to polymorphism issues on static functions
     public static function Validate($value) { self::__Validate($value,self::Values(),__CLASS__); }
 }
-?>

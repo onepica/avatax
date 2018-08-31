@@ -1,0 +1,153 @@
+<?php
+/**
+ * OnePica_AvaTax
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0), a
+ * copy of which is available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
+ * @copyright  Copyright (c) 2009 One Pica, Inc.
+ * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ */
+/* @var $this OnePica_AvaTax_Block_Adminhtml_Catalog_Product_Edit_Tab_LandedCost_Parameter */
+?>
+<?php $_htmlId      = $this->getElement()->getHtmlId() ?>
+<?php $_htmlClass   = $this->getElement()->getClass() ?>
+<?php $_htmlName    = $this->getElement()->getName() ?>
+<?php $_readonly    = $this->getElement()->getReadonly() ?>
+<?php $_helper      = Mage::helper('avatax') ?>
+
+<tr>
+    <td class="label"><?php echo $this->getElement()->getLabel() ?></td>
+    <td colspan="10" class="grid tier avatax-unit-of-measurement">
+    <table cellspacing="0" class="data border" id="lcosts_table">
+        <col width="100" />
+        <col />
+        <col width="1" />
+        <thead>
+            <tr class="headings">
+                <th><?php echo $_helper->__('Parameter') ?></th>
+                <th><?php echo $_helper->__('Value') ?></th>
+                <th class="last"><?php echo $_helper->__('Action') ?></th>
+            </tr>
+        </thead>
+        <tbody id="<?php echo $_htmlId ?>_container"></tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4" class="a-right"><?php echo $this->getAddButtonHtml() ?></td>
+            </tr>
+        </tfoot>
+    </table>
+    <span class="nobr">[GLOBAL]</span>
+<script type="text/javascript">
+//<![CDATA[
+var lcUnitRowTemplate = '<tr>'
+    + '<td><select class="<?php echo $_htmlClass ?> custgroup required-entry" name="<?php echo $_htmlName ?>[{{index}}][parameter]" id="lcost_value_row_{{index}}_parameter">'
+    <?php foreach ($this->getParameters() as $unit): ?>
+    + '<option value="<?php echo $unit->getId() ?>"><?php echo $this->jsQuoteEscape($this->escapeHtml($unit->getDescription())) ?></option>'
+    <?php endforeach ?>
+    + '</select></td>'
+    + '<td><input class="<?php echo $_htmlClass ?>" type="number" step="0.0001" min="0" name="<?php echo $_htmlName ?>[{{index}}][value]" value="{{value}}" id="lcost_value_row_{{index}}_value" /></td>'
+    + '<td class="last"><input type="hidden" name="<?php echo $_htmlName ?>[{{index}}][delete]" class="delete" value="" id="lcost_value_row_{{index}}_delete" />'
+    + '<button title="<?php echo Mage::helper('core')->jsQuoteEscape(Mage::helper('catalog')->__("Delete Parameter")) ?>" type="button" class="scalable delete icon-btn delete-product-option" id="lcost_value_row_{{index}}_delete_button" onclick="return lcUnitControl.deleteItem(event);">'
+    + '<span><span><span><?php echo Mage::helper('core')->jsQuoteEscape(Mage::helper('catalog')->__("Delete")) ?></span></span></span></button></td>'
+    + '</tr>';
+
+var lcUnitControl = {
+    template: new Template(lcUnitRowTemplate, new RegExp('(^|.|\\r|\\n)({{\\s*(\\w+)\\s*}})', "")),
+    itemsCount: 0,
+    addItem : function () {
+        <?php if ($_readonly): ?>
+        if (arguments.length < 4) {
+            return;
+        }
+        <?php endif; ?>
+        var data = {
+            value: '',
+            parameter: '<?php echo $this->getDefaultUnitOfMeasurement() ?>',
+            readOnly: false,
+            index: this.itemsCount++
+        };
+
+        if(arguments.length >= 2) {
+            data.parameter      = arguments[0];
+            data.value      = arguments[1];
+        }
+        if (arguments.length == 5) {
+            data.readOnly = arguments[4];
+        }
+
+        Element.insert($('<?php echo $_htmlId ?>_container'), {
+            bottom : this.template.evaluate(data)
+        });
+
+        $('lcost_value_row_' + data.index + '_parameter').value = data.parameter;
+
+        if (data.readOnly == '1') {
+            ['parameter', 'value', 'delete'].each(function(idx){
+                $('lcost_value_row_'+data.index+'_'+idx).disabled = true;
+            });
+            $('lcost_value_row_'+data.index+'_delete_button').hide();
+        }
+
+        <?php if ($_readonly): ?>
+        $('<?php echo $_htmlId ?>_container').select('input', 'select').each(this.disableElement);
+        $('<?php echo $_htmlId ?>_container').up('table').select('button').each(this.disableElement);
+        <?php else: ?>
+        $('<?php echo $_htmlId ?>_container').select('input', 'select').each(function(el){ Event.observe(el, 'change', el.setHasChanges.bind(el)); });
+        <?php endif; ?>
+    },
+    disableElement: function(el) {
+        el.disabled = true;
+        el.addClassName('disabled');
+    },
+    deleteItem: function(event) {
+        var tr = Event.findElement(event, 'tr');
+        if (tr) {
+            Element.select(tr, '.delete').each(function(elem){elem.value='1'});
+            Element.select(tr, ['input', 'select']).each(function(elem){elem.hide()});
+            Element.hide(tr);
+            Element.addClassName(tr, 'no-display template');
+        }
+        return false;
+    }
+};
+<?php foreach ($this->getValues() as $_item): ?>
+lcUnitControl.addItem(
+    '<?php echo $_item['parameter'] ?>',
+    '<?php echo $_item['value'] ?>',
+    <?php echo 0?>);
+<?php endforeach; ?>
+<?php if ($_readonly): ?>
+$('<?php echo $_htmlId ?>_container').up('table').select('button')
+    .each(lcUnitControl.disableElement);
+<?php endif; ?>
+//]]>
+</script>
+<style>
+    td.avatax-unit-of-measurement {
+        padding-left: 5px;
+    }
+
+    td.avatax-unit-of-measurement .default {
+        font-weight: bold;
+    }
+    
+    td.avatax-unit-of-measurement .default .value{
+        padding-right: 5px;
+    }
+
+    td.avatax-unit-of-measurement table {
+        float: left;
+    }
+
+    td.avatax-unit-of-measurement .nobr {
+        padding-left: 5px;
+    }
+</style>
+</td></tr>

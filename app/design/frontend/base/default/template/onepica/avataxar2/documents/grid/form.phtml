@@ -1,0 +1,16 @@
+<?php
+/** @var OnePica_AvaTaxAr2_Block_Documents_Grid_Form $this */
+?>
+<form action="<?php echo $this->getFormActionUrl() ?>" id="avatax_certcapture_customer_form" method="post">
+    <div class="input-box">
+        <label for="customer_number"><?php echo $this->__('Customer Number') ?>: <span class="required"></span></label>
+        <input type="text" class="input-text required-entry" title="<?php echo $this->__('Customer Number') ?>"
+               name="customer_number" id="customer_number" value="<?php echo $this->getCustomerNumberOrGenerate() ?>" required>
+    </div>
+    <div class="actions">
+        <button type="submit" title="<?php echo $this->__('Submit') ?>"
+                form="avatax_certcapture_customer_form" class="button">
+            <span><?php echo $this->__('Submit') ?></span>
+        </button>
+    </div>
+</form>

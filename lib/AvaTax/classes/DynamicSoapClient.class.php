@@ -14,7 +14,7 @@
  * @see TaxServiceSoap
  *  
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright Â© 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Base
  */
  
@@ -53,10 +53,9 @@ class DynamicSoapClient extends SoapClient
             '<Profile xmlns="http://avatax.avalara.com/services" SOAP-ENV:actor="http://schemas.xmlsoap.org/soap/actor/next" SOAP-ENV:mustUnderstand="0">'.
                 '<Name>'.$this->config->name.'</Name>'.
             	'<Client>'.$this->config->client.'</Client>'.
-                '<Adapter>'.$this->config->adapter.'</Adapter>'.        		
+                '<Adapter>'.$this->config->adapter.'</Adapter>'.
+                ($this->config->isLandedCostEnabled ? '<ClientSupportMultiTax>true</ClientSupportMultiTax>' : '').
             '</Profile>';
     }
     
 }
-
-?>

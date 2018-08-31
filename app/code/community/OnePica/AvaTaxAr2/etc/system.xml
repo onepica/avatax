@@ -1,0 +1,156 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * OnePica_AvaTax
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0), a
+ * copy of which is available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
+ * @copyright  Copyright (c) 2009 One Pica, Inc.
+ * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ */
+-->
+<config>
+    <sections>
+        <tax>
+            <tab>sales</tab>
+            <groups>
+                <avatax_document_management translate="label" module="avatax">
+                    <label>AvaTax Document Management</label>
+                    <sort_order>2</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <action translate="label comment">
+                            <label>Action</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_enabledisable</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </action>
+
+                        <title translate="label">
+                            <label><![CDATA[<strong>Rest V2 Api</strong>]]></label>
+                            <frontend_type>label</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </title>
+                        <url translate="label">
+                            <label>URL</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>avataxar2/source_rest_url</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                            <depends><action>1</action></depends>
+                        </url>
+                        <account translate="label">
+                            <label>Account Number</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                            <depends><action>1</action></depends>
+                        </account>
+                        <license translate="label">
+                            <label>Key</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                            <depends><action>1</action></depends>
+                        </license>
+                        <company_code translate="label comment">
+                            <label>Company Code</label>
+                            <comment>Your company code from the AvaTax main configuration.</comment>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>avataxar2/adminhtml_config_renderer_companyCode</frontend_model>
+                            <source_model>avatax/source_companies</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </company_code>
+                        <ecom_title translate="label">
+                            <label><![CDATA[<strong>Cart capture Api</strong>]]></label>
+                            <frontend_type>label</frontend_type>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </ecom_title>
+                        <ecom_url translate="label">
+                            <label>URL</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>avataxar2/source_ecom_url</source_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                            <depends><action>1</action></depends>
+                        </ecom_url>
+                        <ecom_username translate="label">
+                            <label>Username</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>120</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                            <depends><action>1</action></depends>
+                        </ecom_username>
+                        <ecom_password translate="label">
+                            <label>Password</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>130</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                            <depends><action>1</action></depends>
+                        </ecom_password>
+                        <ecom_client_id translate="label">
+                            <label>Client id</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>140</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                            <depends><action>1</action></depends>
+                        </ecom_client_id>
+                        <ecom_company_code translate="label comment">
+                            <label>Company Code</label>
+                            <comment>Your company code from the AvaTax main configuration.</comment>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>avataxar2/adminhtml_config_renderer_companyCode</frontend_model>
+                            <source_model>avatax/source_companies</source_model>
+                            <sort_order>150</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </ecom_company_code>
+                    </fields>
+                </avatax_document_management>
+            </groups>
+        </tax>
+    </sections>
+</config>

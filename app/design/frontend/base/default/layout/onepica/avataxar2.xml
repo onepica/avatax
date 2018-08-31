@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * OnePica_AvaTax
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0), a
+ * copy of which is available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
+ * @copyright  Copyright (c) 2009 One Pica, Inc.
+ * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ */
+-->
+<layout>
+    <checkout_cart_index>
+        <update handle="avataxar2_cert_additional_scripts" />
+    </checkout_cart_index>
+
+    <checkout_onepage_index>
+        <update handle="avataxar2_cert_additional_scripts" />
+    </checkout_onepage_index>
+
+    <checkout_multishipping_overview>
+        <update handle="avataxar2_cert_additional_scripts" />
+    </checkout_multishipping_overview>
+
+    <avataxar2_popup_gencert>
+        <block type="avataxar2/popup_form" name="root" template="onepica/avataxar2/popup/form.phtml" />
+    </avataxar2_popup_gencert>
+
+    <avataxar2_popup_loginmessage>
+        <block type="avataxar2/popup_loginMessage" name="root" template="onepica/avataxar2/popup/loginmessage.phtml" />
+    </avataxar2_popup_loginmessage>
+
+    <customer_account>
+        <reference name="customer_account_navigation">
+            <action method="addLink" ifconfig="tax/avatax_document_management/action">
+                <name>avataxar2_documents_grid</name>
+                <path>avataxar2/documents/grid</path>
+                <label>AvaTax Documents</label>
+            </action>
+        </reference>
+    </customer_account>
+
+    <avataxar2_documents_grid>
+        <update handle="customer_account" />
+        <update handle="avataxar2_cert_additional_scripts" />
+        <reference name="my.account.wrapper">
+            <block type="avataxar2/documents_grid" name="avataxar2.documents.grid" template="onepica/avataxar2/documents/grid.phtml">
+                <block type="avataxar2/documents_grid_button" name="avataxar2.documents.grid.button" template="onepica/avataxar2/documents/grid/button.phtml" />
+            </block>
+        </reference>
+    </avataxar2_documents_grid>
+
+    <!-- Cert additional scripts -->
+    <avataxar2_cert_additional_scripts>
+        <reference name="head">
+            <action method="addItem" ifconfig="tax/avatax_document_management/action">
+                <type>js</type>
+                <name>avatax/certcapture.js</name>
+            </action>
+            <action method="addItem" ifconfig="tax/avatax_document_management/action">
+                <type>js_css</type>
+                <name>avatax/themes/certcapture.css</name>
+            </action>
+            <action method="addItem" ifconfig="tax/avatax_document_management/action">
+                <type>js</type>
+                <name>prototype/window.js</name>
+            </action>
+            <action method="addItem" ifconfig="tax/avatax_document_management/action">
+                <type>js_css</type>
+                <name>prototype/windows/themes/default.css</name>
+            </action>
+        </reference>
+    </avataxar2_cert_additional_scripts>
+</layout>

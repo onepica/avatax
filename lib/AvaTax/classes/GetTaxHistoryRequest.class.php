@@ -12,7 +12,7 @@
  * @see GetTaxHistoryResult
  * 
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright Â© 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Tax
  */
 
@@ -48,5 +48,3 @@ class GetTaxHistoryRequest extends TaxRequest
     	public function setDetailLevel($value) { DetailLevel::Validate($value); $this->DetailLevel = $value; return $this; }			//Summary or Document or Line or Tax or Diagnostic - enum
 
 }
-
-?>

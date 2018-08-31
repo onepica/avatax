@@ -9,7 +9,7 @@
  * @see GetTaxResult
  * 
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright Â© 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Tax
  */
  
@@ -48,7 +48,7 @@ class GetTaxRequest
     private $BRBuyer_IsExemptOrCannotWH_CSLLRF=false;			//boolean	//Changed for 15.6.0.0
     private $BRBuyer_IsExemptOrCannotWH_IRRF=false;			//boolean	//Changed for 15.6.0.0
     private $BRBuyer_IsExemptOrCannotWH_PISRF=false;			//boolean	//Changed for 15.6.0.0
-    private $IsSellerImporterOfRecord=false;			//boolean	//Changed for 15.6.0.0
+    private $IsSellerImporterOfRecord;			//boolean	//Changed for 15.6.0.0
     
     
     //@author: Swetal
@@ -63,9 +63,10 @@ class GetTaxRequest
 	private $PosLaneCode;		//string
 	private $Description;		//string	Changed for 15.6.0.0
 	private $Email;		//string	Changed for 15.6.0.0
-     
+    private $StatusDate;
+    private $TaxDate;
 
-	public function __construct()
+    public function __construct()
 	{
 	
 		$this->DocDate = date("Y-m-d");
@@ -76,8 +77,7 @@ class GetTaxRequest
 		$this->BRBuyer_IsExemptOrCannotWH_COFINSRF=false;	//Changed for 15.6.0.0
 		$this->BRBuyer_IsExemptOrCannotWH_CSLLRF=false;		//Changed for 15.6.0.0
 		$this->BRBuyer_IsExemptOrCannotWH_IRRF=false;		//Changed for 15.6.0.0
-		$this->BRBuyer_IsExemptOrCannotWH_PISRF=false;		//Changed for 15.6.0.0
-		$this->IsSellerImporterOfRecord=false;				//Changed for 15.6.0.0
+		$this->BRBuyer_IsExemptOrCannotWH_PISRF=false;				//Changed for 15.6.0.0
 		$this->HashCode=0;
 		$this->Discount=0.0;
 		$this->DocType=DocumentType::$SalesInvoice;
@@ -150,9 +150,52 @@ class GetTaxRequest
 		
 		return $this;		
 	}
-	
-	
-	/**
+
+    /**
+     * Get status date
+     *
+     * @return string
+     */
+    public function getStatusDate()
+    {
+        return $this->StatusDate;
+    }
+
+    /**
+     * Set status date
+     *
+     * @param string $StatusDate
+     * @return $this
+     */
+    public function setStatusDate($StatusDate)
+    {
+        $this->StatusDate = $StatusDate;
+        return $this;
+    }
+
+    /**
+     * Get tax date
+     *
+     * @return string
+     */
+    public function getTaxDate()
+    {
+        return $this->TaxDate;
+    }
+
+    /**
+     * Set tax date
+     *
+     * @param string $TaxDate
+     * @return $this
+     */
+    public function setTaxDate($TaxDate)
+    {
+        $this->TaxDate = $TaxDate;
+        return $this;
+    }
+
+    /**
 	 * Enter description here...
 	 *
 	 * @param string $value	 
@@ -280,17 +323,17 @@ class GetTaxRequest
      * </p>
      * <p>
      * The standard values for the CustomerUsageType (A-L).<br/>
-        A – Federal Government<br/>
-        B – State/Local Govt.<br/>
-        C – Tribal Government<br/>
-        D – Foreign Diplomat<br/>
-        E – Charitable Organization<br/>
-        F – Religious/Education<br/>
-        G – Resale<br/>
-        H – Agricultural Production<br/>
-        I – Industrial Prod/Mfg.<br/>
-        J – Direct Pay Permit<br/>
-        K – Direct Mail<br/>
+        A ï¿½ Federal Government<br/>
+        B ï¿½ State/Local Govt.<br/>
+        C ï¿½ Tribal Government<br/>
+        D ï¿½ Foreign Diplomat<br/>
+        E ï¿½ Charitable Organization<br/>
+        F ï¿½ Religious/Education<br/>
+        G ï¿½ Resale<br/>
+        H ï¿½ Agricultural Production<br/>
+        I ï¿½ Industrial Prod/Mfg.<br/>
+        J ï¿½ Direct Pay Permit<br/>
+        K ï¿½ Direct Mail<br/>
         L - Other<br/>
      * </p>
      * @param customerUsageType
@@ -652,5 +695,3 @@ class GetTaxRequest
 
 	
 }
-
-?>

@@ -48,6 +48,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax
      *
      * @param   Mage_Sales_Model_Quote_Address $address
      * @return  $this
+     * @throws \Varien_Exception
      */
     public function collect(Mage_Sales_Model_Quote_Address $address)
     {
@@ -75,6 +76,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax
             return $this;
         }
 
+        $this->_beforeCollectorProcessesAddress(new \Varien_Object(array('address' => $address)));
         $this->_resetAddressValues($address);
 
         $calculator = $this->_getCalculator($address);
@@ -84,9 +86,33 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax
         $this->_applyShippingTax($address, $store, $calculator);
         $this->_applyGwTax($address, $store, $calculator);
         $this->_setTaxForItems($address, $this->_itemTaxGroups);
+        $this->_applyFixedTax($address, $store, $calculator);
+        $this->_applyLandedCostTax($address, $store, $calculator);
         $summary = $calculator->getSummary($address);
+        $this->_saveAvataxCollectedTaxes($address, $summary, $calculator);
         $this->_saveAppliedTax($address, $summary);
+        $this->_afterCollectorProcessesAddress(new \Varien_Object(array('address' => $address)));
 
+        return $this;
+    }
+
+    /**
+     * @param Varien_Object $data
+     *
+     * @return $this
+     */
+    protected function _beforeCollectorProcessesAddress($data)
+    {
+        return $this;
+    }
+
+    /**
+     * @param Varien_Object $data
+     *
+     * @return $this
+     */
+    protected function _afterCollectorProcessesAddress($data)
+    {
         return $this;
     }
 
@@ -103,7 +129,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax
         foreach ($summary as $key => $row) {
             $id = $row['name'];
             $fullInfo[$id] = array(
-                'rates'       => array(
+                'rates'              => array(
                     array(
                         'code'     => $row['name'],
                         'title'    => $row['name'],
@@ -113,11 +139,13 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax
                         'rule_id'  => 0
                     )
                 ),
-                'percent'     => $row['rate'],
-                'id'          => $id,
-                'process'     => 0,
-                'amount'      => $store->convertPrice($row['amt']),
-                'base_amount' => $row['amt']
+                'percent'            => $row['rate'],
+                'id'                 => $id,
+                'process'            => 0,
+                'amount'             => $store->convertPrice($row['amt']),
+                'base_amount'        => $row['amt'],
+                'avatax_tax_type'    => $row['avatax_tax_type'],
+                'avatax_tax_subtype' => $row['avatax_tax_subtype'],
             );
         }
 
@@ -166,6 +194,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax
      *
      * @param   Mage_Sales_Model_Quote_Address $address
      * @return  $this
+     * @throws \Varien_Exception
      */
     public function fetch(Mage_Sales_Model_Quote_Address $address)
     {
@@ -173,15 +202,23 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax
         $quote = $address->getQuote();
         $store = $quote->getStore();
         $amount = $address->getTaxAmount();
+        // Landed Cost DDP amount
+        $landedCostImportDutiesAmount = $address->getAvataxLandedCostImportDutiesAmount();
+        //Fixed Tax
+        $fixedTaxAmount = $address->getAvataxFixedTaxAmount();
 
         if (($amount != 0) || (Mage::helper('tax')->displayZeroTax($store))) {
             $address->addTotal(
                 array(
-                    'code'      => $this->getCode(),
-                    'title'     => Mage::helper('tax')->__('Tax'),
-                    'full_info' => $address->getAppliedTaxes(),
-                    'value'     => $amount,
-                    'area'      => null
+                    'code'               => $this->getCode(),
+                    'title'              => Mage::helper('tax')->__('Tax'),
+                    'full_info'          => $address->getAppliedTaxes(),
+                    'value'              => $amount,
+                    'landed_cost_amount' => $landedCostImportDutiesAmount,
+                    'landed_cost_items'  => array(),
+                    'fixed_tax_amount'   => $fixedTaxAmount,
+                    'fixed_tax_items'    => array(),
+                    'area'               => null
                 )
             );
         }
@@ -196,8 +233,8 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax
                 $subtotalInclTax = $address->getSubtotalInclTax();
             } else {
                 $subtotalInclTax = $address->getSubtotal()
-                                   + $address->getTaxAmount()
-                                   - $address->getShippingTaxAmount();
+                    + $address->getTaxAmount()
+                    - $address->getShippingTaxAmount();
             }
 
             $address->addTotal(
@@ -365,6 +402,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax
 
         return $this;
     }
+
     /**
      * Reset address values
      *
@@ -583,6 +621,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax
      *
      * @param float $amount
      * @return Mage_Sales_Model_Quote_Address_Total_Abstract
+     * @throws \OnePica_AvaTax_Exception
      */
     protected function _addAmount($amount)
     {
@@ -596,6 +635,7 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax
      *
      * @param float $baseAmount
      * @return Mage_Sales_Model_Quote_Address_Total_Abstract
+     * @throws \OnePica_AvaTax_Exception
      */
     protected function _addBaseAmount($baseAmount)
     {
@@ -655,5 +695,100 @@ class OnePica_AvaTax_Model_Sales_Quote_Address_Total_Tax
     protected function _getRequestFilterHelper()
     {
         return Mage::helper('avatax/requestFilter');
+    }
+
+    /**
+     * Apply Landed Cost tax
+     *
+     * @param Mage_Sales_Model_Quote_Address         $address
+     * @param Mage_Core_Model_Store|int              $store
+     * @param OnePica_AvaTax_Model_Action_Calculator $calculator
+     * @return $this
+     * @throws \Varien_Exception
+     */
+    protected function _applyLandedCostTax(Mage_Sales_Model_Quote_Address $address, $store, $calculator)
+    {
+        $baseAmount = 0;
+        $amount = 0;
+
+        /** @var \Mage_Sales_Model_Quote_Item $item */
+        foreach ($address->getAllItems() as $item) {
+            $item->setAddress($address);
+            $baseItemAmount = $calculator->getItemLandedCostAmount($item);
+            $itemAmount = $store->convertPrice($baseItemAmount);
+
+            $item->setAvataxLandedCostImportDutiesAmount($itemAmount);
+            $item->setBaseAvataxLandedCostImportDutiesAmount($baseItemAmount);
+
+            $amount = $amount + $itemAmount;
+            $baseAmount = $baseAmount + $baseItemAmount;
+        }
+
+        $address->setAvataxLandedCostImportDutiesAmount($amount);
+        $address->setBaseAvataxLandedCostImportDutiesAmount($baseAmount);
+
+        if ($calculator->getLandedCostMessage()) {
+            $address->setLandedCostMessage($calculator->getLandedCostMessage());
+        }
+
+        return $this;
+    }
+
+    /**
+     * Apply Fixed tax
+     *
+     * @param Mage_Sales_Model_Quote_Address         $address
+     * @param Mage_Core_Model_Store|int              $store
+     * @param OnePica_AvaTax_Model_Action_Calculator $calculator
+     * @return $this
+     * @throws \Varien_Exception
+     */
+    protected function _applyFixedTax(Mage_Sales_Model_Quote_Address $address, $store, $calculator)
+    {
+        $baseAmount = 0;
+        $amount = 0;
+
+        /** @var \Mage_Sales_Model_Quote_Item $item */
+        foreach ($address->getAllItems() as $item) {
+            $item->setAddress($address);
+            $baseItemAmount = $calculator->getItemFixedTaxAmount($item);
+            $itemAmount = $store->convertPrice($baseItemAmount);
+
+            $item->setAvataxFixedTaxAmount($itemAmount);
+            $item->setBaseAvataxFixedTaxAmount($baseItemAmount);
+
+            $amount = $amount + $itemAmount;
+            $baseAmount = $baseAmount + $baseItemAmount;
+        }
+
+        $address->setAvataxFixedTaxAmount($amount);
+        $address->setBaseAvataxFixedTaxAmount($baseAmount);
+
+        return $this;
+    }
+
+    /**
+     * @param \Mage_Sales_Model_Quote_Address         $address
+     * @param                                         $taxSummary
+     * @param \OnePica_AvaTax_Model_Action_Calculator $calculator
+     * @return $this
+     * @throws \Varien_Exception
+     */
+    protected function _saveAvataxCollectedTaxes(Mage_Sales_Model_Quote_Address $address, $taxSummary, $calculator)
+    {
+        /** @var \Mage_Core_Helper_Data $coreHelper */
+        $coreHelper = Mage::helper('core');
+
+        /** @var \Mage_Sales_Model_Quote_Item $item */
+        foreach ($address->getAllItems() as $item) {
+            $item->setAddress($address);
+            $itemCollectedTaxes = array_values($calculator->getItemCollectedTaxes($item));
+
+            $item->setAvataxCollectedTaxes($coreHelper->jsonEncode($itemCollectedTaxes));
+        }
+
+        $address->setAvataxCollectedTaxes($coreHelper->jsonEncode($taxSummary));
+
+        return $this;
     }
 }

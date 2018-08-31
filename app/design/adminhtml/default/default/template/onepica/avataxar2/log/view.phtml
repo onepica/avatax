@@ -1,0 +1,123 @@
+<?php
+/**
+ * OnePica_AvaTax
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0), a
+ * copy of which is available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
+ * @copyright  Copyright (c) 2009 One Pica, Inc.
+ * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ */
+
+/** @var OnePica_AvaTaxAr2_Block_Adminhtml_Export_Log_View $this */
+?>
+
+<div class="content-header">
+    <table cellspacing="0">
+        <tr>
+            <td style="<?php echo $this->getHeaderWidth() ?>"><?php echo $this->getHeaderHtml(); ?></td>
+            <td class="form-buttons"><?php echo $this->getButtonsHtml(); ?></td>
+        </tr>
+    </table>
+</div>
+
+<?php $event = $this->getCurrentEvent(); ?>
+<div class="entry-edit">
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-edit-form fieldset-legend"><?php echo $this->__('Request'); ?></h4>
+        </div>
+        <div id="log_details_fieldset" class="log-details">
+            <div class="columns">
+                <div class="side-col" id="page:left">
+                    <ul id="request_tabs" class="tabs">
+                        <li>
+                            <a href="#" id="request_tabs_soap" name="labels"
+                               title="<?php echo $this->__('HTTP Request'); ?>" class="tab-item-link active">
+                                <span><?php echo $this->__('HTTP Request'); ?></span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#" id="request_tabs_main" name="labels"
+                               title="<?php echo $this->__('Request'); ?>" class="tab-item-link active">
+                                <span><?php echo $this->__('Request'); ?></span>
+                            </a>
+                        </li>
+                    </ul>
+                    <script type="text/javascript">
+                        request_tabsJsTabs = new varienTabs('request_tabs', 'request_tabs_content', 'request_tabs_soap', []);
+                    </script>
+                </div>
+                <div class="main-col" id="content" style="min-height: 250px; padding: 0 0 0 25px;">
+                    <div id="request_tabs_content">
+                        <div id="request_tabs_soap_content">
+                                  <textarea readonly style="width:100%; height:300px"><?php
+                                      echo $this->escapeHtml($event->getSoapRequest());
+                                      ?></textarea>
+                        </div>
+                        <div id="request_tabs_main_content" style="display: none;">
+                            <textarea readonly style="width:100%; height:300px"><?php
+                                echo $this->escapeHtml($event->getRequest());
+                                ?></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-edit-form fieldset-legend"><?php echo $this->__('Response'); ?></h4>
+        </div>
+        <div id="log_details_fieldset" class="log-details">
+            <div class="columns">
+                <div class="side-col" id="page:left">
+                    <ul id="result_tabs" class="tabs">
+                        <li>
+                            <a href="#" id="result_tabs_soap" name="labels"
+                               title="<?php echo $this->__('HTTP Result'); ?>" class="tab-item-link active">
+                                <span><?php echo $this->__('HTTP Result'); ?></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" id="result_tabs_main" name="main"
+                               title="<?php echo $this->__('Result'); ?>" class="tab-item-link">
+                                <span><?php echo $this->__('Result'); ?></span>
+                            </a>
+                        </li>
+                    </ul>
+                    <script type="text/javascript">
+                        result_tabsJsTabs = new varienTabs('result_tabs', 'result_tabs_content', 'result_tabs_soap', []);
+                    </script>
+                </div>
+                <div class="main-col" id="content" style="min-height: 250px; padding: 0 0 0 25px;">
+                    <div id="result_tabs_content">
+                        <div id="result_tabs_soap_content">
+                            <textarea readonly style="width:100%; height:300px"><?php
+                                echo $this->escapeHtml($event->getSoapResult());
+                                ?></textarea>
+                        </div>
+                        <div id="result_tabs_main_content" style="display: none;">
+                            <textarea readonly style="width:100%; height:300px"><?php
+                                echo $this->escapeHtml($event->getResult());
+                                ?></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-edit-form fieldset-legend"><?php echo $this->__('Additional'); ?></h4>
+        </div>
+        <div id="log_details_fieldset" class="log-details">
+            <textarea readonly style="width:100%; height:300px"><?php echo $this->escapeHtml(
+                    $event->getAdditional()
+                ); ?></textarea>
+        </div>
+    </div>
+</div>

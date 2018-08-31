@@ -7,7 +7,7 @@
  * Contains certificate request data.  Is part of the {@link CertificateRequestGetResult} result came from the {@link CertificateRequestGet}. 
  * 
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright Â© 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   AvaCert2
  */
 class CertificateRequest {
@@ -73,5 +73,3 @@ class CertificateRequest {
   public function getCommunicationMode(){return $this->CommunicationMode;} // CommunicationMode
 
 }
-
-?>

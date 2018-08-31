@@ -7,7 +7,7 @@
  * Contains the get certificate image operation result returned by {@link CertificateImageGet}. 
  * 
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright Â© 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   AvaCert2
  */
 class CertificateImageGetResult extends BaseResult {
@@ -25,5 +25,3 @@ class CertificateImageGetResult extends BaseResult {
   public function getImage(){return $this->Image;} // base64Binary
 
 }
-
-?>

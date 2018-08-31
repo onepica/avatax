@@ -1,0 +1,63 @@
+<?php
+/** @var OnePica_AvaTaxAr2_Block_Popup_Form $this */
+$regions = $this->getRegions();
+$regionSelected = $this->getSelectedRegion();
+?>
+
+<form id="avatax_certcapture_form_container" action="<?php echo $this->getTokenUrl() ?>"
+      data-update-url="<?php echo $this->getUpdateUrl() ?>">
+    <input type="hidden" id="customer_id" name="customer_id" value="<?php echo $this->getCustomerId() ?>"/>
+    <input type="hidden" id="customer_number" name="customer_number" value="<?php echo $this->getCustomerNumber() ?>"/>
+
+    <?php if ($regions) : ?>
+        <div class="field shipping">
+            <label for="ship_zone" class="required"><?php echo $this->__('State/Province') ?></label>
+            <div class="input-box shipping-region">
+                <select id="ship_zone" name="ship_zone" title="<?php echo $this->__('State/Province') ?>"
+                        class="validate-select" required>
+                    <option value=""><?php echo $this->__('Please select region, state or province') ?></option>
+                    <?php foreach ($this->getRegions() as $region) : ?>
+                        <option value="<?php echo $region['name'] ?>"
+                            <?php echo $region['name'] === $regionSelected ? 'selected' : '' ?> >
+                            <?php echo $region['name'] ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+
+            </div>
+        </div>
+    <?php else: ?>
+        <div class="field">
+            <label for="ship_zone" class="required"><?php echo $this->__('State'); ?></label>
+            <div class="input-box">
+                <input type="text" value="" name="ship_zone" id="ship_zone" required="required"/>
+            </div>
+        </div>
+    <?php endif; ?>
+
+
+    <div id="avatax_certcapture_form_parent" style="display:none;"></div>
+
+    <div class="buttons-set">
+        <button class="button2" id="avatax_certcapture_form_close" data-close-text="<?php echo $this->__('Close'); ?>"
+                onclick='window.parent.Windows.close("avatax_certcapture", event)'>
+            <span><?php echo $this->__('Cancel'); ?></span>
+        </button>
+
+        <button class="button" type="submit" id="avatax_certcapture_form_submit"
+                form="avatax_certcapture_form_container">
+            <span><?php echo $this->__('Next step'); ?></span>
+        </button>
+    </div>
+</form>
+
+<script type="text/javascript">
+    $("avatax_certcapture_form_container").on("submit", function (e) {
+        e.stop();
+        var form = $("avatax_certcapture_form_container"),
+            tokenUrl = form.readAttribute("action"),
+            updateUrl = form.readAttribute("data-update-url");
+
+        AvaTaxCert.initApi(tokenUrl, updateUrl);
+    });
+</script>

@@ -7,7 +7,7 @@
  * Contains the get exemption certificates operation result returned by {@link CertificateGet}.
  * 
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright Â© 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   AvaCert2
  */
 class CertificateGetResult extends BaseResult {
@@ -29,5 +29,3 @@ class CertificateGetResult extends BaseResult {
   } // ArrayOfCertificate
 
 }
-
-?>

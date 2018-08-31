@@ -12,7 +12,7 @@
  * @see PostTaxResult
  * 
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright Â© 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Tax
  */
  
@@ -75,10 +75,5 @@ class PostTaxRequest extends TaxRequest
 	 * @param string $value	 
 	 */
 	public function setNewDocCode($value) { $this->NewDocCode = $value; }
-		
-	}
-	
-	
 
-
-?>
+}
