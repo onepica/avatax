@@ -81,4 +81,3 @@ class AccountServiceSoap extends AvalaraSoapClient
         return $this->client->CompanyFetch(array('FetchRequest' => $validateRequest))->CompanyFetchResult;
     }     
 }
-?>

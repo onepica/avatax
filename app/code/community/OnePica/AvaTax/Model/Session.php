@@ -21,6 +21,11 @@
  * @category   OnePica
  * @package    OnePica_AvaTax
  * @author     OnePica Codemaster <codemaster@onepica.com>
+ *
+ * @method string getCustomerNumber()
+ * @method setCustomerNumber(string $customerNumber)
+ * @method string getCertUpdatedDate()
+ * @method setCertUpdatedDate(string $certUpdatedDate)
  */
 class OnePica_AvaTax_Model_Session extends Mage_Core_Model_Session_Abstract
 {

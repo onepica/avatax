@@ -1,0 +1,90 @@
+<?php /** @var \OnePica_AvaTaxAr2_Block_Documents_Grid $this */ ?>
+
+<?php echo $this->getMessagesBlock()->toHtml() ?>
+<div class="page-title">
+    <h1><?php echo $this->__('AvaTax Documents') ?></h1>
+</div>
+
+<?php if($this->isEnabled()): ?>
+
+    <?php $documents = $this->getCollection(); ?>
+    <table class="data-table" id="avatax_certcapture_grid_header">
+        <col width="1"/>
+        <col width="1"/>
+        <tbody>
+        <tr>
+            <td><?php echo $this->getChildHtml('avataxar2.documents.grid.form'); ?></td>
+            <td class="a-right"><?php echo $this->getChildHtml('avataxar2.documents.grid.button'); ?></td>
+        </tr>
+        </tbody>
+    </table>
+    <?php echo $this->getPagerHtml(); ?>
+    <?php if ($documents->getSize()): ?>
+        <table class="data-table" id="avatax_certcapture_grid">
+            <col width="1"/>
+            <col width="1"/>
+            <col/>
+            <col width="1"/>
+            <col width="1"/>
+            <col width="1"/>
+            <thead>
+            <tr>
+                <th class="number"><?php echo $this->__('Doc #') ?></th>
+                <th class="exposure"><?php echo $this->__('Exposure Zone') ?></th>
+                <th class="exemption"><?php echo $this->__('Exemption Reason') ?></th>
+                <th class="signed"><span class="nobr"><?php echo $this->__('Signed Date') ?></span></th>
+                <th class="expiration"><span class="nobr"><?php echo $this->__('Expiration Date') ?></span></th>
+                <th class="action">&nbsp;</th>
+                <th class="action">&nbsp;</th>
+                <th class="action">&nbsp;</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php $odd = ''; ?>
+            <?php foreach ($documents as $document): ?>
+                <tr>
+                    <td class="number"><?php echo $document->getId() ?></td>
+                    <td class="exposure"><?php echo $document->getData('exposureZone')->name ?></td>
+                    <td class="exemption"><?php echo $document->getData('exemptionReason')->name ?></td>
+                    <td class="signed">
+                        <span class="nobr"><?php echo $this->formatDate($document->getData('signedDate')) ?></span>
+                    </td>
+                    <td class="expiration">
+                        <span class="nobr"><?php echo $this->formatDate($document->getData('expirationDate')) ?></span>
+                    </td>
+                    <td class="a-center view">
+                        <span class="nobr">
+                            <a href="<?php echo $this->getRevokeUrl($document) ?>"
+                               onclick=" if(!confirm('<?php echo $this->__('You are going to delete certificate #%s.', $document->getId()) ?>')) {debugger; event.preventDefault(); };"
+                            ><?php echo $this->__('Revoke') ?></a>
+                        </span>
+                    </td>
+                    <td class="a-center view">
+                        <span class="nobr">
+                            <a href="<?php echo $this->getDocumentPdfUrl($document) ?>"
+                               onclick="popWin(this.href,'_blank','width=800,height=700,resizable=1,scrollbars=1');return false;">
+                                <?php echo $this->__('View') ?>
+                            </a>
+                        </span>
+                    </td>
+                    <td class="a-center view">
+                        <span class="nobr">
+                            <a href="<?php echo $this->getDocumentPdfUrl($document) ?>"
+                               target="_blank" download="<?php echo $this->getDocumentPdfName($document) ?>">
+                            <?php echo $this->__('Download') ?>
+                            </a>
+                        </span>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+        <script type="text/javascript">decorateTable('avatax_certcapture_grid');</script>
+        <?php echo $this->getPagerHtml(); ?>
+    <?php else: ?>
+        <p><?php echo $this->__('There is no any documents'); ?></p>
+    <?php endif ?>
+
+<?php else: ?>
+<p><?php echo $this->__('Document management is disabled currently.'); ?></p>
+<?php endif ?>

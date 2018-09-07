@@ -1,0 +1,216 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * OnePica_AvaTax
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0), a
+ * copy of which is available through the world-wide-web at  this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
+ * @copyright  Copyright (c) 2009 One Pica, Inc.
+ * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ */
+-->
+<config>
+    <modules>
+        <OnePica_AvaTaxAr2>
+            <version>3.7.0.0</version>
+        </OnePica_AvaTaxAr2>
+    </modules>
+    <global>
+        <blocks>
+            <avataxar2>
+                <class>OnePica_AvaTaxAr2_Block</class>
+            </avataxar2>
+            <avatax>
+                <rewrite>
+                    <adminhtml_export_log_view>OnePica_AvaTaxAr2_Block_Adminhtml_Export_Log_View</adminhtml_export_log_view>
+                </rewrite>
+            </avatax>
+        </blocks>
+        <helpers>
+            <avataxar2>
+                <class>OnePica_AvaTaxAr2_Helper</class>
+            </avataxar2>
+        </helpers>
+        <models>
+            <avataxar2>
+                <class>OnePica_AvaTaxAr2_Model</class>
+            </avataxar2>
+            <avataxar2_records>
+                <class>OnePica_AvaTaxAr2_Model_Records</class>
+                <resourceModel>avataxar2_records_mysql4</resourceModel>
+            </avataxar2_records>
+            <avataxar2_records_mysql4>
+                <class>OnePica_AvaTaxAr2_Model_Records_Mysql4</class>
+                <entities>
+                    <!-- TODO: add table -->
+                    <!--<documents>-->
+                    <!--<table>op_avataxar2_documents</table>-->
+                    <!--</documents>-->
+                </entities>
+            </avataxar2_records_mysql4>
+            <avatax>
+                <rewrite>
+                    <source_avatax_logtype>OnePica_AvaTaxAr2_Model_Source_Avatax_Logtype</source_avatax_logtype>
+                </rewrite>
+            </avatax>
+        </models>
+        <events>
+            <controller_front_init_before>
+                <observers>
+                    <avataxar2>
+                        <type>singleton</type>
+                        <class>avataxar2/observer_loadAvaTaxExternalLib</class>
+                        <method>execute</method>
+                    </avataxar2>
+                </observers>
+            </controller_front_init_before>
+            <adminhtml_customer_prepare_save>
+                <observers>
+                    <avataxar2>
+                        <type>singleton</type>
+                        <class>avataxar2/observer_adminhtmlCustomerPrepareSave</class>
+                        <method>execute</method>
+                    </avataxar2>
+                </observers>
+            </adminhtml_customer_prepare_save>
+            <admin_system_config_changed_section_tax>
+                <observers>
+                    <avataxar2>
+                        <type>singleton</type>
+                        <class>avataxar2/observer_adminSystemConfigChangedSectionTax</class>
+                        <method>execute</method>
+                    </avataxar2>
+                </observers>
+            </admin_system_config_changed_section_tax>
+            <avatax_make_request_before>
+                <observers>
+                    <avataxar2>
+                        <type>singleton</type>
+                        <class>avataxar2/observer_avataxMakeRequestBefore</class>
+                        <method>execute</method>
+                    </avataxar2>
+                </observers>
+            </avatax_make_request_before>
+        </events>
+        <resources>
+            <avataxar2_setup>
+                <setup>
+                    <module>OnePica_AvaTaxAr2</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </avataxar2_setup>
+        </resources>
+        <sales>
+            <quote>
+                <totals>
+                    <certcapture_button>
+                        <class>avataxar2/total_button</class>
+                        <renderer>avataxar2/total_button</renderer>
+                        <admin_renderer>avataxar2/total_button</admin_renderer>
+                        <before>subtotal</before>
+                    </certcapture_button>
+                </totals>
+            </quote>
+        </sales>
+    </global>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <avataxar2 after="Mage_Adminhtml">OnePica_AvaTaxAr2_Adminhtml</avataxar2>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+    <!-- the adminhtml section is repeated in config.xml & adminhtml.xml for backwards compatibility -->
+    <!-- @see http://www.magentocommerce.com/bug-tracking/issue?issue=8496 -->
+    <adminhtml>
+        <layout>
+            <updates>
+                <avataxar2>
+                    <file>onepica/avataxar2.xml</file>
+                </avataxar2>
+            </updates>
+        </layout>
+        <translate>
+            <modules>
+                <OnePica_AvaTaxAr2>
+                    <files>
+                        <default>OnePica_AvaTax.csv</default>
+                    </files>
+                </OnePica_AvaTaxAr2>
+            </modules>
+        </translate>
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <avataxar2 translate="title">
+                            <title>AvaTax RestV2 Module</title>
+                            <sort_order>100</sort_order>
+                        </avataxar2>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+        <events>
+            <model_config_data_save_before>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avataxar2/observer_adminSystemConfigSaveBefore</class>
+                        <method>execute</method>
+                    </avatax>
+                </observers>
+            </model_config_data_save_before>
+            <customer_save_before>
+                <observers>
+                    <avatax>
+                        <type>singleton</type>
+                        <class>avataxar2/observer_adminCustomerSaveBefore</class>
+                        <method>execute</method>
+                    </avatax>
+                </observers>
+            </customer_save_before>
+        </events>
+    </adminhtml>
+    <frontend>
+        <layout>
+            <updates>
+                <avataxar2>
+                    <file>onepica/avataxar2.xml</file>
+                </avataxar2>
+            </updates>
+        </layout>
+        <routers>
+            <avataxar2>
+                <use>standard</use>
+                <args>
+                    <module>OnePica_AvaTaxAr2</module>
+                    <frontName>avataxcert</frontName>
+                </args>
+            </avataxar2>
+        </routers>
+    </frontend>
+    <default>
+        <tax>
+            <avatax_document_management>
+                <action>0</action>
+            </avatax_document_management>
+            <avatax>
+                <log_type_list>Ping,GetTax,Filter,Validate,Queue,CertAPI:Ping,CertAPI:Common,RestV2:Ping,RestV2:Common,RestV2:Companies,RestV2:Company,RestV2:CompanyCertificateCustomers,RestV2:CompanyCertificateAttachment,RestV2:CompanyCertificate,RestV2:CompanyCertificate,RestV2:Customer,RestV2:Customers,RestV2:CustomerCertificate,RestV2:CustomerCertificateUnlink,RestV2:CustomerCertExpressInvite</log_type_list>
+            </avatax>
+        </tax>
+    </default>
+</config>

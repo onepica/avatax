@@ -6,7 +6,7 @@
 /**
  * 
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright Â© 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Batch
  */
 class BatchFile {
@@ -55,5 +55,3 @@ class BatchFile {
   public function getErrorCount(){return $this->ErrorCount;} // int
 
 }
-
-?>

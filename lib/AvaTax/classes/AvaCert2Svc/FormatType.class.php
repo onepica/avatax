@@ -7,7 +7,7 @@
  * FormatType is the format in which the image needs to be exported.
  * 
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright Â© 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   AvaCert2
  */
 class FormatType extends Enum {
@@ -39,5 +39,3 @@ class FormatType extends Enum {
     // Unfortunate boiler plate due to polymorphism issues on static functions
     public static function Validate($value) { self::__Validate($value,self::Values(),__CLASS__); }
 }
-
-?>

@@ -70,7 +70,7 @@ class OnePica_AvaTax_Block_Adminhtml_Export_Log_View extends Mage_Adminhtml_Bloc
     /**
      * Get current event
      *
-     * @return OnePica_AvaTax_Model_Event|null
+     * @return \OnePica_AvaTax_Model_Records_Log|null
      */
     public function getCurrentEvent()
     {

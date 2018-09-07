@@ -34,7 +34,7 @@
  * @see Address
  * 
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright Â© 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Address
  */
 
@@ -476,5 +476,3 @@ class ValidAddress //extends Address - or it should - SoapClient has issues mapp
     
     
 }
-
-?>

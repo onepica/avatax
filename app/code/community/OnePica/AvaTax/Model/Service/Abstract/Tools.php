@@ -115,6 +115,26 @@ class OnePica_AvaTax_Model_Service_Abstract_Tools extends Varien_Object
     }
 
     /**
+     * Returns the AvaTax helper.
+     *
+     * @return OnePica_AvaTax_Helper_LandedCost
+     */
+    protected function _getLandedCostHelper()
+    {
+        return Mage::helper('avatax/landedCost');
+    }
+
+    /**
+     * Returns the AvaTax helper.
+     *
+     * @return OnePica_AvaTax_Helper_FixedTax
+     */
+    protected function _getFixedTaxHelper()
+    {
+        return Mage::helper('avatax/fixedTax');
+    }
+
+    /**
      * Test to see if the product carries its own numbers or is calculated based on parent or children
      *
      * @param Mage_Sales_Model_Quote_Item|Mage_Sales_Model_Order_Item|mixed $item
@@ -206,7 +226,7 @@ class OnePica_AvaTax_Model_Service_Abstract_Tools extends Varien_Object
     /**
      * Retrieve simple product id from quote item
      *
-     * @param Mage_Sales_Model_Quote_Item|Mage_Sales_Model_Quote_Address_Item $item
+     * @param Mage_Sales_Model_Quote_Item|Mage_Sales_Model_Quote_Address_Item|Mage_Sales_Model_Order_Invoice_Item $item
      *
      * @return int
      */

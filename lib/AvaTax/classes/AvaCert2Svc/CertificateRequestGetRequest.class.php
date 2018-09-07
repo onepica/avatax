@@ -7,7 +7,7 @@
  * Input for {@link CertificateRequestGet}.
  * 
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright Â© 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   AvaCert2
  */
 class CertificateRequestGetRequest {
@@ -65,5 +65,3 @@ class CertificateRequestGetRequest {
   public function getModToDate(){return $this->ModToDate;} // dateTime
 
 }
-
-?>

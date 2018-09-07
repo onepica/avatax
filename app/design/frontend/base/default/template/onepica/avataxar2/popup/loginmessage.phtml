@@ -1,0 +1,14 @@
+<?php /** @var OnePica_AvaTaxAr2_Block_Popup_LoginMessage $this */ ?>
+
+
+<div class="avataxar2-popup-login-message a-center">
+    <div class="page-head">
+        <h3><?php echo $this->getLoginMessage() ?></h3>
+    </div>
+    <div class="content">
+        <button class="button" id="avatax_certcapture_login_button"
+                onclick="window.location='<?php echo $this->getLoginUrl(); ?>'">
+            <span><?php echo $this->__('Login or Register'); ?></span>
+        </button>
+    </div>
+</div>

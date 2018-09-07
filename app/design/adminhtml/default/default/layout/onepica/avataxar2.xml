@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * OnePica_AvaTax
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0), a
+ * copy of which is available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * @category   OnePica
+ * @package    OnePica_AvaTax
+ * @author     OnePica Codemaster <codemaster@onepica.com>
+ * @copyright  Copyright (c) 2009 One Pica, Inc.
+ * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ */
+-->
+<layout>
+    <adminhtml_customer_edit>
+        <reference name="head">
+            <action method="addJs">
+                <script>avatax/main.js</script>
+            </action>
+        </reference>
+        <update handle="avataxar2_cert_additional_scripts" />
+        <reference name="customer_edit_tabs">
+            <action method="addTab">
+                <name>avataxar2_exemptions</name>
+                <block>avataxar2/adminhtml_customer_documents</block>
+            </action>
+        </reference>
+    </adminhtml_customer_edit>
+
+    <adminhtml_avataxar2_grid_documents>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="avataxar2/adminhtml_customer_documents_grid" name="admin.avataxar2.documents.grid" />
+        </block>
+    </adminhtml_avataxar2_grid_documents>
+
+    <adminhtml_avataxar2_popup_gencert>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="avataxar2/adminhtml_popup_form" name="admin.avataxar2.popup.form" template="onepica/avataxar2/popup/form.phtml" />
+        </block>
+    </adminhtml_avataxar2_popup_gencert>
+
+    <adminhtml_avataxar2_customer_savecustomertoavalara>
+        <reference name="head">
+            <action method="addJs">
+                <script>avatax/update-ava-customer.js</script>
+            </action>
+        </reference>
+        <reference name="content">
+            <block type="avataxar2/adminhtml_customer_saveToAvalara" name ="admin.avataxar2.customer.saveToAvalara.container" />
+        </reference>
+    </adminhtml_avataxar2_customer_savecustomertoavalara>
+
+    <!-- Cert additional scripts -->
+    <avataxar2_cert_additional_scripts>
+        <reference name="head">
+            <action method="addItem" ifconfig="tax/avatax_document_management/action">
+                <type>js</type>
+                <name>avatax/certcapture.js</name>
+                <params />
+            </action>
+            <action method="addItem" ifconfig="tax/avatax_document_management/action">
+                <type>js_css</type>
+                <name>avatax/themes/adminhtml/certcapture.css</name>
+                <params />
+            </action>
+            <action method="addItem" ifconfig="tax/avatax_document_management/action">
+                <type>js</type>
+                <name>prototype/window.js</name>
+                <params />
+            </action>
+            <action method="addItem" ifconfig="tax/avatax_document_management/action">
+                <type>js_css</type>
+                <name>prototype/windows/themes/default.css</name>
+                <params />
+            </action>
+        </reference>
+    </avataxar2_cert_additional_scripts>
+</layout>

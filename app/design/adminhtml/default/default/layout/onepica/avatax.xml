@@ -49,4 +49,103 @@
             </action>
         </reference>
     </adminhtml_sales_order_view>
+
+    <!-- Landed Cost feature -->
+    <avatax_landed_cost_import_duties_add_order_total>
+        <reference name="order_totals">
+            <block type="avatax/sales_order_totals_importDuties" name="avatax_landed_cost_import_duties" />
+        </reference>
+    </avatax_landed_cost_import_duties_add_order_total>
+
+    <adminhtml_sales_order_view>
+        <update handle="avatax_landed_cost_import_duties_add_order_total" />
+    </adminhtml_sales_order_view>
+
+    <adminhtml_sales_order_invoice_new>
+        <reference name="invoice_totals">
+            <block type="avatax/sales_order_totals_importDuties" name="avatax_landed_cost_import_duties" />
+        </reference>
+    </adminhtml_sales_order_invoice_new>
+
+    <adminhtml_sales_order_invoice_view>
+        <reference name="invoice_totals">
+            <block type="avatax/sales_order_totals_importDuties" name="avatax_landed_cost_import_duties" />
+        </reference>
+    </adminhtml_sales_order_invoice_view>
+
+    <adminhtml_sales_order_creditmemo_new>
+        <reference name="creditmemo_totals">
+            <block type="avatax/sales_order_totals_importDuties" name="avatax_landed_cost_import_duties" />
+        </reference>
+    </adminhtml_sales_order_creditmemo_new>
+
+    <adminhtml_sales_order_creditmemo_view>
+        <reference name="creditmemo_totals">
+            <block type="avatax/sales_order_totals_importDuties" name="avatax_landed_cost_import_duties" />
+        </reference>
+    </adminhtml_sales_order_creditmemo_view>
+
+    <adminhtml_system_config_edit>
+        <reference name="head">
+            <action method="addJs"><script>avatax/jquery-3.2.1.min.js</script></action>
+            <action method="addJs"><script>avatax/landedcost.js</script></action>
+            <action method="addJs"><script>avatax/main.js</script></action>
+        </reference>
+    </adminhtml_system_config_edit>
+
+    <adminhtml_avatax_grid_hscode>
+        <reference name="content">
+            <block type="avatax/adminhtml_landedcost_hsCode" name="avatax.hscode.grid" />
+        </reference>
+    </adminhtml_avatax_grid_hscode>
+
+    <adminhtml_avatax_grid_parameter>
+        <reference name="content">
+            <block type="avatax/adminhtml_landedcost_parameter" name="avatax.parameter.grid" />
+        </reference>
+    </adminhtml_avatax_grid_parameter>
+
+    <adminhtml_avatax_grid_agreement>
+        <reference name="content">
+            <block type="avatax/adminhtml_landedcost_agreement" name="avatax.agreements.grid" />
+        </reference>
+    </adminhtml_avatax_grid_agreement>
+    <!-- Landed Cost feature END -->
+
+    <!-- Fixed Tax feature -->
+    <avatax_fixed_tax_add_order_total>
+        <reference name="order_totals">
+            <block type="avatax/sales_order_totals_fixedTax" name="avatax_fixed_tax" />
+        </reference>
+    </avatax_fixed_tax_add_order_total>
+
+    <adminhtml_sales_order_view>
+        <update handle="avatax_fixed_tax_add_order_total" />
+    </adminhtml_sales_order_view>
+
+    <adminhtml_sales_order_invoice_new>
+        <reference name="invoice_totals">
+            <block type="avatax/sales_order_totals_fixedTax" name="avatax_fixed_tax" />
+        </reference>
+    </adminhtml_sales_order_invoice_new>
+
+    <adminhtml_sales_order_invoice_view>
+        <reference name="invoice_totals">
+            <block type="avatax/sales_order_totals_fixedTax" name="avatax_fixed_tax" />
+        </reference>
+    </adminhtml_sales_order_invoice_view>
+
+    <adminhtml_sales_order_creditmemo_new>
+        <reference name="creditmemo_totals">
+            <block type="avatax/sales_order_totals_fixedTax" name="avatax_fixed_tax" />
+        </reference>
+    </adminhtml_sales_order_creditmemo_new>
+
+    <adminhtml_sales_order_creditmemo_view>
+        <reference name="creditmemo_totals">
+            <block type="avatax/sales_order_totals_fixedTax" name="avatax_fixed_tax" />
+        </reference>
+    </adminhtml_sales_order_creditmemo_view>
+    <!-- Fixed Tax feature -->
+
 </layout>

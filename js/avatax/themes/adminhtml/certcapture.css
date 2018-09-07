@@ -1,0 +1,152 @@
+/* AvaTax Pop-up on Admin Panel */
+
+#avatax_certcapture_content.dialog_content {
+    background-color: #fff;
+    min-height: 200px;
+    height: auto !important;
+}
+#avatax_certcapture_table_content.dialog_content {
+    background-color: #fff;
+}
+#overlay_modal.overlay_dialog {
+    position: fixed !important;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+#avatax_certcapture_form_container {
+    display: block;
+    padding: 10px 20px;
+}
+#avatax_certcapture {
+    border: solid 1px #6b8289;
+    display: block;
+    position: absolute;
+    z-index: 200;
+    top: 30vh !important;
+    left: 50% !important;
+    margin-left: -392px;
+    background: white;
+}
+#avatax_certcapture .dialog_close {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: 1px solid gray;
+    background-image: linear-gradient(to top, #0f1a1d 40%, #5a6264 60%);
+    top: 5px;
+    left: 97%;
+    color: #fff;
+    font-size: 10px;
+    text-align: center;
+}
+#avatax_certcapture .dialog_close:before {
+    content: '✕';
+    display: block;
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    line-height: 16px;
+}
+#avatax_certcapture .top.table_window {
+    font: bold 12px/28px Arial, Helvetica, sans-serif;
+    color: #fff;
+    font-size: 10px;
+    font-weight: bold;
+    line-height: 1.4;
+    padding: 5px;
+    text-align: center;
+    margin-bottom: 0px;
+    background-image: linear-gradient(to bottom,#6b838b, #445358);
+    border-bottom: 1px solid #e6e6e6;
+}
+#avatax_certcapture .dialog_title {
+    color: #fff;
+    font: 12px/1.5em Arial, Helvetica, sans-serif;
+    padding: 5px 10px;
+    height: auto;
+    text-align: left;
+    margin-bottom: 0px;
+}
+.buttons-set {
+    text-align: right;
+}
+.button {
+    border-width: 1px;
+    border-style: solid;
+    border-color: #ed6502 #a04300 #a04300 #ed6502;
+    padding: 1px 7px 2px 7px;
+    background-image: linear-gradient(to bottom, #fbab50, #f16a1f);
+    color: #fff;
+    font: bold 12px arial, helvetica, sans-serif;
+    cursor: pointer;
+    text-align: center !important;
+    white-space: nowrap;
+}
+#avatax_certcapture_form_container .button2:hover,
+#avatax_certcapture_form_container .button:hover {
+    background-image: linear-gradient(to bottom, #f7ddbd, #f87d2f);
+}
+#avatax_certcapture .dialog_sw,
+#avatax_certcapture .dialog_sw,
+#avatax_certcapture .dialog_sw,
+#avatax_certcapture .dialog_nw,
+#avatax_certcapture .dialog_n,
+#avatax_certcapture .dialog_ne,
+#avatax_certcapture .dialog_sw,
+#avatax_certcapture .dialog_s,
+#avatax_certcapture .dialog_se {
+    background: transparent;
+    width: auto;
+}
+#avatax_certcapture .dialog_w,
+#avatax_certcapture .dialog_e {
+    width: 0;
+}
+#avatax_certcapture_form_container .field {
+    margin-bottom: 15px;
+}
+#avatax_certcapture_form_container .field {
+    display: flex;
+    flex-direction: row;
+}
+#avatax_certcapture_form_container .field input {
+    min-height: 17px;
+    width: 280px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #aaa #c8c8c8 #c8c8c8 #aaa;
+    padding: 2px 5px;
+    background: #fff;
+    font: 12px arial, helvetica, sans-serif;
+}
+#avatax_certcapture_form_container .field label {
+    color: #333 !important;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    line-height: 22px;
+    width: 120px;
+    font-weight: normal !important;
+    position: relative;
+}
+#avatax_certcapture_form_container .field label.required:after {
+    content: ' *';
+    color: #df280a;
+    font-weight: normal;
+    font-family: "Helvetica Neue", Verdana, Arial, sans-serif;
+    font-size: 12px;
+}
+@media (max-width: 766px) {
+    #avatax_certcapture,
+    #avatax_certcapture_content {
+        width: 100% !important;
+    }
+    #avatax_certcapture {
+        left: 0 !important;
+        margin-left: 0;
+    }
+}

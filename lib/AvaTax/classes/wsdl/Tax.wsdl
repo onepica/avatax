@@ -130,6 +130,7 @@
           <s:element minOccurs="0" maxOccurs="1" name="UnitOfMeasurement" type="s:string" />
           <s:element minOccurs="1" maxOccurs="1" name="Amount" type="s:decimal" />
           <s:element minOccurs="1" maxOccurs="1" name="Discounted" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="HSCode" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="RevAcct" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="Ref1" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="Ref2" type="s:string" />
@@ -160,6 +161,7 @@
         <s:sequence>
           <s:element minOccurs="1" maxOccurs="1" name="Name" type="s:string" />
           <s:element minOccurs="1" maxOccurs="1" name="Value" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="UOMCode" type="s:string" />
         </s:sequence>
       </s:complexType>
       <s:simpleType name="TaxOverrideType">
@@ -314,6 +316,7 @@
           <s:element minOccurs="1" maxOccurs="1" name="JurisType" type="tns:JurisdictionType" />
           <s:element minOccurs="0" maxOccurs="1" name="JurisCode" type="s:string" />
           <s:element minOccurs="1" maxOccurs="1" name="TaxType" type="tns:TaxType" />
+          <s:element minOccurs="1" maxOccurs="1" name="TaxSubTypeId" type="s:string" />
           <s:element minOccurs="1" maxOccurs="1" name="Base" type="s:decimal" />
           <s:element minOccurs="1" maxOccurs="1" name="Taxable" type="s:decimal" />
           <s:element minOccurs="1" maxOccurs="1" name="Rate" type="s:decimal" />

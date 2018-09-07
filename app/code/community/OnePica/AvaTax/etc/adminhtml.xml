@@ -40,20 +40,52 @@
                         <import_export>
                             <!-- enabled/disabled in OnePica_AvaTax_Model_Admin_Session -->
                         </import_export>
-                        <avatax_queue translate="title" module="avatax">
-                            <title>AvaTax Order Sync Queue</title>
-                            <action>adminhtml/avaTax_grid/queue</action>
-                            <resource>avatax</resource>
-                        </avatax_queue>
-                        <avatax_log translate="title" module="avatax">
-                            <title>AvaTax Log</title>
-                            <action>adminhtml/avaTax_grid/log</action>
-                            <resource>avatax</resource>
-                        </avatax_log>
                     </children>
                 </tax>
             </children>
         </sales>
+        <avatax translate="title" module="avatax">
+            <title>AvaTax</title>
+            <sort_order>21</sort_order>
+            <children>
+                <avatax_queue translate="title" module="avatax">
+                    <title>AvaTax Order Sync Queue</title>
+                    <action>adminhtml/avaTax_grid/queue</action>
+                    <resource>avatax</resource>
+                    <sort_order>10</sort_order>
+                </avatax_queue>
+                <avatax_log translate="title" module="avatax">
+                    <title>AvaTax Log</title>
+                    <action>adminhtml/avaTax_grid/log</action>
+                    <resource>avatax</resource>
+                    <sort_order>20</sort_order>
+                </avatax_log>
+                <avatax_landedcost translate="title" module="avatax">
+                    <title>AvaTax Customs Duty</title>
+                    <sort_order>30</sort_order>
+                    <children>
+                        <avatax_hscode translate="title" module="avatax">
+                            <title>HS Code Group</title>
+                            <action>adminhtml/avaTax_grid/hscode</action>
+                            <resource>avatax</resource>
+                            <sort_order>10</sort_order>
+                        </avatax_hscode>
+                        <avatax_parameter translate="title" module="avatax">
+                            <title>Parameters</title>
+                            <action>adminhtml/avaTax_grid/parameter</action>
+                            <resource>avatax</resource>
+                            <sort_order>20</sort_order>
+                        </avatax_parameter>
+                        <avatax_agreement translate="title" module="avatax">
+                            <title>Agreements</title>
+                            <action>adminhtml/avaTax_grid/agreement</action>
+                            <resource>avatax</resource>
+                            <sort_order>30</sort_order>
+                        </avatax_agreement>
+                    </children>
+                </avatax_landedcost>
+            </children>
+        </avatax>
     </menu>
     <acl>
         <resources>
