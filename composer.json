@@ -5,7 +5,7 @@
     "homepage": "http://www.magentocommerce.com/magento-connect/6760.html",
     "require": {
         "magento-hackathon/magento-composer-installer": "*",
-        "onepica/avatax16":"^0.2.2-alpha"
+        "onepica/avatax16":"^0.2.2-stable"
     },
     "license": "OSL-3.0",
     "authors":[
